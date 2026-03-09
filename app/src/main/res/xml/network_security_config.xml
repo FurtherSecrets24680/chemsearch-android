@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">pubchem.ncbi.nlm.nih.gov</domain>
+        <domain includeSubdomains="true">en.wikipedia.org</domain>
+        <domain includeSubdomains="true">generativelanguage.googleapis.com</domain>
+    </domain-config>
+</network-security-config>

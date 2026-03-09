@@ -1,0 +1,349 @@
+package com.furthersecrets.chemsearch
+
+import android.app.Application
+import android.content.Context
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.furthersecrets.chemsearch.data.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+import java.io.IOException
+
+class ChemViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val prefs = application.getSharedPreferences("chemsearch_prefs", Context.MODE_PRIVATE)
+
+    private val _uiState = MutableStateFlow(ChemUiState())
+    val uiState: StateFlow<ChemUiState> = _uiState.asStateFlow()
+
+    private val _isDarkTheme = MutableStateFlow(prefs.getBoolean("dark_theme", false))
+    val isDarkTheme: StateFlow<Boolean> = _isDarkTheme.asStateFlow()
+
+    private val _autoSuggest = MutableStateFlow(prefs.getBoolean("auto_suggest", true))
+    val autoSuggest: StateFlow<Boolean> = _autoSuggest.asStateFlow()
+
+    private val _defaultDescSource = MutableStateFlow(getSavedDescSource())
+    val defaultDescSource: StateFlow<DescSource> = _defaultDescSource.asStateFlow()
+
+    fun toggleTheme() {
+        val next = !_isDarkTheme.value
+        _isDarkTheme.value = next
+        prefs.edit().putBoolean("dark_theme", next).apply()
+    }
+
+    fun toggleAutoSuggest() {
+        val next = !_autoSuggest.value
+        _autoSuggest.value = next
+        prefs.edit().putBoolean("auto_suggest", next).apply()
+        if (!next) _uiState.update { it.copy(suggestions = emptyList()) }
+    }
+
+    fun setDefaultDescSource(source: DescSource) {
+        _defaultDescSource.value = source
+        saveDescSource(source)
+    }
+
+    private val _query = MutableStateFlow("")
+    val query: StateFlow<String> = _query.asStateFlow()
+
+    private var searchJob: Job? = null
+    private var autocompleteJob: Job? = null
+
+    init {
+        _uiState.update { it.copy(history = loadHistory()) }
+    }
+
+    fun onQueryChange(q: String) {
+        _query.value = q
+        autocompleteJob?.cancel()
+        if (!_autoSuggest.value || q.length < 2) {
+            _uiState.update { it.copy(suggestions = emptyList()) }
+            return
+        }
+        autocompleteJob = viewModelScope.launch {
+            delay(300)
+            try {
+                val res = ApiClient.pubChemAutocomplete.autocomplete(q)
+                _uiState.update { it.copy(suggestions = res.dictionaryTerms?.compound ?: emptyList()) }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(suggestions = emptyList()) }
+            }
+        }
+    }
+
+    fun search(queryOverride: String? = null) {
+        val q = (queryOverride ?: _query.value).trim()
+        if (q.isBlank()) return
+        if (queryOverride != null) _query.value = q
+
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            _uiState.update {
+                it.copy(isLoading = true, error = null, suggestions = emptyList(), hasResult = false)
+            }
+            try {
+                val cid = ApiClient.pubChem.getCid(q).identifierList?.cid?.firstOrNull()
+                    ?: throw NoSuchElementException("Chemical not found.")
+
+                val propsDeferred = async { runCatching { ApiClient.pubChem.getProperties(cid) }.getOrNull() }
+                val synsDeferred  = async { runCatching { ApiClient.pubChem.getSynonyms(cid) }.getOrNull() }
+                val descDeferred  = async { runCatching { ApiClient.pubChem.getDescription(cid) }.getOrNull() }
+
+                val props = propsDeferred.await()?.propertyTable?.properties?.firstOrNull()
+                    ?: CompoundProperty(cid, null, null, null, null, null, null, null, null)
+                val synonyms = synsDeferred.await()
+                    ?.informationList?.information?.firstOrNull()?.synonym ?: emptyList()
+                val descItem = descDeferred.await()
+                    ?.informationList?.information?.find { it.description != null }
+
+                val casRegex = Regex("""^\d{1,7}-\d{2}-\d$""")
+                val casNumber = synonyms.firstOrNull { casRegex.matches(it) }
+
+                val compoundName = synonyms.firstOrNull() ?: q
+                val formula = props.molecularFormula ?: ""
+
+                val pubDesc: String? = descItem?.description?.let { el ->
+                    when {
+                        el.isJsonPrimitive -> el.asString
+                        el.isJsonArray -> el.asJsonArray.mapNotNull {
+                            runCatching { it.asString }.getOrNull()
+                        }.joinToString("\n\n")
+                        else -> null
+                    }
+                }
+
+                val savedSource = getSavedDescSource()
+                saveToHistory(compoundName)
+
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        hasResult = true,
+                        cid = cid,
+                        name = compoundName.replaceFirstChar { c -> c.uppercase() },
+                        formula = formula,
+                        empiricalFormula = getEmpiricalFormula(formula),
+                        weight = props.molecularWeight ?: "",
+                        charge = props.charge ?: 0,
+                        iupacName = props.iupacName ?: "",
+                        smiles = props.smiles ?: "",
+                        connectivitySmiles = props.connectivitySmiles ?: props.smiles ?: "",
+                        inchiKey = props.inchiKey ?: "",
+                        inchi = props.inchi ?: "",
+                        synonyms = synonyms.take(8),
+                        casNumber = casNumber,
+                        pubDescription = pubDesc,
+                        wikiDescription = null,
+                        aiDescription = null,
+                        descSource = savedSource,
+                        elementalData = calcElementalData(formula),
+                        history = loadHistory(),
+                        activeTab = MolTab.TWO_D
+                    )
+                }
+
+                when (savedSource) {
+                    DescSource.WIKI -> fetchWikiDescription()
+                    DescSource.AI   -> fetchAiDescription()
+                    else -> Unit
+                }
+
+            } catch (e: Exception) {
+                val msg = when (e) {
+                    is IOException -> "Network error. Check your connection."
+                    is NoSuchElementException -> e.message ?: "Not found"
+                    else -> "Chemical not found. Try a different name or spelling."
+                }
+                _uiState.update {
+                    it.copy(isLoading = false, error = msg)
+                }
+            }
+        }
+    }
+
+    fun fetchWikiDescription() {
+        val name = _uiState.value.name.ifBlank { return }
+        _uiState.update { it.copy(isLoadingDesc = true) }
+        viewModelScope.launch {
+            val titleCased = name.trim().split(" ")
+                .joinToString(" ") { word -> word.lowercase().replaceFirstChar { it.uppercase() } }
+            val desc = runCatching { ApiClient.wiki.getSummary(titleCased).extract }.getOrNull()
+                ?: runCatching { ApiClient.wiki.getSummary(name.trim().lowercase().replaceFirstChar { it.uppercase() }).extract }.getOrNull()
+            _uiState.update { it.copy(isLoadingDesc = false, wikiDescription = desc) }
+        }
+    }
+
+    fun fetchAiDescription() {
+        val name = _uiState.value.name.ifBlank { return }
+        val key = getGeminiKey() ?: run {
+            _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "No API key set. Add your Gemini key in Settings.") }
+            return
+        }
+        _uiState.update { it.copy(isLoadingDesc = true) }
+        viewModelScope.launch {
+            val prompt = "Write a short 2-3 sentence description of the chemical \"$name\". " +
+                    "Include real-world applications. Keep it clear and easy to read."
+            val req = GeminiRequest(
+                contents = listOf(GeminiContent(parts = listOf(GeminiPart(text = prompt))))
+            )
+            try {
+                val response = ApiClient.gemini.generateContent(key, req)
+                val text = response.candidates?.firstOrNull()?.content?.parts?.firstOrNull()?.text
+                _uiState.update {
+                    it.copy(
+                        isLoadingDesc = false,
+                        aiDescription = text ?: "Gemini returned an empty response. Try regenerating."
+                    )
+                }
+            } catch (e: retrofit2.HttpException) {
+                val errorBody = e.response()?.errorBody()?.string() ?: "Unknown error"
+                _uiState.update {
+                    it.copy(isLoadingDesc = false, aiDescription = "API error ${e.code()}: $errorBody")
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(isLoadingDesc = false, aiDescription = "Network error: ${e.message}")
+                }
+            }
+        }
+    }
+
+    fun setDescSource(source: DescSource) {
+        _uiState.update { it.copy(descSource = source) }
+        val state = _uiState.value
+        if (source == DescSource.WIKI && state.wikiDescription == null) fetchWikiDescription()
+        if (source == DescSource.AI   && state.aiDescription == null)   fetchAiDescription()
+    }
+
+    fun setTab(tab: MolTab) = _uiState.update { it.copy(activeTab = tab) }
+    fun clearSuggestions() = _uiState.update { it.copy(suggestions = emptyList()) }
+    fun clearError() = _uiState.update { it.copy(error = null) }
+
+    fun getGeminiKey(): String? = prefs.getString("gemini_key", null)?.ifBlank { null }
+    fun saveGeminiKey(key: String) = prefs.edit().putString("gemini_key", key).apply()
+    fun clearGeminiKey() {
+        prefs.edit().remove("gemini_key").apply()
+        _uiState.update { it.copy(aiDescription = null) }
+    }
+
+    private fun getSavedDescSource(): DescSource =
+        DescSource.entries.firstOrNull { it.name == prefs.getString("desc_source", null) }
+            ?: DescSource.PUBCHEM
+
+    private fun saveDescSource(source: DescSource) =
+        prefs.edit().putString("desc_source", source.name).apply()
+
+    private fun loadHistory(): List<String> =
+        prefs.getString("history", "")?.split("||")?.filter { it.isNotBlank() } ?: emptyList()
+
+    private fun saveToHistory(name: String) {
+        val updated = loadHistory().toMutableList().apply {
+            removeAll { it.equals(name, ignoreCase = true) }
+            add(0, name)
+            if (size > 10) removeLast()
+        }
+        prefs.edit().putString("history", updated.joinToString("||")).apply()
+        _uiState.update { it.copy(history = updated) }
+    }
+
+    fun clearHistory() {
+        prefs.edit().remove("history").apply()
+        _uiState.update { it.copy(history = emptyList()) }
+    }
+
+    private fun parseFormula(formula: String): Map<String, Int> {
+        val totalResult = mutableMapOf<String, Int>()
+        // Handle hydrates (e.g. CuSO4·5H2O)
+        val parts = formula.split(Regex("[·.*\\s]")).filter { it.isNotBlank() }
+        for (part in parts) {
+            val multMatch = Regex("^(\\d+)").find(part)
+            val partMult = multMatch?.groupValues?.get(1)?.toInt() ?: 1
+            val cleanPart = if (multMatch != null) part.substring(multMatch.range.last + 1) else part
+            
+            parseBasicFormula(cleanPart).forEach { (el, cnt) ->
+                totalResult[el] = (totalResult[el] ?: 0) + (cnt * partMult)
+            }
+        }
+        return totalResult
+    }
+
+    private fun parseBasicFormula(formula: String): Map<String, Int> {
+        val result = mutableMapOf<String, Int>()
+        val stack = ArrayDeque<MutableMap<String, Int>>().apply { addLast(result) }
+        var i = 0
+        while (i < formula.length) {
+            when {
+                formula[i] == '(' -> { stack.addLast(mutableMapOf()); i++ }
+                formula[i] == ')' -> {
+                    i++
+                    var numStr = ""
+                    while (i < formula.length && formula[i].isDigit()) numStr += formula[i++]
+                    val mult = numStr.toIntOrNull() ?: 1
+                    val top = stack.removeLast()
+                    top.forEach { (el, cnt) -> stack.last()[el] = (stack.last()[el] ?: 0) + cnt * mult }
+                }
+                formula[i].isUpperCase() -> {
+                    var el = formula[i].toString(); i++
+                    while (i < formula.length && formula[i].isLowerCase()) el += formula[i++]
+                    var numStr = ""
+                    while (i < formula.length && formula[i].isDigit()) numStr += formula[i++]
+                    val cnt = numStr.toIntOrNull() ?: 1
+                    stack.last()[el] = (stack.last()[el] ?: 0) + cnt
+                }
+                else -> i++
+            }
+        }
+        return result
+    }
+
+    private fun gcd(a: Int, b: Int): Int = if (b == 0) a else gcd(b, a % b)
+
+    private fun getEmpiricalFormula(formula: String): String {
+        if (formula.isBlank()) return ""
+        val els = parseFormula(formula)
+        if (els.isEmpty()) return formula
+        val d = els.values.reduce { a, b -> gcd(a, b) }
+        return els.entries.joinToString("") { (el, cnt) -> el + if (cnt / d > 1) "${cnt / d}" else "" }
+    }
+
+    private fun calcElementalData(formula: String): List<ElementData> {
+        if (formula.isBlank()) return emptyList()
+        val els = parseFormula(formula)
+        var total = 0.0
+        val raw = els.mapNotNull { (el, cnt) ->
+            val w = ATOMIC_WEIGHTS[el] ?: return@mapNotNull null
+            val mass = w * cnt
+            total += mass
+            el to mass
+        }
+        if (total == 0.0) return emptyList()
+        return raw.map { (el, mass) ->
+            ElementData(el, ((mass / total) * 100).toFloat())
+        }.sortedByDescending { it.percentage }
+    }
+
+    companion object {
+        private val ATOMIC_WEIGHTS = mapOf(
+            "H" to 1.008, "He" to 4.0026, "Li" to 6.94, "Be" to 9.0122, "B" to 10.81, "C" to 12.011,
+            "N" to 14.007, "O" to 15.999, "F" to 18.998, "Ne" to 20.180, "Na" to 22.990, "Mg" to 24.305,
+            "Al" to 26.982, "Si" to 28.085, "P" to 30.974, "S" to 32.06, "Cl" to 35.45, "Ar" to 39.948,
+            "K" to 39.098, "Ca" to 40.078, "Sc" to 44.956, "Ti" to 47.867, "V" to 50.942, "Cr" to 51.996,
+            "Mn" to 54.938, "Fe" to 55.845, "Co" to 58.933, "Ni" to 58.693, "Cu" to 63.546, "Zn" to 65.38,
+            "Ga" to 69.723, "Ge" to 72.63, "As" to 74.922, "Se" to 78.97, "Br" to 79.904, "Kr" to 83.798,
+            "Rb" to 85.468, "Sr" to 87.62, "Y" to 88.906, "Zr" to 91.224, "Nb" to 92.906, "Mo" to 95.95,
+            "Ru" to 101.07, "Rh" to 102.91, "Pd" to 106.42, "Ag" to 107.87, "Cd" to 112.41, "In" to 114.82,
+            "Sn" to 118.71, "Sb" to 121.76, "Te" to 127.60, "I" to 126.90, "Xe" to 131.29, "Cs" to 132.91,
+            "Ba" to 137.33, "La" to 138.91, "Ce" to 140.12, "Pr" to 140.91, "Nd" to 144.24, "Pm" to 145.0,
+            "Sm" to 150.36, "Eu" to 151.96, "Gd" to 157.25, "Tb" to 158.93, "Dy" to 162.50, "Ho" to 164.93,
+            "Er" to 167.26, "Tm" to 168.93, "Yb" to 173.05, "Lu" to 174.97, "Hf" to 178.49, "Ta" to 180.95,
+            "W" to 183.84, "Re" to 186.21, "Os" to 190.23, "Ir" to 192.22, "Pt" to 195.08, "Au" to 196.97,
+            "Hg" to 200.59, "Tl" to 204.38, "Pb" to 207.2, "Bi" to 208.98, "Po" to 209.0, "At" to 210.0,
+            "Rn" to 222.0, "Fr" to 223.0, "Ra" to 226.0, "Ac" to 227.0, "Th" to 232.04, "Pa" to 231.04,
+            "U" to 238.03, "Np" to 237.0, "Pu" to 244.0, "Am" to 243.0, "Cm" to 247.0, "Bk" to 247.0,
+            "Cf" to 251.0, "Es" to 252.0, "Fm" to 257.0, "Md" to 258.0, "No" to 259.0, "Lr" to 262.0,
+            "Rf" to 267.0, "Db" to 270.0, "Sg" to 271.0, "Bh" to 270.0, "Hs" to 277.0, "Mt" to 276.0,
+            "Ds" to 281.0, "Rg" to 280.0, "Cn" to 285.0, "Nh" to 284.0, "Fl" to 289.0, "Mc" to 288.0,
+            "Lv" to 293.0, "Ts" to 294.0, "Og" to 294.0
+        )
+    }
+}
