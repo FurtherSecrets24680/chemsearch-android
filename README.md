@@ -99,11 +99,6 @@ To use AI descriptions, you'll need a Google Gemini API key. You can get a free 
 
 ---
 
-## 📜 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
 ## 📚 Data Sources
 - **[PubChem](https://pubchem.ncbi.nlm.nih.gov/)**
 - **[Wikipedia](https://en.wikipedia.org/)**
@@ -111,4 +106,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Developed by [FurtherSecrets](https://github.com/FurtherSecrets24680)**
+## 📜 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
