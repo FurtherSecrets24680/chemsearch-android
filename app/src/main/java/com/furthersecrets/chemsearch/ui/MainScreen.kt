@@ -200,18 +200,12 @@ fun AppHeader(isDark: Boolean, onToggleTheme: () -> Unit, onOpenSettings: () -> 
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Box(
-                modifier = Modifier.size(46.dp).clip(RoundedCornerShape(14.dp))
-                    .background(MaterialTheme.colorScheme.primary),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.chemsearch),
-                    contentDescription = null,
-                    tint = Color.Unspecified,
-                    modifier = Modifier.size(50.dp)
-                )
-            }
+            Icon(
+                painter = painterResource(id = R.drawable.chemsearch),
+                contentDescription = null,
+                tint = Color.Unspecified,
+                modifier = Modifier.size(50.dp)
+            )
             Column {
                 Text("ChemSearch", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold)
                 Text(
