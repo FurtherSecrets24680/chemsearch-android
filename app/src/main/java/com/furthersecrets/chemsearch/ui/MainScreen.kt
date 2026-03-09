@@ -170,6 +170,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             if (state.hasResult) {
                 item { CompoundHeader(state) }
                 item { StructureViewer(state, vm) }
+                item { QuickInfoSection(state, context) }
                 item { IdentifiersSection(state, context) }
                 if (state.elementalData.isNotEmpty()) item { ElementalSection(state.elementalData) }
                 if (state.synonyms.isNotEmpty()) item { SynonymsSection(state.synonyms) }
@@ -360,7 +361,7 @@ fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearch: () -> Un
         value = query,
         onValueChange = onQueryChange,
         modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text("Search compound... (e.g. caffeine)") },
+        placeholder = { Text("Search compound ..") },
         leadingIcon = { Icon(Icons.Default.Search, null) },
         trailingIcon = {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -431,64 +432,26 @@ fun HistorySection(history: List<String>, onSelect: (String) -> Unit, onClear: (
 
 @Composable
 fun CompoundHeader(state: ChemUiState) {
-    val context = LocalContext.current
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)) {
-        Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(state.name, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold, color = Color.White)
             Text(toSubscriptFormula(state.formula), style = MaterialTheme.typography.titleMedium, color = Color.White.copy(0.85f), fontFamily = FontFamily.Monospace)
-            
-            Spacer(modifier = Modifier.height(4.dp))
-            
-            if (state.weight.isNotBlank()) {
-                HeaderInfoRow("Weight", "${state.weight} g/mol", state.weight, context)
-            }
-            state.cid?.let {
-                HeaderInfoRow("CID", it.toString(), it.toString(), context)
-            }
-            state.casNumber?.let {
-                HeaderInfoRow("CAS", it, it, context)
-            }
-            if (state.charge != 0) {
-                HeaderInfoRow("Charge", state.charge.toString(), state.charge.toString(), context)
-            }
         }
     }
 }
 
+// ─── Quick Info ────────────────────────────────────────────────────────────────
+
 @Composable
-fun HeaderInfoRow(label: String, displayValue: String, copyValue: String, context: Context) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                cm.setPrimaryClip(ClipData.newPlainText(label, copyValue))
-            }
-            .padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column {
-            Text(
-                label.uppercase(),
-                style = MaterialTheme.typography.labelSmall,
-                fontWeight = FontWeight.Bold,
-                color = Color.White.copy(0.6f),
-                letterSpacing = 0.5.sp
-            )
-            Text(
-                displayValue,
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.White,
-                fontFamily = FontFamily.Monospace
-            )
+fun QuickInfoSection(state: ChemUiState, context: Context) {
+    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            SectionLabel("Basic Information")
+            if (state.weight.isNotBlank()) IdentifierRow("Weight", "${state.weight} g/mol", context)
+            state.cid?.let { IdentifierRow("CID", it.toString(), context) }
+            state.casNumber?.let { IdentifierRow("CAS", it, context) }
+            if (state.charge != 0) IdentifierRow("Formal Charge", state.charge.toString(), context)
         }
-        Icon(
-            imageVector = Icons.Default.ContentCopy,
-            contentDescription = "Copy",
-            tint = Color.White.copy(0.4f),
-            modifier = Modifier.size(16.dp)
-        )
     }
 }
 
