@@ -59,18 +59,18 @@ Choose where you get your information:
 
 ### ⚠️ Known issues
 - 3D model viewer is not properly working
-- Autosuggestions is very glitchy (disable it in the settings)
+- 'Autosuggestions' is very glitchy (disable it in the settings)
 ## 🛠️ Tech Stack
 
-| Library | Purpose |
-|---|---|
-| **Kotlin** | Primary programming language. |
-| **Jetpack Compose** | Modern toolkit for building native UI. |
-| **Material 3** | Latest Android design system. |
-| **Retrofit 2** | Type-safe HTTP client for API interactions. |
+| Library               | Purpose                                                 |
+|-----------------------|---------------------------------------------------------|
+| **Kotlin**            | Primary programming language.                           |
+| **Jetpack Compose**   | Modern toolkit for building native UI.                  |
+| **Material 3**        | Latest Android design system.                           |
+| **Retrofit 2**        | Type-safe HTTP client for API interactions.             |
 | **Coroutines & Flow** | Asynchronous programming and reactive state management. |
-| **Coil** | Image loading for 2D structures. |
-| **WebView** | Used for hosting the interactive 3D molecular viewer. |
+| **Coil**              | Image loading for 2D structures.                        |
+| **WebView**           | Used for hosting the interactive 3D molecular viewer.   |
 
 ---
 

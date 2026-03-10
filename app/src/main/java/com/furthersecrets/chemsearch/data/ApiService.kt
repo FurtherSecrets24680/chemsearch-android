@@ -54,12 +54,11 @@ interface WikiApi {
 }
 
 // ─── Gemini ────────────────────────────────────────────────────────────────────
-// Model name must be exactly "gemini-1.5-flash" — "gemini-2.0-flash" does not exist
-// as a valid model ID and causes the API to return 404.
+// Model: gemini-flash-latest
 
 interface GeminiApi {
 
-    @POST("models/gemini-2.0-flash:generateContent")
+    @POST("models/gemini-flash-latest:generateContent")
     suspend fun generateContent(
         @Query("key") apiKey: String,
         @Body request: GeminiRequest
