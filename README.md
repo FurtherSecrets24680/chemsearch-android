@@ -34,32 +34,29 @@ This project is the native Android version of the original **ChemSearch** web ap
 - **Recent History:** Quickly revisit previous searches with one-tap access.
 
 ### **Detailed Chemical Data**
-- **Title Card:** Displays the compound name and molecular formula (with proper subscripts).
-- **Key Identifiers:** Vertical layout for **Molecular Weight**, **CID**, **CAS Number**, and **Charge**.
-- **One-Tap Copy:** Every identifier in the title card and the detailed identifiers section is copyable to the clipboard.
+- **Redesigned Title Card:** A modern, prominent header displaying the compound name and molecular formula.
+- **Quick Identifiers:** One-tap access to **Molecular Weight**, **CID**, and **CAS Number** directly in the header.
+- **One-Tap Copy:** Most identifiers (CID, CAS, SMILES, etc.) are clickable to copy directly to your clipboard.
 - **Comprehensive Set:** Access IUPAC names, SMILES (Full & Connectivity), InChI, and InChIKey.
 
 ### **Visualization & Analysis**
 - **Structure Viewer:**
     - **2D Structure:** High-quality PNG images from PubChem.
-    - **3D Model:** Interactive 3D visualization using `3Dmol.js` in a WebView, allowing rotation and inspection of molecular geometry.
+    - **3D Model:** Interactive 3D visualization using `3Dmol.js`. The app pre-fetches SDF data for offline-ready, smooth rendering and rotation.
 - **Elemental Analysis:** Visual bar charts showing the percentage composition of every element in the compound, calculated using high-precision atomic weights.
 
 ### **Multi-Source Descriptions**
 Choose where you get your information:
 - **PubChem:** Scientific descriptions directly from the source.
 - **Wikipedia:** Quick summaries for general context.
-- **AI (Gemini):** Concise, AI-generated descriptions including real-world applications (requires a free API key).
+- **AI (Gemini & Groq):** Concise, AI-generated descriptions. Supports both **Google Gemini** and **Groq** (requires your own API key).
 
 ### **Customization**
 - **Themes:** Full support for Dark and Light modes.
-- **Settings:** Configure your default description source, toggle autosuggestions, and manage your Gemini API key.
+- **Settings:** Configure your default description source, choose your preferred AI provider, and manage your API keys.
 
 ---
 
-### ⚠️ Known issues
-- 3D model viewer is not properly working
-- 'Autosuggestions' is very glitchy (disable it in the settings)
 ## 🛠️ Tech Stack
 
 | Library               | Purpose                                                 |
@@ -88,13 +85,17 @@ Choose where you get your information:
 ---
 
 ## 🔑 AI Descriptions (Optional)
-To use AI descriptions, you'll need a Google Gemini API key. You can get a free key at [aistudio.google.com](https://aistudio.google.com). Once obtained, enter it in the app's Settings menu.
+To use AI descriptions, you'll need an API key for either Google Gemini or Groq.
+- **Gemini:** Get a free key at [aistudio.google.com](https://aistudio.google.com).
+- **Groq:** Get a key at [console.groq.com](https://console.groq.com).
+
+Once obtained, enter the key in the app's Settings menu and select your preferred provider.
 
 ---
 
 ## 🛡️ Privacy
-- **Direct API Calls:** Data is fetched directly from PubChem, Wikipedia, and Google Gemini APIs. No intermediary servers are used.
-- **Local Storage:** Your API key and search history are stored locally on your device using `SharedPreferences`.
+- **Direct API Calls:** Data is fetched directly from PubChem, Wikipedia, Google, and Groq APIs. No intermediary servers are used.
+- **Local Storage:** Your API keys and search history are stored locally on your device using `SharedPreferences`.
 - **Transparency:** No tracking or telemetry is included.
 
 ---
@@ -103,6 +104,7 @@ To use AI descriptions, you'll need a Google Gemini API key. You can get a free 
 - **[PubChem](https://pubchem.ncbi.nlm.nih.gov/)**
 - **[Wikipedia](https://en.wikipedia.org/)**
 - **[Google Gemini](https://ai.google.dev/)**
+- **[Groq](https://groq.com/)**
 
 ---
 
