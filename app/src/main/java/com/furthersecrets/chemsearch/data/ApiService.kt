@@ -2,13 +2,10 @@ package com.furthersecrets.chemsearch.data
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
 // ─── PubChem PUG REST ──────────────────────────────────────────────────────────
@@ -28,6 +25,12 @@ interface PubChemApi {
 
     @GET("compound/cid/{cid}/description/JSON")
     suspend fun getDescription(@Path("cid") cid: Long): DescriptionResponse
+
+    @GET("compound/cid/{cid}/SDF")
+    suspend fun getSdf(
+        @Path("cid") cid: Long,
+        @Query("record_type") recordType: String = "3d"
+    ): ResponseBody
 }
 
 // ─── PubChem Autocomplete ──────────────────────────────────────────────────────
@@ -42,8 +45,6 @@ interface PubChemAutocompleteApi {
 }
 
 // ─── Wikipedia ─────────────────────────────────────────────────────────────────
-// Wikipedia REST API requires a User-Agent header or it returns 403 silently.
-// We use a dedicated OkHttpClient that injects this header for every Wikipedia request.
 
 interface WikiApi {
 
@@ -54,7 +55,6 @@ interface WikiApi {
 }
 
 // ─── Gemini ────────────────────────────────────────────────────────────────────
-// Model: gemini-flash-latest
 
 interface GeminiApi {
 
@@ -65,18 +65,26 @@ interface GeminiApi {
     ): GeminiResponse
 }
 
+// ─── Groq ──────────────────────────────────────────────────────────────────────
+
+interface GroqApi {
+
+    @POST("chat/completions")
+    suspend fun generateContent(
+        @Header("Authorization") auth: String,
+        @Body request: GroqRequest
+    ): GroqResponse
+}
+
 // ─── Clients ───────────────────────────────────────────────────────────────────
 
 object ApiClient {
 
-    // Default client for PubChem and Gemini
     private val defaultClient = OkHttpClient.Builder()
         .connectTimeout(15, TimeUnit.SECONDS)
         .readTimeout(20, TimeUnit.SECONDS)
         .build()
 
-    // Wikipedia requires a descriptive User-Agent or it silently returns empty/403.
-    // Format: AppName/version (contact or repo URL)
     private val wikiClient = OkHttpClient.Builder()
         .connectTimeout(15, TimeUnit.SECONDS)
         .readTimeout(20, TimeUnit.SECONDS)
@@ -104,7 +112,6 @@ object ApiClient {
         retrofit("https://pubchem.ncbi.nlm.nih.gov/rest/autocomplete/")
             .create(PubChemAutocompleteApi::class.java)
 
-    // Wiki uses its own client with the required User-Agent
     val wiki: WikiApi =
         retrofit("https://en.wikipedia.org/api/rest_v1/", wikiClient)
             .create(WikiApi::class.java)
@@ -113,6 +120,9 @@ object ApiClient {
         retrofit("https://generativelanguage.googleapis.com/v1beta/")
             .create(GeminiApi::class.java)
 
-    // Raw client for plain-text responses (not needed for 3D anymore — handled in WebView JS)
+    val groq: GroqApi =
+        retrofit("https://api.groq.com/openai/v1/")
+            .create(GroqApi::class.java)
+
     val rawHttp: OkHttpClient = defaultClient
 }

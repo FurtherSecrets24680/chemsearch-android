@@ -3,6 +3,11 @@ package com.furthersecrets.chemsearch.ui
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
+import android.webkit.ConsoleMessage
+import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.animation.AnimatedVisibility
@@ -30,12 +35,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -62,7 +70,9 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val focusManager = LocalFocusManager.current
     val snackbar = remember { SnackbarHostState() }
 
-    var showApiKeyDialog by remember { mutableStateOf(false) }
+    var showGeminiKeyDialog by remember { mutableStateOf(false) }
+    var showGroqKeyDialog by remember { mutableStateOf(false) }
+    var showAiProviderDialog by remember { mutableStateOf(false) }
     var showSuggestions by remember { mutableStateOf(false) }
     var showSettings by remember { mutableStateOf(false) }
 
@@ -73,11 +83,48 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         showSuggestions = state.suggestions.isNotEmpty()
     }
 
-    if (showApiKeyDialog) {
+    if (showGeminiKeyDialog) {
         ApiKeyDialog(
+            title = "Gemini API Key",
+            link = "aistudio.google.com",
             current = vm.getGeminiKey() ?: "",
-            onSave = { key -> vm.saveGeminiKey(key); showApiKeyDialog = false },
-            onDismiss = { showApiKeyDialog = false }
+            onSave = { key ->
+                vm.saveGeminiKey(key); showGeminiKeyDialog = false; vm.setDescSource(
+                DescSource.AI
+            )
+            },
+            onDismiss = { showGeminiKeyDialog = false }
+        )
+    }
+
+    if (showGroqKeyDialog) {
+        ApiKeyDialog(
+            title = "Groq API Key",
+            link = "console.groq.com",
+            current = vm.getGroqKey() ?: "",
+            onSave = { key ->
+                vm.saveGroqKey(key); showGroqKeyDialog = false; vm.setDescSource(
+                DescSource.AI
+            )
+            },
+            onDismiss = { showGroqKeyDialog = false }
+        )
+    }
+
+    if (showAiProviderDialog) {
+        AiProviderDialog(
+            onSelect = { provider ->
+                vm.setAiProvider(provider)
+                showAiProviderDialog = false
+                val key = if (provider == AiProvider.GEMINI) vm.getGeminiKey() else vm.getGroqKey()
+                if (key.isNullOrBlank()) {
+                    if (provider == AiProvider.GEMINI) showGeminiKeyDialog =
+                        true else showGroqKeyDialog = true
+                } else {
+                    vm.setDescSource(DescSource.AI)
+                }
+            },
+            onDismiss = { showAiProviderDialog = false }
         )
     }
 
@@ -86,12 +133,17 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             isDark = isDark,
             autoSuggest = autoSuggest,
             defaultDescSource = defaultDescSource,
+            aiProvider = state.aiProvider,
             hasGeminiKey = vm.getGeminiKey() != null,
+            hasGroqKey = vm.getGroqKey() != null,
             onToggleTheme = { vm.toggleTheme() },
             onToggleAutoSuggest = { vm.toggleAutoSuggest() },
             onSetDefaultDesc = { vm.setDefaultDescSource(it) },
-            onSetApiKey = { showApiKeyDialog = true; showSettings = false },
-            onClearApiKey = { vm.clearGeminiKey() },
+            onSetAiProvider = { vm.setAiProvider(it) },
+            onSetGeminiKey = { showGeminiKeyDialog = true; showSettings = false },
+            onSetGroqKey = { showGroqKeyDialog = true; showSettings = false },
+            onClearGeminiKey = { vm.clearGeminiKey() },
+            onClearGroqKey = { vm.clearGroqKey() },
             onClearHistory = { vm.clearHistory() },
             onDismiss = { showSettings = false }
         )
@@ -101,91 +153,109 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         snackbarHost = { SnackbarHost(snackbar) },
         containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
-        LazyColumn(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) { showSuggestions = false; focusManager.clearFocus() },
-            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 20.dp, bottom = 32.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            item {
-                AppHeader(
-                    isDark = isDark,
-                    onToggleTheme = { vm.toggleTheme() },
-                    onOpenSettings = { showSettings = true }
-                )
-            }
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ) { showSuggestions = false; focusManager.clearFocus() },
+                contentPadding = PaddingValues(
+                    start = 16.dp,
+                    end = 16.dp,
+                    top = 20.dp,
+                    bottom = 32.dp
+                ),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                item {
+                    AppHeader(
+                        isDark = isDark,
+                        onToggleTheme = { vm.toggleTheme() },
+                        onOpenSettings = { showSettings = true }
+                    )
+                }
 
-            item {
-                Box {
+                item {
                     SearchBar(
                         query = query,
                         onQueryChange = {
                             vm.onQueryChange(it)
                             if (it.isNotEmpty() && autoSuggest) showSuggestions = true
                         },
-                        onSearch = { showSuggestions = false; focusManager.clearFocus(); vm.search() },
+                        onSearch = {
+                            showSuggestions = false; focusManager.clearFocus(); vm.search()
+                        },
                         onClear = { vm.onQueryChange(""); showSuggestions = false }
                     )
-                    AnimatedVisibility(
-                        visible = showSuggestions && state.suggestions.isNotEmpty(),
-                        modifier = Modifier.padding(top = 64.dp).zIndex(10f),
-                        enter = fadeIn(), exit = fadeOut()
-                    ) {
-                        SuggestionsDropdown(
-                            suggestions = state.suggestions,
-                            onSelect = {
-                                vm.onQueryChange(it)
-                                showSuggestions = false
-                                focusManager.clearFocus()
-                                vm.search(it)
-                            }
+                }
+
+                if (state.isLoading) {
+                    item {
+                        Box(
+                            Modifier.fillMaxWidth().padding(24.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+                        }
+                    }
+                }
+
+                if (!state.hasResult && !state.isLoading) {
+                    item {
+                        HistorySection(
+                            history = state.history,
+                            onSelect = { vm.search(it) },
+                            onClear = { vm.clearHistory() }
+                        )
+                    }
+                }
+
+                if (state.hasResult) {
+                    item { StructureViewer(state, vm) }
+                    item { CompoundHeader(state) }
+                    item { IdentifiersSection(state, context) }
+                    if (state.elementalData.isNotEmpty()) item { ElementalSection(state.elementalData) }
+                    if (state.synonyms.isNotEmpty()) item { SynonymsSection(state.synonyms) }
+                    item {
+                        DescriptionSection(
+                            state = state,
+                            onPubChem = { vm.setDescSource(DescSource.PUBCHEM) },
+                            onWiki = { vm.setDescSource(DescSource.WIKI) },
+                            onAI = {
+                                val key =
+                                    if (state.aiProvider == AiProvider.GEMINI) vm.getGeminiKey() else vm.getGroqKey()
+                                if (key.isNullOrBlank()) showAiProviderDialog = true
+                                else vm.setDescSource(DescSource.AI)
+                            },
+                            onRegenerate = { vm.fetchAiDescription() }
                         )
                     }
                 }
             }
 
-            if (state.isLoading) {
-                item {
-                    Box(Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+            // Suggestions float OVER everything else
+            AnimatedVisibility(
+                visible = showSuggestions && state.suggestions.isNotEmpty(),
+                modifier = Modifier
+                    .padding(top = 148.dp, start = 16.dp, end = 16.dp)
+                    .zIndex(10f),
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                SuggestionsDropdown(
+                    suggestions = state.suggestions,
+                    onSelect = {
+                        showSuggestions = false
+                        focusManager.clearFocus()
+                        vm.search(it)
                     }
-                }
-            }
-
-            if (!state.hasResult && !state.isLoading) {
-                item {
-                    HistorySection(
-                        history = state.history,
-                        onSelect = { vm.search(it) },
-                        onClear = { vm.clearHistory() }
-                    )
-                }
-            }
-
-            if (state.hasResult) {
-                item { CompoundHeader(state) }
-                item { StructureViewer(state, vm) }
-                item { QuickInfoSection(state, context) }
-                item { IdentifiersSection(state, context) }
-                if (state.elementalData.isNotEmpty()) item { ElementalSection(state.elementalData) }
-                if (state.synonyms.isNotEmpty()) item { SynonymsSection(state.synonyms) }
-                item {
-                    DescriptionSection(
-                        state = state,
-                        onPubChem = { vm.setDescSource(DescSource.PUBCHEM) },
-                        onWiki = { vm.setDescSource(DescSource.WIKI) },
-                        onAI = {
-                            if (vm.getGeminiKey().isNullOrBlank()) showApiKeyDialog = true
-                            else vm.setDescSource(DescSource.AI)
-                        },
-                        onRegenerate = { vm.fetchAiDescription() }
-                    )
-                }
+                )
             }
         }
     }
@@ -241,16 +311,22 @@ fun SettingsSheet(
     isDark: Boolean,
     autoSuggest: Boolean,
     defaultDescSource: DescSource,
+    aiProvider: AiProvider,
     hasGeminiKey: Boolean,
+    hasGroqKey: Boolean,
     onToggleTheme: () -> Unit,
     onToggleAutoSuggest: () -> Unit,
     onSetDefaultDesc: (DescSource) -> Unit,
-    onSetApiKey: () -> Unit,
-    onClearApiKey: () -> Unit,
+    onSetAiProvider: (AiProvider) -> Unit,
+    onSetGeminiKey: () -> Unit,
+    onSetGroqKey: () -> Unit,
+    onClearGeminiKey: () -> Unit,
+    onClearGroqKey: () -> Unit,
     onClearHistory: () -> Unit,
     onDismiss: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val context = LocalContext.current
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
@@ -295,12 +371,29 @@ fun SettingsSheet(
             }
 
             Spacer(Modifier.height(4.dp))
-            SettingsSectionHeader("AI (Gemini)")
+            SettingsSectionHeader("AI Provider")
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                listOf(AiProvider.GEMINI to "Gemini", AiProvider.GROQ to "Groq").forEach { (prov, label) ->
+                    SourceBtn(label = label, active = aiProvider == prov) { onSetAiProvider(prov) }
+                }
+            }
+
+            Spacer(Modifier.height(4.dp))
+            SettingsSectionHeader("API Keys")
             if (hasGeminiKey) {
-                SettingsActionRow(Icons.Default.Key, "API Key saved", "Tap to replace", "Replace", MaterialTheme.colorScheme.primary, onSetApiKey)
-                SettingsActionRow(Icons.Default.DeleteOutline, "Remove API Key", "Disables AI descriptions", "Remove", MaterialTheme.colorScheme.error, onClearApiKey)
+                SettingsActionRow(Icons.Default.Key, "Gemini API Key saved", "Tap to replace", "Replace", MaterialTheme.colorScheme.primary, onSetGeminiKey)
+                SettingsActionRow(Icons.Default.DeleteOutline, "Remove Gemini Key", "Disables Gemini AI", "Remove", MaterialTheme.colorScheme.error, onClearGeminiKey)
             } else {
-                SettingsActionRow(Icons.Default.Key, "No API Key set", "Required for AI descriptions", "Add Key", MaterialTheme.colorScheme.primary, onSetApiKey)
+                SettingsActionRow(Icons.Default.Key, "No Gemini Key set", "Required for Gemini descriptions", "Add Key", MaterialTheme.colorScheme.primary, onSetGeminiKey)
+            }
+            
+            HorizontalDivider(Modifier.padding(vertical = 4.dp), color = MaterialTheme.colorScheme.outline.copy(0.1f))
+
+            if (hasGroqKey) {
+                SettingsActionRow(Icons.Default.Key, "Groq API Key saved", "Tap to replace", "Replace", MaterialTheme.colorScheme.primary, onSetGroqKey)
+                SettingsActionRow(Icons.Default.DeleteOutline, "Remove Groq Key", "Disables Groq AI", "Remove", MaterialTheme.colorScheme.error, onClearGroqKey)
+            } else {
+                SettingsActionRow(Icons.Default.Key, "No Groq Key set", "Required for Groq descriptions", "Add Key", MaterialTheme.colorScheme.primary, onSetGroqKey)
             }
 
             Spacer(Modifier.height(4.dp))
@@ -310,10 +403,41 @@ fun SettingsSheet(
             Spacer(Modifier.height(4.dp))
             SettingsSectionHeader("About")
             Card(shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text("ChemSearch for Android", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
-                    Text("Data from PubChem, Wikipedia and Google Gemini", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
-                    Text("by FurtherSecrets", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text("ChemSearch for Android", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
+                        Text("Data from PubChem, Wikipedia, Google Gemini and Groq", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
+                        Text("by FurtherSecrets", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                    }
+
+                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text("SOURCE CODE", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                        Row(modifier = Modifier.clickable { 
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/FurtherSecrets24680/chemsearch-android"))
+                            context.startActivity(intent)
+                        }, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Icon(Icons.Default.Code, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
+                            Text("GitHub Repository", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Medium)
+                        }
+                    }
+
+                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Text("LIBRARIES & CREDITS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                        val libs = listOf(
+                            "Jetpack Compose" to "UI Framework",
+                            "Retrofit & OkHttp" to "Networking",
+                            "Coil" to "Image Loading",
+                            "3Dmol.js" to "3D Molecular Visualization",
+                            "Gson" to "JSON Parsing",
+                            "Kotlin Coroutines" to "Asynchronous Tasks"
+                        )
+                        libs.forEach { (name, desc) ->
+                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                Text(name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Medium)
+                                Text(desc, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -432,27 +556,65 @@ fun HistorySection(history: List<String>, onSelect: (String) -> Unit, onClear: (
 
 @Composable
 fun CompoundHeader(state: ChemUiState) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)) {
-        Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text(state.name, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold, color = Color.White)
-            Text(toSubscriptFormula(state.formula), style = MaterialTheme.typography.titleMedium, color = Color.White.copy(0.85f), fontFamily = FontFamily.Monospace)
+    val context = LocalContext.current
+    val cm = remember { context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
+        Text(
+            text = state.name.uppercase(),
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.Black,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        if (state.formula.isNotBlank()) {
+            Text(
+                text = toSubscriptFormula(state.formula),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 2.dp)
+            )
+        }
+        if (state.iupacName.isNotBlank()) {
+            Text(
+                text = state.iupacName.lowercase(),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                fontFamily = FontFamily.Monospace,
+                modifier = Modifier.padding(bottom = 2.dp)
+            )
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(18.dp), verticalAlignment = Alignment.CenterVertically) {
+            state.cid?.let {
+                ClickableIdentifier(label = "CID", value = it.toString(), cm = cm)
+            }
+            state.casNumber?.let {
+                ClickableIdentifier(label = "CAS", value = it, cm = cm)
+            }
+            if (state.weight.isNotBlank()) {
+                ClickableIdentifier(label = "MW", value = "${state.weight} g/mol", cm = cm)
+            }
         }
     }
 }
 
-// ─── Quick Info ────────────────────────────────────────────────────────────────
-
 @Composable
-fun QuickInfoSection(state: ChemUiState, context: Context) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            SectionLabel("Basic Information")
-            if (state.weight.isNotBlank()) IdentifierRow("Weight", "${state.weight} g/mol", context)
-            state.cid?.let { IdentifierRow("CID", it.toString(), context) }
-            state.casNumber?.let { IdentifierRow("CAS", it, context) }
-            if (state.charge != 0) IdentifierRow("Formal Charge", state.charge.toString(), context)
+fun ClickableIdentifier(label: String, value: String, cm: ClipboardManager) {
+    Text(
+        text = buildAnnotatedString {
+            withStyle(SpanStyle(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.45f))) { append("$label: ") }
+            withStyle(SpanStyle(color = Color(0xFF64B5F6), fontWeight = FontWeight.Bold)) { append(value) }
+        },
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = Modifier.clickable {
+            cm.setPrimaryClip(ClipData.newPlainText(label, value))
         }
-    }
+    )
 }
 
 // ─── Structure viewer ──────────────────────────────────────────────────────────
@@ -465,7 +627,7 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                 Tab(selected = state.activeTab == MolTab.TWO_D, onClick = { vm.setTab(MolTab.TWO_D) }, text = { Text("2D Structure") })
                 Tab(selected = state.activeTab == MolTab.THREE_D, onClick = { vm.setTab(MolTab.THREE_D) }, text = { Text("3D Model") })
             }
-            Box(modifier = Modifier.fillMaxWidth().height(280.dp), contentAlignment = Alignment.Center) {
+            Box(modifier = Modifier.fillMaxWidth().height(320.dp), contentAlignment = Alignment.Center) {
                 when (state.activeTab) {
                     MolTab.TWO_D -> state.cid?.let { cid ->
                         AsyncImage(
@@ -475,76 +637,69 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                             contentScale = ContentScale.Fit
                         )
                     }
-                    MolTab.THREE_D -> state.cid?.let { cid ->
-                        Viewer3D(cid = cid)
-                    } ?: Text("3D not available", color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                    MolTab.THREE_D -> {
+                        if (state.isLoadingSdf) {
+                            CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                        } else if (state.sdfData != null) {
+                            Viewer3D(cid = state.cid ?: 0, sdfData = state.sdfData)
+                        } else {
+                            Text("3D not available", color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-// ─── 3D Viewer ─────────────────────────────────────────────────────────────────
+// ─── 3D Viewer (3Dmol.js) ──────────────────────────────────────────────────────
 
 @Composable
-fun Viewer3D(cid: Long) {
-    val html = remember(cid) {
-        """<!DOCTYPE html>
+fun Viewer3D(cid: Long, sdfData: String) {
+    val html = remember(cid, sdfData) {
+        val escapedSdf = sdfData
+            .replace("\\", "\\\\")
+            .replace("\r", "")
+            .replace("\n", "\\n")
+            .replace("`", "\\`")
+            .replace("\${", "\\\${")
+        """
+<!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.4/3Dmol-min.js"></script>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-html, body { width:100%; height:100%; overflow:hidden; background:#1e293b; }
-#viewer { width:100%; height:100%; position:relative; }
-#msg { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-       color:#94a3b8; font-family:sans-serif; font-size:13px; text-align:center; }
-</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <script src="file:///android_asset/3Dmol-min.js"></script>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #0f172a; }
+        #viewer { width: 100%; height: 100%; position: relative; }
+    </style>
 </head>
 <body>
-<div id="viewer"></div>
-<div id="msg">Loading 3D model...</div>
-<script>
-(function() {
-  var cid = $cid;
-  var sdfUrl = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/' + cid + '/SDF?record_type=3d';
-
-  fetch(sdfUrl)
-    .then(function(r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.text();
-    })
-    .then(function(sdf) {
-      document.getElementById('msg').style.display = 'none';
-      var viewer = ${'$'}3Dmol.createViewer(document.getElementById('viewer'), {
-        backgroundColor: '#1e293b',
-        antialias: true
-      });
-      viewer.addModel(sdf, 'sdf');
-      viewer.setStyle({}, {
-        stick: { radius: 0.15, colorscheme: 'default' },
-        sphere: { scale: 0.25 }
-      });
-      viewer.zoomTo();
-      viewer.render();
-      viewer.spin('y', 1);
-    })
-    .catch(function(err) {
-      document.getElementById('msg').textContent = '3D structure not available for this compound.';
-    });
-})();
-</script>
+    <div id="viewer"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var element = document.getElementById('viewer');
+            var config = { backgroundColor: '#0f172a' };
+            var viewer = ${'$'}3Dmol.createViewer(element, config);
+            var data = "$escapedSdf";
+            viewer.addModel(data, "sdf");
+            viewer.setStyle({}, {stick: {radius: 0.2, colorscheme: 'Jmol'}, sphere: {scale: 0.3}});
+            viewer.zoomTo();
+            viewer.render();
+            viewer.spin("y", 1);
+        });
+    </script>
 </body>
-</html>"""
+</html>
+        """.trimIndent()
     }
 
     var webViewRef by remember { mutableStateOf<WebView?>(null) }
-    
+
     DisposableEffect(cid) {
-        onDispose {
-            webViewRef?.destroy()
-        }
+        val captured = webViewRef
+        onDispose { captured?.destroy() }
     }
 
     key(cid) {
@@ -555,20 +710,19 @@ html, body { width:100%; height:100%; overflow:hidden; background:#1e293b; }
                     settings.apply {
                         javaScriptEnabled = true
                         domStorageEnabled = true
-                        @Suppress("DEPRECATION")
-                        allowFileAccess = false
-                        mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
+                        databaseEnabled = true
+                        useWideViewPort = true
+                        loadWithOverviewMode = true
+                        setLayerType(android.view.View.LAYER_TYPE_HARDWARE, null)
                     }
                     webViewClient = WebViewClient()
-                    webChromeClient = android.webkit.WebChromeClient()
-                    setLayerType(android.view.View.LAYER_TYPE_HARDWARE, null)
-                    loadDataWithBaseURL(
-                        "https://pubchem.ncbi.nlm.nih.gov",
-                        html,
-                        "text/html",
-                        "UTF-8",
-                        null
-                    )
+                    webChromeClient = object : WebChromeClient() {
+                        override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
+                            Log.d("3DmolConsole", consoleMessage?.message() ?: "")
+                            return true
+                        }
+                    }
+                    loadDataWithBaseURL(null, html, "text/html", "UTF-8", null)
                 }
             },
             modifier = Modifier.fillMaxSize()
@@ -588,14 +742,16 @@ fun IdentifiersSection(state: ChemUiState, context: Context) {
             if (state.smiles.isNotBlank() && state.smiles != state.connectivitySmiles) IdentifierRow("SMILES (Full)", state.smiles, context)
             if (state.inchiKey.isNotBlank()) IdentifierRow("InChIKey", state.inchiKey, context)
             if (state.inchi.isNotBlank()) IdentifierRow("InChI", state.inchi, context)
-            if (state.empiricalFormula.isNotBlank() && state.empiricalFormula != state.formula) IdentifierRow("Empirical Formula", state.empiricalFormula, context)
+            if (state.empiricalFormula.isNotBlank() && state.empiricalFormula != state.formula) IdentifierRow("Empirical Formula", toSubscriptFormula(state.empiricalFormula), context)
+            if (state.charge != 0) IdentifierRow("Formal Charge", state.charge.toString(), context)
         }
     }
 }
 
 @Composable
 fun IdentifierRow(label: String, value: String, context: Context, mono: Boolean = true) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    Column(modifier = Modifier.fillMaxWidth().clickable { cm.setPrimaryClip(ClipData.newPlainText(label, value)) }) {
         Text(label.uppercase(), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
         Spacer(Modifier.height(2.dp))
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -606,12 +762,6 @@ fun IdentifierRow(label: String, value: String, context: Context, mono: Boolean 
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis
             )
-            IconButton(onClick = {
-                val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                cm.setPrimaryClip(ClipData.newPlainText(label, value))
-            }, modifier = Modifier.size(34.dp)) {
-                Icon(Icons.Default.ContentCopy, "Copy", modifier = Modifier.size(15.dp), tint = MaterialTheme.colorScheme.onSurface.copy(0.35f))
-            }
         }
         HorizontalDivider(modifier = Modifier.padding(top = 8.dp), color = MaterialTheme.colorScheme.outline.copy(0.15f))
     }
@@ -680,10 +830,18 @@ fun DescriptionSection(state: ChemUiState, onPubChem: () -> Unit, onWiki: () -> 
                 }
                 Text(text, style = MaterialTheme.typography.bodyMedium, lineHeight = 22.sp)
                 if (state.descSource == DescSource.AI && state.aiDescription != null) {
-                    TextButton(onClick = onRegenerate, contentPadding = PaddingValues(0.dp)) {
-                        Icon(Icons.Default.Refresh, null, modifier = Modifier.size(16.dp))
-                        Spacer(Modifier.width(4.dp))
-                        Text("Regenerate", style = MaterialTheme.typography.labelMedium)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        TextButton(onClick = onRegenerate, contentPadding = PaddingValues(0.dp)) {
+                            Icon(Icons.Default.Refresh, null, modifier = Modifier.size(16.dp))
+                            Spacer(Modifier.width(4.dp))
+                            Text("Regenerate", style = MaterialTheme.typography.labelMedium)
+                        }
+                        Spacer(Modifier.weight(1f))
+                        Text(
+                            text = "via ${if (state.aiProvider == AiProvider.GEMINI) "Gemini" else "Groq"}",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                        )
                     }
                 }
             }
@@ -708,19 +866,58 @@ fun SourceBtn(label: String, active: Boolean, onClick: () -> Unit) {
     }
 }
 
+// ─── API Provider dialog ────────────────────────────────────────────────────────
+
+@Composable
+fun AiProviderDialog(onSelect: (AiProvider) -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Choose AI Provider", fontWeight = FontWeight.Bold) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text("Select which model you'd like to use for generating chemical descriptions.", style = MaterialTheme.typography.bodyMedium)
+
+                Card(
+                    onClick = { onSelect(AiProvider.GEMINI) },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+                ) {
+                    Column(Modifier.padding(12.dp)) {
+                        Text("Google Gemini", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge)
+                        Text("Model: gemini-flash-latest", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                    }
+                }
+
+                Card(
+                    onClick = { onSelect(AiProvider.GROQ) },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+                ) {
+                    Column(Modifier.padding(12.dp)) {
+                        Text("Groq Cloud", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge)
+                        Text("Model: openai/gpt-oss-120b", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                    }
+                }
+            }
+        },
+        confirmButton = {},
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } }
+    )
+}
+
 // ─── API Key dialog ─────────────────────────────────────────────────────────────
 
 @Composable
-fun ApiKeyDialog(current: String, onSave: (String) -> Unit, onDismiss: () -> Unit) {
+fun ApiKeyDialog(title: String, link: String, current: String, onSave: (String) -> Unit, onDismiss: () -> Unit) {
     var key by remember { mutableStateOf(current) }
     var visible by remember { mutableStateOf(false) }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Gemini API Key", fontWeight = FontWeight.Bold) },
+        title = { Text(title, fontWeight = FontWeight.Bold) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text("Required for AI descriptions.", style = MaterialTheme.typography.bodySmall)
-                Text("Get a free key at aistudio.google.com", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                Text("Get a free key at $link", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
                 OutlinedTextField(
                     value = key, onValueChange = { key = it }, label = { Text("API Key") }, singleLine = true, shape = RoundedCornerShape(12.dp),
                     visualTransformation = if (visible) VisualTransformation.None else PasswordVisualTransformation(),

@@ -2,6 +2,7 @@ package com.furthersecrets.chemsearch
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.furthersecrets.chemsearch.data.*
@@ -25,6 +26,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     private val _defaultDescSource = MutableStateFlow(getSavedDescSource())
     val defaultDescSource: StateFlow<DescSource> = _defaultDescSource.asStateFlow()
 
+    init {
+        val savedProvider = AiProvider.entries.firstOrNull { it.name == prefs.getString("ai_provider", null) } ?: AiProvider.GEMINI
+        _uiState.update { it.copy(history = loadHistory(), aiProvider = savedProvider) }
+    }
+
+    fun isAiProviderSet(): Boolean = prefs.contains("ai_provider")
+
     fun toggleTheme() {
         val next = !_isDarkTheme.value
         _isDarkTheme.value = next
@@ -43,15 +51,19 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         saveDescSource(source)
     }
 
+    fun setAiProvider(provider: AiProvider) {
+        _uiState.update { it.copy(aiProvider = provider) }
+        prefs.edit().putString("ai_provider", provider.name).apply()
+        if (_uiState.value.descSource == DescSource.AI) {
+            fetchAiDescription()
+        }
+    }
+
     private val _query = MutableStateFlow("")
     val query: StateFlow<String> = _query.asStateFlow()
 
     private var searchJob: Job? = null
     private var autocompleteJob: Job? = null
-
-    init {
-        _uiState.update { it.copy(history = loadHistory()) }
-    }
 
     fun onQueryChange(q: String) {
         _query.value = q
@@ -79,10 +91,11 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             _uiState.update {
-                it.copy(isLoading = true, error = null, suggestions = emptyList(), hasResult = false)
+                it.copy(isLoading = true, error = null, suggestions = emptyList(), hasResult = false, sdfData = null)
             }
             try {
-                val cid = ApiClient.pubChem.getCid(q).identifierList?.cid?.firstOrNull()
+                val cidResponse = ApiClient.pubChem.getCid(q)
+                val cid = cidResponse.identifierList?.cid?.firstOrNull()
                     ?: throw NoSuchElementException("Chemical not found.")
 
                 val propsDeferred = async { runCatching { ApiClient.pubChem.getProperties(cid) }.getOrNull() }
@@ -175,35 +188,52 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
     fun fetchAiDescription() {
         val name = _uiState.value.name.ifBlank { return }
+        val provider = _uiState.value.aiProvider
+        
+        if (provider == AiProvider.GEMINI) {
+            fetchGeminiDescription(name)
+        } else {
+            fetchGroqDescription(name)
+        }
+    }
+
+    private fun fetchGeminiDescription(name: String) {
         val key = getGeminiKey() ?: run {
-            _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "No API key set. Add your Gemini key in Settings.") }
+            _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "No Gemini API key set. Add it in Settings.") }
             return
         }
         _uiState.update { it.copy(isLoadingDesc = true) }
         viewModelScope.launch {
-            val prompt = "Write a short 2-3 sentence description of the chemical \"$name\". " +
-                    "Include real-world applications. Keep it clear and easy to read."
-            val req = GeminiRequest(
-                contents = listOf(GeminiContent(parts = listOf(GeminiPart(text = prompt))))
-            )
+            val prompt = "Write a short 2-3 sentence description of the chemical \"$name\". Include real-world applications. Keep it clear and easy to read."
+            val req = GeminiRequest(contents = listOf(GeminiContent(parts = listOf(GeminiPart(text = prompt)))))
             try {
                 val response = ApiClient.gemini.generateContent(key, req)
                 val text = response.candidates?.firstOrNull()?.content?.parts?.firstOrNull()?.text
-                _uiState.update {
-                    it.copy(
-                        isLoadingDesc = false,
-                        aiDescription = text ?: "Gemini returned an empty response. Try regenerating."
-                    )
-                }
-            } catch (e: retrofit2.HttpException) {
-                val errorBody = e.response()?.errorBody()?.string() ?: "Unknown error"
-                _uiState.update {
-                    it.copy(isLoadingDesc = false, aiDescription = "API error ${e.code()}: $errorBody")
-                }
+                _uiState.update { it.copy(isLoadingDesc = false, aiDescription = text ?: "Gemini returned empty response.") }
             } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(isLoadingDesc = false, aiDescription = "Network error: ${e.message}")
-                }
+                _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "Gemini error: ${e.message}") }
+            }
+        }
+    }
+
+    private fun fetchGroqDescription(name: String) {
+        val key = getGroqKey() ?: run {
+            _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "No Groq API key set. Add it in Settings.") }
+            return
+        }
+        _uiState.update { it.copy(isLoadingDesc = true) }
+        viewModelScope.launch {
+            val prompt = "Write a short 2-3 sentence description of the chemical \"$name\". Include real-world applications. Keep it clear and easy to read."
+            val req = GroqRequest(
+                model = "openai/gpt-oss-120b",
+                messages = listOf(GroqMessage(role = "user", content = prompt))
+            )
+            try {
+                val response = ApiClient.groq.generateContent("Bearer $key", req)
+                val text = response.choices?.firstOrNull()?.message?.content
+                _uiState.update { it.copy(isLoadingDesc = false, aiDescription = text ?: "Groq returned empty response.") }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "Groq error: ${e.message}") }
             }
         }
     }
@@ -215,7 +245,29 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         if (source == DescSource.AI   && state.aiDescription == null)   fetchAiDescription()
     }
 
-    fun setTab(tab: MolTab) = _uiState.update { it.copy(activeTab = tab) }
+    fun setTab(tab: MolTab) {
+        _uiState.update { it.copy(activeTab = tab) }
+        if (tab == MolTab.THREE_D && _uiState.value.sdfData == null) {
+            fetchSdfData()
+        }
+    }
+
+    private fun fetchSdfData() {
+        val cid = _uiState.value.cid ?: return
+        _uiState.update { it.copy(isLoadingSdf = true) }
+        viewModelScope.launch {
+            try {
+                val sdf = withContext(Dispatchers.IO) {
+                    ApiClient.pubChem.getSdf(cid).string()
+                }
+                _uiState.update { it.copy(isLoadingSdf = false, sdfData = sdf) }
+            } catch (e: Exception) {
+                Log.e("ChemViewModel", "Error fetching SDF", e)
+                _uiState.update { it.copy(isLoadingSdf = false) }
+            }
+        }
+    }
+
     fun clearSuggestions() = _uiState.update { it.copy(suggestions = emptyList()) }
     fun clearError() = _uiState.update { it.copy(error = null) }
 
@@ -223,7 +275,14 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun saveGeminiKey(key: String) = prefs.edit().putString("gemini_key", key).apply()
     fun clearGeminiKey() {
         prefs.edit().remove("gemini_key").apply()
-        _uiState.update { it.copy(aiDescription = null) }
+        if (_uiState.value.aiProvider == AiProvider.GEMINI) _uiState.update { it.copy(aiDescription = null) }
+    }
+
+    fun getGroqKey(): String? = prefs.getString("groq_key", null)?.ifBlank { null }
+    fun saveGroqKey(key: String) = prefs.edit().putString("groq_key", key).apply()
+    fun clearGroqKey() {
+        prefs.edit().remove("groq_key").apply()
+        if (_uiState.value.aiProvider == AiProvider.GROQ) _uiState.update { it.copy(aiDescription = null) }
     }
 
     private fun getSavedDescSource(): DescSource =
@@ -253,13 +312,11 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun parseFormula(formula: String): Map<String, Int> {
         val totalResult = mutableMapOf<String, Int>()
-        // Handle hydrates (e.g. CuSO4·5H2O)
         val parts = formula.split(Regex("[·.*\\s]")).filter { it.isNotBlank() }
         for (part in parts) {
             val multMatch = Regex("^(\\d+)").find(part)
             val partMult = multMatch?.groupValues?.get(1)?.toInt() ?: 1
             val cleanPart = if (multMatch != null) part.substring(multMatch.range.last + 1) else part
-            
             parseBasicFormula(cleanPart).forEach { (el, cnt) ->
                 totalResult[el] = (totalResult[el] ?: 0) + (cnt * partMult)
             }

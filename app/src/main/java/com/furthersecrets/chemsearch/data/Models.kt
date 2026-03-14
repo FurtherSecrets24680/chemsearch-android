@@ -60,7 +60,6 @@ data class DescInfoList(
 )
 
 data class DescriptionInfo(
-    // Can be a String or a JSON array — using JsonElement handles both
     @SerializedName("Description") val description: JsonElement?,
     @SerializedName("DescriptionSourceName") val sourceName: String?
 )
@@ -96,6 +95,27 @@ data class GeminiCandidate(
     val content: GeminiContent?
 )
 
+// ─── Groq ──────────────────────────────────────────────────────────────────────
+
+data class GroqRequest(
+    val model: String,
+    val messages: List<GroqMessage>,
+    val temperature: Float = 0.7f
+)
+
+data class GroqMessage(
+    val role: String,
+    val content: String
+)
+
+data class GroqResponse(
+    val choices: List<GroqChoice>?
+)
+
+data class GroqChoice(
+    val message: GroqMessage?
+)
+
 // ─── UI State ──────────────────────────────────────────────────────────────────
 
 data class ChemUiState(
@@ -117,16 +137,20 @@ data class ChemUiState(
     val wikiDescription: String? = null,
     val aiDescription: String? = null,
     val descSource: DescSource = DescSource.PUBCHEM,
+    val aiProvider: AiProvider = AiProvider.GEMINI,
     val suggestions: List<String> = emptyList(),
     val history: List<String> = emptyList(),
     val activeTab: MolTab = MolTab.TWO_D,
     val isLoadingDesc: Boolean = false,
     val casNumber: String? = null,
     val elementalData: List<ElementData> = emptyList(),
-    val hasResult: Boolean = false
+    val hasResult: Boolean = false,
+    val sdfData: String? = null,
+    val isLoadingSdf: Boolean = false
 )
 
 enum class DescSource { PUBCHEM, WIKI, AI }
+enum class AiProvider { GEMINI, GROQ }
 enum class MolTab { TWO_D, THREE_D }
 
 data class ElementData(
