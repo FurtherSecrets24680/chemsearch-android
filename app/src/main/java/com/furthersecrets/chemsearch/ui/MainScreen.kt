@@ -55,6 +55,7 @@ import com.furthersecrets.chemsearch.data.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import com.furthersecrets.chemsearch.R
+import com.furthersecrets.chemsearch.BuildConfig
 
 // ─── Root ──────────────────────────────────────────────────────────────────────
 
@@ -405,9 +406,34 @@ fun SettingsSheet(
             Card(shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text("ChemSearch for Android", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
-                        Text("Data from PubChem, Wikipedia, Google Gemini and Groq", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
-                        Text("by FurtherSecrets", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                        Text(
+                            "ChemSearch for Android",
+                            fontWeight = FontWeight.SemiBold,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Surface(
+                            shape = RoundedCornerShape(6.dp),
+                            color = MaterialTheme.colorScheme.primary.copy(0.12f)
+                        ) {
+                            Text(
+                                text = "v${BuildConfig.VERSION_NAME}  •  build ${BuildConfig.VERSION_CODE}",
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = FontFamily.Monospace,
+                                color = MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                        Text(
+                            "Data from PubChem, Wikipedia, Google Gemini and Groq",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
+                        )
+                        Text(
+                            "by FurtherSecrets",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
                     }
 
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -917,7 +943,16 @@ fun ApiKeyDialog(title: String, link: String, current: String, onSave: (String) 
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text("Required for AI descriptions.", style = MaterialTheme.typography.bodySmall)
-                Text("Get a free key at $link", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                val context = LocalContext.current
+                Text(
+                    "Get a free key at $link",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.clickable {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://$link"))
+                        context.startActivity(intent)
+                    }
+                )
                 OutlinedTextField(
                     value = key, onValueChange = { key = it }, label = { Text("API Key") }, singleLine = true, shape = RoundedCornerShape(12.dp),
                     visualTransformation = if (visible) VisualTransformation.None else PasswordVisualTransformation(),
