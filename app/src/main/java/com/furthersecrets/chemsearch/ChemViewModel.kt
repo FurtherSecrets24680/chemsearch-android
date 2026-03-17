@@ -9,10 +9,20 @@ import com.furthersecrets.chemsearch.data.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.io.IOException
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
     private val prefs = application.getSharedPreferences("chemsearch_prefs", Context.MODE_PRIVATE)
+
+    private val gson = Gson()
+    private val _favorites = MutableStateFlow<List<FavoriteCompound>>(loadFavorites())
+    val favorites: StateFlow<List<FavoriteCompound>> = _favorites.asStateFlow()
+
+    private val _isFavorite = MutableStateFlow(false)
+    val isFavorite: StateFlow<Boolean> = _isFavorite.asStateFlow()
 
     private val _uiState = MutableStateFlow(ChemUiState())
     val uiState: StateFlow<ChemUiState> = _uiState.asStateFlow()
@@ -29,9 +39,58 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     init {
         val savedProvider = AiProvider.entries.firstOrNull { it.name == prefs.getString("ai_provider", null) } ?: AiProvider.GEMINI
         _uiState.update { it.copy(history = loadHistory(), aiProvider = savedProvider) }
+        // Observe cid changes to update isFavorite
+        viewModelScope.launch {
+            _uiState.collect { state ->
+                _isFavorite.value = state.cid?.let { cid ->
+                    _favorites.value.any { it.cid == cid }
+                } ?: false
+            }
+        }
     }
 
     fun isAiProviderSet(): Boolean = prefs.contains("ai_provider")
+
+    fun toggleFavorite() {
+        val state = _uiState.value
+        val cid = state.cid ?: return
+        val current = _favorites.value.toMutableList()
+        if (_isFavorite.value) {
+            current.removeAll { it.cid == cid }
+        } else {
+            current.add(0, FavoriteCompound(
+                cid = cid,
+                name = state.name,
+                formula = state.formula,
+                molecularWeight = state.weight,
+                iupacName = state.iupacName
+            ))
+        }
+        _favorites.value = current
+        _isFavorite.value = !_isFavorite.value
+        saveFavorites(current)
+    }
+
+    fun deleteFavorite(cid: Long) {
+        val updated = _favorites.value.filter { it.cid != cid }
+        _favorites.value = updated
+        saveFavorites(updated)
+        if (_uiState.value.cid == cid) _isFavorite.value = false
+    }
+
+    private fun loadFavorites(): List<FavoriteCompound> {
+        val json = prefs.getString("favorites", null) ?: return emptyList()
+        return try {
+            val type = object : TypeToken<List<FavoriteCompound>>() {}.type
+            gson.fromJson(json, type) ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    private fun saveFavorites(list: List<FavoriteCompound>) {
+        prefs.edit().putString("favorites", gson.toJson(list)).apply()
+    }
 
     fun toggleTheme() {
         val next = !_isDarkTheme.value
@@ -84,6 +143,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun search(queryOverride: String? = null) {
+
         val q = (queryOverride ?: _query.value).trim()
         if (q.isBlank()) return
         if (queryOverride != null) _query.value = q
@@ -151,7 +211,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                         descSource = savedSource,
                         elementalData = calcElementalData(formula),
                         history = loadHistory(),
-                        activeTab = MolTab.TWO_D
+                        activeTab = MolTab.TWO_D,
                     )
                 }
 
@@ -323,7 +383,6 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }
         return totalResult
     }
-
     private fun parseBasicFormula(formula: String): Map<String, Int> {
         val result = mutableMapOf<String, Int>()
         val stack = ArrayDeque<MutableMap<String, Int>>().apply { addLast(result) }
@@ -404,3 +463,4 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         )
     }
 }
+

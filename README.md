@@ -28,10 +28,11 @@ This project is the native Android version of the original **ChemSearch** web ap
 
 ## 🚀 Features
 
-### **Intelligent Search**
+### **Intelligent Search (Powered by PubChem)**
 - **Compound Lookup:** Search by common name, IUPAC name, or CID using the PubChem PUG REST API.
 - **Autosuggestions:** Real-time search suggestions as you type (can be toggled in settings).
 - **Recent History:** Quickly revisit previous searches with one-tap access.
+- **Bookmarks:** Tap the bookmark icon next to the compound name to save your favourite or important compounds to view later. You can view the added bookmarks by tapping the bookmark logo on the top.
 
 ### **Detailed Chemical Data**
 - **Redesigned Title Card:** A modern, prominent header displaying the compound name and molecular formula.
@@ -42,13 +43,13 @@ This project is the native Android version of the original **ChemSearch** web ap
 ### **Visualization & Analysis**
 - **Structure Viewer:**
     - **2D Structure:** High-quality PNG images from PubChem.
-    - **3D Model:** Interactive 3D visualization using `3Dmol.js`. The app pre-fetches SDF data for offline-ready, smooth rendering and rotation.
+    - **3D Model:** Interactive 3D visualization using a **custom native 3D engine** written in Kotlin/Compose. The app pre-fetches SDF data for offline-ready, smooth rendering and rotation.
 - **Elemental Analysis:** Visual bar charts showing the percentage composition of every element in the compound, calculated using high-precision atomic weights.
 
 ### **Multi-Source Descriptions**
 Choose where you get your information:
 - **PubChem:** Scientific descriptions directly from the source.
-- **Wikipedia:** Quick summaries for general context.
+- **[Wikipedia](https://en.wikipedia.org/):** Quick summaries for general context.
 - **AI (Gemini & Groq):** Concise, AI-generated descriptions. Supports both **Google Gemini** and **Groq** (requires your own API key).
 
 ### **Customization**
@@ -67,7 +68,9 @@ Choose where you get your information:
 | **Retrofit 2**        | Type-safe HTTP client for API interactions.             |
 | **Coroutines & Flow** | Asynchronous programming and reactive state management. |
 | **Coil**              | Image loading for 2D structures.                        |
-| **WebView**           | Used for hosting the interactive 3D molecular viewer.   |
+| **Native 3D Engine**  | Custom-built Canvas-based 3D molecule viewer.           |
+| **Gemini & Groq**     | AI Models for automated chemical descriptions.          |
+| **Gson**              | JSON serialization and parsing.                         |
 
 ---
 
@@ -86,8 +89,10 @@ Choose where you get your information:
 
 ## 🔑 AI Descriptions (Optional)
 To use AI descriptions, you'll need an API key for either Google Gemini or Groq.
-- **Gemini:** Get a free key at [aistudio.google.com](https://aistudio.google.com).
-- **Groq:** Get a key at [console.groq.com](https://console.groq.com).
+
+The application currently supports the following models:
+- **Google Gemini:** `gemini-flash-latest`. Get a free key at [aistudio.google.com](https://aistudio.google.com).
+- **Groq Cloud:** `gpt-oss-120b`. Get a key at [console.groq.com](https://console.groq.com).
 
 Once obtained, enter the key in the app's Settings menu and select your preferred provider.
 

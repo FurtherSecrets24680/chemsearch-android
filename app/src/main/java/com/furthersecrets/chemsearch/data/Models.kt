@@ -146,7 +146,7 @@ data class ChemUiState(
     val elementalData: List<ElementData> = emptyList(),
     val hasResult: Boolean = false,
     val sdfData: String? = null,
-    val isLoadingSdf: Boolean = false
+    val isLoadingSdf: Boolean = false,
 )
 
 enum class DescSource { PUBCHEM, WIKI, AI }
@@ -156,4 +156,15 @@ enum class MolTab { TWO_D, THREE_D }
 data class ElementData(
     val element: String,
     val percentage: Float
+)
+
+// ─── Favorites ─────────────────────────────────────────────────────────────────
+
+data class FavoriteCompound(
+    val cid: Long,
+    val name: String,
+    val formula: String,
+    val molecularWeight: String,
+    val iupacName: String,
+    val savedAt: Long = System.currentTimeMillis()
 )

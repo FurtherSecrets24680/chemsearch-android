@@ -6,10 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import android.webkit.ConsoleMessage
-import android.webkit.WebChromeClient
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -46,7 +42,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
@@ -56,6 +51,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import com.furthersecrets.chemsearch.R
 import com.furthersecrets.chemsearch.BuildConfig
+import androidx.compose.ui.graphics.luminance
 
 // ─── Root ──────────────────────────────────────────────────────────────────────
 
@@ -70,12 +66,16 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val snackbar = remember { SnackbarHostState() }
+    val favorites by vm.favorites.collectAsState()
+    val isFavorite by vm.isFavorite.collectAsState()
 
     var showGeminiKeyDialog by remember { mutableStateOf(false) }
     var showGroqKeyDialog by remember { mutableStateOf(false) }
     var showAiProviderDialog by remember { mutableStateOf(false) }
     var showSuggestions by remember { mutableStateOf(false) }
     var showSettings by remember { mutableStateOf(false) }
+    var showFavorites by remember { mutableStateOf(false) }
+
 
     LaunchedEffect(state.error) {
         state.error?.let { snackbar.showSnackbar(it); vm.clearError() }
@@ -150,6 +150,15 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         )
     }
 
+    if (showFavorites) {
+        FavoritesSheet(
+            favorites = favorites,
+            onSelect = { name -> vm.search(name); showFavorites = false },
+            onDelete = { cid -> vm.deleteFavorite(cid) },
+            onDismiss = { showFavorites = false }
+        )
+    }
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar) },
         containerColor = MaterialTheme.colorScheme.background
@@ -178,7 +187,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                     AppHeader(
                         isDark = isDark,
                         onToggleTheme = { vm.toggleTheme() },
-                        onOpenSettings = { showSettings = true }
+                        onOpenSettings = { showSettings = true },
+                        onOpenFavorites = { showFavorites = true }
                     )
                 }
 
@@ -219,7 +229,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
 
                 if (state.hasResult) {
                     item { StructureViewer(state, vm) }
-                    item { CompoundHeader(state) }
+                    item { CompoundHeader(state, isFavorite, onToggleFavorite = { vm.toggleFavorite() }) }
                     item { IdentifiersSection(state, context) }
                     if (state.elementalData.isNotEmpty()) item { ElementalSection(state.elementalData) }
                     if (state.synonyms.isNotEmpty()) item { SynonymsSection(state.synonyms) }
@@ -265,7 +275,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
 // ─── App header ────────────────────────────────────────────────────────────────
 
 @Composable
-fun AppHeader(isDark: Boolean, onToggleTheme: () -> Unit, onOpenSettings: () -> Unit) {
+fun AppHeader(isDark: Boolean, onToggleTheme: () -> Unit, onOpenSettings: () -> Unit, onOpenFavorites: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -290,6 +300,9 @@ fun AppHeader(isDark: Boolean, onToggleTheme: () -> Unit, onOpenSettings: () -> 
             }
         }
         Row {
+            IconButton(onClick = onOpenFavorites) {
+                Icon(Icons.Default.Bookmarks, contentDescription = "Favorites", tint = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+            }
             IconButton(onClick = onToggleTheme) {
                 Icon(
                     imageVector = if (isDark) Icons.Default.LightMode else Icons.Default.DarkMode,
@@ -451,9 +464,11 @@ fun SettingsSheet(
                         Text("LIBRARIES & CREDITS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
                         val libs = listOf(
                             "Jetpack Compose" to "UI Framework",
+                            "Material 3" to "Design System",
                             "Retrofit & OkHttp" to "Networking",
                             "Coil" to "Image Loading",
-                            "3Dmol.js" to "3D Molecular Visualization",
+                            "Native 3D Engine" to "3D Molecular Visualization",
+                            "Gemini & Groq" to "AI Models",
                             "Gson" to "JSON Parsing",
                             "Kotlin Coroutines" to "Asynchronous Tasks"
                         )
@@ -581,50 +596,45 @@ fun HistorySection(history: List<String>, onSelect: (String) -> Unit, onClear: (
 // ─── Compound header ───────────────────────────────────────────────────────────
 
 @Composable
-fun CompoundHeader(state: ChemUiState) {
+fun CompoundHeader(state: ChemUiState, isFavorite: Boolean, onToggleFavorite: () -> Unit) {
     val context = LocalContext.current
     val cm = remember { context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        verticalArrangement = Arrangement.spacedBy(2.dp)
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.Top
     ) {
-        Text(
-            text = state.name.uppercase(),
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Black,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        if (state.formula.isNotBlank()) {
+        Column(
+            modifier = Modifier.weight(1f).padding(vertical = 4.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
             Text(
-                text = toSubscriptFormula(state.formula),
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 2.dp)
+                text = state.name.uppercase(),
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Black,
+                color = MaterialTheme.colorScheme.onSurface
             )
+            if (state.formula.isNotBlank()) {
+                Text(
+                    text = toSubscriptFormula(state.formula),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 2.dp)
+                )
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(18.dp), verticalAlignment = Alignment.CenterVertically) {
+                state.cid?.let { ClickableIdentifier(label = "CID", value = it.toString(), cm = cm) }
+                state.casNumber?.let { ClickableIdentifier(label = "CAS", value = it, cm = cm) }
+                if (state.weight.isNotBlank()) ClickableIdentifier(label = "MW", value = "${state.weight} g/mol", cm = cm)
+            }
         }
-        if (state.iupacName.isNotBlank()) {
-            Text(
-                text = state.iupacName.lowercase(),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
-                fontFamily = FontFamily.Monospace,
-                modifier = Modifier.padding(bottom = 2.dp)
+        IconButton(onClick = onToggleFavorite) {
+            Icon(
+                imageVector = if (isFavorite) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
+                contentDescription = if (isFavorite) "Remove bookmark" else "Add bookmark",
+                tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.4f)
             )
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(18.dp), verticalAlignment = Alignment.CenterVertically) {
-            state.cid?.let {
-                ClickableIdentifier(label = "CID", value = it.toString(), cm = cm)
-            }
-            state.casNumber?.let {
-                ClickableIdentifier(label = "CAS", value = it, cm = cm)
-            }
-            if (state.weight.isNotBlank()) {
-                ClickableIdentifier(label = "MW", value = "${state.weight} g/mol", cm = cm)
-            }
         }
     }
 }
@@ -667,7 +677,8 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                         if (state.isLoadingSdf) {
                             CircularProgressIndicator(modifier = Modifier.size(24.dp))
                         } else if (state.sdfData != null) {
-                            Viewer3D(cid = state.cid ?: 0, sdfData = state.sdfData)
+                            val isDark = !MaterialTheme.colorScheme.background.luminance().let { it > 0.5f }
+                            Viewer3D(cid = state.cid ?: 0, sdfData = state.sdfData, isDark = isDark)
                         } else {
                             Text("3D not available", color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
                         }
@@ -678,83 +689,6 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
     }
 }
 
-// ─── 3D Viewer (3Dmol.js) ──────────────────────────────────────────────────────
-
-@Composable
-fun Viewer3D(cid: Long, sdfData: String) {
-    val html = remember(cid, sdfData) {
-        val escapedSdf = sdfData
-            .replace("\\", "\\\\")
-            .replace("\r", "")
-            .replace("\n", "\\n")
-            .replace("`", "\\`")
-            .replace("\${", "\\\${")
-        """
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <script src="file:///android_asset/3Dmol-min.js"></script>
-    <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #0f172a; }
-        #viewer { width: 100%; height: 100%; position: relative; }
-    </style>
-</head>
-<body>
-    <div id="viewer"></div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var element = document.getElementById('viewer');
-            var config = { backgroundColor: '#0f172a' };
-            var viewer = ${'$'}3Dmol.createViewer(element, config);
-            var data = "$escapedSdf";
-            viewer.addModel(data, "sdf");
-            viewer.setStyle({}, {stick: {radius: 0.2, colorscheme: 'Jmol'}, sphere: {scale: 0.3}});
-            viewer.zoomTo();
-            viewer.render();
-            viewer.spin("y", 1);
-        });
-    </script>
-</body>
-</html>
-        """.trimIndent()
-    }
-
-    var webViewRef by remember { mutableStateOf<WebView?>(null) }
-
-    DisposableEffect(cid) {
-        val captured = webViewRef
-        onDispose { captured?.destroy() }
-    }
-
-    key(cid) {
-        AndroidView(
-            factory = { ctx ->
-                WebView(ctx).apply {
-                    webViewRef = this
-                    settings.apply {
-                        javaScriptEnabled = true
-                        domStorageEnabled = true
-                        databaseEnabled = true
-                        useWideViewPort = true
-                        loadWithOverviewMode = true
-                        setLayerType(android.view.View.LAYER_TYPE_HARDWARE, null)
-                    }
-                    webViewClient = WebViewClient()
-                    webChromeClient = object : WebChromeClient() {
-                        override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-                            Log.d("3DmolConsole", consoleMessage?.message() ?: "")
-                            return true
-                        }
-                    }
-                    loadDataWithBaseURL(null, html, "text/html", "UTF-8", null)
-                }
-            },
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-}
 
 // ─── Identifiers ───────────────────────────────────────────────────────────────
 
@@ -785,8 +719,6 @@ fun IdentifierRow(label: String, value: String, context: Context, mono: Boolean 
                 value,
                 style = if (mono) MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace) else MaterialTheme.typography.bodySmall,
                 modifier = Modifier.weight(1f),
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis
             )
         }
         HorizontalDivider(modifier = Modifier.padding(top = 8.dp), color = MaterialTheme.colorScheme.outline.copy(0.15f))
@@ -980,5 +912,95 @@ fun toSubscriptFormula(formula: String): String {
         val prefix = match.groupValues[1]
         val digits = match.groupValues[2]
         prefix + digits.map { sub[it] ?: it }.joinToString("")
+    }
+}
+
+// ─── Favorites sheet ───────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FavoritesSheet(
+    favorites: List<FavoriteCompound>,
+    onSelect: (String) -> Unit,
+    onDelete: (Long) -> Unit,
+    onDismiss: () -> Unit
+) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = sheetState,
+        containerColor = MaterialTheme.colorScheme.surface,
+        shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 20.dp, bottom = 48.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(
+                "Bookmarks",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+            if (favorites.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 40.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text("🔖", fontSize = 36.sp)
+                        Text("No bookmarks yet", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+                        Text("Tap the bookmark icon on any compound", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                    }
+                }
+            } else {
+                favorites.forEach { fav ->
+                    Card(
+                        onClick = { onSelect(fav.name) },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(12.dp).fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(fav.name, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+                                if (fav.formula.isNotBlank()) {
+                                    Text(
+                                        toSubscriptFormula(fav.formula),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        fontFamily = FontFamily.Monospace,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                                if (fav.molecularWeight.isNotBlank()) {
+                                    Text(
+                                        "MW: ${fav.molecularWeight} g/mol",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+                                    )
+                                }
+                            }
+                            IconButton(onClick = { onDelete(fav.cid) }) {
+                                Icon(
+                                    Icons.Default.Delete,
+                                    contentDescription = "Remove",
+                                    tint = MaterialTheme.colorScheme.error.copy(0.7f),
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        }
+                    }
+                    Spacer(Modifier.height(4.dp))
+                }
+            }
+        }
     }
 }
