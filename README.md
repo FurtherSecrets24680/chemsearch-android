@@ -35,7 +35,7 @@ This is the native Android version of the original **ChemSearch** web applicatio
   <img src="screenshots/ea_syn_desc.jpg" width="200"/>
   <img src="screenshots/ghs_safety.jpg" width="200"/>
   <img src="screenshots/settings.jpg" width="200"/>
-  <img src="screenshots/bookmarks.jpg.jpg" width="200"/>
+  <img src="screenshots/bookmarks.jpg" width="200"/>
 </p>
 ---
 
@@ -43,40 +43,35 @@ This is the native Android version of the original **ChemSearch** web applicatio
 
 ### Search
 - Search by common name, IUPAC name, CAS number, or CID via PubChem PUG REST
-- Real-time autocomplete suggestions as you type (toggleable)
-- Recent search history with one-tap access
-- Bookmarks to save and revisit compounds
+- Real-time **autocomplete suggestions** as you type (toggleable)
+- Recent **search history** with one-tap access
+- **Bookmarks** to save and revisit compounds
 
 ### Compound Data
 - Compound header showing name, molecular formula, molecular weight, CID and CAS at a glance
-- Full identifiers card: IUPAC name, SMILES (full and connectivity), InChI, InChIKey, empirical formula, and formal charge — tap any to copy to clipboard
-- Info tooltips on each card explaining what each identifier or data type means
-- Up to 8 synonyms displayed as chips
-- Elemental analysis with mass percentage bars for each element
+- Full identifiers card: IUPAC name, SMILES (full and connectivity), InChI, InChIKey, empirical formula, and formal charge - tap any to copy to clipboard
+- **Info tooltips** on each card explaining what each identifier or data type means
+- Up to 8 **synonyms** displayed as chips
+- **Elemental analysis** with mass percentage bars for each element
 
 ### Structure Viewer
 - **2D structure** via PubChem PNG images
-- **3D model** using a fully native Canvas-based engine (no WebView, no JavaScript):
+- **3D model** using a fully native Canvas-based engine:
     - Drag to rotate, pinch to zoom, auto-spin with pause on touch
-    - Correct painter's algorithm depth sorting for atoms and bonds
     - CPK coloring for all 118 elements
     - Ball-and-stick model with bonds connected to atom surfaces
-    - Dynamic specular highlight that responds to rotation
     - Reset view button
-    - Full dark and light mode support
 
 ### Safety Information
 - GHS classification fetched from PubChem PUG View:
     - Signal word badge (Danger / Warning) with color coding
     - GHS pictograms (GHS01 through GHS09) with icons and labels
-    - Hazard H-codes, filtered to remove noise entries like "Not Classified"
-- Info tooltip explaining what GHS means
-
+    - Hazard H-codes
 ### Descriptions
 Three switchable sources per compound:
 - **PubChem** for scientific descriptions
 - **Wikipedia** for general summaries
-- **AI** via Google Gemini or Groq, with a regenerate button and provider label
+- **AI** via Google Gemini or Groq, with a regenerate button
 
 ### Customization
 - Dark and light mode toggle
@@ -176,5 +171,3 @@ Keys are stored locally on your device and only sent directly to the respective 
 MIT License. See [LICENSE](LICENSE) for details.
 
 ---
-
-<p align="center">Built by <a href="https://github.com/FurtherSecrets24680">FurtherSecrets</a></p>
