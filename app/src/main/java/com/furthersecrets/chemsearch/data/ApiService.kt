@@ -125,4 +125,18 @@ object ApiClient {
             .create(GroqApi::class.java)
 
     val rawHttp: OkHttpClient = defaultClient
+
+    val pubChemView: PubChemViewApi =
+        retrofit("https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/")
+            .create(PubChemViewApi::class.java)
+}
+
+// ─── PubChem PUG View ──────────────────────────────────────────────────────────
+
+interface PubChemViewApi {
+    @GET("data/compound/{cid}/JSON")
+    suspend fun getSection(
+        @Path("cid") cid: Long,
+        @Query("heading") heading: String
+    ): com.google.gson.JsonObject
 }

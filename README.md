@@ -1,117 +1,180 @@
-# ChemSearch (for Android)
+# ChemSearch for Android
 
-**ChemSearch** is a native Android application designed for chemists, students, and researchers to quickly search and visualize chemical compounds. It provides a comprehensive set of data, including identifiers, structural models, and AI-generated descriptions, all within a clean, modern Material 3 interface.
+<p align="center">
+  <img src="app/src/main/res/drawable/chemsearch.png" width="96" alt="ChemSearch icon"/>
+</p>
 
----
+<p align="center">
+  <strong>A native Android app for searching and exploring chemical compounds.</strong><br/>
+  Built for students, researchers, and anyone curious about chemistry.
+</p>
 
-This project is the native Android version of the original **ChemSearch** web application.
-
-- **Live Web App:** [chemsearch.netlify.app](https://chemsearch.netlify.app/)
-- **Web App Repository:** [FurtherSecrets24680/chemsearch](https://github.com/FurtherSecrets24680/chemsearch)
-
----
-
-## 📱 Requirements
-
-### **For Users (Installing the APK)**
-- **Android Version:** Android 8.0 (Oreo) or higher (API level 26+).
-- **Internet Connection:** Required for searching compounds, loading structures, and generating AI descriptions.
-- **Storage:** Minimal space for app installation and local search history caching.
-
-### **For Developers (Building from Source)**
-- **IDE:** Android Studio Hedgehog (2023.1.1) or newer.
-- **JDK:** Version 11.
-- **Android SDK:** API Level 34 (Compile & Target).
-- **Internet:** Required for Gradle sync and library dependencies.
+<p align="center">
+  <a href="https://github.com/FurtherSecrets24680/chemsearch-android/releases">
+    <img src="https://img.shields.io/github/v/release/FurtherSecrets24680/chemsearch-android?style=flat-square" alt="Latest Release"/>
+  </a>
+  <img src="https://img.shields.io/badge/Android-8.0%2B-green?style=flat-square&logo=android" alt="Android 8.0+"/>
+  <img src="https://img.shields.io/badge/Kotlin-Jetpack%20Compose-blue?style=flat-square&logo=kotlin" alt="Kotlin"/>
+  <img src="https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square" alt="MIT License"/>
+</p>
 
 ---
 
-## 🚀 Features
+This is the native Android version of the original **ChemSearch** web application, rewritten in Kotlin with Jetpack Compose.
 
-### **Intelligent Search (Powered by PubChem)**
-- **Compound Lookup:** Search by common name, IUPAC name, or CID using the PubChem PUG REST API.
-- **Autosuggestions:** Real-time search suggestions as you type (can be toggled in settings).
-- **Recent History:** Quickly revisit previous searches with one-tap access.
-- **Bookmarks:** Tap the bookmark icon next to the compound name to save your favourite or important compounds to view later. You can view the added bookmarks by tapping the bookmark logo on the top.
-
-### **Detailed Chemical Data**
-- **Redesigned Title Card:** A modern, prominent header displaying the compound name and molecular formula.
-- **Quick Identifiers:** One-tap access to **Molecular Weight**, **CID**, and **CAS Number** directly in the header.
-- **One-Tap Copy:** Most identifiers (CID, CAS, SMILES, etc.) are clickable to copy directly to your clipboard.
-- **Comprehensive Set:** Access IUPAC names, SMILES (Full & Connectivity), InChI, and InChIKey.
-
-### **Visualization & Analysis**
-- **Structure Viewer:**
-    - **2D Structure:** High-quality PNG images from PubChem.
-    - **3D Model:** Interactive 3D visualization using a **custom native 3D engine** written in Kotlin/Compose. The app pre-fetches SDF data for offline-ready, smooth rendering and rotation.
-- **Elemental Analysis:** Visual bar charts showing the percentage composition of every element in the compound, calculated using high-precision atomic weights.
-
-### **Multi-Source Descriptions**
-Choose where you get your information:
-- **PubChem:** Scientific descriptions directly from the source.
-- **[Wikipedia](https://en.wikipedia.org/):** Quick summaries for general context.
-- **AI (Gemini & Groq):** Concise, AI-generated descriptions. Supports both **Google Gemini** and **Groq** (requires your own API key).
-
-### **Customization**
-- **Themes:** Full support for Dark and Light modes.
-- **Settings:** Configure your default description source, choose your preferred AI provider, and manage your API keys.
+- **Web app:** [chemsearch.netlify.app](https://chemsearch.netlify.app/)
+- **Web repo:** [FurtherSecrets24680/chemsearch](https://github.com/FurtherSecrets24680/chemsearch)
 
 ---
 
-## 🛠️ Tech Stack
+## Screenshots
 
-| Library               | Purpose                                                 |
-|-----------------------|---------------------------------------------------------|
-| **Kotlin**            | Primary programming language.                           |
-| **Jetpack Compose**   | Modern toolkit for building native UI.                  |
-| **Material 3**        | Latest Android design system.                           |
-| **Retrofit 2**        | Type-safe HTTP client for API interactions.             |
-| **Coroutines & Flow** | Asynchronous programming and reactive state management. |
-| **Coil**              | Image loading for 2D structures.                        |
-| **Native 3D Engine**  | Custom-built Canvas-based 3D molecule viewer.           |
-| **Gemini & Groq**     | AI Models for automated chemical descriptions.          |
-| **Gson**              | JSON serialization and parsing.                         |
+<p align="center">
+  <img src="screenshots/home_dark.jpg" width="200"/>
+  <img src="screenshots/home_light.jpg" width="200"/>
+  <img src="screenshots/ea_syn_desc.jpg" width="200"/>
+  <img src="screenshots/ghs_safety.jpg" width="200"/>
+  <img src="screenshots/settings.jpg" width="200"/>
+  <img src="screenshots/bookmarks.jpg.jpg" width="200"/>
+</p>
+---
+
+## Features
+
+### Search
+- Search by common name, IUPAC name, CAS number, or CID via PubChem PUG REST
+- Real-time autocomplete suggestions as you type (toggleable)
+- Recent search history with one-tap access
+- Bookmarks to save and revisit compounds
+
+### Compound Data
+- Compound header showing name, molecular formula, molecular weight, CID and CAS at a glance
+- Full identifiers card: IUPAC name, SMILES (full and connectivity), InChI, InChIKey, empirical formula, and formal charge — tap any to copy to clipboard
+- Info tooltips on each card explaining what each identifier or data type means
+- Up to 8 synonyms displayed as chips
+- Elemental analysis with mass percentage bars for each element
+
+### Structure Viewer
+- **2D structure** via PubChem PNG images
+- **3D model** using a fully native Canvas-based engine (no WebView, no JavaScript):
+    - Drag to rotate, pinch to zoom, auto-spin with pause on touch
+    - Correct painter's algorithm depth sorting for atoms and bonds
+    - CPK coloring for all 118 elements
+    - Ball-and-stick model with bonds connected to atom surfaces
+    - Dynamic specular highlight that responds to rotation
+    - Reset view button
+    - Full dark and light mode support
+
+### Safety Information
+- GHS classification fetched from PubChem PUG View:
+    - Signal word badge (Danger / Warning) with color coding
+    - GHS pictograms (GHS01 through GHS09) with icons and labels
+    - Hazard H-codes, filtered to remove noise entries like "Not Classified"
+- Info tooltip explaining what GHS means
+
+### Descriptions
+Three switchable sources per compound:
+- **PubChem** for scientific descriptions
+- **Wikipedia** for general summaries
+- **AI** via Google Gemini or Groq, with a regenerate button and provider label
+
+### Customization
+- Dark and light mode toggle
+- Configurable default description source
+- AI provider selection with per-provider API key management
+- Autosuggestions toggle
 
 ---
 
-## 🏗️ Building from Source
+## Tech Stack
 
-### **Setup**
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/FurtherSecrets24680/chemsearch-android
-   ```
-2. Open the project in Android Studio.
-3. Sync Gradle and build the project.
-4. Run on a physical device or emulator (API 26+).
-
----
-
-## 🔑 AI Descriptions (Optional)
-To use AI descriptions, you'll need an API key for either Google Gemini or Groq.
-
-The application currently supports the following models:
-- **Google Gemini:** `gemini-flash-latest`. Get a free key at [aistudio.google.com](https://aistudio.google.com).
-- **Groq Cloud:** `gpt-oss-120b`. Get a key at [console.groq.com](https://console.groq.com).
-
-Once obtained, enter the key in the app's Settings menu and select your preferred provider.
+| Component | Technology |
+|---|---|
+| Language | Kotlin |
+| UI | Jetpack Compose + Material 3 |
+| Networking | Retrofit 2 + OkHttp |
+| Image loading | Coil |
+| Async | Kotlin Coroutines + StateFlow |
+| JSON | Gson |
+| 3D rendering | Custom native Canvas engine |
+| Storage | SharedPreferences |
+| Versioning | Git tag-based version name + commit count version code |
 
 ---
 
-## 🛡️ Privacy
-- **Direct API Calls:** Data is fetched directly from PubChem, Wikipedia, Google, and Groq APIs. No intermediary servers are used.
-- **Local Storage:** Your API keys and search history are stored locally on your device using `SharedPreferences`.
-- **Transparency:** No tracking or telemetry is included.
+## Data Sources
+
+| Source | Used for |
+|---|---|
+| [PubChem PUG REST](https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest) | Compound lookup, properties, synonyms, descriptions, SDF, autocomplete |
+| [PubChem PUG View](https://pubchem.ncbi.nlm.nih.gov/docs/pug-view) | GHS safety classifications |
+| [Wikipedia REST API](https://en.wikipedia.org/api/rest_v1/) | Compound summaries |
+| [Google Gemini](https://ai.google.dev/) | AI descriptions |
+| [Groq](https://groq.com/) | AI descriptions |
 
 ---
 
-## 📚 Data Sources
-- **[PubChem](https://pubchem.ncbi.nlm.nih.gov/)**
-- **[Wikipedia](https://en.wikipedia.org/)**
-- **[Google Gemini](https://ai.google.dev/)**
-- **[Groq](https://groq.com/)**
+## Requirements
+
+### For Users
+- Android 8.0 (Oreo) or higher (API 26+)
+- Internet connection for compound data and AI descriptions
+
+### For Developers
+- Android Studio Hedgehog (2023.1.1) or newer
+- JDK 11
+- Android SDK API 34
 
 ---
 
-## 📜 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Building from Source
+
+```bash
+git clone https://github.com/FurtherSecrets24680/chemsearch-android
+```
+
+Open in Android Studio, sync Gradle, and run on a device or emulator (API 26+). Debug builds work without any API keys configured.
+
+### Release Signing
+
+Create a `keystore.properties` file in the project root:
+
+```properties
+storeFile=path/to/your.keystore
+storePassword=yourStorePassword
+keyAlias=yourKeyAlias
+keyPassword=yourKeyPassword
+```
+
+Then build via **Build → Generate Signed APK**.
+
+---
+
+## AI Descriptions (Optional)
+
+AI descriptions require a free API key from your chosen provider, entered in the app's Settings.
+
+| Provider | Model                 | Get an API key                                                     |
+|---|-----------------------|--------------------------------------------------------------------|
+| Google Gemini | `gemini-flash-latest` | [aistudio.google.com/api-keys](https://aistudio.google.com/api-keys) |
+| Groq Cloud | `gpt-oss-120b`        | [console.groq.com/keys](https://console.groq.com/keys)                       |
+
+Keys are stored locally on your device and only sent directly to the respective provider.
+
+---
+
+## Privacy
+
+- Data is fetched directly from PubChem, Wikipedia, Gemini and Groq. No intermediary servers are used.
+- API keys, search history and bookmarks are stored locally using `SharedPreferences`.
+- No analytics, tracking or telemetry of any kind.
+
+---
+
+## License
+
+MIT License. See [LICENSE](LICENSE) for details.
+
+---
+
+<p align="center">Built by <a href="https://github.com/FurtherSecrets24680">FurtherSecrets</a></p>

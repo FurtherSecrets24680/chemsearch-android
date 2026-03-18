@@ -39,7 +39,6 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     init {
         val savedProvider = AiProvider.entries.firstOrNull { it.name == prefs.getString("ai_provider", null) } ?: AiProvider.GEMINI
         _uiState.update { it.copy(history = loadHistory(), aiProvider = savedProvider) }
-        // Observe cid changes to update isFavorite
         viewModelScope.launch {
             _uiState.collect { state ->
                 _isFavorite.value = state.cid?.let { cid ->
@@ -151,7 +150,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             _uiState.update {
-                it.copy(isLoading = true, error = null, suggestions = emptyList(), hasResult = false, sdfData = null)
+                it.copy(isLoading = true, error = null, suggestions = emptyList(), hasResult = false, sdfData = null, ghsData = null, isLoadingSafety = false)
             }
             try {
                 val cidResponse = ApiClient.pubChem.getCid(q)
@@ -220,6 +219,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     DescSource.AI   -> fetchAiDescription()
                     else -> Unit
                 }
+
+                fetchSafetyData()
 
             } catch (e: Exception) {
                 val msg = when (e) {
@@ -436,6 +437,85 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         return raw.map { (el, mass) ->
             ElementData(el, ((mass / total) * 100).toFloat())
         }.sortedByDescending { it.percentage }
+    }
+
+    fun fetchSafetyData() {
+        val cid = _uiState.value.cid ?: return
+        _uiState.update { it.copy(isLoadingSafety = true) }
+        viewModelScope.launch {
+            try {
+                val json = ApiClient.pubChemView.getSection(cid, "GHS Classification")
+                val ghs = parseGhsData(json)
+                _uiState.update { it.copy(isLoadingSafety = false, ghsData = ghs) }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(isLoadingSafety = false, ghsData = null) }
+            }
+        }
+    }
+
+    private fun parseGhsData(json: com.google.gson.JsonObject): GhsData? {
+        return try {
+            val record = json.getAsJsonObject("Record") ?: return null
+            val sections = record.getAsJsonArray("Section") ?: return null
+
+            fun flatten(arr: com.google.gson.JsonArray): List<com.google.gson.JsonObject> {
+                val result = mutableListOf<com.google.gson.JsonObject>()
+                for (el in arr) {
+                    val obj = runCatching { el.asJsonObject }.getOrNull() ?: continue
+                    result.add(obj)
+                    obj.getAsJsonArray("Section")?.let { result.addAll(flatten(it)) }
+                }
+                return result
+            }
+
+            val allSections = flatten(sections)
+
+            val hazardStatements = mutableListOf<String>()
+            var signalWord: String? = null
+            val pictogramCodes = mutableListOf<String>()
+
+            for (section in allSections) {
+                val heading = section.get("TOCHeading")?.asString ?: continue
+                val infoList = section.getAsJsonArray("Information") ?: continue
+
+                for (infoEl in infoList) {
+                    val info = runCatching { infoEl.asJsonObject }.getOrNull() ?: continue
+                    val name = info.get("Name")?.asString ?: continue
+                    val value = info.getAsJsonObject("Value") ?: continue
+                    val swm = value.getAsJsonArray("StringWithMarkup") ?: continue
+
+                    when {
+                        heading == "GHS Classification" && name.contains("Signal", ignoreCase = true) -> {
+                            signalWord = swm.firstOrNull()
+                                ?.asJsonObject?.get("String")?.asString
+                        }
+                        heading == "GHS Classification" && name.contains("Hazard Statement", ignoreCase = true) -> {
+                            swm.mapNotNull {
+                                runCatching { it.asJsonObject.get("String")?.asString }.getOrNull()
+                            }
+                                .filter { it.isNotBlank() && !it.equals("Not Classified", ignoreCase = true) && !it.startsWith("Reported as not meeting", ignoreCase = true) }
+                                .let { hazardStatements.addAll(it) }
+                        }
+                        heading == "Pictogram(s)" || name.contains("Pictogram", ignoreCase = true) -> {
+                            swm.forEach { markupEl ->
+                                val obj = runCatching { markupEl.asJsonObject }.getOrNull() ?: return@forEach
+                                obj.getAsJsonArray("Markup")?.forEach { m ->
+                                    val mObj = runCatching { m.asJsonObject }.getOrNull() ?: return@forEach
+                                    val url = mObj.get("URL")?.asString ?: return@forEach
+                                    Regex("GHS\\d{2}").find(url)?.value?.let { pictogramCodes.add(it) }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (hazardStatements.isEmpty() && signalWord == null && pictogramCodes.isEmpty()) return null
+            GhsData(signalWord, hazardStatements, pictogramCodes.distinct())
+        } catch (e: Exception) {
+            Log.e("ChemViewModel", "GHS parse error", e)
+            null
+        }
     }
 
     companion object {

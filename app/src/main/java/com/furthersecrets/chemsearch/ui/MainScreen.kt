@@ -233,6 +233,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                     item { IdentifiersSection(state, context) }
                     if (state.elementalData.isNotEmpty()) item { ElementalSection(state.elementalData) }
                     if (state.synonyms.isNotEmpty()) item { SynonymsSection(state.synonyms) }
+
                     item {
                         DescriptionSection(
                             state = state,
@@ -247,10 +248,15 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                             onRegenerate = { vm.fetchAiDescription() }
                         )
                     }
+
+                    item {
+                        SafetySection(
+                            ghsData = state.ghsData,
+                            isLoading = state.isLoadingSafety
+                        )
+                    }
                 }
             }
-
-            // Suggestions float OVER everything else
             AnimatedVisibility(
                 visible = showSuggestions && state.suggestions.isNotEmpty(),
                 modifier = Modifier
@@ -526,7 +532,7 @@ fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearch: () -> Un
         value = query,
         onValueChange = onQueryChange,
         modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text("Search compound ..") },
+        placeholder = { Text("Search compound...") },
         leadingIcon = { Icon(Icons.Default.Search, null) },
         trailingIcon = {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -623,10 +629,32 @@ fun CompoundHeader(state: ChemUiState, isFavorite: Boolean, onToggleFavorite: ()
                     modifier = Modifier.padding(bottom = 2.dp)
                 )
             }
-            Row(horizontalArrangement = Arrangement.spacedBy(18.dp), verticalAlignment = Alignment.CenterVertically) {
-                state.cid?.let { ClickableIdentifier(label = "CID", value = it.toString(), cm = cm) }
-                state.casNumber?.let { ClickableIdentifier(label = "CAS", value = it, cm = cm) }
-                if (state.weight.isNotBlank()) ClickableIdentifier(label = "MW", value = "${state.weight} g/mol", cm = cm)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(48.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                state.cid?.let {
+                    Column {
+                        Text("CID", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                        Text(it.toString(), style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold, color = Color(0xFF64B5F6),
+                            modifier = Modifier.clickable { cm.setPrimaryClip(ClipData.newPlainText("CID", it.toString())) })
+                    }
+                }
+                state.casNumber?.let {
+                    Column {
+                        Text("CAS", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                        Text(it, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold, color = Color(0xFF64B5F6),
+                            modifier = Modifier.clickable { cm.setPrimaryClip(ClipData.newPlainText("CAS", it)) })
+                    }
+                }
+                if (state.weight.isNotBlank()) {
+                    Column {
+                        Text("Weight", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                        Text("${state.weight} g/mol", style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold, color = Color(0xFF64B5F6),
+                            modifier = Modifier.clickable { cm.setPrimaryClip(ClipData.newPlainText("Weight", "${state.weight} g/mol")) })
+                    }
+                }
             }
         }
         IconButton(onClick = onToggleFavorite) {
@@ -647,6 +675,7 @@ fun ClickableIdentifier(label: String, value: String, cm: ClipboardManager) {
             withStyle(SpanStyle(color = Color(0xFF64B5F6), fontWeight = FontWeight.Bold)) { append(value) }
         },
         style = MaterialTheme.typography.bodyMedium,
+        softWrap = false,
         modifier = Modifier.clickable {
             cm.setPrimaryClip(ClipData.newPlainText(label, value))
         }
@@ -691,12 +720,30 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
 
 
 // ─── Identifiers ───────────────────────────────────────────────────────────────
-
 @Composable
 fun IdentifiersSection(state: ChemUiState, context: Context) {
+    var showInfo by remember { mutableStateOf(false) }
+
+    if (showInfo) {
+        InfoDialog(
+            title = "About Identifiers",
+            entries = listOf(
+                "IUPAC Name" to "The systematic name assigned by the International Union of Pure and Applied Chemistry. Uniquely describes the structure using a standard naming convention.",
+                "CID" to "PubChem Compound ID — a unique number assigned by the PubChem database to identify this exact compound.",
+                "CAS Number" to "Chemical Abstracts Service registry number. A globally recognized unique identifier assigned to every chemical substance.",
+                "SMILES" to "Simplified Molecular Input Line Entry System. A text notation that describes the molecular structure using atoms and bonds in a single line.",
+                "InChI" to "International Chemical Identifier. A standard text identifier for chemical substances designed to be unique and non-proprietary.",
+                "InChIKey" to "A fixed-length, hashed version of the full InChI. Easier to search and index than the full InChI string.",
+                "Empirical Formula" to "The simplest whole-number ratio of atoms in a compound. Differs from molecular formula for compounds like benzene (C₆H₆ → CH).",
+                "Formal Charge" to "The electric charge assigned to an atom in a molecule, assuming all bonds are equally shared. Non-zero means the compound is an ion."
+            ),
+            onDismiss = { showInfo = false }
+        )
+    }
+
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            SectionLabel("Identifiers")
+            CardSectionHeader("Identifiers") { showInfo = true }
             if (state.iupacName.isNotBlank()) IdentifierRow("IUPAC Name", state.iupacName, context, mono = false)
             if (state.connectivitySmiles.isNotBlank()) IdentifierRow("SMILES (Connectivity)", state.connectivitySmiles, context)
             if (state.smiles.isNotBlank() && state.smiles != state.connectivitySmiles) IdentifierRow("SMILES (Full)", state.smiles, context)
@@ -731,7 +778,19 @@ fun IdentifierRow(label: String, value: String, context: Context, mono: Boolean 
 fun ElementalSection(data: List<com.furthersecrets.chemsearch.data.ElementData>) {
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            SectionLabel("Elemental Analysis")
+            var showInfo by remember { mutableStateOf(false) }
+            if (showInfo) {
+                InfoDialog(
+                    title = "Elemental Analysis",
+                    entries = listOf(
+                        "What is this?" to "Shows the percentage of each element by mass in the compound. Calculated from atomic weights and the molecular formula.",
+                        "Example" to "Water (H₂O) is ~11% hydrogen and ~89% oxygen by mass, since oxygen atoms are much heavier than hydrogen atoms.",
+                        "Why it matters" to "Useful in analytical chemistry to verify compound identity, and in nutrition science to understand nutrient composition."
+                    ),
+                    onDismiss = { showInfo = false }
+                )
+            }
+            CardSectionHeader("Elemental Analysis") { showInfo = true }
             data.forEach { el ->
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     Text(el.element, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, modifier = Modifier.width(26.dp))
@@ -905,6 +964,66 @@ fun SectionLabel(text: String) {
     Text(text.uppercase(), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 1.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
 }
 
+// ─── Info dialog ───────────────────────────────────────────────────────────────
+
+@Composable
+fun InfoDialog(title: String, entries: List<Pair<String, String>>, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(title, fontWeight = FontWeight.Bold)
+        },
+        text = {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                entries.forEach { (term, explanation) ->
+                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Text(
+                            term,
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            explanation,
+                            style = MaterialTheme.typography.bodySmall,
+                            lineHeight = 18.sp,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.8f)
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) { Text("Got it") }
+        }
+    )
+}
+
+@Composable
+fun CardSectionHeader(label: String, onInfoClick: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        SectionLabel(label)
+        IconButton(
+            onClick = onInfoClick,
+            modifier = Modifier.size(20.dp)
+        ) {
+            Icon(
+                Icons.Default.Info,
+                contentDescription = "Info",
+                tint = MaterialTheme.colorScheme.onSurface.copy(0.35f),
+                modifier = Modifier.size(15.dp)
+            )
+        }
+    }
+}
+
 fun toSubscriptFormula(formula: String): String {
     val sub = mapOf('0' to '₀', '1' to '₁', '2' to '₂', '3' to '₃', '4' to '₄', '5' to '₅', '6' to '₆', '7' to '₇', '8' to '₈', '9' to '₉')
     val regex = Regex("([A-Za-z\\)])(\\d+)")
@@ -999,6 +1118,172 @@ fun FavoritesSheet(
                         }
                     }
                     Spacer(Modifier.height(4.dp))
+                }
+            }
+        }
+    }
+}
+
+// ─── GHS Safety ────────────────────────────────────────────────────────────────
+
+
+private val ghsPictogramEmoji = mapOf(
+    "GHS01" to "💥" to "Explosive",
+    "GHS02" to "🔥" to "Flammable",
+    "GHS03" to "🔆" to "Oxidizing",
+    "GHS04" to "🔵" to "Compressed Gas",
+    "GHS05" to "⚗️" to "Corrosive",
+    "GHS06" to "☠️" to "Toxic",
+    "GHS07" to "⚠️" to "Harmful",
+    "GHS08" to "🫁" to "Health Hazard",
+    "GHS09" to "🌿" to "Environmental"
+)
+private val ghsEmoji = mapOf(
+    "GHS01" to "💥", "GHS02" to "🔥", "GHS03" to "🔆",
+    "GHS04" to "🔵", "GHS05" to "⚗️", "GHS06" to "☠️",
+    "GHS07" to "⚠️", "GHS08" to "🫁", "GHS09" to "🌿"
+)
+
+private val ghsLabel = mapOf(
+    "GHS01" to "Explosive", "GHS02" to "Flammable", "GHS03" to "Oxidizing",
+    "GHS04" to "Compressed Gas", "GHS05" to "Corrosive", "GHS06" to "Toxic",
+    "GHS07" to "Harmful", "GHS08" to "Health Hazard", "GHS09" to "Environmental"
+)
+
+private val DangerRed = Color(0xFFDC2626)
+private val WarningAmber = Color(0xFFD97706)
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
+    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            var showInfo by remember { mutableStateOf(false) }
+            if (showInfo) {
+                InfoDialog(
+                    title = "GHS Safety",
+                    entries = listOf(
+                        "What is GHS?" to "The Globally Harmonized System of Classification and Labelling of Chemicals — a UN standard for communicating chemical hazards worldwide.",
+                        "Signal Word" to "'Danger' indicates a more severe hazard. 'Warning' indicates a less severe hazard.",
+                        "Pictograms" to "Standardized symbols (GHS01–GHS09) that visually communicate the type of hazard — flammability, toxicity, corrosion, etc.",
+                        "Hazard Statements" to "Standardized H-codes that describe the nature and degree of hazard. For example, H225 means 'Highly flammable liquid and vapour'.",
+                        "Data source" to "GHS data is sourced from PubChem's aggregated classification records, which combine data from multiple regulatory bodies."
+                    ),
+                    onDismiss = { showInfo = false }
+                )
+            }
+            CardSectionHeader("Safety (GHS)") { showInfo = true }
+
+            if (isLoading) {
+                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                }
+            } else if (ghsData == null) {
+                Text(
+                    "No GHS classification available.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+                )
+            } else {
+                ghsData.signalWord?.let { word ->
+                    val isDanger = word.equals("Danger", ignoreCase = true)
+                    val badgeColor = if (isDanger) DangerRed else WarningAmber
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = badgeColor.copy(alpha = 0.12f),
+                        border = BorderStroke(1.dp, badgeColor.copy(alpha = 0.5f))
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            Text(if (isDanger) "🚨" else "⚠️", fontSize = 14.sp)
+                            Text(
+                                word.uppercase(),
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = badgeColor,
+                                letterSpacing = 1.sp
+                            )
+                        }
+                    }
+                }
+
+                if (ghsData.pictogramCodes.isNotEmpty()) {
+                    Text(
+                        "PICTOGRAMS",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.45f),
+                        letterSpacing = 0.5.sp
+                    )
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        ghsData.pictogramCodes.forEach { code ->
+                            Surface(
+                                shape = RoundedCornerShape(10.dp),
+                                color = MaterialTheme.colorScheme.surfaceVariant,
+                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f))
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
+                                    Text(ghsEmoji[code] ?: "⚠️", fontSize = 28.sp)
+                                    Text(
+                                        code,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        fontFamily = FontFamily.Monospace,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                    Text(
+                                        ghsLabel[code] ?: "",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                                        fontSize = 8.sp
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (ghsData.hazardStatements.isNotEmpty()) {
+                    Text(
+                        "HAZARD STATEMENTS",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.45f),
+                        letterSpacing = 0.5.sp
+                    )
+                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        ghsData.hazardStatements.take(8).forEach { statement ->
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.Top
+                            ) {
+                                Text(
+                                    "•",
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(top = 1.dp)
+                                )
+                                Text(
+                                    statement,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    lineHeight = 18.sp
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }

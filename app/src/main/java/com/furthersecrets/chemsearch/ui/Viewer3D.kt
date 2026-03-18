@@ -210,7 +210,6 @@ private fun project(
 
 // ─────────────────────────────────────────────────────────────────────────────
 // BOND DRAWING
-// Bonds start/end at atom SURFACE (not center) — the key fix for tangent look
 // ─────────────────────────────────────────────────────────────────────────────
 
 private fun DrawScope.drawBond(
@@ -226,16 +225,13 @@ private fun DrawScope.drawBond(
     val ux = dx / dist
     val uy = dy / dist
 
-    // Pull bond endpoints to atom surfaces
     val startX = s1.x + ux * (r1 * 0.85f)
     val startY = s1.y + uy * (r1 * 0.85f)
     val endX   = s2.x - ux * (r2 * 0.85f)
     val endY   = s2.y - uy * (r2 * 0.85f)
 
-    // If atoms are overlapping on screen, skip drawing the bond
     if (dist < (r1 + r2) * 0.5f) return
 
-    // Perpendicular offset direction for multi-bonds
     val px = -uy * bondStroke * 2.2f
     val py =  ux * bondStroke * 2.2f
 
@@ -263,17 +259,21 @@ private fun DrawScope.drawBond(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ATOM DRAWING — sphere shading
+// ATOM DRAWING
 // ─────────────────────────────────────────────────────────────────────────────
 
-private fun DrawScope.drawAtom(pos: Offset, r: Float, color: Color, depthFactor: Float) {
-    drawCircle(Color.Black.copy(0.28f), r * 1.06f, Offset(pos.x + r * 0.1f, pos.y + r * 0.1f))
+private fun DrawScope.drawAtom(pos: Offset, r: Float, color: Color, depthFactor: Float, rotX: Float, rotY: Float) {
+    val lx = cos(rotY) * (-0.6f)
+    val ly = (-0.6f) * cos(rotX)
+    val hlX = pos.x + lx * r * 0.55f
+    val hlY = pos.y + ly * r * 0.55f
+
+    drawCircle(Color.Black.copy(0.28f), r * 1.06f, Offset(pos.x + r * 0.08f, pos.y + r * 0.08f))
     drawCircle(color, r, pos)
     drawCircle(Color.Black.copy(0.20f), r, pos, style = Stroke(r * 0.18f))
-    drawCircle(Color.White.copy(0.50f), r * 0.35f, Offset(pos.x - r * 0.30f, pos.y - r * 0.32f))
-    drawCircle(Color.White.copy(0.12f), r * 0.65f, Offset(pos.x - r * 0.12f, pos.y - r * 0.15f))
+    drawCircle(Color.White.copy(0.55f), r * 0.36f, Offset(hlX, hlY))
+    drawCircle(Color.White.copy(0.12f), r * 0.65f, Offset(pos.x + lx * r * 0.25f, pos.y + ly * r * 0.25f))
 }
-
 // ─────────────────────────────────────────────────────────────────────────────
 // MAIN COMPOSABLE
 // ─────────────────────────────────────────────────────────────────────────────
@@ -309,7 +309,6 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
         return
     }
 
-    // Center molecule
     val avgX = molecule.atoms.map { it.x }.average().toFloat()
     val avgY = molecule.atoms.map { it.y }.average().toFloat()
     val avgZ = molecule.atoms.map { it.z }.average().toFloat()
@@ -323,7 +322,6 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
-                // Pinch zoom + drag rotate — both handled in one gesture
                 .pointerInput(cid) {
                     detectTransformGestures { _, pan, gestureZoom, _ ->
                         isInteracting = true
@@ -351,14 +349,6 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
             val baseScale = (viewSize * 0.28f) / maxExtent
             val bondStroke = (baseScale * zoom * 0.10f).coerceIn(2.5f, 9f)
 
-            data class Proj(
-                val pos: Offset,
-                val depth: Float,
-                val depthP: Float,
-                val element: String,
-                val depthFactor: Float
-            )
-
             val rawProjected = centered.mapIndexed { _, atom ->
                 val (rx, ry, rz) = rotate3D(atom.x, atom.y, atom.z, rotX, rotY)
                 val (pos, p) = project(rx, ry, rz, screenCx, screenCy, baseScale, zoom)
@@ -370,36 +360,54 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
             val depthRange = (maxDepth - minDepth).coerceAtLeast(0.001f)
 
             val projected = rawProjected.map { atom ->
-                // depth is z after rotation, higher z = closer to viewer
-                // so front atoms have higher z, depthFactor closer to 1
                 atom.copy(depthFactor = ((atom.depth - minDepth) / depthRange).coerceIn(0f, 1f))
             }
 
             fun screenR(el: String, dp: Float) =
                 (elementBallRadius(el) * baseScale * zoom * dp).coerceIn(4f, 60f)
 
+            val drawCalls = mutableListOf<DrawCall>()
+
+            projected.forEach { drawCalls.add(DrawCall.AtomCall(it)) }
+
             molecule.bonds.forEach { bond ->
                 val a1 = projected.getOrNull(bond.a1) ?: return@forEach
                 val a2 = projected.getOrNull(bond.a2) ?: return@forEach
-                val bondColor = Color(0xFF8899BB)
-                drawBond(
-                    a1.pos, screenR(a1.element, a1.depthP),
-                    a2.pos, screenR(a2.element, a2.depthP),
-                    bond.type, bondStroke, bondColor
-                )
+                val avgDepth = (a1.depth + a2.depth) / 2f - 0.05f
+                drawCalls.add(DrawCall.BondCall(a1, a2, bond.type, avgDepth))
             }
-
-            projected.sortedByDescending { it.depth }.forEach { atom ->
-                drawAtom(atom.pos, screenR(atom.element, atom.depthP), elementColor(atom.element), atom.depthFactor)
+            drawCalls.sortByDescending {
+                when (it) {
+                    is DrawCall.AtomCall -> it.proj.depth
+                    is DrawCall.BondCall -> it.depth
+                }
+            }
+            val bondColor = Color(0xFF8899BB)
+            drawCalls.forEach { call ->
+                when (call) {
+                    is DrawCall.AtomCall -> drawAtom(
+                        call.proj.pos,
+                        screenR(call.proj.element, call.proj.depthP),
+                        elementColor(call.proj.element),
+                        call.proj.depthFactor,
+                        rotX,
+                        rotY
+                    )
+                    is DrawCall.BondCall -> drawBond(
+                        call.a1.pos, screenR(call.a1.element, call.a1.depthP),
+                        call.a2.pos, screenR(call.a2.element, call.a2.depthP),
+                        call.bondType, bondStroke, bondColor
+                    )
+                }
             }
         }
 
-        // ── Top left: reset button ───────────────────────────────────────────
+// ── Top left: reset button ───────────────────────────────────────────
         IconButton(
             onClick = { rotX = 0.25f; rotY = 0f; zoom = 1f; autoSpin = true },
             modifier = Modifier.align(Alignment.TopStart).padding(4.dp).size(32.dp)
         ) {
-            Icon(Icons.Default.Refresh, "Reset view", tint = Color.White.copy(0.3f), modifier = Modifier.size(16.dp))
+            Icon(Icons.Default.Refresh, "Reset view", tint = overlayTextColor.copy(0.4f), modifier = Modifier.size(16.dp))
         }
 
         // ── Top right: hints ─────────────────────────────────────────────────
@@ -408,8 +416,8 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
             horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
-            Text("drag to rotate", color = Color.White.copy(0.22f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
-            Text("pinch to zoom",  color = Color.White.copy(0.22f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
+            Text("drag to rotate", color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
+            Text("pinch to zoom",  color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
         }
 
         // ── Bottom left: element legend ──────────────────────────────────────
@@ -420,12 +428,12 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
             molecule.atoms.map { it.element }.distinct().take(7).forEach { el ->
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
                     Box(Modifier.size(9.dp).background(elementColor(el), RoundedCornerShape(50)))
-                    Text(el, color = Color.White.copy(0.55f), fontSize = 10.sp, fontFamily = FontFamily.Monospace)
+                    Text(el, color = overlayTextColor.copy(0.6f), fontSize = 10.sp, fontFamily = FontFamily.Monospace)
                 }
             }
         }
 
-        // ── Bottom right: stats + spin indicator ─────────────────────────────
+        // ── Bottom right: stats and spin indicator ─────────────────────────────
         Column(
             modifier = Modifier.align(Alignment.BottomEnd).padding(10.dp),
             horizontalAlignment = Alignment.End,
@@ -433,13 +441,28 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
         ) {
             Text(
                 "${molecule.atoms.size} atoms  •  ${molecule.bonds.size} bonds",
-                color = Color.White.copy(0.25f), fontSize = 9.sp, fontFamily = FontFamily.Monospace
+                color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace
             )
             Text(
                 if (autoSpin) "⟳ auto-spin" else "● paused",
-                color = if (autoSpin) Color(0xFF3B82F6).copy(0.55f) else Color.White.copy(0.2f),
+                color = if (autoSpin) Color(0xFF3B82F6).copy(0.7f) else overlayTextColor.copy(0.3f),
                 fontSize = 9.sp, fontFamily = FontFamily.Monospace
             )
         }
     }
+}
+private data class Proj(
+    val pos: Offset,
+    val depth: Float,
+    val depthP: Float,
+    val element: String,
+    val depthFactor: Float
+)
+
+private sealed class DrawCall {
+    data class AtomCall(val proj: Proj) : DrawCall()
+    data class BondCall(
+        val a1: Proj, val a2: Proj,
+        val bondType: Int, val depth: Float
+    ) : DrawCall()
 }

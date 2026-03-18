@@ -147,6 +147,8 @@ data class ChemUiState(
     val hasResult: Boolean = false,
     val sdfData: String? = null,
     val isLoadingSdf: Boolean = false,
+    val ghsData: GhsData? = null,
+    val isLoadingSafety: Boolean = false,
 )
 
 enum class DescSource { PUBCHEM, WIKI, AI }
@@ -167,4 +169,12 @@ data class FavoriteCompound(
     val molecularWeight: String,
     val iupacName: String,
     val savedAt: Long = System.currentTimeMillis()
+)
+
+// ─── GHS Safety ────────────────────────────────────────────────────────────────
+
+data class GhsData(
+    val signalWord: String?,
+    val hazardStatements: List<String>,
+    val pictogramCodes: List<String>
 )
