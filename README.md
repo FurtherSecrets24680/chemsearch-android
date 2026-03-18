@@ -28,33 +28,13 @@ This is the native Android version of the original **ChemSearch** web applicatio
 ---
 
 ## Screenshots
+|                                                     |                                                     |                                                      |
+|:---------------------------------------------------:|:---------------------------------------------------:|:----------------------------------------------------:|
+| <img src="screenshots/home_dark.jpg" width="220"/>  | <img src="screenshots/home_light.jpg" width="220"/> | <img src="screenshots/ea_syn_desc.jpg" width="220"/> |
+|                 Search (Dark mode)                  |                 Search (Light mode)                 |      Elemental Analysis, Synonyms & Description      |
+| <img src="screenshots/ghs_safety.jpg" width="220"/> |  <img src="screenshots/settings.jpg" width="220"/>  |  <img src="screenshots/bookmarks.jpg" width="220"/>  |
+|               GHS Safety Information                |                      Settings                       |                      Bookmarks                       |
 
-### Search & Compound View
-<p align="center">
-  <img src="screenshots/home_dark.jpg" width="200" height="420"/>
-  <img src="screenshots/home_light.jpg" width="200" height="420"/>
-</p>
-<p align="center">
-  <sub>Dark mode &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Light mode</sub>
-</p>
-
-### Analysis & Safety
-<p align="center">
-  <img src="screenshots/ea_syn_desc.jpg" width="200" height="420"/>
-  <img src="screenshots/ghs_safety.jpg" width="200" height="420"/>
-</p>
-<p align="center">
-  <sub>Elemental analysis, synonyms & description &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GHS safety classification</sub>
-</p>
-
-### Settings & Bookmarks
-<p align="center">
-  <img src="screenshots/settings.jpg" width="200" height="420"/>
-  <img src="screenshots/bookmarks.jpg" width="200" height="420"/>
-</p>
-<p align="center">
-  <sub>Settings &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bookmarks</sub>
-</p>
 
 ## Features
 
