@@ -15,6 +15,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -25,6 +26,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -38,7 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -52,6 +54,23 @@ import androidx.compose.foundation.verticalScroll
 import com.furthersecrets.chemsearch.R
 import com.furthersecrets.chemsearch.BuildConfig
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.foundation.shape.CircleShape
+
+
+enum class AppTab { SEARCH, FAVORITES, RECENT, TOOLS, SETTINGS }
 
 // ─── Root ──────────────────────────────────────────────────────────────────────
 
@@ -76,12 +95,16 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     var showSettings by remember { mutableStateOf(false) }
     var showFavorites by remember { mutableStateOf(false) }
 
-
     LaunchedEffect(state.error) {
         state.error?.let { snackbar.showSnackbar(it); vm.clearError() }
     }
+
     LaunchedEffect(state.suggestions) {
-        showSuggestions = state.suggestions.isNotEmpty()
+        if (state.suggestions.isNotEmpty() && !state.isLoading && !state.hasResult) {
+            showSuggestions = true
+        } else if (state.hasResult || state.isLoading) {
+            showSuggestions = false
+        }
     }
 
     if (showGeminiKeyDialog) {
@@ -89,11 +112,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             title = "Gemini API Key",
             link = "aistudio.google.com",
             current = vm.getGeminiKey() ?: "",
-            onSave = { key ->
-                vm.saveGeminiKey(key); showGeminiKeyDialog = false; vm.setDescSource(
-                DescSource.AI
-            )
-            },
+            onSave = { key -> vm.saveGeminiKey(key); showGeminiKeyDialog = false; vm.setDescSource(DescSource.AI) },
             onDismiss = { showGeminiKeyDialog = false }
         )
     }
@@ -103,11 +122,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             title = "Groq API Key",
             link = "console.groq.com",
             current = vm.getGroqKey() ?: "",
-            onSave = { key ->
-                vm.saveGroqKey(key); showGroqKeyDialog = false; vm.setDescSource(
-                DescSource.AI
-            )
-            },
+            onSave = { key -> vm.saveGroqKey(key); showGroqKeyDialog = false; vm.setDescSource(DescSource.AI) },
             onDismiss = { showGroqKeyDialog = false }
         )
     }
@@ -119,8 +134,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                 showAiProviderDialog = false
                 val key = if (provider == AiProvider.GEMINI) vm.getGeminiKey() else vm.getGroqKey()
                 if (key.isNullOrBlank()) {
-                    if (provider == AiProvider.GEMINI) showGeminiKeyDialog =
-                        true else showGroqKeyDialog = true
+                    if (provider == AiProvider.GEMINI) showGeminiKeyDialog = true else showGroqKeyDialog = true
                 } else {
                     vm.setDescSource(DescSource.AI)
                 }
@@ -159,9 +173,54 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         )
     }
 
+    var selectedTab by remember { mutableStateOf(AppTab.SEARCH) }
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar) },
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = MaterialTheme.colorScheme.background,
+        bottomBar = {
+            NavigationBar(
+                containerColor = MaterialTheme.colorScheme.surface,
+                tonalElevation = 0.dp
+            ) {
+                listOf(
+                    AppTab.SEARCH    to Triple(Icons.Default.Search,    Icons.Default.Search,        "Search"),
+                    AppTab.FAVORITES to Triple(Icons.Default.Bookmark,  Icons.Default.BookmarkBorder,"Favorites"),
+                    AppTab.RECENT    to Triple(Icons.Default.History,   Icons.Default.History,       "Recent"),
+                    AppTab.TOOLS     to Triple(Icons.Default.Build,     Icons.Default.Build,         "Tools"),
+                    AppTab.SETTINGS  to Triple(Icons.Default.Settings,  Icons.Default.Settings,      "Settings")
+
+                ).forEach { (tab, triple) ->
+                    val (selectedIcon, unselectedIcon, label) = triple
+                    val isSelected = selectedTab == tab
+                    NavigationBarItem(
+                        selected = isSelected,
+                        onClick = { selectedTab = tab },
+                        icon = {
+                            Icon(
+                                if (isSelected) selectedIcon else unselectedIcon,
+                                contentDescription = label,
+                                modifier = Modifier.size(22.dp)
+                            )
+                        },
+                        label = {
+                            Text(
+                                label,
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                            )
+                        },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = MaterialTheme.colorScheme.primary,
+                            selectedTextColor = MaterialTheme.colorScheme.primary,
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurface.copy(0.5f),
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurface.copy(0.5f),
+                            indicatorColor = MaterialTheme.colorScheme.primary.copy(0.1f)
+                        )
+                    )
+                }
+            }
+        }
     ) { padding ->
         Box(
             modifier = Modifier
@@ -175,88 +234,140 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() }
                     ) { showSuggestions = false; focusManager.clearFocus() },
-                contentPadding = PaddingValues(
-                    start = 16.dp,
-                    end = 16.dp,
-                    top = 20.dp,
-                    bottom = 32.dp
-                ),
+                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 20.dp, bottom = 40.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                item {
-                    AppHeader(
-                        isDark = isDark,
-                        onToggleTheme = { vm.toggleTheme() },
-                        onOpenSettings = { showSettings = true },
-                        onOpenFavorites = { showFavorites = true }
-                    )
-                }
-
-                item {
-                    SearchBar(
-                        query = query,
-                        onQueryChange = {
-                            vm.onQueryChange(it)
-                            if (it.isNotEmpty() && autoSuggest) showSuggestions = true
-                        },
-                        onSearch = {
-                            showSuggestions = false; focusManager.clearFocus(); vm.search()
-                        },
-                        onClear = { vm.onQueryChange(""); showSuggestions = false }
-                    )
-                }
-
-                if (state.isLoading) {
+                if (selectedTab == AppTab.SEARCH) {
                     item {
-                        Box(
-                            Modifier.fillMaxWidth().padding(24.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+                        AppHeader(
+                            isDark = isDark,
+                            onToggleTheme = { vm.toggleTheme() }
+                        )
+                    }
+
+                    item {
+                        SearchBar(
+                            query = query,
+                            onQueryChange = {
+                                vm.onQueryChange(it)
+                                if (it.isNotEmpty() && autoSuggest) showSuggestions = true
+                            },
+                            onSearch = { showSuggestions = false; focusManager.clearFocus(); vm.search() },
+                            onClear = { vm.onQueryChange(""); showSuggestions = false }
+                        )
+                    }
+                }
+
+                if (selectedTab != AppTab.SEARCH) {
+                    item {
+                        when (selectedTab) {
+                            AppTab.RECENT -> HistorySection(
+                                history = state.history,
+                                onSelect = { vm.search(it); selectedTab = AppTab.SEARCH },
+                                onClear = { vm.clearHistory() }
+                            )
+
+                            AppTab.FAVORITES -> FavoritesInline(
+                                favorites = favorites,
+                                onSelect = { name -> vm.search(name); selectedTab = AppTab.SEARCH },
+                                onDelete = { cid -> vm.deleteFavorite(cid) }
+                            )
+
+                            AppTab.SETTINGS -> SettingsInline(
+                                isDark = isDark,
+                                autoSuggest = autoSuggest,
+                                defaultDescSource = defaultDescSource,
+                                aiProvider = state.aiProvider,
+                                hasGeminiKey = vm.getGeminiKey() != null,
+                                hasGroqKey = vm.getGroqKey() != null,
+                                onToggleTheme = { vm.toggleTheme() },
+                                onToggleAutoSuggest = { vm.toggleAutoSuggest() },
+                                onSetDefaultDesc = { vm.setDefaultDescSource(it) },
+                                onSetAiProvider = { vm.setAiProvider(it) },
+                                onSetGeminiKey = { showGeminiKeyDialog = true },
+                                onSetGroqKey = { showGroqKeyDialog = true },
+                                onClearGeminiKey = { vm.clearGeminiKey() },
+                                onClearGroqKey = { vm.clearGroqKey() },
+                                onClearHistory = { vm.clearHistory() }
+                            )
+
+                            AppTab.TOOLS -> ToolsScreen(isDark = isDark)
+
+                            else -> {}
+                        }
+                    }
+                } else {
+                    // Search tab
+                    if (state.isLoading) {
+                        item {
+                            Box(
+                                Modifier.fillMaxWidth().padding(vertical = 40.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                                ) {
+                                    CircularProgressIndicator(
+                                        color = MaterialTheme.colorScheme.primary,
+                                        modifier = Modifier.size(32.dp),
+                                        strokeWidth = 2.5.dp
+                                    )
+                                    Text(
+                                        "Looking up compound...",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    if (!state.hasResult && !state.isLoading) {
+                        item {
+                            HistorySection(
+                                history = state.history,
+                                onSelect = { vm.search(it) },
+                                onClear = { vm.clearHistory() }
+                            )
+                        }
+                    }
+
+                    if (state.hasResult) {
+                        item { StructureViewer(state, vm) }
+                        item {
+                            CompoundHeader(
+                                state,
+                                isFavorite,
+                                onToggleFavorite = { vm.toggleFavorite() })
+                        }
+                        item { IdentifiersSection(state, context) }
+                        if (state.elementalData.isNotEmpty()) item { ElementalSection(state.elementalData) }
+                        if (state.synonyms.isNotEmpty()) item { SynonymsSection(state.synonyms) }
+                        item {
+                            DescriptionSection(
+                                state = state,
+                                onPubChem = { vm.setDescSource(DescSource.PUBCHEM) },
+                                onWiki = { vm.setDescSource(DescSource.WIKI) },
+                                onAI = {
+                                    val key =
+                                        if (state.aiProvider == AiProvider.GEMINI) vm.getGeminiKey() else vm.getGroqKey()
+                                    if (key.isNullOrBlank()) showAiProviderDialog = true
+                                    else vm.setDescSource(DescSource.AI)
+                                },
+                                onRegenerate = { vm.fetchAiDescription() }
+                            )
+                        }
+                        item {
+                            SafetySection(
+                                ghsData = state.ghsData,
+                                isLoading = state.isLoadingSafety
+                            )
                         }
                     }
                 }
-
-                if (!state.hasResult && !state.isLoading) {
-                    item {
-                        HistorySection(
-                            history = state.history,
-                            onSelect = { vm.search(it) },
-                            onClear = { vm.clearHistory() }
-                        )
-                    }
-                }
-
-                if (state.hasResult) {
-                    item { StructureViewer(state, vm) }
-                    item { CompoundHeader(state, isFavorite, onToggleFavorite = { vm.toggleFavorite() }) }
-                    item { IdentifiersSection(state, context) }
-                    if (state.elementalData.isNotEmpty()) item { ElementalSection(state.elementalData) }
-                    if (state.synonyms.isNotEmpty()) item { SynonymsSection(state.synonyms) }
-
-                    item {
-                        DescriptionSection(
-                            state = state,
-                            onPubChem = { vm.setDescSource(DescSource.PUBCHEM) },
-                            onWiki = { vm.setDescSource(DescSource.WIKI) },
-                            onAI = {
-                                val key =
-                                    if (state.aiProvider == AiProvider.GEMINI) vm.getGeminiKey() else vm.getGroqKey()
-                                if (key.isNullOrBlank()) showAiProviderDialog = true
-                                else vm.setDescSource(DescSource.AI)
-                            },
-                            onRegenerate = { vm.fetchAiDescription() }
-                        )
-                    }
-
-                    item {
-                        SafetySection(
-                            ghsData = state.ghsData,
-                            isLoading = state.isLoadingSafety
-                        )
-                    }
-                }
             }
+
             AnimatedVisibility(
                 visible = showSuggestions && state.suggestions.isNotEmpty(),
                 modifier = Modifier
@@ -281,45 +392,54 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
 // ─── App header ────────────────────────────────────────────────────────────────
 
 @Composable
-fun AppHeader(isDark: Boolean, onToggleTheme: () -> Unit, onOpenSettings: () -> Unit, onOpenFavorites: () -> Unit) {
+fun AppHeader(isDark: Boolean, onToggleTheme: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             Icon(
                 painter = painterResource(id = R.drawable.chemsearch),
                 contentDescription = null,
                 tint = Color.Unspecified,
-                modifier = Modifier.size(50.dp)
+                modifier = Modifier.size(46.dp)
             )
-            Column {
-                Text("ChemSearch", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold)
+            Column(verticalArrangement = Arrangement.spacedBy(1.dp)) {
+                Text(
+                    "ChemSearch",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.ExtraBold,
+                    letterSpacing = (-0.3).sp
+                )
                 Text(
                     "POWERED BY PUBCHEM",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary,
-                    letterSpacing = 1.5.sp,
-                    fontWeight = FontWeight.Bold
+                    letterSpacing = 1.8.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 9.sp
                 )
             }
         }
-        Row {
-            IconButton(onClick = onOpenFavorites) {
-                Icon(Icons.Default.Bookmarks, contentDescription = "Favorites", tint = MaterialTheme.colorScheme.onSurface.copy(0.6f))
-            }
-            IconButton(onClick = onToggleTheme) {
-                Icon(
-                    imageVector = if (isDark) Icons.Default.LightMode else Icons.Default.DarkMode,
-                    contentDescription = "Toggle theme",
-                    tint = MaterialTheme.colorScheme.onSurface.copy(0.6f)
-                )
-            }
-            IconButton(onClick = onOpenSettings) {
-                Icon(Icons.Default.Settings, contentDescription = "Settings", tint = MaterialTheme.colorScheme.onSurface.copy(0.6f))
-            }
+        Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+            HeaderIconButton(onClick = onToggleTheme, icon = if (isDark) Icons.Default.LightMode else Icons.Default.DarkMode, description = "Toggle theme")
         }
+    }
+}
+
+@Composable
+private fun HeaderIconButton(onClick: () -> Unit, icon: ImageVector, description: String) {
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier.size(38.dp)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = description,
+            tint = MaterialTheme.colorScheme.onSurface.copy(0.55f),
+            modifier = Modifier.size(20.dp)
+        )
     }
 }
 
@@ -360,7 +480,12 @@ fun SettingsSheet(
                 .padding(start = 20.dp, end = 20.dp, bottom = 48.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text("Settings", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 12.dp))
+            Text(
+                "Settings",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
 
             SettingsSectionHeader("Appearance")
             SettingsToggleRow(
@@ -383,7 +508,12 @@ fun SettingsSheet(
 
             Spacer(Modifier.height(4.dp))
             SettingsSectionHeader("Default Description Source")
-            Text("Automatically shown when you search a compound", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.padding(bottom = 8.dp))
+            Text(
+                "Automatically shown when you search a compound",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 listOf(DescSource.PUBCHEM to "PubChem", DescSource.WIKI to "Wikipedia", DescSource.AI to "AI").forEach { (src, label) ->
                     SourceBtn(label = label, active = defaultDescSource == src) { onSetDefaultDesc(src) }
@@ -406,7 +536,7 @@ fun SettingsSheet(
             } else {
                 SettingsActionRow(Icons.Default.Key, "No Gemini Key set", "Required for Gemini descriptions", "Add Key", MaterialTheme.colorScheme.primary, onSetGeminiKey)
             }
-            
+
             HorizontalDivider(Modifier.padding(vertical = 4.dp), color = MaterialTheme.colorScheme.outline.copy(0.1f))
 
             if (hasGroqKey) {
@@ -422,14 +552,13 @@ fun SettingsSheet(
 
             Spacer(Modifier.height(4.dp))
             SettingsSectionHeader("About")
-            Card(shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Card(
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+            ) {
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(
-                            "ChemSearch for Android",
-                            fontWeight = FontWeight.SemiBold,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+                        Text("ChemSearch for Android", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
                         Surface(
                             shape = RoundedCornerShape(6.dp),
                             color = MaterialTheme.colorScheme.primary.copy(0.12f)
@@ -443,24 +572,22 @@ fun SettingsSheet(
                                 fontWeight = FontWeight.Bold
                             )
                         }
-                        Text(
-                            "Data from PubChem, Wikipedia, Google Gemini and Groq",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
-                        )
-                        Text(
-                            "by FurtherSecrets",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                        Text("Data from PubChem, Wikipedia, Google Gemini and Groq", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
+                        Text("by FurtherSecrets", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
                     }
+
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
 
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text("SOURCE CODE", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-                        Row(modifier = Modifier.clickable { 
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/FurtherSecrets24680/chemsearch-android"))
-                            context.startActivity(intent)
-                        }, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Row(
+                            modifier = Modifier.clickable {
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/FurtherSecrets24680/chemsearch-android"))
+                                context.startActivity(intent)
+                            },
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
                             Icon(Icons.Default.Code, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
                             Text("GitHub Repository", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Medium)
                         }
@@ -488,17 +615,29 @@ fun SettingsSheet(
                 }
             }
         }
+
     }
 }
 
 @Composable
 fun SettingsSectionHeader(text: String) {
-    Text(text.uppercase(), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 1.sp, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(top = 8.dp, bottom = 2.dp))
+    Text(
+        text.uppercase(),
+        style = MaterialTheme.typography.labelSmall,
+        fontWeight = FontWeight.Bold,
+        letterSpacing = 1.2.sp,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.padding(top = 8.dp, bottom = 2.dp)
+    )
 }
 
 @Composable
 fun SettingsToggleRow(icon: ImageVector, title: String, subtitle: String, checked: Boolean, onToggle: () -> Unit) {
-    Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Icon(icon, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(20.dp))
             Column {
@@ -512,15 +651,25 @@ fun SettingsToggleRow(icon: ImageVector, title: String, subtitle: String, checke
 
 @Composable
 fun SettingsActionRow(icon: ImageVector, title: String, subtitle: String, actionLabel: String, actionColor: Color, onClick: () -> Unit) {
-    Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.weight(1f)) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.weight(1f)
+        ) {
             Icon(icon, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(20.dp))
             Column {
                 Text(title, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
                 Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
             }
         }
-        TextButton(onClick = onClick) { Text(actionLabel, color = actionColor, fontWeight = FontWeight.SemiBold) }
+        TextButton(onClick = onClick) {
+            Text(actionLabel, color = actionColor, fontWeight = FontWeight.SemiBold)
+        }
     }
 }
 
@@ -532,23 +681,53 @@ fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearch: () -> Un
         value = query,
         onValueChange = onQueryChange,
         modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text("Search compound...") },
-        leadingIcon = { Icon(Icons.Default.Search, null) },
+        placeholder = {
+            Text(
+                "Search compound...",
+                color = MaterialTheme.colorScheme.onSurface.copy(0.38f)
+            )
+        },
+        leadingIcon = {
+            Icon(
+                Icons.Default.Search,
+                null,
+                tint = MaterialTheme.colorScheme.onSurface.copy(0.45f),
+                modifier = Modifier.size(20.dp)
+            )
+        },
         trailingIcon = {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (query.isNotEmpty()) {
-                    IconButton(onClick = onClear) { Icon(Icons.Default.Close, "Clear", tint = MaterialTheme.colorScheme.error) }
+                    IconButton(onClick = onClear) {
+                        Icon(Icons.Default.Close, "Clear", tint = MaterialTheme.colorScheme.onSurface.copy(0.45f), modifier = Modifier.size(18.dp))
+                    }
                 }
-                IconButton(onClick = onSearch) { Icon(Icons.Default.ArrowForward, "Search", tint = MaterialTheme.colorScheme.primary) }
+                IconButton(onClick = onSearch) {
+                    Box(
+                        modifier = Modifier
+                            .size(32.dp)
+                            .background(MaterialTheme.colorScheme.primary, CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            Icons.Default.ArrowForward,
+                            "Search",
+                            tint = Color.White,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                }
             }
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = { onSearch() }),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(20.dp),
         singleLine = true,
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.outline
+            unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(0.5f),
+            focusedContainerColor = MaterialTheme.colorScheme.surface,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
         )
     )
 }
@@ -557,14 +736,34 @@ fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearch: () -> Un
 
 @Composable
 fun SuggestionsDropdown(suggestions: List<String>, onSelect: (String) -> Unit) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), elevation = CardDefaults.cardElevation(8.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
         Column {
             suggestions.forEachIndexed { index, suggestion ->
-                Row(modifier = Modifier.fillMaxWidth().clickable { onSelect(suggestion) }.padding(horizontal = 16.dp, vertical = 13.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Icon(Icons.Default.Science, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
-                    Text(suggestion.replaceFirstChar { it.uppercase() }, style = MaterialTheme.typography.bodyMedium)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onSelect(suggestion) }
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Science,
+                        null,
+                        tint = MaterialTheme.colorScheme.primary.copy(0.7f),
+                        modifier = Modifier.size(15.dp)
+                    )
+                    Text(
+                        suggestion.replaceFirstChar { it.uppercase() },
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                 }
-                if (index < suggestions.lastIndex) HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.2f))
+                if (index < suggestions.lastIndex) HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
             }
         }
     }
@@ -575,27 +774,96 @@ fun SuggestionsDropdown(suggestions: List<String>, onSelect: (String) -> Unit) {
 @Composable
 fun HistorySection(history: List<String>, onSelect: (String) -> Unit, onClear: () -> Unit) {
     if (history.isEmpty()) {
-        Box(modifier = Modifier.fillMaxWidth().padding(top = 60.dp), contentAlignment = Alignment.Center) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("⚗️", fontSize = 48.sp)
-                Text("Search for any chemical compound", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 64.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(80.dp)
+                        .background(
+                            MaterialTheme.colorScheme.primary.copy(0.08f),
+                            CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(Icons.Default.Science, null, tint = MaterialTheme.colorScheme.primary.copy(0.5f), modifier = Modifier.size(52.dp))
+                }
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Text(
+                        "Search any compound",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.7f)
+                    )
+                    Text(
+                        "Try caffeine, aspirin, ethanol...",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.38f)
+                    )
+                }
             }
         }
         return
     }
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-            Text("RECENT SEARCHES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 1.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
-            TextButton(onClick = onClear) { Text("Clear all", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.labelSmall) }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                "RECENT SEARCHES",
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 1.2.sp,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+            )
+            TextButton(onClick = onClear, contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)) {
+                Text("Clear all", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.labelSmall)
+            }
         }
         history.forEach { item ->
-            Card(modifier = Modifier.fillMaxWidth().clickable { onSelect(item) }, shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
-                Row(modifier = Modifier.padding(horizontal = 16.dp, vertical = 13.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Icon(Icons.Default.History, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(18.dp))
-                    Text(item.replaceFirstChar { it.uppercase() }, style = MaterialTheme.typography.bodyMedium)
+            Card(
+                modifier = Modifier.fillMaxWidth().clickable { onSelect(item) },
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 13.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    Icon(
+                        Icons.Default.History,
+                        null,
+                        tint = MaterialTheme.colorScheme.onSurface.copy(0.3f),
+                        modifier = Modifier.size(17.dp)
+                    )
+                    Text(
+                        item.replaceFirstChar { it.uppercase() },
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Icon(
+                        Icons.Default.ArrowForward,
+                        null,
+                        tint = MaterialTheme.colorScheme.onSurface.copy(0.2f),
+                        modifier = Modifier.size(14.dp)
+                    )
                 }
             }
         }
+
     }
 }
 
@@ -610,60 +878,97 @@ fun CompoundHeader(state: ChemUiState, isFavorite: Boolean, onToggleFavorite: ()
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Top
     ) {
-        Column(
-            modifier = Modifier.weight(1f).padding(vertical = 4.dp),
-            verticalArrangement = Arrangement.spacedBy(2.dp)
-        ) {
-            Text(
-                text = state.name.uppercase(),
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Black,
-                color = MaterialTheme.colorScheme.onSurface
+        Row(modifier = Modifier.weight(1f)) {
+            Box(
+                modifier = Modifier
+                    .width(3.dp)
+                    .height(72.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .background(
+                        Brush.verticalGradient(
+                            listOf(
+                                MaterialTheme.colorScheme.primary,
+                                MaterialTheme.colorScheme.primary.copy(0f)
+                            )
+                        )
+                    )
             )
-            if (state.formula.isNotBlank()) {
-                Text(
-                    text = toSubscriptFormula(state.formula),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 2.dp)
-                )
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(48.dp),
-                verticalAlignment = Alignment.CenterVertically
+            Spacer(Modifier.width(12.dp))
+            Column(
+                modifier = Modifier.padding(vertical = 4.dp),
+                verticalArrangement = Arrangement.spacedBy(3.dp)
             ) {
-                state.cid?.let {
-                    Column {
-                        Text("CID", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
-                        Text(it.toString(), style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold, color = Color(0xFF64B5F6),
-                            modifier = Modifier.clickable { cm.setPrimaryClip(ClipData.newPlainText("CID", it.toString())) })
-                    }
+                Text(
+                    text = state.name.uppercase(),
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.Black,
+                    letterSpacing = (-0.5).sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                if (state.formula.isNotBlank()) {
+                    Text(
+                        text = toSubscriptFormula(state.formula),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
-                state.casNumber?.let {
-                    Column {
-                        Text("CAS", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
-                        Text(it, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold, color = Color(0xFF64B5F6),
-                            modifier = Modifier.clickable { cm.setPrimaryClip(ClipData.newPlainText("CAS", it)) })
+                Spacer(Modifier.height(4.dp))
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    state.cid?.let {
+                        CompactIdentifier(label = "CID", value = it.toString()) {
+                            cm.setPrimaryClip(ClipData.newPlainText("CID", it.toString()))
+                        }
                     }
-                }
-                if (state.weight.isNotBlank()) {
-                    Column {
-                        Text("Weight", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
-                        Text("${state.weight} g/mol", style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold, color = Color(0xFF64B5F6),
-                            modifier = Modifier.clickable { cm.setPrimaryClip(ClipData.newPlainText("Weight", "${state.weight} g/mol")) })
+                    state.casNumber?.let {
+                        CompactIdentifier(label = "CAS", value = it) {
+                            cm.setPrimaryClip(ClipData.newPlainText("CAS", it))
+                        }
+                    }
+                    if (state.weight.isNotBlank()) {
+                        CompactIdentifier(label = "MW", value = "${state.weight} g/mol") {
+                            cm.setPrimaryClip(ClipData.newPlainText("MW", "${state.weight} g/mol"))
+                        }
                     }
                 }
             }
         }
-        IconButton(onClick = onToggleFavorite) {
+        IconButton(
+            onClick = onToggleFavorite,
+            modifier = Modifier.padding(top = 4.dp)
+        ) {
             Icon(
                 imageVector = if (isFavorite) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
                 contentDescription = if (isFavorite) "Remove bookmark" else "Add bookmark",
-                tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.35f)
             )
         }
+    }
+}
+
+@Composable
+private fun CompactIdentifier(label: String, value: String, onCopy: () -> Unit) {
+    Column(
+        modifier = Modifier.clickable { onCopy() },
+        verticalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
+        Text(
+            label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.4f),
+            fontSize = 9.sp,
+            letterSpacing = 0.8.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            value,
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.primary
+        )
     }
 }
 
@@ -672,13 +977,11 @@ fun ClickableIdentifier(label: String, value: String, cm: ClipboardManager) {
     Text(
         text = buildAnnotatedString {
             withStyle(SpanStyle(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.45f))) { append("$label: ") }
-            withStyle(SpanStyle(color = Color(0xFF64B5F6), fontWeight = FontWeight.Bold)) { append(value) }
+            withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.SemiBold)) { append(value) }
         },
         style = MaterialTheme.typography.bodyMedium,
         softWrap = false,
-        modifier = Modifier.clickable {
-            cm.setPrimaryClip(ClipData.newPlainText(label, value))
-        }
+        modifier = Modifier.clickable { cm.setPrimaryClip(ClipData.newPlainText(label, value)) }
     )
 }
 
@@ -688,38 +991,101 @@ fun ClickableIdentifier(label: String, value: String, cm: ClipboardManager) {
 fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
         Column {
-            TabRow(selectedTabIndex = if (state.activeTab == MolTab.TWO_D) 0 else 1, containerColor = MaterialTheme.colorScheme.surface) {
-                Tab(selected = state.activeTab == MolTab.TWO_D, onClick = { vm.setTab(MolTab.TWO_D) }, text = { Text("2D Structure") })
-                Tab(selected = state.activeTab == MolTab.THREE_D, onClick = { vm.setTab(MolTab.THREE_D) }, text = { Text("3D Model") })
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(50),
+                    color = MaterialTheme.colorScheme.outline.copy(0.12f),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier.padding(4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        val twoDActive = state.activeTab == MolTab.TWO_D
+                        Surface(
+                            onClick = { vm.setTab(MolTab.TWO_D) },
+                            shape = RoundedCornerShape(50),
+                            color = if (twoDActive) MaterialTheme.colorScheme.primary else Color.Transparent,
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(
+                                "2D Structure",
+                                modifier = Modifier.padding(vertical = 8.dp),
+                                color = if (twoDActive) Color.White else MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.SemiBold,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                        val threeDActive = state.activeTab == MolTab.THREE_D
+                        Surface(
+                            onClick = { vm.setTab(MolTab.THREE_D) },
+                            shape = RoundedCornerShape(50),
+                            color = if (threeDActive) MaterialTheme.colorScheme.primary else Color.Transparent,
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(
+                                "3D Model",
+                                modifier = Modifier.padding(vertical = 8.dp),
+                                color = if (threeDActive) Color.White else MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.SemiBold,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
             }
-            Box(modifier = Modifier.fillMaxWidth().height(320.dp), contentAlignment = Alignment.Center) {
+
+            Box(
+                modifier = Modifier.fillMaxWidth().height(300.dp),
+                contentAlignment = Alignment.Center
+            ) {
                 when (state.activeTab) {
                     MolTab.TWO_D -> state.cid?.let { cid ->
                         AsyncImage(
                             model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/$cid/PNG?image_size=large",
                             contentDescription = "2D Structure",
-                            modifier = Modifier.fillMaxSize().padding(16.dp),
+                            modifier = Modifier.fillMaxSize().padding(12.dp),
                             contentScale = ContentScale.Fit
                         )
                     }
                     MolTab.THREE_D -> {
                         if (state.isLoadingSdf) {
-                            CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
+                                CircularProgressIndicator(modifier = Modifier.size(28.dp), strokeWidth = 2.dp)
+                                Text("Loading 3D model...", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                            }
                         } else if (state.sdfData != null) {
                             val isDark = !MaterialTheme.colorScheme.background.luminance().let { it > 0.5f }
                             Viewer3D(cid = state.cid ?: 0, sdfData = state.sdfData, isDark = isDark)
                         } else {
-                            Text("3D not available", color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Icon(Icons.Default.VisibilityOff, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.3f), modifier = Modifier.size(32.dp))
+                                Text("3D model not available", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                            }
                         }
                     }
                 }
             }
         }
+
     }
 }
 
-
 // ─── Identifiers ───────────────────────────────────────────────────────────────
+
 @Composable
 fun IdentifiersSection(state: ChemUiState, context: Context) {
     var showInfo by remember { mutableStateOf(false) }
@@ -729,7 +1095,7 @@ fun IdentifiersSection(state: ChemUiState, context: Context) {
             title = "About Identifiers",
             entries = listOf(
                 "IUPAC Name" to "The systematic name assigned by the International Union of Pure and Applied Chemistry. Uniquely describes the structure using a standard naming convention.",
-                "CID" to "PubChem Compound ID — a unique number assigned by the PubChem database to identify this exact compound.",
+                "CID" to "PubChem Compound ID (CID) is a unique number assigned by the PubChem database to identify this exact compound.",
                 "CAS Number" to "Chemical Abstracts Service registry number. A globally recognized unique identifier assigned to every chemical substance.",
                 "SMILES" to "Simplified Molecular Input Line Entry System. A text notation that describes the molecular structure using atoms and bonds in a single line.",
                 "InChI" to "International Chemical Identifier. A standard text identifier for chemical substances designed to be unique and non-proprietary.",
@@ -758,24 +1124,76 @@ fun IdentifiersSection(state: ChemUiState, context: Context) {
 @Composable
 fun IdentifierRow(label: String, value: String, context: Context, mono: Boolean = true) {
     val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    Column(modifier = Modifier.fillMaxWidth().clickable { cm.setPrimaryClip(ClipData.newPlainText(label, value)) }) {
-        Text(label.uppercase(), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-        Spacer(Modifier.height(2.dp))
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+    var expanded by remember { mutableStateOf(false) }
+    val isLong = value.length > 80
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                when {
+                    isLong && !expanded -> expanded = true
+                    isLong && expanded -> expanded = false
+                    else -> cm.setPrimaryClip(ClipData.newPlainText(label, value))
+                }
+            }
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Text(
-                value,
-                style = if (mono) MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace) else MaterialTheme.typography.bodySmall,
-                modifier = Modifier.weight(1f),
+                label.uppercase(),
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 0.5.sp,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
             )
+            if (isLong) {
+                Text(
+                    if (expanded) "collapse" else "expand",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary.copy(0.7f),
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.clickable { expanded = !expanded }
+                )
+            }
         }
-        HorizontalDivider(modifier = Modifier.padding(top = 8.dp), color = MaterialTheme.colorScheme.outline.copy(0.15f))
+        Spacer(Modifier.height(3.dp))
+        Text(
+            value,
+            style = if (mono) MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace) else MaterialTheme.typography.bodySmall,
+            modifier = Modifier.fillMaxWidth(),
+            color = MaterialTheme.colorScheme.onSurface.copy(0.88f),
+            lineHeight = 18.sp,
+            maxLines = if (expanded || !isLong) Int.MAX_VALUE else 2,
+            overflow = if (expanded || !isLong) androidx.compose.ui.text.style.TextOverflow.Visible else androidx.compose.ui.text.style.TextOverflow.Ellipsis
+        )
+        if (isLong && expanded) {
+            Spacer(Modifier.height(4.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(
+                    onClick = { cm.setPrimaryClip(ClipData.newPlainText(label, value)) },
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp)
+                ) {
+                    Icon(Icons.Default.ContentCopy, null, modifier = Modifier.size(13.dp))
+                    Spacer(Modifier.width(4.dp))
+                    Text("Copy", style = MaterialTheme.typography.labelSmall)
+                }
+            }
+        }
+        HorizontalDivider(modifier = Modifier.padding(top = 6.dp), color = MaterialTheme.colorScheme.outline.copy(0.12f))
     }
 }
 
 // ─── Elemental analysis ────────────────────────────────────────────────────────
 
 @Composable
-fun ElementalSection(data: List<com.furthersecrets.chemsearch.data.ElementData>) {
+fun ElementalSection(data: List<ElementData>) {
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             var showInfo by remember { mutableStateOf(false) }
@@ -792,15 +1210,58 @@ fun ElementalSection(data: List<com.furthersecrets.chemsearch.data.ElementData>)
             }
             CardSectionHeader("Elemental Analysis") { showInfo = true }
             data.forEach { el ->
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text(el.element, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, modifier = Modifier.width(26.dp))
-                    Box(modifier = Modifier.weight(1f).height(8.dp).clip(RoundedCornerShape(4.dp)).background(MaterialTheme.colorScheme.outline.copy(0.15f))) {
-                        Box(modifier = Modifier.fillMaxHeight().fillMaxWidth(el.percentage / 100f).clip(RoundedCornerShape(4.dp)).background(MaterialTheme.colorScheme.primary))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(28.dp)
+                            .background(MaterialTheme.colorScheme.primary.copy(0.1f), RoundedCornerShape(6.dp)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            el.element,
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontSize = 11.sp
+                        )
                     }
-                    Text("${"%.1f".format(el.percentage)}%", style = MaterialTheme.typography.labelSmall, fontFamily = FontFamily.Monospace, modifier = Modifier.width(44.dp), color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(10.dp)
+                            .clip(RoundedCornerShape(5.dp))
+                            .background(MaterialTheme.colorScheme.outline.copy(0.12f))
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth(el.percentage / 100f)
+                                .clip(RoundedCornerShape(5.dp))
+                                .background(
+                                    Brush.horizontalGradient(
+                                        listOf(
+                                            MaterialTheme.colorScheme.primary,
+                                            MaterialTheme.colorScheme.primary.copy(0.6f)
+                                        )
+                                    )
+                                )
+                        )
+                    }
+                    Text(
+                        "${"%.1f".format(el.percentage)}%",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = FontFamily.Monospace,
+                        modifier = Modifier.width(44.dp),
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                        textAlign = TextAlign.End
+                    )
                 }
             }
         }
+
     }
 }
 
@@ -812,14 +1273,27 @@ fun SynonymsSection(synonyms: List<String>) {
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             SectionLabel("Synonyms")
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 synonyms.forEach { syn ->
-                    Surface(shape = RoundedCornerShape(8.dp), color = MaterialTheme.colorScheme.primary.copy(0.08f), border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.2f))) {
-                        Text(syn, modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = MaterialTheme.colorScheme.primary.copy(0.07f),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f))
+                    ) {
+                        Text(
+                            syn,
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
                     }
                 }
             }
         }
+
     }
 }
 
@@ -830,14 +1304,45 @@ fun DescriptionSection(state: ChemUiState, onPubChem: () -> Unit, onWiki: () -> 
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             SectionLabel("Description")
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                SourceBtn("PubChem", state.descSource == DescSource.PUBCHEM, onPubChem)
-                SourceBtn("Wikipedia", state.descSource == DescSource.WIKI, onWiki)
-                SourceBtn("AI ✨", state.descSource == DescSource.AI, onAI)
+            Surface(
+                shape = RoundedCornerShape(50),
+                color = MaterialTheme.colorScheme.outline.copy(0.1f),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(modifier = Modifier.padding(4.dp)) {
+                    listOf(
+                        DescSource.PUBCHEM to "PubChem",
+                        DescSource.WIKI to "Wikipedia",
+                        DescSource.AI to "AI ✨"
+                    ).forEach { (src, label) ->
+                        val active = state.descSource == src
+                        val onClick = when (src) {
+                            DescSource.PUBCHEM -> onPubChem
+                            DescSource.WIKI -> onWiki
+                            DescSource.AI -> onAI
+                        }
+                        Surface(
+                            onClick = onClick,
+                            shape = RoundedCornerShape(50),
+                            color = if (active) MaterialTheme.colorScheme.primary else Color.Transparent,
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(
+                                label,
+                                modifier = Modifier.padding(vertical = 7.dp),
+                                color = if (active) Color.White else MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.SemiBold,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
             }
+
             if (state.isLoadingDesc) {
                 Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                    CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
                 }
             } else {
                 val text = when (state.descSource) {
@@ -845,24 +1350,31 @@ fun DescriptionSection(state: ChemUiState, onPubChem: () -> Unit, onWiki: () -> 
                     DescSource.WIKI    -> state.wikiDescription ?: "Wikipedia description not available for this compound."
                     DescSource.AI      -> state.aiDescription   ?: "AI description not available. Check your API key in Settings."
                 }
-                Text(text, style = MaterialTheme.typography.bodyMedium, lineHeight = 22.sp)
+                Text(text, style = MaterialTheme.typography.bodyMedium, lineHeight = 22.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.85f))
                 if (state.descSource == DescSource.AI && state.aiDescription != null) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         TextButton(onClick = onRegenerate, contentPadding = PaddingValues(0.dp)) {
-                            Icon(Icons.Default.Refresh, null, modifier = Modifier.size(16.dp))
+                            Icon(Icons.Default.Refresh, null, modifier = Modifier.size(14.dp))
                             Spacer(Modifier.width(4.dp))
                             Text("Regenerate", style = MaterialTheme.typography.labelMedium)
                         }
                         Spacer(Modifier.weight(1f))
-                        Text(
-                            text = "via ${if (state.aiProvider == AiProvider.GEMINI) "Gemini" else "Groq"}",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
-                        )
+                        Surface(
+                            shape = RoundedCornerShape(6.dp),
+                            color = MaterialTheme.colorScheme.primary.copy(0.08f)
+                        ) {
+                            Text(
+                                "via ${if (state.aiProvider == AiProvider.GEMINI) "Gemini" else "Groq"}",
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.primary.copy(0.8f)
+                            )
+                        }
                     }
                 }
             }
         }
+
     }
 }
 
@@ -877,7 +1389,7 @@ fun SourceBtn(label: String, active: Boolean, onClick: () -> Unit) {
         shape = RoundedCornerShape(10.dp),
         contentPadding = PaddingValues(horizontal = 14.dp, vertical = 7.dp),
         elevation = ButtonDefaults.buttonElevation(if (active) 2.dp else 0.dp),
-        border = if (!active) BorderStroke(1.dp, MaterialTheme.colorScheme.outline) else null
+        border = if (!active) BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.5f)) else null
     ) {
         Text(label, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.SemiBold)
     }
@@ -892,27 +1404,27 @@ fun AiProviderDialog(onSelect: (AiProvider) -> Unit, onDismiss: () -> Unit) {
         title = { Text("Choose AI Provider", fontWeight = FontWeight.Bold) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("Select which model you'd like to use for generating chemical descriptions.", style = MaterialTheme.typography.bodyMedium)
-
+                Text("Select which model to use for AI descriptions.", style = MaterialTheme.typography.bodyMedium)
                 Card(
                     onClick = { onSelect(AiProvider.GEMINI) },
                     modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
                 ) {
-                    Column(Modifier.padding(12.dp)) {
+                    Column(Modifier.padding(14.dp)) {
                         Text("Google Gemini", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge)
-                        Text("Model: gemini-flash-latest", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                        Text("gemini-flash-latest", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary, fontFamily = FontFamily.Monospace)
                     }
                 }
-
                 Card(
                     onClick = { onSelect(AiProvider.GROQ) },
                     modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
                 ) {
-                    Column(Modifier.padding(12.dp)) {
+                    Column(Modifier.padding(14.dp)) {
                         Text("Groq Cloud", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge)
-                        Text("Model: openai/gpt-oss-120b", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                        Text("openai/gpt-oss-120b", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary, fontFamily = FontFamily.Monospace)
                     }
                 }
             }
@@ -945,14 +1457,24 @@ fun ApiKeyDialog(title: String, link: String, current: String, onSave: (String) 
                     }
                 )
                 OutlinedTextField(
-                    value = key, onValueChange = { key = it }, label = { Text("API Key") }, singleLine = true, shape = RoundedCornerShape(12.dp),
+                    value = key,
+                    onValueChange = { key = it },
+                    label = { Text("API Key") },
+                    singleLine = true,
+                    shape = RoundedCornerShape(12.dp),
                     visualTransformation = if (visible) VisualTransformation.None else PasswordVisualTransformation(),
-                    trailingIcon = { IconButton(onClick = { visible = !visible }) { Icon(if (visible) Icons.Default.VisibilityOff else Icons.Default.Visibility, null) } }
+                    trailingIcon = {
+                        IconButton(onClick = { visible = !visible }) {
+                            Icon(if (visible) Icons.Default.VisibilityOff else Icons.Default.Visibility, null)
+                        }
+                    }
                 )
                 Text("Stored locally on your device only.", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
             }
         },
-        confirmButton = { Button(onClick = { if (key.isNotBlank()) onSave(key.trim()) }, shape = RoundedCornerShape(10.dp)) { Text("Save") } },
+        confirmButton = {
+            Button(onClick = { if (key.isNotBlank()) onSave(key.trim()) }, shape = RoundedCornerShape(10.dp)) { Text("Save") }
+        },
         dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } }
     )
 }
@@ -961,7 +1483,13 @@ fun ApiKeyDialog(title: String, link: String, current: String, onSave: (String) 
 
 @Composable
 fun SectionLabel(text: String) {
-    Text(text.uppercase(), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 1.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+    Text(
+        text.uppercase(),
+        style = MaterialTheme.typography.labelSmall,
+        fontWeight = FontWeight.Bold,
+        letterSpacing = 1.sp,
+        color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+    )
 }
 
 // ─── Info dialog ───────────────────────────────────────────────────────────────
@@ -970,35 +1498,21 @@ fun SectionLabel(text: String) {
 fun InfoDialog(title: String, entries: List<Pair<String, String>>, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = {
-            Text(title, fontWeight = FontWeight.Bold)
-        },
+        title = { Text(title, fontWeight = FontWeight.Bold) },
         text = {
             Column(
                 modifier = Modifier.verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 entries.forEach { (term, explanation) ->
-                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text(
-                            term,
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                        Text(
-                            explanation,
-                            style = MaterialTheme.typography.bodySmall,
-                            lineHeight = 18.sp,
-                            color = MaterialTheme.colorScheme.onSurface.copy(0.8f)
-                        )
+                    Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                        Text(term, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                        Text(explanation, style = MaterialTheme.typography.bodySmall, lineHeight = 18.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.8f))
                     }
                 }
             }
         },
-        confirmButton = {
-            TextButton(onClick = onDismiss) { Text("Got it") }
-        }
+        confirmButton = { TextButton(onClick = onDismiss) { Text("Got it") } }
     )
 }
 
@@ -1010,16 +1524,8 @@ fun CardSectionHeader(label: String, onInfoClick: () -> Unit) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         SectionLabel(label)
-        IconButton(
-            onClick = onInfoClick,
-            modifier = Modifier.size(20.dp)
-        ) {
-            Icon(
-                Icons.Default.Info,
-                contentDescription = "Info",
-                tint = MaterialTheme.colorScheme.onSurface.copy(0.35f),
-                modifier = Modifier.size(15.dp)
-            )
+        IconButton(onClick = onInfoClick, modifier = Modifier.size(20.dp)) {
+            Icon(Icons.Default.Info, contentDescription = "Info", tint = MaterialTheme.colorScheme.onSurface.copy(0.3f), modifier = Modifier.size(14.dp))
         }
     }
 }
@@ -1057,24 +1563,28 @@ fun FavoritesSheet(
                 .padding(start = 20.dp, end = 20.dp, bottom = 48.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text(
-                "Bookmarks",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
+            Text("Favorites", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 12.dp))
             if (favorites.isEmpty()) {
                 Box(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 40.dp),
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 48.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Text("🔖", fontSize = 36.sp)
-                        Text("No bookmarks yet", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
-                        Text("Tap the bookmark icon on any compound", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                        Box(
+                            modifier = Modifier
+                                .size(72.dp)
+                                .background(MaterialTheme.colorScheme.primary.copy(0.08f), CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(Icons.Default.BookmarkBorder, null, tint = MaterialTheme.colorScheme.primary.copy(0.5f), modifier = Modifier.size(36.dp))
+                        }
+                        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Text("No favorites yet", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                            Text("Tap the bookmark icon on any compound", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.38f))
+                        }
                     }
                 }
             } else {
@@ -1082,62 +1592,38 @@ fun FavoritesSheet(
                     Card(
                         onClick = { onSelect(fav.name) },
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(14.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.5f))
                     ) {
                         Row(
-                            modifier = Modifier.padding(12.dp).fillMaxWidth(),
+                            modifier = Modifier.padding(14.dp).fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            Column(modifier = Modifier.weight(1f)) {
+                            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                 Text(fav.name, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
                                 if (fav.formula.isNotBlank()) {
-                                    Text(
-                                        toSubscriptFormula(fav.formula),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        fontFamily = FontFamily.Monospace,
-                                        color = MaterialTheme.colorScheme.primary
-                                    )
+                                    Text(toSubscriptFormula(fav.formula), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.primary)
                                 }
                                 if (fav.molecularWeight.isNotBlank()) {
-                                    Text(
-                                        "MW: ${fav.molecularWeight} g/mol",
-                                        style = MaterialTheme.typography.labelSmall,
-                                        color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
-                                    )
+                                    Text("MW: ${fav.molecularWeight} g/mol", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
                                 }
                             }
                             IconButton(onClick = { onDelete(fav.cid) }) {
-                                Icon(
-                                    Icons.Default.Delete,
-                                    contentDescription = "Remove",
-                                    tint = MaterialTheme.colorScheme.error.copy(0.7f),
-                                    modifier = Modifier.size(20.dp)
-                                )
+                                Icon(Icons.Default.Delete, contentDescription = "Remove", tint = MaterialTheme.colorScheme.error.copy(0.65f), modifier = Modifier.size(18.dp))
                             }
                         }
                     }
-                    Spacer(Modifier.height(4.dp))
+                    Spacer(Modifier.height(6.dp))
                 }
             }
         }
+
     }
 }
 
 // ─── GHS Safety ────────────────────────────────────────────────────────────────
 
-
-private val ghsPictogramEmoji = mapOf(
-    "GHS01" to "💥" to "Explosive",
-    "GHS02" to "🔥" to "Flammable",
-    "GHS03" to "🔆" to "Oxidizing",
-    "GHS04" to "🔵" to "Compressed Gas",
-    "GHS05" to "⚗️" to "Corrosive",
-    "GHS06" to "☠️" to "Toxic",
-    "GHS07" to "⚠️" to "Harmful",
-    "GHS08" to "🫁" to "Health Hazard",
-    "GHS09" to "🌿" to "Environmental"
-)
 private val ghsEmoji = mapOf(
     "GHS01" to "💥", "GHS02" to "🔥", "GHS03" to "🔆",
     "GHS04" to "🔵", "GHS05" to "⚗️", "GHS06" to "☠️",
@@ -1157,18 +1643,15 @@ private val WarningAmber = Color(0xFFD97706)
 @Composable
 fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             var showInfo by remember { mutableStateOf(false) }
             if (showInfo) {
                 InfoDialog(
                     title = "GHS Safety",
                     entries = listOf(
-                        "What is GHS?" to "The Globally Harmonized System of Classification and Labelling of Chemicals — a UN standard for communicating chemical hazards worldwide.",
+                        "What is GHS?" to "The Globally Harmonized System of Classification and Labelling of Chemicals (GHS) is a UN standard for communicating chemical hazards worldwide.",
                         "Signal Word" to "'Danger' indicates a more severe hazard. 'Warning' indicates a less severe hazard.",
-                        "Pictograms" to "Standardized symbols (GHS01–GHS09) that visually communicate the type of hazard — flammability, toxicity, corrosion, etc.",
+                        "Pictograms" to "Standardized symbols (GHS01–GHS09) that visually communicate the type of hazard (e.g flammability, toxicity, corrosion, etc.)",
                         "Hazard Statements" to "Standardized H-codes that describe the nature and degree of hazard. For example, H225 means 'Highly flammable liquid and vapour'.",
                         "Data source" to "GHS data is sourced from PubChem's aggregated classification records, which combine data from multiple regulatory bodies."
                     ),
@@ -1179,77 +1662,59 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
 
             if (isLoading) {
                 Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                    CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
                 }
             } else if (ghsData == null) {
-                Text(
-                    "No GHS classification available.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
-                )
+                Text("No GHS classification available.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
             } else {
                 ghsData.signalWord?.let { word ->
                     val isDanger = word.equals("Danger", ignoreCase = true)
                     val badgeColor = if (isDanger) DangerRed else WarningAmber
                     Surface(
-                        shape = RoundedCornerShape(8.dp),
-                        color = badgeColor.copy(alpha = 0.12f),
-                        border = BorderStroke(1.dp, badgeColor.copy(alpha = 0.5f))
+                        shape = RoundedCornerShape(10.dp),
+                        color = badgeColor.copy(alpha = 0.1f),
+                        border = BorderStroke(1.dp, badgeColor.copy(alpha = 0.4f))
                     ) {
                         Row(
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 7.dp),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text(if (isDanger) "🚨" else "⚠️", fontSize = 14.sp)
+                            Icon(
+                                if (isDanger) Icons.Default.Error else Icons.Default.Warning,
+                                null,
+                                tint = badgeColor,
+                                modifier = Modifier.size(18.dp)
+                            )
+
                             Text(
                                 word.uppercase(),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = badgeColor,
-                                letterSpacing = 1.sp
+                                letterSpacing = 1.5.sp
                             )
                         }
                     }
                 }
 
                 if (ghsData.pictogramCodes.isNotEmpty()) {
-                    Text(
-                        "PICTOGRAMS",
-                        style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface.copy(0.45f),
-                        letterSpacing = 0.5.sp
-                    )
-                    FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
+                    Text("PICTOGRAMS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.45f), letterSpacing = 0.5.sp)
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         ghsData.pictogramCodes.forEach { code ->
                             Surface(
-                                shape = RoundedCornerShape(10.dp),
+                                shape = RoundedCornerShape(12.dp),
                                 color = MaterialTheme.colorScheme.surfaceVariant,
-                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f))
+                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.25f))
                             ) {
                                 Column(
-                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp),
+                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                     verticalArrangement = Arrangement.spacedBy(4.dp)
                                 ) {
                                     Text(ghsEmoji[code] ?: "⚠️", fontSize = 28.sp)
-                                    Text(
-                                        code,
-                                        style = MaterialTheme.typography.labelSmall,
-                                        fontFamily = FontFamily.Monospace,
-                                        fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.primary
-                                    )
-                                    Text(
-                                        ghsLabel[code] ?: "",
-                                        style = MaterialTheme.typography.labelSmall,
-                                        color = MaterialTheme.colorScheme.onSurface.copy(0.55f),
-                                        fontSize = 8.sp
-                                    )
+                                    Text(code, style = MaterialTheme.typography.labelSmall, fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                                    Text(ghsLabel[code] ?: "", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f), fontSize = 9.sp, textAlign = TextAlign.Center)
                                 }
                             }
                         }
@@ -1257,33 +1722,1751 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
                 }
 
                 if (ghsData.hazardStatements.isNotEmpty()) {
-                    Text(
-                        "HAZARD STATEMENTS",
-                        style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface.copy(0.45f),
-                        letterSpacing = 0.5.sp
-                    )
-                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text("HAZARD STATEMENTS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.45f), letterSpacing = 0.5.sp)
+                    Column(verticalArrangement = Arrangement.spacedBy(7.dp)) {
                         ghsData.hazardStatements.take(8).forEach { statement ->
                             Row(
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                horizontalArrangement = Arrangement.spacedBy(10.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text(
-                                    "•",
-                                    color = MaterialTheme.colorScheme.primary,
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier.padding(top = 1.dp)
+                                Box(
+                                    modifier = Modifier
+                                        .padding(top = 5.dp)
+                                        .size(5.dp)
+                                        .background(MaterialTheme.colorScheme.primary.copy(0.5f), CircleShape)
                                 )
+                                Text(statement, style = MaterialTheme.typography.bodySmall, lineHeight = 18.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.85f))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+@Composable
+fun FavoritesInline(
+    favorites: List<FavoriteCompound>,
+    onSelect: (String) -> Unit,
+    onDelete: (Long) -> Unit
+) {
+    if (favorites.isEmpty()) {
+        Box(
+            modifier = Modifier.fillMaxWidth().padding(top = 64.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Box(
+                    modifier = Modifier.size(80.dp).background(MaterialTheme.colorScheme.primary.copy(0.08f), CircleShape),
+                    contentAlignment = Alignment.Center
+                ) { Text("🔖", fontSize = 36.sp) }
+                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text("No bookmarks yet", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface.copy(0.7f))
+                    Text("Tap the bookmark icon on any compound", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.38f))
+                }
+            }
+        }
+        return
+    }
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text("FAVORITES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+        favorites.forEach { fav ->
+            Card(
+                onClick = { onSelect(fav.name) },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            ) {
+                Row(
+                    modifier = Modifier.padding(14.dp).fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Text(fav.name, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+                        if (fav.formula.isNotBlank()) {
+                            Text(toSubscriptFormula(fav.formula), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.primary)
+                        }
+                        if (fav.molecularWeight.isNotBlank()) {
+                            Text("MW: ${fav.molecularWeight} g/mol", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                        }
+                    }
+                    IconButton(onClick = { onDelete(fav.cid) }) {
+                        Icon(Icons.Default.Delete, null, tint = MaterialTheme.colorScheme.error.copy(0.6f), modifier = Modifier.size(18.dp))
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+@Composable
+fun SettingsInline(
+    isDark: Boolean,
+    autoSuggest: Boolean,
+    defaultDescSource: DescSource,
+    aiProvider: AiProvider,
+    hasGeminiKey: Boolean,
+    hasGroqKey: Boolean,
+    onToggleTheme: () -> Unit,
+    onToggleAutoSuggest: () -> Unit,
+    onSetDefaultDesc: (DescSource) -> Unit,
+    onSetAiProvider: (AiProvider) -> Unit,
+    onSetGeminiKey: () -> Unit,
+    onSetGroqKey: () -> Unit,
+    onClearGeminiKey: () -> Unit,
+    onClearGroqKey: () -> Unit,
+    onClearHistory: () -> Unit
+) {
+    val context = LocalContext.current
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Text("Settings", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 8.dp))
+
+        SettingsSectionHeader("Appearance")
+        SettingsToggleRow(icon = if (isDark) Icons.Default.LightMode else Icons.Default.DarkMode, title = "Dark Mode", subtitle = if (isDark) "Currently dark" else "Currently light", checked = isDark, onToggle = onToggleTheme)
+
+        Spacer(Modifier.height(4.dp))
+        SettingsSectionHeader("Search")
+        SettingsToggleRow(icon = Icons.Default.Search, title = "Autosuggestions", subtitle = "Show dropdown while typing", checked = autoSuggest, onToggle = onToggleAutoSuggest)
+
+        Spacer(Modifier.height(4.dp))
+        SettingsSectionHeader("Default Description Source")
+        Text("Automatically shown when you search a compound", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.padding(bottom = 8.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            listOf(DescSource.PUBCHEM to "PubChem", DescSource.WIKI to "Wikipedia", DescSource.AI to "AI").forEach { (src, label) ->
+                SourceBtn(label = label, active = defaultDescSource == src) { onSetDefaultDesc(src) }
+            }
+        }
+
+        Spacer(Modifier.height(4.dp))
+        SettingsSectionHeader("AI Provider")
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            listOf(AiProvider.GEMINI to "Gemini", AiProvider.GROQ to "Groq").forEach { (prov, label) ->
+                SourceBtn(label = label, active = aiProvider == prov) { onSetAiProvider(prov) }
+            }
+        }
+
+        Spacer(Modifier.height(4.dp))
+        SettingsSectionHeader("API Keys")
+        if (hasGeminiKey) {
+            SettingsActionRow(Icons.Default.Key, "Gemini API Key saved", "Tap to replace", "Replace", MaterialTheme.colorScheme.primary, onSetGeminiKey)
+            SettingsActionRow(Icons.Default.DeleteOutline, "Remove Gemini Key", "Disables Gemini AI", "Remove", MaterialTheme.colorScheme.error, onClearGeminiKey)
+        } else {
+            SettingsActionRow(Icons.Default.Key, "No Gemini Key set", "Required for Gemini descriptions", "Add Key", MaterialTheme.colorScheme.primary, onSetGeminiKey)
+        }
+
+        HorizontalDivider(Modifier.padding(vertical = 4.dp), color = MaterialTheme.colorScheme.outline.copy(0.1f))
+
+        if (hasGroqKey) {
+            SettingsActionRow(Icons.Default.Key, "Groq API Key saved", "Tap to replace", "Replace", MaterialTheme.colorScheme.primary, onSetGroqKey)
+            SettingsActionRow(Icons.Default.DeleteOutline, "Remove Groq Key", "Disables Groq AI", "Remove", MaterialTheme.colorScheme.error, onClearGroqKey)
+        } else {
+            SettingsActionRow(Icons.Default.Key, "No Groq Key set", "Required for Groq descriptions", "Add Key", MaterialTheme.colorScheme.primary, onSetGroqKey)
+        }
+
+        Spacer(Modifier.height(4.dp))
+        SettingsSectionHeader("Data")
+        SettingsActionRow(Icons.Default.History, "Search History", "Clear all recent searches", "Clear", MaterialTheme.colorScheme.error, onClearHistory)
+
+        Spacer(Modifier.height(4.dp))
+        SettingsSectionHeader("About")
+        Card(shape = RoundedCornerShape(14.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
+            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text("ChemSearch for Android", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
+                    Surface(shape = RoundedCornerShape(6.dp), color = MaterialTheme.colorScheme.primary.copy(0.12f)) {
+                        Text("v${BuildConfig.VERSION_NAME}  •  build ${BuildConfig.VERSION_CODE}", modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp), style = MaterialTheme.typography.labelSmall, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                    }
+                    Text("Data from PubChem, Wikipedia, Google Gemini and Groq", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
+                    Text("by FurtherSecrets", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                }
+                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text("SOURCE CODE", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                    Row(modifier = Modifier.clickable {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/FurtherSecrets24680/chemsearch-android"))
+                        context.startActivity(intent)
+                    }, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Icon(Icons.Default.Code, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
+                        Text("GitHub Repository", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Medium)
+                    }
+                }
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text("LIBRARIES & CREDITS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                    listOf(
+                        "Jetpack Compose" to "UI Framework", "Material 3" to "Design System",
+                        "Retrofit & OkHttp" to "Networking", "Coil" to "Image Loading",
+                        "Native 3D Engine" to "3D Molecular Visualization", "Gemini & Groq" to "AI Models",
+                        "Gson" to "JSON Parsing", "Kotlin Coroutines" to "Asynchronous Tasks"
+                    ).forEach { (name, desc) ->
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                            Text(name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Medium)
+                            Text(desc, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TOOLS SCREEN
+// ─────────────────────────────────────────────────────────────────────────────
+
+@Composable
+fun ToolsScreen(isDark: Boolean) {
+    var selectedTool by remember { mutableStateOf(0) }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text(
+            "Tools",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+
+        if (selectedTool == 0) {
+            ToolCard(
+                icon = Icons.Default.ViewInAr,
+                title = "Custom 3D Molecule Viewer",
+                subtitle = "Load any .sdf or .mol file and view it in 3D",
+                onClick = { selectedTool = 1 }
+            )
+            ToolCard(
+                icon = Icons.Default.Calculate,
+                title = "Molar Mass Calculator",
+                subtitle = "Enter a molecular formula and get the molar mass",
+                onClick = { selectedTool = 2 }
+            )
+            ToolCard(
+                icon = Icons.Default.Science,
+                title = "Oxidation State Finder",
+                subtitle = "Find oxidation states of each element in a compound",
+                onClick = { selectedTool = 3 }
+            )
+            ToolCard(
+                icon = Icons.Default.AccountTree,
+                title = "SMILES Visualizer",
+                subtitle = "Paste a SMILES string to view its 2D and 3D structure",
+                onClick = { selectedTool = 4 }
+            )
+            ToolCard(
+                icon = Icons.Default.SwapHoriz,
+                title = "Reaction Balancer",
+                subtitle = "Balance any chemical equation automatically",
+                onClick = { selectedTool = 5 }
+            )
+        } else {
+            TextButton(
+                onClick = { selectedTool = 0 },
+                contentPadding = PaddingValues(horizontal = 0.dp)
+            ) {
+                Icon(Icons.Default.ArrowBack, null, modifier = Modifier.size(16.dp))
+                Spacer(Modifier.width(4.dp))
+                Text("Back to Tools")
+            }
+
+            when (selectedTool) {
+                1 -> SdfViewerTool(isDark = isDark)
+                2 -> MolarMassCalculator()
+                3 -> OxidationStateFinder()
+                4 -> SmilesVisualizer(isDark = isDark)
+                5 -> ReactionBalancer()
+            }
+        }
+    }
+}
+
+@Composable
+private fun ToolCard(icon: ImageVector, title: String, subtitle: String, onClick: () -> Unit) {
+    Card(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(52.dp)
+                    .background(MaterialTheme.colorScheme.primary.copy(0.1f), RoundedCornerShape(12.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(icon, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(26.dp))
+            }
+            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
+                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+            }
+            Icon(Icons.Default.ChevronRight, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.3f))
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TOOL 1 : CUSTOM 3D MOLECULE VIEWER
+// ─────────────────────────────────────────────────────────────────────────────
+
+@Composable
+fun SdfViewerTool(isDark: Boolean) {
+    val context = LocalContext.current
+    var sdfContent by remember { mutableStateOf<String?>(null) }
+    var fileName by remember { mutableStateOf<String?>(null) }
+    var error by remember { mutableStateOf<String?>(null) }
+
+    val filePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        try {
+            val stream = context.contentResolver.openInputStream(uri)
+            val content = stream?.bufferedReader()?.readText()
+            stream?.close()
+            if (content != null) {
+                sdfContent = content
+                fileName = uri.lastPathSegment?.substringAfterLast('/') ?: "file.sdf"
+                error = null
+            } else {
+                error = "Could not read file."
+            }
+        } catch (e: Exception) {
+            error = "Error reading file: ${e.message}"
+        }
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        var showInfo by remember { mutableStateOf(false) }
+        if (showInfo) {
+            InfoDialog(
+                title = "Custom 3D Molecule Viewer",
+                entries = listOf(
+                    "What is an SDF file?" to "Structure Data File (.sdf) is a standard chemical file format that stores 3D atomic coordinates and bond information for one or more molecules.",
+                    "What is a MOL file?" to "A .mol file is the single-molecule variant of SDF. Both formats are widely exported by chemistry software like ChemDraw, Avogadro, and PubChem.",
+                    "How to get an SDF file" to "You can download SDF files from PubChem by searching a compound and choosing '3D SDF' from the download options, or export them from any molecular editor.",
+                    "Controls" to "Drag to rotate the molecule. Pinch to zoom in and out. The model auto-spins when idle, so tap to pause. Tap the reset button to return to the default view.",
+                    "CPK coloring" to "Atoms are colored using the Jmol CPK convention: carbon is dark grey, oxygen is red, nitrogen is blue, hydrogen is white, and so on across all 118 elements."
+                ),
+                onDismiss = { showInfo = false }
+            )
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Custom 3D Molecule Viewer", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
+                Icon(Icons.Default.Info, contentDescription = "Info", tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
+            }
+        }
+        if (sdfContent == null) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.5f))
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(40.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(72.dp)
+                            .background(MaterialTheme.colorScheme.primary.copy(0.1f), CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) { Icon(Icons.Default.FolderOpen, null, tint = MaterialTheme.colorScheme.primary.copy(0.6f), modifier = Modifier.size(40.dp)) }
+                    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Text("No file loaded", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
+                        Text(
+                            "Load any .sdf or .mol file from your device to view it in 3D",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        )
+                    }
+                    Button(
+                        onClick = { filePicker.launch("*/*") },
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Icon(Icons.Default.FolderOpen, null, modifier = Modifier.size(16.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text("Choose File")
+                    }
+                }
+            }
+        } else {
+            Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+                Row(
+                    modifier = Modifier.padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Icon(Icons.Default.InsertDriveFile, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
+                    Text(fileName ?: "file.sdf", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f))
+                    TextButton(onClick = { filePicker.launch("*/*") }, contentPadding = PaddingValues(horizontal = 8.dp)) {
+                        Text("Change", style = MaterialTheme.typography.labelMedium)
+                    }
+                }
+            }
+
+            Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+                Box(modifier = Modifier.fillMaxWidth().height(360.dp)) {
+                    Viewer3D(cid = -1L, sdfData = sdfContent!!, isDark = isDark)
+                }
+            }
+        }
+
+        if (error != null) {
+            Card(
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer.copy(0.5f))
+            ) {
+                Text(error!!, modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+            }
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TOOL 2 : MOLAR MASS CALCULATOR
+// ─────────────────────────────────────────────────────────────────────────────
+
+private val MOLAR_WEIGHTS = mapOf(
+    "H" to 1.008, "He" to 4.003, "Li" to 6.941, "Be" to 9.012, "B" to 10.811,
+    "C" to 12.011, "N" to 14.007, "O" to 15.999, "F" to 18.998, "Ne" to 20.180,
+    "Na" to 22.990, "Mg" to 24.305, "Al" to 26.982, "Si" to 28.086, "P" to 30.974,
+    "S" to 32.065, "Cl" to 35.453, "Ar" to 39.948, "K" to 39.098, "Ca" to 40.078,
+    "Sc" to 44.956, "Ti" to 47.867, "V" to 50.942, "Cr" to 51.996, "Mn" to 54.938,
+    "Fe" to 55.845, "Co" to 58.933, "Ni" to 58.693, "Cu" to 63.546, "Zn" to 65.38,
+    "Ga" to 69.723, "Ge" to 72.630, "As" to 74.922, "Se" to 78.971, "Br" to 79.904,
+    "Kr" to 83.798, "Rb" to 85.468, "Sr" to 87.620, "Y" to 88.906, "Zr" to 91.224,
+    "Nb" to 92.906, "Mo" to 95.950, "Tc" to 98.0, "Ru" to 101.07, "Rh" to 102.91,
+    "Pd" to 106.42, "Ag" to 107.87, "Cd" to 112.41, "In" to 114.82, "Sn" to 118.71,
+    "Sb" to 121.76, "Te" to 127.60, "I" to 126.90, "Xe" to 131.29, "Cs" to 132.91,
+    "Ba" to 137.33, "La" to 138.91, "Ce" to 140.12, "Pr" to 140.91, "Nd" to 144.24,
+    "Pm" to 145.0, "Sm" to 150.36, "Eu" to 151.96, "Gd" to 157.25, "Tb" to 158.93,
+    "Dy" to 162.50, "Ho" to 164.93, "Er" to 167.26, "Tm" to 168.93, "Yb" to 173.05,
+    "Lu" to 174.97, "Hf" to 178.49, "Ta" to 180.95, "W" to 183.84, "Re" to 186.21,
+    "Os" to 190.23, "Ir" to 192.22, "Pt" to 195.08, "Au" to 196.97, "Hg" to 200.59,
+    "Tl" to 204.38, "Pb" to 207.20, "Bi" to 208.98, "Po" to 209.0, "At" to 210.0,
+    "Rn" to 222.0, "Fr" to 223.0, "Ra" to 226.0, "Ac" to 227.0, "Th" to 232.04,
+    "Pa" to 231.04, "U" to 238.03, "Np" to 237.0, "Pu" to 244.0, "Am" to 243.0,
+    "Cm" to 247.0, "Bk" to 247.0, "Cf" to 251.0, "Es" to 252.0, "Fm" to 257.0,
+    "Md" to 258.0, "No" to 259.0, "Lr" to 262.0, "Rf" to 267.0, "Db" to 270.0,
+    "Sg" to 271.0, "Bh" to 270.0, "Hs" to 277.0, "Mt" to 276.0, "Ds" to 281.0,
+    "Rg" to 280.0, "Cn" to 285.0, "Nh" to 284.0, "Fl" to 289.0, "Mc" to 288.0,
+    "Lv" to 293.0, "Ts" to 294.0, "Og" to 294.0
+)
+
+private data class CalcResult(
+    val molarMass: Double,
+    val breakdown: List<Triple<String, Int, Double>>,
+    val error: String? = null
+)
+
+private fun parseFormulaForCalc(formula: String): Map<String, Int> {
+    val result = mutableMapOf<String, Int>()
+    val stack = ArrayDeque<MutableMap<String, Int>>().apply { addLast(result) }
+    var i = 0
+    val f = formula.trim()
+    while (i < f.length) {
+        when {
+            f[i] == '(' -> { stack.addLast(mutableMapOf()); i++ }
+            f[i] == ')' -> {
+                i++
+                var num = ""
+                while (i < f.length && f[i].isDigit()) num += f[i++]
+                val mult = num.toIntOrNull() ?: 1
+                val top = stack.removeLast()
+                top.forEach { (el, cnt) -> stack.last()[el] = (stack.last()[el] ?: 0) + cnt * mult }
+            }
+            f[i].isUpperCase() -> {
+                var el = f[i].toString(); i++
+                while (i < f.length && f[i].isLowerCase()) el += f[i++]
+                var num = ""
+                while (i < f.length && f[i].isDigit()) num += f[i++]
+                val cnt = num.toIntOrNull() ?: 1
+                stack.last()[el] = (stack.last()[el] ?: 0) + cnt
+            }
+            else -> i++
+        }
+    }
+    return result
+}
+
+private fun calculateMolarMass(formula: String): CalcResult {
+    if (formula.isBlank()) return CalcResult(0.0, emptyList(), "Enter a formula")
+    val elements = try { parseFormulaForCalc(formula) }
+    catch (e: Exception) { return CalcResult(0.0, emptyList(), "Invalid formula syntax") }
+    if (elements.isEmpty()) return CalcResult(0.0, emptyList(), "Could not parse formula")
+    val unknown = elements.keys.filter { it !in MOLAR_WEIGHTS }
+    if (unknown.isNotEmpty()) return CalcResult(0.0, emptyList(), "Unknown element(s): ${unknown.joinToString(", ")}")
+    var total = 0.0
+    val breakdown = elements.map { (el, cnt) ->
+        val contrib = MOLAR_WEIGHTS[el]!! * cnt
+        total += contrib
+        Triple(el, cnt, contrib)
+    }.sortedByDescending { it.third }
+    return CalcResult(total, breakdown)
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun MolarMassCalculator() {
+    var input by remember { mutableStateOf("") }
+    val result by remember(input) {
+        mutableStateOf(
+            if (input.isBlank()) null else calculateMolarMass(
+                input
+            )
+        )
+    }
+    val focusManager = LocalFocusManager.current
+
+    val examples = listOf("H₂O", "C₆H₁₂O₆", "NaCl", "H₂SO₄", "Ca(OH)₂", "C₂H₅OH", "Fe₂O₃")
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        var showInfo by remember { mutableStateOf(false) }
+        if (showInfo) {
+            InfoDialog(
+                title = "Molar Mass Calculator",
+                entries = listOf(
+                    "What is molar mass?" to "Molar mass is the mass of one mole (6.022 × 10²³ particles) of a substance, expressed in grams per mole (g/mol). It equals the sum of atomic weights of all atoms in the formula.",
+                    "How to enter a formula" to "Type the molecular formula using standard element symbols with numbers for atom counts. Parentheses are supported for groups, e.g. Ca(OH)2 or Al2(SO4)3.",
+                    "Case sensitivity" to "Element symbols are case-sensitive! 'Co' is cobalt, 'CO' is carbon monoxide. Always capitalize only the first letter of each element symbol.",
+                    "Atomic weights" to "Atomic weights used here are the standard values from IUPAC, based on the natural isotopic abundance of each element.",
+                    "Elemental breakdown" to "The breakdown table shows each element's contribution to the total molar mass, both as an absolute value (g/mol) and as a percentage by mass.",
+                ),
+                onDismiss = { showInfo = false }
+            )
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Molar Mass Calculator", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
+                Icon(Icons.Default.Info, contentDescription = "Info", tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
+            }
+        }
+
+        OutlinedTextField(
+            value = input,
+            onValueChange = { input = it },
+            label = { Text("Molecular Formula") },
+            placeholder = { Text("e.g. H2O, Ca(OH)2, C6H12O6") },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(14.dp),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.None,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+            trailingIcon = {
+                if (input.isNotBlank()) {
+                    IconButton(onClick = { input = "" }) {
+                        Icon(Icons.Default.Clear, null, modifier = Modifier.size(18.dp))
+                    }
+                }
+            }
+        )
+
+        Text(
+            "EXAMPLES",
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 0.8.sp,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+        )
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            examples.forEach { ex ->
+                val plainEx = ex.map { c ->
+                    when (c) {
+                        '₀' -> '0'; '₁' -> '1'; '₂' -> '2'; '₃' -> '3'; '₄' -> '4'
+                        '₅' -> '5'; '₆' -> '6'; '₇' -> '7'; '₈' -> '8'; '₉' -> '9'
+                        else -> c
+                    }
+                }.joinToString("")
+                val isActive = input == plainEx
+                FilterChip(
+                    selected = isActive,
+                    onClick = { input = plainEx; focusManager.clearFocus() },
+                    label = {
+                        Text(
+                            ex,
+                            style = MaterialTheme.typography.labelMedium,
+                            fontFamily = FontFamily.Monospace
+                        )
+                    }
+                )
+            }
+        }
+
+        if (result != null) {
+            if (result!!.error != null) {
+                Card(
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer.copy(
+                            0.4f
+                        )
+                    )
+                ) {
+                    Text(
+                        result!!.error!!,
+                        modifier = Modifier.padding(12.dp),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            } else {
+                Card(shape = RoundedCornerShape(16.dp)) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(14.dp)
+                    ) {
+
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                                Text("MOLAR MASS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                                Text(toSubscriptFormula(input), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                            }
+                            Surface(
+                                shape = RoundedCornerShape(10.dp),
+                                color = MaterialTheme.colorScheme.primary.copy(0.1f),
+                                border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary.copy(0.4f))
+                            ) {
                                 Text(
-                                    statement,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    lineHeight = 18.sp
+                                    "${"%.4f".format(result!!.molarMass)} g/mol",
+                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    fontFamily = FontFamily.Monospace,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                        }
+
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.12f))
+
+                        Text(
+                            "ELEMENTAL BREAKDOWN",
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 0.8.sp,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+                        )
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                "Element",
+                                modifier = Modifier.weight(1.2f),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                            )
+                            Text(
+                                "Count",
+                                modifier = Modifier.weight(1f),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                            )
+                            Text(
+                                "g/mol",
+                                modifier = Modifier.weight(1.3f),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                            )
+                            Text(
+                                "%",
+                                modifier = Modifier.weight(0.7f),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurface.copy(0.4f),
+                                textAlign = androidx.compose.ui.text.style.TextAlign.End
+                            )
+                        }
+
+                        result!!.breakdown.forEach { (el, cnt, contrib) ->
+                            val pct = (contrib / result!!.molarMass * 100).toFloat()
+                            Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Row(
+                                        modifier = Modifier.weight(1.2f),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                    ) {
+                                        Box(
+                                            modifier = Modifier.size(26.dp).background(
+                                                MaterialTheme.colorScheme.primary.copy(0.1f),
+                                                RoundedCornerShape(6.dp)
+                                            ),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                el,
+                                                style = MaterialTheme.typography.labelSmall,
+                                                fontWeight = FontWeight.Bold,
+                                                color = MaterialTheme.colorScheme.primary,
+                                                fontSize = 11.sp
+                                            )
+                                        }
+                                    }
+                                    Text(
+                                        "×$cnt",
+                                        modifier = Modifier.weight(1f),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        fontFamily = FontFamily.Monospace,
+                                        color = MaterialTheme.colorScheme.onSurface.copy(0.7f)
+                                    )
+                                    Text(
+                                        "%.3f".format(contrib),
+                                        modifier = Modifier.weight(1.3f),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        fontFamily = FontFamily.Monospace
+                                    )
+                                    Text(
+                                        "%.1f%%".format(pct),
+                                        modifier = Modifier.weight(0.7f),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        fontFamily = FontFamily.Monospace,
+                                        color = MaterialTheme.colorScheme.primary,
+                                        textAlign = androidx.compose.ui.text.style.TextAlign.End
+                                    )
+                                }
+                                Box(
+                                    modifier = Modifier.fillMaxWidth().height(4.dp)
+                                        .clip(RoundedCornerShape(2.dp))
+                                        .background(MaterialTheme.colorScheme.outline.copy(0.1f))
+                                ) {
+                                    Box(
+                                        modifier = Modifier.fillMaxHeight().fillMaxWidth(pct / 100f)
+                                            .clip(RoundedCornerShape(2.dp))
+                                            .background(MaterialTheme.colorScheme.primary.copy(0.65f))
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TOOL 3 : OXIDATION STATE FINDER
+// ─────────────────────────────────────────────────────────────────────────────
+
+private val GROUP1  = setOf("Li","Na","K","Rb","Cs","Fr")
+private val GROUP2  = setOf("Be","Mg","Ca","Sr","Ba","Ra")
+
+private data class OsResult(
+    val states: List<Pair<String, String>> = emptyList(),
+    val note: String? = null,
+    val error: String? = null
+)
+private fun osSign(v: Int) = if (v > 0) "+$v" else "$v"
+private fun gcdOs(a: Long, b: Long): Long = if (b == 0L) a else gcdOs(b, a % b)
+
+private fun findOxidationStates(formula: String, chargeIn: Int): OsResult {
+    if (formula.isBlank()) return OsResult(error = "Enter a formula")
+    val elements = try { parseFormulaForCalc(formula) }
+    catch (e: Exception) { return OsResult(error = "Invalid formula syntax") }
+    if (elements.isEmpty()) return OsResult(error = "Could not parse formula")
+
+    val oCount = elements["O"] ?: 0
+    val hCount = elements["H"] ?: 0
+    val fCount = elements["F"] ?: 0
+    val hasO = oCount > 0
+    val hasH = hCount > 0
+    val hasF = fCount > 0
+
+    // ── Free / monoatomic ────────────────────────────────────────────────────
+    if (elements.size == 1) {
+        val (el, cnt) = elements.entries.first()
+        return if (cnt == 1) OsResult(states = listOf(el to osSign(chargeIn)))
+        else OsResult(states = listOf(el to "0"), note = "Free element. Oxidation state is 0")
+    }
+
+    val alkaliEl   = elements.keys.firstOrNull { it in GROUP1 }
+    val alkalineEl = elements.keys.firstOrNull { it in GROUP2 }
+
+    // ── OF₂ / higher oxygen fluorides ────────────────────────────────────────
+    if (elements.size == 2 && hasO && hasF) {
+        val oOs = (chargeIn + fCount) / oCount
+        return OsResult(
+            states = listOf("F" to "-1", "O" to osSign(oOs)),
+            note = "Oxygen fluoride : F is always -1, so O = ${osSign(oOs)}"
+        )
+    }
+
+    // ── Superoxide  M(O₂)  e.g. KO₂, NaO₂  →  O = -½ ───────────────────────
+    if (alkaliEl != null && elements.size == 2 && hasO) {
+        val mCnt = elements[alkaliEl]!!
+        if (oCount == mCnt * 2) {
+            val metalSum = mCnt * 1
+            if (chargeIn - metalSum == -mCnt) {
+                return OsResult(
+                    states = listOf(alkaliEl to "+1", "O" to "-\u00BD"),
+                    note = "Superoxide : O₂⁻ unit, each O has oxidation state = -½"
+                )
+            }
+        }
+    }
+
+    // ── Ozonide  M(O₃)  e.g. KO₃  →  O = -⅓ ───────────────────────────────
+    if (alkaliEl != null && elements.size == 2 && hasO) {
+        val mCnt = elements[alkaliEl]!!
+        if (oCount == mCnt * 3 && chargeIn - mCnt == -mCnt) {
+            return OsResult(
+                states = listOf(alkaliEl to "+1", "O" to "-\u2153"),
+                note = "Ozonide : O₃⁻ unit, each O has oxidation state = -⅓"
+            )
+        }
+    }
+
+    // ── Peroxide  (O = -1) ────────────────────────────────────────────────────
+    val isPeroxide: Boolean = when {
+        // H₂O₂
+        elements.size == 2 && hasH && hasO && hCount == 2 && oCount == 2 && chargeIn == 0 -> true
+        // Alkali M₂O₂  (Na₂O₂: 2 Na, 2 O, ratio 1:1)
+        alkaliEl != null && elements.size == 2 && hasO &&
+                oCount == elements[alkaliEl]!! && chargeIn == 0 -> true
+        // Alkaline earth MO₂  (BaO₂: 1 Ba, 2 O)
+        alkalineEl != null && elements.size == 2 && hasO &&
+                oCount == elements[alkalineEl]!! * 2 && chargeIn == 0 -> true
+        // Peroxide anion O₂²⁻
+        elements.size == 1 && hasO && oCount == 2 && chargeIn == -2 -> true
+        // Generic: compound with exactly H and O where H:O = 1:1 and charge = 0 (like peroxy acids fragment)
+        else -> false
+    }
+
+    if (isPeroxide) {
+        val res = mutableListOf("O" to "-1")
+        for ((el, cnt) in elements) {
+            if (el == "O") continue
+            val fixedOs = when {
+                el in GROUP1  -> 1
+                el in GROUP2  -> 2
+                el == "H"     -> 1
+                el == "F"     -> -1
+                else          -> null
+            }
+            if (fixedOs != null) {
+                res.add(el to osSign(fixedOs))
+            } else {
+                val knownSumLocal = elements.entries
+                    .filter { it.key != el }
+                    .sumOf { (e, c) ->
+                        when {
+                            e == "O"      -> -1 * c
+                            e in GROUP1   ->  1 * c
+                            e in GROUP2   ->  2 * c
+                            e == "H"      ->  1 * c
+                            else          ->  0
+                        }
+                    }
+                val rem = chargeIn - knownSumLocal
+                res.add(el to if (rem % cnt == 0) osSign(rem / cnt) else "$rem/$cnt")
+            }
+        }
+        return OsResult(states = res, note = "Peroxide compound : O has oxidation state = -1")
+    }
+
+    // ── Metal hydrides  (H = -1) ──────────────────────────────────────────────
+    // Metal hydride: contains H, no O or F, and ALL non-H elements are metals
+    // with fixed oxidation states. This covers binary (NaH), ternary (LiAlH4) and complex hydrides.
+    val metalHydrideMetals = setOf(
+        "Li","Na","K","Rb","Cs","Fr",  // Group 1
+        "Be","Mg","Ca","Sr","Ba","Ra",  // Group 2
+        "Al","Ga","In","Tl",             // Group 13 metals
+        "B"                               // boron hydrides (BH4- etc.)
+    )
+    val fixedOsForMetal: (String) -> Int? = { el ->
+        when {
+            el in GROUP1 -> 1
+            el in GROUP2 -> 2
+            el == "Al" || el == "Ga" || el == "In" || el == "Tl" || el == "B" -> 3
+            else -> null
+        }
+    }
+    val isMetalHydride = hasH && !hasO && !hasF &&
+            elements.keys.filter { it != "H" }.all { it in metalHydrideMetals }
+
+    if (isMetalHydride) {
+        val res = mutableListOf("H" to "-1")
+        for ((el, _) in elements) {
+            if (el == "H") continue
+            val metalOs = fixedOsForMetal(el)
+            res.add(el to if (metalOs != null) osSign(metalOs) else "?")
+        }
+        val sum = elements.entries.sumOf { (el, cnt) ->
+            when (el) {
+                "H" -> -1 * cnt
+                else -> (fixedOsForMetal(el) ?: 0) * cnt
+            }
+        }
+        return OsResult(
+            states = res,
+            note = "Metal hydride : H has oxidation state = -1" + if (sum != chargeIn) " (sum = $sum, charge = $chargeIn , check formula)" else ""
+        )
+    }
+
+    val fixed = mutableMapOf<String, Int>()
+    var knownSum = 0
+    val unknowns = mutableListOf<String>()
+
+    for ((el, cnt) in elements) {
+        val os: Int? = when (el) {
+            "F"                                     -> -1
+            in GROUP1                               ->  1
+            in GROUP2                               ->  2
+            "Al","Ga","Sc","Y","La","Lu"            ->  3
+            "Zn","Cd"                               ->  2
+            "Ag"                                    ->  1
+            "In","Tl"                               ->  3
+            // Halogen electronegativity order: F > Cl > Br > I
+            // A halogen is fixed at -1 only when NO more electronegative halogen is present.
+            // If a more electronegative halogen exists, this one becomes the central atom
+            // and is solved algebraically (e.g. ICl3: I=+3,Cl=-1; ClF3: Cl=+3,F=-1)
+            "Cl" -> if (hasF) null else -1
+            "Br" -> if (hasF || elements.containsKey("Cl")) null else -1
+            "I"  -> if (hasF || elements.containsKey("Cl") || elements.containsKey("Br")) null else -1
+            "O"                                     -> -2  // default; special cases above
+            "H"                                     ->  1  // default; hydrides above
+            else                                    ->  null
+        }
+        if (os != null) { fixed[el] = os; knownSum += os * cnt }
+        else unknowns.add(el)
+    }
+
+    return when (unknowns.size) {
+        0 -> {
+            val states = fixed.entries.map { it.key to osSign(it.value) }
+            if (knownSum != chargeIn)
+                OsResult(states = states,
+                    note = "Sum of known oxidation state ($knownSum) ≠ overall charge ($chargeIn). " +
+                            "Possible mixed-valence, peroxo group, or formula error.")
+            else OsResult(states = states)
+        }
+        1 -> {
+            val unknown = unknowns[0]
+            val cnt = elements[unknown]!!
+            val rem = chargeIn - knownSum
+            if (rem % cnt != 0) {
+                val g = gcdOs(Math.abs(rem.toLong()), Math.abs(cnt.toLong())).toInt()
+                val fracStr = "${rem / g}/${cnt / g}"
+                val states = fixed.entries.map { it.key to osSign(it.value) } + listOf(unknown to fracStr)
+                OsResult(states = states,
+                    note = "Non-integer oxidation state for $unknown ($fracStr). It may indicate mixed-valence or a special compound.")
+            } else {
+                fixed[unknown] = rem / cnt
+                OsResult(states = fixed.entries.map { it.key to osSign(it.value) })
+            }
+        }
+        else -> {
+            val states = fixed.entries.map { it.key to osSign(it.value) } +
+                    unknowns.map { it to "?" }
+            OsResult(states = states,
+                error = "Cannot solve! multiple unknown elements: ${unknowns.joinToString(", ")}. " +
+                        "For transition metal complexes, use the charge field to provide additional constraints.")
+        }
+    }
+}
+
+@Composable
+fun OxidationStateFinder() {
+    var formula by remember { mutableStateOf("") }
+    var chargeInput by remember { mutableStateOf("0") }
+    var result by remember { mutableStateOf<OsResult?>(null) }
+    val focusManager = LocalFocusManager.current
+
+    val examples = listOf("KMnO4", "H2SO4", "Fe2O3", "Cr2O7" to -2, "NaCl" to 0, "HNO3" to 0)
+
+    var showInfo by remember { mutableStateOf(false) }
+    if (showInfo) {
+        InfoDialog(
+            title = "Oxidation State Finder",
+            entries = listOf(
+                "What is an oxidation state?" to "A number assigned to an atom representing its degree of oxidation. Positive = electrons lost, negative = electrons gained. Used to track electron transfer in redox reactions.",
+                "Rules applied" to "F is always -1. Group 1 = +1, Group 2 = +2. Al, Ga, In, Sc, Y, La, Lu = +3. Zn, Cd = +2. Ag = +1. O defaults to -2 (except peroxides/superoxides). H defaults to +1 (except metal hydrides). Halogens (Cl, Br, I) default to -1 unless a more electronegative halogen is present.",
+                "Halogen priority" to "Electronegativity order: F > Cl > Br > I. In interhalogen compounds, the less electronegative halogen takes a positive OS. Example: ICl3 → I=+3, Cl=-1. ClF3 → Cl=+3, F=-1.",
+                "Special cases handled" to "Peroxides (O=-1): H2O2, Na2O2, BaO2. Superoxides (O=-½): KO2, NaO2. Ozonides (O=-⅓): KO3. Metal hydrides (H=-1): NaH, LiAlH4, NaBH4, CaH2.",
+                "Overall charge" to "For neutral compounds enter 0. For polyatomic ions enter the ion charge. Examples: SO4²⁻ → charge -2. NH4⁺ → charge +1. MnO4⁻ → charge -1.",
+                "Organic compounds" to "For single-carbon compounds (CH4, CO2, CCl4) the result is exact. For multi-carbon compounds, the app calculates an average oxidation state across all carbons, which is chemically meaningful for comparisons but does not reflect individual carbon environments. Ethanol (C2H5OH) has carbons at -3 and -1, but the app returns -2 as the average.",
+                "Limitations" to "Compounds with 2 or more transition metals or unknown elements cannot be solved without additional information. Mixed-valence compounds like Fe3O4 (Fe²⁺ and Fe³⁺ coexist) return a fractional average with a warning. For these, enter the ion charge separately if known.",
+                "Example" to "KMnO4 (charge 0): K=+1 (fixed), O=-2 (fixed, ×4). Mn = 0 − (+1) − 4(−2) = +7."
+            ),
+            onDismiss = { showInfo = false }
+        )
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("Oxidation State Finder", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
+                Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
+            }
+        }
+
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            OutlinedTextField(
+                value = formula,
+                onValueChange = { formula = it; result = null },
+                label = { Text("Formula") },
+                placeholder = { Text("e.g. KMnO4") },
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(14.dp),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+            )
+            OutlinedTextField(
+                value = chargeInput,
+                onValueChange = { chargeInput = it; result = null },
+                label = { Text("Charge") },
+                placeholder = { Text("0") },
+                modifier = Modifier.width(90.dp),
+                shape = RoundedCornerShape(14.dp),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = {
+                    focusManager.clearFocus()
+                    result = findOxidationStates(formula, chargeInput.toIntOrNull() ?: 0)
+                })
+            )
+        }
+
+        Text("EXAMPLES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+        @OptIn(ExperimentalLayoutApi::class)
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            listOf("KMnO4" to 0, "H2SO4" to 0, "Fe2O3" to 0, "Cr2O7" to -2, "NH4" to 1, "HNO3" to 0).forEach { (f, c) ->
+                FilterChip(
+                    selected = formula == f && (chargeInput.toIntOrNull() ?: 0) == c,
+                    onClick = { formula = f; chargeInput = c.toString(); focusManager.clearFocus(); result = findOxidationStates(f, c) },
+                    label = { Text(toSubscriptFormula(f) + if (c != 0) " (${if (c > 0) "+$c" else "$c"})" else "", style = MaterialTheme.typography.labelMedium) }
+                )
+            }
+        }
+
+        Button(
+            onClick = {
+                focusManager.clearFocus()
+                result = findOxidationStates(formula, chargeInput.toIntOrNull() ?: 0)
+            },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            enabled = formula.isNotBlank()
+        ) {
+            Text("Find Oxidation States")
+        }
+
+        result?.let { res ->
+            if (res.error != null) {
+                Card(shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer.copy(0.4f))) {
+                    Text(res.error, modifier = Modifier.padding(14.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                }
+            } else {
+                Card(shape = RoundedCornerShape(16.dp)) {
+                    Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                            Text("OXIDATION STATES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                            Text(
+                                toSubscriptFormula(formula) + if ((chargeInput.toIntOrNull() ?: 0) != 0) " (${if ((chargeInput.toIntOrNull() ?: 0) > 0) "+${chargeInput}" else chargeInput})" else "",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+                            )
+                        }
+
+                        res.states.forEach { (el, os) ->
+                            val osColor = when {
+                                os == "?" -> MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                                os.startsWith("+") && os != "+0" -> Color(0xFF3B82F6)
+                                os.startsWith("-") -> Color(0xFFEF4444)
+                                else -> MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                            }
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                            ) {
+                                Box(
+                                    modifier = Modifier.size(36.dp).background(osColor.copy(0.1f), RoundedCornerShape(8.dp)),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(el, fontWeight = FontWeight.Bold, color = osColor, style = MaterialTheme.typography.bodyMedium)
+                                }
+                                Text(el, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+                                Surface(shape = RoundedCornerShape(8.dp), color = osColor.copy(0.1f), border = BorderStroke(1.dp, osColor.copy(0.4f))) {
+                                    Text(
+                                        os,
+                                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 5.dp),
+                                        style = MaterialTheme.typography.titleSmall,
+                                        fontWeight = FontWeight.Bold,
+                                        fontFamily = FontFamily.Monospace,
+                                        color = osColor
+                                    )
+                                }
+                            }
+                        }
+
+                        if (res.note != null) {
+                            HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.Top) {
+                                Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.primary.copy(0.6f), modifier = Modifier.size(14.dp))
+                                Text(res.note, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f), lineHeight = 17.sp)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TOOL 4 : SMILES VISUALIZER
+// ─────────────────────────────────────────────────────────────────────────────
+
+@Composable
+fun SmilesVisualizer(isDark: Boolean) {
+    var input by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf<String?>(null) }
+    var cidResult by remember { mutableStateOf<Long?>(null) }
+    var compoundName by remember { mutableStateOf<String?>(null) }
+    var sdfData by remember { mutableStateOf<String?>(null) }
+    var activeTab by remember { mutableStateOf(0) } // 0=2D, 1=3D
+    val scope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
+
+    val examples = listOf(
+        "Aspirin"   to "CC(=O)Oc1ccccc1C(=O)O",
+        "Caffeine"  to "CN1C=NC2=C1C(=O)N(C(=O)N2C)C",
+        "Glucose"   to "C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O)O",
+        "Ethanol"   to "CCO",
+        "Benzene"   to "c1ccccc1"
+    )
+
+    var showInfo by remember { mutableStateOf(false) }
+    if (showInfo) {
+        InfoDialog(
+            title = "SMILES Visualizer",
+            entries = listOf(
+                "What is SMILES?" to "Simplified Molecular Input Line Entry System. A notation that encodes molecular structure as a text string using atom symbols and bond characters.",
+                "How to use" to "Paste any valid SMILES string and tap Visualize. The app looks up the compound on PubChem and shows its 2D structure and 3D model.",
+                "Where to get SMILES" to "PubChem, ChemDraw, SciFinder, and most chemistry databases provide SMILES strings for compounds. You can also find them in published papers.",
+                "Aromatic notation" to "Lowercase letters (c, n, o) denote aromatic atoms. For example, benzene is 'c1ccccc1' and pyridine is 'c1ccncc1'.",
+                "Chirality" to "@  and @@ in SMILES denote stereocenters. The visualizer handles both standard and isomeric SMILES.",
+                "Limitations" to "Only SMILES strings recognized by PubChem can be visualized. Novel or hypothetical molecules not in PubChem will return no result."
+            ),
+            onDismiss = { showInfo = false }
+        )
+    }
+
+    fun visualize() {
+        val smiles = input.trim()
+        if (smiles.isBlank()) return
+        focusManager.clearFocus()
+        scope.launch {
+            isLoading = true
+            error = null
+            cidResult = null
+            compoundName = null
+            sdfData = null
+            try {
+                val body = okhttp3.FormBody.Builder().add("smiles", smiles).build()
+                val request = okhttp3.Request.Builder()
+                    .url("https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/cids/JSON")
+                    .post(body)
+                    .build()
+                val response = withContext(Dispatchers.IO) {
+                    com.furthersecrets.chemsearch.data.ApiClient.rawHttp.newCall(request).execute()
+                }
+                val bodyStr = response.body?.string()
+                if (!response.isSuccessful || bodyStr == null) {
+                    error = "Compound not found on PubChem. Check your SMILES string."
+                    return@launch
+                }
+                val json = com.google.gson.Gson().fromJson(bodyStr, com.google.gson.JsonObject::class.java)
+                val cidElement = json
+                    ?.getAsJsonObject("IdentifierList")
+                    ?.getAsJsonArray("CID")
+                    ?.firstOrNull()
+                if (cidElement == null) {
+                    error = "No compound found for this SMILES string."
+                    return@launch
+                }
+                val cid = cidElement.asJsonPrimitive.asLong
+                cidResult = cid
+                val syns = withContext(Dispatchers.IO) {
+                    runCatching { com.furthersecrets.chemsearch.data.ApiClient.pubChem.getSynonyms(cid) }.getOrNull()
+                }
+                compoundName = syns?.informationList?.information?.firstOrNull()?.synonym?.firstOrNull()
+                val sdf = withContext(Dispatchers.IO) {
+                    runCatching { com.furthersecrets.chemsearch.data.ApiClient.pubChem.getSdf(cid).string() }.getOrNull()
+                }
+                sdfData = sdf
+            } catch (e: Exception) {
+                error = "Error: ${e.message}"
+            } finally {
+                isLoading = false
+            }
+        }
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("SMILES Visualizer", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
+                Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
+            }
+        }
+
+        OutlinedTextField(
+            value = input,
+            onValueChange = { input = it; cidResult = null; error = null },
+            label = { Text("SMILES String") },
+            placeholder = { Text("e.g. CCO") },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(14.dp),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { visualize() }),
+            trailingIcon = {
+                if (input.isNotBlank()) {
+                    IconButton(onClick = { input = ""; cidResult = null; error = null }) {
+                        Icon(Icons.Default.Close, null, modifier = Modifier.size(18.dp))
+                    }
+                }
+            }
+        )
+
+        Text("EXAMPLES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+        @OptIn(ExperimentalLayoutApi::class)
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            examples.forEach { (name, smiles) ->
+                FilterChip(
+                    selected = input == smiles,
+                    onClick = { input = smiles; cidResult = null; error = null },
+                    label = { Text(name, style = MaterialTheme.typography.labelMedium) }
+                )
+            }
+        }
+
+        Button(
+            onClick = { visualize() },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            enabled = input.isNotBlank() && !isLoading
+        ) {
+            if (isLoading) {
+                CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = Color.White)
+                Spacer(Modifier.width(8.dp))
+            }
+            Text(if (isLoading) "Looking up..." else "Visualize")
+        }
+
+        if (error != null) {
+            Card(shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer.copy(0.4f))) {
+                Text(error!!, modifier = Modifier.padding(14.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+            }
+        }
+
+        if (cidResult != null) {
+            Card(shape = RoundedCornerShape(14.dp)) {
+                Row(
+                    modifier = Modifier.padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Box(
+                        modifier = Modifier.size(40.dp).background(MaterialTheme.colorScheme.primary.copy(0.1f), RoundedCornerShape(10.dp)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(Icons.Default.Science, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(22.dp))
+                    }
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(compoundName?.replaceFirstChar { it.uppercase() } ?: "CID $cidResult", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+                        Text("PubChem CID: $cidResult", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f), fontFamily = FontFamily.Monospace)
+                    }
+                }
+            }
+
+            Card(shape = RoundedCornerShape(16.dp)) {
+                Column {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Surface(
+                            shape = RoundedCornerShape(50),
+                            color = MaterialTheme.colorScheme.outline.copy(0.12f),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Row(modifier = Modifier.padding(4.dp)) {
+                                listOf("2D Structure", "3D Model").forEachIndexed { idx, label ->
+                                    Surface(
+                                        onClick = { activeTab = idx },
+                                        shape = RoundedCornerShape(50),
+                                        color = if (activeTab == idx) MaterialTheme.colorScheme.primary else Color.Transparent,
+                                        modifier = Modifier.weight(1f)
+                                    ) {
+                                        Text(
+                                            label,
+                                            modifier = Modifier.padding(vertical = 8.dp),
+                                            color = if (activeTab == idx) Color.White else MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                                            style = MaterialTheme.typography.labelMedium,
+                                            fontWeight = FontWeight.SemiBold,
+                                            textAlign = TextAlign.Center
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Box(
+                        modifier = Modifier.fillMaxWidth().height(300.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        when (activeTab) {
+                            0 -> AsyncImage(
+                                model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/$cidResult/PNG?image_size=large",
+                                contentDescription = "2D Structure",
+                                modifier = Modifier.fillMaxSize().padding(12.dp),
+                                contentScale = ContentScale.Fit
+                            )
+                            1 -> if (sdfData != null) {
+                                Viewer3D(cid = cidResult ?: -1L, sdfData = sdfData!!, isDark = isDark)
+                            } else {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                    Icon(Icons.Default.VisibilityOff, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.3f), modifier = Modifier.size(28.dp))
+                                    Text("3D model not available", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TOOL 5 : REACTION BALANCER
+// ─────────────────────────────────────────────────────────────────────────────
+
+private data class Frac(val num: Long, val den: Long) {
+    companion object {
+        fun of(n: Long) = Frac(n, 1L)
+        fun zero() = Frac(0L, 1L)
+        fun gcd(a: Long, b: Long): Long = if (b == 0L) a else gcd(b, a % b)
+        fun lcm(a: Long, b: Long): Long = a / gcd(a, b) * b
+    }
+    fun isZero() = num == 0L
+    operator fun unaryMinus() = Frac(-num, den)
+    operator fun plus(o: Frac)  = Frac(num * o.den + o.num * den, den * o.den).r()
+    operator fun minus(o: Frac) = Frac(num * o.den - o.num * den, den * o.den).r()
+    operator fun times(o: Frac) = Frac(num * o.num, den * o.den).r()
+    operator fun div(o: Frac): Frac {
+        if (o.num == 0L) throw ArithmeticException("div by zero")
+        return Frac(num * o.den, den * o.num).r()
+    }
+    private fun r(): Frac {
+        if (num == 0L) return Frac(0L, 1L)
+        val g = gcd(Math.abs(num), Math.abs(den))
+        return if (den < 0) Frac(-num / g, -den / g) else Frac(num / g, den / g)
+    }
+}
+
+private data class BalancerResult(
+    val reactants: List<Pair<String, Int>> = emptyList(),
+    val products:  List<Pair<String, Int>> = emptyList(),
+    val error: String? = null
+)
+
+private fun stripCoeff(s: String): String {
+    var i = 0; while (i < s.length && s[i].isDigit()) i++; return s.substring(i)
+}
+
+private fun tryBalance(matrix: Array<Array<Frac>>, m: Int, n: Int, freeIdx: Int): List<Int>? {
+    val nv = n - 1
+    val colOrder = (0 until n).filter { it != freeIdx }
+    val aug = Array(m) { row ->
+        Array(nv + 1) { col ->
+            if (col < nv) matrix[row][colOrder[col]] else -matrix[row][freeIdx]
+        }
+    }
+    var pr = 0
+    val pivotForCol = IntArray(nv) { -1 }
+    for (col in 0 until nv) {
+        var found = -1
+        for (row in pr until m) { if (!aug[row][col].isZero()) { found = row; break } }
+        if (found == -1) return null
+        if (found != pr) { val t = aug[pr]; aug[pr] = aug[found]; aug[found] = t }
+        val pv = aug[pr][col]
+        if (pv.isZero()) return null
+        for (k in 0..nv) aug[pr][k] = aug[pr][k] / pv
+        for (row in 0 until m) {
+            if (row != pr && !aug[row][col].isZero()) {
+                val f = aug[row][col]
+                for (k in 0..nv) aug[row][k] = aug[row][k] - f * aug[pr][k]
+            }
+        }
+        pivotForCol[col] = pr; pr++
+    }
+    val solNonFree = List(nv) { col ->
+        val r = pivotForCol[col]; if (r < 0) return null; aug[r][nv]
+    }
+    val full = MutableList(n) { Frac.zero() }
+    full[freeIdx] = Frac.of(1)
+    colOrder.forEachIndexed { i, oc -> full[oc] = solNonFree[i] }
+    if (full.any { it.num < 0 }) return null
+    val lcm = full.map { it.den }.fold(1L) { acc, d -> Frac.lcm(acc, d) }
+    val scaled = full.map { (it * Frac.of(lcm)).num }
+    if (scaled.any { it <= 0 }) return null
+    val g = scaled.map { Math.abs(it) }.fold(0L) { acc, v -> Frac.gcd(acc, v) }
+    if (g == 0L) return null
+    return scaled.map { (it / g).toInt() }
+}
+
+private fun balanceReaction(equation: String): BalancerResult {
+    val parts = equation.split(Regex("->|=>|→|⟶"))
+    if (parts.size != 2) return BalancerResult(error = "Use '->' to separate reactants and products.\nExample: H2 + O2 -> H2O")
+    val rStr = parts[0].split("+").map { it.trim() }.filter { it.isNotEmpty() }
+    val pStr = parts[1].split("+").map { it.trim() }.filter { it.isNotEmpty() }
+    if (rStr.isEmpty()) return BalancerResult(error = "No reactants found")
+    if (pStr.isEmpty()) return BalancerResult(error = "No products found")
+    val rFormulas = rStr.map { stripCoeff(it) }
+    val pFormulas = pStr.map { stripCoeff(it) }
+    val all = rFormulas + pFormulas
+    val n = all.size
+    val parsed = all.mapIndexed { i, f ->
+        try { parseFormulaForCalc(f) } catch (e: Exception) {
+            return BalancerResult(error = "Cannot parse: ${all[i]}")
+        }
+    }
+    val elements = parsed.flatMap { it.keys }.distinct().sorted()
+    val m = elements.size
+    if (m == 0) return BalancerResult(error = "No elements found")
+    val matrix = Array(m) { row ->
+        val el = elements[row]
+        Array(n) { col ->
+            val cnt = parsed[col][el] ?: 0
+            val sign = if (col >= rFormulas.size) -1 else 1
+            Frac.of(cnt.toLong() * sign)
+        }
+    }
+    for (freeIdx in n - 1 downTo 0) {
+        val sol = tryBalance(matrix, m, n, freeIdx) ?: continue
+        if (sol.all { it > 0 }) {
+            return BalancerResult(
+                reactants = rFormulas.mapIndexed { i, f -> f to sol[i] },
+                products  = pFormulas.mapIndexed { i, f -> f to sol[rFormulas.size + i] }
+            )
+        }
+    }
+    return BalancerResult(error = "Could not balance this equation. Check that all elements appear on both sides and the equation is valid.")
+}
+
+@Composable
+fun ReactionBalancer() {
+    var input by remember { mutableStateOf("") }
+    var result by remember { mutableStateOf<BalancerResult?>(null) }
+    val focusManager = LocalFocusManager.current
+
+    val examples = listOf(
+        "H2 + O2 -> H2O",
+        "Fe + O2 -> Fe2O3",
+        "C3H8 + O2 -> CO2 + H2O",
+        "Al + HCl -> AlCl3 + H2",
+        "KMnO4 + HCl -> KCl + MnCl2 + H2O + Cl2"
+    )
+
+    var showInfo by remember { mutableStateOf(false) }
+    if (showInfo) {
+        InfoDialog(
+            title = "Reaction Balancer",
+            entries = listOf(
+                "How to enter equations" to "Type reactants on the left and products on the right, separated by '->'. Separate compounds with '+'. Example: H2 + O2 -> H2O",
+                "Coefficients" to "Do not enter coefficients. The app determines them. H2 + O2 -> H2O, not 2H2 + O2 -> 2H2O.",
+                "How it works" to "The balancer builds a matrix of element counts and solves the system using Gaussian elimination with exact rational arithmetic to find integer coefficients.",
+                "Supported formulas" to "Standard molecular formulas with parentheses are supported, e.g. Ca(OH)2, Al2(SO4)3.",
+                "Limitations" to "Equations that cannot be balanced by integer stoichiometry (e.g. some redox reactions requiring half-reaction method) may not solve correctly.",
+                "Verification" to "The element count table below the result shows that atoms are conserved. You can verify the balancing manually."
+            ),
+            onDismiss = { showInfo = false }
+        )
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("Reaction Balancer", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
+                Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
+            }
+        }
+
+        OutlinedTextField(
+            value = input,
+            onValueChange = { input = it; result = null },
+            label = { Text("Chemical Equation") },
+            placeholder = { Text("H2 + O2 -> H2O") },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(14.dp),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = {
+                focusManager.clearFocus()
+                result = balanceReaction(input)
+            }),
+            trailingIcon = {
+                if (input.isNotBlank()) {
+                    IconButton(onClick = { input = ""; result = null }) {
+                        Icon(Icons.Default.Close, null, modifier = Modifier.size(18.dp))
+                    }
+                }
+            }
+        )
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                "Insert:",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+            )
+            listOf("+" to " + ", "->" to " -> ", "(" to "(", ")" to ")").forEach { (label, insert) ->
+                Surface(
+                    onClick = { input += insert; result = null },
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f))
+                ) {
+                    Text(
+                        label,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = FontFamily.Monospace,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+            Spacer(Modifier.weight(1f))
+            Surface(
+                onClick = { if (input.isNotEmpty()) { input = input.dropLast(1); result = null } },
+                shape = RoundedCornerShape(8.dp),
+                color = MaterialTheme.colorScheme.errorContainer.copy(0.3f),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(0.2f))
+            ) {
+                Icon(
+                    Icons.Default.Backspace,
+                    contentDescription = "Backspace",
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp).size(14.dp),
+                    tint = MaterialTheme.colorScheme.error.copy(0.7f)
+                )
+            }
+        }
+
+        Button(
+            onClick = { focusManager.clearFocus(); result = balanceReaction(input) },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            enabled = input.isNotBlank()
+        ) {
+            Icon(Icons.Default.SwapHoriz, null, modifier = Modifier.size(16.dp))
+            Spacer(Modifier.width(8.dp))
+            Text("Balance")
+        }
+
+        result?.let { res ->
+            if (res.error != null) {
+                Card(shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer.copy(0.4f))) {
+                    Text(res.error, modifier = Modifier.padding(14.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                }
+            } else {
+                Card(shape = RoundedCornerShape(16.dp)) {
+                    Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+
+                        Text("BALANCED EQUATION", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+
+                        @OptIn(ExperimentalLayoutApi::class)
+                        FlowRow(
+                            horizontalArrangement = Arrangement.spacedBy(6.dp),
+                            verticalArrangement = Arrangement.spacedBy(6.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            res.reactants.forEachIndexed { i, (formula, coeff) ->
+                                if (i > 0) {
+                                    Text("+", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.align(Alignment.CenterVertically))
+                                }
+                                Surface(
+                                    shape = RoundedCornerShape(10.dp),
+                                    color = MaterialTheme.colorScheme.primary.copy(0.08f),
+                                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.25f))
+                                ) {
+                                    Row(modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+                                        if (coeff > 1) {
+                                            Text("$coeff", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.ExtraBold, color = MaterialTheme.colorScheme.primary)
+                                        }
+                                        Text(toSubscriptFormula(formula), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, fontFamily = FontFamily.Monospace)
+                                    }
+                                }
+                            }
+
+                            Surface(
+                                shape = RoundedCornerShape(8.dp),
+                                color = MaterialTheme.colorScheme.outline.copy(0.1f),
+                                modifier = Modifier.align(Alignment.CenterVertically)
+                            ) {
+                                Icon(Icons.Default.ArrowForward, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.6f), modifier = Modifier.padding(6.dp).size(16.dp))
+                            }
+
+                            res.products.forEachIndexed { i, (formula, coeff) ->
+                                if (i > 0) {
+                                    Text("+", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.align(Alignment.CenterVertically))
+                                }
+                                Surface(
+                                    shape = RoundedCornerShape(10.dp),
+                                    color = MaterialTheme.colorScheme.secondary.copy(0.08f),
+                                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary.copy(0.25f))
+                                ) {
+                                    Row(modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+                                        if (coeff > 1) {
+                                            Text("$coeff", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.ExtraBold, color = MaterialTheme.colorScheme.secondary)
+                                        }
+                                        Text(toSubscriptFormula(formula), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, fontFamily = FontFamily.Monospace)
+                                    }
+                                }
+                            }
+                        }
+
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
+
+                        Text("ATOM COUNT VERIFICATION", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+
+                        val allElements = (res.reactants + res.products).flatMap { (f, _) ->
+                            try { parseFormulaForCalc(f).keys } catch (e: Exception) { emptySet() }
+                        }.distinct().sorted()
+
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Text("Element", modifier = Modifier.weight(1f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                            Text("Reactants", modifier = Modifier.weight(1f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary.copy(0.7f), textAlign = TextAlign.Center)
+                            Text("Products", modifier = Modifier.weight(1f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.secondary.copy(0.7f), textAlign = TextAlign.Center)
+                            Text("✓", modifier = Modifier.width(24.dp), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f), textAlign = TextAlign.Center)
+                        }
+
+                        allElements.forEach { el ->
+                            val rCount = res.reactants.sumOf { (f, c) ->
+                                try { (parseFormulaForCalc(f)[el] ?: 0) * c } catch (e: Exception) { 0 }
+                            }
+                            val pCount = res.products.sumOf { (f, c) ->
+                                try { (parseFormulaForCalc(f)[el] ?: 0) * c } catch (e: Exception) { 0 }
+                            }
+                            val balanced = rCount == pCount
+                            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                                Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                    Box(
+                                        modifier = Modifier.size(22.dp).background(MaterialTheme.colorScheme.primary.copy(0.1f), RoundedCornerShape(5.dp)),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(el, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, fontSize = 10.sp)
+                                    }
+                                }
+                                Text("$rCount", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, textAlign = TextAlign.Center)
+                                Text("$pCount", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, textAlign = TextAlign.Center)
+                                Icon(
+                                    if (balanced) Icons.Default.CheckCircle else Icons.Default.Cancel,
+                                    null,
+                                    tint = if (balanced) Color(0xFF22C55E) else MaterialTheme.colorScheme.error,
+                                    modifier = Modifier.width(24.dp).size(16.dp)
                                 )
                             }
                         }
                     }
+                }
+            }
+        }
+
+        Text("EXAMPLES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            examples.forEach { ex ->
+                Surface(
+                    onClick = { input = ex; result = null },
+                    shape = RoundedCornerShape(10.dp),
+                    color = if (input == ex) MaterialTheme.colorScheme.primary.copy(0.1f) else MaterialTheme.colorScheme.surfaceVariant.copy(0.5f),
+                    border = if (input == ex) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.4f)) else null
+                ) {
+                    Text(
+                        ex,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = FontFamily.Monospace,
+                        color = if (input == ex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
+                    )
                 }
             }
         }
