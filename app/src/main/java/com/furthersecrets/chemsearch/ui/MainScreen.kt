@@ -6,9 +6,15 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -58,6 +64,11 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import android.app.Activity
+import android.content.ContentValues
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.shape.CircleShape
@@ -68,6 +79,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.foundation.shape.CircleShape
+import java.io.File
 
 
 enum class AppTab { SEARCH, FAVORITES, RECENT, TOOLS, SETTINGS }
@@ -227,142 +239,151 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) { showSuggestions = false; focusManager.clearFocus() },
-                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 20.dp, bottom = 40.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                if (selectedTab == AppTab.SEARCH) {
-                    item {
-                        AppHeader(
-                            isDark = isDark,
-                            onToggleTheme = { vm.toggleTheme() }
-                        )
-                    }
-
-                    item {
-                        SearchBar(
-                            query = query,
-                            onQueryChange = {
-                                vm.onQueryChange(it)
-                                if (it.isNotEmpty() && autoSuggest) showSuggestions = true
-                            },
-                            onSearch = { showSuggestions = false; focusManager.clearFocus(); vm.search() },
-                            onClear = { vm.onQueryChange(""); showSuggestions = false }
-                        )
-                    }
-                }
-
-                if (selectedTab != AppTab.SEARCH) {
-                    item {
-                        when (selectedTab) {
-                            AppTab.RECENT -> HistorySection(
-                                history = state.history,
-                                onSelect = { vm.search(it); selectedTab = AppTab.SEARCH },
-                                onClear = { vm.clearHistory() }
-                            )
-
-                            AppTab.FAVORITES -> FavoritesInline(
-                                favorites = favorites,
-                                onSelect = { name -> vm.search(name); selectedTab = AppTab.SEARCH },
-                                onDelete = { cid -> vm.deleteFavorite(cid) }
-                            )
-
-                            AppTab.SETTINGS -> SettingsInline(
-                                isDark = isDark,
-                                autoSuggest = autoSuggest,
-                                defaultDescSource = defaultDescSource,
-                                aiProvider = state.aiProvider,
-                                hasGeminiKey = vm.getGeminiKey() != null,
-                                hasGroqKey = vm.getGroqKey() != null,
-                                onToggleTheme = { vm.toggleTheme() },
-                                onToggleAutoSuggest = { vm.toggleAutoSuggest() },
-                                onSetDefaultDesc = { vm.setDefaultDescSource(it) },
-                                onSetAiProvider = { vm.setAiProvider(it) },
-                                onSetGeminiKey = { showGeminiKeyDialog = true },
-                                onSetGroqKey = { showGroqKeyDialog = true },
-                                onClearGeminiKey = { vm.clearGeminiKey() },
-                                onClearGroqKey = { vm.clearGroqKey() },
-                                onClearHistory = { vm.clearHistory() }
-                            )
-
-                            AppTab.TOOLS -> ToolsScreen(isDark = isDark)
-
-                            else -> {}
-                        }
-                    }
-                } else {
-                    // Search tab
-                    if (state.isLoading) {
+            AnimatedContent(
+                targetState = selectedTab,
+                transitionSpec = {
+                    val direction = if (targetState.ordinal > initialState.ordinal) 1 else -1
+                    (slideInHorizontally(
+                        animationSpec = tween(300, easing = FastOutSlowInEasing)
+                    ) { it / 5 * direction } + fadeIn(tween(300))) togetherWith
+                    (slideOutHorizontally(
+                        animationSpec = tween(300, easing = FastOutSlowInEasing)
+                    ) { -it / 5 * direction } + fadeOut(tween(200)))
+                },
+                modifier = Modifier.fillMaxSize()
+            ) { tab ->
+                if (tab == AppTab.SEARCH) {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) { showSuggestions = false; focusManager.clearFocus() },
+                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 20.dp, bottom = 40.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
                         item {
-                            Box(
-                                Modifier.fillMaxWidth().padding(vertical = 40.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                            AppHeader(
+                                isDark = isDark,
+                                onToggleTheme = { vm.toggleTheme() }
+                            )
+                        }
+                        item {
+                            SearchBar(
+                                query = query,
+                                onQueryChange = {
+                                    vm.onQueryChange(it)
+                                    if (it.isNotEmpty() && autoSuggest) showSuggestions = true
+                                },
+                                onSearch = { showSuggestions = false; focusManager.clearFocus(); vm.search() },
+                                onClear = { vm.onQueryChange(""); showSuggestions = false }
+                            )
+                        }
+                        if (state.isLoading) {
+                            item {
+                                Box(
+                                    Modifier.fillMaxWidth().padding(vertical = 40.dp),
+                                    contentAlignment = Alignment.Center
                                 ) {
-                                    CircularProgressIndicator(
-                                        color = MaterialTheme.colorScheme.primary,
-                                        modifier = Modifier.size(32.dp),
-                                        strokeWidth = 2.5.dp
-                                    )
-                                    Text(
-                                        "Looking up compound...",
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
-                                    )
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                                    ) {
+                                        CircularProgressIndicator(
+                                            color = MaterialTheme.colorScheme.primary,
+                                            modifier = Modifier.size(32.dp),
+                                            strokeWidth = 2.5.dp
+                                        )
+                                        Text(
+                                            "Looking up compound...",
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                                        )
+                                    }
                                 }
                             }
                         }
-                    }
-
-                    if (!state.hasResult && !state.isLoading) {
-                        item {
-                            HistorySection(
-                                history = state.history,
-                                onSelect = { vm.search(it) },
-                                onClear = { vm.clearHistory() }
-                            )
+                        if (!state.hasResult && !state.isLoading) {
+                            item {
+                                HistorySection(
+                                    history = state.history,
+                                    onSelect = { vm.search(it) },
+                                    onClear = { vm.clearHistory() }
+                                )
+                            }
+                        }
+                        if (state.hasResult) {
+                            item { StructureViewer(state, vm) }
+                            item {
+                                CompoundHeader(
+                                    state,
+                                    isFavorite,
+                                    onToggleFavorite = { vm.toggleFavorite() })
+                            }
+                            item { IdentifiersSection(state, context) }
+                            if (state.elementalData.isNotEmpty()) item { ElementalSection(state.elementalData) }
+                            if (state.synonyms.isNotEmpty()) item { SynonymsSection(state.synonyms) }
+                            item {
+                                DescriptionSection(
+                                    state = state,
+                                    onPubChem = { vm.setDescSource(DescSource.PUBCHEM) },
+                                    onWiki = { vm.setDescSource(DescSource.WIKI) },
+                                    onAI = {
+                                        val key =
+                                            if (state.aiProvider == AiProvider.GEMINI) vm.getGeminiKey() else vm.getGroqKey()
+                                        if (key.isNullOrBlank()) showAiProviderDialog = true
+                                        else vm.setDescSource(DescSource.AI)
+                                    },
+                                    onRegenerate = { vm.fetchAiDescription() }
+                                )
+                            }
+                            item {
+                                SafetySection(
+                                    ghsData = state.ghsData,
+                                    isLoading = state.isLoadingSafety
+                                )
+                            }
                         }
                     }
-
-                    if (state.hasResult) {
-                        item { StructureViewer(state, vm) }
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 20.dp, bottom = 40.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
                         item {
-                            CompoundHeader(
-                                state,
-                                isFavorite,
-                                onToggleFavorite = { vm.toggleFavorite() })
-                        }
-                        item { IdentifiersSection(state, context) }
-                        if (state.elementalData.isNotEmpty()) item { ElementalSection(state.elementalData) }
-                        if (state.synonyms.isNotEmpty()) item { SynonymsSection(state.synonyms) }
-                        item {
-                            DescriptionSection(
-                                state = state,
-                                onPubChem = { vm.setDescSource(DescSource.PUBCHEM) },
-                                onWiki = { vm.setDescSource(DescSource.WIKI) },
-                                onAI = {
-                                    val key =
-                                        if (state.aiProvider == AiProvider.GEMINI) vm.getGeminiKey() else vm.getGroqKey()
-                                    if (key.isNullOrBlank()) showAiProviderDialog = true
-                                    else vm.setDescSource(DescSource.AI)
-                                },
-                                onRegenerate = { vm.fetchAiDescription() }
-                            )
-                        }
-                        item {
-                            SafetySection(
-                                ghsData = state.ghsData,
-                                isLoading = state.isLoadingSafety
-                            )
+                            when (tab) {
+                                AppTab.RECENT -> HistorySection(
+                                    history = state.history,
+                                    onSelect = { vm.search(it); selectedTab = AppTab.SEARCH },
+                                    onClear = { vm.clearHistory() }
+                                )
+                                AppTab.FAVORITES -> FavoritesInline(
+                                    favorites = favorites,
+                                    onSelect = { name -> vm.search(name); selectedTab = AppTab.SEARCH },
+                                    onDelete = { cid -> vm.deleteFavorite(cid) }
+                                )
+                                AppTab.SETTINGS -> SettingsInline(
+                                    isDark = isDark,
+                                    autoSuggest = autoSuggest,
+                                    defaultDescSource = defaultDescSource,
+                                    aiProvider = state.aiProvider,
+                                    hasGeminiKey = vm.getGeminiKey() != null,
+                                    hasGroqKey = vm.getGroqKey() != null,
+                                    onToggleTheme = { vm.toggleTheme() },
+                                    onToggleAutoSuggest = { vm.toggleAutoSuggest() },
+                                    onSetDefaultDesc = { vm.setDefaultDescSource(it) },
+                                    onSetAiProvider = { vm.setAiProvider(it) },
+                                    onSetGeminiKey = { showGeminiKeyDialog = true },
+                                    onSetGroqKey = { showGroqKeyDialog = true },
+                                    onClearGeminiKey = { vm.clearGeminiKey() },
+                                    onClearGroqKey = { vm.clearGroqKey() },
+                                    onClearHistory = { vm.clearHistory() }
+                                )
+                                AppTab.TOOLS -> ToolsScreen(isDark = isDark)
+                                else -> {}
+                            }
                         }
                     }
                 }
@@ -742,7 +763,7 @@ fun SuggestionsDropdown(suggestions: List<String>, onSelect: (String) -> Unit) {
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
-        Column {
+        Column(modifier = Modifier.heightIn(max = 280.dp).verticalScroll(rememberScrollState())) {
             suggestions.forEachIndexed { index, suggestion ->
                 Row(
                     modifier = Modifier
@@ -987,8 +1008,62 @@ fun ClickableIdentifier(label: String, value: String, cm: ClipboardManager) {
 
 // ─── Structure viewer ──────────────────────────────────────────────────────────
 
+private suspend fun saveSdfFile(context: Context, compoundName: String, sdfData: String) {
+    val fileName = "${compoundName.replace(" ", "_").lowercase()}_3d.sdf"
+    val sdfBytes = sdfData.toByteArray()
+    try {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val values = ContentValues().apply {
+                put(MediaStore.Downloads.DISPLAY_NAME, fileName)
+                put(MediaStore.Downloads.MIME_TYPE, "chemical/x-mdl-sdfile")
+                put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+            }
+            val uri = context.contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
+            uri?.let { context.contentResolver.openOutputStream(it)?.use { os -> os.write(sdfBytes) } }
+        } else {
+            val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            File(dir, fileName).writeBytes(sdfBytes)
+        }
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, "Saved $fileName to Downloads", Toast.LENGTH_SHORT).show()
+        }
+    } catch (e: Exception) {
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, "Download failed: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+}
+
 @Composable
 fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    // Runtime storage permission for Android 9 and below
+    val writePermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            scope.launch(Dispatchers.IO) {
+                saveSdfFile(context, state.name, state.sdfData ?: return@launch)
+            }
+        } else {
+            Toast.makeText(context, "Storage permission denied. Cannot save file", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    fun triggerDownload() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q &&
+            context.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != android.content.pm.PackageManager.PERMISSION_GRANTED
+        ) {
+            writePermissionLauncher.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        } else {
+            scope.launch(Dispatchers.IO) {
+                saveSdfFile(context, state.name, state.sdfData ?: return@launch)
+            }
+        }
+    }
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
         Column {
             Row(
@@ -1067,6 +1142,21 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                         } else if (state.sdfData != null) {
                             val isDark = !MaterialTheme.colorScheme.background.luminance().let { it > 0.5f }
                             Viewer3D(cid = state.cid ?: 0, sdfData = state.sdfData, isDark = isDark)
+                            IconButton(
+                                onClick = { triggerDownload() },
+                                modifier = Modifier
+                                    .align(Alignment.TopStart)
+                                    .padding(top = 36.dp, start = 0.dp)
+                                    .size(32.dp)
+                            ) {
+                                Icon(
+                                    Icons.Default.Download,
+                                    contentDescription = "Download SDF",
+                                    tint = if (!MaterialTheme.colorScheme.background.luminance().let { it > 0.5f })
+                                        Color.White.copy(0.4f) else Color.Black.copy(0.35f),
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            }
                         } else {
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -1806,6 +1896,7 @@ fun FavoritesInline(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsInline(
     isDark: Boolean,
@@ -1825,6 +1916,11 @@ fun SettingsInline(
     onClearHistory: () -> Unit
 ) {
     val context = LocalContext.current
+    val prefs = remember { context.getSharedPreferences("chemsearch_prefs", Context.MODE_PRIVATE) }
+    var buildTapCount by remember { mutableIntStateOf(0) }
+    var isDevMode by remember { mutableStateOf(prefs.getBoolean("dev_mode", false)) }
+    var themeDropdownExpanded by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -1832,7 +1928,74 @@ fun SettingsInline(
         Text("Settings", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 8.dp))
 
         SettingsSectionHeader("Appearance")
-        SettingsToggleRow(icon = if (isDark) Icons.Default.LightMode else Icons.Default.DarkMode, title = "Dark Mode", subtitle = if (isDark) "Currently dark" else "Currently light", checked = isDark, onToggle = onToggleTheme)
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Icon(Icons.Default.Palette, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(20.dp))
+                Column {
+                    Text("Theme mode", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
+                    Text(if (isDark) "Dark" else "Light", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+                }
+            }
+            Box {
+                Surface(
+                    shape = RoundedCornerShape(10.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f)),
+                    modifier = Modifier.clickable { themeDropdownExpanded = true }
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Icon(
+                            if (isDark) Icons.Default.DarkMode else Icons.Default.LightMode,
+                            null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Text(
+                            if (isDark) "Dark" else "Light",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Icon(Icons.Default.ArrowDropDown, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.4f), modifier = Modifier.size(16.dp))
+                    }
+                }
+                DropdownMenu(
+                    expanded = themeDropdownExpanded,
+                    onDismissRequest = { themeDropdownExpanded = false }
+                ) {
+                    listOf(false to "Light", true to "Dark").forEach { (dark, label) ->
+                        DropdownMenuItem(
+                            text = {
+                                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                    Icon(
+                                        if (dark) Icons.Default.DarkMode else Icons.Default.LightMode,
+                                        null,
+                                        tint = if (isDark == dark) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.6f),
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                    Text(label, color = if (isDark == dark) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface)
+                                }
+                            },
+                            onClick = {
+                                themeDropdownExpanded = false
+                                if (isDark != dark) onToggleTheme()
+                            },
+                            trailingIcon = {
+                                if (isDark == dark) Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
+                            }
+                        )
+                    }
+                }
+            }
+        }
 
         Spacer(Modifier.height(4.dp))
         SettingsSectionHeader("Search")
@@ -1877,13 +2040,41 @@ fun SettingsInline(
         SettingsSectionHeader("Data")
         SettingsActionRow(Icons.Default.History, "Search History", "Clear all recent searches", "Clear", MaterialTheme.colorScheme.error, onClearHistory)
 
+        if (isDevMode) {
+            Spacer(Modifier.height(4.dp))
+            DebugSettingsSection(
+                prefs = prefs,
+                onDisableDevMode = {
+                    isDevMode = false
+                    buildTapCount = 0
+                    prefs.edit().putBoolean("dev_mode", false).apply()
+                    Toast.makeText(context, "Debug settings hidden", Toast.LENGTH_SHORT).show()
+                }
+            )
+        }
+
         Spacer(Modifier.height(4.dp))
         SettingsSectionHeader("About")
         Card(shape = RoundedCornerShape(14.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
             Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text("ChemSearch for Android", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
-                    Surface(shape = RoundedCornerShape(6.dp), color = MaterialTheme.colorScheme.primary.copy(0.12f)) {
+                    Surface(
+                        shape = RoundedCornerShape(6.dp),
+                        color = MaterialTheme.colorScheme.primary.copy(0.12f),
+                        modifier = Modifier.clickable {
+                            buildTapCount++
+                            when (buildTapCount) {
+                                3 -> Toast.makeText(context, "2 more taps to unlock debug settings", Toast.LENGTH_SHORT).show()
+                                4 -> Toast.makeText(context, "1 more tap to unlock debug settings", Toast.LENGTH_SHORT).show()
+                                5 -> {
+                                    isDevMode = true
+                                    prefs.edit().putBoolean("dev_mode", true).apply()
+                                    Toast.makeText(context, "Debug settings unlocked", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    ) {
                         Text("v${BuildConfig.VERSION_NAME}  •  build ${BuildConfig.VERSION_CODE}", modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp), style = MaterialTheme.typography.labelSmall, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
                     }
                     Text("Data from PubChem, Wikipedia, Google Gemini and Groq", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
@@ -1917,6 +2108,355 @@ fun SettingsInline(
             }
         }
 
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DEBUG SETTINGS
+// ─────────────────────────────────────────────────────────────────────────────
+
+object DebugLog {
+    private const val MAX = 200
+    val lines = mutableStateListOf<String>()
+    var verbose = false
+
+    fun d(tag: String, msg: String) {
+        Log.d(tag, msg)
+        if (verbose) append("D/$tag: $msg")
+    }
+    fun e(tag: String, msg: String) {
+        Log.e(tag, msg)
+        append("E/$tag: $msg")
+    }
+    fun i(tag: String, msg: String) {
+        Log.i(tag, msg)
+        if (verbose) append("I/$tag: $msg")
+    }
+    private fun append(line: String) {
+        val ts = java.text.SimpleDateFormat("HH:mm:ss.SSS", java.util.Locale.US).format(java.util.Date())
+        if (lines.size >= MAX) lines.removeAt(0)
+        lines.add("$ts  $line")
+    }
+    fun clear() { lines.clear() }
+}
+
+@Composable
+fun DebugSettingsSection(
+    prefs: android.content.SharedPreferences,
+    onDisableDevMode: () -> Unit
+) {
+    val context = LocalContext.current
+    var verboseLogging by remember { mutableStateOf(prefs.getBoolean("debug_verbose", false)) }
+    var showInfoDialog by remember { mutableStateOf(false) }
+    var showPrefsDialog by remember { mutableStateOf(false) }
+    var showLogsDialog by remember { mutableStateOf(false) }
+    var showMemoryDialog by remember { mutableStateOf(false) }
+    var showCrashConfirm by remember { mutableStateOf(false) }
+    val logLines = DebugLog.lines
+
+    if (showInfoDialog) {
+        InfoDialog(
+            title = "Debug Settings",
+            entries = listOf(
+                "Verbose logging" to "Writes detailed log lines tagged 'ChemSearch' to Android Logcat and to the in-app live log buffer. Disable in production to reduce noise.",
+                "Live log viewer" to "Shows the in-app log buffer in real time (up to 200 lines). Verbose logs (D/) only appear when verbose logging is on. Errors (E/) are always captured. You can copy or clear the buffer.",
+                "Inspect SharedPreferences" to "Dumps every key-value pair in the app's preference file. Includes API keys (masked), theme, history entries, dev mode flag, and anything else saved with SharedPreferences.",
+                "Memory info" to "Shows current heap usage from the JVM runtime and the Android ActivityManager. Useful for spotting memory leaks or unusually high allocations.",
+                "Network requests" to "Copies all 5 API base URLs to your clipboard for manual testing in a browser or HTTP client like Postman.",
+                "Wipe all SharedPreferences" to "Calls prefs.edit().clear(). Removes everything: API keys, history, favorites, settings. Restart required for changes to take full effect.",
+                "Force crash" to "Deliberately throws an unhandled RuntimeException. Used to verify that crash reporting / Logcat is working correctly. There is a confirmation step before it fires.",
+                "Hide debug settings" to "Sets dev_mode=false and hides this section. Tap the build number 5 times in the About card to unlock it again."
+            ),
+            onDismiss = { showInfoDialog = false }
+        )
+    }
+
+    if (showPrefsDialog) {
+        AlertDialog(
+            onDismissRequest = { showPrefsDialog = false },
+            title = { Text("SharedPreferences dump", fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace) },
+            text = {
+                Column(modifier = Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    if (prefs.all.isEmpty()) {
+                        Text("No keys stored.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+                    } else {
+                        prefs.all.entries.sortedBy { it.key }.forEach { (k, v) ->
+                            val display = if (k.contains("key", ignoreCase = true) && v.toString().length > 8)
+                                v.toString().take(4) + "••••" + v.toString().takeLast(4)
+                            else v.toString()
+                            Text(
+                                text = "$k\n  → $display",
+                                style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
+                                color = MaterialTheme.colorScheme.onSurface.copy(0.85f),
+                                lineHeight = 16.sp,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.1f))
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    TextButton(onClick = {
+                        val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val dump = prefs.all.entries.sortedBy { it.key }.joinToString("\n") { "${it.key} = ${it.value}" }
+                        cm.setPrimaryClip(ClipData.newPlainText("prefs", dump))
+                        Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show()
+                    }) { Text("Copy") }
+                    TextButton(onClick = { showPrefsDialog = false }) { Text("Close") }
+                }
+            }
+        )
+    }
+
+    if (showLogsDialog) {
+        AlertDialog(
+            onDismissRequest = { showLogsDialog = false },
+            title = {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("Live Logs", fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace, modifier = Modifier.weight(1f))
+                    Surface(shape = RoundedCornerShape(6.dp), color = if (verboseLogging) Color(0xFF22C55E).copy(0.15f) else MaterialTheme.colorScheme.outline.copy(0.1f)) {
+                        Text(
+                            if (verboseLogging) "● LIVE" else "○ PAUSED",
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                            style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
+                            color = if (verboseLogging) Color(0xFF22C55E) else MaterialTheme.colorScheme.onSurface.copy(0.4f),
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            },
+            text = {
+                Column(modifier = Modifier.heightIn(max = 320.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(1.dp)) {
+                    if (logLines.isEmpty()) {
+                        Text(
+                            if (verboseLogging) "No logs yet. Perform an action in the app."
+                            else "Verbose logging is off. Only errors are captured.\nEnable it to see debug logs.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+                        )
+                    } else {
+                        logLines.toList().forEach { line ->
+                            val isError = line.contains("E/")
+                            Text(
+                                line,
+                                style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
+                                color = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface.copy(0.8f),
+                                lineHeight = 15.sp
+                            )
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    TextButton(onClick = { DebugLog.clear() }) { Text("Clear") }
+                    TextButton(onClick = {
+                        val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        cm.setPrimaryClip(ClipData.newPlainText("logs", logLines.joinToString("\n")))
+                        Toast.makeText(context, "Copied ${logLines.size} lines", Toast.LENGTH_SHORT).show()
+                    }) { Text("Copy") }
+                    TextButton(onClick = { showLogsDialog = false }) { Text("Close") }
+                }
+            }
+        )
+    }
+
+    if (showMemoryDialog) {
+        val rt = Runtime.getRuntime()
+        val usedMb = (rt.totalMemory() - rt.freeMemory()) / 1_048_576L
+        val totalMb = rt.totalMemory() / 1_048_576L
+        val maxMb = rt.maxMemory() / 1_048_576L
+        val am = context.getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager
+        val mi = android.app.ActivityManager.MemoryInfo().also { am.getMemoryInfo(it) }
+        val availMb = mi.availMem / 1_048_576L
+        val totalSystemMb = mi.totalMem / 1_048_576L
+        AlertDialog(
+            onDismissRequest = { showMemoryDialog = false },
+            title = { Text("Memory info", fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("JVM HEAP", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    listOf(
+                        "Used" to "${usedMb} MB",
+                        "Allocated" to "${totalMb} MB",
+                        "Max" to "${maxMb} MB"
+                    ).forEach { (k, v) ->
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                            Text(k, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace))
+                            Text(v, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace), fontWeight = FontWeight.SemiBold)
+                        }
+                    }
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
+                    Text("SYSTEM RAM", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    listOf(
+                        "Available" to "${availMb} MB",
+                        "Total" to "${totalSystemMb} MB",
+                        "Low memory" to if (mi.lowMemory) "YES ⚠️" else "No"
+                    ).forEach { (k, v) ->
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                            Text(k, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace))
+                            Text(v, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace), fontWeight = FontWeight.SemiBold)
+                        }
+                    }
+                }
+            },
+            confirmButton = { TextButton(onClick = { showMemoryDialog = false }) { Text("Close") } }
+        )
+    }
+
+    if (showCrashConfirm) {
+        AlertDialog(
+            onDismissRequest = { showCrashConfirm = false },
+            title = { Text("Force crash?", fontWeight = FontWeight.Bold) },
+            text = { Text("This will immediately crash the app with an unhandled exception. Used to verify crash reporting is working.") },
+            confirmButton = {
+                Button(
+                    onClick = { throw RuntimeException("ChemSearch debug force crash") },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) { Text("Crash now") }
+            },
+            dismissButton = { TextButton(onClick = { showCrashConfirm = false }) { Text("Cancel") } }
+        )
+    }
+
+    Card(
+        shape = RoundedCornerShape(14.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary.copy(0.06f)),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.3f))
+    ) {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Icon(Icons.Default.BugReport, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+                    Text(
+                        "DEBUG SETTINGS",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.ExtraBold,
+                        letterSpacing = 1.5.sp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                IconButton(onClick = { showInfoDialog = true }, modifier = Modifier.size(24.dp)) {
+                    Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.primary.copy(0.6f), modifier = Modifier.size(16.dp))
+                }
+            }
+
+            HorizontalDivider(color = MaterialTheme.colorScheme.primary.copy(0.2f), modifier = Modifier.padding(vertical = 4.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Icon(Icons.Default.Terminal, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(20.dp))
+                    Column {
+                        Text("Verbose logging", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
+                        Text("Tag: ChemSearch", style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace), color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                    }
+                }
+                Switch(
+                    checked = verboseLogging,
+                    onCheckedChange = {
+                        verboseLogging = it
+                        DebugLog.verbose = it
+                        prefs.edit().putBoolean("debug_verbose", it).apply()
+                        DebugLog.d("ChemSearch", if (it) "Verbose logging enabled" else "Verbose logging disabled")
+                    }
+                )
+            }
+
+            // Live logs
+            SettingsActionRow(
+                icon = Icons.Default.Feed,
+                title = "Live log viewer",
+                subtitle = "${logLines.size} line${if (logLines.size != 1) "s" else ""} captured",
+                actionLabel = "Open",
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = { showLogsDialog = true }
+            )
+
+            // SharedPreferences dump
+            SettingsActionRow(
+                icon = Icons.Default.Storage,
+                title = "Inspect SharedPreferences",
+                subtitle = "${prefs.all.size} keys stored",
+                actionLabel = "View",
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = { showPrefsDialog = true }
+            )
+
+            // Memory info
+            SettingsActionRow(
+                icon = Icons.Default.Memory,
+                title = "Memory info",
+                subtitle = "JVM heap + system RAM",
+                actionLabel = "View",
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = { showMemoryDialog = true }
+            )
+
+            // API endpoints copy
+            SettingsActionRow(
+                icon = Icons.Default.Hub,
+                title = "API endpoints",
+                subtitle = "PubChem · Wikipedia · Gemini · Groq",
+                actionLabel = "Copy",
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = {
+                    val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val endpoints = listOf(
+                        "PubChem PUG REST: https://pubchem.ncbi.nlm.nih.gov/rest/pug/",
+                        "PubChem PUG View: https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/",
+                        "Wikipedia REST: https://en.wikipedia.org/api/rest_v1/",
+                        "Gemini: https://generativelanguage.googleapis.com/v1beta/",
+                        "Groq: https://api.groq.com/openai/v1/"
+                    ).joinToString("\n")
+                    cm.setPrimaryClip(ClipData.newPlainText("endpoints", endpoints))
+                    Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()
+                }
+            )
+
+            // Wipe prefs
+            SettingsActionRow(
+                icon = Icons.Default.DeleteSweep,
+                title = "Wipe all SharedPreferences",
+                subtitle = "Clears keys, history, API keys, settings",
+                actionLabel = "Wipe",
+                actionColor = MaterialTheme.colorScheme.error,
+                onClick = {
+                    prefs.edit().clear().apply()
+                    DebugLog.e("ChemSearch", "SharedPreferences wiped by developer")
+                    Toast.makeText(context, "All preferences wiped. Restart the app.", Toast.LENGTH_LONG).show()
+                }
+            )
+
+            // Force crash
+            SettingsActionRow(
+                icon = Icons.Default.Warning,
+                title = "Force crash",
+                subtitle = "Throws unhandled exception for testing",
+                actionLabel = "Crash",
+                actionColor = MaterialTheme.colorScheme.error,
+                onClick = { showCrashConfirm = true }
+            )
+
+            HorizontalDivider(color = MaterialTheme.colorScheme.primary.copy(0.2f), modifier = Modifier.padding(vertical = 4.dp))
+            TextButton(
+                onClick = onDisableDevMode,
+                contentPadding = PaddingValues(0.dp)
+            ) {
+                Icon(Icons.Default.VisibilityOff, null, modifier = Modifier.size(14.dp), tint = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                Spacer(Modifier.width(6.dp))
+                Text("Hide debug settings", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+            }
+        }
     }
 }
 

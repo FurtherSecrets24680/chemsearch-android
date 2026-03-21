@@ -33,20 +33,20 @@ This is the native Android version of the original **ChemSearch** web applicatio
 | <img src="screenshots/home_dark.jpg" width="220"/>  | <img src="screenshots/home_light.jpg" width="220"/> | <img src="screenshots/ea_syn_desc.jpg" width="220"/> |
 |                 Search (Dark mode)                  |                 Search (Light mode)                 |      Elemental Analysis, Synonyms & Description      |
 | <img src="screenshots/ghs_safety.jpg" width="220"/> |  <img src="screenshots/settings.jpg" width="220"/>  |  <img src="screenshots/bookmarks.jpg" width="220"/>  |
-|               GHS Safety Information                |                      Settings                       |                      Bookmarks                       |
+|               GHS Safety Information                |                      Settings                       |                      Favorites                       |
 
 
 ## Features
 
 ### Search
 - Search by common name, IUPAC name, CAS number, or CID via PubChem PUG REST
-- Real-time **autocomplete suggestions** as you type (toggleable)
+- Real-time **autocomplete suggestions** as you type, with a scrollable dropdown (toggleable)
 - Recent **search history** with one-tap access
-- **Bookmarks** to save and revisit compounds
+- **Favorites** to save and revisit compounds
 
 ### Compound Data
 - Compound header showing name, molecular formula, molecular weight, CID and CAS at a glance
-- Full identifiers card: IUPAC name, SMILES (full and connectivity), InChI, InChIKey, empirical formula, and formal charge - tap any to copy to clipboard
+- Full identifiers card: IUPAC name, SMILES (full and connectivity), InChI, InChIKey, empirical formula, and formal charge (tap any to copy to clipboard).
 - **Info tooltips** on each card explaining what each identifier or data type means
 - Up to 8 **synonyms** displayed as chips
 - **Elemental analysis** with mass percentage bars for each element
@@ -58,23 +58,44 @@ This is the native Android version of the original **ChemSearch** web applicatio
     - CPK coloring for all 118 elements
     - Ball-and-stick model with bonds connected to atom surfaces
     - Reset view button
+    - **Download SDF** button to save the 3D structure file directly to Downloads
 
 ### Safety Information
 - GHS classification fetched from PubChem PUG View:
     - Signal word badge (Danger / Warning) with color coding
     - GHS pictograms (GHS01 through GHS09) with icons and labels
     - Hazard H-codes
+
 ### Descriptions
 Three switchable sources per compound:
 - **PubChem** for scientific descriptions
 - **Wikipedia** for general summaries
 - **AI** via Google Gemini or Groq, with a regenerate button
 
+### Tools
+Five chemistry tools accessible from the Tools tab:
+
+- **Custom 3D Molecule Viewer** : Load any `.sdf` or `.mol` file from your device and view it in the native 3D engine
+- **Molar Mass Calculator** : Enter any molecular formula (including parentheses groups) to get the molar mass and a full elemental breakdown by mass percentage
+- **Oxidation State Finder** : Determine oxidation states for each element in a compound, with support for peroxides, superoxides, ozonides, metal hydrides, and interhalogen compounds. Enter the overall charge for polyatomic ions
+- **SMILES Visualizer** : Paste any SMILES string to look it up on PubChem and view its 2D structure and 3D model
+- **Reaction Balancer** : Balance any chemical equation using matrix-based Gaussian elimination with exact rational arithmetic. Includes quick-insert buttons for `+`, `->`, `(` and `)`, and an atom count verification table
+
 ### Customization
-- Dark and light mode toggle
+- **Theme mode** dropdown (Light / Dark) in Settings
 - Configurable default description source
 - AI provider selection with per-provider API key management
-- Autosuggestions toggle
+- Autosuggestions toggle (scrollable dropdown, toggleable)
+
+### Developer Options
+A hidden debug menu can be unlocked by tapping the build number in the 'About' card five times. It includes:
+- **Live log viewer** : Real-time in-app log buffer (up to 200 lines) capturing search events, API calls, errors, SDF loads, and more, with timestamps. Errors always captured; verbose logs toggle-gated
+- **Verbose logging toggle** : Writes detailed `D/ChemSearch` lines to Logcat and the live buffer
+- **SharedPreferences inspector** : Dumps all stored keys and values (API keys partially masked)
+- **Memory info** : JVM heap usage and system RAM from `ActivityManager`
+- **API endpoints** : Copies all five base URLs to clipboard for manual testing
+- **Wipe SharedPreferences** : Completely reset all the stored data
+- **Force crash** : Throws a deliberate unhandled exception to verify crash reporting (confirmation required)
 
 ---
 

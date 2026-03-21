@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.*
 import java.io.IOException
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.furthersecrets.chemsearch.ui.DebugLog
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class ChemViewModel(application: Application) : AndroidViewModel(application) {
@@ -56,6 +57,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         val current = _favorites.value.toMutableList()
         if (_isFavorite.value) {
             current.removeAll { it.cid == cid }
+            DebugLog.d("ChemSearch", "Removed favorite: ${state.name} (CID $cid)")
         } else {
             current.add(0, FavoriteCompound(
                 cid = cid,
@@ -64,6 +66,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 molecularWeight = state.weight,
                 iupacName = state.iupacName
             ))
+            DebugLog.d("ChemSearch", "Added favorite: ${state.name} (CID $cid)")
         }
         _favorites.value = current
         _isFavorite.value = !_isFavorite.value
@@ -95,6 +98,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         val next = !_isDarkTheme.value
         _isDarkTheme.value = next
         prefs.edit().putBoolean("dark_theme", next).apply()
+        DebugLog.d("ChemSearch", "Theme → ${if (next) "dark" else "light"}")
     }
 
     fun toggleAutoSuggest() {
@@ -102,6 +106,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         _autoSuggest.value = next
         prefs.edit().putBoolean("auto_suggest", next).apply()
         if (!next) _uiState.update { it.copy(suggestions = emptyList()) }
+        DebugLog.d("ChemSearch", "Autosuggestions → ${if (next) "on" else "off"}")
     }
 
     fun setDefaultDescSource(source: DescSource) {
@@ -112,6 +117,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun setAiProvider(provider: AiProvider) {
         _uiState.update { it.copy(aiProvider = provider) }
         prefs.edit().putString("ai_provider", provider.name).apply()
+        DebugLog.d("ChemSearch", "AI provider → ${provider.name}")
         if (_uiState.value.descSource == DescSource.AI) {
             fetchAiDescription()
         }
@@ -134,8 +140,11 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             delay(300)
             try {
                 val res = ApiClient.pubChemAutocomplete.autocomplete(q)
-                _uiState.update { it.copy(suggestions = res.dictionaryTerms?.compound ?: emptyList()) }
+                val suggestions = res.dictionaryTerms?.compound ?: emptyList()
+                DebugLog.d("ChemSearch", "Autocomplete \"$q\" → ${suggestions.size} results")
+                _uiState.update { it.copy(suggestions = suggestions) }
             } catch (e: Exception) {
+                DebugLog.e("ChemSearch", "Autocomplete error for \"$q\": ${e.message}")
                 _uiState.update { it.copy(suggestions = emptyList()) }
             }
         }
@@ -149,6 +158,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
+            DebugLog.d("ChemSearch", "Search started: \"$q\"")
             _uiState.update {
                 it.copy(isLoading = true, error = null, suggestions = emptyList(), hasResult = false, sdfData = null, ghsData = null, isLoadingSafety = false)
             }
@@ -156,6 +166,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 val cidResponse = ApiClient.pubChem.getCid(q)
                 val cid = cidResponse.identifierList?.cid?.firstOrNull()
                     ?: throw NoSuchElementException("Chemical not found.")
+                DebugLog.d("ChemSearch", "CID resolved: $cid for \"$q\"")
 
                 val propsDeferred = async { runCatching { ApiClient.pubChem.getProperties(cid) }.getOrNull() }
                 val synsDeferred  = async { runCatching { ApiClient.pubChem.getSynonyms(cid) }.getOrNull() }
@@ -167,6 +178,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     ?.informationList?.information?.firstOrNull()?.synonym ?: emptyList()
                 val descItem = descDeferred.await()
                     ?.informationList?.information?.find { it.description != null }
+
+                DebugLog.d("ChemSearch", "Properties fetched: MW=${props.molecularWeight}, formula=${props.molecularFormula}")
 
                 val casRegex = Regex("""^\d{1,7}-\d{2}-\d$""")
                 val casNumber = synonyms.firstOrNull { casRegex.matches(it) }
@@ -186,6 +199,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
                 val savedSource = getSavedDescSource()
                 saveToHistory(compoundName)
+                DebugLog.d("ChemSearch", "Search complete: \"$compoundName\" (CID $cid), ${synonyms.size} synonyms, desc=${pubDesc != null}")
 
                 _uiState.update {
                     it.copy(
@@ -228,6 +242,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     is NoSuchElementException -> e.message ?: "Not found"
                     else -> "Chemical not found. Try a different name or spelling."
                 }
+                DebugLog.e("ChemSearch", "Search failed for \"$q\": ${e::class.simpleName} — ${e.message}")
                 _uiState.update {
                     it.copy(isLoading = false, error = msg)
                 }
@@ -238,11 +253,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun fetchWikiDescription() {
         val name = _uiState.value.name.ifBlank { return }
         _uiState.update { it.copy(isLoadingDesc = true) }
+        DebugLog.d("ChemSearch", "Fetching Wikipedia description for \"$name\"")
         viewModelScope.launch {
             val titleCased = name.trim().split(" ")
                 .joinToString(" ") { word -> word.lowercase().replaceFirstChar { it.uppercase() } }
             val desc = runCatching { ApiClient.wiki.getSummary(titleCased).extract }.getOrNull()
                 ?: runCatching { ApiClient.wiki.getSummary(name.trim().lowercase().replaceFirstChar { it.uppercase() }).extract }.getOrNull()
+            DebugLog.d("ChemSearch", "Wikipedia result: ${if (desc != null) "${desc.take(60)}…" else "not found"}")
             _uiState.update { it.copy(isLoadingDesc = false, wikiDescription = desc) }
         }
     }
@@ -264,14 +281,17 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             return
         }
         _uiState.update { it.copy(isLoadingDesc = true) }
+        DebugLog.d("ChemSearch", "Fetching Gemini description for \"$name\"")
         viewModelScope.launch {
             val prompt = "Write a short 2-3 sentence description of the chemical \"$name\". Include real-world applications. Keep it clear and easy to read."
             val req = GeminiRequest(contents = listOf(GeminiContent(parts = listOf(GeminiPart(text = prompt)))))
             try {
                 val response = ApiClient.gemini.generateContent(key, req)
                 val text = response.candidates?.firstOrNull()?.content?.parts?.firstOrNull()?.text
+                DebugLog.d("ChemSearch", "Gemini response: ${text?.take(80) ?: "empty"}")
                 _uiState.update { it.copy(isLoadingDesc = false, aiDescription = text ?: "Gemini returned empty response.") }
             } catch (e: Exception) {
+                DebugLog.e("ChemSearch", "Gemini error: ${e.message}")
                 _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "Gemini error: ${e.message}") }
             }
         }
@@ -283,6 +303,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             return
         }
         _uiState.update { it.copy(isLoadingDesc = true) }
+        DebugLog.d("ChemSearch", "Fetching Groq description for \"$name\"")
         viewModelScope.launch {
             val prompt = "Write a short 2-3 sentence description of the chemical \"$name\". Include real-world applications. Keep it clear and easy to read."
             val req = GroqRequest(
@@ -292,8 +313,10 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val response = ApiClient.groq.generateContent("Bearer $key", req)
                 val text = response.choices?.firstOrNull()?.message?.content
+                DebugLog.d("ChemSearch", "Groq response: ${text?.take(80) ?: "empty"}")
                 _uiState.update { it.copy(isLoadingDesc = false, aiDescription = text ?: "Groq returned empty response.") }
             } catch (e: Exception) {
+                DebugLog.e("ChemSearch", "Groq error: ${e.message}")
                 _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "Groq error: ${e.message}") }
             }
         }
@@ -316,13 +339,16 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     private fun fetchSdfData() {
         val cid = _uiState.value.cid ?: return
         _uiState.update { it.copy(isLoadingSdf = true) }
+        DebugLog.d("ChemSearch", "Fetching SDF for CID $cid")
         viewModelScope.launch {
             try {
                 val sdf = withContext(Dispatchers.IO) {
                     ApiClient.pubChem.getSdf(cid).string()
                 }
+                DebugLog.d("ChemSearch", "SDF loaded: ${sdf.lines().size} lines, ${sdf.length} bytes")
                 _uiState.update { it.copy(isLoadingSdf = false, sdfData = sdf) }
             } catch (e: Exception) {
+                DebugLog.e("ChemSearch", "SDF fetch failed for CID $cid: ${e.message}")
                 Log.e("ChemViewModel", "Error fetching SDF", e)
                 _uiState.update { it.copy(isLoadingSdf = false) }
             }
@@ -369,6 +395,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun clearHistory() {
         prefs.edit().remove("history").apply()
         _uiState.update { it.copy(history = emptyList()) }
+        DebugLog.d("ChemSearch", "Search history cleared")
     }
 
     private fun parseFormula(formula: String): Map<String, Int> {
@@ -442,12 +469,15 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun fetchSafetyData() {
         val cid = _uiState.value.cid ?: return
         _uiState.update { it.copy(isLoadingSafety = true) }
+        DebugLog.d("ChemSearch", "Fetching GHS safety data for CID $cid")
         viewModelScope.launch {
             try {
                 val json = ApiClient.pubChemView.getSection(cid, "GHS Classification")
                 val ghs = parseGhsData(json)
+                DebugLog.d("ChemSearch", "GHS result: signal=${ghs?.signalWord}, pictograms=${ghs?.pictogramCodes?.size ?: 0}, hazards=${ghs?.hazardStatements?.size ?: 0}")
                 _uiState.update { it.copy(isLoadingSafety = false, ghsData = ghs) }
             } catch (e: Exception) {
+                DebugLog.e("ChemSearch", "GHS fetch failed for CID $cid: ${e.message}")
                 _uiState.update { it.copy(isLoadingSafety = false, ghsData = null) }
             }
         }
