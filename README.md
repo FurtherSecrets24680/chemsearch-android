@@ -26,19 +26,6 @@ This is the native Android version of the original **ChemSearch** web applicatio
 - **Web repo:** [FurtherSecrets24680/chemsearch](https://github.com/FurtherSecrets24680/chemsearch)
 
 ---
-
-## Screenshots
-|                                                    |                                                     |                                                     |
-|:--------------------------------------------------:|:---------------------------------------------------:|:---------------------------------------------------:|
-| <img src="screenshots/home_dark.jpg" width="220"/> | <img src="screenshots/home_light.jpg" width="220"/> | <img src="screenshots/3dmolecule.jpg" width="220"/> |
-|                 Search (Dark mode)                 |                 Search (Light mode)                 |                 3D Molecule Viewer                  |
-| <img src="screenshots/favorites.jpg" width="220"/> | <img src="screenshots/tools_page.jpg" width="220"/> |  <img src="screenshots/iden_ea.jpg" width="220"/>   |
-|                     Favorites                      |                     Tools Page                      |           Identifiers & Element Analysis            |
-| <img src="screenshots/syn_desc.jpg" width="220"/>  | <img src="screenshots/ghs_safety.jpg" width="220"/> |  <img src="screenshots/tool_mmc.jpg" width="220"/>  |
-|               Synonyms & Description               |               GHS Safety Information                |                Molar Mass Calculator                |
-| <img src="screenshots/tool_osf.jpg" width="220"/>  |  <img src="screenshots/tool_rb.jpg" width="220"/>   |  <img src="screenshots/tool_sv.jpg" width="220"/>   |
-|               Oxidation State Finder               |                  Reaction Balancer                  |                  SMILES Visualizer                  |
-
 ## Features
 
 ### Search
@@ -99,6 +86,20 @@ A hidden debug menu can be unlocked by tapping the build number in the 'About' c
 - **API endpoints** : Copies all five base URLs to clipboard for manual testing
 - **Wipe SharedPreferences** : Completely reset all the stored data
 - **Force crash** : Throws a deliberate unhandled exception to verify crash reporting (confirmation required)
+
+---
+
+## Screenshots
+|                                                    |                                                     |                                                     |
+|:--------------------------------------------------:|:---------------------------------------------------:|:---------------------------------------------------:|
+| <img src="screenshots/home_dark.jpg" width="220"/> | <img src="screenshots/home_light.jpg" width="220"/> | <img src="screenshots/3dmolecule.jpg" width="220"/> |
+|                 Search (Dark mode)                 |                 Search (Light mode)                 |                 3D Molecule Viewer                  |
+| <img src="screenshots/favorites.jpg" width="220"/> | <img src="screenshots/tools_page.jpg" width="220"/> |  <img src="screenshots/iden_ea.jpg" width="220"/>   |
+|                     Favorites                      |                     Tools Page                      |           Identifiers & Element Analysis            |
+| <img src="screenshots/syn_desc.jpg" width="220"/>  | <img src="screenshots/ghs_safety.jpg" width="220"/> |  <img src="screenshots/tool_mmc.jpg" width="220"/>  |
+|               Synonyms & Description               |               GHS Safety Information                |                Molar Mass Calculator                |
+| <img src="screenshots/tool_osf.jpg" width="220"/>  |  <img src="screenshots/tool_rb.jpg" width="220"/>   |  <img src="screenshots/tool_sv.jpg" width="220"/>   |
+|               Oxidation State Finder               |                  Reaction Balancer                  |                  SMILES Visualizer                  |
 
 ---
 
