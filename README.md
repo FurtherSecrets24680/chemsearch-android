@@ -28,13 +28,16 @@ This is the native Android version of the original **ChemSearch** web applicatio
 ---
 
 ## Screenshots
-|                                                     |                                                     |                                                      |
-|:---------------------------------------------------:|:---------------------------------------------------:|:----------------------------------------------------:|
-| <img src="screenshots/home_dark.jpg" width="220"/>  | <img src="screenshots/home_light.jpg" width="220"/> | <img src="screenshots/ea_syn_desc.jpg" width="220"/> |
-|                 Search (Dark mode)                  |                 Search (Light mode)                 |      Elemental Analysis, Synonyms & Description      |
-| <img src="screenshots/ghs_safety.jpg" width="220"/> |  <img src="screenshots/settings.jpg" width="220"/>  |  <img src="screenshots/bookmarks.jpg" width="220"/>  |
-|               GHS Safety Information                |                      Settings                       |                      Favorites                       |
-
+|                                                    |                                                     |                                                     |
+|:--------------------------------------------------:|:---------------------------------------------------:|:---------------------------------------------------:|
+| <img src="screenshots/home_dark.jpg" width="220"/> | <img src="screenshots/home_light.jpg" width="220"/> | <img src="screenshots/3dmolecule.jpg" width="220"/> |
+|                 Search (Dark mode)                 |                 Search (Light mode)                 |                 3D Molecule Viewer                  |
+| <img src="screenshots/favorites.jpg" width="220"/> | <img src="screenshots/tools_page.jpg" width="220"/> |  <img src="screenshots/iden_ea.jpg" width="220"/>   |
+|                     Favorites                      |                     Tools Page                      |           Identifiers & Element Analysis            |
+| <img src="screenshots/syn_desc.jpg" width="220"/>  | <img src="screenshots/ghs_safety.jpg" width="220"/> |  <img src="screenshots/tool_mmc.jpg" width="220"/>  |
+|               Synonyms & Description               |               GHS Safety Information                |                Molar Mass Calculator                |
+| <img src="screenshots/tool_osf.jpg" width="220"/>  |  <img src="screenshots/tool_rb.jpg" width="220"/>   |  <img src="screenshots/tool_sv.jpg" width="220"/>   |
+|               Oxidation State Finder               |                  Reaction Balancer                  |                  SMILES Visualizer                  |
 
 ## Features
 
