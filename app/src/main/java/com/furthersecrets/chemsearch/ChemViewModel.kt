@@ -37,6 +37,18 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     private val _defaultDescSource = MutableStateFlow(getSavedDescSource())
     val defaultDescSource: StateFlow<DescSource> = _defaultDescSource.asStateFlow()
 
+    private val _cacheSizeBytes = MutableStateFlow(computeCacheSize())
+    val cacheSizeBytes: StateFlow<Long> = _cacheSizeBytes.asStateFlow()
+
+    private val _cacheDirPath = MutableStateFlow(prefs.getString("cache_dir", "") ?: "")
+    val cacheDirPath: StateFlow<String> = _cacheDirPath.asStateFlow()
+
+    private val _hasGeminiKey = MutableStateFlow(prefs.getString("gemini_key", null)?.isNotBlank() == true)
+    val hasGeminiKey: StateFlow<Boolean> = _hasGeminiKey.asStateFlow()
+
+    private val _hasGroqKey = MutableStateFlow(prefs.getString("groq_key", null)?.isNotBlank() == true)
+    val hasGroqKey: StateFlow<Boolean> = _hasGroqKey.asStateFlow()
+
     init {
         val savedProvider = AiProvider.entries.firstOrNull { it.name == prefs.getString("ai_provider", null) } ?: AiProvider.GEMINI
         _uiState.update { it.copy(history = loadHistory(), aiProvider = savedProvider) }
@@ -150,6 +162,84 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    // Compound cache
+    // Cached compound JSON files stored in context.cacheDir/compound_cache/
+    // Each file is named by CID: <cid>.json
+
+    private val cacheDir: java.io.File get() {
+        val custom = prefs.getString("cache_dir", null)
+        val dir = if (!custom.isNullOrBlank()) java.io.File(custom) else java.io.File(getApplication<Application>().cacheDir, "compound_cache")
+        if (!dir.exists()) dir.mkdirs()
+        return dir
+    }
+
+    fun getCacheSizeBytes(): Long = computeCacheSize()
+
+    private fun computeCacheSize(): Long =
+        runCatching { cacheDir.walkTopDown().filter { it.isFile }.sumOf { it.length() } }.getOrDefault(0L)
+
+    fun clearCache() {
+        cacheDir.walkTopDown().filter { it.isFile }.forEach { it.delete() }
+        _cacheSizeBytes.value = 0L
+        DebugLog.d("ChemSearch", "Compound cache cleared")
+    }
+
+    fun setCacheDir(path: String) {
+        prefs.edit().putString("cache_dir", path).apply()
+        _cacheDirPath.value = path
+        _cacheSizeBytes.value = computeCacheSize()
+        DebugLog.d("ChemSearch", "Cache dir set to: $path")
+    }
+
+    fun getCacheDir(): String = prefs.getString("cache_dir", null) ?: ""
+
+    private fun readCache(cid: Long): ChemUiState? {
+        val file = java.io.File(cacheDir, "$cid.json")
+        if (!file.exists()) return null
+        return try {
+            val json = file.readText()
+            gson.fromJson(json, ChemUiState::class.java)
+        } catch (e: Exception) {
+            DebugLog.e("ChemSearch", "Cache read failed for CID $cid: ${e.message}")
+            null
+        }
+    }
+
+    private fun findCacheByName(query: String): ChemUiState? {
+        val q = query.trim().lowercase()
+        return try {
+            cacheDir.listFiles()
+                ?.filter { it.isFile && it.extension == "json" }
+                ?.firstOrNull { file ->
+                    try {
+                        val state = gson.fromJson(file.readText(), ChemUiState::class.java)
+                        state.name.lowercase() == q ||
+                        state.synonyms.any { it.lowercase() == q } ||
+                        state.casNumber?.lowercase() == q ||
+                        state.cid?.toString() == q
+                    } catch (e: Exception) { false }
+                }
+                ?.let { file ->
+                    gson.fromJson(file.readText(), ChemUiState::class.java)
+                }
+        } catch (e: Exception) {
+            DebugLog.e("ChemSearch", "Cache name search failed: ${e.message}")
+            null
+        }
+    }
+
+    private fun writeCache(state: ChemUiState) {
+        val cid = state.cid ?: return
+        try {
+            val file = java.io.File(cacheDir, "$cid.json")
+            file.writeText(gson.toJson(state))
+            _cacheSizeBytes.value = computeCacheSize()
+            DebugLog.d("ChemSearch", "Cached compound CID $cid (${file.length() / 1024}KB)")
+        } catch (e: Exception) {
+            DebugLog.e("ChemSearch", "Cache write failed: ${e.message}")
+        }
+    }
+
     fun search(queryOverride: String? = null) {
 
         val q = (queryOverride ?: _query.value).trim()
@@ -162,11 +252,62 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             _uiState.update {
                 it.copy(isLoading = true, error = null, suggestions = emptyList(), hasResult = false, sdfData = null, ghsData = null, isLoadingSafety = false)
             }
+
+            // Cache-first lookup by name
+            val cachedByName = findCacheByName(q)
+            if (cachedByName != null) {
+                DebugLog.d("ChemSearch", "Cache hit by name for \"$q\" → CID ${cachedByName.cid}")
+                val savedSource = getSavedDescSource()
+                _uiState.update {
+                    cachedByName.copy(
+                        isLoading = false,
+                        hasResult = true,
+                        history = loadHistory(),
+                        descSource = savedSource,
+                        sdfData = null,
+                        activeTab = MolTab.TWO_D
+                    )
+                }
+                saveToHistory(cachedByName.name)
+                when (savedSource) {
+                    DescSource.WIKI -> if (cachedByName.wikiDescription == null) fetchWikiDescription()
+                    DescSource.AI   -> if (cachedByName.aiDescription == null) fetchAiDescription()
+                    else -> Unit
+                }
+                if (cachedByName.ghsData == null) fetchSafetyData()
+                return@launch
+            }
+
             try {
                 val cidResponse = ApiClient.pubChem.getCid(q)
                 val cid = cidResponse.identifierList?.cid?.firstOrNull()
                     ?: throw NoSuchElementException("Chemical not found.")
                 DebugLog.d("ChemSearch", "CID resolved: $cid for \"$q\"")
+
+                val cached = readCache(cid)
+                if (cached != null) {
+                    DebugLog.d("ChemSearch", "Cache hit for CID $cid (${cached.name})")
+                    val savedSource = getSavedDescSource()
+                    _uiState.update {
+                        cached.copy(
+                            isLoading = false,
+                            hasResult = true,
+                            history = loadHistory(),
+                            descSource = savedSource,
+                            ghsData = cached.ghsData,
+                            sdfData = null,
+                            activeTab = MolTab.TWO_D
+                        )
+                    }
+                    saveToHistory(cached.name)
+                    when (savedSource) {
+                        DescSource.WIKI -> if (cached.wikiDescription == null) fetchWikiDescription()
+                        DescSource.AI   -> if (cached.aiDescription == null) fetchAiDescription()
+                        else -> Unit
+                    }
+                    if (cached.ghsData == null) fetchSafetyData()
+                    return@launch
+                }
 
                 val propsDeferred = async { runCatching { ApiClient.pubChem.getProperties(cid) }.getOrNull() }
                 val synsDeferred  = async { runCatching { ApiClient.pubChem.getSynonyms(cid) }.getOrNull() }
@@ -201,32 +342,33 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 saveToHistory(compoundName)
                 DebugLog.d("ChemSearch", "Search complete: \"$compoundName\" (CID $cid), ${synonyms.size} synonyms, desc=${pubDesc != null}")
 
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        hasResult = true,
-                        cid = cid,
-                        name = compoundName.replaceFirstChar { c -> c.uppercase() },
-                        formula = formula,
-                        empiricalFormula = getEmpiricalFormula(formula),
-                        weight = props.molecularWeight ?: "",
-                        charge = props.charge ?: 0,
-                        iupacName = props.iupacName ?: "",
-                        smiles = props.smiles ?: "",
-                        connectivitySmiles = props.connectivitySmiles ?: props.smiles ?: "",
-                        inchiKey = props.inchiKey ?: "",
-                        inchi = props.inchi ?: "",
-                        synonyms = synonyms.take(8),
-                        casNumber = casNumber,
-                        pubDescription = pubDesc,
-                        wikiDescription = null,
-                        aiDescription = null,
-                        descSource = savedSource,
-                        elementalData = calcElementalData(formula),
-                        history = loadHistory(),
-                        activeTab = MolTab.TWO_D,
-                    )
-                }
+                val newState = ChemUiState(
+                    isLoading = false,
+                    hasResult = true,
+                    cid = cid,
+                    name = compoundName.replaceFirstChar { c -> c.uppercase() },
+                    formula = formula,
+                    empiricalFormula = getEmpiricalFormula(formula),
+                    weight = props.molecularWeight ?: "",
+                    charge = props.charge ?: 0,
+                    iupacName = props.iupacName ?: "",
+                    smiles = props.smiles ?: "",
+                    connectivitySmiles = props.connectivitySmiles ?: props.smiles ?: "",
+                    inchiKey = props.inchiKey ?: "",
+                    inchi = props.inchi ?: "",
+                    synonyms = synonyms.take(8),
+                    casNumber = casNumber,
+                    pubDescription = pubDesc,
+                    wikiDescription = null,
+                    aiDescription = null,
+                    descSource = savedSource,
+                    elementalData = calcElementalData(formula),
+                    history = loadHistory(),
+                    activeTab = MolTab.TWO_D,
+                    aiProvider = _uiState.value.aiProvider
+                )
+                _uiState.update { newState }
+                writeCache(newState)
 
                 when (savedSource) {
                     DescSource.WIKI -> fetchWikiDescription()
@@ -359,16 +501,26 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun clearError() = _uiState.update { it.copy(error = null) }
 
     fun getGeminiKey(): String? = prefs.getString("gemini_key", null)?.ifBlank { null }
-    fun saveGeminiKey(key: String) = prefs.edit().putString("gemini_key", key).apply()
+    fun saveGeminiKey(key: String) {
+        prefs.edit().putString("gemini_key", key).apply()
+        _hasGeminiKey.value = key.isNotBlank()
+    }
+
     fun clearGeminiKey() {
         prefs.edit().remove("gemini_key").apply()
+        _hasGeminiKey.value = false
         if (_uiState.value.aiProvider == AiProvider.GEMINI) _uiState.update { it.copy(aiDescription = null) }
     }
 
     fun getGroqKey(): String? = prefs.getString("groq_key", null)?.ifBlank { null }
-    fun saveGroqKey(key: String) = prefs.edit().putString("groq_key", key).apply()
+    fun saveGroqKey(key: String) {
+        prefs.edit().putString("groq_key", key).apply()
+        _hasGroqKey.value = key.isNotBlank()
+    }
+
     fun clearGroqKey() {
         prefs.edit().remove("groq_key").apply()
+        _hasGroqKey.value = false
         if (_uiState.value.aiProvider == AiProvider.GROQ) _uiState.update { it.copy(aiDescription = null) }
     }
 

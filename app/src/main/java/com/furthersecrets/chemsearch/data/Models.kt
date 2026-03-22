@@ -3,7 +3,7 @@ package com.furthersecrets.chemsearch.data
 import com.google.gson.JsonElement
 import com.google.gson.annotations.SerializedName
 
-// ─── PubChem CID ───────────────────────────────────────────────────────────────
+// PubChem CID
 
 data class CidResponse(
     @SerializedName("IdentifierList") val identifierList: IdentifierList?
@@ -13,7 +13,7 @@ data class IdentifierList(
     @SerializedName("CID") val cid: List<Long>?
 )
 
-// ─── PubChem Properties ────────────────────────────────────────────────────────
+// PubChem Properties
 
 data class PropertiesResponse(
     @SerializedName("PropertyTable") val propertyTable: PropertyTable?
@@ -35,7 +35,7 @@ data class CompoundProperty(
     @SerializedName("Charge") val charge: Int?
 )
 
-// ─── PubChem Synonyms ──────────────────────────────────────────────────────────
+// PubChem Synonyms
 
 data class SynonymsResponse(
     @SerializedName("InformationList") val informationList: SynonymInfoList?
@@ -49,7 +49,7 @@ data class SynonymInfo(
     @SerializedName("Synonym") val synonym: List<String>?
 )
 
-// ─── PubChem Description ───────────────────────────────────────────────────────
+// PubChem Description
 
 data class DescriptionResponse(
     @SerializedName("InformationList") val informationList: DescInfoList?
@@ -64,7 +64,7 @@ data class DescriptionInfo(
     @SerializedName("DescriptionSourceName") val sourceName: String?
 )
 
-// ─── PubChem Autocomplete ──────────────────────────────────────────────────────
+// PubChem Autocomplete
 
 data class AutocompleteResponse(
     @SerializedName("dictionary_terms") val dictionaryTerms: DictionaryTerms?
@@ -74,14 +74,14 @@ data class DictionaryTerms(
     @SerializedName("compound") val compound: List<String>?
 )
 
-// ─── Wikipedia ─────────────────────────────────────────────────────────────────
+// Wikipedia
 
 data class WikiResponse(
     @SerializedName("extract") val extract: String?,
     @SerializedName("title") val title: String?
 )
 
-// ─── Gemini ────────────────────────────────────────────────────────────────────
+// Gemini
 
 data class GeminiRequest(val contents: List<GeminiContent>)
 data class GeminiContent(val parts: List<GeminiPart>)
@@ -95,7 +95,7 @@ data class GeminiCandidate(
     val content: GeminiContent?
 )
 
-// ─── Groq ──────────────────────────────────────────────────────────────────────
+// Groq
 
 data class GroqRequest(
     val model: String,
@@ -116,7 +116,7 @@ data class GroqChoice(
     val message: GroqMessage?
 )
 
-// ─── UI State ──────────────────────────────────────────────────────────────────
+// UI State
 
 data class ChemUiState(
     val isLoading: Boolean = false,
@@ -160,7 +160,7 @@ data class ElementData(
     val percentage: Float
 )
 
-// ─── Favorites ─────────────────────────────────────────────────────────────────
+// Favorites
 
 data class FavoriteCompound(
     val cid: Long,
@@ -171,7 +171,7 @@ data class FavoriteCompound(
     val savedAt: Long = System.currentTimeMillis()
 )
 
-// ─── GHS Safety ────────────────────────────────────────────────────────────────
+// GHS Safety
 
 data class GhsData(
     val signalWord: String?,

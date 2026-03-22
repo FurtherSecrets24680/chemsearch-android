@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
-// ─── PubChem PUG REST ──────────────────────────────────────────────────────────
+// PubChem PUG REST
 
 interface PubChemApi {
 
@@ -33,7 +33,7 @@ interface PubChemApi {
     ): ResponseBody
 }
 
-// ─── PubChem Autocomplete ──────────────────────────────────────────────────────
+// PubChem Autocomplete
 
 interface PubChemAutocompleteApi {
 
@@ -44,7 +44,7 @@ interface PubChemAutocompleteApi {
     ): AutocompleteResponse
 }
 
-// ─── Wikipedia ─────────────────────────────────────────────────────────────────
+// Wikipedia
 
 interface WikiApi {
 
@@ -54,7 +54,7 @@ interface WikiApi {
     ): WikiResponse
 }
 
-// ─── Gemini ────────────────────────────────────────────────────────────────────
+// Gemini
 
 interface GeminiApi {
 
@@ -65,7 +65,7 @@ interface GeminiApi {
     ): GeminiResponse
 }
 
-// ─── Groq ──────────────────────────────────────────────────────────────────────
+// Groq
 
 interface GroqApi {
 
@@ -76,7 +76,7 @@ interface GroqApi {
     ): GroqResponse
 }
 
-// ─── Clients ───────────────────────────────────────────────────────────────────
+// Clients
 
 object ApiClient {
 
@@ -131,7 +131,7 @@ object ApiClient {
             .create(PubChemViewApi::class.java)
 }
 
-// ─── PubChem PUG View ──────────────────────────────────────────────────────────
+// PubChem PUG View
 
 interface PubChemViewApi {
     @GET("data/compound/{cid}/JSON")

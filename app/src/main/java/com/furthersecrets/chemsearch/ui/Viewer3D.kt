@@ -22,19 +22,11 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlin.math.*
-
-// ─────────────────────────────────────────────────────────────────────────────
-// DATA CLASSES
-// ─────────────────────────────────────────────────────────────────────────────
-
 data class Atom3D(val x: Float, val y: Float, val z: Float, val element: String)
 data class Bond3D(val a1: Int, val a2: Int, val type: Int)
 data class Molecule3D(val atoms: List<Atom3D>, val bonds: List<Bond3D>)
 
-// ─────────────────────────────────────────────────────────────────────────────
 // SDF PARSER
-// ─────────────────────────────────────────────────────────────────────────────
-
 fun parseSdf(sdf: String): Molecule3D {
     val lines = sdf.lines()
     if (lines.size < 4) return Molecule3D(emptyList(), emptyList())
@@ -69,10 +61,7 @@ fun parseSdf(sdf: String): Molecule3D {
     return Molecule3D(atoms, bonds)
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // CPK COLORS & BALL-AND-STICK RADII
-// ─────────────────────────────────────────────────────────────────────────────
-
 private val cpkColors = mapOf(
     // Full standard Jmol CPK colors for ALL 118 elements
     "H"  to Color(0xFFFFFFFF), "He" to Color(0xFFD9FFFF),
@@ -182,10 +171,7 @@ private val ballRadii = mapOf(
 fun elementColor(element: String): Color = cpkColors[element] ?: Color(0xFFFF69B4)
 fun elementBallRadius(element: String): Float = ballRadii[element] ?: 0.35f
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 3D MATH
-// ─────────────────────────────────────────────────────────────────────────────
-
+// 3D Math
 private fun rotate3D(
     x: Float, y: Float, z: Float, rx: Float, ry: Float
 ): Triple<Float, Float, Float> {
@@ -208,10 +194,7 @@ private fun project(
     return Pair(Offset(sx, sy), p)
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // BOND DRAWING
-// ─────────────────────────────────────────────────────────────────────────────
-
 private fun DrawScope.drawBond(
     s1: Offset, r1: Float,
     s2: Offset, r2: Float,
@@ -258,10 +241,7 @@ private fun DrawScope.drawBond(
     }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // ATOM DRAWING
-// ─────────────────────────────────────────────────────────────────────────────
-
 private fun DrawScope.drawAtom(pos: Offset, r: Float, color: Color, depthFactor: Float, rotX: Float, rotY: Float) {
     val lx = cos(rotY) * (-0.6f)
     val ly = (-0.6f) * cos(rotX)
@@ -274,10 +254,8 @@ private fun DrawScope.drawAtom(pos: Offset, r: Float, color: Color, depthFactor:
     drawCircle(Color.White.copy(0.55f), r * 0.36f, Offset(hlX, hlY))
     drawCircle(Color.White.copy(0.12f), r * 0.65f, Offset(pos.x + lx * r * 0.25f, pos.y + ly * r * 0.25f))
 }
-// ─────────────────────────────────────────────────────────────────────────────
-// MAIN COMPOSABLE
-// ─────────────────────────────────────────────────────────────────────────────
 
+// MAIN COMPOSABLE
 @Composable
 fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
     val molecule = remember(cid, sdfData) { parseSdf(sdfData) }
@@ -402,7 +380,7 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
             }
         }
 
-// ── Top left: reset button ───────────────────────────────────────────
+// Top left: reset button
         IconButton(
             onClick = { rotX = 0.25f; rotY = 0f; zoom = 1f; autoSpin = true },
             modifier = Modifier.align(Alignment.TopStart).padding(4.dp).size(32.dp)
@@ -410,17 +388,17 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
             Icon(Icons.Default.Refresh, "Reset view", tint = overlayTextColor.copy(0.4f), modifier = Modifier.size(16.dp))
         }
 
-        // ── Top right: hints ─────────────────────────────────────────────────
+        // Top right: hints
         Column(
             modifier = Modifier.align(Alignment.TopEnd).padding(10.dp),
             horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
-            Text("drag to rotate", color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
-            Text("pinch to zoom",  color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
+            Text("Drag to rotate", color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
+            Text("Pinch to zoom",  color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
         }
 
-        // ── Bottom left: element legend ──────────────────────────────────────
+        // Bottom left: element legend
         Column(
             modifier = Modifier.align(Alignment.BottomStart).padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -433,7 +411,7 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
             }
         }
 
-        // ── Bottom right: stats and spin indicator ─────────────────────────────
+        // Bottom right: stats and spin indicator
         Column(
             modifier = Modifier.align(Alignment.BottomEnd).padding(10.dp),
             horizontalAlignment = Alignment.End,
@@ -444,7 +422,7 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
                 color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace
             )
             Text(
-                if (autoSpin) "⟳ auto-spin" else "● paused",
+                if (autoSpin) "⟳ Auto-spin" else "● Paused",
                 color = if (autoSpin) Color(0xFF3B82F6).copy(0.7f) else overlayTextColor.copy(0.3f),
                 fontSize = 9.sp, fontFamily = FontFamily.Monospace
             )

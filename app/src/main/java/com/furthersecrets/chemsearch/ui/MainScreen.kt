@@ -32,6 +32,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -63,6 +64,7 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.activity.compose.BackHandler
 import android.app.Activity
 import android.content.ContentValues
 import android.os.Build
@@ -84,7 +86,7 @@ import java.io.File
 
 enum class AppTab { SEARCH, FAVORITES, RECENT, TOOLS, SETTINGS }
 
-// ─── Root ──────────────────────────────────────────────────────────────────────
+// Root
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -94,6 +96,10 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val isDark by vm.isDarkTheme.collectAsState()
     val autoSuggest by vm.autoSuggest.collectAsState()
     val defaultDescSource by vm.defaultDescSource.collectAsState()
+    val hasGeminiKey by vm.hasGeminiKey.collectAsState()
+    val hasGroqKey by vm.hasGroqKey.collectAsState()
+    val cacheSizeBytes by vm.cacheSizeBytes.collectAsState()
+    val cacheDirPath by vm.cacheDirPath.collectAsState()
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val snackbar = remember { SnackbarHostState() }
@@ -161,8 +167,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             autoSuggest = autoSuggest,
             defaultDescSource = defaultDescSource,
             aiProvider = state.aiProvider,
-            hasGeminiKey = vm.getGeminiKey() != null,
-            hasGroqKey = vm.getGroqKey() != null,
+            hasGeminiKey = hasGeminiKey,
+            hasGroqKey = hasGroqKey,
             onToggleTheme = { vm.toggleTheme() },
             onToggleAutoSuggest = { vm.toggleAutoSuggest() },
             onSetDefaultDesc = { vm.setDefaultDescSource(it) },
@@ -186,6 +192,32 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     }
 
     var selectedTab by remember { mutableStateOf(AppTab.SEARCH) }
+    var showExitDialog by remember { mutableStateOf(false) }
+
+    BackHandler {
+        if (selectedTab != AppTab.SEARCH) {
+            selectedTab = AppTab.SEARCH
+        } else {
+            showExitDialog = true
+        }
+    }
+
+    if (showExitDialog) {
+        AlertDialog(
+            onDismissRequest = { showExitDialog = false },
+            title = { Text("Exit ChemSearch?", fontWeight = FontWeight.Bold) },
+            text = { Text("Are you sure you want to exit?") },
+            confirmButton = {
+                Button(
+                    onClick = { (context as? Activity)?.finish() },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) { Text("Exit") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showExitDialog = false }) { Text("Cancel") }
+            }
+        )
+    }
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar) },
@@ -344,6 +376,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     isLoading = state.isLoadingSafety
                                 )
                             }
+                            item { PubChemCredits() }
                         }
                     }
                 } else {
@@ -369,8 +402,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     autoSuggest = autoSuggest,
                                     defaultDescSource = defaultDescSource,
                                     aiProvider = state.aiProvider,
-                                    hasGeminiKey = vm.getGeminiKey() != null,
-                                    hasGroqKey = vm.getGroqKey() != null,
+                                    hasGeminiKey = hasGeminiKey,
+                                    hasGroqKey = hasGroqKey,
                                     onToggleTheme = { vm.toggleTheme() },
                                     onToggleAutoSuggest = { vm.toggleAutoSuggest() },
                                     onSetDefaultDesc = { vm.setDefaultDescSource(it) },
@@ -379,7 +412,11 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     onSetGroqKey = { showGroqKeyDialog = true },
                                     onClearGeminiKey = { vm.clearGeminiKey() },
                                     onClearGroqKey = { vm.clearGroqKey() },
-                                    onClearHistory = { vm.clearHistory() }
+                                    onClearHistory = { vm.clearHistory() },
+                                    cacheSizeBytes = cacheSizeBytes,
+                                    cacheDir = cacheDirPath,
+                                    onClearCache = { vm.clearCache() },
+                                    onSetCacheDir = { vm.setCacheDir(it) }
                                 )
                                 AppTab.TOOLS -> ToolsScreen(isDark = isDark)
                                 else -> {}
@@ -410,7 +447,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     }
 }
 
-// ─── App header ────────────────────────────────────────────────────────────────
+// App header
 
 @Composable
 fun AppHeader(isDark: Boolean, onToggleTheme: () -> Unit) {
@@ -434,7 +471,7 @@ fun AppHeader(isDark: Boolean, onToggleTheme: () -> Unit) {
                     letterSpacing = (-0.3).sp
                 )
                 Text(
-                    "POWERED BY PUBCHEM",
+                    "CHEMISTRY SIMPLIFIED",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary,
                     letterSpacing = 1.8.sp,
@@ -464,7 +501,7 @@ private fun HeaderIconButton(onClick: () -> Unit, icon: ImageVector, description
     }
 }
 
-// ─── Settings bottom sheet ─────────────────────────────────────────────────────
+// Settings bottom sheet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -694,7 +731,7 @@ fun SettingsActionRow(icon: ImageVector, title: String, subtitle: String, action
     }
 }
 
-// ─── Search bar ────────────────────────────────────────────────────────────────
+// Search bar
 
 @Composable
 fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearch: () -> Unit, onClear: () -> Unit) {
@@ -753,7 +790,7 @@ fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearch: () -> Un
     )
 }
 
-// ─── Suggestions dropdown ──────────────────────────────────────────────────────
+// Suggestions dropdown
 
 @Composable
 fun SuggestionsDropdown(suggestions: List<String>, onSelect: (String) -> Unit) {
@@ -790,7 +827,7 @@ fun SuggestionsDropdown(suggestions: List<String>, onSelect: (String) -> Unit) {
     }
 }
 
-// ─── History ───────────────────────────────────────────────────────────────────
+// History (Recents)
 
 @Composable
 fun HistorySection(history: List<String>, onSelect: (String) -> Unit, onClear: () -> Unit) {
@@ -888,7 +925,7 @@ fun HistorySection(history: List<String>, onSelect: (String) -> Unit, onClear: (
     }
 }
 
-// ─── Compound header ───────────────────────────────────────────────────────────
+// Compound header
 
 @Composable
 fun CompoundHeader(state: ChemUiState, isFavorite: Boolean, onToggleFavorite: () -> Unit) {
@@ -1006,7 +1043,36 @@ fun ClickableIdentifier(label: String, value: String, cm: ClipboardManager) {
     )
 }
 
-// ─── Structure viewer ──────────────────────────────────────────────────────────
+@Composable
+fun PubChemCredits() {
+    val context = LocalContext.current
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp, bottom = 4.dp)
+            .clickable {
+                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://pubchem.ncbi.nlm.nih.gov")))
+            },
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            Icons.Default.Science,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurface.copy(0.25f),
+            modifier = Modifier.size(12.dp)
+        )
+        Spacer(Modifier.width(5.dp))
+        Text(
+            "Compound data from PubChem (NIH/NCBI)",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.28f),
+            fontSize = 10.sp
+        )
+    }
+}
+
+// Structure viewer
 
 private suspend fun saveSdfFile(context: Context, compoundName: String, sdfData: String) {
     val fileName = "${compoundName.replace(" ", "_").lowercase()}_3d.sdf"
@@ -1118,7 +1184,10 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
             }
 
             Box(
-                modifier = Modifier.fillMaxWidth().height(300.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+                    .clipToBounds(),
                 contentAlignment = Alignment.Center
             ) {
                 when (state.activeTab) {
@@ -1174,7 +1243,7 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
     }
 }
 
-// ─── Identifiers ───────────────────────────────────────────────────────────────
+// Identifiers
 
 @Composable
 fun IdentifiersSection(state: ChemUiState, context: Context) {
@@ -1280,7 +1349,7 @@ fun IdentifierRow(label: String, value: String, context: Context, mono: Boolean 
     }
 }
 
-// ─── Elemental analysis ────────────────────────────────────────────────────────
+// Elemental analysis (Percentage Composition)
 
 @Composable
 fun ElementalSection(data: List<ElementData>) {
@@ -1355,7 +1424,7 @@ fun ElementalSection(data: List<ElementData>) {
     }
 }
 
-// ─── Synonyms ──────────────────────────────────────────────────────────────────
+// Synonyms
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -1387,7 +1456,7 @@ fun SynonymsSection(synonyms: List<String>) {
     }
 }
 
-// ─── Description ───────────────────────────────────────────────────────────────
+// Description
 
 @Composable
 fun DescriptionSection(state: ChemUiState, onPubChem: () -> Unit, onWiki: () -> Unit, onAI: () -> Unit, onRegenerate: () -> Unit) {
@@ -1485,7 +1554,7 @@ fun SourceBtn(label: String, active: Boolean, onClick: () -> Unit) {
     }
 }
 
-// ─── API Provider dialog ────────────────────────────────────────────────────────
+// API Provider dialog
 
 @Composable
 fun AiProviderDialog(onSelect: (AiProvider) -> Unit, onDismiss: () -> Unit) {
@@ -1524,7 +1593,7 @@ fun AiProviderDialog(onSelect: (AiProvider) -> Unit, onDismiss: () -> Unit) {
     )
 }
 
-// ─── API Key dialog ─────────────────────────────────────────────────────────────
+// API Key dialog
 
 @Composable
 fun ApiKeyDialog(title: String, link: String, current: String, onSave: (String) -> Unit, onDismiss: () -> Unit) {
@@ -1569,7 +1638,7 @@ fun ApiKeyDialog(title: String, link: String, current: String, onSave: (String) 
     )
 }
 
-// ─── Utilities ──────────────────────────────────────────────────────────────────
+// Utilities
 
 @Composable
 fun SectionLabel(text: String) {
@@ -1582,7 +1651,7 @@ fun SectionLabel(text: String) {
     )
 }
 
-// ─── Info dialog ───────────────────────────────────────────────────────────────
+// Info dialog
 
 @Composable
 fun InfoDialog(title: String, entries: List<Pair<String, String>>, onDismiss: () -> Unit) {
@@ -1630,7 +1699,7 @@ fun toSubscriptFormula(formula: String): String {
     }
 }
 
-// ─── Favorites sheet ───────────────────────────────────────────────────────────
+// Favorites sheet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -1712,7 +1781,7 @@ fun FavoritesSheet(
     }
 }
 
-// ─── GHS Safety ────────────────────────────────────────────────────────────────
+// GHS Safety
 
 private val ghsEmoji = mapOf(
     "GHS01" to "💥", "GHS02" to "🔥", "GHS03" to "🔆",
@@ -1748,7 +1817,7 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
                     onDismiss = { showInfo = false }
                 )
             }
-            CardSectionHeader("Safety (GHS)") { showInfo = true }
+            CardSectionHeader("GHS Safety Information") { showInfo = true }
 
             if (isLoading) {
                 Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -1854,7 +1923,14 @@ fun FavoritesInline(
                 Box(
                     modifier = Modifier.size(80.dp).background(MaterialTheme.colorScheme.primary.copy(0.08f), CircleShape),
                     contentAlignment = Alignment.Center
-                ) { Text("🔖", fontSize = 36.sp) }
+                ) {
+                    Icon(
+                        Icons.Default.BookmarkBorder,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary.copy(0.5f),
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
                 Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     Text("No bookmarks yet", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface.copy(0.7f))
                     Text("Tap the bookmark icon on any compound", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.38f))
@@ -1913,7 +1989,11 @@ fun SettingsInline(
     onSetGroqKey: () -> Unit,
     onClearGeminiKey: () -> Unit,
     onClearGroqKey: () -> Unit,
-    onClearHistory: () -> Unit
+    onClearHistory: () -> Unit,
+    cacheSizeBytes: Long = 0L,
+    cacheDir: String = "",
+    onClearCache: () -> Unit = {},
+    onSetCacheDir: (String) -> Unit = {}
 ) {
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences("chemsearch_prefs", Context.MODE_PRIVATE) }
@@ -2040,6 +2120,70 @@ fun SettingsInline(
         SettingsSectionHeader("Data")
         SettingsActionRow(Icons.Default.History, "Search History", "Clear all recent searches", "Clear", MaterialTheme.colorScheme.error, onClearHistory)
 
+        // Cache settings
+        var showCacheDirDialog by remember { mutableStateOf(false) }
+        var cacheDirInput by remember { mutableStateOf(cacheDir) }
+
+        if (showCacheDirDialog) {
+            AlertDialog(
+                onDismissRequest = { showCacheDirDialog = false },
+                title = { Text("Cache location", fontWeight = FontWeight.Bold) },
+                text = {
+                    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Text(
+                            "Enter a custom path or leave blank to use the default app cache directory.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                        )
+                        OutlinedTextField(
+                            value = cacheDirInput,
+                            onValueChange = { cacheDirInput = it },
+                            label = { Text("Directory path") },
+                            placeholder = { Text("Leave blank for default") },
+                            singleLine = true,
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Text(
+                            "Default: app internal cache. Custom paths must be writable.",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                        )
+                    }
+                },
+                confirmButton = {
+                    Button(onClick = {
+                        onSetCacheDir(cacheDirInput.trim())
+                        showCacheDirDialog = false
+                    }, shape = RoundedCornerShape(10.dp)) { Text("Save") }
+                },
+                dismissButton = { TextButton(onClick = { showCacheDirDialog = false }) { Text("Cancel") } }
+            )
+        }
+
+        val cacheSizeLabel = when {
+            cacheSizeBytes == 0L -> "Empty"
+            cacheSizeBytes < 1024 -> "${cacheSizeBytes} B"
+            cacheSizeBytes < 1024 * 1024 -> "${"%.1f".format(cacheSizeBytes / 1024.0)} KB"
+            else -> "${"%.2f".format(cacheSizeBytes / (1024.0 * 1024.0))} MB"
+        }
+        SettingsActionRow(
+            icon = Icons.Default.Cached,
+            title = "Compound cache",
+            subtitle = "$cacheSizeLabel · ${if (cacheDir.isBlank()) "Default location" else cacheDir.takeLast(30)}",
+            actionLabel = "Clear",
+            actionColor = MaterialTheme.colorScheme.error,
+            onClick = onClearCache
+        )
+        SettingsActionRow(
+            icon = Icons.Default.FolderOpen,
+            title = "Cache location",
+            subtitle = if (cacheDir.isBlank()) "App internal cache (default)" else cacheDir,
+            actionLabel = "Change",
+            actionColor = MaterialTheme.colorScheme.primary,
+            onClick = { cacheDirInput = cacheDir; showCacheDirDialog = true }
+        )
+
         if (isDevMode) {
             Spacer(Modifier.height(4.dp))
             DebugSettingsSection(
@@ -2111,10 +2255,7 @@ fun SettingsInline(
     }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // DEBUG SETTINGS
-// ─────────────────────────────────────────────────────────────────────────────
-
 object DebugLog {
     private const val MAX = 200
     val lines = mutableStateListOf<String>()
@@ -2460,10 +2601,7 @@ fun DebugSettingsSection(
     }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // TOOLS SCREEN
-// ─────────────────────────────────────────────────────────────────────────────
-
 @Composable
 fun ToolsScreen(isDark: Boolean) {
     var selectedTool by remember { mutableStateOf(0) }
@@ -2560,10 +2698,7 @@ private fun ToolCard(icon: ImageVector, title: String, subtitle: String, onClick
     }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // TOOL 1 : CUSTOM 3D MOLECULE VIEWER
-// ─────────────────────────────────────────────────────────────────────────────
-
 @Composable
 fun SdfViewerTool(isDark: Boolean) {
     val context = LocalContext.current
@@ -2690,10 +2825,7 @@ fun SdfViewerTool(isDark: Boolean) {
     }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // TOOL 2 : MOLAR MASS CALCULATOR
-// ─────────────────────────────────────────────────────────────────────────────
-
 private val MOLAR_WEIGHTS = mapOf(
     "H" to 1.008, "He" to 4.003, "Li" to 6.941, "Be" to 9.012, "B" to 10.811,
     "C" to 12.011, "N" to 14.007, "O" to 15.999, "F" to 18.998, "Ne" to 20.180,
@@ -2759,13 +2891,41 @@ private fun parseFormulaForCalc(formula: String): Map<String, Int> {
 
 private fun calculateMolarMass(formula: String): CalcResult {
     if (formula.isBlank()) return CalcResult(0.0, emptyList(), "Enter a formula")
-    val elements = try { parseFormulaForCalc(formula) }
-    catch (e: Exception) { return CalcResult(0.0, emptyList(), "Invalid formula syntax") }
-    if (elements.isEmpty()) return CalcResult(0.0, emptyList(), "Could not parse formula")
-    val unknown = elements.keys.filter { it !in MOLAR_WEIGHTS }
+    // Support hydrated compound notation: CuSO4·5H2O, CuSO4*5H2O, CuSO4.5H2O
+    val normalized = formula.trim()
+    val hydrateRegex = Regex("""[·*](\d*\.?\d*)\s*([A-Z].*)$""")
+    val dotHydrateRegex = Regex("""\.(\d+)([A-Z].*)$""")
+
+    val parts: List<Pair<String, Double>> = run {
+        val hydrateMatch = hydrateRegex.find(normalized)
+        val dotMatch = dotHydrateRegex.find(normalized)
+        val match = hydrateMatch ?: dotMatch
+        if (match != null) {
+            val mainPart = normalized.substring(0, match.range.first)
+            val multiplier = match.groupValues[1].toDoubleOrNull() ?: 1.0
+            val hydratePart = match.groupValues[2]
+            listOf(mainPart to 1.0, hydratePart to multiplier)
+        } else {
+            listOf(normalized to 1.0)
+        }
+    }
+
+    val combined = mutableMapOf<String, Int>()
+    for ((part, multiplier) in parts) {
+        if (part.isBlank()) continue
+        val elements = try { parseFormulaForCalc(part) }
+        catch (e: Exception) { return CalcResult(0.0, emptyList(), "Invalid formula syntax") }
+        for ((el, cnt) in elements) {
+            val scaled = (cnt * multiplier).let { if (it == it.toLong().toDouble()) it.toLong().toInt() else { return CalcResult(0.0, emptyList(), "Non-integer atom count from hydrate multiplier") } }
+            combined[el] = (combined[el] ?: 0) + scaled
+        }
+    }
+
+    if (combined.isEmpty()) return CalcResult(0.0, emptyList(), "Could not parse formula")
+    val unknown = combined.keys.filter { it !in MOLAR_WEIGHTS }
     if (unknown.isNotEmpty()) return CalcResult(0.0, emptyList(), "Unknown element(s): ${unknown.joinToString(", ")}")
     var total = 0.0
-    val breakdown = elements.map { (el, cnt) ->
+    val breakdown = combined.map { (el, cnt) ->
         val contrib = MOLAR_WEIGHTS[el]!! * cnt
         total += contrib
         Triple(el, cnt, contrib)
@@ -2821,7 +2981,7 @@ fun MolarMassCalculator() {
             value = input,
             onValueChange = { input = it },
             label = { Text("Molecular Formula") },
-            placeholder = { Text("e.g. H2O, Ca(OH)2, C6H12O6") },
+            placeholder = { Text("e.g. H2O, Ca(OH)2, CuSO4·5H2O") },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(14.dp),
             singleLine = true,
@@ -2839,40 +2999,46 @@ fun MolarMassCalculator() {
             }
         )
 
-        Text(
-            "EXAMPLES",
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Bold,
-            letterSpacing = 0.8.sp,
-            color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
-        )
-        FlowRow(
+        // Quick-insert buttons for common formula characters
+        Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            examples.forEach { ex ->
-                val plainEx = ex.map { c ->
-                    when (c) {
-                        '₀' -> '0'; '₁' -> '1'; '₂' -> '2'; '₃' -> '3'; '₄' -> '4'
-                        '₅' -> '5'; '₆' -> '6'; '₇' -> '7'; '₈' -> '8'; '₉' -> '9'
-                        else -> c
-                    }
-                }.joinToString("")
-                val isActive = input == plainEx
-                FilterChip(
-                    selected = isActive,
-                    onClick = { input = plainEx; focusManager.clearFocus() },
-                    label = {
-                        Text(
-                            ex,
-                            style = MaterialTheme.typography.labelMedium,
-                            fontFamily = FontFamily.Monospace
-                        )
-                    }
+            Text("Insert:", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+            listOf("(" to "(", ")" to ")", "·" to "·").forEach { (label, insert) ->
+                Surface(
+                    onClick = { input += insert },
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f))
+                ) {
+                    Text(
+                        label,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = FontFamily.Monospace,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+            Spacer(Modifier.weight(1f))
+            Surface(
+                onClick = { if (input.isNotEmpty()) input = input.dropLast(1) },
+                shape = RoundedCornerShape(8.dp),
+                color = MaterialTheme.colorScheme.errorContainer.copy(0.3f),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(0.2f))
+            ) {
+                Icon(
+                    Icons.Default.Backspace,
+                    contentDescription = "Backspace",
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp).size(14.dp),
+                    tint = MaterialTheme.colorScheme.error.copy(0.7f)
                 )
             }
         }
 
+        // result card
         if (result != null) {
             if (result!!.error != null) {
                 Card(
@@ -2932,31 +3098,10 @@ fun MolarMassCalculator() {
                             modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
-                                "Element",
-                                modifier = Modifier.weight(1.2f),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
-                            )
-                            Text(
-                                "Count",
-                                modifier = Modifier.weight(1f),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
-                            )
-                            Text(
-                                "g/mol",
-                                modifier = Modifier.weight(1.3f),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
-                            )
-                            Text(
-                                "%",
-                                modifier = Modifier.weight(0.7f),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurface.copy(0.4f),
-                                textAlign = androidx.compose.ui.text.style.TextAlign.End
-                            )
+                            Text("Element", modifier = Modifier.weight(1.2f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                            Text("Count", modifier = Modifier.weight(1f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                            Text("g/mol", modifier = Modifier.weight(1.3f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                            Text("%", modifier = Modifier.weight(0.7f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f), textAlign = androidx.compose.ui.text.style.TextAlign.End)
                         }
 
                         result!!.breakdown.forEach { (el, cnt, contrib) ->
@@ -2966,59 +3111,17 @@ fun MolarMassCalculator() {
                                     modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Row(
-                                        modifier = Modifier.weight(1.2f),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(6.dp)
-                                    ) {
-                                        Box(
-                                            modifier = Modifier.size(26.dp).background(
-                                                MaterialTheme.colorScheme.primary.copy(0.1f),
-                                                RoundedCornerShape(6.dp)
-                                            ),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Text(
-                                                el,
-                                                style = MaterialTheme.typography.labelSmall,
-                                                fontWeight = FontWeight.Bold,
-                                                color = MaterialTheme.colorScheme.primary,
-                                                fontSize = 11.sp
-                                            )
+                                    Row(modifier = Modifier.weight(1.2f), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                        Box(modifier = Modifier.size(26.dp).background(MaterialTheme.colorScheme.primary.copy(0.1f), RoundedCornerShape(6.dp)), contentAlignment = Alignment.Center) {
+                                            Text(el, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, fontSize = 11.sp)
                                         }
                                     }
-                                    Text(
-                                        "×$cnt",
-                                        modifier = Modifier.weight(1f),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        fontFamily = FontFamily.Monospace,
-                                        color = MaterialTheme.colorScheme.onSurface.copy(0.7f)
-                                    )
-                                    Text(
-                                        "%.3f".format(contrib),
-                                        modifier = Modifier.weight(1.3f),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        fontFamily = FontFamily.Monospace
-                                    )
-                                    Text(
-                                        "%.1f%%".format(pct),
-                                        modifier = Modifier.weight(0.7f),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        fontFamily = FontFamily.Monospace,
-                                        color = MaterialTheme.colorScheme.primary,
-                                        textAlign = androidx.compose.ui.text.style.TextAlign.End
-                                    )
+                                    Text("×$cnt", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.onSurface.copy(0.7f))
+                                    Text("%.3f".format(contrib), modifier = Modifier.weight(1.3f), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
+                                    Text("%.1f%%".format(pct), modifier = Modifier.weight(0.7f), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.primary, textAlign = androidx.compose.ui.text.style.TextAlign.End)
                                 }
-                                Box(
-                                    modifier = Modifier.fillMaxWidth().height(4.dp)
-                                        .clip(RoundedCornerShape(2.dp))
-                                        .background(MaterialTheme.colorScheme.outline.copy(0.1f))
-                                ) {
-                                    Box(
-                                        modifier = Modifier.fillMaxHeight().fillMaxWidth(pct / 100f)
-                                            .clip(RoundedCornerShape(2.dp))
-                                            .background(MaterialTheme.colorScheme.primary.copy(0.65f))
-                                    )
+                                Box(modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)).background(MaterialTheme.colorScheme.outline.copy(0.1f))) {
+                                    Box(modifier = Modifier.fillMaxHeight().fillMaxWidth(pct / 100f).clip(RoundedCornerShape(2.dp)).background(MaterialTheme.colorScheme.primary.copy(0.65f)))
                                 }
                             }
                         }
@@ -3027,13 +3130,32 @@ fun MolarMassCalculator() {
             }
         }
 
+        Text(
+            "EXAMPLES",
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 0.8.sp,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+        )
+        @OptIn(ExperimentalLayoutApi::class)
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            listOf("H2O", "NaCl", "Ca(OH)2", "C6H12O6", "H2SO4", "CuSO4·5H2O", "MgSO4·7H2O", "Fe2O3").forEach { ex ->
+                val isActive = input == ex
+                FilterChip(
+                    selected = isActive,
+                    onClick = { input = ex; focusManager.clearFocus() },
+                    label = { Text(ex, style = MaterialTheme.typography.labelMedium, fontFamily = FontFamily.Monospace) }
+                )
+            }
+        }
+
     }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // TOOL 3 : OXIDATION STATE FINDER
-// ─────────────────────────────────────────────────────────────────────────────
-
 private val GROUP1  = setOf("Li","Na","K","Rb","Cs","Fr")
 private val GROUP2  = setOf("Be","Mg","Ca","Sr","Ba","Ra")
 
@@ -3058,7 +3180,7 @@ private fun findOxidationStates(formula: String, chargeIn: Int): OsResult {
     val hasH = hCount > 0
     val hasF = fCount > 0
 
-    // ── Free / monoatomic ────────────────────────────────────────────────────
+    // Free / monoatomic
     if (elements.size == 1) {
         val (el, cnt) = elements.entries.first()
         return if (cnt == 1) OsResult(states = listOf(el to osSign(chargeIn)))
@@ -3068,7 +3190,7 @@ private fun findOxidationStates(formula: String, chargeIn: Int): OsResult {
     val alkaliEl   = elements.keys.firstOrNull { it in GROUP1 }
     val alkalineEl = elements.keys.firstOrNull { it in GROUP2 }
 
-    // ── OF₂ / higher oxygen fluorides ────────────────────────────────────────
+    // OF₂ / higher oxygen fluorides
     if (elements.size == 2 && hasO && hasF) {
         val oOs = (chargeIn + fCount) / oCount
         return OsResult(
@@ -3077,7 +3199,7 @@ private fun findOxidationStates(formula: String, chargeIn: Int): OsResult {
         )
     }
 
-    // ── Superoxide  M(O₂)  e.g. KO₂, NaO₂  →  O = -½ ───────────────────────
+    // Superoxide  (O = -½)
     if (alkaliEl != null && elements.size == 2 && hasO) {
         val mCnt = elements[alkaliEl]!!
         if (oCount == mCnt * 2) {
@@ -3091,7 +3213,7 @@ private fun findOxidationStates(formula: String, chargeIn: Int): OsResult {
         }
     }
 
-    // ── Ozonide  M(O₃)  e.g. KO₃  →  O = -⅓ ───────────────────────────────
+    // Ozonides (O = -⅓)
     if (alkaliEl != null && elements.size == 2 && hasO) {
         val mCnt = elements[alkaliEl]!!
         if (oCount == mCnt * 3 && chargeIn - mCnt == -mCnt) {
@@ -3102,7 +3224,7 @@ private fun findOxidationStates(formula: String, chargeIn: Int): OsResult {
         }
     }
 
-    // ── Peroxide  (O = -1) ────────────────────────────────────────────────────
+    // Peroxides  (O = -1)
     val isPeroxide: Boolean = when {
         // H₂O₂
         elements.size == 2 && hasH && hasO && hCount == 2 && oCount == 2 && chargeIn == 0 -> true
@@ -3150,7 +3272,7 @@ private fun findOxidationStates(formula: String, chargeIn: Int): OsResult {
         return OsResult(states = res, note = "Peroxide compound : O has oxidation state = -1")
     }
 
-    // ── Metal hydrides  (H = -1) ──────────────────────────────────────────────
+    // Metal hydrides  (H = -1)
     // Metal hydride: contains H, no O or F, and ALL non-H elements are metals
     // with fixed oxidation states. This covers binary (NaH), ternary (LiAlH4) and complex hydrides.
     val metalHydrideMetals = setOf(
@@ -3320,18 +3442,6 @@ fun OxidationStateFinder() {
             )
         }
 
-        Text("EXAMPLES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-        @OptIn(ExperimentalLayoutApi::class)
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf("KMnO4" to 0, "H2SO4" to 0, "Fe2O3" to 0, "Cr2O7" to -2, "NH4" to 1, "HNO3" to 0).forEach { (f, c) ->
-                FilterChip(
-                    selected = formula == f && (chargeInput.toIntOrNull() ?: 0) == c,
-                    onClick = { formula = f; chargeInput = c.toString(); focusManager.clearFocus(); result = findOxidationStates(f, c) },
-                    label = { Text(toSubscriptFormula(f) + if (c != 0) " (${if (c > 0) "+$c" else "$c"})" else "", style = MaterialTheme.typography.labelMedium) }
-                )
-            }
-        }
-
         Button(
             onClick = {
                 focusManager.clearFocus()
@@ -3405,13 +3515,22 @@ fun OxidationStateFinder() {
             }
         }
 
+        Text("EXAMPLES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+        @OptIn(ExperimentalLayoutApi::class)
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            listOf("KMnO4" to 0, "H2SO4" to 0, "Fe2O3" to 0, "Cr2O7" to -2, "NH4" to 1, "HNO3" to 0).forEach { (f, c) ->
+                FilterChip(
+                    selected = formula == f && (chargeInput.toIntOrNull() ?: 0) == c,
+                    onClick = { formula = f; chargeInput = c.toString(); focusManager.clearFocus(); result = findOxidationStates(f, c) },
+                    label = { Text(toSubscriptFormula(f) + if (c != 0) " (${if (c > 0) "+$c" else "$c"})" else "", style = MaterialTheme.typography.labelMedium) }
+                )
+            }
+        }
+
     }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // TOOL 4 : SMILES VISUALIZER
-// ─────────────────────────────────────────────────────────────────────────────
-
 @Composable
 fun SmilesVisualizer(isDark: Boolean) {
     var input by remember { mutableStateOf("") }
@@ -3645,10 +3764,7 @@ fun SmilesVisualizer(isDark: Boolean) {
     }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // TOOL 5 : REACTION BALANCER
-// ─────────────────────────────────────────────────────────────────────────────
-
 private data class Frac(val num: Long, val den: Long) {
     companion object {
         fun of(n: Long) = Frac(n, 1L)

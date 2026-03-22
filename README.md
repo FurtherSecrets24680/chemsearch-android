@@ -18,12 +18,13 @@
   <img src="https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square" alt="MIT License"/>
 </p>
 
+<p align="center">
+<a href="https://www.producthunt.com/products/chemsearch?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-chemsearch" target="_blank" rel="noopener noreferrer"><img alt="ChemSearch - Chemistry Simplified. | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1104309&amp;theme=light&amp;t=1774183145053"></a>
+</p>
+
 ---
 
-This is the native Android version of the original **ChemSearch** web application, rewritten in Kotlin with Jetpack Compose.
-
-- **Web app:** [chemsearch.netlify.app](https://chemsearch.netlify.app/)
-- **Web repo:** [FurtherSecrets24680/chemsearch](https://github.com/FurtherSecrets24680/chemsearch)
+This is the native Android version of the original [**ChemSearch** webapp](https://chemsearch.netlify.app/), rewritten in Kotlin with Jetpack Compose.
 
 ---
 ## Features
@@ -47,7 +48,6 @@ This is the native Android version of the original **ChemSearch** web applicatio
     - Drag to rotate, pinch to zoom, auto-spin with pause on touch
     - CPK coloring for all 118 elements
     - Ball-and-stick model with bonds connected to atom surfaces
-    - Reset view button
     - **Download SDF** button to save the 3D structure file directly to Downloads
 
 ### Safety Information
@@ -105,29 +105,29 @@ A hidden debug menu can be unlocked by tapping the build number in the 'About' c
 
 ## Tech Stack
 
-| Component | Technology |
-|---|---|
-| Language | Kotlin |
-| UI | Jetpack Compose + Material 3 |
-| Networking | Retrofit 2 + OkHttp |
-| Image loading | Coil |
-| Async | Kotlin Coroutines + StateFlow |
-| JSON | Gson |
-| 3D rendering | Custom native Canvas engine |
-| Storage | SharedPreferences |
-| Versioning | Git tag-based version name + commit count version code |
+| Component     | Technology                                             |
+|---------------|--------------------------------------------------------|
+| Language      | Kotlin                                                 |
+| UI            | Jetpack Compose + Material 3                           |
+| Networking    | Retrofit 2 + OkHttp                                    |
+| Image loading | Coil                                                   |
+| Async         | Kotlin Coroutines + StateFlow                          |
+| JSON          | Gson                                                   |
+| 3D rendering  | Custom native Canvas engine                            |
+| Storage       | SharedPreferences                                      |
+| Versioning    | Git tag-based version name + commit count version code |
 
 ---
 
 ## Data Sources
 
-| Source | Used for |
-|---|---|
+| Source                                                             | Used for                                                               |
+|--------------------------------------------------------------------|------------------------------------------------------------------------|
 | [PubChem PUG REST](https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest) | Compound lookup, properties, synonyms, descriptions, SDF, autocomplete |
-| [PubChem PUG View](https://pubchem.ncbi.nlm.nih.gov/docs/pug-view) | GHS safety classifications |
-| [Wikipedia REST API](https://en.wikipedia.org/api/rest_v1/) | Compound summaries |
-| [Google Gemini](https://ai.google.dev/) | AI descriptions |
-| [Groq](https://groq.com/) | AI descriptions |
+| [PubChem PUG View](https://pubchem.ncbi.nlm.nih.gov/docs/pug-view) | GHS safety classifications                                             |
+| [Wikipedia REST API](https://en.wikipedia.org/api/rest_v1/)        | Compound summaries                                                     |
+| [Google Gemini](https://ai.google.dev/)                            | AI descriptions                                                        |
+| [Groq](https://groq.com/)                                          | AI descriptions                                                        |
 
 ---
 
@@ -171,10 +171,10 @@ Then build via **Build → Generate Signed APK**.
 
 AI descriptions require a free API key from your chosen provider, entered in the app's Settings.
 
-| Provider | Model                 | Get an API key                                                     |
-|---|-----------------------|--------------------------------------------------------------------|
+| Provider      | Model                 | Get an API key                                                       |
+|---------------|-----------------------|----------------------------------------------------------------------|
 | Google Gemini | `gemini-flash-latest` | [aistudio.google.com/api-keys](https://aistudio.google.com/api-keys) |
-| Groq Cloud | `gpt-oss-120b`        | [console.groq.com/keys](https://console.groq.com/keys)                       |
+| Groq Cloud    | `gpt-oss-120b`        | [console.groq.com/keys](https://console.groq.com/keys)               |
 
 Keys are stored locally on your device and only sent directly to the respective provider.
 
