@@ -70,6 +70,7 @@ Five chemistry tools accessible from the Tools tab:
 - **Oxidation State Finder** : Determine oxidation states for each element in a compound, with support for peroxides, superoxides, ozonides, metal hydrides, and interhalogen compounds. Enter the overall charge for polyatomic ions
 - **SMILES Visualizer** : Paste any SMILES string to look it up on PubChem and view its 2D structure and 3D model
 - **Reaction Balancer** : Balance any chemical equation using matrix-based Gaussian elimination with exact rational arithmetic. Includes quick-insert buttons for `+`, `->`, `(` and `)`, and an atom count verification table
+- **Isomer Finder** : Find up to 20 structural isomers by searching with a molecular formula.
 
 ### Customization
 - **Theme mode** dropdown (Light / Dark) in Settings
