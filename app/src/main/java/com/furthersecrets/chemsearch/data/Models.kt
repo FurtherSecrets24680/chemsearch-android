@@ -149,6 +149,12 @@ data class ChemUiState(
     val isLoadingSdf: Boolean = false,
     val ghsData: GhsData? = null,
     val isLoadingSafety: Boolean = false,
+    val isomerMode: Boolean = false,
+    val isomerQuery: String = "",
+    val isomers: List<IsomerItem> = emptyList(),
+    val isLoadingIsomers: Boolean = false,
+    val isomerError: String? = null,
+
 )
 
 enum class DescSource { PUBCHEM, WIKI, AI }
@@ -178,3 +184,22 @@ data class GhsData(
     val hazardStatements: List<String>,
     val pictogramCodes: List<String>
 )
+
+data class IsomerItem(
+    val cid: Long,
+    val title: String
+)
+
+data class TitleResponse(
+    @SerializedName("PropertyTable") val propertyTable: TitlePropertyTable?
+)
+
+data class TitlePropertyTable(
+    @SerializedName("Properties") val properties: List<TitleProperty>?
+)
+
+data class TitleProperty(
+    @SerializedName("CID") val cid: Long?,
+    @SerializedName("Title") val title: String?
+)
+

@@ -161,11 +161,6 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
-
-    // Compound cache
-    // Cached compound JSON files stored in context.cacheDir/compound_cache/
-    // Each file is named by CID: <cid>.json
-
     private val cacheDir: java.io.File get() {
         val custom = prefs.getString("cache_dir", null)
         val dir = if (!custom.isNullOrBlank()) java.io.File(custom) else java.io.File(getApplication<Application>().cacheDir, "compound_cache")
@@ -253,7 +248,6 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 it.copy(isLoading = true, error = null, suggestions = emptyList(), hasResult = false, sdfData = null, ghsData = null, isLoadingSafety = false)
             }
 
-            // Cache-first lookup by name
             val cachedByName = findCacheByName(q)
             if (cachedByName != null) {
                 DebugLog.d("ChemSearch", "Cache hit by name for \"$q\" → CID ${cachedByName.cid}")
@@ -548,6 +542,167 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         prefs.edit().remove("history").apply()
         _uiState.update { it.copy(history = emptyList()) }
         DebugLog.d("ChemSearch", "Search history cleared")
+    }
+
+
+
+    fun onIsomerQueryChange(q: String) {
+        _uiState.update { it.copy(isomerQuery = q, isomers = emptyList(), isomerError = null) }
+    }
+
+    fun searchIsomers() {
+        val formula = _uiState.value.isomerQuery.trim()
+        if (formula.isBlank()) return
+
+        viewModelScope.launch {
+            DebugLog.d("ChemSearch", "Isomer search: \"$formula\"")
+            _uiState.update {
+                it.copy(isLoadingIsomers = true, isomers = emptyList(), isomerError = null)
+            }
+            try {
+                val cidResponse = ApiClient.pubChem.getIsomerCids(formula)
+                val cids = cidResponse.identifierList?.cid?.take(20)
+                    ?: throw NoSuchElementException("No isomers found for $formula.")
+
+                DebugLog.d("ChemSearch", "Isomers: ${cids.size} CIDs for $formula")
+
+                val cidString = cids.joinToString(",")
+                val titleMap: Map<Long, String> = runCatching {
+                    ApiClient.pubChem.getTitles(cidString)
+                        .propertyTable?.properties
+                        ?.mapNotNull { p -> p.cid?.let { it to (p.title ?: "Unnamed Compound") } }
+                        ?.toMap()
+                }.getOrNull() ?: emptyMap()
+
+                val isomers = cids.map { cid ->
+                    IsomerItem(cid = cid, title = titleMap[cid] ?: "CID $cid")
+                }
+                DebugLog.d("ChemSearch", "Isomers loaded: ${isomers.size} items")
+                _uiState.update { it.copy(isLoadingIsomers = false, isomers = isomers) }
+
+            } catch (e: Exception) {
+                val msg = when (e) {
+                    is java.io.IOException -> "Network error. Check your connection."
+                    is NoSuchElementException -> e.message ?: "No isomers found."
+                    else -> "No isomers found for \"$formula\". Check the formula and try again."
+                }
+                DebugLog.e("ChemSearch", "Isomer search failed: ${e.message}")
+                _uiState.update { it.copy(isLoadingIsomers = false, isomerError = msg) }
+            }
+        }
+    }
+
+    fun searchByCid(cid: Long) {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            DebugLog.d("ChemSearch", "Search by CID: $cid")
+            _uiState.update {
+                it.copy(
+                    isLoading = true, error = null, hasResult = false,
+                    sdfData = null, ghsData = null, isLoadingSafety = false,
+                    isomerMode = false, isomers = emptyList()
+                )
+            }
+
+            val cached = readCache(cid)
+            if (cached != null) {
+                DebugLog.d("ChemSearch", "Cache hit for CID $cid (${cached.name})")
+                val savedSource = getSavedDescSource()
+                _uiState.update {
+                    cached.copy(
+                        isLoading = false, hasResult = true,
+                        history = loadHistory(), descSource = savedSource,
+                        sdfData = null, activeTab = MolTab.TWO_D,
+                        isomerMode = false, isomers = emptyList()
+                    )
+                }
+                _query.value = cached.name
+                saveToHistory(cached.name)
+                when (savedSource) {
+                    DescSource.WIKI -> if (cached.wikiDescription == null) fetchWikiDescription()
+                    DescSource.AI   -> if (cached.aiDescription == null) fetchAiDescription()
+                    else -> Unit
+                }
+                if (cached.ghsData == null) fetchSafetyData()
+                return@launch
+            }
+
+            try {
+                val propsDeferred = async { runCatching { ApiClient.pubChem.getProperties(cid) }.getOrNull() }
+                val synsDeferred  = async { runCatching { ApiClient.pubChem.getSynonyms(cid) }.getOrNull() }
+                val descDeferred  = async { runCatching { ApiClient.pubChem.getDescription(cid) }.getOrNull() }
+
+                val props = propsDeferred.await()?.propertyTable?.properties?.firstOrNull()
+                    ?: CompoundProperty(cid, null, null, null, null, null, null, null, null)
+                val synonyms = synsDeferred.await()
+                    ?.informationList?.information?.firstOrNull()?.synonym ?: emptyList()
+                val descItem = descDeferred.await()
+                    ?.informationList?.information?.find { it.description != null }
+
+                val casRegex = Regex("""^\d{1,7}-\d{2}-\d$""")
+                val casNumber = synonyms.firstOrNull { casRegex.matches(it) }
+                val compoundName = synonyms.firstOrNull() ?: "CID $cid"
+                val formula = props.molecularFormula ?: ""
+
+                val pubDesc: String? = descItem?.description?.let { el ->
+                    when {
+                        el.isJsonPrimitive -> el.asString
+                        el.isJsonArray -> el.asJsonArray
+                            .mapNotNull { runCatching { it.asString }.getOrNull() }
+                            .joinToString("\n\n")
+                        else -> null
+                    }
+                }
+
+                val savedSource = getSavedDescSource()
+                saveToHistory(compoundName)
+                DebugLog.d("ChemSearch", "CID $cid resolved: \"$compoundName\"")
+
+                val newState = ChemUiState(
+                    isLoading = false, hasResult = true,
+                    cid = cid,
+                    name = compoundName.replaceFirstChar { c -> c.uppercase() },
+                    formula = formula,
+                    empiricalFormula = getEmpiricalFormula(formula),
+                    weight = props.molecularWeight ?: "",
+                    charge = props.charge ?: 0,
+                    iupacName = props.iupacName ?: "",
+                    smiles = props.smiles ?: "",
+                    connectivitySmiles = props.connectivitySmiles ?: props.smiles ?: "",
+                    inchiKey = props.inchiKey ?: "",
+                    inchi = props.inchi ?: "",
+                    synonyms = synonyms.take(8),
+                    casNumber = casNumber,
+                    pubDescription = pubDesc,
+                    wikiDescription = null, aiDescription = null,
+                    descSource = savedSource,
+                    elementalData = calcElementalData(formula),
+                    history = loadHistory(),
+                    activeTab = MolTab.TWO_D,
+                    aiProvider = _uiState.value.aiProvider,
+                    isomerMode = false,
+                    isomers = emptyList()
+                )
+                _uiState.update { newState }
+                _query.value = compoundName
+                writeCache(newState)
+
+                when (savedSource) {
+                    DescSource.WIKI -> fetchWikiDescription()
+                    DescSource.AI   -> fetchAiDescription()
+                    else -> Unit
+                }
+                fetchSafetyData()
+
+            } catch (e: Exception) {
+                val msg = when (e) {
+                    is java.io.IOException -> "Network error. Check your connection."
+                    else -> "Could not load compound (CID $cid)."
+                }
+                DebugLog.e("ChemSearch", "searchByCid failed for $cid: ${e.message}")
+                _uiState.update { it.copy(isLoading = false, error = msg) }
+            }
+        }
     }
 
     private fun parseFormula(formula: String): Map<String, Int> {

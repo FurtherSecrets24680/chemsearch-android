@@ -31,6 +31,17 @@ interface PubChemApi {
         @Path("cid") cid: Long,
         @Query("record_type") recordType: String = "3d"
     ): ResponseBody
+
+    @GET("compound/fastformula/{formula}/cids/JSON")
+    suspend fun getIsomerCids(
+        @Path("formula", encoded = true) formula: String,
+        @Query("MaxRecords") maxRecords: Int = 20
+    ): CidResponse
+
+    @GET("compound/cid/{cids}/property/Title/JSON")
+    suspend fun getTitles(
+        @Path("cids", encoded = true) cids: String
+    ): TitleResponse
 }
 
 // PubChem Autocomplete

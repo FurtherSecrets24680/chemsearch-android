@@ -82,6 +82,15 @@ import kotlinx.coroutines.withContext
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.foundation.shape.CircleShape
 import java.io.File
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.Backspace
+import androidx.compose.material.icons.automirrored.filled.Feed
+import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
+import androidx.compose.ui.text.input.OffsetMapping
+import androidx.compose.ui.text.input.TransformedText
+import androidx.compose.material.icons.filled.Biotech
 
 
 enum class AppTab { SEARCH, FAVORITES, RECENT, TOOLS, SETTINGS }
@@ -193,6 +202,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
 
     var selectedTab by remember { mutableStateOf(AppTab.SEARCH) }
     var showExitDialog by remember { mutableStateOf(false) }
+    var jumpToTool by remember { mutableStateOf(0) }
 
     BackHandler {
         if (selectedTab != AppTab.SEARCH) {
@@ -312,6 +322,36 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 onClear = { vm.onQueryChange(""); showSuggestions = false }
                             )
                         }
+
+                        item {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable(
+                                        indication = null,
+                                        interactionSource = remember { MutableInteractionSource() }
+                                    ) {
+                                        jumpToTool = 6
+                                        selectedTab = AppTab.TOOLS
+                                    }
+                                    .padding(horizontal = 4.dp, vertical = 2.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                Icon(
+                                    Icons.Default.Biotech,
+                                    contentDescription = "Isomer Finder",
+                                    tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.65f),
+                                    modifier = Modifier.size(13.dp)
+                                )
+                                Text(
+                                    text = "Searching with formula? Use Isomer Finder →",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
+                                )
+                            }
+                        }
+
                         if (state.isLoading) {
                             item {
                                 Box(
@@ -418,7 +458,11 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     onClearCache = { vm.clearCache() },
                                     onSetCacheDir = { vm.setCacheDir(it) }
                                 )
-                                AppTab.TOOLS -> ToolsScreen(isDark = isDark)
+                                AppTab.TOOLS -> ToolsScreen(
+                                    isDark = isDark,
+                                    jumpToTool = jumpToTool,
+                                    onNavigateToSearch = { selectedTab = AppTab.SEARCH }
+                                )
                                 else -> {}
                             }
                         }
@@ -741,7 +785,7 @@ fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearch: () -> Un
         modifier = Modifier.fillMaxWidth(),
         placeholder = {
             Text(
-                "Search compound...",
+                "Search compound by name...",
                 color = MaterialTheme.colorScheme.onSurface.copy(0.38f)
             )
         },
@@ -768,7 +812,7 @@ fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearch: () -> Un
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            Icons.Default.ArrowForward,
+                            Icons.AutoMirrored.Filled.ArrowForward,
                             "Search",
                             tint = Color.White,
                             modifier = Modifier.size(16.dp)
@@ -913,7 +957,7 @@ fun HistorySection(history: List<String>, onSelect: (String) -> Unit, onClear: (
                         modifier = Modifier.weight(1f)
                     )
                     Icon(
-                        Icons.Default.ArrowForward,
+                        Icons.AutoMirrored.Filled.ArrowForward,
                         null,
                         tint = MaterialTheme.colorScheme.onSurface.copy(0.2f),
                         modifier = Modifier.size(14.dp)
@@ -2515,7 +2559,7 @@ fun DebugSettingsSection(
 
             // Live logs
             SettingsActionRow(
-                icon = Icons.Default.Feed,
+                icon = Icons.AutoMirrored.Filled.Feed,
                 title = "Live log viewer",
                 subtitle = "${logLines.size} line${if (logLines.size != 1) "s" else ""} captured",
                 actionLabel = "Open",
@@ -2602,9 +2646,14 @@ fun DebugSettingsSection(
 }
 
 // TOOLS SCREEN
+
 @Composable
-fun ToolsScreen(isDark: Boolean) {
+fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, onNavigateToSearch: () -> Unit = {}) {
     var selectedTool by remember { mutableStateOf(0) }
+
+    LaunchedEffect(jumpToTool) {
+        if (jumpToTool != 0) selectedTool = jumpToTool // Redirects to Tool 6: Isomer Finder
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -2648,12 +2697,18 @@ fun ToolsScreen(isDark: Boolean) {
                 subtitle = "Balance any chemical equation automatically",
                 onClick = { selectedTool = 5 }
             )
+            ToolCard(
+                icon = Icons.Default.Biotech,
+                title = "Isomer Finder",
+                subtitle = "Enter a molecular formula to find its structural isomers",
+                onClick = { selectedTool = 6 }
+            )
         } else {
             TextButton(
                 onClick = { selectedTool = 0 },
                 contentPadding = PaddingValues(horizontal = 0.dp)
             ) {
-                Icon(Icons.Default.ArrowBack, null, modifier = Modifier.size(16.dp))
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, null, modifier = Modifier.size(16.dp))
                 Spacer(Modifier.width(4.dp))
                 Text("Back to Tools")
             }
@@ -2664,6 +2719,7 @@ fun ToolsScreen(isDark: Boolean) {
                 3 -> OxidationStateFinder()
                 4 -> SmilesVisualizer(isDark = isDark)
                 5 -> ReactionBalancer()
+                6 -> IsomerFinderTool(onNavigateToSearch = onNavigateToSearch)
             }
         }
     }
@@ -2799,7 +2855,7 @@ fun SdfViewerTool(isDark: Boolean) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    Icon(Icons.Default.InsertDriveFile, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
+                    Icon(Icons.AutoMirrored.Filled.InsertDriveFile, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
                     Text(fileName ?: "file.sdf", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f))
                     TextButton(onClick = { filePicker.launch("*/*") }, contentPadding = PaddingValues(horizontal = 8.dp)) {
                         Text("Change", style = MaterialTheme.typography.labelMedium)
@@ -3030,7 +3086,7 @@ fun MolarMassCalculator() {
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(0.2f))
             ) {
                 Icon(
-                    Icons.Default.Backspace,
+                    Icons.AutoMirrored.Filled.Backspace,
                     contentDescription = "Backspace",
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp).size(14.dp),
                     tint = MaterialTheme.colorScheme.error.copy(0.7f)
@@ -3979,7 +4035,7 @@ fun ReactionBalancer() {
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(0.2f))
             ) {
                 Icon(
-                    Icons.Default.Backspace,
+                    Icons.AutoMirrored.Filled.Backspace,
                     contentDescription = "Backspace",
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp).size(14.dp),
                     tint = MaterialTheme.colorScheme.error.copy(0.7f)
@@ -4038,7 +4094,7 @@ fun ReactionBalancer() {
                                 color = MaterialTheme.colorScheme.outline.copy(0.1f),
                                 modifier = Modifier.align(Alignment.CenterVertically)
                             ) {
-                                Icon(Icons.Default.ArrowForward, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.6f), modifier = Modifier.padding(6.dp).size(16.dp))
+                                Icon(Icons.AutoMirrored.Filled.ArrowForward, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.6f), modifier = Modifier.padding(6.dp).size(16.dp))
                             }
 
                             res.products.forEachIndexed { i, (formula, coeff) ->
@@ -4122,6 +4178,91 @@ fun ReactionBalancer() {
                         style = MaterialTheme.typography.bodySmall,
                         fontFamily = FontFamily.Monospace,
                         color = if (input == ex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
+                    )
+                }
+            }
+        }
+    }
+}
+
+// TOOL 6 : Isomer Finder
+
+@Composable
+fun IsomerFinderTool(onNavigateToSearch: () -> Unit = {}) {
+    val vm: com.furthersecrets.chemsearch.ChemViewModel =
+        androidx.lifecycle.viewmodel.compose.viewModel()
+    val state by vm.uiState.collectAsState()
+    val focusManager = androidx.compose.ui.platform.LocalFocusManager.current
+
+    var showInfo by remember { mutableStateOf(false) }
+    if (showInfo) {
+        InfoDialog(
+            title = "Isomer Finder",
+            entries = listOf(
+                "How to use" to "Enter any molecular formula (e.g. C₆H₆ or C₆H₁₂O₆). The app instantly shows up to 20 known isomers with the exact same formula.",
+                "What are isomers?" to "Isomers are different compounds that have the same molecular formula but different atom connectivity or 3D arrangement.",
+                "How it works" to "The app queries PubChem’s official API in real-time.",
+                "Supported formulas" to "Standard molecular formulas with parentheses are fully supported, e.g. Ca(OH)₂, C₆H₅OH, Al₂(SO₄)₃, or complex ones like C₁₇H₃₅COOH.",
+                "What you get" to "A list of all matching PubChem compounds with names, 2D structures, CIDs, and quick links to full details.",
+                "Limitations" to "Only experimentally known compounds from PubChem are shown. Very rare or brand-new compounds may not appear yet."
+            ),
+            onDismiss = { showInfo = false }
+        )
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text("Isomer Finder", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
+                    Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
+                }
+            }
+            Text(
+                "Enter a molecular formula to find up to 20 structural isomers from PubChem. " +
+                        "Tap any result to load it in the Search tab.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+            )
+        }
+
+        IsomerSearchBar(
+            query = state.isomerQuery,
+            onQueryChange = { vm.onIsomerQueryChange(it) },
+            onSearch = {
+                focusManager.clearFocus()
+                vm.searchIsomers()
+            },
+            onClear = { vm.onIsomerQueryChange("") }
+        )
+
+        if (state.isLoadingIsomers) {
+            IsomerLoadingState()
+        }
+
+        state.isomerError?.let { IsomerErrorState(it) }
+
+        if (state.isomers.isNotEmpty()) {
+            IsomerResultsHeader(
+                formula = state.isomerQuery.trim(),
+                count = state.isomers.size
+            )
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                state.isomers.forEach { isomer ->
+                    IsomerCard(
+                        isomer = isomer,
+                        onClick = {
+                            focusManager.clearFocus()
+                            onNavigateToSearch()
+                            vm.searchByCid(isomer.cid)
+                        }
                     )
                 }
             }
