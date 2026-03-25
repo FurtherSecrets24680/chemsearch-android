@@ -60,7 +60,7 @@ This is the native Android version of the original [**ChemSearch** webapp](https
 Three switchable sources per compound:
 - **PubChem** for scientific descriptions
 - **Wikipedia** for general summaries
-- **AI** via Google Gemini or Groq, with a regenerate button
+- **AI** via Google Gemini or Groq, with a regenerate button. This is totally optional and it requires your API key from these providers to work.
 
 ### Tools
 Five chemistry tools accessible from the Tools tab:

@@ -7,24 +7,33 @@ if (keystorePropertiesFile.exists()) {
 }
 
 fun gitVersionCode(): Int {
-    return try {
-        val process = ProcessBuilder("git", "rev-list", "--count", "HEAD")
-            .directory(rootProject.projectDir)
-            .start()
-        process.inputStream.bufferedReader().readLine().trim().toInt()
-    } catch (e: Exception) {
-        1
-    }
+    return runGit("rev-list", "--count", "HEAD")?.toIntOrNull() ?: 1
 }
 
 fun gitVersionName(): String {
+    val headTag = runGit("tag", "--points-at", "HEAD", "--sort=-v:refname")
+        ?.lineSequence()
+        ?.firstOrNull { it.isNotBlank() }
+    if (headTag != null) return headTag
+
+    val tag = runGit("describe", "--tags", "--abbrev=0")
+    if (tag != null) {
+        val commitsSinceTag = runGit("rev-list", "$tag..HEAD", "--count")?.toIntOrNull() ?: 0
+        return if (commitsSinceTag == 0) tag else "$tag+$commitsSinceTag"
+    }
+    return runGit("rev-parse", "--short", "HEAD") ?: "1.1.0"
+}
+
+fun runGit(vararg args: String): String? {
     return try {
-        val process = ProcessBuilder("git", "describe", "--tags", "--always")
+        val process = ProcessBuilder("git", *args)
             .directory(rootProject.projectDir)
+            .redirectErrorStream(true)
             .start()
-        process.inputStream.bufferedReader().readLine().trim()
-    } catch (e: Exception) {
-        "1.1.0"
+        val output = process.inputStream.bufferedReader().readText().trim()
+        if (process.waitFor() != 0 || output.isBlank()) null else output
+    } catch (_: Exception) {
+        null
     }
 }
 
@@ -80,7 +89,6 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
 
-    // ↓ No version strings — BOM controls these. This is the fix.
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.material:material-icons-extended")
 
