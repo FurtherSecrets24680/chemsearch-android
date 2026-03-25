@@ -6,7 +6,7 @@ import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
-import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.seconds
 
 // PubChem PUG REST
 
@@ -92,13 +92,13 @@ interface GroqApi {
 object ApiClient {
 
     private val defaultClient = OkHttpClient.Builder()
-        .connectTimeout(15, TimeUnit.SECONDS)
-        .readTimeout(20, TimeUnit.SECONDS)
+        .connectTimeout(15.seconds)
+        .readTimeout(20.seconds)
         .build()
 
     private val wikiClient = OkHttpClient.Builder()
-        .connectTimeout(15, TimeUnit.SECONDS)
-        .readTimeout(20, TimeUnit.SECONDS)
+        .connectTimeout(15.seconds)
+        .readTimeout(20.seconds)
         .addInterceptor { chain ->
             val request: Request = chain.request().newBuilder()
                 .header("User-Agent", "ChemSearch/1.0 (Android; github.com/FurtherSecrets24680)")

@@ -30,11 +30,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import coil.compose.AsyncImage
 import com.furthersecrets.chemsearch.data.IsomerItem
 
-// ─── Subscript visual transformation ─────────────────────────────────────────
-// Replaces ASCII digits with Unicode subscript chars purely for display.
-// The raw String in state is untouched → the API always gets plain "C6H12O6".
-// 1-to-1 char replacement so OffsetMapping.Identity is correct.
-
 internal val subscriptMap = mapOf(
     '0' to '₀', '1' to '₁', '2' to '₂', '3' to '₃', '4' to '₄',
     '5' to '₅', '6' to '₆', '7' to '₇', '8' to '₈', '9' to '₉'
@@ -48,10 +43,9 @@ val FormulaSubscriptTransformation = VisualTransformation { text ->
     )
 }
 
-// Helper: apply subscript map to a plain String (for labels / headers)
 fun String.toFormulaSubscript(): String = map { subscriptMap[it] ?: it }.joinToString("")
 
-// ─── Formula input field ──────────────────────────────────────────────────────
+// Formula input field
 
 @Composable
 fun IsomerSearchBar(
@@ -106,7 +100,6 @@ fun IsomerSearchBar(
                 }
             }
         },
-        // ← digits shown as subscripts; raw value sent to API is unchanged
         visualTransformation = FormulaSubscriptTransformation,
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Search,
@@ -124,7 +117,7 @@ fun IsomerSearchBar(
     )
 }
 
-// ─── Header row above results ─────────────────────────────────────────────────
+// Header row above results
 
 @Composable
 fun IsomerResultsHeader(formula: String, count: Int) {
@@ -161,7 +154,7 @@ fun IsomerResultsHeader(formula: String, count: Int) {
     }
 }
 
-// ─── Individual isomer card ───────────────────────────────────────────────────
+// Individual isomer card
 
 @Composable
 fun IsomerCard(isomer: IsomerItem, onClick: () -> Unit) {
@@ -182,7 +175,6 @@ fun IsomerCard(isomer: IsomerItem, onClick: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // 2D structure thumbnail
             Surface(
                 shape = RoundedCornerShape(10.dp),
                 color = MaterialTheme.colorScheme.background,
@@ -198,7 +190,7 @@ fun IsomerCard(isomer: IsomerItem, onClick: () -> Unit) {
                 )
             }
 
-            // Name + CID badge
+
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(6.dp)
@@ -237,9 +229,6 @@ fun IsomerCard(isomer: IsomerItem, onClick: () -> Unit) {
         }
     }
 }
-
-// ─── Loading / Error states ───────────────────────────────────────────────────
-
 @Composable
 fun IsomerLoadingState() {
     Box(

@@ -203,3 +203,8 @@ data class TitleProperty(
     @SerializedName("Title") val title: String?
 )
 
+data class ReleaseInfo(
+    val tagName: String,
+    val changelog: String,
+    val downloadUrl: String
+)

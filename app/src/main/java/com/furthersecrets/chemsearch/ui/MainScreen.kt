@@ -64,6 +64,8 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.activity.compose.BackHandler
 import android.app.Activity
 import android.content.ContentValues
@@ -225,7 +227,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             },
             dismissButton = {
                 TextButton(onClick = { showExitDialog = false }) { Text("Cancel") }
-            }
+            },
+            containerColor = MaterialTheme.colorScheme.surface
         )
     }
 
@@ -666,7 +669,7 @@ fun SettingsSheet(
                             color = MaterialTheme.colorScheme.primary.copy(0.12f)
                         ) {
                             Text(
-                                text = "v${BuildConfig.VERSION_NAME}  •  build ${BuildConfig.VERSION_CODE}",
+                                text = "v${BuildConfig.VERSION_NAME}(${BuildConfig.VERSION_CODE})",
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontFamily = FontFamily.Monospace,
@@ -1174,7 +1177,11 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
             }
         }
     }
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
         Column {
             Row(
                 modifier = Modifier
@@ -1271,20 +1278,115 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                                 )
                             }
                         } else {
+                            var showWhyDialog by remember { mutableStateOf(false) }
+
+                            if (showWhyDialog) {
+                                No3DModelDialog(onDismiss = { showWhyDialog = false })
+                            }
+
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                Icon(Icons.Default.VisibilityOff, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.3f), modifier = Modifier.size(32.dp))
-                                Text("3D model not available", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                                Icon(
+                                    Icons.Default.VisibilityOff,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurface.copy(0.3f),
+                                    modifier = Modifier.size(32.dp)
+                                )
+                                Text(
+                                    "3D model not available",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                                )
+                                Text(
+                                    "Learn why →",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+                                    modifier = Modifier.clickable { showWhyDialog = true }
+                                )
                             }
                         }
+
                     }
                 }
             }
         }
 
     }
+}
+
+// Dialog that appears when 3D model is unavailable
+@Composable
+fun No3DModelDialog(onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Got it", fontWeight = FontWeight.SemiBold)
+            }
+        },
+        icon = {
+            Icon(
+                Icons.Default.VisibilityOff,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary
+            )
+        },
+        title = {
+            Text(
+                "Why is 3D unavailable?",
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleMedium
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(
+                    "PubChem pre-computes 3D conformer models for ~90% of its compounds using " +
+                            "the OMEGA toolkit and MMFF94s force field. A compound gets no 3D model if " +
+                            "it fails any of these criteria:",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f)
+                )
+
+                val reasons = listOf(
+                    "Too large : More than 50 non-hydrogen atoms",
+                    "Too flexible : More than 15 rotatable bonds",
+                    "Unsupported elements : Only H, C, N, O, F, Si, P, S, Cl, Br and I are supported by the force field. Metals are not supported.",
+                    "Salt or mixture : The compound has more than one covalent unit (e.g. NaCl). PubChem may have a 3D model for the parent free base instead",
+                    "Too many undefined stereo centres : 6 or more undefined atom or bond stereo centres",
+                    "Conformer generation failure : The algorithm could not converge on a stable geometry",
+                )
+
+                reasons.forEach { text ->
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.Top
+                    ) {
+                        Text("•", style = MaterialTheme.typography.bodySmall)
+                        Text(
+                            text,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+                        )
+                    }
+                }
+
+                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
+
+                Text(
+                    "Source: PubChem3D project",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
+                )
+            }
+        },
+        shape = RoundedCornerShape(20.dp),
+        containerColor = MaterialTheme.colorScheme.surface
+    )
 }
 
 // Identifiers
@@ -1310,8 +1412,11 @@ fun IdentifiersSection(state: ChemUiState, context: Context) {
         )
     }
 
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             CardSectionHeader("Identifiers") { showInfo = true }
             if (state.iupacName.isNotBlank()) IdentifierRow("IUPAC Name", state.iupacName, context, mono = false)
             if (state.connectivitySmiles.isNotBlank()) IdentifierRow("SMILES (Connectivity)", state.connectivitySmiles, context)
@@ -1397,8 +1502,11 @@ fun IdentifierRow(label: String, value: String, context: Context, mono: Boolean 
 
 @Composable
 fun ElementalSection(data: List<ElementData>) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             var showInfo by remember { mutableStateOf(false) }
             if (showInfo) {
                 InfoDialog(
@@ -1473,8 +1581,11 @@ fun ElementalSection(data: List<ElementData>) {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SynonymsSection(synonyms: List<String>) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             SectionLabel("Synonyms")
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -1504,8 +1615,11 @@ fun SynonymsSection(synonyms: List<String>) {
 
 @Composable
 fun DescriptionSection(state: ChemUiState, onPubChem: () -> Unit, onWiki: () -> Unit, onAI: () -> Unit, onRegenerate: () -> Unit) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             SectionLabel("Description")
             Surface(
                 shape = RoundedCornerShape(50),
@@ -1633,7 +1747,8 @@ fun AiProviderDialog(onSelect: (AiProvider) -> Unit, onDismiss: () -> Unit) {
             }
         },
         confirmButton = {},
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } }
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+        containerColor = MaterialTheme.colorScheme.surface
     )
 }
 
@@ -1678,7 +1793,8 @@ fun ApiKeyDialog(title: String, link: String, current: String, onSave: (String) 
         confirmButton = {
             Button(onClick = { if (key.isNotBlank()) onSave(key.trim()) }, shape = RoundedCornerShape(10.dp)) { Text("Save") }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } }
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+        containerColor = MaterialTheme.colorScheme.surface
     )
 }
 
@@ -1715,7 +1831,8 @@ fun InfoDialog(title: String, entries: List<Pair<String, String>>, onDismiss: ()
                 }
             }
         },
-        confirmButton = { TextButton(onClick = onDismiss) { Text("Got it") } }
+        confirmButton = { TextButton(onClick = onDismiss) { Text("Got it") } },
+        containerColor = MaterialTheme.colorScheme.surface
     )
 }
 
@@ -1845,8 +1962,11 @@ private val WarningAmber = Color(0xFFD97706)
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             var showInfo by remember { mutableStateOf(false) }
             if (showInfo) {
                 InfoDialog(
@@ -1990,13 +2110,26 @@ fun FavoritesInline(
                 onClick = { onSelect(fav.name) },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(14.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
             ) {
                 Row(
-                    modifier = Modifier.padding(14.dp).fillMaxWidth(),
+                    modifier = Modifier.padding(10.dp).fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
+                    Surface(
+                        shape = RoundedCornerShape(10.dp),
+                        color = MaterialTheme.colorScheme.background,
+                        modifier = Modifier.size(64.dp)
+                    ) {
+                        AsyncImage(
+                            model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${fav.cid}/PNG?record_type=2d&image_size=small",
+                            contentDescription = "Structure of ${fav.name}",
+                            modifier = Modifier.fillMaxSize().padding(4.dp),
+                            contentScale = ContentScale.Fit
+                        )
+                    }
                     Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                         Text(fav.name, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
                         if (fav.formula.isNotBlank()) {
@@ -2011,6 +2144,7 @@ fun FavoritesInline(
                     }
                 }
             }
+
         }
 
     }
@@ -2201,7 +2335,8 @@ fun SettingsInline(
                         showCacheDirDialog = false
                     }, shape = RoundedCornerShape(10.dp)) { Text("Save") }
                 },
-                dismissButton = { TextButton(onClick = { showCacheDirDialog = false }) { Text("Cancel") } }
+                dismissButton = { TextButton(onClick = { showCacheDirDialog = false }) { Text("Cancel") } },
+                containerColor = MaterialTheme.colorScheme.surface
             )
         }
 
@@ -2391,7 +2526,8 @@ fun DebugSettingsSection(
                     }) { Text("Copy") }
                     TextButton(onClick = { showPrefsDialog = false }) { Text("Close") }
                 }
-            }
+            },
+            containerColor = MaterialTheme.colorScheme.surface
         )
     }
 
@@ -2444,7 +2580,8 @@ fun DebugSettingsSection(
                     }) { Text("Copy") }
                     TextButton(onClick = { showLogsDialog = false }) { Text("Close") }
                 }
-            }
+            },
+            containerColor = MaterialTheme.colorScheme.surface
         )
     }
 
@@ -2487,7 +2624,8 @@ fun DebugSettingsSection(
                     }
                 }
             },
-            confirmButton = { TextButton(onClick = { showMemoryDialog = false }) { Text("Close") } }
+            confirmButton = { TextButton(onClick = { showMemoryDialog = false }) { Text("Close") } },
+            containerColor = MaterialTheme.colorScheme.surface
         )
     }
 
@@ -2502,7 +2640,8 @@ fun DebugSettingsSection(
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) { Text("Crash now") }
             },
-            dismissButton = { TextButton(onClick = { showCrashConfirm = false }) { Text("Cancel") } }
+            dismissButton = { TextButton(onClick = { showCrashConfirm = false }) { Text("Cancel") } },
+            containerColor = MaterialTheme.colorScheme.surface
         )
     }
 
@@ -2646,13 +2785,30 @@ fun DebugSettingsSection(
 }
 
 // TOOLS SCREEN
-
 @Composable
 fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, onNavigateToSearch: () -> Unit = {}) {
     var selectedTool by remember { mutableStateOf(0) }
+    var toolSearch by remember { mutableStateOf("") }
 
     LaunchedEffect(jumpToTool) {
-        if (jumpToTool != 0) selectedTool = jumpToTool // Redirects to Tool 6: Isomer Finder
+        if (jumpToTool != 0) selectedTool = jumpToTool
+    }
+
+    val allTools = listOf(
+        1 to Triple(Icons.Default.ViewInAr,    "Custom 3D Molecule Viewer",  "Load any .sdf or .mol file and view it in 3D"),
+        2 to Triple(Icons.Default.Calculate,   "Molar Mass Calculator",       "Enter a molecular formula and get the molar mass"),
+        3 to Triple(Icons.Default.Science,     "Oxidation State Finder",      "Find oxidation states of each element in a compound"),
+        4 to Triple(Icons.Default.AccountTree, "SMILES Visualizer",           "Paste a SMILES string to view its 2D and 3D structure"),
+        5 to Triple(Icons.Default.SwapHoriz,   "Reaction Balancer",           "Balance any chemical equation automatically"),
+        6 to Triple(Icons.Default.Biotech,     "Isomer Finder",               "Enter a molecular formula to find its structural isomers"),
+    )
+
+    val filteredTools = remember(toolSearch) {
+        if (toolSearch.isBlank()) allTools
+        else allTools.filter {
+            it.second.second.contains(toolSearch, ignoreCase = true) ||
+                    it.second.third.contains(toolSearch, ignoreCase = true)
+        }
     }
 
     Column(
@@ -2667,45 +2823,62 @@ fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, onNavigateToSearch: () -> 
         )
 
         if (selectedTool == 0) {
-            ToolCard(
-                icon = Icons.Default.ViewInAr,
-                title = "Custom 3D Molecule Viewer",
-                subtitle = "Load any .sdf or .mol file and view it in 3D",
-                onClick = { selectedTool = 1 }
+            OutlinedTextField(
+                value = toolSearch,
+                onValueChange = { toolSearch = it },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = {
+                    Text(
+                        "Search tools…",
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
+                    )
+                },
+                leadingIcon = {
+                    Icon(
+                        Icons.Default.Search, contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                        modifier = Modifier.size(18.dp)
+                    )
+                },
+                trailingIcon = {
+                    if (toolSearch.isNotEmpty()) {
+                        IconButton(onClick = { toolSearch = "" }) {
+                            Icon(Icons.Default.Close, contentDescription = "Clear search",
+                                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                                modifier = Modifier.size(16.dp))
+                        }
+                    }
+                },
+                singleLine = true,
+                shape = RoundedCornerShape(14.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.4f),
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface
+                )
             )
-            ToolCard(
-                icon = Icons.Default.Calculate,
-                title = "Molar Mass Calculator",
-                subtitle = "Enter a molecular formula and get the molar mass",
-                onClick = { selectedTool = 2 }
-            )
-            ToolCard(
-                icon = Icons.Default.Science,
-                title = "Oxidation State Finder",
-                subtitle = "Find oxidation states of each element in a compound",
-                onClick = { selectedTool = 3 }
-            )
-            ToolCard(
-                icon = Icons.Default.AccountTree,
-                title = "SMILES Visualizer",
-                subtitle = "Paste a SMILES string to view its 2D and 3D structure",
-                onClick = { selectedTool = 4 }
-            )
-            ToolCard(
-                icon = Icons.Default.SwapHoriz,
-                title = "Reaction Balancer",
-                subtitle = "Balance any chemical equation automatically",
-                onClick = { selectedTool = 5 }
-            )
-            ToolCard(
-                icon = Icons.Default.Biotech,
-                title = "Isomer Finder",
-                subtitle = "Enter a molecular formula to find its structural isomers",
-                onClick = { selectedTool = 6 }
-            )
+
+            if (filteredTools.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        "No tools match \"$toolSearch\"",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                    )
+                }
+            } else {
+                filteredTools.forEach { (id, triple) ->
+                    val (icon, title, subtitle) = triple
+                    ToolCard(icon = icon, title = title, subtitle = subtitle, onClick = { selectedTool = id })
+                }
+            }
         } else {
             TextButton(
-                onClick = { selectedTool = 0 },
+                onClick = { selectedTool = 0; toolSearch = "" },
                 contentPadding = PaddingValues(horizontal = 0.dp)
             ) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, null, modifier = Modifier.size(16.dp))
@@ -2726,11 +2899,19 @@ fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, onNavigateToSearch: () -> 
 }
 
 @Composable
-private fun ToolCard(icon: ImageVector, title: String, subtitle: String, onClick: () -> Unit) {
+private fun ToolCard(
+    icon: ImageVector,
+    title: String,
+    subtitle: String,
+    onClick: () -> Unit
+) {
     Card(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -2745,10 +2926,12 @@ private fun ToolCard(icon: ImageVector, title: String, subtitle: String, onClick
             ) {
                 Icon(icon, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(26.dp))
             }
+
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                 Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
                 Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
             }
+
             Icon(Icons.Default.ChevronRight, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.3f))
         }
     }
@@ -2947,7 +3130,6 @@ private fun parseFormulaForCalc(formula: String): Map<String, Int> {
 
 private fun calculateMolarMass(formula: String): CalcResult {
     if (formula.isBlank()) return CalcResult(0.0, emptyList(), "Enter a formula")
-    // Support hydrated compound notation: CuSO4·5H2O, CuSO4*5H2O, CuSO4.5H2O
     val normalized = formula.trim()
     val hydrateRegex = Regex("""[·*](\d*\.?\d*)\s*([A-Z].*)$""")
     val dotHydrateRegex = Regex("""\.(\d+)([A-Z].*)$""")
@@ -3041,6 +3223,7 @@ fun MolarMassCalculator() {
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(14.dp),
             singleLine = true,
+            visualTransformation = FormulaSubscriptTransformation,
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
                 imeAction = ImeAction.Done
@@ -3055,7 +3238,6 @@ fun MolarMassCalculator() {
             }
         )
 
-        // Quick-insert buttons for common formula characters
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -3094,7 +3276,6 @@ fun MolarMassCalculator() {
             }
         }
 
-        // result card
         if (result != null) {
             if (result!!.error != null) {
                 Card(
@@ -3203,7 +3384,7 @@ fun MolarMassCalculator() {
                 FilterChip(
                     selected = isActive,
                     onClick = { input = ex; focusManager.clearFocus() },
-                    label = { Text(ex, style = MaterialTheme.typography.labelMedium, fontFamily = FontFamily.Monospace) }
+                    label = { Text(toSubscriptFormula(ex), style = MaterialTheme.typography.labelMedium, fontFamily = FontFamily.Monospace) }
                 )
             }
         }
@@ -3480,6 +3661,7 @@ fun OxidationStateFinder() {
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(14.dp),
                 singleLine = true,
+                visualTransformation = FormulaSubscriptTransformation,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
             )
             OutlinedTextField(
@@ -3934,6 +4116,11 @@ private fun balanceReaction(equation: String): BalancerResult {
     return BalancerResult(error = "Could not balance this equation. Check that all elements appear on both sides and the equation is valid.")
 }
 
+private fun reactionToDisplay(raw: String): String =
+    raw.replace("->", "→")
+        .map { subscriptMap[it] ?: it }
+        .joinToString("")
+
 @Composable
 fun ReactionBalancer() {
     var input by remember { mutableStateOf("") }
@@ -3981,16 +4168,20 @@ fun ReactionBalancer() {
 
         OutlinedTextField(
             value = input,
-            onValueChange = { input = it; result = null },
+            onValueChange = { new ->
+                input = new.replace("->", "→")
+                result = null
+            },
             label = { Text("Chemical Equation") },
             placeholder = { Text("H2 + O2 -> H2O") },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(14.dp),
             singleLine = true,
+            visualTransformation = FormulaSubscriptTransformation,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
                 focusManager.clearFocus()
-                result = balanceReaction(input)
+                result = balanceReaction(input.replace("→", "->"))
             }),
             trailingIcon = {
                 if (input.isNotBlank()) {
@@ -4010,7 +4201,7 @@ fun ReactionBalancer() {
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
             )
-            listOf("+" to " + ", "->" to " -> ", "(" to "(", ")" to ")").forEach { (label, insert) ->
+            listOf("+" to " + ", "→" to " → ", "(" to "(", ")" to ")").forEach { (label, insert) ->
                 Surface(
                     onClick = { input += insert; result = null },
                     shape = RoundedCornerShape(8.dp),
@@ -4044,7 +4235,7 @@ fun ReactionBalancer() {
         }
 
         Button(
-            onClick = { focusManager.clearFocus(); result = balanceReaction(input) },
+            onClick = { focusManager.clearFocus(); result = balanceReaction(input.replace("→", "->")) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
             enabled = input.isNotBlank()
@@ -4167,17 +4358,17 @@ fun ReactionBalancer() {
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             examples.forEach { ex ->
                 Surface(
-                    onClick = { input = ex; result = null },
+                    onClick = { input = ex.replace("->", "→"); result = null },
                     shape = RoundedCornerShape(10.dp),
-                    color = if (input == ex) MaterialTheme.colorScheme.primary.copy(0.1f) else MaterialTheme.colorScheme.surfaceVariant.copy(0.5f),
-                    border = if (input == ex) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.4f)) else null
+                    color = if (input.replace("→", "->") == ex) MaterialTheme.colorScheme.primary.copy(0.1f) else MaterialTheme.colorScheme.surfaceVariant.copy(0.5f),
+                    border = if (input.replace("→", "->") == ex) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.4f)) else null
                 ) {
                     Text(
-                        ex,
+                        reactionToDisplay(ex),
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                         style = MaterialTheme.typography.bodySmall,
                         fontFamily = FontFamily.Monospace,
-                        color = if (input == ex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
+                        color = if (input.replace("→", "->") == ex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
                     )
                 }
             }
