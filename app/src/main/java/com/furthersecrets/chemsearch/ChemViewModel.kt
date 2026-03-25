@@ -12,7 +12,6 @@ import java.io.IOException
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.furthersecrets.chemsearch.ui.DebugLog
-import kotlinx.coroutines.flow.MutableStateFlow
 
 class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -880,4 +879,3 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         )
     }
 }
-

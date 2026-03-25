@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Science
 import androidx.compose.material3.*
@@ -92,7 +92,7 @@ fun IsomerSearchBar(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            Icons.Default.ArrowForward, "Find Isomers",
+                            Icons.AutoMirrored.Filled.ArrowForward, "Find Isomers",
                             tint = Color.White,
                             modifier = Modifier.size(16.dp)
                         )
@@ -221,7 +221,7 @@ fun IsomerCard(isomer: IsomerItem, onClick: () -> Unit) {
             }
 
             Icon(
-                imageVector = Icons.Default.ArrowForward,
+                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = "View compound",
                 tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
                 modifier = Modifier.size(15.dp)
