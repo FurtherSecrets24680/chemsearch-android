@@ -116,6 +116,22 @@ data class GroqChoice(
     val message: GroqMessage?
 )
 
+// GitHub Releases
+
+data class GitHubRelease(
+    @SerializedName("tag_name") val tagName: String?,
+    @SerializedName("name") val name: String?,
+    @SerializedName("body") val body: String?,
+    @SerializedName("html_url") val htmlUrl: String?,
+    @SerializedName("assets") val assets: List<GitHubAsset>?
+)
+
+data class GitHubAsset(
+    @SerializedName("name") val name: String?,
+    @SerializedName("content_type") val contentType: String?,
+    @SerializedName("browser_download_url") val browserDownloadUrl: String?
+)
+
 // UI State
 
 data class ChemUiState(
@@ -206,5 +222,17 @@ data class TitleProperty(
 data class ReleaseInfo(
     val tagName: String,
     val changelog: String,
-    val downloadUrl: String
+    val downloadUrl: String,
+    val releaseUrl: String? = null
+)
+
+data class UpdateStatus(
+    val isChecking: Boolean = false,
+    val latestVersion: String? = null,
+    val updateAvailable: Boolean = false,
+    val downloadUrl: String? = null,
+    val releaseUrl: String? = null,
+    val changelog: String? = null,
+    val lastCheckedAt: Long? = null,
+    val error: String? = null
 )

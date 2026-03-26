@@ -87,6 +87,13 @@ interface GroqApi {
     ): GroqResponse
 }
 
+// GitHub Releases
+
+interface GitHubApi {
+    @GET("repos/FurtherSecrets24680/chemsearch-android/releases/latest")
+    suspend fun getLatestRelease(): GitHubRelease
+}
+
 // Clients
 
 object ApiClient {
@@ -103,6 +110,18 @@ object ApiClient {
             val request: Request = chain.request().newBuilder()
                 .header("User-Agent", "ChemSearch/1.0 (Android; github.com/FurtherSecrets24680)")
                 .header("Accept", "application/json")
+                .build()
+            chain.proceed(request)
+        }
+        .build()
+
+    private val githubClient = OkHttpClient.Builder()
+        .connectTimeout(15.seconds)
+        .readTimeout(20.seconds)
+        .addInterceptor { chain ->
+            val request: Request = chain.request().newBuilder()
+                .header("User-Agent", "ChemSearch/1.0 (Android; github.com/FurtherSecrets24680)")
+                .header("Accept", "application/vnd.github+json")
                 .build()
             chain.proceed(request)
         }
@@ -134,6 +153,10 @@ object ApiClient {
     val groq: GroqApi =
         retrofit("https://api.groq.com/openai/v1/")
             .create(GroqApi::class.java)
+
+    val github: GitHubApi =
+        retrofit("https://api.github.com/", githubClient)
+            .create(GitHubApi::class.java)
 
     val rawHttp: OkHttpClient = defaultClient
 

@@ -1,12 +1,20 @@
 package com.furthersecrets.chemsearch.ui
 
+import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
+import android.os.Handler
+import android.os.Looper
+import android.text.format.DateUtils
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,9 +40,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.furthersecrets.chemsearch.BuildConfig
 import com.furthersecrets.chemsearch.data.*
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,6 +57,8 @@ fun SettingsSheet(
     aiProvider: AiProvider,
     hasGeminiKey: Boolean,
     hasGroqKey: Boolean,
+    updateNotificationsEnabled: Boolean,
+    updateStatus: UpdateStatus,
     onToggleTheme: () -> Unit,
     onToggleAutoSuggest: () -> Unit,
     onSetDefaultDesc: (DescSource) -> Unit,
@@ -54,10 +68,11 @@ fun SettingsSheet(
     onClearGeminiKey: () -> Unit,
     onClearGroqKey: () -> Unit,
     onClearHistory: () -> Unit,
+    onToggleUpdateNotifications: (Boolean) -> Unit,
+    onCheckForUpdates: () -> Unit,
     onDismiss: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val context = LocalContext.current
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
@@ -141,70 +156,16 @@ fun SettingsSheet(
             SettingsSectionHeader("Data")
             SettingsActionRow(Icons.Default.History, "Search History", "Clear all recent searches", "Clear", MaterialTheme.colorScheme.error, onClearHistory)
 
+            UpdatesSection(
+                updateNotificationsEnabled = updateNotificationsEnabled,
+                updateStatus = updateStatus,
+                onToggleUpdateNotifications = onToggleUpdateNotifications,
+                onCheckForUpdates = onCheckForUpdates
+            )
+
             Spacer(Modifier.height(4.dp))
             SettingsSectionHeader("About")
-            Card(
-                shape = RoundedCornerShape(14.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-            ) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text("ChemSearch for Android", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
-                        Surface(
-                            shape = RoundedCornerShape(6.dp),
-                            color = MaterialTheme.colorScheme.primary.copy(0.12f)
-                        ) {
-                            Text(
-                                text = "v${BuildConfig.VERSION_NAME}(${BuildConfig.VERSION_CODE})",
-                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
-                                style = MaterialTheme.typography.labelSmall,
-                                fontFamily = FontFamily.Monospace,
-                                color = MaterialTheme.colorScheme.primary,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                        Text("Data from PubChem, Wikipedia, Google Gemini and Groq", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
-                        Text("by FurtherSecrets", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
-                    }
-
-                    HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
-
-                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text("SOURCE CODE", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-                        Row(
-                            modifier = Modifier.clickable {
-                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/FurtherSecrets24680/chemsearch-android"))
-                                context.startActivity(intent)
-                            },
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            Icon(Icons.Default.Code, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
-                            Text("GitHub Repository", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Medium)
-                        }
-                    }
-
-                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text("LIBRARIES & CREDITS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-                        val libs = listOf(
-                            "Jetpack Compose" to "UI Framework",
-                            "Material 3" to "Design System",
-                            "Retrofit & OkHttp" to "Networking",
-                            "Coil" to "Image Loading",
-                            "Native 3D Engine" to "3D Molecular Visualization",
-                            "Gemini & Groq" to "AI Models",
-                            "Gson" to "JSON Parsing",
-                            "Kotlin Coroutines" to "Asynchronous Tasks"
-                        )
-                        libs.forEach { (name, desc) ->
-                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                Text(name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Medium)
-                                Text(desc, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
-                            }
-                        }
-                    }
-                }
-            }
+            AboutCard()
         }
 
     }
@@ -261,6 +222,245 @@ fun SettingsActionRow(icon: ImageVector, title: String, subtitle: String, action
         TextButton(onClick = onClick) {
             Text(actionLabel, color = actionColor, fontWeight = FontWeight.SemiBold)
         }
+    }
+}
+
+@Composable
+private fun UpdatesSection(
+    updateNotificationsEnabled: Boolean,
+    updateStatus: UpdateStatus,
+    onToggleUpdateNotifications: (Boolean) -> Unit,
+    onCheckForUpdates: () -> Unit
+) {
+    val context = LocalContext.current
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            onToggleUpdateNotifications(true)
+        } else {
+            onToggleUpdateNotifications(false)
+            Toast.makeText(context, "Notifications permission denied", Toast.LENGTH_SHORT).show()
+        }
+    }
+    val requestUpdateNotifications = {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val permission = ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
+            if (permission == PackageManager.PERMISSION_GRANTED) {
+                onToggleUpdateNotifications(true)
+            } else {
+                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        } else {
+            onToggleUpdateNotifications(true)
+        }
+    }
+    val lastCheckedLabel = updateStatus.lastCheckedAt?.let { lastChecked ->
+        val relative = DateUtils.getRelativeTimeSpanString(
+            lastChecked,
+            System.currentTimeMillis(),
+            DateUtils.MINUTE_IN_MILLIS
+        )
+        "Last checked $relative"
+    } ?: "Never checked"
+    val updateLink = updateStatus.downloadUrl ?: updateStatus.releaseUrl
+    val checkLabel = if (updateStatus.isChecking) "Checking..." else "Check"
+
+    Spacer(Modifier.height(4.dp))
+    SettingsSectionHeader("Updates")
+    SettingsToggleRow(
+        icon = Icons.Default.Notifications,
+        title = "Update notifications",
+        subtitle = "Notify when a new version is available",
+        checked = updateNotificationsEnabled,
+        onToggle = {
+            val next = !updateNotificationsEnabled
+            if (next) requestUpdateNotifications() else onToggleUpdateNotifications(false)
+        }
+    )
+    SettingsActionRow(
+        icon = Icons.Default.SystemUpdate,
+        title = "Check for updates",
+        subtitle = lastCheckedLabel,
+        actionLabel = checkLabel,
+        actionColor = MaterialTheme.colorScheme.primary
+    ) {
+        if (!updateStatus.isChecking) onCheckForUpdates()
+    }
+    if (updateStatus.updateAvailable) {
+        val latestLabel = updateStatus.latestVersion?.let { "Latest: $it" } ?: "Update available"
+        SettingsActionRow(
+            icon = Icons.Default.Download,
+            title = "Update available",
+            subtitle = latestLabel,
+            actionLabel = "Download",
+            actionColor = MaterialTheme.colorScheme.primary
+        ) {
+            if (updateLink.isNullOrBlank()) {
+                Toast.makeText(context, "No download link found", Toast.LENGTH_SHORT).show()
+            } else {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateLink))
+                context.startActivity(intent)
+            }
+        }
+    } else if (updateStatus.latestVersion != null && !updateStatus.isChecking) {
+        Text(
+            "You're up to date (latest ${updateStatus.latestVersion})",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
+            modifier = Modifier.padding(start = 32.dp, top = 2.dp)
+        )
+    }
+    updateStatus.error?.let { error ->
+        Text(
+            "Update check failed: $error",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.error,
+            modifier = Modifier.padding(start = 32.dp, top = 2.dp)
+        )
+    }
+}
+
+@Composable
+private fun AboutCard(onVersionTap: (() -> Unit)? = null) {
+    val versionModifier = if (onVersionTap != null) {
+        Modifier.clickable { onVersionTap() }
+    } else {
+        Modifier
+    }
+    Card(
+        shape = RoundedCornerShape(14.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+    ) {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text("ChemSearch for Android", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Surface(
+                        shape = RoundedCornerShape(6.dp),
+                        color = MaterialTheme.colorScheme.primary.copy(0.12f),
+                        modifier = versionModifier
+                    ) {
+                        Text(
+                            text = "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = FontFamily.Monospace,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    Surface(
+                        shape = RoundedCornerShape(6.dp),
+                        color = MaterialTheme.colorScheme.secondary.copy(0.12f)
+                    ) {
+                        Text(
+                            text = if (BuildConfig.DEBUG) "Debug" else "Release",
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.secondary,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                }
+                Text(
+                    "Search compounds, view 2D/3D structures, and read safety data.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
+                )
+                Text("Built by FurtherSecrets", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                Text(
+                    "Package: ${BuildConfig.APPLICATION_ID}",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = FontFamily.Monospace,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+                )
+            }
+
+            HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
+
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text("LINKS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                LinkRow(
+                    icon = Icons.Default.Code,
+                    title = "GitHub repository",
+                    subtitle = "Source, docs, and releases",
+                    url = "https://github.com/FurtherSecrets24680/chemsearch-android"
+                )
+                LinkRow(
+                    icon = Icons.Default.SystemUpdate,
+                    title = "Latest release",
+                    subtitle = "Download the newest APK",
+                    url = "https://github.com/FurtherSecrets24680/chemsearch-android/releases/latest"
+                )
+                LinkRow(
+                    icon = Icons.Default.BugReport,
+                    title = "Report an issue",
+                    subtitle = "Bug reports and feature requests",
+                    url = "https://github.com/FurtherSecrets24680/chemsearch-android/issues"
+                )
+                LinkRow(
+                    icon = Icons.Default.Description,
+                    title = "License",
+                    subtitle = "View the open-source license",
+                    url = "https://github.com/FurtherSecrets24680/chemsearch-android/blob/main/LICENSE"
+                )
+            }
+
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text("DATA SOURCES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                listOf(
+                    "PubChem" to "Structures and properties",
+                    "Wikipedia" to "Descriptions",
+                    "Google Gemini" to "AI summaries",
+                    "Groq" to "AI summaries"
+                ).forEach { (name, detail) ->
+                    CreditRow(name = name, detail = detail)
+                }
+            }
+
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text("LIBRARIES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                listOf(
+                    "Jetpack Compose" to "UI",
+                    "Material 3" to "Design",
+                    "Retrofit + OkHttp" to "Networking",
+                    "Coil" to "Images",
+                    "Gson" to "JSON",
+                    "Coroutines" to "Async",
+                    "Custom 3D renderer" to "SDF viewer"
+                ).forEach { (name, detail) ->
+                    CreditRow(name = name, detail = detail)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun LinkRow(icon: ImageVector, title: String, subtitle: String, url: String) {
+    val context = LocalContext.current
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url))) }
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Icon(icon, null, modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
+        Column {
+            Text(title, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.primary)
+            Text(subtitle, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+        }
+    }
+}
+
+@Composable
+private fun CreditRow(name: String, detail: String) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Text(name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Medium)
+        Text(detail, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
     }
 }
 
@@ -380,6 +580,96 @@ fun InfoDialog(title: String, entries: List<Pair<String, String>>, onDismiss: ()
 
 // Favorites sheet
 
+private enum class FavoritesSort { RECENT, NAME }
+
+@Composable
+private fun FavoriteCard(
+    favorite: FavoriteCompound,
+    onSelect: (String) -> Unit,
+    onDelete: (Long) -> Unit,
+    modifier: Modifier = Modifier,
+    showImage: Boolean = true
+) {
+    Card(
+        onClick = { onSelect(favorite.name) },
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(14.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp).fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            if (showImage) {
+                Surface(
+                    shape = RoundedCornerShape(10.dp),
+                    color = MaterialTheme.colorScheme.background,
+                    modifier = Modifier.size(64.dp)
+                ) {
+                    AsyncImage(
+                        model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${favorite.cid}/PNG?record_type=2d&image_size=small",
+                        contentDescription = "Structure of ${favorite.name}",
+                        modifier = Modifier.fillMaxSize().padding(4.dp),
+                        contentScale = ContentScale.Fit
+                    )
+                }
+            }
+            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(favorite.name, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+                if (favorite.formula.isNotBlank()) {
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = MaterialTheme.colorScheme.primary.copy(0.08f)
+                    ) {
+                        Text(
+                            toSubscriptFormula(favorite.formula),
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = FontFamily.Monospace,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+                Text(
+                    "CID ${favorite.cid}",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = FontFamily.Monospace,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                )
+            }
+            IconButton(onClick = { onDelete(favorite.cid) }) {
+                Icon(Icons.Default.Delete, contentDescription = "Remove", tint = MaterialTheme.colorScheme.error.copy(0.65f), modifier = Modifier.size(18.dp))
+            }
+        }
+    }
+}
+
+@Composable
+private fun SortPill(label: String, selected: Boolean, onClick: () -> Unit) {
+    val background = if (selected) MaterialTheme.colorScheme.primary.copy(0.12f) else MaterialTheme.colorScheme.surfaceVariant
+    val border = if (selected) MaterialTheme.colorScheme.primary.copy(0.35f) else MaterialTheme.colorScheme.outline.copy(0.2f)
+    Surface(
+        shape = RoundedCornerShape(999.dp),
+        color = background,
+        border = BorderStroke(1.dp, border)
+    ) {
+        Box(
+            modifier = Modifier
+                .clickable { onClick() }
+                .padding(horizontal = 12.dp, vertical = 6.dp)
+        ) {
+            Text(
+                label,
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.SemiBold,
+                color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
+            )
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavoritesSheet(
@@ -401,7 +691,25 @@ fun FavoritesSheet(
                 .padding(start = 20.dp, end = 20.dp, bottom = 48.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text("Favorites", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 12.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text("Favorites", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                Surface(
+                    shape = RoundedCornerShape(999.dp),
+                    color = MaterialTheme.colorScheme.primary.copy(0.12f)
+                ) {
+                    Text(
+                        "${favorites.size} saved",
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+            }
             if (favorites.isEmpty()) {
                 Box(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 48.dp),
@@ -426,33 +734,14 @@ fun FavoritesSheet(
                     }
                 }
             } else {
-                favorites.forEach { fav ->
-                    Card(
-                        onClick = { onSelect(fav.name) },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(14.dp),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.5f))
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(14.dp).fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                                Text(fav.name, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
-                                if (fav.formula.isNotBlank()) {
-                                    Text(toSubscriptFormula(fav.formula), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.primary)
-                                }
-                                if (fav.molecularWeight.isNotBlank()) {
-                                    Text("MW: ${fav.molecularWeight} g/mol", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
-                                }
-                            }
-                            IconButton(onClick = { onDelete(fav.cid) }) {
-                                Icon(Icons.Default.Delete, contentDescription = "Remove", tint = MaterialTheme.colorScheme.error.copy(0.65f), modifier = Modifier.size(18.dp))
-                            }
-                        }
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    favorites.forEach { fav ->
+                        FavoriteCard(
+                            favorite = fav,
+                            onSelect = onSelect,
+                            onDelete = onDelete
+                        )
                     }
-                    Spacer(Modifier.height(6.dp))
                 }
             }
         }
@@ -467,6 +756,28 @@ fun FavoritesInline(
     onSelect: (String) -> Unit,
     onDelete: (Long) -> Unit
 ) {
+    var filterQuery by remember { mutableStateOf("") }
+    var sortMode by remember { mutableStateOf(FavoritesSort.RECENT) }
+    val normalizedQuery = filterQuery.trim().lowercase(Locale.US)
+    val filteredFavorites = remember(favorites, normalizedQuery, sortMode) {
+        val base = if (normalizedQuery.isBlank()) {
+            favorites
+        } else {
+            favorites.filter { fav ->
+                fav.name.lowercase(Locale.US).contains(normalizedQuery) ||
+                    fav.formula.lowercase(Locale.US).contains(normalizedQuery) ||
+                    fav.iupacName.lowercase(Locale.US).contains(normalizedQuery) ||
+                    fav.cid.toString().contains(normalizedQuery) ||
+                    fav.molecularWeight.lowercase(Locale.US).contains(normalizedQuery)
+            }
+        }
+        when (sortMode) {
+            FavoritesSort.NAME -> base.sortedBy { it.name.lowercase(Locale.US) }
+            FavoritesSort.RECENT -> base
+        }
+    }
+    val showControls = favorites.size >= 3
+
     if (favorites.isEmpty()) {
         Box(
             modifier = Modifier.fillMaxWidth().padding(top = 64.dp),
@@ -488,57 +799,116 @@ fun FavoritesInline(
                     )
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text("No bookmarks yet", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface.copy(0.7f))
-                    Text("Tap the bookmark icon on any compound", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.38f))
+                    Text("No favorites yet", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface.copy(0.7f))
+                    Text("Tap the favorite icon on any compound", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.38f))
                 }
             }
         }
         return
     }
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text("FAVORITES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
-        favorites.forEach { fav ->
-            Card(
-                onClick = { onSelect(fav.name) },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(14.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Icon(Icons.Default.Bookmark, null, tint = MaterialTheme.colorScheme.primary.copy(0.7f), modifier = Modifier.size(18.dp))
+                Text("Favorites", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            }
+            Surface(
+                shape = RoundedCornerShape(999.dp),
+                color = MaterialTheme.colorScheme.primary.copy(0.12f)
             ) {
-                Row(
-                    modifier = Modifier.padding(10.dp).fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Surface(
-                        shape = RoundedCornerShape(10.dp),
-                        color = MaterialTheme.colorScheme.background,
-                        modifier = Modifier.size(64.dp)
-                    ) {
-                        AsyncImage(
-                            model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${fav.cid}/PNG?record_type=2d&image_size=small",
-                            contentDescription = "Structure of ${fav.name}",
-                            modifier = Modifier.fillMaxSize().padding(4.dp),
-                            contentScale = ContentScale.Fit
-                        )
-                    }
-                    Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text(fav.name, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
-                        if (fav.formula.isNotBlank()) {
-                            Text(toSubscriptFormula(fav.formula), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.primary)
+                Text(
+                    "${favorites.size} saved",
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        }
+        Text(
+            "Tap a card to open. Favorites are stored on this device only.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+        )
+
+        if (showControls) {
+            OutlinedTextField(
+                value = filterQuery,
+                onValueChange = { filterQuery = it },
+                label = { Text("Filter favorites") },
+                leadingIcon = { Icon(Icons.Default.Search, null) },
+                trailingIcon = {
+                    if (filterQuery.isNotBlank()) {
+                        IconButton(onClick = { filterQuery = "" }) {
+                            Icon(Icons.Default.Close, contentDescription = "Clear filter")
                         }
-                        if (fav.molecularWeight.isNotBlank()) {
-                            Text("MW: ${fav.molecularWeight} g/mol", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
-                        }
                     }
-                    IconButton(onClick = { onDelete(fav.cid) }) {
-                        Icon(Icons.Default.Delete, null, tint = MaterialTheme.colorScheme.error.copy(0.6f), modifier = Modifier.size(18.dp))
-                    }
+                },
+                singleLine = true,
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.fillMaxWidth()
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "Sort",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+                )
+                SortPill(label = "Recent", selected = sortMode == FavoritesSort.RECENT) {
+                    sortMode = FavoritesSort.RECENT
+                }
+                SortPill(label = "A-Z", selected = sortMode == FavoritesSort.NAME) {
+                    sortMode = FavoritesSort.NAME
+                }
+                Spacer(Modifier.weight(1f))
+                if (filterQuery.isNotBlank()) {
+                    Text(
+                        "${filteredFavorites.size} match${if (filteredFavorites.size == 1) "" else "es"}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                    )
                 }
             }
-
         }
 
+        if (filteredFavorites.isEmpty()) {
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                Text(
+                    "No matches found.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                )
+                Text(
+                    "Try a different name, formula, or CID.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+                )
+                if (filterQuery.isNotBlank()) {
+                    TextButton(onClick = { filterQuery = "" }) { Text("Clear filter") }
+                }
+            }
+        } else {
+            filteredFavorites.forEach { fav ->
+                FavoriteCard(
+                    favorite = fav,
+                    onSelect = onSelect,
+                    onDelete = onDelete
+                )
+            }
+        }
     }
 }
 
@@ -551,6 +921,8 @@ fun SettingsInline(
     aiProvider: AiProvider,
     hasGeminiKey: Boolean,
     hasGroqKey: Boolean,
+    updateNotificationsEnabled: Boolean = true,
+    updateStatus: UpdateStatus = UpdateStatus(),
     onToggleTheme: () -> Unit,
     onToggleAutoSuggest: () -> Unit,
     onSetDefaultDesc: (DescSource) -> Unit,
@@ -560,6 +932,8 @@ fun SettingsInline(
     onClearGeminiKey: () -> Unit,
     onClearGroqKey: () -> Unit,
     onClearHistory: () -> Unit,
+    onToggleUpdateNotifications: (Boolean) -> Unit = {},
+    onCheckForUpdates: () -> Unit = {},
     cacheSizeBytes: Long = 0L,
     cacheDir: String = "",
     onClearCache: () -> Unit = {},
@@ -755,73 +1129,41 @@ fun SettingsInline(
             onClick = { cacheDirInput = cacheDir; showCacheDirDialog = true }
         )
 
+        UpdatesSection(
+            updateNotificationsEnabled = updateNotificationsEnabled,
+            updateStatus = updateStatus,
+            onToggleUpdateNotifications = onToggleUpdateNotifications,
+            onCheckForUpdates = onCheckForUpdates
+        )
+
         if (isDevMode) {
             Spacer(Modifier.height(4.dp))
             DebugSettingsSection(
                 prefs = prefs,
-                onDisableDevMode = {
+                onDisableDevMode = { persist ->
                     isDevMode = false
                     buildTapCount = 0
-                    prefs.edit().putBoolean("dev_mode", false).apply()
-                    Toast.makeText(context, "Debug settings hidden", Toast.LENGTH_SHORT).show()
+                    if (persist) {
+                        prefs.edit().putBoolean("dev_mode", false).apply()
+                    }
                 }
             )
         }
 
         Spacer(Modifier.height(4.dp))
         SettingsSectionHeader("About")
-        Card(shape = RoundedCornerShape(14.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text("ChemSearch for Android", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
-                    Surface(
-                        shape = RoundedCornerShape(6.dp),
-                        color = MaterialTheme.colorScheme.primary.copy(0.12f),
-                        modifier = Modifier.clickable {
-                            buildTapCount++
-                            when (buildTapCount) {
-                                3 -> Toast.makeText(context, "2 more taps to unlock debug settings", Toast.LENGTH_SHORT).show()
-                                4 -> Toast.makeText(context, "1 more tap to unlock debug settings", Toast.LENGTH_SHORT).show()
-                                5 -> {
-                                    isDevMode = true
-                                    prefs.edit().putBoolean("dev_mode", true).apply()
-                                    Toast.makeText(context, "Debug settings unlocked", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                        }
-                    ) {
-                        Text("v${BuildConfig.VERSION_NAME}  •  build ${BuildConfig.VERSION_CODE}", modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp), style = MaterialTheme.typography.labelSmall, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
-                    }
-                    Text("Data from PubChem, Wikipedia, Google Gemini and Groq", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
-                    Text("by FurtherSecrets", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
-                }
-                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
-                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text("SOURCE CODE", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-                    Row(modifier = Modifier.clickable {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/FurtherSecrets24680/chemsearch-android"))
-                        context.startActivity(intent)
-                    }, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Icon(Icons.Default.Code, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
-                        Text("GitHub Repository", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Medium)
-                    }
-                }
-                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text("LIBRARIES & CREDITS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-                    listOf(
-                        "Jetpack Compose" to "UI Framework", "Material 3" to "Design System",
-                        "Retrofit & OkHttp" to "Networking", "Coil" to "Image Loading",
-                        "Native 3D Engine" to "3D Molecular Visualization", "Gemini & Groq" to "AI Models",
-                        "Gson" to "JSON Parsing", "Kotlin Coroutines" to "Asynchronous Tasks"
-                    ).forEach { (name, desc) ->
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                            Text(name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Medium)
-                            Text(desc, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
-                        }
-                    }
+        AboutCard(onVersionTap = {
+            buildTapCount++
+            when (buildTapCount) {
+                3 -> Toast.makeText(context, "2 more taps to unlock debug settings", Toast.LENGTH_SHORT).show()
+                4 -> Toast.makeText(context, "1 more tap to unlock debug settings", Toast.LENGTH_SHORT).show()
+                5 -> {
+                    isDevMode = true
+                    prefs.edit().putBoolean("dev_mode", true).apply()
+                    Toast.makeText(context, "Debug settings unlocked", Toast.LENGTH_SHORT).show()
                 }
             }
-        }
+        })
 
     }
 }
@@ -831,32 +1173,46 @@ fun SettingsInline(
 object DebugLog {
     private const val MAX = 200
     val lines = mutableStateListOf<String>()
-    var verbose = false
+    private val formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS", Locale.US)
+    private val mainHandler = Handler(Looper.getMainLooper())
+    @Volatile var verbose = false
 
     fun d(tag: String, msg: String) {
+        if (!verbose) return
         Log.d(tag, msg)
-        if (verbose) append("D/$tag: $msg")
+        append("D/$tag: $msg")
     }
     fun e(tag: String, msg: String) {
         Log.e(tag, msg)
         append("E/$tag: $msg")
     }
     fun i(tag: String, msg: String) {
+        if (!verbose) return
         Log.i(tag, msg)
-        if (verbose) append("I/$tag: $msg")
+        append("I/$tag: $msg")
     }
     private fun append(line: String) {
-        val ts = java.text.SimpleDateFormat("HH:mm:ss.SSS", java.util.Locale.US).format(java.util.Date())
-        if (lines.size >= MAX) lines.removeAt(0)
-        lines.add("$ts  $line")
+        val entry = "${LocalTime.now().format(formatter)}  $line"
+        runOnMain {
+            while (lines.size >= MAX) lines.removeAt(0)
+            lines.add(entry)
+        }
     }
-    fun clear() { lines.clear() }
+    fun clear() = runOnMain { lines.clear() }
+
+    private fun runOnMain(block: () -> Unit) {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            block()
+        } else {
+            mainHandler.post { block() }
+        }
+    }
 }
 
 @Composable
 fun DebugSettingsSection(
     prefs: android.content.SharedPreferences,
-    onDisableDevMode: () -> Unit
+    onDisableDevMode: (Boolean) -> Unit
 ) {
     val context = LocalContext.current
     var verboseLogging by remember { mutableStateOf(prefs.getBoolean("debug_verbose", false)) }
@@ -865,18 +1221,30 @@ fun DebugSettingsSection(
     var showLogsDialog by remember { mutableStateOf(false) }
     var showMemoryDialog by remember { mutableStateOf(false) }
     var showCrashConfirm by remember { mutableStateOf(false) }
+    var showWipeConfirm by remember { mutableStateOf(false) }
     val logLines = DebugLog.lines
+    val sensitiveKeyTokens = listOf("key", "token", "secret")
+
+    fun redactValue(key: String, value: Any?): String {
+        val raw = value?.toString() ?: "null"
+        val isSensitive = sensitiveKeyTokens.any { key.lowercase(Locale.US).contains(it) }
+        return if (isSensitive && raw.length > 8) raw.take(4) + "••••" + raw.takeLast(4) else raw
+    }
+
+    LaunchedEffect(verboseLogging) {
+        DebugLog.verbose = verboseLogging
+    }
 
     if (showInfoDialog) {
         InfoDialog(
             title = "Debug Settings",
             entries = listOf(
-                "Verbose logging" to "Writes detailed log lines tagged 'ChemSearch' to Android Logcat and to the in-app live log buffer. Disable in production to reduce noise.",
+                "Verbose logging" to "Enables debug/info logs (tagged 'ChemSearch') in Logcat and the in-app buffer. Errors are always captured. Disable to reduce noise.",
                 "Live log viewer" to "Shows the in-app log buffer in real time (up to 200 lines). Verbose logs (D/) only appear when verbose logging is on. Errors (E/) are always captured. You can copy or clear the buffer.",
-                "Inspect SharedPreferences" to "Dumps every key-value pair in the app's preference file. Includes API keys (masked), theme, history entries, dev mode flag, and anything else saved with SharedPreferences.",
+                "Inspect SharedPreferences" to "Dumps every key-value pair in the app's preference file. Keys like key/token/secret are masked; use Copy full if you need raw values.",
                 "Memory info" to "Shows current heap usage from the JVM runtime and the Android ActivityManager. Useful for spotting memory leaks or unusually high allocations.",
-                "Network requests" to "Copies all 5 API base URLs to your clipboard for manual testing in a browser or HTTP client like Postman.",
-                "Wipe all SharedPreferences" to "Calls prefs.edit().clear(). Removes everything: API keys, history, favorites, settings. Restart required for changes to take full effect.",
+                "API endpoints" to "Copies base URLs for PubChem, Wikipedia, Gemini, and Groq to your clipboard for manual testing.",
+                "Wipe all SharedPreferences" to "Calls prefs.edit().clear(). Removes API keys, history, favorites, settings, and debug flags. You'll need to unlock debug settings again; restart recommended.",
                 "Force crash" to "Deliberately throws an unhandled RuntimeException. Used to verify that crash reporting / Logcat is working correctly. There is a confirmation step before it fires.",
                 "Hide debug settings" to "Sets dev_mode=false and hides this section. Tap the build number 5 times in the About card to unlock it again."
             ),
@@ -885,18 +1253,27 @@ fun DebugSettingsSection(
     }
 
     if (showPrefsDialog) {
+        val prefEntries = prefs.all.entries.sortedBy { it.key }
+        val hasSensitive = prefEntries.any { entry ->
+            sensitiveKeyTokens.any { entry.key.lowercase(Locale.US).contains(it) }
+        }
         AlertDialog(
             onDismissRequest = { showPrefsDialog = false },
             title = { Text("SharedPreferences dump", fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace) },
             text = {
                 Column(modifier = Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    if (prefs.all.isEmpty()) {
+                    if (prefEntries.isEmpty()) {
                         Text("No keys stored.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
                     } else {
-                        prefs.all.entries.sortedBy { it.key }.forEach { (k, v) ->
-                            val display = if (k.contains("key", ignoreCase = true) && v.toString().length > 8)
-                                v.toString().take(4) + "••••" + v.toString().takeLast(4)
-                            else v.toString()
+                        if (hasSensitive) {
+                            Text(
+                                "Sensitive values are masked. Use \"Copy full\" to include raw values.",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+                            )
+                        }
+                        prefEntries.forEach { (k, v) ->
+                            val display = redactValue(k, v)
                             Text(
                                 text = "$k\n  → $display",
                                 style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
@@ -913,13 +1290,19 @@ fun DebugSettingsSection(
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     TextButton(onClick = {
                         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        val dump = prefs.all.entries.sortedBy { it.key }.joinToString("\n") { "${it.key} = ${it.value}" }
+                        val dump = prefEntries.joinToString("\n") { "${it.key} = ${redactValue(it.key, it.value)}" }
                         cm.setPrimaryClip(ClipData.newPlainText("prefs", dump))
-                        Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show()
-                    }) { Text("Copy") }
-                    TextButton(onClick = { showPrefsDialog = false }) { Text("Close") }
+                        Toast.makeText(context, "Copied masked prefs", Toast.LENGTH_SHORT).show()
+                    }) { Text("Copy masked") }
+                    TextButton(onClick = {
+                        val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val dump = prefEntries.joinToString("\n") { "${it.key} = ${it.value}" }
+                        cm.setPrimaryClip(ClipData.newPlainText("prefs", dump))
+                        Toast.makeText(context, "Copied full prefs", Toast.LENGTH_SHORT).show()
+                    }) { Text("Copy full") }
                 }
             },
+            dismissButton = { TextButton(onClick = { showPrefsDialog = false }) { Text("Close") } },
             containerColor = MaterialTheme.colorScheme.surface
         )
     }
@@ -980,44 +1363,198 @@ fun DebugSettingsSection(
 
     if (showMemoryDialog) {
         val rt = Runtime.getRuntime()
-        val usedMb = (rt.totalMemory() - rt.freeMemory()) / 1_048_576L
-        val totalMb = rt.totalMemory() / 1_048_576L
-        val maxMb = rt.maxMemory() / 1_048_576L
+        val heapUsedMb = (rt.totalMemory() - rt.freeMemory()) / 1_048_576L
+        val heapAllocatedMb = rt.totalMemory() / 1_048_576L
+        val heapMaxMb = rt.maxMemory() / 1_048_576L
+        val heapHeadroomMb = (heapMaxMb - heapUsedMb).coerceAtLeast(0)
+        val heapPercent = if (heapMaxMb > 0) heapUsedMb.toFloat() / heapMaxMb else 0f
+        val heapPercentLabel = if (heapMaxMb > 0) String.format(Locale.US, "%.0f%%", heapPercent * 100f) else "—"
         val am = context.getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager
         val mi = android.app.ActivityManager.MemoryInfo().also { am.getMemoryInfo(it) }
         val availMb = mi.availMem / 1_048_576L
         val totalSystemMb = mi.totalMem / 1_048_576L
+        val usedSystemMb = (totalSystemMb - availMb).coerceAtLeast(0)
+        val systemPercent = if (totalSystemMb > 0) usedSystemMb.toFloat() / totalSystemMb else 0f
+        val systemPercentLabel = if (totalSystemMb > 0) String.format(Locale.US, "%.0f%%", systemPercent * 100f) else "—"
+        val heapColor = when {
+            heapPercent >= 0.85f -> MaterialTheme.colorScheme.error
+            heapPercent >= 0.7f -> MaterialTheme.colorScheme.tertiary
+            else -> MaterialTheme.colorScheme.primary
+        }
+        val systemColor = when {
+            systemPercent >= 0.85f -> MaterialTheme.colorScheme.error
+            systemPercent >= 0.7f -> MaterialTheme.colorScheme.tertiary
+            else -> MaterialTheme.colorScheme.primary
+        }
+        val trackColor = MaterialTheme.colorScheme.outline.copy(0.2f)
+        val lowMemoryLabel = if (mi.lowMemory) "YES (low)" else "No"
+        val lowMemoryColor = if (mi.lowMemory) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface.copy(0.7f)
         AlertDialog(
             onDismissRequest = { showMemoryDialog = false },
             title = { Text("Memory info", fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace) },
             text = {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("JVM HEAP", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-                    listOf(
-                        "Used" to "${usedMb} MB",
-                        "Allocated" to "${totalMb} MB",
-                        "Max" to "${maxMb} MB"
-                    ).forEach { (k, v) ->
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                            Text(k, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace))
-                            Text(v, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace), fontWeight = FontWeight.SemiBold)
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    @Composable
+                    fun UsageBar(percent: Float, color: Color) {
+                        val clamped = percent.coerceIn(0f, 1f)
+                        BoxWithConstraints(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(8.dp)
+                                .background(trackColor, RoundedCornerShape(6.dp))
+                        ) {
+                            val barWidth = maxWidth * clamped
+                            Box(
+                                modifier = Modifier
+                                    .width(barWidth)
+                                    .fillMaxHeight()
+                                    .background(color, RoundedCornerShape(6.dp))
+                            )
                         }
                     }
-                    HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
-                    Text("SYSTEM RAM", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-                    listOf(
-                        "Available" to "${availMb} MB",
-                        "Total" to "${totalSystemMb} MB",
-                        "Low memory" to if (mi.lowMemory) "YES ⚠️" else "No"
-                    ).forEach { (k, v) ->
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                            Text(k, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace))
-                            Text(v, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace), fontWeight = FontWeight.SemiBold)
+
+                    Card(
+                        shape = RoundedCornerShape(12.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.6f)),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.15f))
+                    ) {
+                        Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                    Icon(Icons.Default.Memory, null, tint = heapColor, modifier = Modifier.size(18.dp))
+                                    Column {
+                                        Text("JVM heap", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+                                        Text(
+                                            "Used ${heapUsedMb} MB of ${heapMaxMb} MB max",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                                        )
+                                    }
+                                }
+                                Surface(
+                                    shape = RoundedCornerShape(6.dp),
+                                    color = heapColor.copy(0.15f)
+                                ) {
+                                    Text(
+                                        heapPercentLabel,
+                                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                        style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
+                                        color = heapColor,
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                }
+                            }
+                            UsageBar(heapPercent, heapColor)
+                            listOf(
+                                "Used" to "${heapUsedMb} MB",
+                                "Allocated" to "${heapAllocatedMb} MB",
+                                "Max" to "${heapMaxMb} MB",
+                                "Headroom" to "${heapHeadroomMb} MB"
+                            ).forEach { (k, v) ->
+                                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                    Text(k, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace))
+                                    Text(v, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace), fontWeight = FontWeight.SemiBold)
+                                }
+                            }
+                        }
+                    }
+
+                    Card(
+                        shape = RoundedCornerShape(12.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.6f)),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.15f))
+                    ) {
+                        Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                    Icon(Icons.Default.Storage, null, tint = systemColor, modifier = Modifier.size(18.dp))
+                                    Column {
+                                        Text("System RAM", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+                                        Text(
+                                            "Used ${usedSystemMb} MB of ${totalSystemMb} MB total",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                                        )
+                                    }
+                                }
+                                Surface(
+                                    shape = RoundedCornerShape(6.dp),
+                                    color = systemColor.copy(0.15f)
+                                ) {
+                                    Text(
+                                        systemPercentLabel,
+                                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                        style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
+                                        color = systemColor,
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                }
+                            }
+                            UsageBar(systemPercent, systemColor)
+                            listOf(
+                                "Used" to "${usedSystemMb} MB",
+                                "Available" to "${availMb} MB",
+                                "Total" to "${totalSystemMb} MB"
+                            ).forEach { (k, v) ->
+                                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                    Text(k, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace))
+                                    Text(v, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace), fontWeight = FontWeight.SemiBold)
+                                }
+                            }
+                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                Text("Low memory", style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace))
+                                Text(lowMemoryLabel, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace), fontWeight = FontWeight.SemiBold, color = lowMemoryColor)
+                            }
                         }
                     }
                 }
             },
-            confirmButton = { TextButton(onClick = { showMemoryDialog = false }) { Text("Close") } },
+            confirmButton = {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    TextButton(onClick = {
+                        val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val snapshot = buildString {
+                            append("JVM heap: used ${heapUsedMb} MB, allocated ${heapAllocatedMb} MB, max ${heapMaxMb} MB, headroom ${heapHeadroomMb} MB (${heapPercentLabel})\n")
+                            append("System RAM: used ${usedSystemMb} MB, available ${availMb} MB, total ${totalSystemMb} MB (${systemPercentLabel}), low memory: $lowMemoryLabel")
+                        }
+                        cm.setPrimaryClip(ClipData.newPlainText("memory", snapshot))
+                        Toast.makeText(context, "Copied memory snapshot", Toast.LENGTH_SHORT).show()
+                    }) { Text("Copy") }
+                    TextButton(onClick = { showMemoryDialog = false }) { Text("Close") }
+                }
+            },
+            containerColor = MaterialTheme.colorScheme.surface
+        )
+    }
+
+    if (showWipeConfirm) {
+        AlertDialog(
+            onDismissRequest = { showWipeConfirm = false },
+            title = { Text("Wipe all preferences?", fontWeight = FontWeight.Bold) },
+            text = { Text("This clears API keys, history, favorites, settings, and debug flags. You will need to unlock debug settings again.") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showWipeConfirm = false
+                        prefs.edit().clear().apply()
+                        DebugLog.verbose = false
+                        verboseLogging = false
+                        DebugLog.e("ChemSearch", "SharedPreferences wiped by developer")
+                        onDisableDevMode(false)
+                        Toast.makeText(context, "All preferences wiped. Restart the app.", Toast.LENGTH_LONG).show()
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) { Text("Wipe now") }
+            },
+            dismissButton = { TextButton(onClick = { showWipeConfirm = false }) { Text("Cancel") } },
             containerColor = MaterialTheme.colorScheme.surface
         )
     }
@@ -1144,14 +1681,10 @@ fun DebugSettingsSection(
             SettingsActionRow(
                 icon = Icons.Default.DeleteSweep,
                 title = "Wipe all SharedPreferences",
-                subtitle = "Clears keys, history, API keys, settings",
+                subtitle = "Clears keys, history, API keys, settings, debug flags",
                 actionLabel = "Wipe",
                 actionColor = MaterialTheme.colorScheme.error,
-                onClick = {
-                    prefs.edit().clear().apply()
-                    DebugLog.e("ChemSearch", "SharedPreferences wiped by developer")
-                    Toast.makeText(context, "All preferences wiped. Restart the app.", Toast.LENGTH_LONG).show()
-                }
+                onClick = { showWipeConfirm = true }
             )
 
             // Force crash
@@ -1166,7 +1699,10 @@ fun DebugSettingsSection(
 
             HorizontalDivider(color = MaterialTheme.colorScheme.primary.copy(0.2f), modifier = Modifier.padding(vertical = 4.dp))
             TextButton(
-                onClick = onDisableDevMode,
+                onClick = {
+                    onDisableDevMode(true)
+                    Toast.makeText(context, "Debug settings hidden", Toast.LENGTH_SHORT).show()
+                },
                 contentPadding = PaddingValues(0.dp)
             ) {
                 Icon(Icons.Default.VisibilityOff, null, modifier = Modifier.size(14.dp), tint = MaterialTheme.colorScheme.onSurface.copy(0.4f))

@@ -1,8 +1,19 @@
 package com.furthersecrets.chemsearch
 
+import android.Manifest
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.furthersecrets.chemsearch.data.*
@@ -48,7 +59,16 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     private val _hasGroqKey = MutableStateFlow(prefs.getString("groq_key", null)?.isNotBlank() == true)
     val hasGroqKey: StateFlow<Boolean> = _hasGroqKey.asStateFlow()
 
+    private val _updateNotificationsEnabled = MutableStateFlow(prefs.getBoolean(PREF_UPDATE_NOTIFICATIONS, true))
+    val updateNotificationsEnabled: StateFlow<Boolean> = _updateNotificationsEnabled.asStateFlow()
+
+    private val _updateStatus = MutableStateFlow(
+        UpdateStatus(lastCheckedAt = prefs.getLong(PREF_UPDATE_LAST_CHECK, 0L).takeIf { it != 0L })
+    )
+    val updateStatus: StateFlow<UpdateStatus> = _updateStatus.asStateFlow()
+
     init {
+        DebugLog.verbose = prefs.getBoolean("debug_verbose", false)
         val savedProvider = AiProvider.entries.firstOrNull { it.name == prefs.getString("ai_provider", null) } ?: AiProvider.GEMINI
         _uiState.update { it.copy(history = loadHistory(), aiProvider = savedProvider) }
         viewModelScope.launch {
@@ -58,9 +78,71 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 } ?: false
             }
         }
+        checkForUpdates()
     }
 
     fun isAiProviderSet(): Boolean = prefs.contains("ai_provider")
+
+    fun setUpdateNotificationsEnabled(enabled: Boolean) {
+        _updateNotificationsEnabled.value = enabled
+        prefs.edit().putBoolean(PREF_UPDATE_NOTIFICATIONS, enabled).apply()
+        if (enabled) checkForUpdates()
+    }
+
+    fun checkForUpdates(manual: Boolean = false) {
+        if (_updateStatus.value.isChecking) return
+        val now = System.currentTimeMillis()
+        if (!manual) {
+            val lastCheck = prefs.getLong(PREF_UPDATE_LAST_CHECK, 0L)
+            if (lastCheck != 0L && now - lastCheck < UPDATE_CHECK_INTERVAL_MS) return
+        }
+        _updateStatus.update { it.copy(isChecking = true, error = null) }
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                runCatching { ApiClient.github.getLatestRelease() }
+            }
+            val currentStatus = _updateStatus.value
+            val nextStatus = result.fold(
+                onSuccess = { release ->
+                    val latestTag = release.tagName?.trim().orEmpty()
+                    if (latestTag.isBlank()) {
+                        currentStatus.copy(
+                            isChecking = false,
+                            error = "No release tag found.",
+                            lastCheckedAt = now
+                        )
+                    } else {
+                        val downloadUrl = release.assets
+                            ?.firstOrNull { it.browserDownloadUrl?.endsWith(".apk", ignoreCase = true) == true }
+                            ?.browserDownloadUrl
+                        val releaseUrl = release.htmlUrl
+                        val updateAvailable = isUpdateAvailable(BuildConfig.VERSION_NAME, latestTag)
+                        val status = UpdateStatus(
+                            isChecking = false,
+                            latestVersion = latestTag,
+                            updateAvailable = updateAvailable,
+                            downloadUrl = downloadUrl,
+                            releaseUrl = releaseUrl,
+                            changelog = release.body,
+                            lastCheckedAt = now,
+                            error = null
+                        )
+                        if (updateAvailable) maybeNotifyUpdate(latestTag, downloadUrl, releaseUrl)
+                        status
+                    }
+                },
+                onFailure = { e ->
+                    currentStatus.copy(
+                        isChecking = false,
+                        error = e.message ?: "Update check failed.",
+                        lastCheckedAt = now
+                    )
+                }
+            )
+            _updateStatus.value = nextStatus
+            prefs.edit().putLong(PREF_UPDATE_LAST_CHECK, now).apply()
+        }
+    }
 
     fun toggleFavorite() {
         val state = _uiState.value
@@ -531,7 +613,6 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         val updated = loadHistory().toMutableList().apply {
             removeAll { it.equals(name, ignoreCase = true) }
             add(0, name)
-            if (size > 10) removeLast()
         }
         prefs.edit().putString("history", updated.joinToString("||")).apply()
         _uiState.update { it.copy(history = updated) }
@@ -541,6 +622,15 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         prefs.edit().remove("history").apply()
         _uiState.update { it.copy(history = emptyList()) }
         DebugLog.d("ChemSearch", "Search history cleared")
+    }
+
+    fun removeHistoryItem(query: String) {
+        val updated = loadHistory().toMutableList().apply {
+            removeAll { it.equals(query, ignoreCase = true) }
+        }
+        prefs.edit().putString("history", updated.joinToString("||")).apply()
+        _uiState.update { it.copy(history = updated) }
+        DebugLog.d("ChemSearch", "Removed recent search: $query")
     }
 
 
@@ -855,7 +945,101 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    private fun maybeNotifyUpdate(latestTag: String, downloadUrl: String?, releaseUrl: String?) {
+        if (!_updateNotificationsEnabled.value) return
+        val lastNotified = prefs.getString(PREF_UPDATE_LAST_NOTIFIED, null)
+        if (latestTag.equals(lastNotified, ignoreCase = true)) return
+        sendUpdateNotification(latestTag, downloadUrl ?: releaseUrl)
+        prefs.edit().putString(PREF_UPDATE_LAST_NOTIFIED, latestTag).apply()
+    }
+
+    private fun sendUpdateNotification(latestTag: String, url: String?) {
+        val context = getApplication<Application>()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val permission = ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
+            if (permission != PackageManager.PERMISSION_GRANTED) return
+        }
+        ensureUpdateChannel()
+        val intent = url?.takeIf { it.isNotBlank() }?.let { Intent(Intent.ACTION_VIEW, Uri.parse(it)) }
+        val pendingIntent = intent?.let {
+            PendingIntent.getActivity(
+                context,
+                0,
+                it,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        }
+        val builder = NotificationCompat.Builder(context, UPDATE_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle("ChemSearch update available")
+            .setContentText("Version $latestTag is available")
+            .setAutoCancel(true)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        if (pendingIntent != null) builder.setContentIntent(pendingIntent)
+        NotificationManagerCompat.from(context).notify(UPDATE_NOTIFICATION_ID, builder.build())
+    }
+
+    private fun ensureUpdateChannel() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
+        val context = getApplication<Application>()
+        val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (manager.getNotificationChannel(UPDATE_CHANNEL_ID) != null) return
+        val channel = NotificationChannel(
+            UPDATE_CHANNEL_ID,
+            "Updates",
+            NotificationManager.IMPORTANCE_DEFAULT
+        )
+        channel.description = "Notifications when a new version is available"
+        manager.createNotificationChannel(channel)
+    }
+
+    private fun isUpdateAvailable(currentVersion: String, latestTag: String): Boolean {
+        val currentBase = baseVersion(currentVersion)
+        val latestBase = baseVersion(latestTag)
+        if (currentBase.equals(latestBase, ignoreCase = true)) return false
+        val currentParts = parseVersionParts(currentBase)
+        val latestParts = parseVersionParts(latestBase)
+        if (currentParts.isNotEmpty() && latestParts.isNotEmpty()) {
+            return compareVersionParts(latestParts, currentParts) > 0
+        }
+        if (currentVersion.contains(latestBase, ignoreCase = true)) return false
+        return true
+    }
+
+    private fun baseVersion(raw: String): String {
+        val normalized = normalizeVersion(raw)
+        return normalized.split(Regex("[+\\-\\s]")).firstOrNull().orEmpty()
+    }
+
+    private fun normalizeVersion(raw: String): String =
+        raw.trim().removePrefix("v").removePrefix("V")
+
+    private fun parseVersionParts(version: String): List<Int> {
+        if (version.isBlank()) return emptyList()
+        return version.split(".")
+            .mapNotNull { part ->
+                part.takeWhile { it.isDigit() }.toIntOrNull()
+            }
+    }
+
+    private fun compareVersionParts(a: List<Int>, b: List<Int>): Int {
+        val maxSize = maxOf(a.size, b.size)
+        for (i in 0 until maxSize) {
+            val av = a.getOrElse(i) { 0 }
+            val bv = b.getOrElse(i) { 0 }
+            if (av != bv) return av.compareTo(bv)
+        }
+        return 0
+    }
+
     companion object {
+        private const val UPDATE_CHANNEL_ID = "updates"
+        private const val UPDATE_NOTIFICATION_ID = 901
+        private const val PREF_UPDATE_NOTIFICATIONS = "update_notifications"
+        private const val PREF_UPDATE_LAST_CHECK = "update_last_check"
+        private const val PREF_UPDATE_LAST_NOTIFIED = "update_last_notified"
+        private const val UPDATE_CHECK_INTERVAL_MS = 12 * 60 * 60 * 1000L
+
         private val ATOMIC_WEIGHTS = mapOf(
             "H" to 1.008, "He" to 4.0026, "Li" to 6.94, "Be" to 9.0122, "B" to 10.81, "C" to 12.011,
             "N" to 14.007, "O" to 15.999, "F" to 18.998, "Ne" to 20.180, "Na" to 22.990, "Mg" to 24.305,

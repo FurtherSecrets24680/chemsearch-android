@@ -47,6 +47,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val hasGroqKey by vm.hasGroqKey.collectAsState()
     val cacheSizeBytes by vm.cacheSizeBytes.collectAsState()
     val cacheDirPath by vm.cacheDirPath.collectAsState()
+    val updateNotificationsEnabled by vm.updateNotificationsEnabled.collectAsState()
+    val updateStatus by vm.updateStatus.collectAsState()
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val snackbar = remember { SnackbarHostState() }
@@ -116,6 +118,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             aiProvider = state.aiProvider,
             hasGeminiKey = hasGeminiKey,
             hasGroqKey = hasGroqKey,
+            updateNotificationsEnabled = updateNotificationsEnabled,
+            updateStatus = updateStatus,
             onToggleTheme = { vm.toggleTheme() },
             onToggleAutoSuggest = { vm.toggleAutoSuggest() },
             onSetDefaultDesc = { vm.setDefaultDescSource(it) },
@@ -125,6 +129,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             onClearGeminiKey = { vm.clearGeminiKey() },
             onClearGroqKey = { vm.clearGroqKey() },
             onClearHistory = { vm.clearHistory() },
+            onToggleUpdateNotifications = { enabled -> vm.setUpdateNotificationsEnabled(enabled) },
+            onCheckForUpdates = { vm.checkForUpdates(manual = true) },
             onDismiss = { showSettings = false }
         )
     }
@@ -321,7 +327,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 HistorySection(
                                     history = state.history,
                                     onSelect = { vm.search(it) },
-                                    onClear = { vm.clearHistory() }
+                                    onClear = { vm.clearHistory() },
+                                    onDelete = { vm.removeHistoryItem(it) }
                                 )
                             }
                         }
@@ -378,7 +385,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 AppTab.RECENT -> HistorySection(
                                     history = state.history,
                                     onSelect = { vm.search(it); selectedTab = AppTab.SEARCH },
-                                    onClear = { vm.clearHistory() }
+                                    onClear = { vm.clearHistory() },
+                                    onDelete = { vm.removeHistoryItem(it) }
                                 )
                                 AppTab.FAVORITES -> FavoritesInline(
                                     favorites = favorites,
@@ -392,6 +400,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     aiProvider = state.aiProvider,
                                     hasGeminiKey = hasGeminiKey,
                                     hasGroqKey = hasGroqKey,
+                                    updateNotificationsEnabled = updateNotificationsEnabled,
+                                    updateStatus = updateStatus,
                                     onToggleTheme = { vm.toggleTheme() },
                                     onToggleAutoSuggest = { vm.toggleAutoSuggest() },
                                     onSetDefaultDesc = { vm.setDefaultDescSource(it) },
@@ -401,6 +411,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     onClearGeminiKey = { vm.clearGeminiKey() },
                                     onClearGroqKey = { vm.clearGroqKey() },
                                     onClearHistory = { vm.clearHistory() },
+                                    onToggleUpdateNotifications = { enabled -> vm.setUpdateNotificationsEnabled(enabled) },
+                                    onCheckForUpdates = { vm.checkForUpdates(manual = true) },
                                     cacheSizeBytes = cacheSizeBytes,
                                     cacheDir = cacheDirPath,
                                     onClearCache = { vm.clearCache() },
