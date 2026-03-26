@@ -26,29 +26,34 @@
 
 This is the native Android version of the original [**ChemSearch** webapp](https://chemsearch.netlify.app/), rewritten in Kotlin with Jetpack Compose.
 
+## Download
+- Grab the latest APK from [GitHub Releases](https://github.com/FurtherSecrets24680/chemsearch-android/releases).
+- Or build from source (see below).
+
 ---
 ## Features
 
 ### Search
 - Search by common name, IUPAC name, CAS number, or CID via PubChem PUG REST
 - Real-time **autocomplete suggestions** as you type, with a scrollable dropdown (toggleable)
-- Recent **search history** with one-tap access
-- **Favorites** to save and revisit compounds
+- Recent searches with filter, inline delete, and one-tap access
+- **Favorites** with filter and A-Z/Recent sorting
 
 ### Compound Data
 - Compound header showing name, molecular formula, molecular weight, CID and CAS at a glance
-- Full identifiers card: IUPAC name, SMILES (full and connectivity), InChI, InChIKey, empirical formula, and formal charge (tap any to copy to clipboard).
+- Full identifiers card: IUPAC name, SMILES (full and connectivity), InChI, InChIKey, empirical formula, and formal charge (tap any value to copy).
 - **Info tooltips** on each card explaining what each identifier or data type means
 - Up to 8 **synonyms** displayed as chips
 - **Elemental analysis** with mass percentage bars for each element
+- Tap the formula to jump into the Isomer Finder
 
 ### Structure Viewer
-- **2D structure** via PubChem PNG images
+- **2D structure** via PubChem PNG images with tap-to-zoom
 - **3D model** using a fully native Canvas-based engine:
     - Drag to rotate, pinch to zoom, auto-spin with pause on touch
     - CPK coloring for all 118 elements
     - Ball-and-stick model with bonds connected to atom surfaces
-    - **Download SDF** button to save the 3D structure file directly to Downloads
+- **Download** 2D PNG or 3D SDF files directly to Downloads
 
 ### Safety Information
 - GHS classification fetched from PubChem PUG View:
@@ -63,20 +68,24 @@ Three switchable sources per compound:
 - **AI** via Google Gemini or Groq, with a regenerate button. This is totally optional and it requires your API key from these providers to work.
 
 ### Tools
-Five chemistry tools accessible from the Tools tab:
+Six chemistry tools accessible from the Tools tab:
 
 - **Custom 3D Molecule Viewer** : Load any `.sdf` or `.mol` file from your device and view it in the native 3D engine
-- **Molar Mass Calculator** : Enter any molecular formula (including parentheses groups) to get the molar mass and a full elemental breakdown by mass percentage
+- **Molar Mass Calculator** : Enter any molecular formula (including parentheses groups and hydrate dot notation) to get the molar mass and a full elemental breakdown by mass percentage
 - **Oxidation State Finder** : Determine oxidation states for each element in a compound, with support for peroxides, superoxides, ozonides, metal hydrides, and interhalogen compounds. Enter the overall charge for polyatomic ions
 - **SMILES Visualizer** : Paste any SMILES string to look it up on PubChem and view its 2D structure and 3D model
 - **Reaction Balancer** : Balance any chemical equation using matrix-based Gaussian elimination with exact rational arithmetic. Includes quick-insert buttons for `+`, `->`, `(` and `)`, and an atom count verification table
-- **Isomer Finder** : Find up to 20 structural isomers by searching with a molecular formula.
+- **Isomer Finder** : Find up to 20 structural isomers by searching with a molecular formula
 
 ### Customization
 - **Theme mode** dropdown (Light / Dark) in Settings
 - Configurable default description source
 - AI provider selection with per-provider API key management
 - Autosuggestions toggle (scrollable dropdown, toggleable)
+
+### Updates and Cache
+- Built-in update checks against GitHub releases, with optional notifications
+- Local compound cache to speed repeat searches, with clear + custom location controls
 
 ### Developer Options
 A hidden debug menu can be unlocked by tapping the build number in the 'About' card five times. It includes:
@@ -87,6 +96,7 @@ A hidden debug menu can be unlocked by tapping the build number in the 'About' c
 - **API endpoints** : Copies all five base URLs to clipboard for manual testing
 - **Wipe SharedPreferences** : Completely reset all the stored data
 - **Force crash** : Throws a deliberate unhandled exception to verify crash reporting (confirmation required)
+- **Hide debug settings** : Relock the developer menu until the next 5-tap unlock
 
 ---
 
@@ -129,6 +139,7 @@ A hidden debug menu can be unlocked by tapping the build number in the 'About' c
 | [Wikipedia REST API](https://en.wikipedia.org/api/rest_v1/)        | Compound summaries                                                     |
 | [Google Gemini](https://ai.google.dev/)                            | AI descriptions                                                        |
 | [Groq](https://groq.com/)                                          | AI descriptions                                                        |
+| [GitHub Releases API](https://docs.github.com/en/rest/releases/releases) | Update checks                                                     |
 
 ---
 
@@ -141,7 +152,15 @@ A hidden debug menu can be unlocked by tapping the build number in the 'About' c
 ### For Developers
 - Android Studio Hedgehog (2023.1.1) or newer
 - JDK 11
-- Android SDK API 34
+- Android SDK API 36
+
+---
+
+## Permissions
+
+- `INTERNET` for compound data, suggestions, descriptions, and update checks
+- `POST_NOTIFICATIONS` (Android 13+) for optional update notifications
+- `WRITE_EXTERNAL_STORAGE` (Android 9 and below) to save 2D PNG and 3D SDF downloads
 
 ---
 
@@ -149,13 +168,21 @@ A hidden debug menu can be unlocked by tapping the build number in the 'About' c
 
 ```bash
 git clone https://github.com/FurtherSecrets24680/chemsearch-android
+cd chemsearch-android
+./gradlew assembleDebug
 ```
 
 Open in Android Studio, sync Gradle, and run on a device or emulator (API 26+). Debug builds work without any API keys configured.
 
+To install a debug build on a connected device:
+
+```bash
+./gradlew installDebug
+```
+
 ### Release Signing
 
-Create a `keystore.properties` file in the project root:
+Release builds require a `keystore.properties` file in the project root:
 
 ```properties
 storeFile=path/to/your.keystore
@@ -164,7 +191,7 @@ keyAlias=yourKeyAlias
 keyPassword=yourKeyPassword
 ```
 
-Then build via **Build → Generate Signed APK**.
+Then build via `./gradlew assembleRelease` or **Build → Generate Signed APK**.
 
 ---
 
@@ -175,7 +202,7 @@ AI descriptions require a free API key from your chosen provider, entered in the
 | Provider      | Model                 | Get an API key                                                       |
 |---------------|-----------------------|----------------------------------------------------------------------|
 | Google Gemini | `gemini-flash-latest` | [aistudio.google.com/api-keys](https://aistudio.google.com/api-keys) |
-| Groq Cloud    | `gpt-oss-120b`        | [console.groq.com/keys](https://console.groq.com/keys)               |
+| Groq Cloud    | `openai/gpt-oss-120b` | [console.groq.com/keys](https://console.groq.com/keys)               |
 
 Keys are stored locally on your device and only sent directly to the respective provider.
 
@@ -183,8 +210,8 @@ Keys are stored locally on your device and only sent directly to the respective 
 
 ## Privacy
 
-- Data is fetched directly from PubChem, Wikipedia, Gemini and Groq. No intermediary servers are used.
-- API keys, search history and bookmarks are stored locally using `SharedPreferences`.
+- Data is fetched directly from PubChem, Wikipedia, Gemini, Groq, and GitHub Releases. No intermediary servers are used.
+- API keys, search history, favorites, and cache settings are stored locally using `SharedPreferences`. Cached compound data is stored locally on device.
 - No analytics, tracking or telemetry of any kind.
 
 ---
