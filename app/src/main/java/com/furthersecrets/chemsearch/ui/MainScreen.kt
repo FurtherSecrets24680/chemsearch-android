@@ -141,6 +141,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     var selectedTab by remember { mutableStateOf(AppTab.SEARCH) }
     var showExitDialog by remember { mutableStateOf(false) }
     var jumpToTool by remember { mutableStateOf(0) }
+    var jumpToToolVersion by remember { mutableStateOf(0) }
 
     BackHandler {
         if (selectedTab != AppTab.SEARCH) {
@@ -330,7 +331,15 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 CompoundHeader(
                                     state,
                                     isFavorite,
-                                    onToggleFavorite = { vm.toggleFavorite() })
+                                    onToggleFavorite = { vm.toggleFavorite() },
+                                    onFormulaClick = if (state.formula.isNotBlank()) {{
+                                        vm.onIsomerQueryChange(state.formula)
+                                        vm.searchIsomers()
+                                        jumpToTool = 6
+                                        jumpToToolVersion++
+                                        selectedTab = AppTab.TOOLS
+                                    }} else null
+                                )
                             }
                             item { IdentifiersSection(state, context) }
                             if (state.elementalData.isNotEmpty()) item { ElementalSection(state.elementalData) }
@@ -400,6 +409,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 AppTab.TOOLS -> ToolsScreen(
                                     isDark = isDark,
                                     jumpToTool = jumpToTool,
+                                    jumpToToolVersion = jumpToToolVersion,
                                     onNavigateToSearch = { selectedTab = AppTab.SEARCH }
                                 )
                             }

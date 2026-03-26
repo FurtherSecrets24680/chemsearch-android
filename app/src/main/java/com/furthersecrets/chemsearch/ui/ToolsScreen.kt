@@ -40,11 +40,11 @@ import kotlinx.coroutines.withContext
 
 // TOOLS SCREEN
 @Composable
-fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, onNavigateToSearch: () -> Unit = {}) {
+fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, jumpToToolVersion: Int = 0, onNavigateToSearch: () -> Unit = {}) {
     var selectedTool by remember { mutableStateOf(0) }
     var toolSearch by remember { mutableStateOf("") }
 
-    LaunchedEffect(jumpToTool) {
+    LaunchedEffect(jumpToTool, jumpToToolVersion) {
         if (jumpToTool != 0) selectedTool = jumpToTool
     }
 

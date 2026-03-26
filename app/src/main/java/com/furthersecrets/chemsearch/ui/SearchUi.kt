@@ -56,6 +56,17 @@ import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import android.graphics.BitmapFactory
+import androidx.compose.foundation.gestures.detectTransformGestures
+import androidx.compose.foundation.gestures.rememberTransformableState
+import androidx.compose.foundation.gestures.transformable
+import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import kotlinx.coroutines.withContext
 
 // App header
 
@@ -308,7 +319,12 @@ fun HistorySection(history: List<String>, onSelect: (String) -> Unit, onClear: (
 // Compound header
 
 @Composable
-fun CompoundHeader(state: ChemUiState, isFavorite: Boolean, onToggleFavorite: () -> Unit) {
+fun CompoundHeader(
+    state: ChemUiState,
+    isFavorite: Boolean,
+    onToggleFavorite: () -> Unit,
+    onFormulaClick: (() -> Unit)? = null
+) {
     val context = LocalContext.current
     val cm = remember { context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
 
@@ -344,12 +360,38 @@ fun CompoundHeader(state: ChemUiState, isFavorite: Boolean, onToggleFavorite: ()
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 if (state.formula.isNotBlank()) {
-                    Text(
-                        text = toSubscriptFormula(state.formula),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.SemiBold
-                    )
+                    val clickMod = if (onFormulaClick != null)
+                        Modifier.clickable { onFormulaClick() }
+                    else Modifier
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        modifier = clickMod
+                    ) {
+                        Text(
+                            text = toSubscriptFormula(state.formula),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        if (onFormulaClick != null) {
+                            Icon(
+                                Icons.Default.Biotech,
+                                contentDescription = "Find isomers",
+                                tint = MaterialTheme.colorScheme.primary.copy(0.45f),
+                                modifier = Modifier.size(13.dp)
+                            )
+                        }
+                    }
+                    if (onFormulaClick != null) {
+                        Text(
+                            "Tap to find isomers →",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.primary.copy(0.4f),
+                            fontSize = 9.sp
+                        )
+                    }
                 }
                 Spacer(Modifier.height(4.dp))
                 Row(
@@ -576,12 +618,50 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
             ) {
                 when (state.activeTab) {
                     MolTab.TWO_D -> state.cid?.let { cid ->
-                        AsyncImage(
-                            model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/$cid/PNG?image_size=large",
-                            contentDescription = "2D Structure",
-                            modifier = Modifier.fillMaxSize().padding(12.dp),
-                            contentScale = ContentScale.Fit
-                        )
+                        var showZoom by remember { mutableStateOf(false) }
+
+                        if (showZoom) {
+                            TwoDZoomDialog(cid = cid, onDismiss = { showZoom = false })
+                        }
+
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            AsyncImage(
+                                model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/$cid/PNG?image_size=large",
+                                contentDescription = "2D Structure",
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(12.dp)
+                                    .clickable { showZoom = true },
+                                contentScale = ContentScale.Fit
+                            )
+                            // Download button — bottom-end, styled like the 3D download button
+                            IconButton(
+                                onClick = {
+                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q &&
+                                        context.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                        != android.content.pm.PackageManager.PERMISSION_GRANTED
+                                    ) {
+                                        writePermissionLauncher.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                    } else {
+                                        scope.launch(Dispatchers.IO) {
+                                            save2dPng(context, state.name, cid)
+                                        }
+                                    }
+                                },
+                                modifier = Modifier
+                                    .align(Alignment.BottomEnd)
+                                    .padding(bottom = 4.dp, end = 0.dp)
+                                    .size(32.dp)
+                            ) {
+                                Icon(
+                                    Icons.Default.Download,
+                                    contentDescription = "Download 2D PNG",
+                                    tint = if (!MaterialTheme.colorScheme.background.luminance().let { it > 0.5f })
+                                        Color.White.copy(0.55f) else Color.Black.copy(0.45f),
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            }
+                        }
                     }
                     MolTab.THREE_D -> {
                         if (state.isLoadingSdf) {
@@ -646,6 +726,98 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
             }
         }
 
+    }
+}
+
+@Composable
+fun TwoDZoomDialog(cid: Long, onDismiss: () -> Unit) {
+    var scale by remember { androidx.compose.runtime.mutableFloatStateOf(1f) }
+    var offsetX by remember { androidx.compose.runtime.mutableFloatStateOf(0f) }
+    var offsetY by remember { androidx.compose.runtime.mutableFloatStateOf(0f) }
+
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(androidx.compose.ui.graphics.Color.Black.copy(0.92f))
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
+                ) { onDismiss() },
+            contentAlignment = Alignment.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
+                    .pointerInput(Unit) {
+                        detectTransformGestures { _, pan, zoom, _ ->
+                            scale = (scale * zoom).coerceIn(0.5f, 6f)
+                            offsetX += pan.x
+                            offsetY += pan.y
+                        }
+                    }
+                    .graphicsLayer(
+                        scaleX = scale,
+                        scaleY = scale,
+                        translationX = offsetX,
+                        translationY = offsetY
+                    )
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
+                    ) { }
+            ) {
+                AsyncImage(
+                    model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/$cid/PNG?image_size=large",
+                    contentDescription = "2D Structure (zoom)",
+                    modifier = Modifier.fillMaxSize().padding(16.dp),
+                    contentScale = ContentScale.Fit
+                )
+            }
+
+
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(16.dp)
+            ) {
+                Surface(
+                    shape = CircleShape,
+                    color = MaterialTheme.colorScheme.surface.copy(0.8f)
+                ) {
+                    IconButton(onClick = onDismiss, modifier = Modifier.size(36.dp)) {
+                        Icon(
+                            Icons.Default.Close,
+                            contentDescription = "Close",
+                            tint = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 24.dp)
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(20.dp),
+                    color = MaterialTheme.colorScheme.surface.copy(0.7f)
+                ) {
+                    Text(
+                        "Pinch to zoom · Tap outside to close",
+                        modifier = Modifier.padding(horizontal = 14.dp, vertical = 6.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.7f)
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -1208,5 +1380,35 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
             }
         }
 
+    }
+}
+
+private suspend fun save2dPng(context: Context, compoundName: String, cid: Long) {
+    val url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/$cid/PNG?image_size=large"
+    val fileName = "${compoundName.replace(" ", "_").lowercase()}_2d.png"
+    try {
+        val request = okhttp3.Request.Builder().url(url).build()
+        val bytes = withContext(Dispatchers.IO) {
+            com.furthersecrets.chemsearch.data.ApiClient.rawHttp.newCall(request).execute().body.bytes()
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val values = ContentValues().apply {
+                put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
+                put(MediaStore.Images.Media.MIME_TYPE, "image/png")
+                put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+            }
+            val uri = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            uri?.let { context.contentResolver.openOutputStream(it)?.use { os -> os.write(bytes) } }
+        } else {
+            val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            File(dir, fileName).writeBytes(bytes)
+        }
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, "Saved $fileName to Pictures", Toast.LENGTH_SHORT).show()
+        }
+    } catch (e: Exception) {
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, "Download failed: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
     }
 }

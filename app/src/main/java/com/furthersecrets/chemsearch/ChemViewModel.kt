@@ -789,6 +789,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+
     private fun parseGhsData(json: com.google.gson.JsonObject): GhsData? {
         return try {
             val record = json.getAsJsonObject("Record") ?: return null
