@@ -3,9 +3,6 @@ name: Debug APK Build
 on:
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,12 +23,8 @@ jobs:
       - name: Build debug APK
         run: ./gradlew assembleDebug
 
-      - name: Upload APK to GitHub Release
-        uses: ncipollo/release-action@v1
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
-          tag: debug-latest
-          name: Debug APK (latest)
-          prerelease: true
-          allowUpdates: true
-          replacesArtifacts: true
-          artifacts: app/build/outputs/apk/debug/*.apk
+          name: chemsearch-debug
+          path: app/build/outputs/apk/debug/*.apk
