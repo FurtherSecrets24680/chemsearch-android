@@ -22,6 +22,19 @@ jobs:
 
       - name: Decode keystore
         run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore.jks
+      - name: Decode keystore
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore.jks
+
+      - name: Debug keystore
+        run: |
+          echo "=== Working directory ==="
+          pwd
+          echo "=== Files in root ==="
+          ls -la
+          echo "=== Keystore size ==="
+          wc -c keystore.jks
+          echo "=== List aliases (will fail if wrong password, but shows the error) ==="
+          keytool -list -keystore keystore.jks -storepass "${{ secrets.STORE_PASSWORD }}" -noprompt 2>&1
 
       - name: Create keystore.properties
         run: |
