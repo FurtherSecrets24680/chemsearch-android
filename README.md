@@ -36,8 +36,8 @@ This is the native Android version of the original [**ChemSearch** webapp](https
 ### Search
 - Search by common name, IUPAC name, CAS number, or CID via PubChem PUG REST
 - Real-time **autocomplete suggestions** as you type, with a scrollable dropdown (toggleable)
-- Recent searches with filter, inline delete, and one-tap access
-- **Favorites** with filter and A-Z/Recent sorting
+- **Recent searches** tab to access recently searched compounds.
+- **Favorites** tab to access favorited compounds easily.
 
 ### Compound Data
 - Compound header showing name, molecular formula, molecular weight, CID and CAS at a glance
@@ -214,6 +214,14 @@ Keys are stored locally on your device and only sent directly to the respective 
 - API keys, search history, favorites, and cache settings are stored locally using `SharedPreferences`. Cached compound data is stored locally on device.
 - No analytics, tracking or telemetry of any kind.
 
+---
+<a href="https://www.star-history.com/?repos=furthersecrets24680%2Fchemsearch-android&type=timeline&logscale=&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=furthersecrets24680/chemsearch-android&type=timeline&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=furthersecrets24680/chemsearch-android&type=timeline&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=furthersecrets24680/chemsearch-android&type=timeline&legend=top-left" />
+ </picture>
+</a>
 ---
 
 ## License
