@@ -6,6 +6,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
     steps:
       - name: Checkout code
@@ -18,16 +23,29 @@ jobs:
           distribution: 'temurin'
 
       - name: Decode keystore
-        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore.jks
+        run: printf '%s' "$KEYSTORE_BASE64" | base64 --decode > keystore.jks
 
       - name: Create keystore.properties
         run: |
-          cat > keystore.properties <<EOF
-          storeFile=../keystore.jks
-          storePassword=${{ secrets.STORE_PASSWORD }}
-          keyAlias=${{ secrets.KEY_ALIAS }}
-          keyPassword=${{ secrets.KEY_PASSWORD }}
-          EOF
+          STORE_PASSWORD_CLEAN=$(printf '%s' "$STORE_PASSWORD" | tr -d '\r')
+          KEY_ALIAS_CLEAN=$(printf '%s' "$KEY_ALIAS" | tr -d '\r')
+          KEY_PASSWORD_CLEAN=$(printf '%s' "$KEY_PASSWORD" | tr -d '\r')
+          printf '%s\n' \
+            "storeFile=$GITHUB_WORKSPACE/keystore.jks" \
+            "storePassword=$STORE_PASSWORD_CLEAN" \
+            "keyAlias=$KEY_ALIAS_CLEAN" \
+            "keyPassword=$KEY_PASSWORD_CLEAN" \
+            > keystore.properties
+
+      - name: Verify keystore alias
+        run: |
+          STORE_PASSWORD_CLEAN=$(printf '%s' "$STORE_PASSWORD" | tr -d '\r')
+          KEY_ALIAS_CLEAN=$(printf '%s' "$KEY_ALIAS" | tr -d '\r')
+          if ! keytool -list -keystore keystore.jks -storepass "$STORE_PASSWORD_CLEAN" | grep -Fq "$KEY_ALIAS_CLEAN"; then
+            echo "Alias not found in keystore. Available aliases:"
+            keytool -list -keystore keystore.jks -storepass "$STORE_PASSWORD_CLEAN"
+            exit 1
+          fi
 
       - name: Grant execute permission to gradlew
         run: chmod +x ./gradlew
