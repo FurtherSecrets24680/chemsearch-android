@@ -879,6 +879,56 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    private val hazardCodeRegex = Regex("\\bH\\d{3}(?:[+/](?:H)?\\d{3})*\\b")
+    private val hazardPercentRegex = Regex("\\((\\d+(?:\\.\\d+)?)%\\)")
+    private val hazardWhitespaceRegex = Regex("\\s+")
+
+    private data class HazardStatementChoice(
+        val raw: String,
+        val percent: Float?,
+        val normalized: String
+    )
+
+    private fun normalizeHazardStatement(statement: String): String {
+        return statement
+            .replace(hazardPercentRegex, "")
+            .replace(hazardWhitespaceRegex, " ")
+            .trim()
+    }
+
+    private fun shouldReplaceHazard(existing: HazardStatementChoice, candidate: HazardStatementChoice): Boolean {
+        val existingPercent = existing.percent
+        val candidatePercent = candidate.percent
+
+        if (candidatePercent != null && existingPercent == null) return true
+        if (candidatePercent == null && existingPercent != null) return false
+        if (candidatePercent != null && existingPercent != null) {
+            if (candidatePercent > existingPercent) return true
+            if (candidatePercent < existingPercent) return false
+        }
+
+        val existingScore = existing.normalized.length
+        val candidateScore = candidate.normalized.length
+        return candidateScore > existingScore
+    }
+
+    private fun dedupeHazardStatements(statements: List<String>): List<String> {
+        val bestByKey = LinkedHashMap<String, HazardStatementChoice>()
+        for (statement in statements) {
+            val normalized = normalizeHazardStatement(statement)
+            if (normalized.isBlank()) continue
+            val key = hazardCodeRegex.find(statement)?.value?.uppercase()
+                ?: normalized.lowercase()
+            val percent = hazardPercentRegex.find(statement)?.groupValues?.getOrNull(1)?.toFloatOrNull()
+            val candidate = HazardStatementChoice(statement, percent, normalized)
+            val existing = bestByKey[key]
+            if (existing == null || shouldReplaceHazard(existing, candidate)) {
+                bestByKey[key] = candidate
+            }
+        }
+        return bestByKey.values.map { it.raw }
+    }
+
 
     private fun parseGhsData(json: com.google.gson.JsonObject): GhsData? {
         return try {
@@ -937,8 +987,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
 
-            if (hazardStatements.isEmpty() && signalWord == null && pictogramCodes.isEmpty()) return null
-            GhsData(signalWord, hazardStatements, pictogramCodes.distinct())
+            val dedupedHazards = dedupeHazardStatements(hazardStatements)
+            if (dedupedHazards.isEmpty() && signalWord == null && pictogramCodes.isEmpty()) return null
+            GhsData(signalWord, dedupedHazards, pictogramCodes.distinct())
         } catch (e: Exception) {
             Log.e("ChemViewModel", "GHS parse error", e)
             null

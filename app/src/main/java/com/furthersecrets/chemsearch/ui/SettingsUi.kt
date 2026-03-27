@@ -3,6 +3,8 @@ package com.furthersecrets.chemsearch.ui
 import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
+import androidx.compose.foundation.layout.height
+import kotlinx.coroutines.launch
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager

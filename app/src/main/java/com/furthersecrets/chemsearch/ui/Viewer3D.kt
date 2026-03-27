@@ -2,6 +2,7 @@ package com.furthersecrets.chemsearch.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,6 +16,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -25,6 +27,16 @@ import kotlin.math.*
 data class Atom3D(val x: Float, val y: Float, val z: Float, val element: String)
 data class Bond3D(val a1: Int, val a2: Int, val type: Int)
 data class Molecule3D(val atoms: List<Atom3D>, val bonds: List<Bond3D>)
+
+private val elementCleanRegex = Regex("[^A-Za-z]")
+private val whitespaceRegex = Regex("\\s+")
+
+private fun normalizeElementSymbol(raw: String): String {
+    val cleaned = raw.replace(elementCleanRegex, "")
+    if (cleaned.isEmpty()) return ""
+    val lower = cleaned.lowercase()
+    return lower.replaceFirstChar { it.uppercase() }
+}
 
 // SDF PARSER
 fun parseSdf(sdf: String): Molecule3D {
@@ -39,13 +51,38 @@ fun parseSdf(sdf: String): Molecule3D {
 
     for (i in 0 until atomCount) {
         val line = lines.getOrNull(4 + i) ?: break
-        if (line.length < 34) continue
-        val x = line.substring(0, 10).trim().toFloatOrNull() ?: 0f
-        val y = line.substring(10, 20).trim().toFloatOrNull() ?: 0f
-        val z = line.substring(20, 30).trim().toFloatOrNull() ?: 0f
-        val element = line.substring(31, minOf(34, line.length)).trim()
-            .replace(Regex("[^A-Za-z]"), "")
-            .replaceFirstChar { it.uppercase() }
+        val hasFixedWidth = line.length >= 30
+        val xFixed = if (hasFixedWidth) line.substring(0, 10).trim().toFloatOrNull() else null
+        val yFixed = if (hasFixedWidth) line.substring(10, 20).trim().toFloatOrNull() else null
+        val zFixed = if (hasFixedWidth) line.substring(20, 30).trim().toFloatOrNull() else null
+
+        val x: Float
+        val y: Float
+        val z: Float
+        val elementRaw: String
+
+        if (xFixed != null && yFixed != null && zFixed != null) {
+            x = xFixed
+            y = yFixed
+            z = zFixed
+            val rawElement = line.drop(31).take(3).trim()
+            elementRaw = if (rawElement.isNotBlank()) {
+                rawElement
+            } else {
+                line.drop(34).trim().split(whitespaceRegex).firstOrNull().orEmpty()
+            }
+        } else {
+            val parts = line.trim().split(whitespaceRegex)
+            val xParsed = parts.getOrNull(0)?.toFloatOrNull()
+            val yParsed = parts.getOrNull(1)?.toFloatOrNull()
+            val zParsed = parts.getOrNull(2)?.toFloatOrNull()
+            x = xParsed ?: xFixed ?: 0f
+            y = yParsed ?: yFixed ?: 0f
+            z = zParsed ?: zFixed ?: 0f
+            elementRaw = parts.getOrNull(3).orEmpty()
+        }
+
+        val element = normalizeElementSymbol(elementRaw)
         atoms.add(Atom3D(x, y, z, element))
     }
 
@@ -186,9 +223,9 @@ private fun project(
     x: Float, y: Float, z: Float,
     cx: Float, cy: Float,
     scale: Float, zoom: Float,
-    fov: Float = 10f
+    cameraDist: Float
 ): Pair<Offset, Float> {
-    val p = fov / (fov + z)
+    val p = cameraDist / (cameraDist + z)
     val sx = cx + x * scale * zoom * p
     val sy = cy - y * scale * zoom * p
     return Pair(Offset(sx, sy), p)
@@ -248,11 +285,15 @@ private fun DrawScope.drawAtom(pos: Offset, r: Float, color: Color, depthFactor:
     val hlX = pos.x + lx * r * 0.55f
     val hlY = pos.y + ly * r * 0.55f
 
+    val shadedColor = lerp(color, Color.Black, depthFactor * 0.18f)
+    val highlightAlpha = (0.55f - depthFactor * 0.25f).coerceIn(0.2f, 0.55f)
+    val softHighlightAlpha = (0.12f - depthFactor * 0.05f).coerceIn(0.05f, 0.12f)
+
     drawCircle(Color.Black.copy(0.28f), r * 1.06f, Offset(pos.x + r * 0.08f, pos.y + r * 0.08f))
-    drawCircle(color, r, pos)
+    drawCircle(shadedColor, r, pos)
     drawCircle(Color.Black.copy(0.20f), r, pos, style = Stroke(r * 0.18f))
-    drawCircle(Color.White.copy(0.55f), r * 0.36f, Offset(hlX, hlY))
-    drawCircle(Color.White.copy(0.12f), r * 0.65f, Offset(pos.x + lx * r * 0.25f, pos.y + ly * r * 0.25f))
+    drawCircle(Color.White.copy(highlightAlpha), r * 0.36f, Offset(hlX, hlY))
+    drawCircle(Color.White.copy(softHighlightAlpha), r * 0.65f, Offset(pos.x + lx * r * 0.25f, pos.y + ly * r * 0.25f))
 }
 
 // MAIN COMPOSABLE
@@ -287,11 +328,15 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
         return
     }
 
-    val avgX = molecule.atoms.map { it.x }.average().toFloat()
-    val avgY = molecule.atoms.map { it.y }.average().toFloat()
-    val avgZ = molecule.atoms.map { it.z }.average().toFloat()
-    val centered = molecule.atoms.map { it.copy(x = it.x - avgX, y = it.y - avgY, z = it.z - avgZ) }
-    val maxExtent = centered.maxOf { sqrt(it.x * it.x + it.y * it.y + it.z * it.z) }.coerceIn(1.5f, Float.MAX_VALUE)
+    val (centered, maxExtent) = remember(molecule) {
+        val avgX = molecule.atoms.map { it.x }.average().toFloat()
+        val avgY = molecule.atoms.map { it.y }.average().toFloat()
+        val avgZ = molecule.atoms.map { it.z }.average().toFloat()
+        val centeredAtoms = molecule.atoms.map { it.copy(x = it.x - avgX, y = it.y - avgY, z = it.z - avgZ) }
+        val extent = centeredAtoms.maxOf { sqrt(it.x * it.x + it.y * it.y + it.z * it.z) }
+            .coerceIn(1.5f, Float.MAX_VALUE)
+        centeredAtoms to extent
+    }
 
     val bgColor = if (isDark) Color(0xFF0F172A) else Color(0xFFF1F5F9)
     val overlayTextColor = if (isDark) Color.White else Color.Black
@@ -325,12 +370,13 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
             val screenCy = size.height / 2f
             val viewSize = size.width.coerceAtMost(size.height)
             val baseScale = (viewSize * 0.28f) / maxExtent
+            val cameraDist = maxExtent * 3.5f
             val bondStroke = (baseScale * zoom * 0.10f).coerceIn(2.5f, 9f)
 
             val rawProjected = centered.mapIndexed { _, atom ->
                 val (rx, ry, rz) = rotate3D(atom.x, atom.y, atom.z, rotX, rotY)
-                val (pos, p) = project(rx, ry, rz, screenCx, screenCy, baseScale, zoom)
-                Proj(pos, rz, p.coerceIn(0.75f, 1.3f), atom.element, 0f)
+                val (pos, p) = project(rx, ry, rz, screenCx, screenCy, baseScale, zoom, cameraDist)
+                Proj(pos, rz, p.coerceIn(0.75f, 1.35f), atom.element, 0f)
             }
 
             val minDepth = rawProjected.minOf { it.depth }
@@ -360,7 +406,7 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
                     is DrawCall.BondCall -> it.depth
                 }
             }
-            val bondColor = Color(0xFF8899BB)
+            val baseBondColor = if (isDark) Color(0xFF8899BB) else Color(0xFF64748B)
             drawCalls.forEach { call ->
                 when (call) {
                     is DrawCall.AtomCall -> drawAtom(
@@ -371,11 +417,15 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
                         rotX,
                         rotY
                     )
-                    is DrawCall.BondCall -> drawBond(
-                        call.a1.pos, screenR(call.a1.element, call.a1.depthP),
-                        call.a2.pos, screenR(call.a2.element, call.a2.depthP),
-                        call.bondType, bondStroke, bondColor
-                    )
+                    is DrawCall.BondCall -> {
+                        val depthFactor = (call.a1.depthFactor + call.a2.depthFactor) * 0.5f
+                        val bondAlpha = 0.35f + (1f - depthFactor) * 0.45f
+                        drawBond(
+                            call.a1.pos, screenR(call.a1.element, call.a1.depthP),
+                            call.a2.pos, screenR(call.a2.element, call.a2.depthP),
+                            call.bondType, bondStroke, baseBondColor.copy(alpha = bondAlpha)
+                        )
+                    }
                 }
             }
         }
@@ -413,7 +463,10 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
 
         // Bottom right: stats and spin indicator
         Column(
-            modifier = Modifier.align(Alignment.BottomEnd).padding(10.dp),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(10.dp)
+                .clickable { autoSpin = !autoSpin },
             horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
@@ -425,6 +478,12 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
                 if (autoSpin) "⟳ Auto-spin" else "● Paused",
                 color = if (autoSpin) Color(0xFF3B82F6).copy(0.7f) else overlayTextColor.copy(0.3f),
                 fontSize = 9.sp, fontFamily = FontFamily.Monospace
+            )
+            Text(
+                "Tap to toggle",
+                color = overlayTextColor.copy(0.25f),
+                fontSize = 8.sp,
+                fontFamily = FontFamily.Monospace
             )
         }
     }
