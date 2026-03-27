@@ -166,6 +166,21 @@ fun SettingsSheet(
             )
 
             Spacer(Modifier.height(4.dp))
+            SettingsSectionHeader("FAQ")
+            var showFaqDialogSheet by remember { mutableStateOf(false) }
+            if (showFaqDialogSheet) {
+                InfoDialog(title = "FAQ", entries = FAQ_ENTRIES, onDismiss = { showFaqDialogSheet = false })
+            }
+            SettingsActionRow(
+                icon = Icons.Default.HelpOutline,
+                title = "Frequently asked questions",
+                subtitle = "Quick answers about ChemSearch",
+                actionLabel = "Open",
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = { showFaqDialogSheet = true }
+            )
+
+            Spacer(Modifier.height(4.dp))
             SettingsSectionHeader("About")
             AboutCard()
         }
@@ -580,6 +595,31 @@ fun InfoDialog(title: String, entries: List<Pair<String, String>>, onDismiss: ()
     )
 }
 
+private val FAQ_ENTRIES = listOf(
+    "Why use this app instead of PubChem or ChemSpider?" to "It puts the same core data in a fast, mobile-friendly view and comes bundled with useful chemistry tools ( reaction balancing, molar mass, stoichiometry, 3D viewer etc.) so you can study without constantly changing sites.",
+    "Where does compound data come from?" to "Most compound properties, structures, and safety data are pulled from PubChem. Descriptions can also come from Wikipedia or AI depending on your settings.",
+    "What can I search for?" to "Search by common name, IUPAC name, CAS number, or CID. Suggestions use PubChem as you type.",
+    "Why am I not getting results?" to "Check spelling, try a CID or CAS number, or remove extra spaces. Some compounds are not listed in PubChem.",
+    "Do I need an API key for AI descriptions?" to "Yes. AI descriptions use Gemini or Groq. Add a key in Settings > API Keys. Keys are stored locally on your device.",
+    "Where are my API keys stored?" to "Keys are stored locally in app preferences on your device and are not synced.",
+    "Is the app offline?" to "Most features require internet access. Recently viewed compounds may load from cache, but live searches and AI always need a connection.",
+    "How do autosuggestions work?" to "Autosuggestions query PubChem as you type. You can toggle them in Settings > Search.",
+    "How do I save favorites?" to "Tap the bookmark icon on a compound to add it to Favorites. Favorites are stored locally.",
+    "How do I clear history or cache?" to "Go to Settings > Data to clear search history or manage the compound cache.",
+    "How do I download structures?" to "Use the download buttons in the Structure section to save a 2D PNG or 3D SDF file.",
+    "Why is the 3D model missing?" to "Some compounds do not have a 3D SDF available in PubChem. In that case the 3D viewer shows a placeholder.",
+    "How do I use the custom 3D viewer?" to "Open Tools > Custom 3D Molecule Viewer and load a .sdf or .mol file from your device.",
+    "What does the SMILES visualizer do?" to "Paste a SMILES string to look it up on PubChem and view its 2D or 3D structure when available.",
+    "How does the Reaction Balancer work?" to "It builds an element matrix and solves it with exact arithmetic. Very complex redox reactions or incorrect formulas may fail to balance.",
+    "What does the Stoichiometry tool calculate?" to "It balances the reaction, finds the limiting reagent, and computes theoretical yield, excess reagents, and reaction scaling.",
+    "How is molar mass calculated?" to "The calculator sums standard atomic weights for each element in the formula. Parentheses and hydrates are supported.",
+    "Why does oxidation state show a fraction or question mark?" to "Some formulas need a charge to solve, and some have multiple unknown elements. The tool shows averages or unknowns in those cases.",
+    "How does the Isomer Finder work?" to "It queries PubChem for matching formulas and returns up to 20 results.",
+    "Are update notifications optional?" to "Yes. You can toggle update notifications in Settings. Manual update checks are also available.",
+    "Is safety info official?" to "GHS data is aggregated from multiple sources in PubChem. It is for reference only and does not replace an official SDS.",
+    "How do I unlock debug settings?" to "Tap the build number in the About card five times to reveal the developer tools."
+)
+
 // Favorites sheet
 
 private enum class FavoritesSort { RECENT, NAME }
@@ -946,6 +986,7 @@ fun SettingsInline(
     var buildTapCount by remember { mutableIntStateOf(0) }
     var isDevMode by remember { mutableStateOf(prefs.getBoolean("dev_mode", false)) }
     var themeDropdownExpanded by remember { mutableStateOf(false) }
+    var showFaqDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -1136,6 +1177,20 @@ fun SettingsInline(
             updateStatus = updateStatus,
             onToggleUpdateNotifications = onToggleUpdateNotifications,
             onCheckForUpdates = onCheckForUpdates
+        )
+
+        Spacer(Modifier.height(4.dp))
+        SettingsSectionHeader("FAQ")
+        if (showFaqDialog) {
+            InfoDialog(title = "FAQ", entries = FAQ_ENTRIES, onDismiss = { showFaqDialog = false })
+        }
+        SettingsActionRow(
+            icon = Icons.Default.HelpOutline,
+            title = "Frequently asked questions",
+            subtitle = "Quick answers about ChemSearch",
+            actionLabel = "Open",
+            actionColor = MaterialTheme.colorScheme.primary,
+            onClick = { showFaqDialog = true }
         )
 
         if (isDevMode) {
