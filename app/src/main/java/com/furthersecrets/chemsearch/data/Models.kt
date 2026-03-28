@@ -161,6 +161,7 @@ data class ChemUiState(
     val casNumber: String? = null,
     val elementalData: List<ElementData> = emptyList(),
     val hasResult: Boolean = false,
+    val isCached: Boolean = false,
     val sdfData: String? = null,
     val isLoadingSdf: Boolean = false,
     val ghsData: GhsData? = null,

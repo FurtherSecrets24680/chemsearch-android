@@ -558,6 +558,22 @@ fun CompoundHeader(
                         )
                     }
                 }
+                if (state.isCached) {
+                    Surface(
+                        shape = RoundedCornerShape(999.dp),
+                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.25f)),
+                        modifier = Modifier.padding(top = 4.dp)
+                    ) {
+                        Text(
+                            "Cached",
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.6f),
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                }
                 Spacer(Modifier.height(4.dp))
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(20.dp),

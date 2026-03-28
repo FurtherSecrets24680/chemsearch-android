@@ -1,11 +1,15 @@
 package com.furthersecrets.chemsearch.ui
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -15,6 +19,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.Backspace
 import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
+import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -39,82 +44,256 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 // TOOLS SCREEN
+private const val TOOL_ORDER_PREF = "tool_order"
+
+private fun loadToolOrder(prefs: SharedPreferences, defaultIds: List<Int>): List<Int> {
+    val stored = prefs.getString(TOOL_ORDER_PREF, null)
+        ?.split(',')
+        ?.mapNotNull { it.toIntOrNull() }
+        ?: emptyList()
+    val order = stored.filter { it in defaultIds }.toMutableList()
+    defaultIds.forEach { id ->
+        if (id !in order) order.add(id)
+    }
+    return order
+}
+
+private fun saveToolOrder(prefs: SharedPreferences, order: List<Int>) {
+    prefs.edit().putString(TOOL_ORDER_PREF, order.joinToString(",")).apply()
+}
+
+private enum class ToolCategory(val label: String) {
+    ALL("All"),
+    VISUALIZE("Visualize"),
+    CALCULATORS("Calculators"),
+    REACTIONS("Reactions"),
+    STOICHIOMETRY("Stoichiometry"),
+    STRUCTURE("Structure")
+}
+
+private val TOOL_CATEGORIES = listOf(
+    ToolCategory.ALL,
+    ToolCategory.VISUALIZE,
+    ToolCategory.CALCULATORS,
+    ToolCategory.REACTIONS,
+    ToolCategory.STOICHIOMETRY,
+    ToolCategory.STRUCTURE
+)
+
+private data class ToolDefinition(
+    val id: Int,
+    val icon: ImageVector,
+    val title: String,
+    val subtitle: String,
+    val category: ToolCategory
+)
+
 @Composable
 fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, jumpToToolVersion: Int = 0, onNavigateToSearch: () -> Unit = {}) {
     var selectedTool by remember { mutableStateOf(0) }
     var toolSearch by remember { mutableStateOf("") }
+    var selectedCategory by remember { mutableStateOf(ToolCategory.ALL) }
+    var isReordering by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val prefs = remember(context) { context.getSharedPreferences("chemsearch_prefs", Context.MODE_PRIVATE) }
 
     LaunchedEffect(jumpToTool, jumpToToolVersion) {
         if (jumpToTool != 0) selectedTool = jumpToTool
     }
+    LaunchedEffect(selectedTool) {
+        if (selectedTool != 0 && isReordering) isReordering = false
+    }
 
-    val allTools = listOf(
-        1 to Triple(Icons.Default.ViewInAr,    "Custom 3D Molecule Viewer",  "Load any .sdf or .mol file and view it in 3D"),
-        2 to Triple(Icons.Default.Calculate,   "Molar Mass Calculator",       "Enter a molecular formula and get the molar mass"),
-        3 to Triple(Icons.Default.Science,     "Oxidation State Finder",      "Find oxidation states of each element in a compound"),
-        4 to Triple(Icons.Default.AccountTree, "SMILES Visualizer",           "Paste a SMILES string to view its 2D and 3D structure"),
-        5 to Triple(Icons.Default.SwapHoriz,   "Reaction Balancer",           "Balance any chemical equation automatically"),
-        6 to Triple(Icons.Default.Biotech,     "Isomer Finder",               "Enter a molecular formula to find its structural isomers"),
-        7 to Triple(Icons.Default.Calculate,   "Stoichiometry Calculator",    "Limiting reagents, yields, and reaction scaling"),
+    val defaultTools = listOf(
+        ToolDefinition(
+            id = 1,
+            icon = Icons.Default.ViewInAr,
+            title = "Custom 3D Molecule Viewer",
+            subtitle = "Load any .sdf or .mol file and view it in 3D",
+            category = ToolCategory.VISUALIZE
+        ),
+        ToolDefinition(
+            id = 2,
+            icon = Icons.Default.Calculate,
+            title = "Molar Mass Calculator",
+            subtitle = "Enter a molecular formula and get the molar mass",
+            category = ToolCategory.CALCULATORS
+        ),
+        ToolDefinition(
+            id = 3,
+            icon = Icons.Default.Science,
+            title = "Oxidation State Finder",
+            subtitle = "Find oxidation states of each element in a compound",
+            category = ToolCategory.CALCULATORS
+        ),
+        ToolDefinition(
+            id = 4,
+            icon = Icons.Default.AccountTree,
+            title = "SMILES Visualizer",
+            subtitle = "Paste a SMILES string to view its 2D and 3D structure",
+            category = ToolCategory.VISUALIZE
+        ),
+        ToolDefinition(
+            id = 5,
+            icon = Icons.Default.SwapHoriz,
+            title = "Reaction Balancer",
+            subtitle = "Balance any chemical equation automatically",
+            category = ToolCategory.REACTIONS
+        ),
+        ToolDefinition(
+            id = 6,
+            icon = Icons.Default.Biotech,
+            title = "Isomer Finder",
+            subtitle = "Enter a molecular formula to find its structural isomers",
+            category = ToolCategory.STRUCTURE
+        ),
+        ToolDefinition(
+            id = 7,
+            icon = Icons.Default.FilterAlt,
+            title = "Limiting Reagent",
+            subtitle = "Find limiting reagent, ratios, and theoretical yield",
+            category = ToolCategory.STOICHIOMETRY
+        ),
+        ToolDefinition(
+            id = 8,
+            icon = Icons.AutoMirrored.Filled.ShowChart,
+            title = "Percent Yield",
+            subtitle = "Compare actual yield against theoretical yield",
+            category = ToolCategory.STOICHIOMETRY
+        ),
+        ToolDefinition(
+            id = 9,
+            icon = Icons.Default.Tune,
+            title = "Reaction Scaling",
+            subtitle = "Scale reactants for a target product amount",
+            category = ToolCategory.STOICHIOMETRY
+        ),
+        ToolDefinition(
+            id = 11,
+            icon = Icons.Default.WaterDrop,
+            title = "Dilution Calculator",
+            subtitle = "Solve C1V1 = C2V2 for solutions",
+            category = ToolCategory.CALCULATORS
+        ),
+        ToolDefinition(
+            id = 12,
+            icon = Icons.Default.Air,
+            title = "Ideal Gas Law",
+            subtitle = "Solve PV = nRT for gases",
+            category = ToolCategory.CALCULATORS
+        ),
     )
+    val defaultToolIds = defaultTools.map { it.id }
+    var toolOrder by remember { mutableStateOf(loadToolOrder(prefs, defaultToolIds)) }
+    val toolsById = defaultTools.associateBy { it.id }
+    val orderedTools = toolOrder.mapNotNull { id -> toolsById[id] }.ifEmpty { defaultTools }
 
-    val filteredTools = remember(toolSearch) {
-        if (toolSearch.isBlank()) allTools
-        else allTools.filter {
-            it.second.second.contains(toolSearch, ignoreCase = true) ||
-                    it.second.third.contains(toolSearch, ignoreCase = true)
+    val filteredTools = remember(toolSearch, orderedTools, selectedCategory) {
+        val categoryFiltered = if (selectedCategory == ToolCategory.ALL) orderedTools
+        else orderedTools.filter { it.category == selectedCategory }
+        if (toolSearch.isBlank()) categoryFiltered
+        else categoryFiltered.filter {
+            it.title.contains(toolSearch, ignoreCase = true) ||
+                    it.subtitle.contains(toolSearch, ignoreCase = true)
         }
     }
+    val visibleTools = if (isReordering) orderedTools else filteredTools
 
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text(
-            "Tools",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 4.dp)
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                "Tools",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+            if (selectedTool == 0 && defaultTools.size > 1) {
+                TextButton(
+                    onClick = {
+                        val next = !isReordering
+                        isReordering = next
+                        if (next) {
+                            toolSearch = ""
+                            selectedCategory = ToolCategory.ALL
+                        }
+                    },
+                    contentPadding = PaddingValues(horizontal = 8.dp)
+                ) {
+                    Text(if (isReordering) "Done" else "Reorder")
+                }
+            }
+        }
+        if (selectedTool == 0 && isReordering) {
+            Text(
+                "Reorder mode: use the arrows to move tools.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
+            )
+        }
 
         if (selectedTool == 0) {
-            OutlinedTextField(
-                value = toolSearch,
-                onValueChange = { toolSearch = it },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = {
-                    Text(
-                        "Search tools…",
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
-                    )
-                },
-                leadingIcon = {
-                    Icon(
-                        Icons.Default.Search, contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
-                        modifier = Modifier.size(18.dp)
-                    )
-                },
-                trailingIcon = {
-                    if (toolSearch.isNotEmpty()) {
-                        IconButton(onClick = { toolSearch = "" }) {
-                            Icon(Icons.Default.Close, contentDescription = "Clear search",
+            if (!isReordering) {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    OutlinedTextField(
+                        value = toolSearch,
+                        onValueChange = { toolSearch = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        placeholder = {
+                            Text(
+                                "Search tools…",
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
+                            )
+                        },
+                        leadingIcon = {
+                            Icon(
+                                Icons.Default.Search, contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
-                                modifier = Modifier.size(16.dp))
+                                modifier = Modifier.size(18.dp)
+                            )
+                        },
+                        trailingIcon = {
+                            if (toolSearch.isNotEmpty()) {
+                                IconButton(onClick = { toolSearch = "" }) {
+                                    Icon(Icons.Default.Close, contentDescription = "Clear search",
+                                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                                        modifier = Modifier.size(16.dp))
+                                }
+                            }
+                        },
+                        singleLine = true,
+                        shape = RoundedCornerShape(14.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.4f),
+                            focusedContainerColor = MaterialTheme.colorScheme.surface,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surface
+                        )
+                    )
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState()),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        TOOL_CATEGORIES.forEach { category ->
+                            CategoryPill(
+                                label = category.label,
+                                selected = selectedCategory == category,
+                                onClick = { selectedCategory = category }
+                            )
                         }
                     }
-                },
-                singleLine = true,
-                shape = RoundedCornerShape(14.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.4f),
-                    focusedContainerColor = MaterialTheme.colorScheme.surface,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surface
-                )
-            )
+                }
+            }
 
-            if (filteredTools.isEmpty()) {
+            if (!isReordering && filteredTools.isEmpty()) {
                 Box(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
                     contentAlignment = Alignment.Center
@@ -126,9 +305,35 @@ fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, jumpToToolVersion: Int = 0
                     )
                 }
             } else {
-                filteredTools.forEach { (id, triple) ->
-                    val (icon, title, subtitle) = triple
-                    ToolCard(icon = icon, title = title, subtitle = subtitle, onClick = { selectedTool = id })
+                visibleTools.forEachIndexed { index, tool ->
+                    ToolCard(
+                        icon = tool.icon,
+                        title = tool.title,
+                        subtitle = tool.subtitle,
+                        onClick = { selectedTool = tool.id },
+                        enableSelect = !isReordering,
+                        showReorderControls = isReordering,
+                        canMoveUp = isReordering && index > 0,
+                        canMoveDown = isReordering && index < visibleTools.lastIndex,
+                        onMoveUp = {
+                            if (isReordering && index > 0) {
+                                val updated = toolOrder.toMutableList()
+                                val item = updated.removeAt(index)
+                                updated.add(index - 1, item)
+                                toolOrder = updated
+                                saveToolOrder(prefs, updated)
+                            }
+                        },
+                        onMoveDown = {
+                            if (isReordering && index < visibleTools.lastIndex) {
+                                val updated = toolOrder.toMutableList()
+                                val item = updated.removeAt(index)
+                                updated.add(index + 1, item)
+                                toolOrder = updated
+                                saveToolOrder(prefs, updated)
+                            }
+                        }
+                    )
                 }
             }
         } else {
@@ -148,7 +353,20 @@ fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, jumpToToolVersion: Int = 0
                 4 -> SmilesVisualizer(isDark = isDark)
                 5 -> ReactionBalancer()
                 6 -> IsomerFinderTool(onNavigateToSearch = onNavigateToSearch)
-                7 -> StoichiometryCalculator()
+                7 -> StoichiometryCalculator(
+                    mode = StoichiometryMode.LIMITING,
+                    title = "Limiting Reagent"
+                )
+                8 -> StoichiometryCalculator(
+                    mode = StoichiometryMode.YIELD,
+                    title = "Percent Yield"
+                )
+                9 -> StoichiometryCalculator(
+                    mode = StoichiometryMode.SCALING,
+                    title = "Reaction Scaling"
+                )
+                11 -> DilutionCalculatorTool()
+                12 -> IdealGasLawTool()
             }
         }
     }
@@ -159,10 +377,16 @@ private fun ToolCard(
     icon: ImageVector,
     title: String,
     subtitle: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    enableSelect: Boolean = true,
+    showReorderControls: Boolean = false,
+    canMoveUp: Boolean = false,
+    canMoveDown: Boolean = false,
+    onMoveUp: () -> Unit = {},
+    onMoveDown: () -> Unit = {}
 ) {
     Card(
-        onClick = onClick,
+        onClick = { if (enableSelect) onClick() },
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
@@ -188,8 +412,58 @@ private fun ToolCard(
                 Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
             }
 
-            Icon(Icons.Default.ChevronRight, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.3f))
+            if (showReorderControls) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    IconButton(
+                        onClick = onMoveUp,
+                        enabled = canMoveUp,
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.KeyboardArrowUp,
+                            contentDescription = "Move up",
+                            tint = MaterialTheme.colorScheme.onSurface.copy(if (canMoveUp) 0.6f else 0.25f)
+                        )
+                    }
+                    IconButton(
+                        onClick = onMoveDown,
+                        enabled = canMoveDown,
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.KeyboardArrowDown,
+                            contentDescription = "Move down",
+                            tint = MaterialTheme.colorScheme.onSurface.copy(if (canMoveDown) 0.6f else 0.25f)
+                        )
+                    }
+                }
+            } else {
+                Icon(Icons.Default.ChevronRight, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.3f))
+            }
         }
+    }
+}
+
+@Composable
+private fun CategoryPill(label: String, selected: Boolean, onClick: () -> Unit) {
+    val background = if (selected) MaterialTheme.colorScheme.primary.copy(0.12f) else MaterialTheme.colorScheme.surfaceVariant
+    val border = if (selected) MaterialTheme.colorScheme.primary.copy(0.35f) else MaterialTheme.colorScheme.outline.copy(0.2f)
+    Surface(
+        onClick = onClick,
+        shape = RoundedCornerShape(999.dp),
+        color = background,
+        border = BorderStroke(1.dp, border)
+    ) {
+        Text(
+            label,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
+            color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
+        )
     }
 }
 
@@ -483,7 +757,7 @@ fun MolarMassCalculator() {
             value = input,
             onValueChange = { input = it },
             label = { Text("Molecular Formula") },
-            placeholder = { Text("e.g. H2O, Ca(OH)2, CuSO4·5H2O") },
+            placeholder = { Text("e.g. H2O, Ca(OH)2, CuSO4·5H2O", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(14.dp),
             singleLine = true,
@@ -523,20 +797,6 @@ fun MolarMassCalculator() {
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
-            }
-            Spacer(Modifier.weight(1f))
-            Surface(
-                onClick = { if (input.isNotEmpty()) input = input.dropLast(1) },
-                shape = RoundedCornerShape(8.dp),
-                color = MaterialTheme.colorScheme.errorContainer.copy(0.3f),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(0.2f))
-            ) {
-                Icon(
-                    Icons.AutoMirrored.Filled.Backspace,
-                    contentDescription = "Backspace",
-                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp).size(14.dp),
-                    tint = MaterialTheme.colorScheme.error.copy(0.7f)
-                )
             }
         }
 
@@ -924,7 +1184,7 @@ fun OxidationStateFinder() {
                 value = formula,
                 onValueChange = { formula = it; result = null },
                 label = { Text("Formula") },
-                placeholder = { Text("e.g. KMnO4") },
+                placeholder = { Text("e.g. KMnO4", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(14.dp),
                 singleLine = true,
@@ -935,7 +1195,7 @@ fun OxidationStateFinder() {
                 value = chargeInput,
                 onValueChange = { chargeInput = it; result = null },
                 label = { Text("Charge") },
-                placeholder = { Text("0") },
+                placeholder = { Text("0", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.width(90.dp),
                 shape = RoundedCornerShape(14.dp),
                 singleLine = true,
@@ -1037,7 +1297,6 @@ fun OxidationStateFinder() {
 
     }
 }
-
 // TOOL 4 : SMILES VISUALIZER
 @Composable
 fun SmilesVisualizer(isDark: Boolean) {
@@ -1145,7 +1404,7 @@ fun SmilesVisualizer(isDark: Boolean) {
             value = input,
             onValueChange = { input = it; cidResult = null; error = null },
             label = { Text("SMILES String") },
-            placeholder = { Text("e.g. CCO") },
+            placeholder = { Text("e.g. CCO", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(14.dp),
             singleLine = true,
@@ -1397,6 +1656,16 @@ private fun reactionToDisplay(raw: String): String =
         .map { subscriptMap[it] ?: it }
         .joinToString("")
 
+private fun swapEquationSides(input: String): String {
+    val normalized = input.replace("→", "->")
+    val parts = normalized.split("->")
+    if (parts.size < 2) return input
+    val left = parts.first().trim()
+    val right = parts.drop(1).joinToString("->").trim()
+    if (left.isBlank() || right.isBlank()) return input
+    return "$right → $left"
+}
+
 @Composable
 fun ReactionBalancer() {
     var input by remember { mutableStateOf("") }
@@ -1449,7 +1718,7 @@ fun ReactionBalancer() {
                 result = null
             },
             label = { Text("Chemical Equation") },
-            placeholder = { Text("H2 + O2 -> H2O") },
+            placeholder = { Text("H2 + O2 -> H2O", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(14.dp),
             singleLine = true,
@@ -1469,6 +1738,7 @@ fun ReactionBalancer() {
         )
 
         Row(
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -1477,36 +1747,46 @@ fun ReactionBalancer() {
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
             )
-            listOf("+" to " + ", "→" to " → ", "(" to "(", ")" to ")").forEach { (label, insert) ->
+            Row(
+                modifier = Modifier.weight(1f).horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                listOf("+" to " + ", "→" to " → ", "(" to "(", ")" to ")").forEach { (label, insert) ->
+                    Surface(
+                        onClick = { input += insert; result = null },
+                        shape = RoundedCornerShape(8.dp),
+                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f))
+                    ) {
+                        Text(
+                            label,
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                            style = MaterialTheme.typography.labelMedium,
+                            fontFamily = FontFamily.Monospace,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Surface(
-                    onClick = { input += insert; result = null },
+                    onClick = { input = swapEquationSides(input); result = null },
                     shape = RoundedCornerShape(8.dp),
                     color = MaterialTheme.colorScheme.surfaceVariant,
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f))
                 ) {
-                    Text(
-                        label,
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                        style = MaterialTheme.typography.labelMedium,
-                        fontFamily = FontFamily.Monospace,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
+                    Icon(
+                        Icons.Default.SwapHoriz,
+                        contentDescription = "Swap sides",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp).size(14.dp)
                     )
                 }
-            }
-            Spacer(Modifier.weight(1f))
-            Surface(
-                onClick = { if (input.isNotEmpty()) { input = input.dropLast(1); result = null } },
-                shape = RoundedCornerShape(8.dp),
-                color = MaterialTheme.colorScheme.errorContainer.copy(0.3f),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(0.2f))
-            ) {
-                Icon(
-                    Icons.AutoMirrored.Filled.Backspace,
-                    contentDescription = "Backspace",
-                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp).size(14.dp),
-                    tint = MaterialTheme.colorScheme.error.copy(0.7f)
-                )
             }
         }
 
@@ -1740,9 +2020,405 @@ fun IsomerFinderTool(onNavigateToSearch: () -> Unit = {}) {
     }
 }
 
-// TOOL 7 : STOICHIOMETRY CALCULATOR
+private data class SolveResult(val value: Double?, val error: String? = null)
+
+private enum class DilutionSolve(val label: String, val unit: String) {
+    C1("C1 (stock)", "M"),
+    V1("V1 (stock)", "mL"),
+    C2("C2 (final)", "M"),
+    V2("V2 (final)", "mL")
+}
+
+private fun solveDilution(
+    solveFor: DilutionSolve,
+    c1: String,
+    v1: String,
+    c2: String,
+    v2: String
+): SolveResult {
+    val c1Val = parsePositiveNumber(c1)
+    val v1Val = parsePositiveNumber(v1)
+    val c2Val = parsePositiveNumber(c2)
+    val v2Val = parsePositiveNumber(v2)
+    return when (solveFor) {
+        DilutionSolve.C1 -> {
+            if (v1Val == null) SolveResult(null, "Enter V1")
+            else if (c2Val == null) SolveResult(null, "Enter C2")
+            else if (v2Val == null) SolveResult(null, "Enter V2")
+            else SolveResult((c2Val * v2Val) / v1Val)
+        }
+        DilutionSolve.V1 -> {
+            if (c1Val == null) SolveResult(null, "Enter C1")
+            else if (c2Val == null) SolveResult(null, "Enter C2")
+            else if (v2Val == null) SolveResult(null, "Enter V2")
+            else SolveResult((c2Val * v2Val) / c1Val)
+        }
+        DilutionSolve.C2 -> {
+            if (c1Val == null) SolveResult(null, "Enter C1")
+            else if (v1Val == null) SolveResult(null, "Enter V1")
+            else if (v2Val == null) SolveResult(null, "Enter V2")
+            else SolveResult((c1Val * v1Val) / v2Val)
+        }
+        DilutionSolve.V2 -> {
+            if (c1Val == null) SolveResult(null, "Enter C1")
+            else if (v1Val == null) SolveResult(null, "Enter V1")
+            else if (c2Val == null) SolveResult(null, "Enter C2")
+            else SolveResult((c1Val * v1Val) / c2Val)
+        }
+    }
+}
+
+private const val GAS_R = 0.082057
+
+private enum class GasSolve(val label: String, val unit: String) {
+    PRESSURE("Pressure", "atm"),
+    VOLUME("Volume", "L"),
+    MOLES("Moles", "mol"),
+    TEMPERATURE("Temperature", "K")
+}
+
+private fun solveGasLaw(
+    solveFor: GasSolve,
+    pressure: String,
+    volume: String,
+    moles: String,
+    temperature: String
+): SolveResult {
+    val pVal = parsePositiveNumber(pressure)
+    val vVal = parsePositiveNumber(volume)
+    val nVal = parsePositiveNumber(moles)
+    val tVal = parsePositiveNumber(temperature)
+    return when (solveFor) {
+        GasSolve.PRESSURE -> {
+            if (nVal == null) SolveResult(null, "Enter moles")
+            else if (tVal == null) SolveResult(null, "Enter temperature")
+            else if (vVal == null) SolveResult(null, "Enter volume")
+            else SolveResult((nVal * GAS_R * tVal) / vVal)
+        }
+        GasSolve.VOLUME -> {
+            if (nVal == null) SolveResult(null, "Enter moles")
+            else if (tVal == null) SolveResult(null, "Enter temperature")
+            else if (pVal == null) SolveResult(null, "Enter pressure")
+            else SolveResult((nVal * GAS_R * tVal) / pVal)
+        }
+        GasSolve.MOLES -> {
+            if (pVal == null) SolveResult(null, "Enter pressure")
+            else if (vVal == null) SolveResult(null, "Enter volume")
+            else if (tVal == null) SolveResult(null, "Enter temperature")
+            else SolveResult((pVal * vVal) / (GAS_R * tVal))
+        }
+        GasSolve.TEMPERATURE -> {
+            if (pVal == null) SolveResult(null, "Enter pressure")
+            else if (vVal == null) SolveResult(null, "Enter volume")
+            else if (nVal == null) SolveResult(null, "Enter moles")
+            else SolveResult((pVal * vVal) / (GAS_R * nVal))
+        }
+    }
+}
+
+// TOOL 7 : DILUTION CALCULATOR
+@Composable
+fun DilutionCalculatorTool() {
+    var c1 by remember { mutableStateOf("") }
+    var v1 by remember { mutableStateOf("") }
+    var c2 by remember { mutableStateOf("") }
+    var v2 by remember { mutableStateOf("") }
+    var solveFor by remember { mutableStateOf(DilutionSolve.C2) }
+    val focusManager = LocalFocusManager.current
+
+    val result = remember(solveFor, c1, v1, c2, v2) { solveDilution(solveFor, c1, v1, c2, v2) }
+    val solvedText = result.value?.let { formatNumber(it, 4) }.orEmpty()
+    val hasAnyInput = c1.isNotBlank() || v1.isNotBlank() || c2.isNotBlank() || v2.isNotBlank()
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        var showInfo by remember { mutableStateOf(false) }
+        if (showInfo) {
+            InfoDialog(
+                title = "Dilution Calculator",
+                entries = listOf(
+                    "Equation" to "Uses C1V1 = C2V2 to solve dilutions.",
+                    "Units" to "Keep concentration units consistent (M) and volume units consistent (mL or L).",
+                    "Tip" to "Pick the variable you want to solve, then fill the other three."
+                ),
+                onDismiss = { showInfo = false }
+            )
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("Dilution Calculator", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
+                Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
+            }
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Text("Solve for", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+            var expanded by remember { mutableStateOf(false) }
+            Box {
+                Surface(
+                    onClick = { expanded = true },
+                    shape = RoundedCornerShape(10.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.25f))
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Text(solveFor.label, style = MaterialTheme.typography.labelMedium)
+                        Icon(Icons.Default.KeyboardArrowDown, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                    }
+                }
+                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                    DilutionSolve.values().forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(option.label) },
+                            onClick = {
+                                solveFor = option
+                                expanded = false
+                                focusManager.clearFocus()
+                            }
+                        )
+                    }
+                }
+            }
+        }
+
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = if (solveFor == DilutionSolve.C1) solvedText else c1,
+                onValueChange = { c1 = it },
+                label = { Text("C1 (M)") },
+                placeholder = { Text("e.g. 1.0", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(12.dp),
+                singleLine = true,
+                enabled = solveFor != DilutionSolve.C1
+            )
+            OutlinedTextField(
+                value = if (solveFor == DilutionSolve.V1) solvedText else v1,
+                onValueChange = { v1 = it },
+                label = { Text("V1 (mL)") },
+                placeholder = { Text("e.g. 25", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(12.dp),
+                singleLine = true,
+                enabled = solveFor != DilutionSolve.V1
+            )
+        }
+
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = if (solveFor == DilutionSolve.C2) solvedText else c2,
+                onValueChange = { c2 = it },
+                label = { Text("C2 (M)") },
+                placeholder = { Text("e.g. 0.5", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(12.dp),
+                singleLine = true,
+                enabled = solveFor != DilutionSolve.C2
+            )
+            OutlinedTextField(
+                value = if (solveFor == DilutionSolve.V2) solvedText else v2,
+                onValueChange = { v2 = it },
+                label = { Text("V2 (mL)") },
+                placeholder = { Text("e.g. 50", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(12.dp),
+                singleLine = true,
+                enabled = solveFor != DilutionSolve.V2
+            )
+        }
+
+        if (result.error != null && hasAnyInput) {
+            Text(result.error, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+        } else if (result.value != null) {
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = MaterialTheme.colorScheme.primary.copy(0.1f),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.3f))
+            ) {
+                Text(
+                    "${solveFor.label} = ${formatNumber(result.value, 4)} ${solveFor.unit}",
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = FontFamily.Monospace,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+    }
+}
+
+// TOOL 8 : IDEAL GAS LAW
+@Composable
+fun IdealGasLawTool() {
+    var pressure by remember { mutableStateOf("") }
+    var volume by remember { mutableStateOf("") }
+    var moles by remember { mutableStateOf("") }
+    var temperature by remember { mutableStateOf("") }
+    var solveFor by remember { mutableStateOf(GasSolve.PRESSURE) }
+    val focusManager = LocalFocusManager.current
+
+    val result = remember(solveFor, pressure, volume, moles, temperature) {
+        solveGasLaw(solveFor, pressure, volume, moles, temperature)
+    }
+    val solvedText = result.value?.let { formatNumber(it, 4) }.orEmpty()
+    val hasAnyInput = pressure.isNotBlank() || volume.isNotBlank() || moles.isNotBlank() || temperature.isNotBlank()
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        var showInfo by remember { mutableStateOf(false) }
+        if (showInfo) {
+            InfoDialog(
+                title = "Ideal Gas Law",
+                entries = listOf(
+                    "Equation" to "Uses PV = nRT to solve for any variable.",
+                    "Units" to "P in atm, V in liters, n in moles, T in Kelvin.",
+                    "Gas constant" to "R = 0.082057 L·atm/mol·K."
+                ),
+                onDismiss = { showInfo = false }
+            )
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("Ideal Gas Law", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
+                Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
+            }
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Text("Solve for", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+            var expanded by remember { mutableStateOf(false) }
+            Box {
+                Surface(
+                    onClick = { expanded = true },
+                    shape = RoundedCornerShape(10.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.25f))
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Text(solveFor.label, style = MaterialTheme.typography.labelMedium)
+                        Icon(Icons.Default.KeyboardArrowDown, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                    }
+                }
+                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                    GasSolve.values().forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(option.label) },
+                            onClick = {
+                                solveFor = option
+                                expanded = false
+                                focusManager.clearFocus()
+                            }
+                        )
+                    }
+                }
+            }
+        }
+
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = if (solveFor == GasSolve.PRESSURE) solvedText else pressure,
+                onValueChange = { pressure = it },
+                label = { Text("Pressure (atm)") },
+                placeholder = { Text("e.g. 1.0", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(12.dp),
+                singleLine = true,
+                enabled = solveFor != GasSolve.PRESSURE
+            )
+            OutlinedTextField(
+                value = if (solveFor == GasSolve.VOLUME) solvedText else volume,
+                onValueChange = { volume = it },
+                label = { Text("Volume (L)") },
+                placeholder = { Text("e.g. 2.5", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(12.dp),
+                singleLine = true,
+                enabled = solveFor != GasSolve.VOLUME
+            )
+        }
+
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = if (solveFor == GasSolve.MOLES) solvedText else moles,
+                onValueChange = { moles = it },
+                label = { Text("Moles (mol)") },
+                placeholder = { Text("e.g. 0.5", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(12.dp),
+                singleLine = true,
+                enabled = solveFor != GasSolve.MOLES
+            )
+            OutlinedTextField(
+                value = if (solveFor == GasSolve.TEMPERATURE) solvedText else temperature,
+                onValueChange = { temperature = it },
+                label = { Text("Temperature (K)") },
+                placeholder = { Text("e.g. 298", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(12.dp),
+                singleLine = true,
+                enabled = solveFor != GasSolve.TEMPERATURE
+            )
+        }
+
+        Text("R = 0.082057 L·atm/mol·K", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+
+        if (result.error != null && hasAnyInput) {
+            Text(result.error, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+        } else if (result.value != null) {
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = MaterialTheme.colorScheme.primary.copy(0.1f),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.3f))
+            ) {
+                Text(
+                    "${solveFor.label} = ${formatNumber(result.value, 4)} ${solveFor.unit}",
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = FontFamily.Monospace,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+    }
+}
+
+// TOOL 9 : STOICHIOMETRY TOOLS
 private const val AVOGADRO = 6.02214076e23
 private const val DEFAULT_MOLAR_VOLUME = 22.414
+
+private enum class StoichiometryMode {
+    LIMITING,
+    YIELD,
+    SCALING
+}
 
 private enum class StoichUnit(val label: String) {
     GRAMS("g"),
@@ -1878,7 +2554,10 @@ private fun StoichUnitDropdown(
 }
 
 @Composable
-fun StoichiometryCalculator() {
+private fun StoichiometryCalculator(
+    mode: StoichiometryMode = StoichiometryMode.LIMITING,
+    title: String = "Stoichiometry Calculator"
+) {
     var equation by remember { mutableStateOf("") }
     var result by remember { mutableStateOf<BalancerResult?>(null) }
     val reactantInputs = remember { mutableStateListOf<StoichReactantInput>() }
@@ -1893,6 +2572,10 @@ fun StoichiometryCalculator() {
     var actualMolarity by remember { mutableStateOf("") }
     var actualVolume by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
+    val showReactantInputs = mode != StoichiometryMode.SCALING
+    val showSummary = mode == StoichiometryMode.LIMITING || mode == StoichiometryMode.YIELD
+    val showYield = mode == StoichiometryMode.YIELD
+    val showScaling = mode == StoichiometryMode.SCALING
 
     val examples = listOf(
         "H2 + O2 -> H2O",
@@ -1905,7 +2588,7 @@ fun StoichiometryCalculator() {
     var showInfo by remember { mutableStateOf(false) }
     if (showInfo) {
         InfoDialog(
-            title = "Stoichiometry Calculator",
+            title = title,
             entries = listOf(
                 "What this does" to "Balances a reaction, finds the limiting reagent, computes theoretical yields, excess reagents, and reaction scaling.",
                 "Limiting reagent" to "The limiting reagent has the smallest (moles / coefficient) ratio. It determines the reaction extent.",
@@ -1955,7 +2638,7 @@ fun StoichiometryCalculator() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Stoichiometry Calculator", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
                 Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
             }
@@ -1968,7 +2651,7 @@ fun StoichiometryCalculator() {
                 result = null
             },
             label = { Text("Chemical Equation") },
-            placeholder = { Text("H2 + O2 -> H2O") },
+            placeholder = { Text("H2 + O2 -> H2O", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(14.dp),
             singleLine = true,
@@ -1988,40 +2671,55 @@ fun StoichiometryCalculator() {
         )
 
         Row(
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Insert:", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
-            listOf("+" to " + ", "→" to " → ", "(" to "(", ")" to ")").forEach { (label, insert) ->
+            Text(
+                "Insert:",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+            )
+            Row(
+                modifier = Modifier.weight(1f).horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                listOf("+" to " + ", "→" to " → ", "(" to "(", ")" to ")").forEach { (label, insert) ->
+                    Surface(
+                        onClick = { equation += insert; result = null },
+                        shape = RoundedCornerShape(8.dp),
+                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f))
+                    ) {
+                        Text(
+                            label,
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                            style = MaterialTheme.typography.labelMedium,
+                            fontFamily = FontFamily.Monospace,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Surface(
-                    onClick = { equation += insert; result = null },
+                    onClick = { equation = swapEquationSides(equation); result = null },
                     shape = RoundedCornerShape(8.dp),
                     color = MaterialTheme.colorScheme.surfaceVariant,
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f))
                 ) {
-                    Text(
-                        label,
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                        style = MaterialTheme.typography.labelMedium,
-                        fontFamily = FontFamily.Monospace,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
+                    Icon(
+                        Icons.Default.SwapHoriz,
+                        contentDescription = "Swap sides",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp).size(14.dp)
                     )
                 }
-            }
-            Spacer(Modifier.weight(1f))
-            Surface(
-                onClick = { if (equation.isNotEmpty()) { equation = equation.dropLast(1); result = null } },
-                shape = RoundedCornerShape(8.dp),
-                color = MaterialTheme.colorScheme.errorContainer.copy(0.3f),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(0.2f))
-            ) {
-                Icon(
-                    Icons.AutoMirrored.Filled.Backspace,
-                    contentDescription = "Backspace",
-                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp).size(14.dp),
-                    tint = MaterialTheme.colorScheme.error.copy(0.7f)
-                )
             }
         }
 
@@ -2040,7 +2738,7 @@ fun StoichiometryCalculator() {
             value = molarVolumeInput,
             onValueChange = { molarVolumeInput = it },
             label = { Text("Gas molar volume (L/mol)") },
-            placeholder = { Text(DEFAULT_MOLAR_VOLUME.toString()) },
+            placeholder = { Text(DEFAULT_MOLAR_VOLUME.toString(), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(14.dp),
             singleLine = true,
@@ -2114,7 +2812,7 @@ fun StoichiometryCalculator() {
                     }
                 }
 
-                if (reactantInputs.isNotEmpty()) {
+                if (showReactantInputs && reactantInputs.isNotEmpty()) {
                     Text("REACTANT AMOUNTS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
                 }
 
@@ -2123,121 +2821,123 @@ fun StoichiometryCalculator() {
                     input to computeMolesForInput(input, molarMass, molarVolume)
                 }
 
-                reactantInputs.forEachIndexed { index, input ->
-                    val molarMass = molarMassMap[input.formula]
-                    val info = reactantMoles.getOrNull(index)?.second
-                    Card(
-                        shape = RoundedCornerShape(16.dp),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-                    ) {
-                        Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    Surface(
-                                        shape = RoundedCornerShape(8.dp),
-                                        color = MaterialTheme.colorScheme.primary.copy(0.1f),
-                                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.25f))
-                                    ) {
-                                        Text(
-                                            if (input.coeff > 1) "${input.coeff} ${toSubscriptFormula(input.formula)}" else toSubscriptFormula(input.formula),
-                                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            fontWeight = FontWeight.SemiBold,
-                                            fontFamily = FontFamily.Monospace,
-                                            color = MaterialTheme.colorScheme.primary
-                                        )
+                if (showReactantInputs) {
+                    reactantInputs.forEachIndexed { index, input ->
+                        val molarMass = molarMassMap[input.formula]
+                        val info = reactantMoles.getOrNull(index)?.second
+                        Card(
+                            shape = RoundedCornerShape(16.dp),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                        ) {
+                            Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        Surface(
+                                            shape = RoundedCornerShape(8.dp),
+                                            color = MaterialTheme.colorScheme.primary.copy(0.1f),
+                                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.25f))
+                                        ) {
+                                            Text(
+                                                if (input.coeff > 1) "${input.coeff} ${toSubscriptFormula(input.formula)}" else toSubscriptFormula(input.formula),
+                                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                                                style = MaterialTheme.typography.bodyMedium,
+                                                fontWeight = FontWeight.SemiBold,
+                                                fontFamily = FontFamily.Monospace,
+                                                color = MaterialTheme.colorScheme.primary
+                                            )
+                                        }
                                     }
+                                    Text(
+                                        molarMass?.let { "${formatNumber(it, 4)} g/mol" } ?: "Molar mass N/A",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+                                    )
                                 }
-                                Text(
-                                    molarMass?.let { "${formatNumber(it, 4)} g/mol" } ?: "Molar mass N/A",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
-                                )
-                            }
 
-                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                                OutlinedTextField(
-                                    value = if (input.unit == StoichUnit.MOLARITY) input.molarity else input.amount,
-                                    onValueChange = { value ->
-                                        val updated = if (input.unit == StoichUnit.MOLARITY) input.copy(molarity = value) else input.copy(amount = value)
-                                        reactantInputs[index] = updated
-                                    },
-                                    label = { Text(if (input.unit == StoichUnit.MOLARITY) "Molarity (M)" else "Amount") },
-                                    placeholder = { Text("e.g. 2.5") },
-                                    modifier = Modifier.weight(1f),
-                                    shape = RoundedCornerShape(12.dp),
-                                    singleLine = true
-                                )
-                                StoichUnitDropdown(
-                                    unit = input.unit,
-                                    onUnitChange = { newUnit ->
-                                        reactantInputs[index] = input.copy(unit = newUnit)
-                                    }
-                                )
-                            }
+                                Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                                    OutlinedTextField(
+                                        value = if (input.unit == StoichUnit.MOLARITY) input.molarity else input.amount,
+                                        onValueChange = { value ->
+                                            val updated = if (input.unit == StoichUnit.MOLARITY) input.copy(molarity = value) else input.copy(amount = value)
+                                            reactantInputs[index] = updated
+                                        },
+                                        label = { Text(if (input.unit == StoichUnit.MOLARITY) "Molarity (M)" else "Amount") },
+                                        placeholder = { Text("e.g. 2.5", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                                        modifier = Modifier.weight(1f),
+                                        shape = RoundedCornerShape(12.dp),
+                                        singleLine = true
+                                    )
+                                    StoichUnitDropdown(
+                                        unit = input.unit,
+                                        onUnitChange = { newUnit ->
+                                            reactantInputs[index] = input.copy(unit = newUnit)
+                                        }
+                                    )
+                                }
 
-                            if (input.unit == StoichUnit.MOLARITY) {
+                                if (input.unit == StoichUnit.MOLARITY) {
+                                    OutlinedTextField(
+                                        value = input.volume,
+                                        onValueChange = { reactantInputs[index] = input.copy(volume = it) },
+                                        label = { Text("Volume (mL)") },
+                                        placeholder = { Text("e.g. 250", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        shape = RoundedCornerShape(12.dp),
+                                        singleLine = true
+                                    )
+                                }
+
                                 OutlinedTextField(
-                                    value = input.volume,
-                                    onValueChange = { reactantInputs[index] = input.copy(volume = it) },
-                                    label = { Text("Volume (mL)") },
-                                    placeholder = { Text("e.g. 250") },
+                                    value = input.purity,
+                                    onValueChange = { reactantInputs[index] = input.copy(purity = it) },
+                                    label = { Text("Purity % (optional)") },
+                                    placeholder = { Text("100", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                                     modifier = Modifier.fillMaxWidth(),
                                     shape = RoundedCornerShape(12.dp),
                                     singleLine = true
                                 )
-                            }
 
-                            OutlinedTextField(
-                                value = input.purity,
-                                onValueChange = { reactantInputs[index] = input.copy(purity = it) },
-                                label = { Text("Purity % (optional)") },
-                                placeholder = { Text("100") },
-                                modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(12.dp),
-                                singleLine = true
-                            )
-
-                            when {
-                                info?.error != null -> {
-                                    Text(info.error, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
-                                }
-                                info?.moles != null -> {
-                                    val note = if (info.purityApplied) " (purity applied)" else ""
-                                    Text(
-                                        "Moles available: ${formatNumber(info.moles)} mol$note",
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurface.copy(0.7f)
-                                    )
-                                }
-                                else -> {
-                                    Text("Enter an amount to compute moles.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                                when {
+                                    info?.error != null -> {
+                                        Text(info.error, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                                    }
+                                    info?.moles != null -> {
+                                        val note = if (info.purityApplied) " (purity applied)" else ""
+                                        Text(
+                                            "Moles available: ${formatNumber(info.moles)} mol$note",
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurface.copy(0.7f)
+                                        )
+                                    }
+                                    else -> {
+                                        Text("Enter an amount to compute moles.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                if (reactantInputs.isNotEmpty()) {
-                    TextButton(
-                        onClick = {
-                            for (i in reactantInputs.indices) {
-                                reactantInputs[i] = reactantInputs[i].copy(amount = "", molarity = "", volume = "", purity = "")
-                            }
-                            actualAmount = ""
-                            actualMolarity = ""
-                            actualVolume = ""
-                            desiredAmount = ""
-                            desiredMolarity = ""
-                            desiredVolume = ""
-                        },
-                        contentPadding = PaddingValues(horizontal = 0.dp)
-                    ) {
-                        Text("Clear all amounts", style = MaterialTheme.typography.labelMedium)
+                    if (reactantInputs.isNotEmpty()) {
+                        TextButton(
+                            onClick = {
+                                for (i in reactantInputs.indices) {
+                                    reactantInputs[i] = reactantInputs[i].copy(amount = "", molarity = "", volume = "", purity = "")
+                                }
+                                actualAmount = ""
+                                actualMolarity = ""
+                                actualVolume = ""
+                                desiredAmount = ""
+                                desiredMolarity = ""
+                                desiredVolume = ""
+                            },
+                            contentPadding = PaddingValues(horizontal = 0.dp)
+                        ) {
+                            Text("Clear all amounts", style = MaterialTheme.typography.labelMedium)
+                        }
                     }
                 }
 
@@ -2250,86 +2950,88 @@ fun StoichiometryCalculator() {
                     null
                 }
 
-                Card(
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Text("STOICHIOMETRY SUMMARY", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                if (showSummary) {
+                    Card(
+                        shape = RoundedCornerShape(16.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                            Text("STOICHIOMETRY SUMMARY", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
 
-                        if (limitingData == null) {
-                            Text(
-                                "Enter valid amounts for all reactants to determine the limiting reagent.",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
-                            )
-                        } else {
-                            val (limitingEntry, extent, limitingCoeff) = limitingData
-                            val limitingFormula = limitingEntry.first.formula
-                            val limitingMoles = limitingEntry.second.moles ?: 0.0
-                            val limitingMass = molarMassMap[limitingFormula]?.let { it * limitingMoles }
+                            if (limitingData == null) {
+                                Text(
+                                    "Enter valid amounts for all reactants to determine the limiting reagent.",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                                )
+                            } else {
+                                val (limitingEntry, extent, limitingCoeff) = limitingData
+                                val limitingFormula = limitingEntry.first.formula
+                                val limitingMoles = limitingEntry.second.moles ?: 0.0
+                                val limitingMass = molarMassMap[limitingFormula]?.let { it * limitingMoles }
 
-                            Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                                    Text("Limiting reagent", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
-                                    Text(toSubscriptFormula(limitingFormula), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, fontFamily = FontFamily.Monospace)
-                                }
-                                Column(horizontalAlignment = Alignment.End) {
-                                    Text("${formatNumber(limitingMoles)} mol", style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
-                                    if (limitingMass != null) {
-                                        Text("${formatNumber(limitingMass, 3)} g", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                                Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                                        Text("Limiting reagent", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+                                        Text(toSubscriptFormula(limitingFormula), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, fontFamily = FontFamily.Monospace)
+                                    }
+                                    Column(horizontalAlignment = Alignment.End) {
+                                        Text("${formatNumber(limitingMoles)} mol", style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
+                                        if (limitingMass != null) {
+                                            Text("${formatNumber(limitingMass, 3)} g", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                                        }
                                     }
                                 }
-                            }
 
-                            Text("Reaction extent: ${formatNumber(extent)} mol", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.65f))
+                                Text("Reaction extent: ${formatNumber(extent)} mol", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.65f))
 
-                            HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
-                            Text("MOLE RATIOS (relative to limiting reagent)", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
+                                Text("MOLE RATIOS (relative to limiting reagent)", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
 
-                            (res.reactants + res.products).forEach { (formula, coeff) ->
-                                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                    Text(toSubscriptFormula(formula), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
-                                    Text(ratioToString(coeff, limitingCoeff), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.primary)
-                                }
-                            }
-
-                            HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
-                            Text("THEORETICAL YIELD", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
-
-                            res.products.forEach { (formula, coeff) ->
-                                val moles = extent * coeff
-                                val mass = molarMassMap[formula]?.let { it * moles }
-                                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                    Text(toSubscriptFormula(formula), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
-                                    Column(horizontalAlignment = Alignment.End) {
-                                        Text("${formatNumber(moles)} mol", style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
-                                        Text(
-                                            mass?.let { "${formatNumber(it, 3)} g" } ?: "g N/A",
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
-                                        )
+                                (res.reactants + res.products).forEach { (formula, coeff) ->
+                                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                        Text(toSubscriptFormula(formula), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
+                                        Text(ratioToString(coeff, limitingCoeff), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.primary)
                                     }
                                 }
-                            }
 
-                            HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
-                            Text("EXCESS REACTANTS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
+                                Text("THEORETICAL YIELD", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
 
-                            reactantMoles.forEach { (input, info) ->
-                                val available = info.moles ?: return@forEach
-                                val used = extent * input.coeff
-                                val leftover = (available - used).coerceAtLeast(0.0)
-                                val leftoverMass = molarMassMap[input.formula]?.let { it * leftover }
-                                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                    Text(toSubscriptFormula(input.formula), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
-                                    Column(horizontalAlignment = Alignment.End) {
-                                        Text("${formatNumber(leftover)} mol", style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
-                                        Text(
-                                            leftoverMass?.let { "${formatNumber(it, 3)} g" } ?: "g N/A",
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
-                                        )
+                                res.products.forEach { (formula, coeff) ->
+                                    val moles = extent * coeff
+                                    val mass = molarMassMap[formula]?.let { it * moles }
+                                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                        Text(toSubscriptFormula(formula), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
+                                        Column(horizontalAlignment = Alignment.End) {
+                                            Text("${formatNumber(moles)} mol", style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
+                                            Text(
+                                                mass?.let { "${formatNumber(it, 3)} g" } ?: "g N/A",
+                                                style = MaterialTheme.typography.bodySmall,
+                                                color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                                            )
+                                        }
+                                    }
+                                }
+
+                                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
+                                Text("EXCESS REACTANTS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+
+                                reactantMoles.forEach { (input, info) ->
+                                    val available = info.moles ?: return@forEach
+                                    val used = extent * input.coeff
+                                    val leftover = (available - used).coerceAtLeast(0.0)
+                                    val leftoverMass = molarMassMap[input.formula]?.let { it * leftover }
+                                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                        Text(toSubscriptFormula(input.formula), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
+                                        Column(horizontalAlignment = Alignment.End) {
+                                            Text("${formatNumber(leftover)} mol", style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
+                                            Text(
+                                                leftoverMass?.let { "${formatNumber(it, 3)} g" } ?: "g N/A",
+                                                style = MaterialTheme.typography.bodySmall,
+                                                color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                                            )
+                                        }
                                     }
                                 }
                             }
@@ -2338,13 +3040,18 @@ fun StoichiometryCalculator() {
                 }
 
                 val products = res.products
-                if (products.isNotEmpty()) {
+                if (products.isNotEmpty() && (showYield || showScaling)) {
+                    val sectionTitle = when {
+                        showYield && showScaling -> "YIELD & SCALING"
+                        showYield -> "PERCENT YIELD"
+                        else -> "SCALING"
+                    }
                     Card(
                         shape = RoundedCornerShape(16.dp),
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                     ) {
                         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                            Text("YIELD & SCALING", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                            Text(sectionTitle, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
 
                             var productMenuExpanded by remember { mutableStateOf(false) }
                             val selectedProduct = products.getOrNull(selectedProductIndex) ?: products.first()
@@ -2378,137 +3085,144 @@ fun StoichiometryCalculator() {
                                 }
                             }
 
-                            Text("Actual yield (optional)", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
-                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                                OutlinedTextField(
-                                    value = if (actualUnit == StoichUnit.MOLARITY) actualMolarity else actualAmount,
-                                    onValueChange = { value ->
-                                        if (actualUnit == StoichUnit.MOLARITY) actualMolarity = value else actualAmount = value
-                                    },
-                                    label = { Text(if (actualUnit == StoichUnit.MOLARITY) "Molarity (M)" else "Amount") },
-                                    placeholder = { Text("e.g. 1.25") },
-                                    modifier = Modifier.weight(1f),
-                                    shape = RoundedCornerShape(12.dp),
-                                    singleLine = true
+                            if (showYield) {
+                                Text("Actual yield (optional)", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                                Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                                    OutlinedTextField(
+                                        value = if (actualUnit == StoichUnit.MOLARITY) actualMolarity else actualAmount,
+                                        onValueChange = { value ->
+                                            if (actualUnit == StoichUnit.MOLARITY) actualMolarity = value else actualAmount = value
+                                        },
+                                        label = { Text(if (actualUnit == StoichUnit.MOLARITY) "Molarity (M)" else "Amount") },
+                                        placeholder = { Text("e.g. 1.25", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                                        modifier = Modifier.weight(1f),
+                                        shape = RoundedCornerShape(12.dp),
+                                        singleLine = true
+                                    )
+                                    StoichUnitDropdown(
+                                        unit = actualUnit,
+                                        onUnitChange = { actualUnit = it }
+                                    )
+                                }
+
+                                if (actualUnit == StoichUnit.MOLARITY) {
+                                    OutlinedTextField(
+                                        value = actualVolume,
+                                        onValueChange = { actualVolume = it },
+                                        label = { Text("Volume (mL)") },
+                                        placeholder = { Text("e.g. 100", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        shape = RoundedCornerShape(12.dp),
+                                        singleLine = true
+                                    )
+                                }
+
+                                val theoreticalMoles = if (limitingData != null) {
+                                    val extent = limitingData.second
+                                    extent * selectedProduct.second
+                                } else null
+                                val actualInfo = computeMolesForInput(
+                                    StoichReactantInput(
+                                        formula = selectedProduct.first,
+                                        coeff = 1,
+                                        amount = actualAmount,
+                                        unit = actualUnit,
+                                        molarity = actualMolarity,
+                                        volume = actualVolume
+                                    ),
+                                    molarMassMap[selectedProduct.first],
+                                    molarVolume
                                 )
-                                StoichUnitDropdown(
-                                    unit = actualUnit,
-                                    onUnitChange = { actualUnit = it }
-                                )
+                                val actualProvided = if (actualUnit == StoichUnit.MOLARITY) {
+                                    actualMolarity.isNotBlank() || actualVolume.isNotBlank()
+                                } else {
+                                    actualAmount.isNotBlank()
+                                }
+
+                                if (theoreticalMoles != null && actualInfo.moles != null && actualInfo.error == null) {
+                                    val percentYield = (actualInfo.moles / theoreticalMoles) * 100.0
+                                    Text(
+                                        "Percent yield: ${formatNumber(percentYield, 2)}%",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = if (percentYield >= 100.0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.75f)
+                                    )
+                                } else if (actualInfo.error != null) {
+                                    Text(actualInfo.error, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                                } else if (actualProvided && limitingData == null) {
+                                    Text("Need limiting reagent to compute percent yield.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
+                                }
                             }
 
-                            if (actualUnit == StoichUnit.MOLARITY) {
-                                OutlinedTextField(
-                                    value = actualVolume,
-                                    onValueChange = { actualVolume = it },
-                                    label = { Text("Volume (mL)") },
-                                    placeholder = { Text("e.g. 100") },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    shape = RoundedCornerShape(12.dp),
-                                    singleLine = true
-                                )
+                            if (showYield && showScaling) {
+                                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
                             }
 
-                            val theoreticalMoles = if (limitingData != null) {
-                                val extent = limitingData.second
-                                extent * selectedProduct.second
-                            } else null
-                            val actualInfo = computeMolesForInput(
-                                StoichReactantInput(
-                                    formula = selectedProduct.first,
-                                    coeff = 1,
-                                    amount = actualAmount,
-                                    unit = actualUnit,
-                                    molarity = actualMolarity,
-                                    volume = actualVolume
-                                ),
-                                molarMassMap[selectedProduct.first],
-                                molarVolume
-                            )
-                            val actualProvided = if (actualUnit == StoichUnit.MOLARITY) {
-                                actualMolarity.isNotBlank() || actualVolume.isNotBlank()
-                            } else {
-                                actualAmount.isNotBlank()
-                            }
+                            if (showScaling) {
+                                Text("Desired product amount", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                                Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                                    OutlinedTextField(
+                                        value = if (desiredUnit == StoichUnit.MOLARITY) desiredMolarity else desiredAmount,
+                                        onValueChange = { value ->
+                                            if (desiredUnit == StoichUnit.MOLARITY) desiredMolarity = value else desiredAmount = value
+                                        },
+                                        label = { Text(if (desiredUnit == StoichUnit.MOLARITY) "Molarity (M)" else "Amount") },
+                                        placeholder = { Text("e.g. 5.0", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                                        modifier = Modifier.weight(1f),
+                                        shape = RoundedCornerShape(12.dp),
+                                        singleLine = true
+                                    )
+                                    StoichUnitDropdown(
+                                        unit = desiredUnit,
+                                        onUnitChange = { desiredUnit = it }
+                                    )
+                                }
 
-                            if (theoreticalMoles != null && actualInfo.moles != null && actualInfo.error == null) {
-                                val percentYield = (actualInfo.moles / theoreticalMoles) * 100.0
-                                Text(
-                                    "Percent yield: ${formatNumber(percentYield, 2)}%",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = if (percentYield >= 100.0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.75f)
+                                if (desiredUnit == StoichUnit.MOLARITY) {
+                                    OutlinedTextField(
+                                        value = desiredVolume,
+                                        onValueChange = { desiredVolume = it },
+                                        label = { Text("Volume (mL)") },
+                                        placeholder = { Text("e.g. 500", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        shape = RoundedCornerShape(12.dp),
+                                        singleLine = true
+                                    )
+                                }
+
+                                val desiredInfo = computeMolesForInput(
+                                    StoichReactantInput(
+                                        formula = selectedProduct.first,
+                                        coeff = 1,
+                                        amount = desiredAmount,
+                                        unit = desiredUnit,
+                                        molarity = desiredMolarity,
+                                        volume = desiredVolume
+                                    ),
+                                    molarMassMap[selectedProduct.first],
+                                    molarVolume
                                 )
-                            } else if (actualInfo.error != null) {
-                                Text(actualInfo.error, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
-                            } else if (actualProvided && limitingData == null) {
-                                Text("Need limiting reagent to compute percent yield.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
-                            }
 
-                            HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
-                            Text("Desired product amount", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
-                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                                OutlinedTextField(
-                                    value = if (desiredUnit == StoichUnit.MOLARITY) desiredMolarity else desiredAmount,
-                                    onValueChange = { value ->
-                                        if (desiredUnit == StoichUnit.MOLARITY) desiredMolarity = value else desiredAmount = value
-                                    },
-                                    label = { Text(if (desiredUnit == StoichUnit.MOLARITY) "Molarity (M)" else "Amount") },
-                                    placeholder = { Text("e.g. 5.0") },
-                                    modifier = Modifier.weight(1f),
-                                    shape = RoundedCornerShape(12.dp),
-                                    singleLine = true
-                                )
-                                StoichUnitDropdown(
-                                    unit = desiredUnit,
-                                    onUnitChange = { desiredUnit = it }
-                                )
-                            }
-
-                            if (desiredUnit == StoichUnit.MOLARITY) {
-                                OutlinedTextField(
-                                    value = desiredVolume,
-                                    onValueChange = { desiredVolume = it },
-                                    label = { Text("Volume (mL)") },
-                                    placeholder = { Text("e.g. 500") },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    shape = RoundedCornerShape(12.dp),
-                                    singleLine = true
-                                )
-                            }
-
-                            val desiredInfo = computeMolesForInput(
-                                StoichReactantInput(
-                                    formula = selectedProduct.first,
-                                    coeff = 1,
-                                    amount = desiredAmount,
-                                    unit = desiredUnit,
-                                    molarity = desiredMolarity,
-                                    volume = desiredVolume
-                                ),
-                                molarMassMap[selectedProduct.first],
-                                molarVolume
-                            )
-
-                            if (desiredInfo.moles != null && desiredInfo.error == null) {
-                                val extent = desiredInfo.moles / selectedProduct.second
-                                Text("Required reactants (theoretical)", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
-                                res.reactants.forEach { (formula, coeff) ->
-                                    val reqMoles = extent * coeff
-                                    val reqMass = molarMassMap[formula]?.let { it * reqMoles }
-                                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                        Text(toSubscriptFormula(formula), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
-                                        Column(horizontalAlignment = Alignment.End) {
-                                            Text("${formatNumber(reqMoles)} mol", style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
-                                            Text(
-                                                reqMass?.let { "${formatNumber(it, 3)} g" } ?: "g N/A",
-                                                style = MaterialTheme.typography.bodySmall,
-                                                color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
-                                            )
+                                if (desiredInfo.moles != null && desiredInfo.error == null) {
+                                    val extent = desiredInfo.moles / selectedProduct.second
+                                    Text("Required reactants (theoretical)", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                                    res.reactants.forEach { (formula, coeff) ->
+                                        val reqMoles = extent * coeff
+                                        val reqMass = molarMassMap[formula]?.let { it * reqMoles }
+                                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                            Text(toSubscriptFormula(formula), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
+                                            Column(horizontalAlignment = Alignment.End) {
+                                                Text("${formatNumber(reqMoles)} mol", style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
+                                                Text(
+                                                    reqMass?.let { "${formatNumber(it, 3)} g" } ?: "g N/A",
+                                                    style = MaterialTheme.typography.bodySmall,
+                                                    color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                                                )
+                                            }
                                         }
                                     }
+                                } else if (desiredInfo.error != null) {
+                                    Text(desiredInfo.error, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                                 }
-                            } else if (desiredInfo.error != null) {
-                                Text(desiredInfo.error, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                             }
                         }
                     }

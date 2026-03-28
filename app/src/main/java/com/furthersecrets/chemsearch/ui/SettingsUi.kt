@@ -3,6 +3,7 @@ package com.furthersecrets.chemsearch.ui
 import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.height
 import kotlinx.coroutines.launch
 import android.content.Context
@@ -36,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -622,7 +624,61 @@ private val FAQ_ENTRIES = listOf(
 
 // Favorites sheet
 
-private enum class FavoritesSort { RECENT, NAME }
+private enum class FavoritesSort { RECENT, NAME, ATOMS_DESC, ATOMS_ASC }
+
+private fun countAtomsInFormula(formula: String): Int {
+    val trimmed = formula.trim()
+    if (trimmed.isBlank()) return 0
+    val parts = trimmed.split('·', '.').filter { it.isNotBlank() }
+    var total = 0
+    for (part in parts) {
+        val match = Regex("""^(\d+)(.*)$""").find(part)
+        val multiplier = match?.groupValues?.getOrNull(1)?.toIntOrNull() ?: 1
+        val fragment = match?.groupValues?.getOrNull(2)?.takeIf { it.isNotBlank() } ?: part
+        total += multiplier * countAtomsInFragment(fragment)
+    }
+    return total
+}
+
+private fun countAtomsInFragment(formula: String): Int {
+    val stack = ArrayDeque<MutableMap<String, Int>>().apply { addLast(mutableMapOf()) }
+    var i = 0
+    while (i < formula.length) {
+        when {
+            formula[i] == '(' -> {
+                stack.addLast(mutableMapOf())
+                i++
+            }
+            formula[i] == ')' -> {
+                i++
+                var num = ""
+                while (i < formula.length && formula[i].isDigit()) {
+                    num += formula[i++]
+                }
+                val mult = num.toIntOrNull() ?: 1
+                val top = stack.removeLast()
+                top.forEach { (el, cnt) ->
+                    stack.last()[el] = (stack.last()[el] ?: 0) + cnt * mult
+                }
+            }
+            formula[i].isUpperCase() -> {
+                var el = formula[i].toString()
+                i++
+                while (i < formula.length && formula[i].isLowerCase()) {
+                    el += formula[i++]
+                }
+                var num = ""
+                while (i < formula.length && formula[i].isDigit()) {
+                    num += formula[i++]
+                }
+                val cnt = num.toIntOrNull() ?: 1
+                stack.last()[el] = (stack.last()[el] ?: 0) + cnt
+            }
+            else -> i++
+        }
+    }
+    return stack.last().values.sum()
+}
 
 @Composable
 private fun FavoriteCard(
@@ -630,10 +686,16 @@ private fun FavoriteCard(
     onSelect: (String) -> Unit,
     onDelete: (Long) -> Unit,
     modifier: Modifier = Modifier,
-    showImage: Boolean = true
+    showImage: Boolean = true,
+    enableSelect: Boolean = true,
+    showReorderControls: Boolean = false,
+    canMoveUp: Boolean = false,
+    canMoveDown: Boolean = false,
+    onMoveUp: () -> Unit = {},
+    onMoveDown: () -> Unit = {}
 ) {
     Card(
-        onClick = { onSelect(favorite.name) },
+        onClick = { if (enableSelect) onSelect(favorite.name) },
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -681,6 +743,35 @@ private fun FavoriteCard(
                     color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
                 )
             }
+            if (showReorderControls) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    IconButton(
+                        onClick = onMoveUp,
+                        enabled = canMoveUp,
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.KeyboardArrowUp,
+                            contentDescription = "Move up",
+                            tint = MaterialTheme.colorScheme.onSurface.copy(if (canMoveUp) 0.6f else 0.25f)
+                        )
+                    }
+                    IconButton(
+                        onClick = onMoveDown,
+                        enabled = canMoveDown,
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.KeyboardArrowDown,
+                            contentDescription = "Move down",
+                            tint = MaterialTheme.colorScheme.onSurface.copy(if (canMoveDown) 0.6f else 0.25f)
+                        )
+                    }
+                }
+            }
             IconButton(onClick = { onDelete(favorite.cid) }) {
                 Icon(Icons.Default.Delete, contentDescription = "Remove", tint = MaterialTheme.colorScheme.error.copy(0.65f), modifier = Modifier.size(18.dp))
             }
@@ -718,9 +809,14 @@ fun FavoritesSheet(
     favorites: List<FavoriteCompound>,
     onSelect: (String) -> Unit,
     onDelete: (Long) -> Unit,
+    onMoveFavorite: (Int, Int) -> Unit,
     onDismiss: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var isReordering by remember { mutableStateOf(false) }
+    LaunchedEffect(favorites.size) {
+        if (favorites.size < 2 && isReordering) isReordering = false
+    }
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
@@ -739,18 +835,36 @@ fun FavoritesSheet(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text("Favorites", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-                Surface(
-                    shape = RoundedCornerShape(999.dp),
-                    color = MaterialTheme.colorScheme.primary.copy(0.12f)
-                ) {
-                    Text(
-                        "${favorites.size} saved",
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.SemiBold
-                    )
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Surface(
+                        shape = RoundedCornerShape(999.dp),
+                        color = MaterialTheme.colorScheme.primary.copy(0.12f)
+                    ) {
+                        Text(
+                            "${favorites.size} saved",
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                    if (favorites.size > 1) {
+                        TextButton(
+                            onClick = { isReordering = !isReordering },
+                            contentPadding = PaddingValues(horizontal = 8.dp)
+                        ) {
+                            Text(if (isReordering) "Done" else "Reorder")
+                        }
+                    }
                 }
+            }
+            if (isReordering) {
+                Text(
+                    "Tap the arrows to move favorites.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                    modifier = Modifier.padding(bottom = 6.dp)
+                )
             }
             if (favorites.isEmpty()) {
                 Box(
@@ -777,11 +891,17 @@ fun FavoritesSheet(
                 }
             } else {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    favorites.forEach { fav ->
+                    favorites.forEachIndexed { index, fav ->
                         FavoriteCard(
                             favorite = fav,
                             onSelect = onSelect,
-                            onDelete = onDelete
+                            onDelete = onDelete,
+                            enableSelect = !isReordering,
+                            showReorderControls = isReordering,
+                            canMoveUp = index > 0,
+                            canMoveDown = index < favorites.lastIndex,
+                            onMoveUp = { if (index > 0) onMoveFavorite(index, index - 1) },
+                            onMoveDown = { if (index < favorites.lastIndex) onMoveFavorite(index, index + 1) }
                         )
                     }
                 }
@@ -796,10 +916,16 @@ fun FavoritesSheet(
 fun FavoritesInline(
     favorites: List<FavoriteCompound>,
     onSelect: (String) -> Unit,
-    onDelete: (Long) -> Unit
+    onDelete: (Long) -> Unit,
+    onMoveFavorite: (Int, Int) -> Unit
 ) {
     var filterQuery by remember { mutableStateOf("") }
     var sortMode by remember { mutableStateOf(FavoritesSort.RECENT) }
+    var isReordering by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
+    LaunchedEffect(favorites.size) {
+        if (favorites.size < 2 && isReordering) isReordering = false
+    }
     val normalizedQuery = filterQuery.trim().lowercase(Locale.US)
     val filteredFavorites = remember(favorites, normalizedQuery, sortMode) {
         val base = if (normalizedQuery.isBlank()) {
@@ -815,10 +941,19 @@ fun FavoritesInline(
         }
         when (sortMode) {
             FavoritesSort.NAME -> base.sortedBy { it.name.lowercase(Locale.US) }
+            FavoritesSort.ATOMS_DESC -> base.sortedWith(
+                compareByDescending<FavoriteCompound> { countAtomsInFormula(it.formula) }
+                    .thenBy { it.name.lowercase(Locale.US) }
+            )
+            FavoritesSort.ATOMS_ASC -> base.sortedWith(
+                compareBy<FavoriteCompound> { countAtomsInFormula(it.formula) }
+                    .thenBy { it.name.lowercase(Locale.US) }
+            )
             FavoritesSort.RECENT -> base
         }
     }
-    val showControls = favorites.size >= 3
+    val showControls = favorites.size >= 2
+    val displayFavorites = if (isReordering) favorites else filteredFavorites
 
     if (favorites.isEmpty()) {
         Box(
@@ -858,17 +993,35 @@ fun FavoritesInline(
                 Icon(Icons.Default.Bookmark, null, tint = MaterialTheme.colorScheme.primary.copy(0.7f), modifier = Modifier.size(18.dp))
                 Text("Favorites", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             }
-            Surface(
-                shape = RoundedCornerShape(999.dp),
-                color = MaterialTheme.colorScheme.primary.copy(0.12f)
-            ) {
-                Text(
-                    "${favorites.size} saved",
-                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.SemiBold
-                )
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Surface(
+                    shape = RoundedCornerShape(999.dp),
+                    color = MaterialTheme.colorScheme.primary.copy(0.12f)
+                ) {
+                    Text(
+                        "${favorites.size} saved",
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+                if (favorites.size > 1) {
+                    TextButton(
+                        onClick = {
+                            val next = !isReordering
+                            isReordering = next
+                            if (next) {
+                                filterQuery = ""
+                                sortMode = FavoritesSort.RECENT
+                                focusManager.clearFocus()
+                            }
+                        },
+                        contentPadding = PaddingValues(horizontal = 8.dp)
+                    ) {
+                        Text(if (isReordering) "Done" else "Reorder")
+                    }
+                }
             }
         }
         Text(
@@ -876,8 +1029,15 @@ fun FavoritesInline(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
         )
+        if (isReordering) {
+            Text(
+                "Reorder mode: use the arrows to move items.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
+            )
+        }
 
-        if (showControls) {
+        if (showControls && !isReordering) {
             OutlinedTextField(
                 value = filterQuery,
                 onValueChange = { filterQuery = it },
@@ -894,34 +1054,47 @@ fun FavoritesInline(
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier.fillMaxWidth()
             )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    "Sort",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
-                )
-                SortPill(label = "Recent", selected = sortMode == FavoritesSort.RECENT) {
-                    sortMode = FavoritesSort.RECENT
-                }
-                SortPill(label = "A-Z", selected = sortMode == FavoritesSort.NAME) {
-                    sortMode = FavoritesSort.NAME
-                }
-                Spacer(Modifier.weight(1f))
-                if (filterQuery.isNotBlank()) {
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
-                        "${filteredFavorites.size} match${if (filteredFavorites.size == 1) "" else "es"}",
+                        "Sort",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
                     )
+                    if (filterQuery.isNotBlank()) {
+                        Text(
+                            "${filteredFavorites.size} match${if (filteredFavorites.size == 1) "" else "es"}",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                        )
+                    }
+                }
+                @OptIn(ExperimentalLayoutApi::class)
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    SortPill(label = "Recent", selected = sortMode == FavoritesSort.RECENT) {
+                        sortMode = FavoritesSort.RECENT
+                    }
+                    SortPill(label = "A-Z", selected = sortMode == FavoritesSort.NAME) {
+                        sortMode = FavoritesSort.NAME
+                    }
+                    SortPill(label = "Most atoms", selected = sortMode == FavoritesSort.ATOMS_DESC) {
+                        sortMode = FavoritesSort.ATOMS_DESC
+                    }
+                    SortPill(label = "Least atoms", selected = sortMode == FavoritesSort.ATOMS_ASC) {
+                        sortMode = FavoritesSort.ATOMS_ASC
+                    }
                 }
             }
         }
 
-        if (filteredFavorites.isEmpty()) {
+        if (displayFavorites.isEmpty()) {
             Column(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -943,11 +1116,17 @@ fun FavoritesInline(
                 }
             }
         } else {
-            filteredFavorites.forEach { fav ->
+            displayFavorites.forEachIndexed { index, fav ->
                 FavoriteCard(
                     favorite = fav,
                     onSelect = onSelect,
-                    onDelete = onDelete
+                    onDelete = onDelete,
+                    enableSelect = !isReordering,
+                    showReorderControls = isReordering,
+                    canMoveUp = isReordering && index > 0,
+                    canMoveDown = isReordering && index < displayFavorites.lastIndex,
+                    onMoveUp = { if (isReordering && index > 0) onMoveFavorite(index, index - 1) },
+                    onMoveDown = { if (isReordering && index < displayFavorites.lastIndex) onMoveFavorite(index, index + 1) }
                 )
             }
         }

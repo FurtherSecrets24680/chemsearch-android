@@ -140,6 +140,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             favorites = favorites,
             onSelect = { name -> vm.search(name); showFavorites = false },
             onDelete = { cid -> vm.deleteFavorite(cid) },
+            onMoveFavorite = { from, to -> vm.moveFavorite(from, to) },
             onDismiss = { showFavorites = false }
         )
     }
@@ -391,7 +392,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 AppTab.FAVORITES -> FavoritesInline(
                                     favorites = favorites,
                                     onSelect = { name -> vm.search(name); selectedTab = AppTab.SEARCH },
-                                    onDelete = { cid -> vm.deleteFavorite(cid) }
+                                    onDelete = { cid -> vm.deleteFavorite(cid) },
+                                    onMoveFavorite = { from, to -> vm.moveFavorite(from, to) }
                                 )
                                 AppTab.SETTINGS -> SettingsInline(
                                     isDark = isDark,

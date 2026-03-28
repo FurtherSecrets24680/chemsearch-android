@@ -173,6 +173,15 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         if (_uiState.value.cid == cid) _isFavorite.value = false
     }
 
+    fun moveFavorite(fromIndex: Int, toIndex: Int) {
+        val current = _favorites.value.toMutableList()
+        if (fromIndex !in current.indices || toIndex !in current.indices) return
+        val item = current.removeAt(fromIndex)
+        current.add(toIndex, item)
+        _favorites.value = current
+        saveFavorites(current)
+    }
+
     private fun loadFavorites(): List<FavoriteCompound> {
         val json = prefs.getString("favorites", null) ?: return emptyList()
         return try {
@@ -326,7 +335,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         searchJob = viewModelScope.launch {
             DebugLog.d("ChemSearch", "Search started: \"$q\"")
             _uiState.update {
-                it.copy(isLoading = true, error = null, suggestions = emptyList(), hasResult = false, sdfData = null, ghsData = null, isLoadingSafety = false)
+                it.copy(isLoading = true, error = null, suggestions = emptyList(), hasResult = false, isCached = false, sdfData = null, ghsData = null, isLoadingSafety = false)
             }
 
             val cachedByName = findCacheByName(q)
@@ -337,6 +346,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     cachedByName.copy(
                         isLoading = false,
                         hasResult = true,
+                        isCached = true,
                         history = loadHistory(),
                         descSource = savedSource,
                         sdfData = null,
@@ -367,6 +377,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                         cached.copy(
                             isLoading = false,
                             hasResult = true,
+                            isCached = true,
                             history = loadHistory(),
                             descSource = savedSource,
                             ghsData = cached.ghsData,
@@ -440,7 +451,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     elementalData = calcElementalData(formula),
                     history = loadHistory(),
                     activeTab = MolTab.TWO_D,
-                    aiProvider = _uiState.value.aiProvider
+                    aiProvider = _uiState.value.aiProvider,
+                    isCached = false
                 )
                 _uiState.update { newState }
                 writeCache(newState)
@@ -689,7 +701,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 it.copy(
                     isLoading = true, error = null, hasResult = false,
                     sdfData = null, ghsData = null, isLoadingSafety = false,
-                    isomerMode = false, isomers = emptyList()
+                    isomerMode = false, isomers = emptyList(),
+                    isCached = false
                 )
             }
 
@@ -702,7 +715,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                         isLoading = false, hasResult = true,
                         history = loadHistory(), descSource = savedSource,
                         sdfData = null, activeTab = MolTab.TWO_D,
-                        isomerMode = false, isomers = emptyList()
+                        isomerMode = false, isomers = emptyList(),
+                        isCached = true
                     )
                 }
                 _query.value = cached.name
@@ -770,7 +784,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     activeTab = MolTab.TWO_D,
                     aiProvider = _uiState.value.aiProvider,
                     isomerMode = false,
-                    isomers = emptyList()
+                    isomers = emptyList(),
+                    isCached = false
                 )
                 _uiState.update { newState }
                 _query.value = compoundName
