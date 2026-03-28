@@ -37,7 +37,7 @@ This is the native Android version of the original [**ChemSearch** webapp](https
 - Search by common name, IUPAC name, CAS number, or CID via PubChem PUG REST
 - Real-time **autocomplete suggestions** as you type, with a scrollable dropdown (toggleable)
 - **Recent searches** tab to access recently searched compounds.
-- **Favorites** tab to access favorited compounds easily.
+- **Favorites** tab with filtering, A-Z and atom-count sorting, and manual reordering.
 
 ### Compound Data
 - Compound header showing name, molecular formula, molecular weight, CID and CAS at a glance
@@ -68,14 +68,21 @@ Three switchable sources per compound:
 - **AI** via Google Gemini or Groq, with a regenerate button. This is totally optional and it requires your API key from these providers to work.
 
 ### Tools
-Six chemistry tools accessible from the Tools tab:
+Eleven chemistry tools accessible from the Tools tab:
 
 - **Custom 3D Molecule Viewer** : Load any `.sdf` or `.mol` file from your device and view it in the native 3D engine
 - **Molar Mass Calculator** : Enter any molecular formula (including parentheses groups and hydrate dot notation) to get the molar mass and a full elemental breakdown by mass percentage
 - **Oxidation State Finder** : Determine oxidation states for each element in a compound, with support for peroxides, superoxides, ozonides, metal hydrides, and interhalogen compounds. Enter the overall charge for polyatomic ions
 - **SMILES Visualizer** : Paste any SMILES string to look it up on PubChem and view its 2D structure and 3D model
-- **Reaction Balancer** : Balance any chemical equation using matrix-based Gaussian elimination with exact rational arithmetic. Includes quick-insert buttons for `+`, `->`, `(` and `)`, and an atom count verification table
+- **Reaction Balancer** : Balance any chemical equation using matrix-based Gaussian elimination with exact rational arithmetic. Includes quick-insert buttons and swap-sides control
 - **Isomer Finder** : Find up to 20 structural isomers by searching with a molecular formula
+- **Limiting Reagent** : Identify limiting reagent, ratios, and theoretical yield for a balanced equation
+- **Percent Yield** : Compare actual yield against theoretical yield for a target product
+- **Reaction Scaling** : Scale reactants for a desired product amount
+- **Dilution Calculator** : Solve C1V1 = C2V2 for solutions
+- **Ideal Gas Law** : Solve PV = nRT for gases
+
+Tool categories include scrollable filter pills and manual tool reordering.
 
 ### Customization
 - **Theme mode** dropdown (Light / Dark) in Settings
@@ -86,6 +93,7 @@ Six chemistry tools accessible from the Tools tab:
 ### Updates and Cache
 - Built-in update checks against GitHub releases, with optional notifications
 - Local compound cache to speed repeat searches, with clear + custom location controls
+- Cached results are labeled in the UI
 
 ### Developer Options
 A hidden debug menu can be unlocked by tapping the build number in the 'About' card five times. It includes:
