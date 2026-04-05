@@ -22,10 +22,6 @@
 <a href="https://www.producthunt.com/products/chemsearch?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-chemsearch" target="_blank" rel="noopener noreferrer"><img alt="ChemSearch - Chemistry Simplified. | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1104309&amp;theme=light&amp;t=1774183145053"></a>
 </p>
 
----
-
-This is the native Android version of the original [**ChemSearch** webapp](https://chemsearch.netlify.app/), rewritten in Kotlin with Jetpack Compose.
-
 ## Download
 - Grab the latest APK from [GitHub Releases](https://github.com/FurtherSecrets24680/chemsearch-android/releases).
 - Or build from source (see below).
