@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -145,7 +146,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         )
     }
 
-    var selectedTab by remember { mutableStateOf(AppTab.SEARCH) }
+    var selectedTab by rememberSaveable { mutableStateOf(AppTab.SEARCH) }
     var showExitDialog by remember { mutableStateOf(false) }
     var jumpToTool by remember { mutableStateOf(0) }
     var jumpToToolVersion by remember { mutableStateOf(0) }
@@ -418,7 +419,9 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     cacheSizeBytes = cacheSizeBytes,
                                     cacheDir = cacheDirPath,
                                     onClearCache = { vm.clearCache() },
-                                    onSetCacheDir = { vm.setCacheDir(it) }
+                                    onSetCacheDir = { vm.setCacheDir(it) },
+                                    onTestUpdateNotification = { vm.sendDebugUpdateNotification() },
+                                    onSettingsImported = { vm.reloadSettingsFromPreferences() }
                                 )
                                 AppTab.TOOLS -> ToolsScreen(
                                     isDark = isDark,

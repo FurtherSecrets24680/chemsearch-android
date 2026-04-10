@@ -525,14 +525,13 @@ fun CompoundHeader(
                     )
                 }
                 if (state.formula.isNotBlank()) {
-                    val clickMod = if (onFormulaClick != null)
-                        Modifier.clickable { onFormulaClick() }
-                    else Modifier
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = clickMod
+                        modifier = Modifier.clickable {
+                            cm.setPrimaryClip(ClipData.newPlainText("Formula", state.formula))
+                            Toast.makeText(context, "Formula copied", Toast.LENGTH_SHORT).show()
+                        }
                     ) {
                         Text(
                             text = toSubscriptFormula(state.formula),
@@ -545,16 +544,19 @@ fun CompoundHeader(
                                 Icons.Default.Biotech,
                                 contentDescription = "Find isomers",
                                 tint = MaterialTheme.colorScheme.primary.copy(0.45f),
-                                modifier = Modifier.size(13.dp)
+                                modifier = Modifier
+                                    .size(13.dp)
+                                    .clickable { onFormulaClick() }
                             )
                         }
                     }
                     if (onFormulaClick != null) {
                         Text(
-                            "Tap to find isomers →",
+                            "Tap formula to copy · Find isomers →",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.primary.copy(0.4f),
-                            fontSize = 9.sp
+                            fontSize = 9.sp,
+                            modifier = Modifier.clickable { onFormulaClick() }
                         )
                     }
                 }
@@ -1247,13 +1249,16 @@ fun ElementalSection(data: List<ElementData>) {
                             )
                     )
                 }
+                val percentageLabel = if (el.percentage >= 99.95f) "100%" else "${"%.1f".format(el.percentage)}%"
                 Text(
-                    "${"%.1f".format(el.percentage)}%",
+                    percentageLabel,
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = FontFamily.Monospace,
                     modifier = Modifier.width(44.dp),
                     color = MaterialTheme.colorScheme.onSurface.copy(0.55f),
-                    textAlign = TextAlign.End
+                    textAlign = TextAlign.End,
+                    maxLines = 1,
+                    softWrap = false
                 )
             }
         }
@@ -1265,6 +1270,8 @@ fun ElementalSection(data: List<ElementData>) {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SynonymsSection(synonyms: List<String>) {
+    val context = LocalContext.current
+    val cm = remember { context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
     SearchCard(modifier = Modifier.fillMaxWidth(), spacing = 10.dp) {
         SectionLabel("Synonyms")
         FlowRow(
@@ -1275,7 +1282,11 @@ fun SynonymsSection(synonyms: List<String>) {
                 Surface(
                     shape = RoundedCornerShape(8.dp),
                     color = MaterialTheme.colorScheme.primary.copy(0.07f),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f))
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f)),
+                    modifier = Modifier.clickable {
+                        cm.setPrimaryClip(ClipData.newPlainText("Synonym", syn))
+                        Toast.makeText(context, "Copied: $syn", Toast.LENGTH_SHORT).show()
+                    }
                 ) {
                     Text(
                         syn,

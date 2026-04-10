@@ -8,6 +8,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -31,12 +32,18 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import kotlinx.coroutines.Dispatchers
@@ -95,6 +102,7 @@ fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, jumpToToolVersion: Int = 0
     var selectedCategory by remember { mutableStateOf(ToolCategory.ALL) }
     var isReordering by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
     val prefs = remember(context) { context.getSharedPreferences("chemsearch_prefs", Context.MODE_PRIVATE) }
 
     LaunchedEffect(jumpToTool, jumpToToolVersion) {
@@ -172,7 +180,7 @@ fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, jumpToToolVersion: Int = 0
             id = 11,
             icon = Icons.Default.WaterDrop,
             title = "Dilution Calculator",
-            subtitle = "Solve C1V1 = C2V2 for solutions",
+            subtitle = "Solve C₁V₁ = C₂V₂ for solutions",
             category = ToolCategory.CALCULATORS
         ),
         ToolDefinition(
@@ -200,7 +208,12 @@ fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, jumpToToolVersion: Int = 0
     val visibleTools = if (isReordering) orderedTools else filteredTools
 
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) { focusManager.clearFocus() },
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Row(
@@ -310,6 +323,7 @@ fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, jumpToToolVersion: Int = 0
                         icon = tool.icon,
                         title = tool.title,
                         subtitle = tool.subtitle,
+                        categoryLabel = tool.category.label,
                         onClick = { selectedTool = tool.id },
                         enableSelect = !isReordering,
                         showReorderControls = isReordering,
@@ -377,6 +391,7 @@ private fun ToolCard(
     icon: ImageVector,
     title: String,
     subtitle: String,
+    categoryLabel: String,
     onClick: () -> Unit,
     enableSelect: Boolean = true,
     showReorderControls: Boolean = false,
@@ -409,6 +424,7 @@ private fun ToolCard(
 
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                 Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
+                ToolCategoryIndicatorPill(categoryLabel)
                 Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
             }
 
@@ -463,6 +479,23 @@ private fun CategoryPill(label: String, selected: Boolean, onClick: () -> Unit) 
             style = MaterialTheme.typography.labelMedium,
             fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
             color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
+        )
+    }
+}
+
+@Composable
+private fun ToolCategoryIndicatorPill(label: String) {
+    Surface(
+        shape = RoundedCornerShape(999.dp),
+        color = MaterialTheme.colorScheme.primary.copy(0.12f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.25f))
+    ) {
+        Text(
+            label,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }
@@ -2023,10 +2056,10 @@ fun IsomerFinderTool(onNavigateToSearch: () -> Unit = {}) {
 private data class SolveResult(val value: Double?, val error: String? = null)
 
 private enum class DilutionSolve(val label: String, val unit: String) {
-    C1("C1 (stock)", "M"),
-    V1("V1 (stock)", "mL"),
-    C2("C2 (final)", "M"),
-    V2("V2 (final)", "mL")
+    C1("C₁ (stock)", "M"),
+    V1("V₁ (stock)", "mL"),
+    C2("C₂ (final)", "M"),
+    V2("V₂ (final)", "mL")
 }
 
 private fun solveDilution(
@@ -2042,27 +2075,27 @@ private fun solveDilution(
     val v2Val = parsePositiveNumber(v2)
     return when (solveFor) {
         DilutionSolve.C1 -> {
-            if (v1Val == null) SolveResult(null, "Enter V1")
-            else if (c2Val == null) SolveResult(null, "Enter C2")
-            else if (v2Val == null) SolveResult(null, "Enter V2")
+            if (v1Val == null) SolveResult(null, "Enter V₁")
+            else if (c2Val == null) SolveResult(null, "Enter C₂")
+            else if (v2Val == null) SolveResult(null, "Enter V₂")
             else SolveResult((c2Val * v2Val) / v1Val)
         }
         DilutionSolve.V1 -> {
-            if (c1Val == null) SolveResult(null, "Enter C1")
-            else if (c2Val == null) SolveResult(null, "Enter C2")
-            else if (v2Val == null) SolveResult(null, "Enter V2")
+            if (c1Val == null) SolveResult(null, "Enter C₁")
+            else if (c2Val == null) SolveResult(null, "Enter C₂")
+            else if (v2Val == null) SolveResult(null, "Enter V₂")
             else SolveResult((c2Val * v2Val) / c1Val)
         }
         DilutionSolve.C2 -> {
-            if (c1Val == null) SolveResult(null, "Enter C1")
-            else if (v1Val == null) SolveResult(null, "Enter V1")
-            else if (v2Val == null) SolveResult(null, "Enter V2")
+            if (c1Val == null) SolveResult(null, "Enter C₁")
+            else if (v1Val == null) SolveResult(null, "Enter V₁")
+            else if (v2Val == null) SolveResult(null, "Enter V₂")
             else SolveResult((c1Val * v1Val) / v2Val)
         }
         DilutionSolve.V2 -> {
-            if (c1Val == null) SolveResult(null, "Enter C1")
-            else if (v1Val == null) SolveResult(null, "Enter V1")
-            else if (c2Val == null) SolveResult(null, "Enter C2")
+            if (c1Val == null) SolveResult(null, "Enter C₁")
+            else if (v1Val == null) SolveResult(null, "Enter V₁")
+            else if (c2Val == null) SolveResult(null, "Enter C₂")
             else SolveResult((c1Val * v1Val) / c2Val)
         }
     }
@@ -2116,6 +2149,103 @@ private fun solveGasLaw(
     }
 }
 
+private fun renderLatex(latex: String): AnnotatedString {
+    val source = latex.trim()
+        .removePrefix("$")
+        .removeSuffix("$")
+        .replace("\\,", " ")
+
+    return buildAnnotatedString {
+        var i = 0
+        while (i < source.length) {
+            when {
+                source[i] == '\\' -> {
+                    var j = i + 1
+                    while (j < source.length && source[j].isLetter()) j++
+                    val command = source.substring(i + 1, j)
+                    when (command) {
+                        "cdot" -> append("·")
+                        "times" -> append("×")
+                        "left", "right" -> Unit
+                        else -> append(command)
+                    }
+                    i = if (j == i + 1 && i + 1 < source.length) {
+                        append(source[i + 1].toString())
+                        i + 2
+                    } else {
+                        j
+                    }
+                }
+                source[i] == '_' || source[i] == '^' -> {
+                    val isSubscript = source[i] == '_'
+                    i++
+                    if (i >= source.length) break
+                    val token = if (source[i] == '{') {
+                        var depth = 1
+                        val start = i + 1
+                        i++
+                        while (i < source.length && depth > 0) {
+                            when (source[i]) {
+                                '{' -> depth++
+                                '}' -> depth--
+                            }
+                            i++
+                        }
+                        source.substring(start, (i - 1).coerceAtLeast(start))
+                    } else {
+                        source[i++].toString()
+                    }
+                    withStyle(
+                        SpanStyle(
+                            baselineShift = if (isSubscript) BaselineShift.Subscript else BaselineShift.Superscript,
+                            fontSize = 0.82.em
+                        )
+                    ) {
+                        append(token)
+                    }
+                }
+                else -> {
+                    append(source[i])
+                    i++
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun FormulaExplanationCard(
+    latexFormula: String,
+    explanation: String
+) {
+    Card(
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.4f))
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                "Explanation for Formula",
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+            )
+            Text(
+                text = remember(latexFormula) { renderLatex(latexFormula) },
+                style = MaterialTheme.typography.titleMedium,
+                fontFamily = FontFamily.Monospace
+            )
+            Text(
+                explanation,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.7f)
+            )
+        }
+    }
+}
+
 // TOOL 7 : DILUTION CALCULATOR
 @Composable
 fun DilutionCalculatorTool() {
@@ -2139,7 +2269,7 @@ fun DilutionCalculatorTool() {
             InfoDialog(
                 title = "Dilution Calculator",
                 entries = listOf(
-                    "Equation" to "Uses C1V1 = C2V2 to solve dilutions.",
+                    "Equation" to "Uses C₁V₁ = C₂V₂ to solve dilutions.",
                     "Units" to "Keep concentration units consistent (M) and volume units consistent (mL or L).",
                     "Tip" to "Pick the variable you want to solve, then fill the other three."
                 ),
@@ -2199,7 +2329,7 @@ fun DilutionCalculatorTool() {
             OutlinedTextField(
                 value = if (solveFor == DilutionSolve.C1) solvedText else c1,
                 onValueChange = { c1 = it },
-                label = { Text("C1 (M)") },
+                label = { Text("C₁ (M)") },
                 placeholder = { Text("e.g. 1.0", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
@@ -2209,7 +2339,7 @@ fun DilutionCalculatorTool() {
             OutlinedTextField(
                 value = if (solveFor == DilutionSolve.V1) solvedText else v1,
                 onValueChange = { v1 = it },
-                label = { Text("V1 (mL)") },
+                label = { Text("V₁ (mL)") },
                 placeholder = { Text("e.g. 25", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
@@ -2222,7 +2352,7 @@ fun DilutionCalculatorTool() {
             OutlinedTextField(
                 value = if (solveFor == DilutionSolve.C2) solvedText else c2,
                 onValueChange = { c2 = it },
-                label = { Text("C2 (M)") },
+                label = { Text("C₂ (M)") },
                 placeholder = { Text("e.g. 0.5", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
@@ -2232,7 +2362,7 @@ fun DilutionCalculatorTool() {
             OutlinedTextField(
                 value = if (solveFor == DilutionSolve.V2) solvedText else v2,
                 onValueChange = { v2 = it },
-                label = { Text("V2 (mL)") },
+                label = { Text("V₂ (mL)") },
                 placeholder = { Text("e.g. 50", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
@@ -2258,6 +2388,12 @@ fun DilutionCalculatorTool() {
                 )
             }
         }
+
+        FormulaExplanationCard(
+            latexFormula = "C_1V_1 = C_2V_2",
+            explanation = "Stock concentration and volume are related to final concentration and volume. " +
+                "Given any three values, the fourth is determined directly from this equation."
+        )
     }
 }
 
@@ -2407,6 +2543,12 @@ fun IdealGasLawTool() {
                 )
             }
         }
+
+        FormulaExplanationCard(
+            latexFormula = "PV = nRT",
+            explanation = "Pressure, volume, amount, and temperature are linked by the ideal gas law. " +
+                "Solve any one variable when the other three are known and units are consistent."
+        )
     }
 }
 

@@ -5,7 +5,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.height
-import kotlinx.coroutines.launch
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -49,6 +48,8 @@ import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.furthersecrets.chemsearch.BuildConfig
 import com.furthersecrets.chemsearch.data.*
+import org.json.JSONArray
+import org.json.JSONObject
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -189,6 +190,89 @@ fun SettingsSheet(
         }
 
     }
+}
+
+private fun buildSettingsBackupJson(prefs: android.content.SharedPreferences): String {
+    val root = JSONObject()
+    root.put("format", "chemsearch_settings")
+    root.put("version", 1)
+    root.put("exported_at", System.currentTimeMillis())
+    val entries = JSONObject()
+
+    prefs.all.toSortedMap().forEach { (key, value) ->
+        val item = JSONObject()
+        when (value) {
+            is Boolean -> {
+                item.put("type", "boolean")
+                item.put("value", value)
+            }
+            is Int -> {
+                item.put("type", "int")
+                item.put("value", value)
+            }
+            is Long -> {
+                item.put("type", "long")
+                item.put("value", value)
+            }
+            is Float -> {
+                item.put("type", "float")
+                item.put("value", value)
+            }
+            is String -> {
+                item.put("type", "string")
+                item.put("value", value)
+            }
+            is Set<*> -> {
+                item.put("type", "string_set")
+                val arr = JSONArray()
+                value.filterIsInstance<String>().forEach(arr::put)
+                item.put("value", arr)
+            }
+            else -> return@forEach
+        }
+        entries.put(key, item)
+    }
+
+    root.put("entries", entries)
+    return root.toString(2)
+}
+
+private fun restoreSettingsFromBackup(
+    prefs: android.content.SharedPreferences,
+    rawJson: String
+): Int {
+    val root = JSONObject(rawJson)
+    val entries = root.optJSONObject("entries")
+        ?: throw IllegalArgumentException("Invalid settings backup file.")
+    val editor = prefs.edit().clear()
+    var restored = 0
+
+    val keys = entries.keys()
+    while (keys.hasNext()) {
+        val key = keys.next()
+        val item = entries.optJSONObject(key) ?: continue
+        when (item.optString("type")) {
+            "boolean" -> editor.putBoolean(key, item.optBoolean("value"))
+            "int" -> editor.putInt(key, item.optInt("value"))
+            "long" -> editor.putLong(key, item.optLong("value"))
+            "float" -> editor.putFloat(key, item.optDouble("value").toFloat())
+            "string" -> editor.putString(key, item.optString("value"))
+            "string_set" -> {
+                val set = buildSet {
+                    val arr = item.optJSONArray("value") ?: JSONArray()
+                    for (idx in 0 until arr.length()) {
+                        add(arr.optString(idx))
+                    }
+                }
+                editor.putStringSet(key, set)
+            }
+            else -> continue
+        }
+        restored++
+    }
+
+    editor.apply()
+    return restored
 }
 
 @Composable
@@ -1159,7 +1243,9 @@ fun SettingsInline(
     cacheSizeBytes: Long = 0L,
     cacheDir: String = "",
     onClearCache: () -> Unit = {},
-    onSetCacheDir: (String) -> Unit = {}
+    onSetCacheDir: (String) -> Unit = {},
+    onTestUpdateNotification: () -> Unit = {},
+    onSettingsImported: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences("chemsearch_prefs", Context.MODE_PRIVATE) }
@@ -1167,6 +1253,37 @@ fun SettingsInline(
     var isDevMode by remember { mutableStateOf(prefs.getBoolean("dev_mode", false)) }
     var themeDropdownExpanded by remember { mutableStateOf(false) }
     var showFaqDialog by remember { mutableStateOf(false) }
+    val exportSettingsLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("application/json")
+    ) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        runCatching {
+            val json = buildSettingsBackupJson(prefs)
+            context.contentResolver.openOutputStream(uri)?.bufferedWriter()?.use { writer ->
+                writer.write(json)
+            } ?: error("Unable to open file for export")
+        }.onSuccess {
+            Toast.makeText(context, "Settings exported", Toast.LENGTH_SHORT).show()
+        }.onFailure { e ->
+            Toast.makeText(context, "Export failed: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+    val importSettingsLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        runCatching {
+            val raw = context.contentResolver.openInputStream(uri)?.bufferedReader()?.use { reader ->
+                reader.readText()
+            } ?: error("Unable to open file for import")
+            restoreSettingsFromBackup(prefs, raw)
+        }.onSuccess { restoredCount ->
+            onSettingsImported()
+            Toast.makeText(context, "Imported $restoredCount settings", Toast.LENGTH_SHORT).show()
+        }.onFailure { e ->
+            Toast.makeText(context, "Import failed: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -1286,6 +1403,26 @@ fun SettingsInline(
         Spacer(Modifier.height(4.dp))
         SettingsSectionHeader("Data")
         SettingsActionRow(Icons.Default.History, "Search History", "Clear all recent searches", "Clear", MaterialTheme.colorScheme.error, onClearHistory)
+        SettingsActionRow(
+            icon = Icons.Default.Description,
+            title = "Export settings",
+            subtitle = "Save current app settings to a JSON file",
+            actionLabel = "Export",
+            actionColor = MaterialTheme.colorScheme.primary,
+            onClick = {
+                exportSettingsLauncher.launch("chemsearch-settings-${System.currentTimeMillis()}.json")
+            }
+        )
+        SettingsActionRow(
+            icon = Icons.Default.FolderOpen,
+            title = "Import settings",
+            subtitle = "Restore settings from a JSON backup",
+            actionLabel = "Import",
+            actionColor = MaterialTheme.colorScheme.primary,
+            onClick = {
+                importSettingsLauncher.launch(arrayOf("application/json", "text/plain"))
+            }
+        )
 
         // Cache settings
         var showCacheDirDialog by remember { mutableStateOf(false) }
@@ -1377,6 +1514,7 @@ fun SettingsInline(
             Spacer(Modifier.height(4.dp))
             DebugSettingsSection(
                 prefs = prefs,
+                onTestUpdateNotification = onTestUpdateNotification,
                 onDisableDevMode = { persist ->
                     isDevMode = false
                     buildTapCount = 0
@@ -1449,6 +1587,7 @@ object DebugLog {
 @Composable
 fun DebugSettingsSection(
     prefs: android.content.SharedPreferences,
+    onTestUpdateNotification: () -> Unit,
     onDisableDevMode: (Boolean) -> Unit
 ) {
     val context = LocalContext.current
@@ -1871,6 +2010,25 @@ fun DebugSettingsSection(
                 actionLabel = "Open",
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = { showLogsDialog = true }
+            )
+
+            // Update notification test
+            SettingsActionRow(
+                icon = Icons.Default.NotificationsActive,
+                title = "Test update notification",
+                subtitle = "Send a sample update notification now",
+                actionLabel = "Send",
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = {
+                    val hasPermission = Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+                        ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+                    if (!hasPermission) {
+                        Toast.makeText(context, "Grant notification permission first", Toast.LENGTH_SHORT).show()
+                    } else {
+                        onTestUpdateNotification()
+                        Toast.makeText(context, "Test notification sent", Toast.LENGTH_SHORT).show()
+                    }
+                }
             )
 
             // SharedPreferences dump

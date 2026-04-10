@@ -225,6 +225,34 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun reloadSettingsFromPreferences() {
+        _isDarkTheme.value = prefs.getBoolean("dark_theme", false)
+        _autoSuggest.value = prefs.getBoolean("auto_suggest", true)
+        _defaultDescSource.value = getSavedDescSource()
+        _cacheDirPath.value = prefs.getString("cache_dir", "") ?: ""
+        _cacheSizeBytes.value = computeCacheSize()
+        _hasGeminiKey.value = prefs.getString("gemini_key", null)?.isNotBlank() == true
+        _hasGroqKey.value = prefs.getString("groq_key", null)?.isNotBlank() == true
+        _updateNotificationsEnabled.value = prefs.getBoolean(PREF_UPDATE_NOTIFICATIONS, true)
+        _updateStatus.update {
+            it.copy(lastCheckedAt = prefs.getLong(PREF_UPDATE_LAST_CHECK, 0L).takeIf { ts -> ts != 0L })
+        }
+        _favorites.value = loadFavorites()
+
+        val provider = AiProvider.entries.firstOrNull { it.name == prefs.getString("ai_provider", null) }
+            ?: AiProvider.GEMINI
+        val source = getSavedDescSource()
+        _uiState.update { current ->
+            current.copy(
+                history = loadHistory(),
+                aiProvider = provider,
+                descSource = source,
+                suggestions = if (_autoSuggest.value) current.suggestions else emptyList()
+            )
+        }
+        DebugLog.d("ChemSearch", "Settings reloaded from SharedPreferences")
+    }
+
     private val _query = MutableStateFlow("")
     val query: StateFlow<String> = _query.asStateFlow()
 
@@ -1017,6 +1045,15 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         if (latestTag.equals(lastNotified, ignoreCase = true)) return
         sendUpdateNotification(latestTag, downloadUrl ?: releaseUrl)
         prefs.edit().putString(PREF_UPDATE_LAST_NOTIFIED, latestTag).apply()
+    }
+
+    fun sendDebugUpdateNotification() {
+        val debugTag = "debug-${System.currentTimeMillis() % 100000}"
+        val url = _updateStatus.value.downloadUrl
+            ?: _updateStatus.value.releaseUrl
+            ?: "https://github.com/FurtherSecrets24680/chemsearch-android/releases/latest"
+        sendUpdateNotification(debugTag, url)
+        DebugLog.d("ChemSearch", "Debug update notification sent ($debugTag)")
     }
 
     private fun sendUpdateNotification(latestTag: String, url: String?) {
