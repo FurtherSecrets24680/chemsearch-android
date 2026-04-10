@@ -45,6 +45,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -104,6 +105,7 @@ fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, jumpToToolVersion: Int = 0
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val prefs = remember(context) { context.getSharedPreferences("chemsearch_prefs", Context.MODE_PRIVATE) }
+    val compact = LocalCompactMode.current
 
     LaunchedEffect(jumpToTool, jumpToToolVersion) {
         if (jumpToTool != 0) selectedTool = jumpToTool
@@ -214,10 +216,10 @@ fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, jumpToToolVersion: Int = 0
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }
             ) { focusManager.clearFocus() },
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 12.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 4.dp),
+            modifier = Modifier.fillMaxWidth().padding(bottom = if (compact) 0.dp else 4.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -252,7 +254,7 @@ fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, jumpToToolVersion: Int = 0
 
         if (selectedTool == 0) {
             if (!isReordering) {
-                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 10.dp)) {
                     OutlinedTextField(
                         value = toolSearch,
                         onValueChange = { toolSearch = it },
@@ -308,7 +310,7 @@ fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, jumpToToolVersion: Int = 0
 
             if (!isReordering && filteredTools.isEmpty()) {
                 Box(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
+                    modifier = Modifier.fillMaxWidth().padding(vertical = if (compact) 20.dp else 32.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -1974,7 +1976,7 @@ fun ReactionBalancer() {
 fun IsomerFinderTool(onNavigateToSearch: () -> Unit = {}) {
     val vm: com.furthersecrets.chemsearch.ChemViewModel =
         androidx.lifecycle.viewmodel.compose.viewModel()
-    val state by vm.uiState.collectAsState()
+    val state by vm.uiState.collectAsStateWithLifecycle()
     val focusManager = androidx.compose.ui.platform.LocalFocusManager.current
 
     var showInfo by remember { mutableStateOf(false) }

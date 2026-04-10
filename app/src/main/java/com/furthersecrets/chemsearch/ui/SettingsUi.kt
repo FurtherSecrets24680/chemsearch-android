@@ -48,6 +48,12 @@ import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.furthersecrets.chemsearch.BuildConfig
 import com.furthersecrets.chemsearch.data.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 import java.time.LocalTime
@@ -59,6 +65,7 @@ import java.util.Locale
 fun SettingsSheet(
     isDark: Boolean,
     autoSuggest: Boolean,
+    compactMode: Boolean,
     defaultDescSource: DescSource,
     aiProvider: AiProvider,
     hasGeminiKey: Boolean,
@@ -67,6 +74,7 @@ fun SettingsSheet(
     updateStatus: UpdateStatus,
     onToggleTheme: () -> Unit,
     onToggleAutoSuggest: () -> Unit,
+    onToggleCompactMode: () -> Unit,
     onSetDefaultDesc: (DescSource) -> Unit,
     onSetAiProvider: (AiProvider) -> Unit,
     onSetGeminiKey: () -> Unit,
@@ -116,6 +124,13 @@ fun SettingsSheet(
                 subtitle = "Show dropdown while typing",
                 checked = autoSuggest,
                 onToggle = onToggleAutoSuggest
+            )
+            SettingsToggleRow(
+                icon = Icons.Default.Tune,
+                title = "Compact mode",
+                subtitle = "Show more content per screen",
+                checked = compactMode,
+                onToggle = onToggleCompactMode
             )
 
             Spacer(Modifier.height(4.dp))
@@ -289,13 +304,14 @@ fun SettingsSectionHeader(text: String) {
 
 @Composable
 fun SettingsToggleRow(icon: ImageVector, title: String, subtitle: String, checked: Boolean, onToggle: () -> Unit) {
+    val compact = LocalCompactMode.current
     Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+        modifier = Modifier.fillMaxWidth().padding(vertical = if (compact) 2.dp else 6.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Icon(icon, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(20.dp))
+            Icon(icon, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(if (compact) 18.dp else 20.dp))
             Column {
                 Text(title, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
                 Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
@@ -307,8 +323,9 @@ fun SettingsToggleRow(icon: ImageVector, title: String, subtitle: String, checke
 
 @Composable
 fun SettingsActionRow(icon: ImageVector, title: String, subtitle: String, actionLabel: String, actionColor: Color, onClick: () -> Unit) {
+    val compact = LocalCompactMode.current
     Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        modifier = Modifier.fillMaxWidth().padding(vertical = if (compact) 2.dp else 4.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -317,7 +334,7 @@ fun SettingsActionRow(icon: ImageVector, title: String, subtitle: String, action
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.weight(1f)
         ) {
-            Icon(icon, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(20.dp))
+            Icon(icon, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(if (compact) 18.dp else 20.dp))
             Column {
                 Text(title, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
                 Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
@@ -334,7 +351,8 @@ private fun UpdatesSection(
     updateNotificationsEnabled: Boolean,
     updateStatus: UpdateStatus,
     onToggleUpdateNotifications: (Boolean) -> Unit,
-    onCheckForUpdates: () -> Unit
+    onCheckForUpdates: () -> Unit,
+    showHeader: Boolean = true
 ) {
     val context = LocalContext.current
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
@@ -370,8 +388,10 @@ private fun UpdatesSection(
     val updateLink = updateStatus.downloadUrl ?: updateStatus.releaseUrl
     val checkLabel = if (updateStatus.isChecking) "Checking..." else "Check"
 
-    Spacer(Modifier.height(4.dp))
-    SettingsSectionHeader("Updates")
+    if (showHeader) {
+        Spacer(Modifier.height(4.dp))
+        SettingsSectionHeader("Updates")
+    }
     SettingsToggleRow(
         icon = Icons.Default.Notifications,
         title = "Update notifications",
@@ -779,6 +799,7 @@ private fun FavoriteCard(
     onMoveUp: () -> Unit = {},
     onMoveDown: () -> Unit = {}
 ) {
+    val compact = LocalCompactMode.current
     Card(
         onClick = { if (enableSelect) onSelect(favorite.name) },
         modifier = modifier.fillMaxWidth(),
@@ -787,15 +808,15 @@ private fun FavoriteCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Row(
-            modifier = Modifier.padding(12.dp).fillMaxWidth(),
+            modifier = Modifier.padding(if (compact) 9.dp else 12.dp).fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(if (compact) 9.dp else 12.dp)
         ) {
             if (showImage) {
                 Surface(
                     shape = RoundedCornerShape(10.dp),
                     color = MaterialTheme.colorScheme.background,
-                    modifier = Modifier.size(64.dp)
+                    modifier = Modifier.size(if (compact) 52.dp else 64.dp)
                 ) {
                     AsyncImage(
                         model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${favorite.cid}/PNG?record_type=2d&image_size=small",
@@ -1218,11 +1239,55 @@ fun FavoritesInline(
     }
 }
 
+@Composable
+private fun SettingsGroupCard(
+    icon: ImageVector,
+    title: String,
+    subtitle: String? = null,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    val compact = LocalCompactMode.current
+    Card(
+        shape = RoundedCornerShape(if (compact) 12.dp else 14.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(if (compact) 11.dp else 14.dp),
+            verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Icon(icon, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+                Text(title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+            }
+            if (!subtitle.isNullOrBlank()) {
+                Text(
+                    subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                )
+            }
+            content()
+        }
+    }
+}
+
+@Composable
+private fun SettingsGroupDivider() {
+    HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.14f))
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsInline(
     isDark: Boolean,
     autoSuggest: Boolean,
+    compactMode: Boolean,
     defaultDescSource: DescSource,
     aiProvider: AiProvider,
     hasGeminiKey: Boolean,
@@ -1231,6 +1296,7 @@ fun SettingsInline(
     updateStatus: UpdateStatus = UpdateStatus(),
     onToggleTheme: () -> Unit,
     onToggleAutoSuggest: () -> Unit,
+    onToggleCompactMode: () -> Unit,
     onSetDefaultDesc: (DescSource) -> Unit,
     onSetAiProvider: (AiProvider) -> Unit,
     onSetGeminiKey: () -> Unit,
@@ -1253,6 +1319,9 @@ fun SettingsInline(
     var isDevMode by remember { mutableStateOf(prefs.getBoolean("dev_mode", false)) }
     var themeDropdownExpanded by remember { mutableStateOf(false) }
     var showFaqDialog by remember { mutableStateOf(false) }
+    var showCacheDirDialog by remember { mutableStateOf(false) }
+    var cacheDirInput by remember(cacheDir) { mutableStateOf(cacheDir) }
+
     val exportSettingsLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.CreateDocument("application/json")
     ) { uri ->
@@ -1285,262 +1354,471 @@ fun SettingsInline(
         }
     }
 
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Text("Settings", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 8.dp))
+    if (showFaqDialog) {
+        InfoDialog(title = "FAQ", entries = FAQ_ENTRIES, onDismiss = { showFaqDialog = false })
+    }
 
-        SettingsSectionHeader("Appearance")
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                Icon(Icons.Default.Palette, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(20.dp))
-                Column {
-                    Text("Theme mode", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
-                    Text(if (isDark) "Dark" else "Light", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+    if (showCacheDirDialog) {
+        AlertDialog(
+            onDismissRequest = { showCacheDirDialog = false },
+            title = { Text("Cache location", fontWeight = FontWeight.Bold) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text(
+                        "Enter a custom path or leave blank to use the default app cache directory.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                    )
+                    OutlinedTextField(
+                        value = cacheDirInput,
+                        onValueChange = { cacheDirInput = it },
+                        label = { Text("Directory path") },
+                        placeholder = { Text("Leave blank for default") },
+                        singleLine = true,
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
+                        "Default: app internal cache. Custom paths must be writable.",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                    )
                 }
-            }
-            Box {
-                Surface(
-                    shape = RoundedCornerShape(10.dp),
-                    color = MaterialTheme.colorScheme.surfaceVariant,
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f)),
-                    modifier = Modifier.clickable { themeDropdownExpanded = true }
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
-                        Icon(
-                            if (isDark) Icons.Default.DarkMode else Icons.Default.LightMode,
-                            null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Text(
-                            if (isDark) "Dark" else "Light",
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                        Icon(Icons.Default.ArrowDropDown, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.4f), modifier = Modifier.size(16.dp))
-                    }
-                }
-                DropdownMenu(
-                    expanded = themeDropdownExpanded,
-                    onDismissRequest = { themeDropdownExpanded = false }
-                ) {
-                    listOf(false to "Light", true to "Dark").forEach { (dark, label) ->
-                        DropdownMenuItem(
-                            text = {
-                                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    Icon(
-                                        if (dark) Icons.Default.DarkMode else Icons.Default.LightMode,
-                                        null,
-                                        tint = if (isDark == dark) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.6f),
-                                        modifier = Modifier.size(16.dp)
-                                    )
-                                    Text(label, color = if (isDark == dark) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface)
-                                }
-                            },
-                            onClick = {
-                                themeDropdownExpanded = false
-                                if (isDark != dark) onToggleTheme()
-                            },
-                            trailingIcon = {
-                                if (isDark == dark) Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
-                            }
-                        )
-                    }
-                }
-            }
-        }
-
-        Spacer(Modifier.height(4.dp))
-        SettingsSectionHeader("Search")
-        SettingsToggleRow(icon = Icons.Default.Search, title = "Autosuggestions", subtitle = "Show dropdown while typing", checked = autoSuggest, onToggle = onToggleAutoSuggest)
-
-        Spacer(Modifier.height(4.dp))
-        SettingsSectionHeader("Default Description Source")
-        Text("Automatically shown when you search a compound", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.padding(bottom = 8.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf(DescSource.PUBCHEM to "PubChem", DescSource.WIKI to "Wikipedia", DescSource.AI to "AI").forEach { (src, label) ->
-                SourceBtn(label = label, active = defaultDescSource == src) { onSetDefaultDesc(src) }
-            }
-        }
-
-        Spacer(Modifier.height(4.dp))
-        SettingsSectionHeader("AI Provider")
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf(AiProvider.GEMINI to "Gemini", AiProvider.GROQ to "Groq").forEach { (prov, label) ->
-                SourceBtn(label = label, active = aiProvider == prov) { onSetAiProvider(prov) }
-            }
-        }
-
-        Spacer(Modifier.height(4.dp))
-        SettingsSectionHeader("API Keys")
-        if (hasGeminiKey) {
-            SettingsActionRow(Icons.Default.Key, "Gemini API Key saved", "Tap to replace", "Replace", MaterialTheme.colorScheme.primary, onSetGeminiKey)
-            SettingsActionRow(Icons.Default.DeleteOutline, "Remove Gemini Key", "Disables Gemini AI", "Remove", MaterialTheme.colorScheme.error, onClearGeminiKey)
-        } else {
-            SettingsActionRow(Icons.Default.Key, "No Gemini Key set", "Required for Gemini descriptions", "Add Key", MaterialTheme.colorScheme.primary, onSetGeminiKey)
-        }
-
-        HorizontalDivider(Modifier.padding(vertical = 4.dp), color = MaterialTheme.colorScheme.outline.copy(0.1f))
-
-        if (hasGroqKey) {
-            SettingsActionRow(Icons.Default.Key, "Groq API Key saved", "Tap to replace", "Replace", MaterialTheme.colorScheme.primary, onSetGroqKey)
-            SettingsActionRow(Icons.Default.DeleteOutline, "Remove Groq Key", "Disables Groq AI", "Remove", MaterialTheme.colorScheme.error, onClearGroqKey)
-        } else {
-            SettingsActionRow(Icons.Default.Key, "No Groq Key set", "Required for Groq descriptions", "Add Key", MaterialTheme.colorScheme.primary, onSetGroqKey)
-        }
-
-        Spacer(Modifier.height(4.dp))
-        SettingsSectionHeader("Data")
-        SettingsActionRow(Icons.Default.History, "Search History", "Clear all recent searches", "Clear", MaterialTheme.colorScheme.error, onClearHistory)
-        SettingsActionRow(
-            icon = Icons.Default.Description,
-            title = "Export settings",
-            subtitle = "Save current app settings to a JSON file",
-            actionLabel = "Export",
-            actionColor = MaterialTheme.colorScheme.primary,
-            onClick = {
-                exportSettingsLauncher.launch("chemsearch-settings-${System.currentTimeMillis()}.json")
-            }
-        )
-        SettingsActionRow(
-            icon = Icons.Default.FolderOpen,
-            title = "Import settings",
-            subtitle = "Restore settings from a JSON backup",
-            actionLabel = "Import",
-            actionColor = MaterialTheme.colorScheme.primary,
-            onClick = {
-                importSettingsLauncher.launch(arrayOf("application/json", "text/plain"))
-            }
-        )
-
-        // Cache settings
-        var showCacheDirDialog by remember { mutableStateOf(false) }
-        var cacheDirInput by remember { mutableStateOf(cacheDir) }
-
-        if (showCacheDirDialog) {
-            AlertDialog(
-                onDismissRequest = { showCacheDirDialog = false },
-                title = { Text("Cache location", fontWeight = FontWeight.Bold) },
-                text = {
-                    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                        Text(
-                            "Enter a custom path or leave blank to use the default app cache directory.",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
-                        )
-                        OutlinedTextField(
-                            value = cacheDirInput,
-                            onValueChange = { cacheDirInput = it },
-                            label = { Text("Directory path") },
-                            placeholder = { Text("Leave blank for default") },
-                            singleLine = true,
-                            shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                        Text(
-                            "Default: app internal cache. Custom paths must be writable.",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
-                        )
-                    }
-                },
-                confirmButton = {
-                    Button(onClick = {
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
                         onSetCacheDir(cacheDirInput.trim())
                         showCacheDirDialog = false
-                    }, shape = RoundedCornerShape(10.dp)) { Text("Save") }
-                },
-                dismissButton = { TextButton(onClick = { showCacheDirDialog = false }) { Text("Cancel") } },
-                containerColor = MaterialTheme.colorScheme.surface
-            )
-        }
+                    },
+                    shape = RoundedCornerShape(10.dp)
+                ) { Text("Save") }
+            },
+            dismissButton = { TextButton(onClick = { showCacheDirDialog = false }) { Text("Cancel") } },
+            containerColor = MaterialTheme.colorScheme.surface
+        )
+    }
 
-        val cacheSizeLabel = when {
+    val cacheSizeLabel = remember(cacheSizeBytes) {
+        when {
             cacheSizeBytes == 0L -> "Empty"
             cacheSizeBytes < 1024 -> "${cacheSizeBytes} B"
             cacheSizeBytes < 1024 * 1024 -> "${"%.1f".format(cacheSizeBytes / 1024.0)} KB"
             else -> "${"%.2f".format(cacheSizeBytes / (1024.0 * 1024.0))} MB"
         }
-        SettingsActionRow(
-            icon = Icons.Default.Cached,
-            title = "Compound cache",
-            subtitle = "$cacheSizeLabel · ${if (cacheDir.isBlank()) "Default location" else cacheDir.takeLast(30)}",
-            actionLabel = "Clear",
-            actionColor = MaterialTheme.colorScheme.error,
-            onClick = onClearCache
-        )
-        SettingsActionRow(
-            icon = Icons.Default.FolderOpen,
-            title = "Cache location",
-            subtitle = if (cacheDir.isBlank()) "App internal cache (default)" else cacheDir,
-            actionLabel = "Change",
-            actionColor = MaterialTheme.colorScheme.primary,
-            onClick = { cacheDirInput = cacheDir; showCacheDirDialog = true }
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text("Settings", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+        Text(
+            "Customize search, AI, storage, and app updates.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
         )
 
-        UpdatesSection(
-            updateNotificationsEnabled = updateNotificationsEnabled,
-            updateStatus = updateStatus,
-            onToggleUpdateNotifications = onToggleUpdateNotifications,
-            onCheckForUpdates = onCheckForUpdates
-        )
-
-        Spacer(Modifier.height(4.dp))
-        SettingsSectionHeader("FAQ")
-        if (showFaqDialog) {
-            InfoDialog(title = "FAQ", entries = FAQ_ENTRIES, onDismiss = { showFaqDialog = false })
-        }
-        SettingsActionRow(
-            icon = Icons.AutoMirrored.Filled.HelpOutline,
-            title = "Frequently asked questions",
-            subtitle = "Quick answers about ChemSearch",
-            actionLabel = "Open",
-            actionColor = MaterialTheme.colorScheme.primary,
-            onClick = { showFaqDialog = true }
-        )
-
-        if (isDevMode) {
-            Spacer(Modifier.height(4.dp))
-            DebugSettingsSection(
-                prefs = prefs,
-                onTestUpdateNotification = onTestUpdateNotification,
-                onDisableDevMode = { persist ->
-                    isDevMode = false
-                    buildTapCount = 0
-                    if (persist) {
-                        prefs.edit().putBoolean("dev_mode", false).apply()
+        SettingsGroupCard(
+            icon = Icons.Default.Tune,
+            title = "Display & Search",
+            subtitle = "Control theme, autosuggestions, and default description behavior."
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Icon(Icons.Default.Palette, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(20.dp))
+                    Column {
+                        Text("Theme mode", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
+                        Text(if (isDark) "Dark" else "Light", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
                     }
+                }
+                Box {
+                    Surface(
+                        shape = RoundedCornerShape(10.dp),
+                        color = MaterialTheme.colorScheme.surface,
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f)),
+                        modifier = Modifier.clickable { themeDropdownExpanded = true }
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            Icon(
+                                if (isDark) Icons.Default.DarkMode else Icons.Default.LightMode,
+                                null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Text(
+                                if (isDark) "Dark" else "Light",
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Icon(Icons.Default.ArrowDropDown, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.4f), modifier = Modifier.size(16.dp))
+                        }
+                    }
+                    DropdownMenu(
+                        expanded = themeDropdownExpanded,
+                        onDismissRequest = { themeDropdownExpanded = false }
+                    ) {
+                        listOf(false to "Light", true to "Dark").forEach { (dark, label) ->
+                            DropdownMenuItem(
+                                text = {
+                                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        Icon(
+                                            if (dark) Icons.Default.DarkMode else Icons.Default.LightMode,
+                                            null,
+                                            tint = if (isDark == dark) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.6f),
+                                            modifier = Modifier.size(16.dp)
+                                        )
+                                        Text(label, color = if (isDark == dark) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface)
+                                    }
+                                },
+                                onClick = {
+                                    themeDropdownExpanded = false
+                                    if (isDark != dark) onToggleTheme()
+                                },
+                                trailingIcon = {
+                                    if (isDark == dark) Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+            SettingsGroupDivider()
+            SettingsToggleRow(
+                icon = Icons.Default.Search,
+                title = "Autosuggestions",
+                subtitle = "Show dropdown while typing",
+                checked = autoSuggest,
+                onToggle = onToggleAutoSuggest
+            )
+            SettingsGroupDivider()
+            SettingsToggleRow(
+                icon = Icons.Default.Tune,
+                title = "Compact mode",
+                subtitle = "Show more content per screen",
+                checked = compactMode,
+                onToggle = onToggleCompactMode
+            )
+            SettingsGroupDivider()
+            Text(
+                "Default description source",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                listOf(DescSource.PUBCHEM to "PubChem", DescSource.WIKI to "Wikipedia", DescSource.AI to "AI").forEach { (src, label) ->
+                    SourceBtn(label = label, active = defaultDescSource == src) { onSetDefaultDesc(src) }
+                }
+            }
+            Text(
+                "AI provider",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                listOf(AiProvider.GEMINI to "Gemini", AiProvider.GROQ to "Groq").forEach { (provider, label) ->
+                    SourceBtn(label = label, active = aiProvider == provider) { onSetAiProvider(provider) }
+                }
+            }
+        }
+
+        SettingsGroupCard(
+            icon = Icons.Default.Key,
+            title = "AI Keys",
+            subtitle = "Manage local API keys for Gemini and Groq."
+        ) {
+            if (hasGeminiKey) {
+                SettingsActionRow(Icons.Default.Key, "Gemini API Key saved", "Tap to replace", "Replace", MaterialTheme.colorScheme.primary, onSetGeminiKey)
+                SettingsActionRow(Icons.Default.DeleteOutline, "Remove Gemini Key", "Disables Gemini AI", "Remove", MaterialTheme.colorScheme.error, onClearGeminiKey)
+            } else {
+                SettingsActionRow(Icons.Default.Key, "No Gemini Key set", "Required for Gemini descriptions", "Add Key", MaterialTheme.colorScheme.primary, onSetGeminiKey)
+            }
+            SettingsGroupDivider()
+            if (hasGroqKey) {
+                SettingsActionRow(Icons.Default.Key, "Groq API Key saved", "Tap to replace", "Replace", MaterialTheme.colorScheme.primary, onSetGroqKey)
+                SettingsActionRow(Icons.Default.DeleteOutline, "Remove Groq Key", "Disables Groq AI", "Remove", MaterialTheme.colorScheme.error, onClearGroqKey)
+            } else {
+                SettingsActionRow(Icons.Default.Key, "No Groq Key set", "Required for Groq descriptions", "Add Key", MaterialTheme.colorScheme.primary, onSetGroqKey)
+            }
+        }
+
+        SettingsGroupCard(
+            icon = Icons.Default.Storage,
+            title = "Data & Storage",
+            subtitle = "Clear history/cache and import or export local settings."
+        ) {
+            SettingsActionRow(Icons.Default.History, "Search History", "Clear all recent searches", "Clear", MaterialTheme.colorScheme.error, onClearHistory)
+            SettingsActionRow(
+                icon = Icons.Default.Cached,
+                title = "Compound cache",
+                subtitle = "$cacheSizeLabel · ${if (cacheDir.isBlank()) "Default location" else cacheDir.takeLast(42)}",
+                actionLabel = "Clear",
+                actionColor = MaterialTheme.colorScheme.error,
+                onClick = onClearCache
+            )
+            SettingsActionRow(
+                icon = Icons.Default.FolderOpen,
+                title = "Cache location",
+                subtitle = if (cacheDir.isBlank()) "App internal cache (default)" else cacheDir,
+                actionLabel = "Change",
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = {
+                    cacheDirInput = cacheDir
+                    showCacheDirDialog = true
+                }
+            )
+            SettingsGroupDivider()
+            SettingsActionRow(
+                icon = Icons.Default.Description,
+                title = "Export settings",
+                subtitle = "Save current app settings to a JSON file",
+                actionLabel = "Export",
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = {
+                    exportSettingsLauncher.launch("chemsearch-settings-${System.currentTimeMillis()}.json")
+                }
+            )
+            SettingsActionRow(
+                icon = Icons.Default.FolderOpen,
+                title = "Import settings",
+                subtitle = "Restore settings from a JSON backup",
+                actionLabel = "Import",
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = {
+                    importSettingsLauncher.launch(arrayOf("application/json", "text/plain"))
                 }
             )
         }
 
-        Spacer(Modifier.height(4.dp))
-        SettingsSectionHeader("About")
-        AboutCard(onVersionTap = {
-            buildTapCount++
-            when (buildTapCount) {
-                3 -> Toast.makeText(context, "2 more taps to unlock debug settings", Toast.LENGTH_SHORT).show()
-                4 -> Toast.makeText(context, "1 more tap to unlock debug settings", Toast.LENGTH_SHORT).show()
-                5 -> {
-                    isDevMode = true
-                    prefs.edit().putBoolean("dev_mode", true).apply()
-                    Toast.makeText(context, "Debug settings unlocked", Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
+        SettingsGroupCard(
+            icon = Icons.Default.SystemUpdate,
+            title = "Updates & Help",
+            subtitle = "Control update checks and open support resources."
+        ) {
+            UpdatesSection(
+                updateNotificationsEnabled = updateNotificationsEnabled,
+                updateStatus = updateStatus,
+                onToggleUpdateNotifications = onToggleUpdateNotifications,
+                onCheckForUpdates = onCheckForUpdates,
+                showHeader = false
+            )
+            SettingsGroupDivider()
+            SettingsActionRow(
+                icon = Icons.AutoMirrored.Filled.HelpOutline,
+                title = "Frequently asked questions",
+                subtitle = "Quick answers about ChemSearch",
+                actionLabel = "Open",
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = { showFaqDialog = true }
+            )
+        }
 
+        if (isDevMode) {
+            SettingsGroupCard(
+                icon = Icons.Default.BugReport,
+                title = "Developer",
+                subtitle = "Diagnostics and advanced debugging tools."
+            ) {
+                DebugSettingsSection(
+                    prefs = prefs,
+                    onTestUpdateNotification = onTestUpdateNotification,
+                    onDisableDevMode = { persist ->
+                        isDevMode = false
+                        buildTapCount = 0
+                        if (persist) {
+                            prefs.edit().putBoolean("dev_mode", false).apply()
+                        }
+                    }
+                )
+            }
+        }
+
+        SettingsGroupCard(
+            icon = Icons.Default.Info,
+            title = "About ChemSearch"
+        ) {
+            AboutCard(onVersionTap = {
+                buildTapCount++
+                when (buildTapCount) {
+                    3 -> Toast.makeText(context, "2 more taps to unlock debug settings", Toast.LENGTH_SHORT).show()
+                    4 -> Toast.makeText(context, "1 more tap to unlock debug settings", Toast.LENGTH_SHORT).show()
+                    5 -> {
+                        isDevMode = true
+                        prefs.edit().putBoolean("dev_mode", true).apply()
+                        Toast.makeText(context, "Debug settings unlocked", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+        }
     }
+}
+
+private enum class NetworkProbeState { SUCCESS, FAILED, SKIPPED }
+
+private data class NetworkProbeResult(
+    val service: String,
+    val endpoint: String,
+    val state: NetworkProbeState,
+    val statusCode: Int?,
+    val latencyMs: Long?,
+    val detail: String,
+    val responsePreview: String? = null
+)
+
+private fun skippedNetworkProbe(service: String, endpoint: String, reason: String): NetworkProbeResult =
+    NetworkProbeResult(
+        service = service,
+        endpoint = endpoint,
+        state = NetworkProbeState.SKIPPED,
+        statusCode = null,
+        latencyMs = null,
+        detail = reason,
+        responsePreview = null
+    )
+
+private fun String.toNetworkSnippet(): String =
+    replace(Regex("\\s+"), " ").trim().take(260)
+
+private fun runNetworkProbe(
+    service: String,
+    endpoint: String,
+    request: Request
+): NetworkProbeResult {
+    val startedAt = System.nanoTime()
+    return try {
+        ApiClient.rawHttp.newCall(request).execute().use { response ->
+            val latencyMs = ((System.nanoTime() - startedAt) / 1_000_000L).coerceAtLeast(0L)
+            val statusCode = response.code
+            val preview = runCatching { response.body.string().toNetworkSnippet() }
+                .getOrNull()
+                ?.takeIf { it.isNotBlank() }
+            val detail = "HTTP $statusCode ${response.message}"
+            NetworkProbeResult(
+                service = service,
+                endpoint = endpoint,
+                state = if (response.isSuccessful) NetworkProbeState.SUCCESS else NetworkProbeState.FAILED,
+                statusCode = statusCode,
+                latencyMs = latencyMs,
+                detail = detail,
+                responsePreview = preview
+            )
+        }
+    } catch (e: Exception) {
+        val latencyMs = ((System.nanoTime() - startedAt) / 1_000_000L).coerceAtLeast(0L)
+        NetworkProbeResult(
+            service = service,
+            endpoint = endpoint,
+            state = NetworkProbeState.FAILED,
+            statusCode = null,
+            latencyMs = latencyMs,
+            detail = "${e::class.simpleName}: ${e.message ?: "Unknown error"}",
+            responsePreview = null
+        )
+    }
+}
+
+private suspend fun runNetworkDiagnosticsChecks(
+    geminiKey: String?,
+    groqKey: String?
+): List<NetworkProbeResult> = withContext(Dispatchers.IO) {
+    val results = mutableListOf<NetworkProbeResult>()
+
+    results += runNetworkProbe(
+        service = "PubChem Search",
+        endpoint = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/water/cids/JSON",
+        request = Request.Builder()
+            .url("https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/water/cids/JSON")
+            .get()
+            .build()
+    )
+
+    results += runNetworkProbe(
+        service = "PubChem Autocomplete",
+        endpoint = "https://pubchem.ncbi.nlm.nih.gov/rest/autocomplete/compound/caffeine/JSON?limit=3",
+        request = Request.Builder()
+            .url("https://pubchem.ncbi.nlm.nih.gov/rest/autocomplete/compound/caffeine/JSON?limit=3")
+            .get()
+            .build()
+    )
+
+    results += runNetworkProbe(
+        service = "PubChem View",
+        endpoint = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/2244/JSON?heading=GHS%20Classification",
+        request = Request.Builder()
+            .url("https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/2244/JSON?heading=GHS%20Classification")
+            .get()
+            .build()
+    )
+
+    results += runNetworkProbe(
+        service = "Wikipedia",
+        endpoint = "https://en.wikipedia.org/api/rest_v1/page/summary/Water",
+        request = Request.Builder()
+            .url("https://en.wikipedia.org/api/rest_v1/page/summary/Water")
+            .header("User-Agent", "ChemSearch/1.0 (Android; github.com/FurtherSecrets24680)")
+            .header("Accept", "application/json")
+            .get()
+            .build()
+    )
+
+    results += runNetworkProbe(
+        service = "GitHub Releases",
+        endpoint = "https://api.github.com/repos/FurtherSecrets24680/chemsearch-android/releases/latest",
+        request = Request.Builder()
+            .url("https://api.github.com/repos/FurtherSecrets24680/chemsearch-android/releases/latest")
+            .header("User-Agent", "ChemSearch/1.0 (Android; github.com/FurtherSecrets24680)")
+            .header("Accept", "application/vnd.github+json")
+            .get()
+            .build()
+    )
+
+    if (geminiKey.isNullOrBlank()) {
+        results += skippedNetworkProbe(
+            service = "Gemini API",
+            endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent",
+            reason = "Skipped: Gemini API key is not set."
+        )
+    } else {
+        val body = """{"contents":[{"parts":[{"text":"Reply with PONG only."}]}]}"""
+        results += runNetworkProbe(
+            service = "Gemini API",
+            endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent",
+            request = Request.Builder()
+                .url("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=$geminiKey")
+                .post(body.toRequestBody("application/json".toMediaType()))
+                .build()
+        )
+    }
+
+    if (groqKey.isNullOrBlank()) {
+        results += skippedNetworkProbe(
+            service = "Groq API",
+            endpoint = "https://api.groq.com/openai/v1/chat/completions",
+            reason = "Skipped: Groq API key is not set."
+        )
+    } else {
+        val body = """{"model":"openai/gpt-oss-120b","messages":[{"role":"user","content":"Reply with PONG only."}],"max_tokens":8,"temperature":0}"""
+        results += runNetworkProbe(
+            service = "Groq API",
+            endpoint = "https://api.groq.com/openai/v1/chat/completions",
+            request = Request.Builder()
+                .url("https://api.groq.com/openai/v1/chat/completions")
+                .header("Authorization", "Bearer $groqKey")
+                .post(body.toRequestBody("application/json".toMediaType()))
+                .build()
+        )
+    }
+
+    results
 }
 
 
@@ -1591,15 +1869,40 @@ fun DebugSettingsSection(
     onDisableDevMode: (Boolean) -> Unit
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     var verboseLogging by remember { mutableStateOf(prefs.getBoolean("debug_verbose", false)) }
     var showInfoDialog by remember { mutableStateOf(false) }
     var showPrefsDialog by remember { mutableStateOf(false) }
     var showLogsDialog by remember { mutableStateOf(false) }
     var showMemoryDialog by remember { mutableStateOf(false) }
+    var showNetworkDialog by remember { mutableStateOf(false) }
     var showCrashConfirm by remember { mutableStateOf(false) }
     var showWipeConfirm by remember { mutableStateOf(false) }
+    var isRunningNetworkDiagnostics by remember { mutableStateOf(false) }
+    var networkDiagnosticsRunAt by remember { mutableStateOf<Long?>(null) }
+    var networkDiagnosticsResults by remember { mutableStateOf<List<NetworkProbeResult>>(emptyList()) }
     val logLines = DebugLog.lines
     val sensitiveKeyTokens = listOf("key", "token", "secret")
+
+    fun runNetworkDiagnostics() {
+        if (isRunningNetworkDiagnostics) return
+        isRunningNetworkDiagnostics = true
+        scope.launch {
+            val geminiKey = prefs.getString("gemini_key", null)
+            val groqKey = prefs.getString("groq_key", null)
+            val results = runNetworkDiagnosticsChecks(geminiKey, groqKey)
+            networkDiagnosticsResults = results
+            networkDiagnosticsRunAt = System.currentTimeMillis()
+            isRunningNetworkDiagnostics = false
+            val successCount = results.count { it.state == NetworkProbeState.SUCCESS }
+            val failureCount = results.count { it.state == NetworkProbeState.FAILED }
+            val skippedCount = results.count { it.state == NetworkProbeState.SKIPPED }
+            DebugLog.i(
+                "ChemSearch",
+                "Network diagnostics finished: success=$successCount, failed=$failureCount, skipped=$skippedCount"
+            )
+        }
+    }
 
     fun redactValue(key: String, value: Any?): String {
         val raw = value?.toString() ?: "null"
@@ -1619,6 +1922,7 @@ fun DebugSettingsSection(
                 "Live log viewer" to "Shows the in-app log buffer in real time (up to 200 lines). Verbose logs (D/) only appear when verbose logging is on. Errors (E/) are always captured. You can copy or clear the buffer.",
                 "Inspect SharedPreferences" to "Dumps every key-value pair in the app's preference file. Keys like key/token/secret are masked; use Copy full if you need raw values.",
                 "Memory info" to "Shows current heap usage from the JVM runtime and the Android ActivityManager. Useful for spotting memory leaks or unusually high allocations.",
+                "Network diagnostics" to "Runs endpoint checks against PubChem, Wikipedia, GitHub releases, and AI providers. Shows HTTP status, latency, and response previews for each service.",
                 "API endpoints" to "Copies base URLs for PubChem, Wikipedia, Gemini, and Groq to your clipboard for manual testing.",
                 "Wipe all SharedPreferences" to "Calls prefs.edit().clear(). Removes API keys, history, favorites, settings, and debug flags. You'll need to unlock debug settings again; restart recommended.",
                 "Force crash" to "Deliberately throws an unhandled RuntimeException. Used to verify that crash reporting / Logcat is working correctly. There is a confirmation step before it fires.",
@@ -1731,6 +2035,152 @@ fun DebugSettingsSection(
                         Toast.makeText(context, "Copied ${logLines.size} lines", Toast.LENGTH_SHORT).show()
                     }) { Text("Copy") }
                     TextButton(onClick = { showLogsDialog = false }) { Text("Close") }
+                }
+            },
+            containerColor = MaterialTheme.colorScheme.surface
+        )
+    }
+
+    if (showNetworkDialog) {
+        val successCount = networkDiagnosticsResults.count { it.state == NetworkProbeState.SUCCESS }
+        val failedCount = networkDiagnosticsResults.count { it.state == NetworkProbeState.FAILED }
+        val skippedCount = networkDiagnosticsResults.count { it.state == NetworkProbeState.SKIPPED }
+        val runLabel = networkDiagnosticsRunAt?.let {
+            DateUtils.getRelativeTimeSpanString(it, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS)
+        } ?: "Not run yet"
+
+        AlertDialog(
+            onDismissRequest = { showNetworkDialog = false },
+            title = {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text("Network diagnostics", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                    if (isRunningNetworkDiagnostics) {
+                        CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
+                    }
+                }
+            },
+            text = {
+                Column(
+                    modifier = Modifier
+                        .heightIn(max = 380.dp)
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        "Last run: $runLabel",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
+                    )
+                    if (networkDiagnosticsResults.isNotEmpty()) {
+                        Text(
+                            "Success $successCount · Failed $failedCount · Skipped $skippedCount",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                        )
+                    }
+                    if (networkDiagnosticsResults.isEmpty() && !isRunningNetworkDiagnostics) {
+                        Text(
+                            "Run diagnostics to test PubChem, Wikipedia, GitHub releases, and AI endpoints.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.65f)
+                        )
+                    }
+                    networkDiagnosticsResults.forEach { result ->
+                        val tint = when (result.state) {
+                            NetworkProbeState.SUCCESS -> Color(0xFF22C55E)
+                            NetworkProbeState.FAILED -> MaterialTheme.colorScheme.error
+                            NetworkProbeState.SKIPPED -> MaterialTheme.colorScheme.tertiary
+                        }
+                        val stateLabel = when (result.state) {
+                            NetworkProbeState.SUCCESS -> "SUCCESS"
+                            NetworkProbeState.FAILED -> "FAILED"
+                            NetworkProbeState.SKIPPED -> "SKIPPED"
+                        }
+                        Card(
+                            shape = RoundedCornerShape(10.dp),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.45f)),
+                            border = BorderStroke(1.dp, tint.copy(alpha = 0.35f))
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(10.dp),
+                                verticalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Text(result.service, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold)
+                                    Surface(
+                                        shape = RoundedCornerShape(6.dp),
+                                        color = tint.copy(alpha = 0.14f)
+                                    ) {
+                                        Text(
+                                            stateLabel,
+                                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                            style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
+                                            color = tint,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    }
+                                }
+                                Text(
+                                    result.endpoint,
+                                    style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
+                                    color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
+                                )
+                                val meta = buildString {
+                                    append(result.detail)
+                                    result.latencyMs?.let { append(" • ${it}ms") }
+                                }
+                                Text(
+                                    meta,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(0.75f)
+                                )
+                                result.responsePreview?.let { preview ->
+                                    Text(
+                                        preview,
+                                        style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
+                                        color = MaterialTheme.colorScheme.onSurface.copy(0.65f)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    TextButton(
+                        onClick = { runNetworkDiagnostics() },
+                        enabled = !isRunningNetworkDiagnostics
+                    ) { Text(if (networkDiagnosticsResults.isEmpty()) "Run" else "Re-run") }
+                    TextButton(
+                        onClick = {
+                            val report = buildString {
+                                append("ChemSearch network diagnostics\n")
+                                append("Run at: ${networkDiagnosticsRunAt ?: 0L}\n")
+                                append("Success: $successCount, Failed: $failedCount, Skipped: $skippedCount\n\n")
+                                networkDiagnosticsResults.forEach { item ->
+                                    append("[${item.state}] ${item.service}\n")
+                                    append("Endpoint: ${item.endpoint}\n")
+                                    append("Status: ${item.detail}\n")
+                                    item.latencyMs?.let { append("Latency: ${it}ms\n") }
+                                    item.responsePreview?.let { append("Preview: $it\n") }
+                                    append("\n")
+                                }
+                            }
+                            val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            cm.setPrimaryClip(ClipData.newPlainText("network_diagnostics", report))
+                            Toast.makeText(context, "Diagnostics copied", Toast.LENGTH_SHORT).show()
+                        },
+                        enabled = networkDiagnosticsResults.isNotEmpty()
+                    ) { Text("Copy") }
+                    TextButton(onClick = { showNetworkDialog = false }) { Text("Close") }
                 }
             },
             containerColor = MaterialTheme.colorScheme.surface
@@ -2010,6 +2460,28 @@ fun DebugSettingsSection(
                 actionLabel = "Open",
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = { showLogsDialog = true }
+            )
+
+            val networkSummary = if (networkDiagnosticsResults.isEmpty()) {
+                "Ping PubChem, Wikipedia, GitHub, Gemini, and Groq"
+            } else {
+                val ok = networkDiagnosticsResults.count { it.state == NetworkProbeState.SUCCESS }
+                val fail = networkDiagnosticsResults.count { it.state == NetworkProbeState.FAILED }
+                val skipped = networkDiagnosticsResults.count { it.state == NetworkProbeState.SKIPPED }
+                "Last run: $ok ok • $fail failed • $skipped skipped"
+            }
+            SettingsActionRow(
+                icon = Icons.Default.Public,
+                title = "Network diagnostics",
+                subtitle = networkSummary,
+                actionLabel = if (isRunningNetworkDiagnostics) "Running..." else "Run",
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = {
+                    showNetworkDialog = true
+                    if (networkDiagnosticsResults.isEmpty() && !isRunningNetworkDiagnostics) {
+                        runNetworkDiagnostics()
+                    }
+                }
             )
 
             // Update notification test

@@ -44,10 +44,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     private val _autoSuggest = MutableStateFlow(prefs.getBoolean("auto_suggest", true))
     val autoSuggest: StateFlow<Boolean> = _autoSuggest.asStateFlow()
 
+    private val _compactMode = MutableStateFlow(prefs.getBoolean("compact_mode", false))
+    val compactMode: StateFlow<Boolean> = _compactMode.asStateFlow()
+
     private val _defaultDescSource = MutableStateFlow(getSavedDescSource())
     val defaultDescSource: StateFlow<DescSource> = _defaultDescSource.asStateFlow()
 
-    private val _cacheSizeBytes = MutableStateFlow(computeCacheSize())
+    private val _cacheSizeBytes = MutableStateFlow(0L)
     val cacheSizeBytes: StateFlow<Long> = _cacheSizeBytes.asStateFlow()
 
     private val _cacheDirPath = MutableStateFlow(prefs.getString("cache_dir", "") ?: "")
@@ -72,12 +75,18 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         val savedProvider = AiProvider.entries.firstOrNull { it.name == prefs.getString("ai_provider", null) } ?: AiProvider.GEMINI
         _uiState.update { it.copy(history = loadHistory(), aiProvider = savedProvider) }
         viewModelScope.launch {
-            _uiState.collect { state ->
-                _isFavorite.value = state.cid?.let { cid ->
-                    _favorites.value.any { it.cid == cid }
-                } ?: false
+            combine(
+                _uiState.map { it.cid }.distinctUntilChanged(),
+                _favorites
+            ) { cid, favorites ->
+                cid?.let { selectedCid -> favorites.any { it.cid == selectedCid } } ?: false
             }
+                .distinctUntilChanged()
+                .collect { isFavoriteNow ->
+                    _isFavorite.value = isFavoriteNow
+                }
         }
+        refreshCacheSizeAsync()
         checkForUpdates()
     }
 
@@ -211,6 +220,12 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         DebugLog.d("ChemSearch", "Autosuggestions → ${if (next) "on" else "off"}")
     }
 
+    fun setCompactMode(enabled: Boolean) {
+        _compactMode.value = enabled
+        prefs.edit().putBoolean("compact_mode", enabled).apply()
+        DebugLog.d("ChemSearch", "Compact mode → ${if (enabled) "on" else "off"}")
+    }
+
     fun setDefaultDescSource(source: DescSource) {
         _defaultDescSource.value = source
         saveDescSource(source)
@@ -228,9 +243,10 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun reloadSettingsFromPreferences() {
         _isDarkTheme.value = prefs.getBoolean("dark_theme", false)
         _autoSuggest.value = prefs.getBoolean("auto_suggest", true)
+        _compactMode.value = prefs.getBoolean("compact_mode", false)
         _defaultDescSource.value = getSavedDescSource()
         _cacheDirPath.value = prefs.getString("cache_dir", "") ?: ""
-        _cacheSizeBytes.value = computeCacheSize()
+        refreshCacheSizeAsync()
         _hasGeminiKey.value = prefs.getString("gemini_key", null)?.isNotBlank() == true
         _hasGroqKey.value = prefs.getString("groq_key", null)?.isNotBlank() == true
         _updateNotificationsEnabled.value = prefs.getBoolean(PREF_UPDATE_NOTIFICATIONS, true)
@@ -286,54 +302,63 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         return dir
     }
 
-    fun getCacheSizeBytes(): Long = computeCacheSize()
+    fun getCacheSizeBytes(): Long = computeCacheSizeBlocking()
 
-    private fun computeCacheSize(): Long =
+    private fun computeCacheSizeBlocking(): Long =
         runCatching { cacheDir.walkTopDown().filter { it.isFile }.sumOf { it.length() } }.getOrDefault(0L)
 
+    private fun refreshCacheSizeAsync() {
+        viewModelScope.launch {
+            _cacheSizeBytes.value = withContext(Dispatchers.IO) { computeCacheSizeBlocking() }
+        }
+    }
+
     fun clearCache() {
-        cacheDir.walkTopDown().filter { it.isFile }.forEach { it.delete() }
-        _cacheSizeBytes.value = 0L
-        DebugLog.d("ChemSearch", "Compound cache cleared")
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                cacheDir.walkTopDown().filter { it.isFile }.forEach { it.delete() }
+            }
+            _cacheSizeBytes.value = 0L
+            DebugLog.d("ChemSearch", "Compound cache cleared")
+        }
     }
 
     fun setCacheDir(path: String) {
         prefs.edit().putString("cache_dir", path).apply()
         _cacheDirPath.value = path
-        _cacheSizeBytes.value = computeCacheSize()
+        refreshCacheSizeAsync()
         DebugLog.d("ChemSearch", "Cache dir set to: $path")
     }
 
     fun getCacheDir(): String = prefs.getString("cache_dir", null) ?: ""
 
-    private fun readCache(cid: Long): ChemUiState? {
-        val file = java.io.File(cacheDir, "$cid.json")
-        if (!file.exists()) return null
-        return try {
-            val json = file.readText()
-            gson.fromJson(json, ChemUiState::class.java)
-        } catch (e: Exception) {
-            DebugLog.e("ChemSearch", "Cache read failed for CID $cid: ${e.message}")
-            null
+    private suspend fun readCache(cid: Long): ChemUiState? =
+        withContext(Dispatchers.IO) {
+            val file = java.io.File(cacheDir, "$cid.json")
+            if (!file.exists()) return@withContext null
+            try {
+                val json = file.readText()
+                gson.fromJson(json, ChemUiState::class.java)
+            } catch (e: Exception) {
+                DebugLog.e("ChemSearch", "Cache read failed for CID $cid: ${e.message}")
+                null
+            }
         }
-    }
 
-    private fun findCacheByName(query: String): ChemUiState? {
+    private suspend fun findCacheByName(query: String): ChemUiState? = withContext(Dispatchers.IO) {
         val q = query.trim().lowercase()
-        return try {
+        try {
             cacheDir.listFiles()
                 ?.filter { it.isFile && it.extension == "json" }
-                ?.firstOrNull { file ->
-                    try {
-                        val state = gson.fromJson(file.readText(), ChemUiState::class.java)
-                        state.name.lowercase() == q ||
+                ?.asSequence()
+                ?.mapNotNull { file ->
+                    runCatching { gson.fromJson(file.readText(), ChemUiState::class.java) }.getOrNull()
+                }
+                ?.firstOrNull { state ->
+                    state.name.lowercase() == q ||
                         state.synonyms.any { it.lowercase() == q } ||
                         state.casNumber?.lowercase() == q ||
                         state.cid?.toString() == q
-                    } catch (e: Exception) { false }
-                }
-                ?.let { file ->
-                    gson.fromJson(file.readText(), ChemUiState::class.java)
                 }
         } catch (e: Exception) {
             DebugLog.e("ChemSearch", "Cache name search failed: ${e.message}")
@@ -341,13 +366,16 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun writeCache(state: ChemUiState) {
+    private suspend fun writeCache(state: ChemUiState) {
         val cid = state.cid ?: return
         try {
-            val file = java.io.File(cacheDir, "$cid.json")
-            file.writeText(gson.toJson(state))
-            _cacheSizeBytes.value = computeCacheSize()
-            DebugLog.d("ChemSearch", "Cached compound CID $cid (${file.length() / 1024}KB)")
+            val (fileSizeKb, cacheBytes) = withContext(Dispatchers.IO) {
+                val file = java.io.File(cacheDir, "$cid.json")
+                file.writeText(gson.toJson(state))
+                (file.length() / 1024L) to computeCacheSizeBlocking()
+            }
+            _cacheSizeBytes.value = cacheBytes
+            DebugLog.d("ChemSearch", "Cached compound CID $cid (${fileSizeKb}KB)")
         } catch (e: Exception) {
             DebugLog.e("ChemSearch", "Cache write failed: ${e.message}")
         }

@@ -21,8 +21,10 @@ import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.withContext
 import kotlin.math.*
 data class Atom3D(val x: Float, val y: Float, val z: Float, val element: String)
 data class Bond3D(val a1: Int, val a2: Int, val type: Int)
@@ -299,7 +301,9 @@ private fun DrawScope.drawAtom(pos: Offset, r: Float, color: Color, depthFactor:
 // MAIN COMPOSABLE
 @Composable
 fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
-    val molecule = remember(cid, sdfData) { parseSdf(sdfData) }
+    val molecule by produceState<Molecule3D?>(initialValue = null, cid, sdfData) {
+        value = withContext(Dispatchers.Default) { parseSdf(sdfData) }
+    }
 
     var rotX by remember { mutableFloatStateOf(0.25f) }
     var rotY by remember { mutableFloatStateOf(0f) }
@@ -313,26 +317,36 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
 
     LaunchedEffect(cid) {
         while (isActive) {
-            delay(16L)
             if (autoSpin && !isInteracting) {
                 rotY += 0.006f
                 if (rotY > 2 * PI.toFloat()) rotY -= 2 * PI.toFloat()
+                delay(16L)
+            } else {
+                delay(80L)
             }
         }
     }
 
-    if (molecule.atoms.isEmpty()) {
+    val parsedMolecule = molecule
+    if (parsedMolecule == null) {
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator(modifier = Modifier.size(26.dp), strokeWidth = 2.dp)
+        }
+        return
+    }
+
+    if (parsedMolecule.atoms.isEmpty()) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text("Could not parse 3D data", color = Color.White.copy(0.4f), style = MaterialTheme.typography.bodySmall)
         }
         return
     }
 
-    val (centered, maxExtent) = remember(molecule) {
-        val avgX = molecule.atoms.map { it.x }.average().toFloat()
-        val avgY = molecule.atoms.map { it.y }.average().toFloat()
-        val avgZ = molecule.atoms.map { it.z }.average().toFloat()
-        val centeredAtoms = molecule.atoms.map { it.copy(x = it.x - avgX, y = it.y - avgY, z = it.z - avgZ) }
+    val (centered, maxExtent) = remember(parsedMolecule) {
+        val avgX = parsedMolecule.atoms.map { it.x }.average().toFloat()
+        val avgY = parsedMolecule.atoms.map { it.y }.average().toFloat()
+        val avgZ = parsedMolecule.atoms.map { it.z }.average().toFloat()
+        val centeredAtoms = parsedMolecule.atoms.map { it.copy(x = it.x - avgX, y = it.y - avgY, z = it.z - avgZ) }
         val extent = centeredAtoms.maxOf { sqrt(it.x * it.x + it.y * it.y + it.z * it.z) }
             .coerceIn(1.5f, Float.MAX_VALUE)
         centeredAtoms to extent
@@ -394,7 +408,7 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
 
             projected.forEach { drawCalls.add(DrawCall.AtomCall(it)) }
 
-            molecule.bonds.forEach { bond ->
+            parsedMolecule.bonds.forEach { bond ->
                 val a1 = projected.getOrNull(bond.a1) ?: return@forEach
                 val a2 = projected.getOrNull(bond.a2) ?: return@forEach
                 val avgDepth = (a1.depth + a2.depth) / 2f - 0.05f
@@ -453,7 +467,7 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
             modifier = Modifier.align(Alignment.BottomStart).padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            molecule.atoms.map { it.element }.distinct().take(7).forEach { el ->
+            parsedMolecule.atoms.map { it.element }.distinct().take(7).forEach { el ->
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
                     Box(Modifier.size(9.dp).background(elementColor(el), RoundedCornerShape(50)))
                     Text(el, color = overlayTextColor.copy(0.6f), fontSize = 10.sp, fontFamily = FontFamily.Monospace)
@@ -471,7 +485,7 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             Text(
-                "${molecule.atoms.size} atoms  •  ${molecule.bonds.size} bonds",
+                "${parsedMolecule.atoms.size} atoms  •  ${parsedMolecule.bonds.size} bonds",
                 color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace
             )
             Text(

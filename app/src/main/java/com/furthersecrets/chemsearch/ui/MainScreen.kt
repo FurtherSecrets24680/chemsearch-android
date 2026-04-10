@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.furthersecrets.chemsearch.ChemViewModel
 import androidx.activity.compose.BackHandler
@@ -39,22 +40,23 @@ enum class AppTab { SEARCH, FAVORITES, RECENT, TOOLS, SETTINGS }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(vm: ChemViewModel = viewModel()) {
-    val state by vm.uiState.collectAsState()
-    val query by vm.query.collectAsState()
-    val isDark by vm.isDarkTheme.collectAsState()
-    val autoSuggest by vm.autoSuggest.collectAsState()
-    val defaultDescSource by vm.defaultDescSource.collectAsState()
-    val hasGeminiKey by vm.hasGeminiKey.collectAsState()
-    val hasGroqKey by vm.hasGroqKey.collectAsState()
-    val cacheSizeBytes by vm.cacheSizeBytes.collectAsState()
-    val cacheDirPath by vm.cacheDirPath.collectAsState()
-    val updateNotificationsEnabled by vm.updateNotificationsEnabled.collectAsState()
-    val updateStatus by vm.updateStatus.collectAsState()
+    val state by vm.uiState.collectAsStateWithLifecycle()
+    val query by vm.query.collectAsStateWithLifecycle()
+    val isDark by vm.isDarkTheme.collectAsStateWithLifecycle()
+    val autoSuggest by vm.autoSuggest.collectAsStateWithLifecycle()
+    val compactMode by vm.compactMode.collectAsStateWithLifecycle()
+    val defaultDescSource by vm.defaultDescSource.collectAsStateWithLifecycle()
+    val hasGeminiKey by vm.hasGeminiKey.collectAsStateWithLifecycle()
+    val hasGroqKey by vm.hasGroqKey.collectAsStateWithLifecycle()
+    val cacheSizeBytes by vm.cacheSizeBytes.collectAsStateWithLifecycle()
+    val cacheDirPath by vm.cacheDirPath.collectAsStateWithLifecycle()
+    val updateNotificationsEnabled by vm.updateNotificationsEnabled.collectAsStateWithLifecycle()
+    val updateStatus by vm.updateStatus.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val snackbar = remember { SnackbarHostState() }
-    val favorites by vm.favorites.collectAsState()
-    val isFavorite by vm.isFavorite.collectAsState()
+    val favorites by vm.favorites.collectAsStateWithLifecycle()
+    val isFavorite by vm.isFavorite.collectAsStateWithLifecycle()
 
     var showGeminiKeyDialog by remember { mutableStateOf(false) }
     var showGroqKeyDialog by remember { mutableStateOf(false) }
@@ -115,6 +117,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         SettingsSheet(
             isDark = isDark,
             autoSuggest = autoSuggest,
+            compactMode = compactMode,
             defaultDescSource = defaultDescSource,
             aiProvider = state.aiProvider,
             hasGeminiKey = hasGeminiKey,
@@ -123,6 +126,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             updateStatus = updateStatus,
             onToggleTheme = { vm.toggleTheme() },
             onToggleAutoSuggest = { vm.toggleAutoSuggest() },
+            onToggleCompactMode = { vm.setCompactMode(!compactMode) },
             onSetDefaultDesc = { vm.setDefaultDescSource(it) },
             onSetAiProvider = { vm.setAiProvider(it) },
             onSetGeminiKey = { showGeminiKeyDialog = true; showSettings = false },
@@ -177,6 +181,12 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         )
     }
 
+    val pageTopPadding = if (compactMode) 12.dp else 20.dp
+    val pageBottomPadding = if (compactMode) 24.dp else 40.dp
+    val pageSpacing = if (compactMode) 8.dp else 12.dp
+    val suggestionTopPadding = if (compactMode) 132.dp else 148.dp
+
+    CompositionLocalProvider(LocalCompactMode provides compactMode) {
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar) },
         containerColor = MaterialTheme.colorScheme.background,
@@ -250,8 +260,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() }
                             ) { showSuggestions = false; focusManager.clearFocus() },
-                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 20.dp, bottom = 40.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = pageTopPadding, bottom = pageBottomPadding),
+                        verticalArrangement = Arrangement.spacedBy(pageSpacing)
                     ) {
                         item {
                             AppHeader(
@@ -303,7 +313,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                         if (state.isLoading) {
                             item {
                                 Box(
-                                    Modifier.fillMaxWidth().padding(vertical = 40.dp),
+                                    Modifier.fillMaxWidth().padding(vertical = if (compactMode) 28.dp else 40.dp),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Column(
@@ -379,8 +389,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                 } else {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 20.dp, bottom = 40.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = pageTopPadding, bottom = pageBottomPadding),
+                        verticalArrangement = Arrangement.spacedBy(pageSpacing)
                     ) {
                         item {
                             when (tab) {
@@ -399,6 +409,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 AppTab.SETTINGS -> SettingsInline(
                                     isDark = isDark,
                                     autoSuggest = autoSuggest,
+                                    compactMode = compactMode,
                                     defaultDescSource = defaultDescSource,
                                     aiProvider = state.aiProvider,
                                     hasGeminiKey = hasGeminiKey,
@@ -407,6 +418,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     updateStatus = updateStatus,
                                     onToggleTheme = { vm.toggleTheme() },
                                     onToggleAutoSuggest = { vm.toggleAutoSuggest() },
+                                    onToggleCompactMode = { vm.setCompactMode(!compactMode) },
                                     onSetDefaultDesc = { vm.setDefaultDescSource(it) },
                                     onSetAiProvider = { vm.setAiProvider(it) },
                                     onSetGeminiKey = { showGeminiKeyDialog = true },
@@ -438,7 +450,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             AnimatedVisibility(
                 visible = showSuggestions && state.suggestions.isNotEmpty(),
                 modifier = Modifier
-                    .padding(top = 148.dp, start = 16.dp, end = 16.dp)
+                    .padding(top = suggestionTopPadding, start = 16.dp, end = 16.dp)
                     .zIndex(10f),
                 enter = fadeIn(),
                 exit = fadeOut()
@@ -453,5 +465,6 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                 )
             }
         }
+    }
     }
 }

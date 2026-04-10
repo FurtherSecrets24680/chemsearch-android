@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -60,17 +61,11 @@ import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import android.graphics.BitmapFactory
 import androidx.compose.foundation.gestures.detectTransformGestures
-import androidx.compose.foundation.gestures.rememberTransformableState
-import androidx.compose.foundation.gestures.transformable
-import androidx.compose.foundation.Image
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import kotlinx.coroutines.withContext
 import java.util.Locale
 
 // App header
@@ -239,6 +234,7 @@ fun HistorySection(
         if (normalizedQuery.isBlank()) history else history.filter { it.lowercase(Locale.US).contains(normalizedQuery) }
     }
     val showControls = history.size >= 3
+    val compact = LocalCompactMode.current
 
     if (showClearConfirm) {
         AlertDialog(
@@ -279,7 +275,7 @@ fun HistorySection(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 64.dp),
+                .padding(top = if (compact) 40.dp else 64.dp),
             contentAlignment = Alignment.Center
         ) {
             Column(
@@ -418,7 +414,10 @@ fun HistorySection(
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                 ) {
                     Row(
-                        modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
+                        modifier = Modifier.padding(
+                            horizontal = if (compact) 10.dp else 14.dp,
+                            vertical = if (compact) 8.dp else 12.dp
+                        ),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
@@ -693,19 +692,25 @@ private fun formatCompoundTitle(name: String): String {
 
 private suspend fun saveSdfFile(context: Context, compoundName: String, sdfData: String) {
     val fileName = "${compoundName.replace(" ", "_").lowercase()}_3d.sdf"
-    val sdfBytes = sdfData.toByteArray()
     try {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val values = ContentValues().apply {
-                put(MediaStore.Downloads.DISPLAY_NAME, fileName)
-                put(MediaStore.Downloads.MIME_TYPE, "chemical/x-mdl-sdfile")
-                put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+        withContext(Dispatchers.IO) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val values = ContentValues().apply {
+                    put(MediaStore.Downloads.DISPLAY_NAME, fileName)
+                    put(MediaStore.Downloads.MIME_TYPE, "chemical/x-mdl-sdfile")
+                    put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+                }
+                val uri = context.contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
+                    ?: error("Could not create destination file")
+                context.contentResolver.openOutputStream(uri)?.bufferedWriter()?.use { writer ->
+                    writer.write(sdfData)
+                } ?: error("Unable to open output stream")
+            } else {
+                val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                File(dir, fileName).bufferedWriter().use { writer ->
+                    writer.write(sdfData)
+                }
             }
-            val uri = context.contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
-            uri?.let { context.contentResolver.openOutputStream(it)?.use { os -> os.write(sdfBytes) } }
-        } else {
-            val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-            File(dir, fileName).writeBytes(sdfBytes)
         }
         withContext(Dispatchers.Main) {
             Toast.makeText(context, "Saved $fileName to Downloads", Toast.LENGTH_SHORT).show()
@@ -1416,7 +1421,21 @@ private fun SearchCard(
     spacing: Dp = 12.dp,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val shape = RoundedCornerShape(18.dp)
+    val compact = LocalCompactMode.current
+    val layoutDirection = LocalLayoutDirection.current
+    val scale = if (compact) 0.72f else 1f
+    val horizontalBase = contentPadding.calculateLeftPadding(layoutDirection)
+    val rightBase = contentPadding.calculateRightPadding(layoutDirection)
+    val topBase = contentPadding.calculateTopPadding()
+    val bottomBase = contentPadding.calculateBottomPadding()
+    val effectivePadding = PaddingValues(
+        start = (horizontalBase * scale).coerceAtLeast(6.dp),
+        top = (topBase * scale).coerceAtLeast(4.dp),
+        end = (rightBase * scale).coerceAtLeast(6.dp),
+        bottom = (bottomBase * scale).coerceAtLeast(4.dp)
+    )
+    val effectiveSpacing = (spacing * scale).coerceAtLeast(6.dp)
+    val shape = RoundedCornerShape(if (compact) 14.dp else 18.dp)
     Surface(
         modifier = modifier,
         shape = shape,
@@ -1435,8 +1454,8 @@ private fun SearchCard(
                         )
                     )
                 )
-                .padding(contentPadding),
-            verticalArrangement = Arrangement.spacedBy(spacing),
+                .padding(effectivePadding),
+            verticalArrangement = Arrangement.spacedBy(effectiveSpacing),
             content = content
         )
     }
@@ -1593,20 +1612,32 @@ private suspend fun save2dPng(context: Context, compoundName: String, cid: Long)
     val fileName = "${compoundName.replace(" ", "_").lowercase()}_2d.png"
     try {
         val request = okhttp3.Request.Builder().url(url).build()
-        val bytes = withContext(Dispatchers.IO) {
-            com.furthersecrets.chemsearch.data.ApiClient.rawHttp.newCall(request).execute().body.bytes()
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val values = ContentValues().apply {
-                put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
-                put(MediaStore.Images.Media.MIME_TYPE, "image/png")
-                put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+        withContext(Dispatchers.IO) {
+            com.furthersecrets.chemsearch.data.ApiClient.rawHttp.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) error("Image download failed (${response.code})")
+                val body = response.body
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    val values = ContentValues().apply {
+                        put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
+                        put(MediaStore.Images.Media.MIME_TYPE, "image/png")
+                        put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                    }
+                    val uri = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+                        ?: error("Could not create destination file")
+                    context.contentResolver.openOutputStream(uri)?.use { output ->
+                        body.byteStream().use { input ->
+                            input.copyTo(output)
+                        }
+                    } ?: error("Unable to open output stream")
+                } else {
+                    val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                    File(dir, fileName).outputStream().use { output ->
+                        body.byteStream().use { input ->
+                            input.copyTo(output)
+                        }
+                    }
+                }
             }
-            val uri = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-            uri?.let { context.contentResolver.openOutputStream(it)?.use { os -> os.write(bytes) } }
-        } else {
-            val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-            File(dir, fileName).writeBytes(bytes)
         }
         withContext(Dispatchers.Main) {
             Toast.makeText(context, "Saved $fileName to Pictures", Toast.LENGTH_SHORT).show()
