@@ -34,12 +34,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -402,30 +404,46 @@ private fun ToolCard(
     onMoveUp: () -> Unit = {},
     onMoveDown: () -> Unit = {}
 ) {
+    val compact = LocalCompactMode.current
     Card(
         onClick = { if (enableSelect) onClick() },
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(if (compact) 14.dp else 16.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         )
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(if (compact) 12.dp else 16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(14.dp)
+            horizontalArrangement = Arrangement.spacedBy(if (compact) 10.dp else 14.dp)
         ) {
             Box(
                 modifier = Modifier
-                    .size(52.dp)
-                    .background(MaterialTheme.colorScheme.primary.copy(0.1f), RoundedCornerShape(12.dp)),
+                    .size(if (compact) 44.dp else 52.dp)
+                    .background(
+                        MaterialTheme.colorScheme.primary.copy(0.1f),
+                        RoundedCornerShape(if (compact) 10.dp else 12.dp)
+                    ),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(icon, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(26.dp))
+                Icon(
+                    icon,
+                    null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(if (compact) 22.dp else 26.dp)
+                )
             }
 
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(if (compact) 2.dp else 3.dp)
+            ) {
+                Text(
+                    title,
+                    style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.SemiBold
+                )
                 ToolCategoryIndicatorPill(categoryLabel)
                 Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
             }
@@ -438,28 +456,35 @@ private fun ToolCard(
                     IconButton(
                         onClick = onMoveUp,
                         enabled = canMoveUp,
-                        modifier = Modifier.size(28.dp)
+                        modifier = Modifier.size(if (compact) 24.dp else 28.dp)
                     ) {
                         Icon(
                             Icons.Default.KeyboardArrowUp,
                             contentDescription = "Move up",
-                            tint = MaterialTheme.colorScheme.onSurface.copy(if (canMoveUp) 0.6f else 0.25f)
+                            tint = MaterialTheme.colorScheme.onSurface.copy(if (canMoveUp) 0.6f else 0.25f),
+                            modifier = Modifier.size(if (compact) 18.dp else 24.dp)
                         )
                     }
                     IconButton(
                         onClick = onMoveDown,
                         enabled = canMoveDown,
-                        modifier = Modifier.size(28.dp)
+                        modifier = Modifier.size(if (compact) 24.dp else 28.dp)
                     ) {
                         Icon(
                             Icons.Default.KeyboardArrowDown,
                             contentDescription = "Move down",
-                            tint = MaterialTheme.colorScheme.onSurface.copy(if (canMoveDown) 0.6f else 0.25f)
+                            tint = MaterialTheme.colorScheme.onSurface.copy(if (canMoveDown) 0.6f else 0.25f),
+                            modifier = Modifier.size(if (compact) 18.dp else 24.dp)
                         )
                     }
                 }
             } else {
-                Icon(Icons.Default.ChevronRight, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.3f))
+                Icon(
+                    Icons.Default.ChevronRight,
+                    null,
+                    tint = MaterialTheme.colorScheme.onSurface.copy(0.3f),
+                    modifier = Modifier.size(if (compact) 18.dp else 24.dp)
+                )
             }
         }
     }
@@ -467,6 +492,7 @@ private fun ToolCard(
 
 @Composable
 private fun CategoryPill(label: String, selected: Boolean, onClick: () -> Unit) {
+    val compact = LocalCompactMode.current
     val background = if (selected) MaterialTheme.colorScheme.primary.copy(0.12f) else MaterialTheme.colorScheme.surfaceVariant
     val border = if (selected) MaterialTheme.colorScheme.primary.copy(0.35f) else MaterialTheme.colorScheme.outline.copy(0.2f)
     Surface(
@@ -477,7 +503,7 @@ private fun CategoryPill(label: String, selected: Boolean, onClick: () -> Unit) 
     ) {
         Text(
             label,
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            modifier = Modifier.padding(horizontal = if (compact) 10.dp else 12.dp, vertical = if (compact) 5.dp else 6.dp),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
             color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
@@ -487,6 +513,7 @@ private fun CategoryPill(label: String, selected: Boolean, onClick: () -> Unit) 
 
 @Composable
 private fun ToolCategoryIndicatorPill(label: String) {
+    val compact = LocalCompactMode.current
     Surface(
         shape = RoundedCornerShape(999.dp),
         color = MaterialTheme.colorScheme.primary.copy(0.12f),
@@ -494,7 +521,7 @@ private fun ToolCategoryIndicatorPill(label: String) {
     ) {
         Text(
             label,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+            modifier = Modifier.padding(horizontal = if (compact) 7.dp else 8.dp, vertical = if (compact) 2.dp else 3.dp),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.primary
@@ -747,13 +774,9 @@ private fun calculateMolarMass(formula: String): CalcResult {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MolarMassCalculator() {
-    var input by remember { mutableStateOf("") }
-    val result by remember(input) {
-        mutableStateOf(
-            if (input.isBlank()) null else calculateMolarMass(
-                input
-            )
-        )
+    var input by remember { mutableStateOf(TextFieldValue("")) }
+    val result = remember(input.text) {
+        if (input.text.isBlank()) null else calculateMolarMass(input.text)
     }
     val focusManager = LocalFocusManager.current
 
@@ -803,8 +826,8 @@ fun MolarMassCalculator() {
             ),
             keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
             trailingIcon = {
-                if (input.isNotBlank()) {
-                    IconButton(onClick = { input = "" }) {
+                if (input.text.isNotBlank()) {
+                    IconButton(onClick = { input = TextFieldValue("") }) {
                         Icon(Icons.Default.Clear, null, modifier = Modifier.size(18.dp))
                     }
                 }
@@ -818,7 +841,7 @@ fun MolarMassCalculator() {
             Text("Insert:", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
             listOf("(" to "(", ")" to ")", "·" to "·").forEach { (label, insert) ->
                 Surface(
-                    onClick = { input += insert },
+                    onClick = { input = insertIntoField(input, insert) },
                     shape = RoundedCornerShape(8.dp),
                     color = MaterialTheme.colorScheme.surfaceVariant,
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f))
@@ -835,8 +858,8 @@ fun MolarMassCalculator() {
             }
         }
 
-        if (result != null) {
-            if (result!!.error != null) {
+        result?.let { calc ->
+            if (calc.error != null) {
                 Card(
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(
@@ -846,7 +869,7 @@ fun MolarMassCalculator() {
                     )
                 ) {
                     Text(
-                        result!!.error!!,
+                        calc.error,
                         modifier = Modifier.padding(12.dp),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.error
@@ -865,7 +888,7 @@ fun MolarMassCalculator() {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                 Text("MOLAR MASS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
-                                Text(toSubscriptFormula(input), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                                Text(toSubscriptFormula(input.text), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
                             }
                             Surface(
                                 shape = RoundedCornerShape(10.dp),
@@ -873,7 +896,7 @@ fun MolarMassCalculator() {
                                 border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary.copy(0.4f))
                             ) {
                                 Text(
-                                    "${"%.4f".format(result!!.molarMass)} g/mol",
+                                    "${"%.4f".format(calc.molarMass)} g/mol",
                                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold,
@@ -903,8 +926,8 @@ fun MolarMassCalculator() {
                             Text("%", modifier = Modifier.weight(0.7f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f), textAlign = androidx.compose.ui.text.style.TextAlign.End)
                         }
 
-                        result!!.breakdown.forEach { (el, cnt, contrib) ->
-                            val pct = (contrib / result!!.molarMass * 100).toFloat()
+                        calc.breakdown.forEach { (el, cnt, contrib) ->
+                            val pct = (contrib / calc.molarMass * 100).toFloat()
                             Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
                                 Row(
                                     modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
@@ -942,10 +965,10 @@ fun MolarMassCalculator() {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             listOf("H2O", "NaCl", "Ca(OH)2", "C6H12O6", "H2SO4", "CuSO4·5H2O", "MgSO4·7H2O", "Fe2O3").forEach { ex ->
-                val isActive = input == ex
+                val isActive = input.text == ex
                 FilterChip(
                     selected = isActive,
-                    onClick = { input = ex; focusManager.clearFocus() },
+                    onClick = { input = fieldValueAtEnd(ex); focusManager.clearFocus() },
                     label = { Text(toSubscriptFormula(ex), style = MaterialTheme.typography.labelMedium, fontFamily = FontFamily.Monospace) }
                 )
             }
@@ -1691,6 +1714,35 @@ private fun reactionToDisplay(raw: String): String =
         .map { subscriptMap[it] ?: it }
         .joinToString("")
 
+private fun fieldValueAtEnd(text: String): TextFieldValue =
+    TextFieldValue(text = text, selection = TextRange(text.length))
+
+private fun insertIntoField(current: TextFieldValue, insert: String): TextFieldValue {
+    val start = current.selection.start.coerceIn(0, current.text.length)
+    val end = current.selection.end.coerceIn(0, current.text.length)
+    val from = minOf(start, end)
+    val to = maxOf(start, end)
+    val newText = current.text.replaceRange(from, to, insert)
+    val cursor = from + insert.length
+    return TextFieldValue(text = newText, selection = TextRange(cursor))
+}
+
+private fun normalizeEquationField(value: TextFieldValue): TextFieldValue {
+    val raw = value.text
+    val normalized = raw.replace("->", "→")
+    if (raw == normalized) return value
+
+    val start = raw
+        .substring(0, value.selection.start.coerceIn(0, raw.length))
+        .replace("->", "→")
+        .length
+    val end = raw
+        .substring(0, value.selection.end.coerceIn(0, raw.length))
+        .replace("->", "→")
+        .length
+    return value.copy(text = normalized, selection = TextRange(start, end))
+}
+
 private fun swapEquationSides(input: String): String {
     val normalized = input.replace("→", "->")
     val parts = normalized.split("->")
@@ -1703,7 +1755,7 @@ private fun swapEquationSides(input: String): String {
 
 @Composable
 fun ReactionBalancer() {
-    var input by remember { mutableStateOf("") }
+    var input by remember { mutableStateOf(TextFieldValue("")) }
     var result by remember { mutableStateOf<BalancerResult?>(null) }
     val focusManager = LocalFocusManager.current
 
@@ -1749,8 +1801,10 @@ fun ReactionBalancer() {
         OutlinedTextField(
             value = input,
             onValueChange = { new ->
-                input = new.replace("->", "→")
-                result = null
+                val normalized = normalizeEquationField(new)
+                val textChanged = normalized.text != input.text
+                input = normalized
+                if (textChanged) result = null
             },
             label = { Text("Chemical Equation") },
             placeholder = { Text("H2 + O2 -> H2O", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
@@ -1761,11 +1815,11 @@ fun ReactionBalancer() {
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
                 focusManager.clearFocus()
-                result = balanceReaction(input.replace("→", "->"))
+                result = balanceReaction(input.text.replace("→", "->"))
             }),
             trailingIcon = {
-                if (input.isNotBlank()) {
-                    IconButton(onClick = { input = ""; result = null }) {
+                if (input.text.isNotBlank()) {
+                    IconButton(onClick = { input = TextFieldValue(""); result = null }) {
                         Icon(Icons.Default.Close, null, modifier = Modifier.size(18.dp))
                     }
                 }
@@ -1789,7 +1843,7 @@ fun ReactionBalancer() {
             ) {
                 listOf("+" to " + ", "→" to " → ", "(" to "(", ")" to ")").forEach { (label, insert) ->
                     Surface(
-                        onClick = { input += insert; result = null },
+                        onClick = { input = insertIntoField(input, insert); result = null },
                         shape = RoundedCornerShape(8.dp),
                         color = MaterialTheme.colorScheme.surfaceVariant,
                         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f))
@@ -1810,7 +1864,7 @@ fun ReactionBalancer() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Surface(
-                    onClick = { input = swapEquationSides(input); result = null },
+                    onClick = { input = fieldValueAtEnd(swapEquationSides(input.text)); result = null },
                     shape = RoundedCornerShape(8.dp),
                     color = MaterialTheme.colorScheme.surfaceVariant,
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f))
@@ -1826,10 +1880,10 @@ fun ReactionBalancer() {
         }
 
         Button(
-            onClick = { focusManager.clearFocus(); result = balanceReaction(input.replace("→", "->")) },
+            onClick = { focusManager.clearFocus(); result = balanceReaction(input.text.replace("→", "->")) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
-            enabled = input.isNotBlank()
+            enabled = input.text.isNotBlank()
         ) {
             Icon(Icons.Default.SwapHoriz, null, modifier = Modifier.size(16.dp))
             Spacer(Modifier.width(8.dp))
@@ -1952,17 +2006,17 @@ fun ReactionBalancer() {
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             examples.forEach { ex ->
                 Surface(
-                    onClick = { input = ex.replace("->", "→"); result = null },
+                    onClick = { input = fieldValueAtEnd(ex.replace("->", "→")); result = null },
                     shape = RoundedCornerShape(10.dp),
-                    color = if (input.replace("→", "->") == ex) MaterialTheme.colorScheme.primary.copy(0.1f) else MaterialTheme.colorScheme.surfaceVariant.copy(0.5f),
-                    border = if (input.replace("→", "->") == ex) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.4f)) else null
+                    color = if (input.text.replace("→", "->") == ex) MaterialTheme.colorScheme.primary.copy(0.1f) else MaterialTheme.colorScheme.surfaceVariant.copy(0.5f),
+                    border = if (input.text.replace("→", "->") == ex) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.4f)) else null
                 ) {
                     Text(
                         reactionToDisplay(ex),
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                         style = MaterialTheme.typography.bodySmall,
                         fontFamily = FontFamily.Monospace,
-                        color = if (input.replace("→", "->") == ex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
+                        color = if (input.text.replace("→", "->") == ex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
                     )
                 }
             }
@@ -2702,7 +2756,7 @@ private fun StoichiometryCalculator(
     mode: StoichiometryMode = StoichiometryMode.LIMITING,
     title: String = "Stoichiometry Calculator"
 ) {
-    var equation by remember { mutableStateOf("") }
+    var equation by remember { mutableStateOf(TextFieldValue("")) }
     var result by remember { mutableStateOf<BalancerResult?>(null) }
     val reactantInputs = remember { mutableStateListOf<StoichReactantInput>() }
     var molarVolumeInput by remember { mutableStateOf(DEFAULT_MOLAR_VOLUME.toString()) }
@@ -2791,8 +2845,10 @@ private fun StoichiometryCalculator(
         OutlinedTextField(
             value = equation,
             onValueChange = { new ->
-                equation = new.replace("->", "→")
-                result = null
+                val normalized = normalizeEquationField(new)
+                val textChanged = normalized.text != equation.text
+                equation = normalized
+                if (textChanged) result = null
             },
             label = { Text("Chemical Equation") },
             placeholder = { Text("H2 + O2 -> H2O", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
@@ -2803,11 +2859,11 @@ private fun StoichiometryCalculator(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
                 focusManager.clearFocus()
-                result = balanceReaction(equation.replace("→", "->"))
+                result = balanceReaction(equation.text.replace("→", "->"))
             }),
             trailingIcon = {
-                if (equation.isNotBlank()) {
-                    IconButton(onClick = { equation = ""; result = null }) {
+                if (equation.text.isNotBlank()) {
+                    IconButton(onClick = { equation = TextFieldValue(""); result = null }) {
                         Icon(Icons.Default.Close, null, modifier = Modifier.size(18.dp))
                     }
                 }
@@ -2831,7 +2887,7 @@ private fun StoichiometryCalculator(
             ) {
                 listOf("+" to " + ", "→" to " → ", "(" to "(", ")" to ")").forEach { (label, insert) ->
                     Surface(
-                        onClick = { equation += insert; result = null },
+                        onClick = { equation = insertIntoField(equation, insert); result = null },
                         shape = RoundedCornerShape(8.dp),
                         color = MaterialTheme.colorScheme.surfaceVariant,
                         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f))
@@ -2852,7 +2908,7 @@ private fun StoichiometryCalculator(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Surface(
-                    onClick = { equation = swapEquationSides(equation); result = null },
+                    onClick = { equation = fieldValueAtEnd(swapEquationSides(equation.text)); result = null },
                     shape = RoundedCornerShape(8.dp),
                     color = MaterialTheme.colorScheme.surfaceVariant,
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f))
@@ -2868,10 +2924,10 @@ private fun StoichiometryCalculator(
         }
 
         Button(
-            onClick = { focusManager.clearFocus(); result = balanceReaction(equation.replace("→", "->")) },
+            onClick = { focusManager.clearFocus(); result = balanceReaction(equation.text.replace("→", "->")) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
-            enabled = equation.isNotBlank()
+            enabled = equation.text.isNotBlank()
         ) {
             Icon(Icons.Default.Calculate, null, modifier = Modifier.size(16.dp))
             Spacer(Modifier.width(8.dp))
@@ -3378,17 +3434,17 @@ private fun StoichiometryCalculator(
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             examples.forEach { ex ->
                 Surface(
-                    onClick = { equation = ex.replace("->", "→"); result = null },
+                    onClick = { equation = fieldValueAtEnd(ex.replace("->", "→")); result = null },
                     shape = RoundedCornerShape(10.dp),
-                    color = if (equation.replace("→", "->") == ex) MaterialTheme.colorScheme.primary.copy(0.1f) else MaterialTheme.colorScheme.surfaceVariant.copy(0.5f),
-                    border = if (equation.replace("→", "->") == ex) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.4f)) else null
+                    color = if (equation.text.replace("→", "->") == ex) MaterialTheme.colorScheme.primary.copy(0.1f) else MaterialTheme.colorScheme.surfaceVariant.copy(0.5f),
+                    border = if (equation.text.replace("→", "->") == ex) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.4f)) else null
                 ) {
                     Text(
                         reactionToDisplay(ex),
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                         style = MaterialTheme.typography.bodySmall,
                         fontFamily = FontFamily.Monospace,
-                        color = if (equation.replace("→", "->") == ex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
+                        color = if (equation.text.replace("→", "->") == ex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
                     )
                 }
             }

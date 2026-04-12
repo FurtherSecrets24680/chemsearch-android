@@ -21,6 +21,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.io.IOException
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import com.furthersecrets.chemsearch.ui.DebugLog
 
@@ -441,6 +442,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                             activeTab = MolTab.TWO_D
                         )
                     }
+                    backfillStructureMetadataIfMissing(cached, cid)
                     saveToHistory(cached.name)
                     when (savedSource) {
                         DescSource.WIKI -> if (cached.wikiDescription == null) fetchWikiDescription()
@@ -454,13 +456,15 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 val propsDeferred = async { runCatching { ApiClient.pubChem.getProperties(cid) }.getOrNull() }
                 val synsDeferred  = async { runCatching { ApiClient.pubChem.getSynonyms(cid) }.getOrNull() }
                 val descDeferred  = async { runCatching { ApiClient.pubChem.getDescription(cid) }.getOrNull() }
+                val recordDeferred = async { runCatching { ApiClient.pubChem.getRecord(cid) }.getOrNull() }
 
                 val props = propsDeferred.await()?.propertyTable?.properties?.firstOrNull()
-                    ?: CompoundProperty(cid, null, null, null, null, null, null, null, null)
+                    ?: CompoundProperty(cid, null, null, null, null, null, null, null, null, null)
                 val synonyms = synsDeferred.await()
                     ?.informationList?.information?.firstOrNull()?.synonym ?: emptyList()
                 val descItem = descDeferred.await()
                     ?.informationList?.information?.find { it.description != null }
+                val structureCounts = extractStructureCounts(recordDeferred.await())
 
                 DebugLog.d("ChemSearch", "Properties fetched: MW=${props.molecularWeight}, formula=${props.molecularFormula}")
 
@@ -493,6 +497,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     empiricalFormula = getEmpiricalFormula(formula),
                     weight = props.molecularWeight ?: "",
                     charge = props.charge ?: 0,
+                    atomNumber = structureCounts.atomCount,
+                    bondNumber = structureCounts.bondCount,
+                    covalentUnitCount = props.covalentUnitCount,
                     iupacName = props.iupacName ?: "",
                     smiles = props.smiles ?: "",
                     connectivitySmiles = props.connectivitySmiles ?: props.smiles ?: "",
@@ -775,6 +782,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                         isCached = true
                     )
                 }
+                backfillStructureMetadataIfMissing(cached, cid)
                 _query.value = cached.name
                 saveToHistory(cached.name)
                 when (savedSource) {
@@ -790,13 +798,15 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 val propsDeferred = async { runCatching { ApiClient.pubChem.getProperties(cid) }.getOrNull() }
                 val synsDeferred  = async { runCatching { ApiClient.pubChem.getSynonyms(cid) }.getOrNull() }
                 val descDeferred  = async { runCatching { ApiClient.pubChem.getDescription(cid) }.getOrNull() }
+                val recordDeferred = async { runCatching { ApiClient.pubChem.getRecord(cid) }.getOrNull() }
 
                 val props = propsDeferred.await()?.propertyTable?.properties?.firstOrNull()
-                    ?: CompoundProperty(cid, null, null, null, null, null, null, null, null)
+                    ?: CompoundProperty(cid, null, null, null, null, null, null, null, null, null)
                 val synonyms = synsDeferred.await()
                     ?.informationList?.information?.firstOrNull()?.synonym ?: emptyList()
                 val descItem = descDeferred.await()
                     ?.informationList?.information?.find { it.description != null }
+                val structureCounts = extractStructureCounts(recordDeferred.await())
 
                 val casRegex = Regex("""^\d{1,7}-\d{2}-\d$""")
                 val casNumber = synonyms.firstOrNull { casRegex.matches(it) }
@@ -825,6 +835,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     empiricalFormula = getEmpiricalFormula(formula),
                     weight = props.molecularWeight ?: "",
                     charge = props.charge ?: 0,
+                    atomNumber = structureCounts.atomCount,
+                    bondNumber = structureCounts.bondCount,
+                    covalentUnitCount = props.covalentUnitCount,
                     iupacName = props.iupacName ?: "",
                     smiles = props.smiles ?: "",
                     connectivitySmiles = props.connectivitySmiles ?: props.smiles ?: "",
@@ -863,6 +876,68 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 _uiState.update { it.copy(isLoading = false, error = msg) }
             }
         }
+    }
+
+    private data class StructureCounts(
+        val atomCount: Int? = null,
+        val bondCount: Int? = null
+    )
+
+    private suspend fun backfillStructureMetadataIfMissing(cached: ChemUiState, cid: Long) {
+        if (cached.atomNumber != null && cached.bondNumber != null && cached.covalentUnitCount != null) return
+
+        val props = runCatching { ApiClient.pubChem.getProperties(cid) }
+            .getOrNull()
+            ?.propertyTable
+            ?.properties
+            ?.firstOrNull()
+        val counts = extractStructureCounts(runCatching { ApiClient.pubChem.getRecord(cid) }.getOrNull())
+
+        val atomNumber = cached.atomNumber ?: counts.atomCount
+        val bondNumber = cached.bondNumber ?: counts.bondCount
+        val covalentUnits = cached.covalentUnitCount ?: props?.covalentUnitCount
+
+        if (atomNumber == cached.atomNumber &&
+            bondNumber == cached.bondNumber &&
+            covalentUnits == cached.covalentUnitCount
+        ) return
+
+        _uiState.update { state ->
+            if (state.cid != cid) state else state.copy(
+                atomNumber = atomNumber,
+                bondNumber = bondNumber,
+                covalentUnitCount = covalentUnits
+            )
+        }
+        _uiState.value
+            .takeIf { it.cid == cid }
+            ?.copy(isCached = false)
+            ?.let { writeCache(it) }
+    }
+
+    private fun extractStructureCounts(record: JsonObject?): StructureCounts {
+        val compound = runCatching {
+            record
+                ?.getAsJsonArray("PC_Compounds")
+                ?.firstOrNull()
+                ?.asJsonObject
+        }.getOrNull() ?: return StructureCounts()
+
+        val atomCount = runCatching {
+            compound
+                .getAsJsonObject("atoms")
+                ?.getAsJsonArray("aid")
+                ?.size()
+        }.getOrNull()
+
+        val bondCount = runCatching {
+            compound
+                .getAsJsonObject("bonds")
+                ?.getAsJsonArray("aid1")
+                ?.size()
+        }.getOrNull()
+
+        return StructureCounts(atomCount = atomCount, bondCount = bondCount)
     }
 
     private fun parseFormula(formula: String): Map<String, Int> {

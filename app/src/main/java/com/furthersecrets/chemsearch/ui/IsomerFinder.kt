@@ -35,15 +35,32 @@ internal val subscriptMap = mapOf(
     '5' to '₅', '6' to '₆', '7' to '₇', '8' to '₈', '9' to '₉'
 )
 
+private fun shouldSubscriptDigit(text: String, index: Int): Boolean {
+    if (index !in text.indices) return false
+    if (!text[index].isDigit()) return false
+    if (index == 0) return false
+    val prev = text[index - 1]
+    return when {
+        prev.isLetter() || prev == ')' || prev == ']' -> true
+        prev.isDigit() -> shouldSubscriptDigit(text, index - 1)
+        else -> false
+    }
+}
+
 val FormulaSubscriptTransformation = VisualTransformation { text ->
-    val transformed = text.text.map { subscriptMap[it] ?: it }.joinToString("")
+    val raw = text.text
+    val transformed = raw.mapIndexed { index, ch ->
+        if (ch.isDigit() && shouldSubscriptDigit(raw, index)) subscriptMap[ch] ?: ch else ch
+    }.joinToString("")
     TransformedText(
         AnnotatedString(transformed, text.spanStyles, text.paragraphStyles),
         OffsetMapping.Identity
     )
 }
 
-fun String.toFormulaSubscript(): String = map { subscriptMap[it] ?: it }.joinToString("")
+fun String.toFormulaSubscript(): String = mapIndexed { index, ch ->
+    if (ch.isDigit() && shouldSubscriptDigit(this, index)) subscriptMap[ch] ?: ch else ch
+}.joinToString("")
 
 // Formula input field
 

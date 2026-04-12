@@ -32,7 +32,8 @@ data class CompoundProperty(
     @SerializedName("ConnectivitySMILES") val connectivitySmiles: String?,
     @SerializedName("InChIKey") val inchiKey: String?,
     @SerializedName("InChI") val inchi: String?,
-    @SerializedName("Charge") val charge: Int?
+    @SerializedName("Charge") val charge: Int?,
+    @SerializedName("CovalentUnitCount") val covalentUnitCount: Int?
 )
 
 // PubChem Synonyms
@@ -143,6 +144,9 @@ data class ChemUiState(
     val empiricalFormula: String = "",
     val weight: String = "",
     val charge: Int = 0,
+    val atomNumber: Int? = null,
+    val bondNumber: Int? = null,
+    val covalentUnitCount: Int? = null,
     val iupacName: String = "",
     val smiles: String = "",
     val connectivitySmiles: String = "",

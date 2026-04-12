@@ -181,10 +181,11 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         )
     }
 
-    val pageTopPadding = if (compactMode) 12.dp else 20.dp
-    val pageBottomPadding = if (compactMode) 24.dp else 40.dp
-    val pageSpacing = if (compactMode) 8.dp else 12.dp
-    val suggestionTopPadding = if (compactMode) 132.dp else 148.dp
+    val pageHorizontalPadding = if (compactMode) 12.dp else 16.dp
+    val pageTopPadding = if (compactMode) 8.dp else 20.dp
+    val pageBottomPadding = if (compactMode) 18.dp else 40.dp
+    val pageSpacing = if (compactMode) 6.dp else 12.dp
+    val suggestionTopPadding = if (compactMode) 124.dp else 148.dp
 
     CompositionLocalProvider(LocalCompactMode provides compactMode) {
     Scaffold(
@@ -260,7 +261,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() }
                             ) { showSuggestions = false; focusManager.clearFocus() },
-                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = pageTopPadding, bottom = pageBottomPadding),
+                        contentPadding = PaddingValues(start = pageHorizontalPadding, end = pageHorizontalPadding, top = pageTopPadding, bottom = pageBottomPadding),
                         verticalArrangement = Arrangement.spacedBy(pageSpacing)
                     ) {
                         item {
@@ -292,7 +293,10 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                         jumpToTool = 6
                                         selectedTab = AppTab.TOOLS
                                     }
-                                    .padding(horizontal = 4.dp, vertical = 2.dp),
+                                    .padding(
+                                        horizontal = if (compactMode) 2.dp else 4.dp,
+                                        vertical = if (compactMode) 1.dp else 2.dp
+                                    ),
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
                             ) {
@@ -313,12 +317,12 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                         if (state.isLoading) {
                             item {
                                 Box(
-                                    Modifier.fillMaxWidth().padding(vertical = if (compactMode) 28.dp else 40.dp),
+                                    Modifier.fillMaxWidth().padding(vertical = if (compactMode) 20.dp else 40.dp),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Column(
                                         horizontalAlignment = Alignment.CenterHorizontally,
-                                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                                        verticalArrangement = Arrangement.spacedBy(if (compactMode) 8.dp else 12.dp)
                                     ) {
                                         CircularProgressIndicator(
                                             color = MaterialTheme.colorScheme.primary,
@@ -389,7 +393,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                 } else {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = pageTopPadding, bottom = pageBottomPadding),
+                        contentPadding = PaddingValues(start = pageHorizontalPadding, end = pageHorizontalPadding, top = pageTopPadding, bottom = pageBottomPadding),
                         verticalArrangement = Arrangement.spacedBy(pageSpacing)
                     ) {
                         item {
@@ -450,7 +454,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             AnimatedVisibility(
                 visible = showSuggestions && state.suggestions.isNotEmpty(),
                 modifier = Modifier
-                    .padding(top = suggestionTopPadding, start = 16.dp, end = 16.dp)
+                    .padding(top = suggestionTopPadding, start = pageHorizontalPadding, end = pageHorizontalPadding)
                     .zIndex(10f),
                 enter = fadeIn(),
                 exit = fadeOut()

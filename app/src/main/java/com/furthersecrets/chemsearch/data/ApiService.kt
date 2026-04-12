@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.data
 
+import com.google.gson.JsonObject
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.ResponseBody
@@ -17,8 +18,11 @@ interface PubChemApi {
         @Path("name", encoded = true) name: String
     ): CidResponse
 
-    @GET("compound/cid/{cid}/property/MolecularFormula,MolecularWeight,IUPACName,SMILES,ConnectivitySMILES,InChIKey,InChI,Charge/JSON")
+    @GET("compound/cid/{cid}/property/MolecularFormula,MolecularWeight,IUPACName,SMILES,ConnectivitySMILES,InChIKey,InChI,Charge,CovalentUnitCount/JSON")
     suspend fun getProperties(@Path("cid") cid: Long): PropertiesResponse
+
+    @GET("compound/cid/{cid}/record/JSON")
+    suspend fun getRecord(@Path("cid") cid: Long): JsonObject
 
     @GET("compound/cid/{cid}/synonyms/JSON")
     suspend fun getSynonyms(@Path("cid") cid: Long): SynonymsResponse
