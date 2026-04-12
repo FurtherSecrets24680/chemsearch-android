@@ -36,12 +36,13 @@
 - **Favorites** tab with filtering, A-Z and atom-count sorting, and manual reordering.
 
 ### Compound Data
-- Compound header showing name, molecular formula, molecular weight, CID and CAS at a glance
-- Full identifiers card: IUPAC name, SMILES (full and connectivity), InChI, InChIKey, empirical formula, and formal charge (tap any value to copy).
+- Compound header showing name, smart-rendered molecular formula, molecular weight, CID and CAS at a glance
+- Full identifiers card: IUPAC name, SMILES (full and connectivity), InChI, InChIKey, empirical formula, atom count, bond count, and formal charge (tap any value to copy).
 - **Info tooltips** on each card explaining what each identifier or data type means
-- Up to 8 **synonyms** displayed as chips
+- Expanded structural metadata sourced from PubChem, with older cached entries automatically backfilled when needed
+- Up to 8 **synonyms** displayed as tap-to-copy chips
 - **Elemental analysis** with mass percentage bars for each element
-- Tap the formula to jump into the Isomer Finder
+- Tap the formula to copy it, or use the inline action to jump into the Isomer Finder
 
 ### Structure Viewer
 - **2D structure** via PubChem PNG images with tap-to-zoom
@@ -49,6 +50,7 @@
     - Drag to rotate, pinch to zoom, auto-spin with pause on touch
     - CPK coloring for all 118 elements
     - Ball-and-stick model with bonds connected to atom surfaces
+- Loading feedback while 3D data is prepared in the background
 - **Download** 2D PNG or 3D SDF files directly to Downloads
 
 ### Safety Information
@@ -67,10 +69,10 @@ Three switchable sources per compound:
 Eleven chemistry tools accessible from the Tools tab:
 
 - **Custom 3D Molecule Viewer** : Load any `.sdf` or `.mol` file from your device and view it in the native 3D engine
-- **Molar Mass Calculator** : Enter any molecular formula (including parentheses groups and hydrate dot notation) to get the molar mass and a full elemental breakdown by mass percentage
+- **Molar Mass Calculator** : Enter any molecular formula (including parentheses groups and hydrate dot notation) to get the molar mass and a full elemental breakdown by mass percentage, with cursor-aware editing and quick-insert helpers
 - **Oxidation State Finder** : Determine oxidation states for each element in a compound, with support for peroxides, superoxides, ozonides, metal hydrides, and interhalogen compounds. Enter the overall charge for polyatomic ions
 - **SMILES Visualizer** : Paste any SMILES string to look it up on PubChem and view its 2D structure and 3D model
-- **Reaction Balancer** : Balance any chemical equation using matrix-based Gaussian elimination with exact rational arithmetic. Includes quick-insert buttons and swap-sides control
+- **Reaction Balancer** : Balance any chemical equation using matrix-based Gaussian elimination with exact rational arithmetic. Includes quick-insert buttons, live `->` to `→` normalization, and swap-sides control
 - **Isomer Finder** : Find up to 20 structural isomers by searching with a molecular formula
 - **Limiting Reagent** : Identify limiting reagent, ratios, and theoretical yield for a balanced equation
 - **Percent Yield** : Compare actual yield against theoretical yield for a target product
@@ -82,22 +84,27 @@ Tool categories include scrollable filter pills and manual tool reordering.
 
 ### Customization
 - **Theme mode** dropdown (Light / Dark) in Settings
+- **Compact mode** toggle for denser layouts on smaller screens
 - Configurable default description source
 - AI provider selection with per-provider API key management
 - Autosuggestions toggle (scrollable dropdown, toggleable)
+- **Settings backup and restore** using JSON export/import
 
 ### Updates and Cache
 - Built-in update checks against GitHub releases, with optional notifications
 - Local compound cache to speed repeat searches, with clear + custom location controls
+- Missing structural metadata for older cached entries is refreshed automatically in the background
 - Cached results are labeled in the UI
 
 ### Developer Options
 A hidden debug menu can be unlocked by tapping the build number in the 'About' card five times. It includes:
 - **Live log viewer** : Real-time in-app log buffer (up to 200 lines) capturing search events, API calls, errors, SDF loads, and more, with timestamps. Errors always captured; verbose logs toggle-gated
 - **Verbose logging toggle** : Writes detailed `D/ChemSearch` lines to Logcat and the live buffer
+- **Network diagnostics** : Tests PubChem, Wikipedia, GitHub releases, Gemini, and Groq endpoints with status and latency reporting
 - **SharedPreferences inspector** : Dumps all stored keys and values (API keys partially masked)
 - **Memory info** : JVM heap usage and system RAM from `ActivityManager`
 - **API endpoints** : Copies all five base URLs to clipboard for manual testing
+- **Test update notification** : Triggers a sample update alert for verification
 - **Wipe SharedPreferences** : Completely reset all the stored data
 - **Force crash** : Throws a deliberate unhandled exception to verify crash reporting (confirmation required)
 - **Hide debug settings** : Relock the developer menu until the next 5-tap unlock
@@ -126,7 +133,7 @@ A hidden debug menu can be unlocked by tapping the build number in the 'About' c
 | UI            | Jetpack Compose + Material 3                           |
 | Networking    | Retrofit 2 + OkHttp                                    |
 | Image loading | Coil                                                   |
-| Async         | Kotlin Coroutines + StateFlow                          |
+| Async         | Kotlin Coroutines + StateFlow + lifecycle-aware Compose state collection |
 | JSON          | Gson                                                   |
 | 3D rendering  | Custom native Canvas engine                            |
 | Storage       | SharedPreferences                                      |
@@ -138,7 +145,7 @@ A hidden debug menu can be unlocked by tapping the build number in the 'About' c
 
 | Source                                                             | Used for                                                               |
 |--------------------------------------------------------------------|------------------------------------------------------------------------|
-| [PubChem PUG REST](https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest) | Compound lookup, properties, synonyms, descriptions, SDF, autocomplete |
+| [PubChem PUG REST](https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest) | Compound lookup, properties, structural metadata, synonyms, descriptions, SDF, autocomplete |
 | [PubChem PUG View](https://pubchem.ncbi.nlm.nih.gov/docs/pug-view) | GHS safety classifications                                             |
 | [Wikipedia REST API](https://en.wikipedia.org/api/rest_v1/)        | Compound summaries                                                     |
 | [Google Gemini](https://ai.google.dev/)                            | AI descriptions                                                        |
