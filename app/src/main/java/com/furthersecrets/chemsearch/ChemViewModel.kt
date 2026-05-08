@@ -42,6 +42,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     private val _isDarkTheme = MutableStateFlow(prefs.getBoolean("dark_theme", false))
     val isDarkTheme: StateFlow<Boolean> = _isDarkTheme.asStateFlow()
 
+    private val _colorScheme = MutableStateFlow(getSavedColorScheme())
+    val colorScheme: StateFlow<AppColorScheme> = _colorScheme.asStateFlow()
+
     private val _autoSuggest = MutableStateFlow(prefs.getBoolean("auto_suggest", true))
     val autoSuggest: StateFlow<Boolean> = _autoSuggest.asStateFlow()
 
@@ -57,11 +60,17 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     private val _cacheDirPath = MutableStateFlow(prefs.getString("cache_dir", "") ?: "")
     val cacheDirPath: StateFlow<String> = _cacheDirPath.asStateFlow()
 
-    private val _hasGeminiKey = MutableStateFlow(prefs.getString("gemini_key", null)?.isNotBlank() == true)
+    private val _hasGeminiKey = MutableStateFlow(getGeminiKey()?.isNotBlank() == true)
     val hasGeminiKey: StateFlow<Boolean> = _hasGeminiKey.asStateFlow()
 
-    private val _hasGroqKey = MutableStateFlow(prefs.getString("groq_key", null)?.isNotBlank() == true)
+    private val _hasGroqKey = MutableStateFlow(getGroqKey()?.isNotBlank() == true)
     val hasGroqKey: StateFlow<Boolean> = _hasGroqKey.asStateFlow()
+
+    private val _aiKeyStatus = MutableStateFlow(loadAiKeyStatus())
+    val aiKeyStatus: StateFlow<Map<AiProvider, Boolean>> = _aiKeyStatus.asStateFlow()
+
+    private val _aiModelCatalogs = MutableStateFlow(loadAiModelCatalogs())
+    val aiModelCatalogs: StateFlow<Map<AiProvider, AiModelCatalog>> = _aiModelCatalogs.asStateFlow()
 
     private val _updateNotificationsEnabled = MutableStateFlow(prefs.getBoolean(PREF_UPDATE_NOTIFICATIONS, true))
     val updateNotificationsEnabled: StateFlow<Boolean> = _updateNotificationsEnabled.asStateFlow()
@@ -158,7 +167,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         val state = _uiState.value
         val cid = state.cid ?: return
         val current = _favorites.value.toMutableList()
-        if (_isFavorite.value) {
+        val wasFavorite = current.any { it.cid == cid }
+        val nextFavorite = !wasFavorite
+        if (wasFavorite) {
             current.removeAll { it.cid == cid }
             DebugLog.d("ChemSearch", "Removed favorite: ${state.name} (CID $cid)")
         } else {
@@ -171,8 +182,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             ))
             DebugLog.d("ChemSearch", "Added favorite: ${state.name} (CID $cid)")
         }
+        _isFavorite.value = nextFavorite
         _favorites.value = current
-        _isFavorite.value = !_isFavorite.value
         saveFavorites(current)
     }
 
@@ -213,6 +224,12 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         DebugLog.d("ChemSearch", "Theme → ${if (next) "dark" else "light"}")
     }
 
+    fun setColorScheme(scheme: AppColorScheme) {
+        _colorScheme.value = scheme
+        prefs.edit().putString("color_scheme", scheme.name).apply()
+        DebugLog.d("ChemSearch", "Color scheme → ${scheme.name}")
+    }
+
     fun toggleAutoSuggest() {
         val next = !_autoSuggest.value
         _autoSuggest.value = next
@@ -235,7 +252,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun setAiProvider(provider: AiProvider) {
         _uiState.update { it.copy(aiProvider = provider) }
         prefs.edit().putString("ai_provider", provider.name).apply()
-        DebugLog.d("ChemSearch", "AI provider → ${provider.name}")
+        DebugLog.d("ChemSearch", "AI provider → ${provider.displayName}")
         if (_uiState.value.descSource == DescSource.AI) {
             fetchAiDescription()
         }
@@ -243,13 +260,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
     fun reloadSettingsFromPreferences() {
         _isDarkTheme.value = prefs.getBoolean("dark_theme", false)
+        _colorScheme.value = getSavedColorScheme()
         _autoSuggest.value = prefs.getBoolean("auto_suggest", true)
         _compactMode.value = prefs.getBoolean("compact_mode", false)
         _defaultDescSource.value = getSavedDescSource()
         _cacheDirPath.value = prefs.getString("cache_dir", "") ?: ""
         refreshCacheSizeAsync()
-        _hasGeminiKey.value = prefs.getString("gemini_key", null)?.isNotBlank() == true
-        _hasGroqKey.value = prefs.getString("groq_key", null)?.isNotBlank() == true
+        refreshAiKeyStatus()
         _updateNotificationsEnabled.value = prefs.getBoolean(PREF_UPDATE_NOTIFICATIONS, true)
         _updateStatus.update {
             it.copy(lastCheckedAt = prefs.getLong(PREF_UPDATE_LAST_CHECK, 0L).takeIf { ts -> ts != 0L })
@@ -324,11 +341,36 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun setCacheDir(path: String) {
-        prefs.edit().putString("cache_dir", path).apply()
-        _cacheDirPath.value = path
+    fun setCacheDir(path: String): Boolean {
+        val cleanPath = path.trim()
+        if (cleanPath.isBlank()) {
+            prefs.edit().remove("cache_dir").apply()
+            _cacheDirPath.value = ""
+            refreshCacheSizeAsync()
+            DebugLog.d("ChemSearch", "Cache dir reset to default")
+            return true
+        }
+
+        val target = java.io.File(cleanPath)
+        val canUseDirectory = runCatching {
+            if (!target.exists()) target.mkdirs()
+            if (!target.isDirectory) return@runCatching false
+            val probe = java.io.File(target, ".chemsearch_write_test")
+            probe.writeText("ok")
+            probe.delete()
+            true
+        }.getOrDefault(false)
+
+        if (!canUseDirectory) {
+            DebugLog.e("ChemSearch", "Rejected cache dir: $cleanPath")
+            return false
+        }
+
+        prefs.edit().putString("cache_dir", cleanPath).apply()
+        _cacheDirPath.value = cleanPath
         refreshCacheSizeAsync()
-        DebugLog.d("ChemSearch", "Cache dir set to: $path")
+        DebugLog.d("ChemSearch", "Cache dir set to: $cleanPath")
+        return true
     }
 
     fun getCacheDir(): String = prefs.getString("cache_dir", null) ?: ""
@@ -382,11 +424,58 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    private suspend fun fetchSynonyms(cid: Long): List<String> =
+        withContext(Dispatchers.IO) {
+            runCatching {
+                ApiClient.pubChem.getSynonyms(cid)
+                    .informationList
+                    ?.information
+                    ?.firstOrNull()
+                    ?.synonym
+                    ?: emptyList()
+            }.getOrDefault(emptyList())
+        }.distinct()
+
+    private fun loadSynonymsForCurrentCompound(cid: Long, force: Boolean = false) {
+        val current = _uiState.value
+        if (!force && current.cid == cid && current.synonyms.size >= 10) return
+        viewModelScope.launch {
+            _uiState.update { state ->
+                if (state.cid == cid) state.copy(isLoadingSynonyms = true) else state
+            }
+            val synonyms = fetchSynonyms(cid)
+            val currentState = _uiState.value.takeIf { it.cid == cid } ?: return@launch
+            if (synonyms.isEmpty()) {
+                _uiState.update { state ->
+                    if (state.cid == cid) state.copy(isLoadingSynonyms = false) else state
+                }
+                return@launch
+            }
+
+            val casRegex = Regex("""^\d{1,7}-\d{2}-\d$""")
+            val refreshed = currentState.copy(
+                synonyms = synonyms,
+                casNumber = synonyms.firstOrNull { casRegex.matches(it) } ?: currentState.casNumber,
+                isLoadingSynonyms = false,
+                isCached = currentState.isCached
+            )
+
+            _uiState.value = refreshed
+            writeCache(refreshed)
+            DebugLog.d("ChemSearch", "Synonyms loaded for CID $cid: ${synonyms.size} names")
+        }
+    }
+
     fun search(queryOverride: String? = null) {
 
         val q = (queryOverride ?: _query.value).trim()
         if (q.isBlank()) return
         if (queryOverride != null) _query.value = q
+
+        q.toLongOrNull()?.takeIf { it > 0 }?.let { cid ->
+            searchByCid(cid)
+            return
+        }
 
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
@@ -407,10 +496,12 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                         history = loadHistory(),
                         descSource = savedSource,
                         sdfData = null,
-                        activeTab = MolTab.TWO_D
+                        activeTab = MolTab.TWO_D,
+                        isLoadingSynonyms = false
                     )
                 }
                 saveToHistory(cachedByName.name)
+                cachedByName.cid?.let { loadSynonymsForCurrentCompound(it) }
                 when (savedSource) {
                     DescSource.WIKI -> if (cachedByName.wikiDescription == null) fetchWikiDescription()
                     DescSource.AI   -> if (cachedByName.aiDescription == null) fetchAiDescription()
@@ -439,11 +530,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                             descSource = savedSource,
                             ghsData = cached.ghsData,
                             sdfData = null,
-                            activeTab = MolTab.TWO_D
+                            activeTab = MolTab.TWO_D,
+                            isLoadingSynonyms = false
                         )
                     }
                     backfillStructureMetadataIfMissing(cached, cid)
                     saveToHistory(cached.name)
+                    loadSynonymsForCurrentCompound(cid)
                     when (savedSource) {
                         DescSource.WIKI -> if (cached.wikiDescription == null) fetchWikiDescription()
                         DescSource.AI   -> if (cached.aiDescription == null) fetchAiDescription()
@@ -454,24 +547,20 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 }
 
                 val propsDeferred = async { runCatching { ApiClient.pubChem.getProperties(cid) }.getOrNull() }
-                val synsDeferred  = async { runCatching { ApiClient.pubChem.getSynonyms(cid) }.getOrNull() }
                 val descDeferred  = async { runCatching { ApiClient.pubChem.getDescription(cid) }.getOrNull() }
                 val recordDeferred = async { runCatching { ApiClient.pubChem.getRecord(cid) }.getOrNull() }
 
                 val props = propsDeferred.await()?.propertyTable?.properties?.firstOrNull()
-                    ?: CompoundProperty(cid, null, null, null, null, null, null, null, null, null)
-                val synonyms = synsDeferred.await()
-                    ?.informationList?.information?.firstOrNull()?.synonym ?: emptyList()
+                    ?: CompoundProperty(cid = cid)
                 val descItem = descDeferred.await()
                     ?.informationList?.information?.find { it.description != null }
                 val structureCounts = extractStructureCounts(recordDeferred.await())
 
                 DebugLog.d("ChemSearch", "Properties fetched: MW=${props.molecularWeight}, formula=${props.molecularFormula}")
 
-                val casRegex = Regex("""^\d{1,7}-\d{2}-\d$""")
-                val casNumber = synonyms.firstOrNull { casRegex.matches(it) }
-
-                val compoundName = synonyms.firstOrNull() ?: q
+                val compoundName = props.title?.takeIf { it.isNotBlank() }
+                    ?: props.iupacName?.takeIf { it.isNotBlank() }
+                    ?: q
                 val formula = props.molecularFormula ?: ""
 
                 val pubDesc: String? = descItem?.description?.let { el ->
@@ -486,7 +575,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
                 val savedSource = getSavedDescSource()
                 saveToHistory(compoundName)
-                DebugLog.d("ChemSearch", "Search complete: \"$compoundName\" (CID $cid), ${synonyms.size} synonyms, desc=${pubDesc != null}")
+                DebugLog.d("ChemSearch", "Search complete: \"$compoundName\" (CID $cid), desc=${pubDesc != null}")
 
                 val newState = ChemUiState(
                     isLoading = false,
@@ -505,8 +594,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     connectivitySmiles = props.connectivitySmiles ?: props.smiles ?: "",
                     inchiKey = props.inchiKey ?: "",
                     inchi = props.inchi ?: "",
-                    synonyms = synonyms.take(8),
-                    casNumber = casNumber,
+                    synonyms = emptyList(),
+                    casNumber = null,
                     pubDescription = pubDesc,
                     wikiDescription = null,
                     aiDescription = null,
@@ -515,10 +604,12 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     history = loadHistory(),
                     activeTab = MolTab.TWO_D,
                     aiProvider = _uiState.value.aiProvider,
-                    isCached = false
+                    isCached = false,
+                    isLoadingSynonyms = true
                 )
                 _uiState.update { newState }
                 writeCache(newState)
+                loadSynonymsForCurrentCompound(cid, force = true)
 
                 when (savedSource) {
                     DescSource.WIKI -> fetchWikiDescription()
@@ -559,57 +650,64 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun fetchAiDescription() {
         val name = _uiState.value.name.ifBlank { return }
         val provider = _uiState.value.aiProvider
-        
-        if (provider == AiProvider.GEMINI) {
-            fetchGeminiDescription(name)
-        } else {
-            fetchGroqDescription(name)
+
+        when (provider) {
+            AiProvider.GEMINI -> fetchGeminiDescription(name)
+            else -> fetchChatDescription(name, provider)
         }
     }
 
     private fun fetchGeminiDescription(name: String) {
-        val key = getGeminiKey() ?: run {
-            _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "No Gemini API key set. Add it in Settings.") }
+        val provider = AiProvider.GEMINI
+        val key = getAiKey(provider) ?: run {
+            _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "No ${provider.shortName} API key set. Add it in Settings.") }
             return
         }
         _uiState.update { it.copy(isLoadingDesc = true) }
-        DebugLog.d("ChemSearch", "Fetching Gemini description for \"$name\"")
+        DebugLog.d("ChemSearch", "Fetching ${provider.shortName} description for \"$name\"")
         viewModelScope.launch {
             val prompt = "Write a short 2-3 sentence description of the chemical \"$name\". Include real-world applications. Keep it clear and easy to read."
             val req = GeminiRequest(contents = listOf(GeminiContent(parts = listOf(GeminiPart(text = prompt)))))
             try {
-                val response = ApiClient.gemini.generateContent(key, req)
+                val response = ApiClient.gemini.generateContent(getSelectedAiModel(provider), key, req)
                 val text = response.candidates?.firstOrNull()?.content?.parts?.firstOrNull()?.text
-                DebugLog.d("ChemSearch", "Gemini response: ${text?.take(80) ?: "empty"}")
-                _uiState.update { it.copy(isLoadingDesc = false, aiDescription = text ?: "Gemini returned empty response.") }
+                DebugLog.d("ChemSearch", "${provider.shortName} response: ${text?.take(80) ?: "empty"}")
+                _uiState.update { it.copy(isLoadingDesc = false, aiDescription = text ?: "${provider.shortName} returned empty response.") }
             } catch (e: Exception) {
-                DebugLog.e("ChemSearch", "Gemini error: ${e.message}")
-                _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "Gemini error: ${e.message}") }
+                DebugLog.e("ChemSearch", "${provider.shortName} error: ${e.message}")
+                _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "${provider.shortName} error: ${e.message}") }
             }
         }
     }
 
-    private fun fetchGroqDescription(name: String) {
-        val key = getGroqKey() ?: run {
-            _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "No Groq API key set. Add it in Settings.") }
+    private fun fetchChatDescription(name: String, provider: AiProvider) {
+        val key = getAiKey(provider) ?: run {
+            _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "No ${provider.shortName} API key set. Add it in Settings.") }
             return
         }
         _uiState.update { it.copy(isLoadingDesc = true) }
-        DebugLog.d("ChemSearch", "Fetching Groq description for \"$name\"")
+        DebugLog.d("ChemSearch", "Fetching ${provider.shortName} description for \"$name\"")
         viewModelScope.launch {
             val prompt = "Write a short 2-3 sentence description of the chemical \"$name\". Include real-world applications. Keep it clear and easy to read."
             val req = GroqRequest(
-                model = "openai/gpt-oss-120b",
+                model = getSelectedAiModel(provider),
                 messages = listOf(GroqMessage(role = "user", content = prompt))
             )
             try {
-                val response = ApiClient.groq.generateContent("Bearer $key", req)
+                val api = when (provider) {
+                    AiProvider.GROQ -> ApiClient.groq
+                    AiProvider.OPENAI -> ApiClient.openAi
+                    AiProvider.OPENROUTER -> ApiClient.openRouter
+                    AiProvider.MISTRAL -> ApiClient.mistral
+                    AiProvider.GEMINI -> error("Gemini uses a separate API")
+                }
+                val response = api.generateContent("Bearer $key", req)
                 val text = response.choices?.firstOrNull()?.message?.content
-                DebugLog.d("ChemSearch", "Groq response: ${text?.take(80) ?: "empty"}")
-                _uiState.update { it.copy(isLoadingDesc = false, aiDescription = text ?: "Groq returned empty response.") }
+                DebugLog.d("ChemSearch", "${provider.shortName} response: ${text?.take(80) ?: "empty"}")
+                _uiState.update { it.copy(isLoadingDesc = false, aiDescription = text ?: "${provider.shortName} returned empty response.") }
             } catch (e: Exception) {
-                DebugLog.e("ChemSearch", "Groq error: ${e.message}")
-                _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "Groq error: ${e.message}") }
+                DebugLog.e("ChemSearch", "${provider.shortName} error: ${e.message}")
+                _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "${provider.shortName} error: ${e.message}") }
             }
         }
     }
@@ -650,33 +748,158 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun clearSuggestions() = _uiState.update { it.copy(suggestions = emptyList()) }
     fun clearError() = _uiState.update { it.copy(error = null) }
 
-    fun getGeminiKey(): String? = prefs.getString("gemini_key", null)?.ifBlank { null }
-    fun saveGeminiKey(key: String) {
-        prefs.edit().putString("gemini_key", key).apply()
-        _hasGeminiKey.value = key.isNotBlank()
+    fun clearSearchResult() {
+        searchJob?.cancel()
+        autocompleteJob?.cancel()
+        _query.value = ""
+        _uiState.update { current ->
+            ChemUiState(
+                history = loadHistory(),
+                aiProvider = current.aiProvider,
+                descSource = getSavedDescSource(),
+                suggestions = emptyList()
+            )
+        }
     }
 
-    fun clearGeminiKey() {
-        prefs.edit().remove("gemini_key").apply()
-        _hasGeminiKey.value = false
-        if (_uiState.value.aiProvider == AiProvider.GEMINI) _uiState.update { it.copy(aiDescription = null) }
+    private fun loadAiKeyStatus(): Map<AiProvider, Boolean> =
+        AiProvider.entries.associateWith { provider ->
+            SecurePrefs.getString(prefs, provider.keyPref)?.isNotBlank() == true
+        }
+
+    private fun refreshAiKeyStatus() {
+        val status = loadAiKeyStatus()
+        _aiKeyStatus.value = status
+        _hasGeminiKey.value = status[AiProvider.GEMINI] == true
+        _hasGroqKey.value = status[AiProvider.GROQ] == true
     }
 
-    fun getGroqKey(): String? = prefs.getString("groq_key", null)?.ifBlank { null }
-    fun saveGroqKey(key: String) {
-        prefs.edit().putString("groq_key", key).apply()
-        _hasGroqKey.value = key.isNotBlank()
+    private fun loadAiModelCatalogs(): Map<AiProvider, AiModelCatalog> =
+        AiProvider.entries.associateWith { provider ->
+            val selected = prefs.getString(modelPrefKey(provider), null)?.takeIf { it.isNotBlank() }
+                ?: provider.modelName
+            AiModelCatalog(
+                models = (listOf(selected) + provider.defaultModels).distinct(),
+                selectedModel = selected
+            )
+        }
+
+    private fun modelPrefKey(provider: AiProvider): String = "ai_model_${provider.name.lowercase()}"
+
+    fun getSelectedAiModel(provider: AiProvider): String =
+        _aiModelCatalogs.value[provider]?.selectedModel?.takeIf { it.isNotBlank() }
+            ?: prefs.getString(modelPrefKey(provider), null)?.takeIf { it.isNotBlank() }
+            ?: provider.modelName
+
+    fun setAiModel(provider: AiProvider, model: String) {
+        val cleanModel = model.trim()
+        if (cleanModel.isBlank()) return
+        prefs.edit().putString(modelPrefKey(provider), cleanModel).apply()
+        _aiModelCatalogs.update { catalogs ->
+            val current = catalogs[provider] ?: AiModelCatalog(models = provider.defaultModels, selectedModel = provider.modelName)
+            catalogs + (provider to current.copy(
+                models = (listOf(cleanModel) + current.models + provider.defaultModels).distinct(),
+                selectedModel = cleanModel,
+                error = null
+            ))
+        }
+        DebugLog.d("ChemSearch", "${provider.shortName} model → $cleanModel")
+        if (_uiState.value.descSource == DescSource.AI && _uiState.value.aiProvider == provider) {
+            _uiState.update { it.copy(aiDescription = null) }
+            fetchAiDescription()
+        }
     }
 
-    fun clearGroqKey() {
-        prefs.edit().remove("groq_key").apply()
-        _hasGroqKey.value = false
-        if (_uiState.value.aiProvider == AiProvider.GROQ) _uiState.update { it.copy(aiDescription = null) }
+    fun refreshAiModels(provider: AiProvider) {
+        val key = getAiKey(provider) ?: run {
+            _aiModelCatalogs.update { catalogs ->
+                val current = catalogs[provider] ?: AiModelCatalog(models = provider.defaultModels, selectedModel = provider.modelName)
+                catalogs + (provider to current.copy(error = "Add an API key first."))
+            }
+            return
+        }
+        _aiModelCatalogs.update { catalogs ->
+            val current = catalogs[provider] ?: AiModelCatalog(models = provider.defaultModels, selectedModel = provider.modelName)
+            catalogs + (provider to current.copy(isLoading = true, error = null))
+        }
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                runCatching {
+                    when (provider) {
+                        AiProvider.GEMINI -> ApiClient.gemini.listModels(key)
+                            .models
+                            ?.filter { model -> model.supportedGenerationMethods?.contains("generateContent") != false }
+                            ?.mapNotNull { it.name?.removePrefix("models/") }
+                            ?: emptyList()
+                        else -> {
+                            val api = when (provider) {
+                                AiProvider.GROQ -> ApiClient.groq
+                                AiProvider.OPENAI -> ApiClient.openAi
+                                AiProvider.OPENROUTER -> ApiClient.openRouter
+                                AiProvider.MISTRAL -> ApiClient.mistral
+                                AiProvider.GEMINI -> error("Gemini uses a separate API")
+                            }
+                            api.listModels("Bearer $key").data?.mapNotNull { it.id } ?: emptyList()
+                        }
+                    }.filter { it.isNotBlank() }.distinct().sorted()
+                }
+            }
+            _aiModelCatalogs.update { catalogs ->
+                val current = catalogs[provider] ?: AiModelCatalog(models = provider.defaultModels, selectedModel = provider.modelName)
+                result.fold(
+                    onSuccess = { fetched ->
+                        val selected = current.selectedModel.ifBlank { provider.modelName }
+                        val models = (listOf(selected) + fetched + provider.defaultModels).distinct()
+                        catalogs + (provider to current.copy(
+                            models = models,
+                            selectedModel = selected,
+                            isLoading = false,
+                            error = if (fetched.isEmpty()) "No models returned. Keeping defaults." else null
+                        ))
+                    },
+                    onFailure = { e ->
+                        catalogs + (provider to current.copy(
+                            isLoading = false,
+                            error = e.message ?: "Could not refresh models."
+                        ))
+                    }
+                )
+            }
+        }
     }
+
+    fun getAiKey(provider: AiProvider): String? =
+        SecurePrefs.getString(prefs, provider.keyPref)?.ifBlank { null }
+
+    fun hasAiKey(provider: AiProvider): Boolean = getAiKey(provider)?.isNotBlank() == true
+
+    fun saveAiKey(provider: AiProvider, key: String) {
+        runCatching { SecurePrefs.putString(prefs, provider.keyPref, key) }
+            .onFailure { DebugLog.e("ChemSearch", "${provider.shortName} key save failed: ${it.message}") }
+        refreshAiKeyStatus()
+    }
+
+    fun clearAiKey(provider: AiProvider) {
+        SecurePrefs.remove(prefs, provider.keyPref)
+        refreshAiKeyStatus()
+        if (_uiState.value.aiProvider == provider) _uiState.update { it.copy(aiDescription = null) }
+    }
+
+    fun getGeminiKey(): String? = getAiKey(AiProvider.GEMINI)
+    fun saveGeminiKey(key: String) = saveAiKey(AiProvider.GEMINI, key)
+    fun clearGeminiKey() = clearAiKey(AiProvider.GEMINI)
+
+    fun getGroqKey(): String? = getAiKey(AiProvider.GROQ)
+    fun saveGroqKey(key: String) = saveAiKey(AiProvider.GROQ, key)
+    fun clearGroqKey() = clearAiKey(AiProvider.GROQ)
 
     private fun getSavedDescSource(): DescSource =
         DescSource.entries.firstOrNull { it.name == prefs.getString("desc_source", null) }
             ?: DescSource.PUBCHEM
+
+    private fun getSavedColorScheme(): AppColorScheme =
+        AppColorScheme.entries.firstOrNull { it.name == prefs.getString("color_scheme", null) }
+            ?: AppColorScheme.BLUE
 
     private fun saveDescSource(source: DescSource) =
         prefs.edit().putString("desc_source", source.name).apply()
@@ -779,12 +1002,14 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                         history = loadHistory(), descSource = savedSource,
                         sdfData = null, activeTab = MolTab.TWO_D,
                         isomerMode = false, isomers = emptyList(),
-                        isCached = true
+                        isCached = true,
+                        isLoadingSynonyms = false
                     )
                 }
                 backfillStructureMetadataIfMissing(cached, cid)
                 _query.value = cached.name
                 saveToHistory(cached.name)
+                loadSynonymsForCurrentCompound(cid)
                 when (savedSource) {
                     DescSource.WIKI -> if (cached.wikiDescription == null) fetchWikiDescription()
                     DescSource.AI   -> if (cached.aiDescription == null) fetchAiDescription()
@@ -796,21 +1021,18 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
             try {
                 val propsDeferred = async { runCatching { ApiClient.pubChem.getProperties(cid) }.getOrNull() }
-                val synsDeferred  = async { runCatching { ApiClient.pubChem.getSynonyms(cid) }.getOrNull() }
                 val descDeferred  = async { runCatching { ApiClient.pubChem.getDescription(cid) }.getOrNull() }
                 val recordDeferred = async { runCatching { ApiClient.pubChem.getRecord(cid) }.getOrNull() }
 
                 val props = propsDeferred.await()?.propertyTable?.properties?.firstOrNull()
-                    ?: CompoundProperty(cid, null, null, null, null, null, null, null, null, null)
-                val synonyms = synsDeferred.await()
-                    ?.informationList?.information?.firstOrNull()?.synonym ?: emptyList()
+                    ?: CompoundProperty(cid = cid)
                 val descItem = descDeferred.await()
                     ?.informationList?.information?.find { it.description != null }
                 val structureCounts = extractStructureCounts(recordDeferred.await())
 
-                val casRegex = Regex("""^\d{1,7}-\d{2}-\d$""")
-                val casNumber = synonyms.firstOrNull { casRegex.matches(it) }
-                val compoundName = synonyms.firstOrNull() ?: "CID $cid"
+                val compoundName = props.title?.takeIf { it.isNotBlank() }
+                    ?: props.iupacName?.takeIf { it.isNotBlank() }
+                    ?: "CID $cid"
                 val formula = props.molecularFormula ?: ""
 
                 val pubDesc: String? = descItem?.description?.let { el ->
@@ -843,8 +1065,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     connectivitySmiles = props.connectivitySmiles ?: props.smiles ?: "",
                     inchiKey = props.inchiKey ?: "",
                     inchi = props.inchi ?: "",
-                    synonyms = synonyms.take(8),
-                    casNumber = casNumber,
+                    synonyms = emptyList(),
+                    casNumber = null,
                     pubDescription = pubDesc,
                     wikiDescription = null, aiDescription = null,
                     descSource = savedSource,
@@ -854,11 +1076,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     aiProvider = _uiState.value.aiProvider,
                     isomerMode = false,
                     isomers = emptyList(),
-                    isCached = false
+                    isCached = false,
+                    isLoadingSynonyms = true
                 )
                 _uiState.update { newState }
                 _query.value = compoundName
                 writeCache(newState)
+                loadSynonymsForCurrentCompound(cid, force = true)
 
                 when (savedSource) {
                     DescSource.WIKI -> fetchWikiDescription()

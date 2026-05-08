@@ -18,7 +18,8 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             val isDark by vm.isDarkTheme.collectAsStateWithLifecycle()
-            ChemSearchTheme(darkTheme = isDark) {
+            val colorScheme by vm.colorScheme.collectAsStateWithLifecycle()
+            ChemSearchTheme(darkTheme = isDark, colorScheme = colorScheme) {
                 MainScreen(vm = vm)
             }
         }

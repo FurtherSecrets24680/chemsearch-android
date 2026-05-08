@@ -11,6 +11,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,6 +22,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
@@ -31,6 +33,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.furthersecrets.chemsearch.ChemViewModel
 import androidx.activity.compose.BackHandler
 import com.furthersecrets.chemsearch.data.AiProvider
+import com.furthersecrets.chemsearch.data.AppColorScheme
 import com.furthersecrets.chemsearch.data.DescSource
 
 enum class AppTab { SEARCH, FAVORITES, RECENT, TOOLS, SETTINGS }
@@ -43,11 +46,12 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val state by vm.uiState.collectAsStateWithLifecycle()
     val query by vm.query.collectAsStateWithLifecycle()
     val isDark by vm.isDarkTheme.collectAsStateWithLifecycle()
+    val colorScheme by vm.colorScheme.collectAsStateWithLifecycle()
     val autoSuggest by vm.autoSuggest.collectAsStateWithLifecycle()
     val compactMode by vm.compactMode.collectAsStateWithLifecycle()
     val defaultDescSource by vm.defaultDescSource.collectAsStateWithLifecycle()
-    val hasGeminiKey by vm.hasGeminiKey.collectAsStateWithLifecycle()
-    val hasGroqKey by vm.hasGroqKey.collectAsStateWithLifecycle()
+    val aiKeyStatus by vm.aiKeyStatus.collectAsStateWithLifecycle()
+    val aiModelCatalogs by vm.aiModelCatalogs.collectAsStateWithLifecycle()
     val cacheSizeBytes by vm.cacheSizeBytes.collectAsStateWithLifecycle()
     val cacheDirPath by vm.cacheDirPath.collectAsStateWithLifecycle()
     val updateNotificationsEnabled by vm.updateNotificationsEnabled.collectAsStateWithLifecycle()
@@ -58,8 +62,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val favorites by vm.favorites.collectAsStateWithLifecycle()
     val isFavorite by vm.isFavorite.collectAsStateWithLifecycle()
 
-    var showGeminiKeyDialog by remember { mutableStateOf(false) }
-    var showGroqKeyDialog by remember { mutableStateOf(false) }
+    var editingAiKeyProvider by remember { mutableStateOf<AiProvider?>(null) }
     var showAiProviderDialog by remember { mutableStateOf(false) }
     var showSuggestions by remember { mutableStateOf(false) }
     var showSettings by remember { mutableStateOf(false) }
@@ -77,37 +80,38 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         }
     }
 
-    if (showGeminiKeyDialog) {
+    editingAiKeyProvider?.let { provider ->
         ApiKeyDialog(
-            title = "Gemini API Key",
-            link = "aistudio.google.com",
-            current = vm.getGeminiKey() ?: "",
-            onSave = { key -> vm.saveGeminiKey(key); showGeminiKeyDialog = false; vm.setDescSource(DescSource.AI) },
-            onDismiss = { showGeminiKeyDialog = false }
-        )
-    }
-
-    if (showGroqKeyDialog) {
-        ApiKeyDialog(
-            title = "Groq API Key",
-            link = "console.groq.com",
-            current = vm.getGroqKey() ?: "",
-            onSave = { key -> vm.saveGroqKey(key); showGroqKeyDialog = false; vm.setDescSource(DescSource.AI) },
-            onDismiss = { showGroqKeyDialog = false }
+            title = "${provider.displayName} API Key",
+            link = provider.helpHost,
+            current = vm.getAiKey(provider) ?: "",
+            onSave = { key ->
+                vm.saveAiKey(provider, key)
+                vm.setAiProvider(provider)
+                vm.refreshAiModels(provider)
+                editingAiKeyProvider = null
+                vm.setDescSource(DescSource.AI)
+            },
+            onDismiss = { editingAiKeyProvider = null }
         )
     }
 
     if (showAiProviderDialog) {
         AiProviderDialog(
+            selectedProvider = state.aiProvider,
+            keyStatus = aiKeyStatus,
             onSelect = { provider ->
                 vm.setAiProvider(provider)
                 showAiProviderDialog = false
-                val key = if (provider == AiProvider.GEMINI) vm.getGeminiKey() else vm.getGroqKey()
-                if (key.isNullOrBlank()) {
-                    if (provider == AiProvider.GEMINI) showGeminiKeyDialog = true else showGroqKeyDialog = true
-                } else {
+                if (vm.hasAiKey(provider)) {
                     vm.setDescSource(DescSource.AI)
+                } else {
+                    editingAiKeyProvider = provider
                 }
+            },
+            onEditKey = { provider ->
+                showAiProviderDialog = false
+                editingAiKeyProvider = provider
             },
             onDismiss = { showAiProviderDialog = false }
         )
@@ -116,23 +120,25 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     if (showSettings) {
         SettingsSheet(
             isDark = isDark,
+            colorScheme = colorScheme,
             autoSuggest = autoSuggest,
             compactMode = compactMode,
             defaultDescSource = defaultDescSource,
             aiProvider = state.aiProvider,
-            hasGeminiKey = hasGeminiKey,
-            hasGroqKey = hasGroqKey,
+            aiKeyStatus = aiKeyStatus,
+            aiModelCatalogs = aiModelCatalogs,
             updateNotificationsEnabled = updateNotificationsEnabled,
             updateStatus = updateStatus,
             onToggleTheme = { vm.toggleTheme() },
+            onSetColorScheme = { vm.setColorScheme(it) },
             onToggleAutoSuggest = { vm.toggleAutoSuggest() },
             onToggleCompactMode = { vm.setCompactMode(!compactMode) },
             onSetDefaultDesc = { vm.setDefaultDescSource(it) },
             onSetAiProvider = { vm.setAiProvider(it) },
-            onSetGeminiKey = { showGeminiKeyDialog = true; showSettings = false },
-            onSetGroqKey = { showGroqKeyDialog = true; showSettings = false },
-            onClearGeminiKey = { vm.clearGeminiKey() },
-            onClearGroqKey = { vm.clearGroqKey() },
+            onSetAiModel = { provider, model -> vm.setAiModel(provider, model) },
+            onRefreshAiModels = { provider -> vm.refreshAiModels(provider) },
+            onEditAiKey = { provider -> editingAiKeyProvider = provider; showSettings = false },
+            onClearAiKey = { provider -> vm.clearAiKey(provider) },
             onClearHistory = { vm.clearHistory() },
             onToggleUpdateNotifications = { enabled -> vm.setUpdateNotificationsEnabled(enabled) },
             onCheckForUpdates = { vm.checkForUpdates(manual = true) },
@@ -257,10 +263,12 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
-                            .clickable(
-                                indication = null,
-                                interactionSource = remember { MutableInteractionSource() }
-                            ) { showSuggestions = false; focusManager.clearFocus() },
+                            .pointerInput(Unit) {
+                                detectTapGestures {
+                                    showSuggestions = false
+                                    focusManager.clearFocus(force = true)
+                                }
+                            },
                         contentPadding = PaddingValues(start = pageHorizontalPadding, end = pageHorizontalPadding, top = pageTopPadding, bottom = pageBottomPadding),
                         verticalArrangement = Arrangement.spacedBy(pageSpacing)
                     ) {
@@ -278,7 +286,10 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     if (it.isNotEmpty() && autoSuggest) showSuggestions = true
                                 },
                                 onSearch = { showSuggestions = false; focusManager.clearFocus(); vm.search() },
-                                onClear = { vm.onQueryChange(""); showSuggestions = false }
+                                onClear = {
+                                    vm.clearSearchResult()
+                                    showSuggestions = false
+                                }
                             )
                         }
 
@@ -365,22 +376,27 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 )
                             }
                             item { IdentifiersSection(state, context) }
-                            if (state.elementalData.isNotEmpty()) item { ElementalSection(state.elementalData) }
-                            if (state.synonyms.isNotEmpty()) item { SynonymsSection(state.synonyms) }
+                            if (state.synonyms.isNotEmpty() || state.isLoadingSynonyms) {
+                                item {
+                                    SynonymsSection(
+                                        synonyms = state.synonyms,
+                                        isLoading = state.isLoadingSynonyms
+                                    )
+                                }
+                            }
                             item {
                                 DescriptionSection(
                                     state = state,
                                     onPubChem = { vm.setDescSource(DescSource.PUBCHEM) },
                                     onWiki = { vm.setDescSource(DescSource.WIKI) },
                                     onAI = {
-                                        val key =
-                                            if (state.aiProvider == AiProvider.GEMINI) vm.getGeminiKey() else vm.getGroqKey()
-                                        if (key.isNullOrBlank()) showAiProviderDialog = true
-                                        else vm.setDescSource(DescSource.AI)
+                                        if (vm.hasAiKey(state.aiProvider)) vm.setDescSource(DescSource.AI)
+                                        else showAiProviderDialog = true
                                     },
                                     onRegenerate = { vm.fetchAiDescription() }
                                 )
                             }
+                            if (state.elementalData.isNotEmpty()) item { ElementalSection(state.elementalData) }
                             item {
                                 SafetySection(
                                     ghsData = state.ghsData,
@@ -412,23 +428,25 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 )
                                 AppTab.SETTINGS -> SettingsInline(
                                     isDark = isDark,
+                                    colorScheme = colorScheme,
                                     autoSuggest = autoSuggest,
                                     compactMode = compactMode,
                                     defaultDescSource = defaultDescSource,
                                     aiProvider = state.aiProvider,
-                                    hasGeminiKey = hasGeminiKey,
-                                    hasGroqKey = hasGroqKey,
+                                    aiKeyStatus = aiKeyStatus,
+                                    aiModelCatalogs = aiModelCatalogs,
                                     updateNotificationsEnabled = updateNotificationsEnabled,
                                     updateStatus = updateStatus,
                                     onToggleTheme = { vm.toggleTheme() },
+                                    onSetColorScheme = { vm.setColorScheme(it) },
                                     onToggleAutoSuggest = { vm.toggleAutoSuggest() },
                                     onToggleCompactMode = { vm.setCompactMode(!compactMode) },
                                     onSetDefaultDesc = { vm.setDefaultDescSource(it) },
                                     onSetAiProvider = { vm.setAiProvider(it) },
-                                    onSetGeminiKey = { showGeminiKeyDialog = true },
-                                    onSetGroqKey = { showGroqKeyDialog = true },
-                                    onClearGeminiKey = { vm.clearGeminiKey() },
-                                    onClearGroqKey = { vm.clearGroqKey() },
+                                    onSetAiModel = { provider, model -> vm.setAiModel(provider, model) },
+                                    onRefreshAiModels = { provider -> vm.refreshAiModels(provider) },
+                                    onEditAiKey = { provider -> editingAiKeyProvider = provider },
+                                    onClearAiKey = { provider -> vm.clearAiKey(provider) },
                                     onClearHistory = { vm.clearHistory() },
                                     onToggleUpdateNotifications = { enabled -> vm.setUpdateNotificationsEnabled(enabled) },
                                     onCheckForUpdates = { vm.checkForUpdates(manual = true) },

@@ -15,10 +15,10 @@ interface PubChemApi {
 
     @GET("compound/name/{name}/cids/JSON")
     suspend fun getCid(
-        @Path("name", encoded = true) name: String
+        @Path("name") name: String
     ): CidResponse
 
-    @GET("compound/cid/{cid}/property/MolecularFormula,MolecularWeight,IUPACName,SMILES,ConnectivitySMILES,InChIKey,InChI,Charge,CovalentUnitCount/JSON")
+    @GET("compound/cid/{cid}/property/MolecularFormula,MolecularWeight,IUPACName,SMILES,ConnectivitySMILES,InChIKey,InChI,Charge,CovalentUnitCount,Title/JSON")
     suspend fun getProperties(@Path("cid") cid: Long): PropertiesResponse
 
     @GET("compound/cid/{cid}/record/JSON")
@@ -38,7 +38,7 @@ interface PubChemApi {
 
     @GET("compound/fastformula/{formula}/cids/JSON")
     suspend fun getIsomerCids(
-        @Path("formula", encoded = true) formula: String,
+        @Path("formula") formula: String,
         @Query("MaxRecords") maxRecords: Int = 20
     ): CidResponse
 
@@ -54,7 +54,7 @@ interface PubChemAutocompleteApi {
 
     @GET("compound/{query}/JSON")
     suspend fun autocomplete(
-        @Path("query", encoded = true) query: String,
+        @Path("query") query: String,
         @Query("limit") limit: Int = 8
     ): AutocompleteResponse
 }
@@ -73,22 +73,33 @@ interface WikiApi {
 
 interface GeminiApi {
 
-    @POST("models/gemini-flash-latest:generateContent")
+    @POST("models/{model}:generateContent")
     suspend fun generateContent(
+        @Path("model") model: String,
         @Query("key") apiKey: String,
         @Body request: GeminiRequest
     ): GeminiResponse
+
+    @GET("models")
+    suspend fun listModels(
+        @Query("key") apiKey: String
+    ): GeminiModelsResponse
 }
 
-// Groq
+// OpenAI-compatible chat providers
 
-interface GroqApi {
+interface ChatCompletionsApi {
 
     @POST("chat/completions")
     suspend fun generateContent(
         @Header("Authorization") auth: String,
         @Body request: GroqRequest
     ): GroqResponse
+
+    @GET("models")
+    suspend fun listModels(
+        @Header("Authorization") auth: String
+    ): ChatModelsResponse
 }
 
 // GitHub Releases
@@ -154,9 +165,21 @@ object ApiClient {
         retrofit("https://generativelanguage.googleapis.com/v1beta/")
             .create(GeminiApi::class.java)
 
-    val groq: GroqApi =
+    val groq: ChatCompletionsApi =
         retrofit("https://api.groq.com/openai/v1/")
-            .create(GroqApi::class.java)
+            .create(ChatCompletionsApi::class.java)
+
+    val openAi: ChatCompletionsApi =
+        retrofit("https://api.openai.com/v1/")
+            .create(ChatCompletionsApi::class.java)
+
+    val openRouter: ChatCompletionsApi =
+        retrofit("https://openrouter.ai/api/v1/")
+            .create(ChatCompletionsApi::class.java)
+
+    val mistral: ChatCompletionsApi =
+        retrofit("https://api.mistral.ai/v1/")
+            .create(ChatCompletionsApi::class.java)
 
     val github: GitHubApi =
         retrofit("https://api.github.com/", githubClient)

@@ -60,27 +60,302 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+private val SECRET_PREF_KEYS = AiProvider.entries.map { it.keyPref }.toSet()
+private val SENSITIVE_PREF_TOKENS = listOf("key", "token", "secret")
+
+private fun AppColorScheme.label(): String = when (this) {
+    AppColorScheme.BLUE -> "Blue"
+    AppColorScheme.VIOLET -> "Violet"
+    AppColorScheme.EMERALD -> "Emerald"
+    AppColorScheme.ROSE -> "Rose"
+    AppColorScheme.AMBER -> "Amber"
+}
+
+private fun AppColorScheme.previewColor(): Color = when (this) {
+    AppColorScheme.BLUE -> Color(0xFF2563EB)
+    AppColorScheme.VIOLET -> Color(0xFF7C3AED)
+    AppColorScheme.EMERALD -> Color(0xFF059669)
+    AppColorScheme.ROSE -> Color(0xFFE11D48)
+    AppColorScheme.AMBER -> Color(0xFFD97706)
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun ColorSchemePicker(
+    colorScheme: AppColorScheme,
+    onSetColorScheme: (AppColorScheme) -> Unit
+) {
+    FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        AppColorScheme.entries.forEach { scheme ->
+            val selected = colorScheme == scheme
+            Surface(
+                onClick = { onSetColorScheme(scheme) },
+                shape = RoundedCornerShape(999.dp),
+                color = if (selected) scheme.previewColor().copy(0.14f) else MaterialTheme.colorScheme.surface,
+                border = BorderStroke(
+                    1.dp,
+                    if (selected) scheme.previewColor().copy(0.75f) else MaterialTheme.colorScheme.outline.copy(0.24f)
+                )
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 7.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(7.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(12.dp)
+                            .background(scheme.previewColor(), CircleShape)
+                    )
+                    Text(
+                        scheme.label(),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = if (selected) scheme.previewColor() else MaterialTheme.colorScheme.onSurface.copy(0.72f)
+                    )
+                    if (selected) {
+                        Icon(
+                            Icons.Default.Check,
+                            contentDescription = null,
+                            tint = scheme.previewColor(),
+                            modifier = Modifier.size(14.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AiProviderSettings(
+    aiProvider: AiProvider,
+    aiKeyStatus: Map<AiProvider, Boolean>,
+    aiModelCatalogs: Map<AiProvider, AiModelCatalog>,
+    onSetAiProvider: (AiProvider) -> Unit,
+    onSetAiModel: (AiProvider, String) -> Unit,
+    onRefreshAiModels: (AiProvider) -> Unit,
+    onEditAiKey: (AiProvider) -> Unit,
+    onClearAiKey: (AiProvider) -> Unit
+) {
+    var providerExpanded by remember { mutableStateOf(false) }
+    var modelExpanded by remember(aiProvider) { mutableStateOf(false) }
+    val selectedHasKey = aiKeyStatus[aiProvider] == true
+    val catalog = aiModelCatalogs[aiProvider] ?: AiModelCatalog(
+        models = aiProvider.defaultModels,
+        selectedModel = aiProvider.modelName
+    )
+    val selectedModel = catalog.selectedModel.ifBlank { aiProvider.modelName }
+    val modelOptions = (listOf(selectedModel) + catalog.models + aiProvider.defaultModels).distinct()
+
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Text(
+            "Provider",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+        )
+        Box {
+            Surface(
+                onClick = { providerExpanded = true },
+                shape = RoundedCornerShape(12.dp),
+                color = MaterialTheme.colorScheme.surface,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.28f)),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Icon(
+                        if (selectedHasKey) Icons.Default.Check else Icons.Default.Key,
+                        contentDescription = null,
+                        tint = if (selectedHasKey) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.48f),
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Text(aiProvider.displayName, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+                        Text(
+                            if (selectedHasKey) "Key saved" else "Needs API key",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = if (selectedHasKey) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error.copy(0.78f),
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                    Icon(Icons.Default.ArrowDropDown, contentDescription = null, tint = MaterialTheme.colorScheme.onSurface.copy(0.55f))
+                }
+            }
+            DropdownMenu(
+                expanded = providerExpanded,
+                onDismissRequest = { providerExpanded = false }
+            ) {
+                AiProvider.entries.forEach { provider ->
+                    val hasKey = aiKeyStatus[provider] == true
+                    DropdownMenuItem(
+                        text = {
+                            Column(verticalArrangement = Arrangement.spacedBy(1.dp)) {
+                                Text(provider.displayName, fontWeight = FontWeight.SemiBold)
+                                Text(
+                                    if (hasKey) "Key saved" else "Needs key",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = if (hasKey) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error.copy(0.75f)
+                                )
+                            }
+                        },
+                        leadingIcon = {
+                            Icon(
+                                if (hasKey) Icons.Default.Check else Icons.Default.Key,
+                                contentDescription = null,
+                                tint = if (hasKey) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.45f),
+                                modifier = Modifier.size(18.dp)
+                            )
+                        },
+                        trailingIcon = {
+                            if (provider == aiProvider) {
+                                Icon(Icons.Default.RadioButtonChecked, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+                            }
+                        },
+                        onClick = {
+                            providerExpanded = false
+                            onSetAiProvider(provider)
+                        }
+                    )
+                }
+            }
+        }
+
+        Text(
+            aiProvider.description,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.58f)
+        )
+
+        Text(
+            "Model",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+        )
+        Box {
+            Surface(
+                onClick = { modelExpanded = true },
+                shape = RoundedCornerShape(12.dp),
+                color = MaterialTheme.colorScheme.surface,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.28f)),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Icon(Icons.Default.Memory, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+                    Text(
+                        selectedModel,
+                        modifier = Modifier.weight(1f),
+                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = FontFamily.Monospace,
+                        maxLines = 1
+                    )
+                    Icon(Icons.Default.ArrowDropDown, contentDescription = null, tint = MaterialTheme.colorScheme.onSurface.copy(0.55f))
+                }
+            }
+            DropdownMenu(
+                expanded = modelExpanded,
+                onDismissRequest = { modelExpanded = false }
+            ) {
+                modelOptions.forEach { model ->
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                model,
+                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = FontFamily.Monospace
+                            )
+                        },
+                        trailingIcon = {
+                            if (model == selectedModel) {
+                                Icon(Icons.Default.Check, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
+                            }
+                        },
+                        onClick = {
+                            modelExpanded = false
+                            onSetAiModel(aiProvider, model)
+                        }
+                    )
+                }
+            }
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Button(
+                onClick = { onEditAiKey(aiProvider) },
+                shape = RoundedCornerShape(10.dp),
+                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp)
+            ) {
+                Icon(Icons.Default.Key, contentDescription = null, modifier = Modifier.size(15.dp))
+                Spacer(Modifier.width(5.dp))
+                Text(if (selectedHasKey) "Replace" else "Add key")
+            }
+            OutlinedButton(
+                onClick = { onRefreshAiModels(aiProvider) },
+                enabled = selectedHasKey && !catalog.isLoading,
+                shape = RoundedCornerShape(10.dp),
+                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp)
+            ) {
+                if (catalog.isLoading) {
+                    CircularProgressIndicator(modifier = Modifier.size(14.dp), strokeWidth = 2.dp)
+                } else {
+                    Icon(Icons.Default.Refresh, contentDescription = null, modifier = Modifier.size(15.dp))
+                }
+                Spacer(Modifier.width(5.dp))
+                Text("Refresh models")
+            }
+            if (selectedHasKey) {
+                IconButton(onClick = { onClearAiKey(aiProvider) }) {
+                    Icon(Icons.Default.DeleteOutline, contentDescription = "Remove key", tint = MaterialTheme.colorScheme.error.copy(0.72f))
+                }
+            }
+        }
+
+        catalog.error?.let { error ->
+            Text(
+                error,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.error
+            )
+        }
+    }
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsSheet(
     isDark: Boolean,
+    colorScheme: AppColorScheme,
     autoSuggest: Boolean,
     compactMode: Boolean,
     defaultDescSource: DescSource,
     aiProvider: AiProvider,
-    hasGeminiKey: Boolean,
-    hasGroqKey: Boolean,
+    aiKeyStatus: Map<AiProvider, Boolean>,
+    aiModelCatalogs: Map<AiProvider, AiModelCatalog>,
     updateNotificationsEnabled: Boolean,
     updateStatus: UpdateStatus,
     onToggleTheme: () -> Unit,
+    onSetColorScheme: (AppColorScheme) -> Unit,
     onToggleAutoSuggest: () -> Unit,
     onToggleCompactMode: () -> Unit,
     onSetDefaultDesc: (DescSource) -> Unit,
     onSetAiProvider: (AiProvider) -> Unit,
-    onSetGeminiKey: () -> Unit,
-    onSetGroqKey: () -> Unit,
-    onClearGeminiKey: () -> Unit,
-    onClearGroqKey: () -> Unit,
+    onSetAiModel: (AiProvider, String) -> Unit,
+    onRefreshAiModels: (AiProvider) -> Unit,
+    onEditAiKey: (AiProvider) -> Unit,
+    onClearAiKey: (AiProvider) -> Unit,
     onClearHistory: () -> Unit,
     onToggleUpdateNotifications: (Boolean) -> Unit,
     onCheckForUpdates: () -> Unit,
@@ -115,6 +390,16 @@ fun SettingsSheet(
                 checked = isDark,
                 onToggle = onToggleTheme
             )
+            Text(
+                "Color scheme",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.45f),
+                modifier = Modifier.padding(top = 6.dp)
+            )
+            ColorSchemePicker(
+                colorScheme = colorScheme,
+                onSetColorScheme = onSetColorScheme
+            )
 
             Spacer(Modifier.height(4.dp))
             SettingsSectionHeader("Search")
@@ -148,30 +433,17 @@ fun SettingsSheet(
             }
 
             Spacer(Modifier.height(4.dp))
-            SettingsSectionHeader("AI Provider")
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                listOf(AiProvider.GEMINI to "Gemini", AiProvider.GROQ to "Groq").forEach { (prov, label) ->
-                    SourceBtn(label = label, active = aiProvider == prov) { onSetAiProvider(prov) }
-                }
-            }
-
-            Spacer(Modifier.height(4.dp))
-            SettingsSectionHeader("API Keys")
-            if (hasGeminiKey) {
-                SettingsActionRow(Icons.Default.Key, "Gemini API Key saved", "Tap to replace", "Replace", MaterialTheme.colorScheme.primary, onSetGeminiKey)
-                SettingsActionRow(Icons.Default.DeleteOutline, "Remove Gemini Key", "Disables Gemini AI", "Remove", MaterialTheme.colorScheme.error, onClearGeminiKey)
-            } else {
-                SettingsActionRow(Icons.Default.Key, "No Gemini Key set", "Required for Gemini descriptions", "Add Key", MaterialTheme.colorScheme.primary, onSetGeminiKey)
-            }
-
-            HorizontalDivider(Modifier.padding(vertical = 4.dp), color = MaterialTheme.colorScheme.outline.copy(0.1f))
-
-            if (hasGroqKey) {
-                SettingsActionRow(Icons.Default.Key, "Groq API Key saved", "Tap to replace", "Replace", MaterialTheme.colorScheme.primary, onSetGroqKey)
-                SettingsActionRow(Icons.Default.DeleteOutline, "Remove Groq Key", "Disables Groq AI", "Remove", MaterialTheme.colorScheme.error, onClearGroqKey)
-            } else {
-                SettingsActionRow(Icons.Default.Key, "No Groq Key set", "Required for Groq descriptions", "Add Key", MaterialTheme.colorScheme.primary, onSetGroqKey)
-            }
+            SettingsSectionHeader("AI Provider & Keys")
+            AiProviderSettings(
+                aiProvider = aiProvider,
+                aiKeyStatus = aiKeyStatus,
+                aiModelCatalogs = aiModelCatalogs,
+                onSetAiProvider = onSetAiProvider,
+                onSetAiModel = onSetAiModel,
+                onRefreshAiModels = onRefreshAiModels,
+                onEditAiKey = onEditAiKey,
+                onClearAiKey = onClearAiKey
+            )
 
             Spacer(Modifier.height(4.dp))
             SettingsSectionHeader("Data")
@@ -210,11 +482,21 @@ fun SettingsSheet(
 private fun buildSettingsBackupJson(prefs: android.content.SharedPreferences): String {
     val root = JSONObject()
     root.put("format", "chemsearch_settings")
-    root.put("version", 1)
+    root.put("version", 2)
     root.put("exported_at", System.currentTimeMillis())
+    root.put("app_version_name", BuildConfig.VERSION_NAME)
+    root.put("app_version_code", BuildConfig.VERSION_CODE)
+    root.put("includes_api_keys", true)
     val entries = JSONObject()
+    val apiKeys = JSONObject()
 
     prefs.all.toSortedMap().forEach { (key, value) ->
+        if (key in SECRET_PREF_KEYS) {
+            SecurePrefs.getString(prefs, key)
+                ?.takeIf { it.isNotBlank() }
+                ?.let { apiKeys.put(key, it) }
+            return@forEach
+        }
         val item = JSONObject()
         when (value) {
             is Boolean -> {
@@ -249,6 +531,12 @@ private fun buildSettingsBackupJson(prefs: android.content.SharedPreferences): S
     }
 
     root.put("entries", entries)
+    root.put("api_keys", apiKeys)
+    root.put("included_sensitive_keys", JSONArray().apply {
+        SECRET_PREF_KEYS.sorted()
+            .filter { apiKeys.has(it) }
+            .forEach(::put)
+    })
     return root.toString(2)
 }
 
@@ -259,12 +547,18 @@ private fun restoreSettingsFromBackup(
     val root = JSONObject(rawJson)
     val entries = root.optJSONObject("entries")
         ?: throw IllegalArgumentException("Invalid settings backup file.")
+    val apiKeys = root.optJSONObject("api_keys")
+    val shouldPreserveExistingSecrets = apiKeys == null
+    val preservedSecrets = if (shouldPreserveExistingSecrets) SECRET_PREF_KEYS.mapNotNull { key ->
+        prefs.getString(key, null)?.let { key to it }
+    }.toMap() else emptyMap()
     val editor = prefs.edit().clear()
     var restored = 0
 
     val keys = entries.keys()
     while (keys.hasNext()) {
         val key = keys.next()
+        if (key in SECRET_PREF_KEYS) continue
         val item = entries.optJSONObject(key) ?: continue
         when (item.optString("type")) {
             "boolean" -> editor.putBoolean(key, item.optBoolean("value"))
@@ -286,7 +580,24 @@ private fun restoreSettingsFromBackup(
         restored++
     }
 
+    preservedSecrets.forEach { (key, value) ->
+        editor.putString(key, value)
+    }
+
     editor.apply()
+
+    if (apiKeys != null) {
+        SECRET_PREF_KEYS.forEach { key ->
+            val value = apiKeys.optString(key, "").trim()
+            if (value.isNotBlank()) {
+                SecurePrefs.putString(prefs, key, value)
+                restored++
+            } else {
+                SecurePrefs.remove(prefs, key)
+            }
+        }
+    }
+
     return restored
 }
 
@@ -537,7 +848,10 @@ private fun AboutCard(onVersionTap: (() -> Unit)? = null) {
                     "PubChem" to "Structures and properties",
                     "Wikipedia" to "Descriptions",
                     "Google Gemini" to "AI summaries",
-                    "Groq" to "AI summaries"
+                    "Groq" to "AI summaries",
+                    "OpenAI" to "AI summaries",
+                    "OpenRouter" to "AI summaries",
+                    "Mistral AI" to "AI summaries"
                 ).forEach { (name, detail) ->
                     CreditRow(name = name, detail = detail)
                 }
@@ -591,34 +905,59 @@ private fun CreditRow(name: String, detail: String) {
 
 // API Provider dialog
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun AiProviderDialog(onSelect: (AiProvider) -> Unit, onDismiss: () -> Unit) {
+fun AiProviderDialog(
+    selectedProvider: AiProvider,
+    keyStatus: Map<AiProvider, Boolean>,
+    onSelect: (AiProvider) -> Unit,
+    onEditKey: (AiProvider) -> Unit,
+    onDismiss: () -> Unit
+) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("Choose AI Provider", fontWeight = FontWeight.Bold) },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("Select which model to use for AI descriptions.", style = MaterialTheme.typography.bodyMedium)
-                Card(
-                    onClick = { onSelect(AiProvider.GEMINI) },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Text("Select the provider for AI descriptions.", style = MaterialTheme.typography.bodyMedium)
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Column(Modifier.padding(14.dp)) {
-                        Text("Google Gemini", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge)
-                        Text("gemini-flash-latest", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary, fontFamily = FontFamily.Monospace)
-                    }
-                }
-                Card(
-                    onClick = { onSelect(AiProvider.GROQ) },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-                ) {
-                    Column(Modifier.padding(14.dp)) {
-                        Text("Groq Cloud", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyLarge)
-                        Text("openai/gpt-oss-120b", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary, fontFamily = FontFamily.Monospace)
+                    AiProvider.entries.forEach { provider ->
+                        val selected = selectedProvider == provider
+                        val hasKey = keyStatus[provider] == true
+                        Surface(
+                            onClick = { onSelect(provider) },
+                            shape = RoundedCornerShape(12.dp),
+                            color = if (selected) MaterialTheme.colorScheme.primary.copy(0.12f) else MaterialTheme.colorScheme.surfaceVariant.copy(0.55f),
+                            border = BorderStroke(
+                                1.dp,
+                                if (selected) MaterialTheme.colorScheme.primary.copy(0.4f) else MaterialTheme.colorScheme.outline.copy(0.2f)
+                            )
+                        ) {
+                            Column(
+                                modifier = Modifier.widthIn(min = 132.dp, max = 220.dp).padding(12.dp),
+                                verticalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                    Icon(
+                                        if (hasKey) Icons.Default.Check else Icons.Default.Key,
+                                        contentDescription = null,
+                                        tint = if (hasKey) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.5f),
+                                        modifier = Modifier.size(15.dp)
+                                    )
+                                    Text(provider.shortName, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
+                                }
+                                Text(provider.modelName, style = MaterialTheme.typography.labelSmall, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
+                                TextButton(
+                                    onClick = { onEditKey(provider) },
+                                    contentPadding = PaddingValues(0.dp)
+                                ) {
+                                    Text(if (hasKey) "Replace key" else "Add key", style = MaterialTheme.typography.labelSmall)
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -644,7 +983,7 @@ fun ApiKeyDialog(title: String, link: String, current: String, onSave: (String) 
                 Text("Required for AI descriptions.", style = MaterialTheme.typography.bodySmall)
                 val context = LocalContext.current
                 Text(
-                    "Get a free key at $link",
+                    "Get or manage a key at $link",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.clickable {
@@ -707,7 +1046,7 @@ private val FAQ_ENTRIES = listOf(
     "Where does compound data come from?" to "Most compound properties, structures, and safety data are pulled from PubChem. Descriptions can also come from Wikipedia or AI depending on your settings.",
     "What can I search for?" to "Search by common name, IUPAC name, CAS number, or CID. Suggestions use PubChem as you type.",
     "Why am I not getting results?" to "Check spelling, try a CID or CAS number, or remove extra spaces. Some compounds are not listed in PubChem.",
-    "Do I need an API key for AI descriptions?" to "Yes. AI descriptions use Gemini or Groq. Add a key in Settings > API Keys. Keys are stored locally on your device.",
+    "Do I need an API key for AI descriptions?" to "Yes. AI descriptions use your selected provider. Add a key in Settings > AI Provider & Keys. Keys are stored locally on your device.",
     "Where are my API keys stored?" to "Keys are stored locally in app preferences on your device and are not synced.",
     "Is the app offline?" to "Most features require internet access. Recently viewed compounds may load from cache, but live searches and AI always need a connection.",
     "How do autosuggestions work?" to "Autosuggestions query PubChem as you type. You can toggle them in Settings > Search.",
@@ -1286,30 +1625,32 @@ private fun SettingsGroupDivider() {
 @Composable
 fun SettingsInline(
     isDark: Boolean,
+    colorScheme: AppColorScheme,
     autoSuggest: Boolean,
     compactMode: Boolean,
     defaultDescSource: DescSource,
     aiProvider: AiProvider,
-    hasGeminiKey: Boolean,
-    hasGroqKey: Boolean,
+    aiKeyStatus: Map<AiProvider, Boolean>,
+    aiModelCatalogs: Map<AiProvider, AiModelCatalog>,
     updateNotificationsEnabled: Boolean = true,
     updateStatus: UpdateStatus = UpdateStatus(),
     onToggleTheme: () -> Unit,
+    onSetColorScheme: (AppColorScheme) -> Unit,
     onToggleAutoSuggest: () -> Unit,
     onToggleCompactMode: () -> Unit,
     onSetDefaultDesc: (DescSource) -> Unit,
     onSetAiProvider: (AiProvider) -> Unit,
-    onSetGeminiKey: () -> Unit,
-    onSetGroqKey: () -> Unit,
-    onClearGeminiKey: () -> Unit,
-    onClearGroqKey: () -> Unit,
+    onSetAiModel: (AiProvider, String) -> Unit,
+    onRefreshAiModels: (AiProvider) -> Unit,
+    onEditAiKey: (AiProvider) -> Unit,
+    onClearAiKey: (AiProvider) -> Unit,
     onClearHistory: () -> Unit,
     onToggleUpdateNotifications: (Boolean) -> Unit = {},
     onCheckForUpdates: () -> Unit = {},
     cacheSizeBytes: Long = 0L,
     cacheDir: String = "",
     onClearCache: () -> Unit = {},
-    onSetCacheDir: (String) -> Unit = {},
+    onSetCacheDir: (String) -> Boolean = { true },
     onTestUpdateNotification: () -> Unit = {},
     onSettingsImported: () -> Unit = {}
 ) {
@@ -1332,7 +1673,7 @@ fun SettingsInline(
                 writer.write(json)
             } ?: error("Unable to open file for export")
         }.onSuccess {
-            Toast.makeText(context, "Settings exported", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Settings exported with API keys.", Toast.LENGTH_LONG).show()
         }.onFailure { e ->
             Toast.makeText(context, "Export failed: ${e.message}", Toast.LENGTH_LONG).show()
         }
@@ -1388,8 +1729,13 @@ fun SettingsInline(
             confirmButton = {
                 Button(
                     onClick = {
-                        onSetCacheDir(cacheDirInput.trim())
-                        showCacheDirDialog = false
+                        val saved = onSetCacheDir(cacheDirInput.trim())
+                        if (saved) {
+                            Toast.makeText(context, "Cache location updated", Toast.LENGTH_SHORT).show()
+                            showCacheDirDialog = false
+                        } else {
+                            Toast.makeText(context, "That cache location is not writable", Toast.LENGTH_LONG).show()
+                        }
                     },
                     shape = RoundedCornerShape(10.dp)
                 ) { Text("Save") }
@@ -1493,6 +1839,16 @@ fun SettingsInline(
                 }
             }
             SettingsGroupDivider()
+            Text(
+                "Color scheme",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+            )
+            ColorSchemePicker(
+                colorScheme = colorScheme,
+                onSetColorScheme = onSetColorScheme
+            )
+            SettingsGroupDivider()
             SettingsToggleRow(
                 icon = Icons.Default.Search,
                 title = "Autosuggestions",
@@ -1519,36 +1875,23 @@ fun SettingsInline(
                     SourceBtn(label = label, active = defaultDescSource == src) { onSetDefaultDesc(src) }
                 }
             }
-            Text(
-                "AI provider",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
-            )
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                listOf(AiProvider.GEMINI to "Gemini", AiProvider.GROQ to "Groq").forEach { (provider, label) ->
-                    SourceBtn(label = label, active = aiProvider == provider) { onSetAiProvider(provider) }
-                }
-            }
         }
 
         SettingsGroupCard(
             icon = Icons.Default.Key,
-            title = "AI Keys",
-            subtitle = "Manage local API keys for Gemini and Groq."
+            title = "AI Provider & Keys",
+            subtitle = "Pick a provider and manage encrypted local API keys."
         ) {
-            if (hasGeminiKey) {
-                SettingsActionRow(Icons.Default.Key, "Gemini API Key saved", "Tap to replace", "Replace", MaterialTheme.colorScheme.primary, onSetGeminiKey)
-                SettingsActionRow(Icons.Default.DeleteOutline, "Remove Gemini Key", "Disables Gemini AI", "Remove", MaterialTheme.colorScheme.error, onClearGeminiKey)
-            } else {
-                SettingsActionRow(Icons.Default.Key, "No Gemini Key set", "Required for Gemini descriptions", "Add Key", MaterialTheme.colorScheme.primary, onSetGeminiKey)
-            }
-            SettingsGroupDivider()
-            if (hasGroqKey) {
-                SettingsActionRow(Icons.Default.Key, "Groq API Key saved", "Tap to replace", "Replace", MaterialTheme.colorScheme.primary, onSetGroqKey)
-                SettingsActionRow(Icons.Default.DeleteOutline, "Remove Groq Key", "Disables Groq AI", "Remove", MaterialTheme.colorScheme.error, onClearGroqKey)
-            } else {
-                SettingsActionRow(Icons.Default.Key, "No Groq Key set", "Required for Groq descriptions", "Add Key", MaterialTheme.colorScheme.primary, onSetGroqKey)
-            }
+            AiProviderSettings(
+                aiProvider = aiProvider,
+                aiKeyStatus = aiKeyStatus,
+                aiModelCatalogs = aiModelCatalogs,
+                onSetAiProvider = onSetAiProvider,
+                onSetAiModel = onSetAiModel,
+                onRefreshAiModels = onRefreshAiModels,
+                onEditAiKey = onEditAiKey,
+                onClearAiKey = onClearAiKey
+            )
         }
 
         SettingsGroupCard(
@@ -1580,7 +1923,7 @@ fun SettingsInline(
             SettingsActionRow(
                 icon = Icons.Default.Description,
                 title = "Export settings",
-                subtitle = "Save current app settings to a JSON file",
+                subtitle = "Save settings, AI provider models, and API keys to JSON",
                 actionLabel = "Export",
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = {
@@ -1882,14 +2225,13 @@ fun DebugSettingsSection(
     var networkDiagnosticsRunAt by remember { mutableStateOf<Long?>(null) }
     var networkDiagnosticsResults by remember { mutableStateOf<List<NetworkProbeResult>>(emptyList()) }
     val logLines = DebugLog.lines
-    val sensitiveKeyTokens = listOf("key", "token", "secret")
 
     fun runNetworkDiagnostics() {
         if (isRunningNetworkDiagnostics) return
         isRunningNetworkDiagnostics = true
         scope.launch {
-            val geminiKey = prefs.getString("gemini_key", null)
-            val groqKey = prefs.getString("groq_key", null)
+            val geminiKey = SecurePrefs.getString(prefs, "gemini_key")
+            val groqKey = SecurePrefs.getString(prefs, "groq_key")
             val results = runNetworkDiagnosticsChecks(geminiKey, groqKey)
             networkDiagnosticsResults = results
             networkDiagnosticsRunAt = System.currentTimeMillis()
@@ -1906,7 +2248,7 @@ fun DebugSettingsSection(
 
     fun redactValue(key: String, value: Any?): String {
         val raw = value?.toString() ?: "null"
-        val isSensitive = sensitiveKeyTokens.any { key.lowercase(Locale.US).contains(it) }
+        val isSensitive = SENSITIVE_PREF_TOKENS.any { key.lowercase(Locale.US).contains(it) }
         return if (isSensitive && raw.length > 8) raw.take(4) + "••••" + raw.takeLast(4) else raw
     }
 
@@ -1920,10 +2262,10 @@ fun DebugSettingsSection(
             entries = listOf(
                 "Verbose logging" to "Enables debug/info logs (tagged 'ChemSearch') in Logcat and the in-app buffer. Errors are always captured. Disable to reduce noise.",
                 "Live log viewer" to "Shows the in-app log buffer in real time (up to 200 lines). Verbose logs (D/) only appear when verbose logging is on. Errors (E/) are always captured. You can copy or clear the buffer.",
-                "Inspect SharedPreferences" to "Dumps every key-value pair in the app's preference file. Keys like key/token/secret are masked; use Copy full if you need raw values.",
+                "Inspect SharedPreferences" to "Dumps stored app preferences with sensitive keys masked. Raw API keys are never shown or copied from this screen.",
                 "Memory info" to "Shows current heap usage from the JVM runtime and the Android ActivityManager. Useful for spotting memory leaks or unusually high allocations.",
                 "Network diagnostics" to "Runs endpoint checks against PubChem, Wikipedia, GitHub releases, and AI providers. Shows HTTP status, latency, and response previews for each service.",
-                "API endpoints" to "Copies base URLs for PubChem, Wikipedia, Gemini, and Groq to your clipboard for manual testing.",
+                "API endpoints" to "Copies base URLs for PubChem, Wikipedia, and supported AI providers to your clipboard for manual testing.",
                 "Wipe all SharedPreferences" to "Calls prefs.edit().clear(). Removes API keys, history, favorites, settings, and debug flags. You'll need to unlock debug settings again; restart recommended.",
                 "Force crash" to "Deliberately throws an unhandled RuntimeException. Used to verify that crash reporting / Logcat is working correctly. There is a confirmation step before it fires.",
                 "Hide debug settings" to "Sets dev_mode=false and hides this section. Tap the build number 5 times in the About card to unlock it again."
@@ -1935,7 +2277,7 @@ fun DebugSettingsSection(
     if (showPrefsDialog) {
         val prefEntries = prefs.all.entries.sortedBy { it.key }
         val hasSensitive = prefEntries.any { entry ->
-            sensitiveKeyTokens.any { entry.key.lowercase(Locale.US).contains(it) }
+            SENSITIVE_PREF_TOKENS.any { entry.key.lowercase(Locale.US).contains(it) }
         }
         AlertDialog(
             onDismissRequest = { showPrefsDialog = false },
@@ -1947,7 +2289,7 @@ fun DebugSettingsSection(
                     } else {
                         if (hasSensitive) {
                             Text(
-                                "Sensitive values are masked. Use \"Copy full\" to include raw values.",
+                                "Sensitive values are masked and are never copied from this view.",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
                             )
@@ -1973,13 +2315,7 @@ fun DebugSettingsSection(
                         val dump = prefEntries.joinToString("\n") { "${it.key} = ${redactValue(it.key, it.value)}" }
                         cm.setPrimaryClip(ClipData.newPlainText("prefs", dump))
                         Toast.makeText(context, "Copied masked prefs", Toast.LENGTH_SHORT).show()
-                    }) { Text("Copy masked") }
-                    TextButton(onClick = {
-                        val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        val dump = prefEntries.joinToString("\n") { "${it.key} = ${it.value}" }
-                        cm.setPrimaryClip(ClipData.newPlainText("prefs", dump))
-                        Toast.makeText(context, "Copied full prefs", Toast.LENGTH_SHORT).show()
-                    }) { Text("Copy full") }
+                    }) { Text("Copy") }
                 }
             },
             dismissButton = { TextButton(onClick = { showPrefsDialog = false }) { Text("Close") } },
@@ -2527,7 +2863,7 @@ fun DebugSettingsSection(
             SettingsActionRow(
                 icon = Icons.Default.Hub,
                 title = "API endpoints",
-                subtitle = "PubChem · Wikipedia · Gemini · Groq",
+                subtitle = "PubChem · Wikipedia · AI providers",
                 actionLabel = "Copy",
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = {
@@ -2537,7 +2873,10 @@ fun DebugSettingsSection(
                         "PubChem PUG View: https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/",
                         "Wikipedia REST: https://en.wikipedia.org/api/rest_v1/",
                         "Gemini: https://generativelanguage.googleapis.com/v1beta/",
-                        "Groq: https://api.groq.com/openai/v1/"
+                        "Groq: https://api.groq.com/openai/v1/",
+                        "OpenAI: https://api.openai.com/v1/",
+                        "OpenRouter: https://openrouter.ai/api/v1/",
+                        "Mistral: https://api.mistral.ai/v1/"
                     ).joinToString("\n")
                     cm.setPrimaryClip(ClipData.newPlainText("endpoints", endpoints))
                     Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()

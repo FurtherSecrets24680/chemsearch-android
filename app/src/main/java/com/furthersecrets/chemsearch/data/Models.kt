@@ -24,16 +24,17 @@ data class PropertyTable(
 )
 
 data class CompoundProperty(
-    @SerializedName("CID") val cid: Long?,
-    @SerializedName("MolecularFormula") val molecularFormula: String?,
-    @SerializedName("MolecularWeight") val molecularWeight: String?,
-    @SerializedName("IUPACName") val iupacName: String?,
-    @SerializedName("SMILES") val smiles: String?,
-    @SerializedName("ConnectivitySMILES") val connectivitySmiles: String?,
-    @SerializedName("InChIKey") val inchiKey: String?,
-    @SerializedName("InChI") val inchi: String?,
-    @SerializedName("Charge") val charge: Int?,
-    @SerializedName("CovalentUnitCount") val covalentUnitCount: Int?
+    @SerializedName("CID") val cid: Long? = null,
+    @SerializedName("MolecularFormula") val molecularFormula: String? = null,
+    @SerializedName("MolecularWeight") val molecularWeight: String? = null,
+    @SerializedName("IUPACName") val iupacName: String? = null,
+    @SerializedName("SMILES") val smiles: String? = null,
+    @SerializedName("ConnectivitySMILES") val connectivitySmiles: String? = null,
+    @SerializedName("InChIKey") val inchiKey: String? = null,
+    @SerializedName("InChI") val inchi: String? = null,
+    @SerializedName("Charge") val charge: Int? = null,
+    @SerializedName("CovalentUnitCount") val covalentUnitCount: Int? = null,
+    @SerializedName("Title") val title: String? = null
 )
 
 // PubChem Synonyms
@@ -96,7 +97,16 @@ data class GeminiCandidate(
     val content: GeminiContent?
 )
 
-// Groq
+data class GeminiModelsResponse(
+    @SerializedName("models") val models: List<GeminiModelInfo>? = null
+)
+
+data class GeminiModelInfo(
+    @SerializedName("name") val name: String? = null,
+    @SerializedName("supportedGenerationMethods") val supportedGenerationMethods: List<String>? = null
+)
+
+// OpenAI-compatible chat
 
 data class GroqRequest(
     val model: String,
@@ -115,6 +125,14 @@ data class GroqResponse(
 
 data class GroqChoice(
     val message: GroqMessage?
+)
+
+data class ChatModelsResponse(
+    @SerializedName("data") val data: List<ChatModelInfo>? = null
+)
+
+data class ChatModelInfo(
+    @SerializedName("id") val id: String? = null
 )
 
 // GitHub Releases
@@ -175,12 +193,75 @@ data class ChemUiState(
     val isomers: List<IsomerItem> = emptyList(),
     val isLoadingIsomers: Boolean = false,
     val isomerError: String? = null,
+    val isLoadingSynonyms: Boolean = false,
 
 )
 
 enum class DescSource { PUBCHEM, WIKI, AI }
-enum class AiProvider { GEMINI, GROQ }
+enum class AiProvider(
+    val displayName: String,
+    val shortName: String,
+    val modelName: String,
+    val defaultModels: List<String>,
+    val keyPref: String,
+    val helpHost: String,
+    val description: String
+) {
+    GEMINI(
+        displayName = "Google Gemini",
+        shortName = "Gemini",
+        modelName = "gemini-flash-latest",
+        defaultModels = listOf("gemini-flash-latest", "gemini-1.5-flash-latest", "gemini-1.5-pro-latest"),
+        keyPref = "gemini_key",
+        helpHost = "aistudio.google.com",
+        description = "Fast general chemistry summaries from Google."
+    ),
+    GROQ(
+        displayName = "Groq Cloud",
+        shortName = "Groq",
+        modelName = "openai/gpt-oss-120b",
+        defaultModels = listOf("openai/gpt-oss-120b", "openai/gpt-oss-20b", "llama-3.3-70b-versatile"),
+        keyPref = "groq_key",
+        helpHost = "console.groq.com",
+        description = "Very fast OpenAI-compatible chat completions."
+    ),
+    OPENAI(
+        displayName = "OpenAI",
+        shortName = "OpenAI",
+        modelName = "gpt-4o-mini",
+        defaultModels = listOf("gpt-4o-mini", "gpt-4o", "gpt-4.1-mini"),
+        keyPref = "openai_key",
+        helpHost = "platform.openai.com/api-keys",
+        description = "Balanced AI descriptions using OpenAI chat completions."
+    ),
+    OPENROUTER(
+        displayName = "OpenRouter",
+        shortName = "OpenRouter",
+        modelName = "openrouter/auto",
+        defaultModels = listOf("openrouter/auto", "openai/gpt-4o-mini", "anthropic/claude-3.5-haiku"),
+        keyPref = "openrouter_key",
+        helpHost = "openrouter.ai/keys",
+        description = "Routes requests to an available model through OpenRouter."
+    ),
+    MISTRAL(
+        displayName = "Mistral AI",
+        shortName = "Mistral",
+        modelName = "mistral-small-latest",
+        defaultModels = listOf("mistral-small-latest", "mistral-medium-latest", "mistral-large-latest"),
+        keyPref = "mistral_key",
+        helpHost = "console.mistral.ai/api-keys",
+        description = "Lightweight summaries from Mistral's chat API."
+    )
+}
 enum class MolTab { TWO_D, THREE_D }
+enum class AppColorScheme { BLUE, VIOLET, EMERALD, ROSE, AMBER }
+
+data class AiModelCatalog(
+    val models: List<String> = emptyList(),
+    val selectedModel: String = "",
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
 
 data class ElementData(
     val element: String,

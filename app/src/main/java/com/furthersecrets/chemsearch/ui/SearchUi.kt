@@ -24,6 +24,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -93,7 +94,7 @@ fun AppHeader(isDark: Boolean, onToggleTheme: () -> Unit) {
                     "ChemSearch",
                     style = if (compact) MaterialTheme.typography.titleMedium else MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.ExtraBold,
-                    letterSpacing = (-0.3).sp
+                    letterSpacing = 0.sp
                 )
                 Text(
                     "CHEMISTRY SIMPLIFIED",
@@ -135,11 +136,16 @@ fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearch: () -> Un
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = if (compact) 58.dp else 66.dp),
         placeholder = {
             Text(
-                "Search compound by name...",
-                color = MaterialTheme.colorScheme.onSurface.copy(0.38f)
+                "Search name, CAS, formula, or CID",
+                color = MaterialTheme.colorScheme.onSurface.copy(0.38f),
+                maxLines = 1,
+                softWrap = false,
+                overflow = TextOverflow.Ellipsis
             )
         },
         leadingIcon = {
@@ -165,7 +171,7 @@ fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearch: () -> Un
                 IconButton(onClick = onSearch) {
                     Box(
                         modifier = Modifier
-                            .size(if (compact) 28.dp else 32.dp)
+                            .size(if (compact) 34.dp else 42.dp)
                             .background(MaterialTheme.colorScheme.primary, CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
@@ -181,8 +187,9 @@ fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearch: () -> Un
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = { onSearch() }),
-        shape = RoundedCornerShape(if (compact) 16.dp else 20.dp),
+        shape = RoundedCornerShape(if (compact) 22.dp else 28.dp),
         singleLine = true,
+        textStyle = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = MaterialTheme.colorScheme.primary,
             unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(0.5f),
@@ -487,6 +494,7 @@ fun HistorySection(
 
 // Compound header
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CompoundHeader(
     state: ChemUiState,
@@ -498,16 +506,86 @@ fun CompoundHeader(
     val cm = remember { context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
     val compact = LocalCompactMode.current
 
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.Top
+    @Composable
+    fun StatChip(
+        icon: ImageVector,
+        label: String,
+        value: String,
+        displayValue: String = value,
+        modifier: Modifier = Modifier,
+        onCopy: () -> Unit
     ) {
-        Row(modifier = Modifier.weight(1f)) {
+        Surface(
+            modifier = modifier.heightIn(min = if (compact) 50.dp else 56.dp),
+            shape = RoundedCornerShape(if (compact) 11.dp else 13.dp),
+            color = MaterialTheme.colorScheme.primary.copy(0.08f),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f)),
+            onClick = {
+                onCopy()
+                Toast.makeText(context, "$label copied", Toast.LENGTH_SHORT).show()
+            }
+        ) {
+            Row(
+                modifier = Modifier.padding(
+                    horizontal = if (compact) 5.dp else 6.dp,
+                    vertical = if (compact) 6.dp else 7.dp
+                ),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 5.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(if (compact) 21.dp else 24.dp)
+                        .background(MaterialTheme.colorScheme.primary.copy(0.12f), RoundedCornerShape(7.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(if (compact) 12.dp else 13.dp))
+                }
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(1.dp)
+                ) {
+                    Text(
+                        if (label.startsWith("MW")) label else label.uppercase(),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.45f),
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 0.3.sp,
+                        maxLines = 1,
+                        fontSize = if (label.length > 5) {
+                            if (compact) 7.sp else 8.sp
+                        } else {
+                            if (compact) 8.sp else 9.sp
+                        }
+                    )
+                    Text(
+                        displayValue,
+                        style = MaterialTheme.typography.bodySmall.copy(fontSize = if (compact) 11.sp else 12.sp),
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+        }
+    }
+
+    SearchCard(
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(if (compact) 12.dp else 16.dp),
+        spacing = if (compact) 10.dp else 12.dp
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.spacedBy(if (compact) 10.dp else 12.dp)
+        ) {
             Box(
                 modifier = Modifier
-                    .width(3.dp)
-                    .height(if (compact) 60.dp else 72.dp)
-                    .clip(RoundedCornerShape(2.dp))
+                    .width(4.dp)
+                    .height(if (compact) 70.dp else 84.dp)
+                    .clip(RoundedCornerShape(999.dp))
                     .background(
                         Brush.verticalGradient(
                             listOf(
@@ -517,10 +595,9 @@ fun CompoundHeader(
                         )
                     )
             )
-            Spacer(Modifier.width(if (compact) 8.dp else 12.dp))
             Column(
-                modifier = Modifier.padding(vertical = if (compact) 2.dp else 4.dp),
-                verticalArrangement = Arrangement.spacedBy(if (compact) 2.dp else 3.dp)
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(if (compact) 3.dp else 4.dp)
             ) {
                 val displayName = remember(state.name) { formatCompoundTitle(state.name) }
                 var isExpanded by remember(state.name) { mutableStateOf(false) }
@@ -535,7 +612,7 @@ fun CompoundHeader(
                         hyphens = Hyphens.None
                     ),
                     fontWeight = FontWeight.Black,
-                    letterSpacing = (-0.5).sp,
+                    letterSpacing = 0.sp,
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = if (isExpanded) Int.MAX_VALUE else 2,
                     overflow = if (isExpanded) TextOverflow.Visible else TextOverflow.Ellipsis,
@@ -556,38 +633,41 @@ fun CompoundHeader(
                 }
                 if (state.formula.isNotBlank()) {
                     Row(
+                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = Modifier.clickable {
-                            cm.setPrimaryClip(ClipData.newPlainText("Formula", state.formula))
-                            Toast.makeText(context, "Formula copied", Toast.LENGTH_SHORT).show()
-                        }
+                        horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp)
                     ) {
                         Text(
                             text = toSubscriptFormula(state.formula),
-                            style = MaterialTheme.typography.titleMedium,
+                            style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.SemiBold
+                            fontWeight = FontWeight.ExtraBold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier
+                                .weight(1f, fill = false)
+                                .clickable {
+                                    cm.setPrimaryClip(ClipData.newPlainText("Formula", state.formula))
+                                    Toast.makeText(context, "Formula copied", Toast.LENGTH_SHORT).show()
+                                }
                         )
                         if (onFormulaClick != null) {
-                            Icon(
-                                Icons.Default.Biotech,
-                                contentDescription = "Find isomers",
-                                tint = MaterialTheme.colorScheme.primary.copy(0.45f),
-                                modifier = Modifier
-                                    .size(13.dp)
-                                    .clickable { onFormulaClick() }
-                            )
+                            Surface(
+                                onClick = onFormulaClick,
+                                shape = RoundedCornerShape(999.dp),
+                                color = MaterialTheme.colorScheme.primary.copy(0.09f),
+                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f))
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(horizontal = if (compact) 7.dp else 9.dp, vertical = if (compact) 3.dp else 4.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
+                                    Icon(Icons.Default.Biotech, contentDescription = null, tint = MaterialTheme.colorScheme.primary.copy(0.75f), modifier = Modifier.size(if (compact) 11.dp else 12.dp))
+                                    Text("Find isomers", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.primary)
+                                }
+                            }
                         }
-                    }
-                    if (onFormulaClick != null) {
-                        Text(
-                            "Tap formula to copy · Find isomers →",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.primary.copy(0.4f),
-                            fontSize = if (compact) 8.sp else 9.sp,
-                            modifier = Modifier.clickable { onFormulaClick() }
-                        )
                     }
                 }
                 if (state.isCached) {
@@ -609,41 +689,58 @@ fun CompoundHeader(
                         )
                     }
                 }
-                Spacer(Modifier.height(if (compact) 2.dp else 4.dp))
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(if (compact) 12.dp else 20.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    state.cid?.let {
-                        CompactIdentifier(label = "CID", value = it.toString()) {
-                            cm.setPrimaryClip(ClipData.newPlainText("CID", it.toString()))
-                        }
-                    }
-                    state.casNumber?.let {
-                        CompactIdentifier(label = "CAS", value = it) {
-                            cm.setPrimaryClip(ClipData.newPlainText("CAS", it))
-                        }
-                    }
-                    if (state.weight.isNotBlank()) {
-                        CompactIdentifier(label = "MW", value = "${state.weight} g/mol") {
-                            cm.setPrimaryClip(ClipData.newPlainText("MW", "${state.weight} g/mol"))
-                        }
-                    }
+            }
+            Surface(
+                onClick = onToggleFavorite,
+                shape = RoundedCornerShape(if (compact) 12.dp else 14.dp),
+                color = MaterialTheme.colorScheme.primary.copy(if (isFavorite) 0.16f else 0.08f),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(if (isFavorite) 0.35f else 0.16f)),
+                modifier = Modifier.size(if (compact) 42.dp else 48.dp)
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        imageVector = if (isFavorite) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
+                        contentDescription = if (isFavorite) "Remove favorite" else "Add favorite",
+                        tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.45f),
+                        modifier = Modifier.size(if (compact) 22.dp else 24.dp)
+                    )
                 }
             }
         }
-        IconButton(
-            onClick = onToggleFavorite,
-            modifier = Modifier.padding(top = if (compact) 2.dp else 4.dp)
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = if (isFavorite) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
-                contentDescription = if (isFavorite) "Remove favorite" else "Add favorite",
-                tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.35f)
-            )
+            state.cid?.let {
+                StatChip(Icons.Default.Science, "CID", it.toString(), modifier = Modifier.weight(1f)) {
+                    cm.setPrimaryClip(ClipData.newPlainText("CID", it.toString()))
+                }
+            }
+            state.casNumber?.let {
+                StatChip(Icons.Default.Info, "CAS", it, modifier = Modifier.weight(1f)) {
+                    cm.setPrimaryClip(ClipData.newPlainText("CAS", it))
+                }
+            }
+            if (state.weight.isNotBlank()) {
+                StatChip(Icons.Default.Scale, "MW (g/mol)", "${state.weight} g/mol", displayValue = state.weight, modifier = Modifier.weight(1f)) {
+                    cm.setPrimaryClip(ClipData.newPlainText("MW", "${state.weight} g/mol"))
+                }
+            }
         }
     }
 }
+
+private fun compoundShareText(state: ChemUiState): String = buildString {
+    appendLine(state.name.ifBlank { "Compound" })
+    if (state.formula.isNotBlank()) appendLine("Formula: ${state.formula}")
+    state.cid?.let { appendLine("PubChem CID: $it") }
+    state.casNumber?.let { appendLine("CAS: $it") }
+    if (state.weight.isNotBlank()) appendLine("Molecular weight: ${state.weight} g/mol")
+    if (state.iupacName.isNotBlank()) appendLine("IUPAC: ${state.iupacName}")
+    state.cid?.let { appendLine("PubChem: https://pubchem.ncbi.nlm.nih.gov/compound/$it") }
+}.trim()
 
 @Composable
 private fun CompactIdentifier(label: String, value: String, onCopy: () -> Unit) {
@@ -726,8 +823,17 @@ private fun formatCompoundTitle(name: String): String {
 
 // Structure viewer
 
+private fun safeDownloadName(rawName: String, fallback: String): String {
+    val cleaned = rawName
+        .lowercase(Locale.US)
+        .replace(Regex("[^a-z0-9._-]+"), "_")
+        .trim('_', '.', '-')
+        .take(80)
+    return cleaned.ifBlank { fallback }
+}
+
 private suspend fun saveSdfFile(context: Context, compoundName: String, sdfData: String) {
-    val fileName = "${compoundName.replace(" ", "_").lowercase()}_3d.sdf"
+    val fileName = "${safeDownloadName(compoundName, "compound")}_3d.sdf"
     try {
         withContext(Dispatchers.IO) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -789,6 +895,48 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
             }
         }
     }
+
+    fun trigger2dDownload(cid: Long) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q &&
+            context.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != android.content.pm.PackageManager.PERMISSION_GRANTED
+        ) {
+            writePermissionLauncher.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        } else {
+            scope.launch(Dispatchers.IO) {
+                save2dPng(context, state.name, cid)
+            }
+        }
+    }
+
+    fun shareCompound() {
+        val sendIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, compoundShareText(state))
+        }
+        context.startActivity(Intent.createChooser(sendIntent, "Share compound"))
+    }
+
+    @Composable
+    fun ViewerActionButton(icon: ImageVector, label: String, onClick: () -> Unit) {
+        Surface(
+            onClick = onClick,
+            shape = RoundedCornerShape(999.dp),
+            color = MaterialTheme.colorScheme.surface.copy(0.94f),
+            shadowElevation = 4.dp,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.16f))
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = if (compact) 12.dp else 16.dp, vertical = if (compact) 7.dp else 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(if (compact) 15.dp else 17.dp))
+                Text(label, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface)
+            }
+        }
+    }
+
     SearchCard(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(0.dp),
@@ -801,12 +949,13 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                         horizontal = if (compact) 8.dp else 12.dp,
                         vertical = if (compact) 8.dp else 10.dp
                     ),
-                horizontalArrangement = Arrangement.Center
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)
             ) {
                 Surface(
                     shape = RoundedCornerShape(50),
                     color = MaterialTheme.colorScheme.outline.copy(0.12f),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.weight(1f)
                 ) {
                     Row(
                         modifier = Modifier.padding(if (compact) 3.dp else 4.dp),
@@ -846,6 +995,22 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                         }
                     }
                 }
+                Surface(
+                    onClick = { shareCompound() },
+                    shape = RoundedCornerShape(if (compact) 12.dp else 14.dp),
+                    color = MaterialTheme.colorScheme.primary.copy(0.08f),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f)),
+                    modifier = Modifier.size(if (compact) 38.dp else 44.dp)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            Icons.Default.Share,
+                            contentDescription = "Share compound",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(if (compact) 18.dp else 20.dp)
+                        )
+                    }
+                }
             }
 
             Box(
@@ -863,42 +1028,41 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                             TwoDZoomDialog(cid = cid, onDismiss = { showZoom = false })
                         }
 
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            AsyncImage(
-                                model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/$cid/PNG?image_size=large",
-                                contentDescription = "2D Structure",
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(
+                                    start = if (compact) 10.dp else 14.dp,
+                                    end = if (compact) 10.dp else 14.dp,
+                                    bottom = if (compact) 10.dp else 14.dp
+                                )
+                        ) {
+                            Surface(
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .padding(if (compact) 8.dp else 12.dp)
                                     .clickable { showZoom = true },
-                                contentScale = ContentScale.Fit
-                            )
-                            // Download button — bottom-end, styled like the 3D download button
-                            IconButton(
-                                onClick = {
-                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q &&
-                                        context.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                        != android.content.pm.PackageManager.PERMISSION_GRANTED
-                                    ) {
-                                        writePermissionLauncher.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                    } else {
-                                        scope.launch(Dispatchers.IO) {
-                                            save2dPng(context, state.name, cid)
-                                        }
-                                    }
-                                },
-                                modifier = Modifier
-                                    .align(Alignment.BottomEnd)
-                                    .padding(bottom = 4.dp, end = 0.dp)
-                                    .size(if (compact) 28.dp else 32.dp)
+                                shape = RoundedCornerShape(if (compact) 16.dp else 20.dp),
+                                color = Color.White,
+                                shadowElevation = 1.dp
                             ) {
-                                Icon(
-                                    Icons.Default.Download,
-                                    contentDescription = "Download 2D PNG",
-                                    tint = if (!MaterialTheme.colorScheme.background.luminance().let { it > 0.5f })
-                                        Color.White.copy(0.55f) else Color.Black.copy(0.45f),
-                                    modifier = Modifier.size(if (compact) 14.dp else 16.dp)
+                                AsyncImage(
+                                    model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/$cid/PNG?image_size=large",
+                                    contentDescription = "2D Structure",
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(if (compact) 14.dp else 18.dp),
+                                    contentScale = ContentScale.Fit
                                 )
+                            }
+                            Row(
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .padding(bottom = if (compact) 10.dp else 14.dp),
+                                horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                ViewerActionButton(Icons.AutoMirrored.Filled.OpenInNew, "Expand") { showZoom = true }
+                                ViewerActionButton(Icons.Default.Download, "Download") { trigger2dDownload(cid) }
                             }
                         }
                     }
@@ -917,20 +1081,14 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                         } else if (state.sdfData != null) {
                             val isDark = !MaterialTheme.colorScheme.background.luminance().let { it > 0.5f }
                             Viewer3D(cid = state.cid ?: 0, sdfData = state.sdfData, isDark = isDark)
-                            IconButton(
-                                onClick = { triggerDownload() },
+                            Row(
                                 modifier = Modifier
-                                    .align(Alignment.TopStart)
-                                    .padding(top = if (compact) 24.dp else 36.dp, start = 0.dp)
-                                    .size(if (compact) 28.dp else 32.dp)
+                                    .align(Alignment.BottomCenter)
+                                    .padding(bottom = if (compact) 10.dp else 14.dp),
+                                horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 12.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Icon(
-                                    Icons.Default.Download,
-                                    contentDescription = "Download SDF",
-                                    tint = if (!MaterialTheme.colorScheme.background.luminance().let { it > 0.5f })
-                                        Color.White.copy(0.4f) else Color.Black.copy(0.35f),
-                                    modifier = Modifier.size(if (compact) 14.dp else 16.dp)
-                                )
+                                ViewerActionButton(Icons.Default.Download, "Download SDF") { triggerDownload() }
                             }
                         } else {
                             var showWhyDialog by remember { mutableStateOf(false) }
@@ -1161,15 +1319,20 @@ fun IdentifiersSection(state: ChemUiState, context: Context) {
 
     SearchCard(modifier = Modifier.fillMaxWidth(), spacing = 10.dp) {
         CardSectionHeader("Identifiers") { showInfo = true }
-        if (state.iupacName.isNotBlank()) IdentifierRow("IUPAC Name", state.iupacName, context, mono = false)
-        if (state.connectivitySmiles.isNotBlank()) IdentifierRow("SMILES (Connectivity)", state.connectivitySmiles, context)
-        if (state.smiles.isNotBlank() && state.smiles != state.connectivitySmiles) IdentifierRow("SMILES (Full)", state.smiles, context)
-        if (state.inchiKey.isNotBlank()) IdentifierRow("InChIKey", state.inchiKey, context)
-        if (state.inchi.isNotBlank()) IdentifierRow("InChI", state.inchi, context)
-        if (state.empiricalFormula.isNotBlank() && state.empiricalFormula != state.formula) IdentifierRow("Empirical Formula", toSubscriptFormula(state.empiricalFormula), context)
-        state.atomNumber?.let { IdentifierRow("Atom Number", it.toString(), context) }
-        state.bondNumber?.let { IdentifierRow("Bond Number", it.toString(), context) }
-        if (state.charge != 0) IdentifierRow("Formal Charge", state.charge.toString(), context)
+        val rows = buildList {
+            if (state.iupacName.isNotBlank()) add(Triple("IUPAC Name", state.iupacName, false))
+            if (state.connectivitySmiles.isNotBlank()) add(Triple("SMILES (Connectivity)", state.connectivitySmiles, true))
+            if (state.smiles.isNotBlank() && state.smiles != state.connectivitySmiles) add(Triple("SMILES (Full)", state.smiles, true))
+            if (state.inchiKey.isNotBlank()) add(Triple("InChIKey", state.inchiKey, true))
+            if (state.inchi.isNotBlank()) add(Triple("InChI", state.inchi, true))
+            if (state.empiricalFormula.isNotBlank() && state.empiricalFormula != state.formula) add(Triple("Empirical Formula", toSubscriptFormula(state.empiricalFormula), true))
+            state.atomNumber?.let { add(Triple("Atom Number", it.toString(), true)) }
+            state.bondNumber?.let { add(Triple("Bond Number", it.toString(), true)) }
+            if (state.charge != 0) add(Triple("Formal Charge", state.charge.toString(), true))
+        }
+        rows.forEach { (label, value, mono) ->
+            IdentifierRow(label, value, context, mono = mono)
+        }
     }
 }
 
@@ -1326,46 +1489,125 @@ fun ElementalSection(data: List<ElementData>) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun SynonymsSection(synonyms: List<String>) {
+fun SynonymsSection(synonyms: List<String>, isLoading: Boolean = false) {
     val context = LocalContext.current
     val cm = remember { context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
     val compact = LocalCompactMode.current
+    var visibleCount by remember(synonyms) { mutableIntStateOf(10) }
+    val visibleSynonyms = synonyms.take(visibleCount)
+    val remaining = (synonyms.size - visibleSynonyms.size).coerceAtLeast(0)
     SearchCard(modifier = Modifier.fillMaxWidth(), spacing = 10.dp) {
-        SectionLabel("Synonyms")
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp),
-            verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            synonyms.forEach { syn ->
-                Surface(
-                    shape = RoundedCornerShape(if (compact) 7.dp else 8.dp),
-                    color = MaterialTheme.colorScheme.primary.copy(0.07f),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f)),
-                    modifier = Modifier.clickable {
-                        cm.setPrimaryClip(ClipData.newPlainText("Synonym", syn))
-                        Toast.makeText(context, "Copied: $syn", Toast.LENGTH_SHORT).show()
+            SectionLabel("Synonyms")
+            if (synonyms.isNotEmpty()) {
+                Text(
+                    "${visibleSynonyms.size}/${synonyms.size}",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.42f),
+                    fontFamily = FontFamily.Monospace
+                )
+            }
+        }
+        if (isLoading && synonyms.isEmpty()) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(vertical = if (compact) 4.dp else 6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
+                Text(
+                    "Loading synonyms...",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
+                )
+            }
+        }
+        if (visibleSynonyms.isNotEmpty()) {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp),
+                verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp)
+            ) {
+                visibleSynonyms.forEach { syn ->
+                    Surface(
+                        shape = RoundedCornerShape(if (compact) 7.dp else 8.dp),
+                        color = MaterialTheme.colorScheme.primary.copy(0.07f),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f)),
+                        modifier = Modifier.clickable {
+                            cm.setPrimaryClip(ClipData.newPlainText("Synonym", syn))
+                            Toast.makeText(context, "Copied: $syn", Toast.LENGTH_SHORT).show()
+                        }
+                    ) {
+                        Text(
+                            syn,
+                            modifier = Modifier.padding(
+                                horizontal = if (compact) 8.dp else 10.dp,
+                                vertical = if (compact) 4.dp else 5.dp
+                            ),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
                     }
-                ) {
-                    Text(
-                        syn,
-                        modifier = Modifier.padding(
-                            horizontal = if (compact) 8.dp else 10.dp,
-                            vertical = if (compact) 4.dp else 5.dp
-                        ),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                }
+            }
+        }
+        if (synonyms.isNotEmpty() && (remaining > 0 || visibleCount > 10 || isLoading)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                if (remaining > 0) {
+                    TextButton(
+                        onClick = { visibleCount = (visibleCount + 10).coerceAtMost(synonyms.size) },
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 2.dp)
+                    ) {
+                        Text(
+                            "Show ${remaining.coerceAtMost(10)} more",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                }
+                if (visibleCount > 10) {
+                    TextButton(
+                        onClick = { visibleCount = 10 },
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 2.dp)
+                    ) {
+                        Text(
+                            "Collapse",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.62f)
+                        )
+                    }
+                }
+                if (isLoading) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.size(14.dp), strokeWidth = 2.dp)
+                        Text(
+                            "Loading",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+                        )
+                    }
                 }
             }
         }
     }
 }
-
 // Description
 
 @Composable
 fun DescriptionSection(state: ChemUiState, onPubChem: () -> Unit, onWiki: () -> Unit, onAI: () -> Unit, onRegenerate: () -> Unit) {
     val compact = LocalCompactMode.current
+    var expanded by remember(state.descSource, state.pubDescription, state.wikiDescription, state.aiDescription) { mutableStateOf(false) }
     SearchCard(modifier = Modifier.fillMaxWidth(), spacing = 12.dp) {
         SectionLabel("Description")
         Surface(
@@ -1377,7 +1619,7 @@ fun DescriptionSection(state: ChemUiState, onPubChem: () -> Unit, onWiki: () -> 
                 listOf(
                     DescSource.PUBCHEM to "PubChem",
                     DescSource.WIKI to "Wikipedia",
-                    DescSource.AI to "AI ✨"
+                    DescSource.AI to "AI"
                 ).forEach { (src, label) ->
                     val active = state.descSource == src
                     val onClick = when (src) {
@@ -1418,8 +1660,28 @@ fun DescriptionSection(state: ChemUiState, onPubChem: () -> Unit, onWiki: () -> 
                 text,
                 style = MaterialTheme.typography.bodyMedium,
                 lineHeight = if (compact) 20.sp else 22.sp,
-                color = MaterialTheme.colorScheme.onSurface.copy(0.85f)
+                color = MaterialTheme.colorScheme.onSurface.copy(0.85f),
+                maxLines = if (expanded) Int.MAX_VALUE else 5,
+                overflow = if (expanded) TextOverflow.Visible else TextOverflow.Ellipsis
             )
+            if (text.length > 260) {
+                TextButton(
+                    onClick = { expanded = !expanded },
+                    contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
+                ) {
+                    Text(
+                        if (expanded) "Read less" else "Read more",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(Modifier.width(4.dp))
+                    Icon(
+                        if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+            }
             if (state.descSource == DescSource.AI && state.aiDescription != null) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     TextButton(onClick = onRegenerate, contentPadding = PaddingValues(0.dp)) {
@@ -1433,7 +1695,7 @@ fun DescriptionSection(state: ChemUiState, onPubChem: () -> Unit, onWiki: () -> 
                         color = MaterialTheme.colorScheme.primary.copy(0.08f)
                     ) {
                         Text(
-                            "via ${if (state.aiProvider == AiProvider.GEMINI) "Gemini" else "Groq"}",
+                            "via ${state.aiProvider.shortName}",
                             modifier = Modifier.padding(
                                 horizontal = if (compact) 6.dp else 8.dp,
                                 vertical = if (compact) 2.dp else 3.dp
@@ -1503,22 +1765,22 @@ private fun SearchCard(
         bottom = scaledInset(bottomBase, 3.dp)
     )
     val effectiveSpacing = if (spacing == 0.dp) 0.dp else (spacing * scale).coerceAtLeast(4.dp)
-    val shape = RoundedCornerShape(if (compact) 12.dp else 18.dp)
+    val shape = RoundedCornerShape(if (compact) 16.dp else 22.dp)
     Surface(
         modifier = modifier,
         shape = shape,
         color = MaterialTheme.colorScheme.surface,
-        tonalElevation = 2.dp,
-        shadowElevation = 1.dp,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.12f))
+        tonalElevation = 1.dp,
+        shadowElevation = 0.dp,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.16f))
     ) {
         Column(
             modifier = Modifier
                 .background(
                     Brush.verticalGradient(
                         listOf(
-                            MaterialTheme.colorScheme.surface,
-                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)
+                            MaterialTheme.colorScheme.surface.copy(alpha = 0.98f),
+                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.42f)
                         )
                     )
                 )
@@ -1556,17 +1818,20 @@ fun toSubscriptFormula(formula: String): String {
 
 // GHS Safety
 
-private val ghsEmoji = mapOf(
-    "GHS01" to "💥", "GHS02" to "🔥", "GHS03" to "🔆",
-    "GHS04" to "🔵", "GHS05" to "⚗️", "GHS06" to "☠️",
-    "GHS07" to "⚠️", "GHS08" to "🫁", "GHS09" to "🌿"
-)
-
 private val ghsLabel = mapOf(
     "GHS01" to "Explosive", "GHS02" to "Flammable", "GHS03" to "Oxidizing",
     "GHS04" to "Compressed Gas", "GHS05" to "Corrosive", "GHS06" to "Toxic",
     "GHS07" to "Harmful", "GHS08" to "Health Hazard", "GHS09" to "Environmental"
 )
+
+private fun ghsIcon(code: String): ImageVector = when (code) {
+    "GHS04" -> Icons.Default.Air
+    "GHS05" -> Icons.Default.Science
+    "GHS08" -> Icons.Default.HealthAndSafety
+    "GHS09" -> Icons.Default.Public
+    "GHS06" -> Icons.Default.Error
+    else -> Icons.Default.Warning
+}
 
 private val DangerRed = Color(0xFFDC2626)
 private val WarningAmber = Color(0xFFD97706)
@@ -1653,7 +1918,19 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.spacedBy(if (compact) 3.dp else 4.dp)
                             ) {
-                                Text(ghsEmoji[code] ?: "⚠️", fontSize = if (compact) 24.sp else 28.sp)
+                                Box(
+                                    modifier = Modifier
+                                        .size(if (compact) 34.dp else 38.dp)
+                                        .background(MaterialTheme.colorScheme.error.copy(0.08f), CircleShape),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        ghsIcon(code),
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.error.copy(0.82f),
+                                        modifier = Modifier.size(if (compact) 18.dp else 21.dp)
+                                    )
+                                }
                                 Text(code, style = MaterialTheme.typography.labelSmall, fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                                 Text(ghsLabel[code] ?: "", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f), fontSize = 9.sp, textAlign = TextAlign.Center)
                             }
@@ -1692,7 +1969,7 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
 
 private suspend fun save2dPng(context: Context, compoundName: String, cid: Long) {
     val url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/$cid/PNG?image_size=large"
-    val fileName = "${compoundName.replace(" ", "_").lowercase()}_2d.png"
+    val fileName = "${safeDownloadName(compoundName, "compound")}_2d.png"
     try {
         val request = okhttp3.Request.Builder().url(url).build()
         withContext(Dispatchers.IO) {
