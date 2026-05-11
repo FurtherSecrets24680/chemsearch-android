@@ -406,6 +406,24 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                             item { PubChemCredits() }
                         }
                     }
+                } else if (tab == AppTab.TOOLS) {
+                    ToolsScreen(
+                        isDark = isDark,
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(
+                            start = pageHorizontalPadding,
+                            end = pageHorizontalPadding,
+                            top = pageTopPadding,
+                            bottom = pageBottomPadding
+                        ),
+                        jumpToTool = jumpToTool,
+                        jumpToToolVersion = jumpToToolVersion,
+                        onNavigateToSearch = { selectedTab = AppTab.SEARCH },
+                        onSearchCompoundFromTool = { compoundQuery ->
+                            vm.search(compoundQuery)
+                            selectedTab = AppTab.SEARCH
+                        }
+                    )
                 } else {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
@@ -457,12 +475,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     onTestUpdateNotification = { vm.sendDebugUpdateNotification() },
                                     onSettingsImported = { vm.reloadSettingsFromPreferences() }
                                 )
-                                AppTab.TOOLS -> ToolsScreen(
-                                    isDark = isDark,
-                                    jumpToTool = jumpToTool,
-                                    jumpToToolVersion = jumpToToolVersion,
-                                    onNavigateToSearch = { selectedTab = AppTab.SEARCH }
-                                )
+                                AppTab.TOOLS -> Unit
                             }
                         }
                     }

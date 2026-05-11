@@ -1,0 +1,1907 @@
+{
+  "version": 1,
+  "ions": [
+    {
+      "name": "Arsenide",
+      "formula": "As^3-",
+      "otherNames": [],
+      "type": "Monoatomic anion",
+      "charge": "-3",
+      "commonCompounds": [
+        "GaAs",
+        "AlAs"
+      ],
+      "notes": "Arsenic anion in arsenide semiconductors.",
+      "tags": [
+        "pnictogen"
+      ],
+      "id": "arsenide",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "bromide",
+      "name": "Bromide",
+      "formula": "Br-",
+      "type": "Monoatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "KBr",
+        "AgBr"
+      ],
+      "notes": "Halide anion.",
+      "tags": [
+        "halide"
+      ]
+    },
+    {
+      "id": "chloride",
+      "name": "Chloride",
+      "formula": "Cl-",
+      "otherNames": [],
+      "type": "Monoatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaCl",
+        "HCl"
+      ],
+      "notes": "Common halide; tested with silver nitrate.",
+      "tags": [
+        "halide"
+      ]
+    },
+    {
+      "id": "fluoride",
+      "name": "Fluoride",
+      "formula": "F-",
+      "otherNames": [],
+      "type": "Monoatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaF",
+        "CaF2"
+      ],
+      "notes": "Halide anion.",
+      "tags": [
+        "halide"
+      ]
+    },
+    {
+      "name": "Hydride",
+      "formula": "H-",
+      "otherNames": [],
+      "type": "Monoatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaH",
+        "LiAlH4"
+      ],
+      "notes": "Hydrogen as an anion; strong base/reducing chemistry.",
+      "tags": [
+        "hydrogen"
+      ],
+      "id": "hydride",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "iodide",
+      "name": "Iodide",
+      "formula": "I-",
+      "otherNames": [],
+      "type": "Monoatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "KI",
+        "AgI"
+      ],
+      "notes": "Can be oxidized to iodine.",
+      "tags": [
+        "halide"
+      ]
+    },
+    {
+      "name": "Nitride",
+      "formula": "N^3-",
+      "otherNames": [],
+      "type": "Monoatomic anion",
+      "charge": "-3",
+      "commonCompounds": [
+        "Mg3N2",
+        "AlN"
+      ],
+      "notes": "Nitrogen anion in metal nitrides.",
+      "tags": [
+        "nitrogen"
+      ],
+      "id": "nitride",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "oxide",
+      "name": "Oxide",
+      "formula": "O^2-",
+      "otherNames": [],
+      "type": "Monoatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "MgO",
+        "CaO"
+      ],
+      "notes": "Basic oxide ion in metal oxides.",
+      "tags": [
+        "oxygen"
+      ]
+    },
+    {
+      "name": "Phosphide",
+      "formula": "P^3-",
+      "otherNames": [],
+      "type": "Monoatomic anion",
+      "charge": "-3",
+      "commonCompounds": [
+        "Ca3P2",
+        "AlP"
+      ],
+      "notes": "Phosphorus anion in metal phosphides.",
+      "tags": [
+        "phosphorus"
+      ],
+      "id": "phosphide",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Selenide",
+      "formula": "Se^2-",
+      "otherNames": [],
+      "type": "Monoatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "ZnSe",
+        "Na2Se"
+      ],
+      "notes": "Selenium anion in selenide salts.",
+      "tags": [
+        "chalcogen"
+      ],
+      "id": "selenide",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "sulfide",
+      "name": "Sulfide",
+      "formula": "S^2-",
+      "otherNames": [
+        "Sulphide"
+      ],
+      "type": "Monoatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "PbS",
+        "ZnS",
+        "Cu2S",
+        "HgS"
+      ],
+      "notes": "Common anion in sulfide ores.",
+      "tags": [
+        "ore",
+        "sulfide"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "aluminum",
+      "name": "Aluminum ion",
+      "formula": "Al3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "Al2O3",
+        "AlCl3"
+      ],
+      "notes": "Small highly charged cation.",
+      "tags": [
+        "metal"
+      ]
+    },
+    {
+      "id": "barium",
+      "name": "Barium ion",
+      "formula": "Ba2+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "BaSO4",
+        "BaCl2"
+      ],
+      "notes": "Forms insoluble sulfate.",
+      "tags": [
+        "alkaline earth"
+      ]
+    },
+    {
+      "id": "cadmium-ii",
+      "name": "Cadmium(II)",
+      "formula": "Cd2+",
+      "otherNames": [
+        "Cadmium ion"
+      ],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "Cadmium salts"
+      ],
+      "notes": "Heavy metal ion associated with industrial pollution.",
+      "tags": [
+        "heavy metal",
+        "pollution"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "calcium",
+      "name": "Calcium ion",
+      "formula": "Ca2+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "CaCO3",
+        "CaCl2"
+      ],
+      "notes": "Important in bones, limestone, and water hardness.",
+      "tags": [
+        "alkaline earth"
+      ]
+    },
+    {
+      "name": "Cesium ion",
+      "formula": "Cs+",
+      "otherNames": [
+        "Caesium ion"
+      ],
+      "type": "Monoatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "CsCl",
+        "CsNO3"
+      ],
+      "notes": "Heavy alkali metal cation.",
+      "tags": [
+        "alkali metal"
+      ],
+      "id": "cesium-ion",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "chromium-iii",
+      "name": "Chromium(III)",
+      "formula": "Cr3+",
+      "otherNames": [
+        "Chromic ion"
+      ],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "Cr2O3"
+      ],
+      "notes": "Chromium ion related to chromite and industrial effluents.",
+      "tags": [
+        "heavy metal",
+        "pollution"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Cobalt(II)",
+      "formula": "Co2+",
+      "otherNames": [
+        "Cobaltous ion"
+      ],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "CoCl2",
+        "CoSO4"
+      ],
+      "notes": "Common cobalt cation; many salts are colored.",
+      "tags": [
+        "transition metal"
+      ],
+      "id": "cobalt-ii",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Cobalt(III)",
+      "formula": "Co3+",
+      "otherNames": [
+        "Cobaltic ion"
+      ],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "CoF3",
+        "[Co(NH3)6]Cl3"
+      ],
+      "notes": "Higher cobalt oxidation state common in complexes.",
+      "tags": [
+        "transition metal"
+      ],
+      "id": "cobalt-iii",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Copper(I)",
+      "formula": "Cu+",
+      "otherNames": [
+        "Cuprous ion"
+      ],
+      "type": "Monoatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "CuCl",
+        "Cu2O"
+      ],
+      "notes": "Cuprous ion; forms insoluble copper(I) chloride and oxide.",
+      "tags": [
+        "transition metal"
+      ],
+      "id": "copper-i",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "copper-ii",
+      "name": "Copper(II)",
+      "formula": "Cu2+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "CuSO4",
+        "CuCl2"
+      ],
+      "notes": "Often blue/green in aqueous compounds.",
+      "tags": [
+        "transition metal"
+      ]
+    },
+    {
+      "name": "Gold(III)",
+      "formula": "Au3+",
+      "otherNames": [
+        "Auric ion"
+      ],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "AuCl3"
+      ],
+      "notes": "Common gold oxidation state in coordination chemistry.",
+      "tags": [
+        "transition metal"
+      ],
+      "id": "gold-iii",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hydrogen-ion",
+      "name": "Hydrogen ion",
+      "formula": "H+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "Acids in water"
+      ],
+      "notes": "Often represented as H3O+ in aqueous solution.",
+      "tags": [
+        "acid"
+      ]
+    },
+    {
+      "id": "iron-ii",
+      "name": "Iron(II)",
+      "formula": "Fe2+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "FeSO4",
+        "FeCl2"
+      ],
+      "notes": "Can oxidize to Fe3+.",
+      "tags": [
+        "transition metal"
+      ]
+    },
+    {
+      "id": "iron-iii",
+      "name": "Iron(III)",
+      "formula": "Fe3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "Fe2O3",
+        "FeCl3"
+      ],
+      "notes": "Forms rust-colored compounds.",
+      "tags": [
+        "transition metal"
+      ]
+    },
+    {
+      "id": "lead-ii",
+      "name": "Lead(II)",
+      "formula": "Pb2+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "Pb(NO3)2",
+        "PbI2",
+        "lead nitrate",
+        "lead iodide"
+      ],
+      "notes": "Forms yellow lead iodide precipitate with iodide ions.",
+      "tags": [
+        "heavy metal",
+        "monoatomic cation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Lead(IV)",
+      "formula": "Pb4+",
+      "otherNames": [
+        "Plumbic ion"
+      ],
+      "type": "Monoatomic cation",
+      "charge": "+4",
+      "commonCompounds": [
+        "PbO2"
+      ],
+      "notes": "Higher oxidation state of lead, often strongly oxidizing.",
+      "tags": [
+        "post-transition metal"
+      ],
+      "id": "lead-iv",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "lithium",
+      "name": "Lithium ion",
+      "formula": "Li+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "LiCl",
+        "Li2CO3"
+      ],
+      "notes": "Group 1 metal cation.",
+      "tags": [
+        "alkali metal"
+      ]
+    },
+    {
+      "id": "magnesium",
+      "name": "Magnesium ion",
+      "formula": "Mg2+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "MgSO4",
+        "MgCl2"
+      ],
+      "notes": "Alkaline earth metal cation.",
+      "tags": [
+        "alkaline earth"
+      ]
+    },
+    {
+      "id": "manganese-ii",
+      "name": "Manganese(II)",
+      "formula": "Mn2+",
+      "otherNames": [
+        "Manganous ion"
+      ],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "Manganese salts"
+      ],
+      "notes": "Manganese is a component of duralumin.",
+      "tags": [
+        "metal",
+        "alloy"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Manganese(III)",
+      "formula": "Mn3+",
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "manganese(III) oxide"
+      ],
+      "notes": "Manganese oxidation state represented in simplified dry-cell chemistry.",
+      "tags": [
+        "monoatomic cation"
+      ],
+      "id": "manganese-iii",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "mercury-ii",
+      "name": "Mercury(II)",
+      "formula": "Hg2+",
+      "otherNames": [
+        "Mercuric ion"
+      ],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "HgS",
+        "HgSO4"
+      ],
+      "notes": "Heavy metal ion; mercury compounds are toxic.",
+      "tags": [
+        "heavy metal",
+        "pollution"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "nickel-ii",
+      "name": "Nickel(II)",
+      "formula": "Ni2+",
+      "otherNames": [
+        "Nickel ion"
+      ],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "Nickel salts"
+      ],
+      "notes": "Transition metal ion; nickel is used in stainless steel.",
+      "tags": [
+        "metal",
+        "alloy"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Platinum(II)",
+      "formula": "Pt2+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "PtCl2",
+        "cisplatin complexes"
+      ],
+      "notes": "Platinum oxidation state common in square-planar complexes.",
+      "tags": [
+        "transition metal"
+      ],
+      "id": "platinum-ii",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "potassium",
+      "name": "Potassium ion",
+      "formula": "K+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "KCl",
+        "KNO3"
+      ],
+      "notes": "Common soluble alkali metal cation.",
+      "tags": [
+        "alkali metal"
+      ]
+    },
+    {
+      "name": "Rubidium ion",
+      "formula": "Rb+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "RbCl",
+        "RbNO3"
+      ],
+      "notes": "Alkali metal cation similar to potassium.",
+      "tags": [
+        "alkali metal"
+      ],
+      "id": "rubidium-ion",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "silver",
+      "name": "Silver ion",
+      "formula": "Ag+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "AgNO3",
+        "AgCl"
+      ],
+      "notes": "Forms insoluble silver halides.",
+      "tags": [
+        "transition metal"
+      ]
+    },
+    {
+      "id": "sodium",
+      "name": "Sodium ion",
+      "formula": "Na+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "NaCl",
+        "NaOH"
+      ],
+      "notes": "Common soluble alkali metal cation.",
+      "tags": [
+        "alkali metal"
+      ]
+    },
+    {
+      "name": "Strontium ion",
+      "formula": "Sr2+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "SrCl2",
+        "SrSO4"
+      ],
+      "notes": "Alkaline earth cation that gives a red flame test.",
+      "tags": [
+        "alkaline earth metal"
+      ],
+      "id": "strontium-ion",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "tin-ii",
+      "name": "Tin(II)",
+      "formula": "Sn2+",
+      "otherNames": [
+        "Stannous ion"
+      ],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "Tin(II) salts"
+      ],
+      "notes": "Tin is a component of bronze.",
+      "tags": [
+        "metal",
+        "alloy"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Tin(IV)",
+      "formula": "Sn4+",
+      "otherNames": [
+        "Stannic ion"
+      ],
+      "type": "Monoatomic cation",
+      "charge": "+4",
+      "commonCompounds": [
+        "SnO2",
+        "SnCl4"
+      ],
+      "notes": "Stannic ion in tin(IV) compounds.",
+      "tags": [
+        "post-transition metal"
+      ],
+      "id": "tin-iv",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Vanadium(V)",
+      "formula": "V5+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+5",
+      "commonCompounds": [
+        "V2O5"
+      ],
+      "notes": "High oxidation-state vanadium in vanadium(V) oxide.",
+      "tags": [
+        "transition metal"
+      ],
+      "id": "vanadium-v",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "zinc",
+      "name": "Zinc ion",
+      "formula": "Zn2+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "ZnCl2",
+        "ZnO"
+      ],
+      "notes": "Usually colorless salts.",
+      "tags": [
+        "transition metal"
+      ]
+    },
+    {
+      "id": "acetate",
+      "name": "Acetate",
+      "formula": "CH3COO-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "Sodium acetate"
+      ],
+      "notes": "Conjugate base of acetic acid.",
+      "tags": [
+        "organic"
+      ]
+    },
+    {
+      "id": "aluminate",
+      "name": "Aluminate",
+      "formula": "AlO2-",
+      "otherNames": [
+        "Aluminium oxide anion"
+      ],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaAlO2"
+      ],
+      "notes": "Present in sodium aluminate during bauxite purification.",
+      "tags": [
+        "aluminium"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Arsenate",
+      "formula": "AsO4^3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-3",
+      "commonCompounds": [
+        "Na3AsO4",
+        "Ca3(AsO4)2"
+      ],
+      "notes": "Arsenic(V) oxyanion; toxic in many compounds.",
+      "tags": [
+        "arsenic"
+      ],
+      "id": "arsenate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Arsenite",
+      "formula": "AsO3^3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-3",
+      "commonCompounds": [
+        "Na3AsO3"
+      ],
+      "notes": "Arsenic(III) oxyanion; toxic in many compounds.",
+      "tags": [
+        "arsenic"
+      ],
+      "id": "arsenite",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Azide",
+      "formula": "N3^-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaN3",
+        "Pb(N3)2"
+      ],
+      "notes": "Linear nitrogen-rich anion; some salts are explosive.",
+      "tags": [
+        "nitrogen"
+      ],
+      "id": "azide",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Benzoate",
+      "formula": "C6H5COO-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "sodium benzoate",
+        "benzoic acid salts"
+      ],
+      "notes": "Aromatic carboxylate anion.",
+      "tags": [
+        "carboxylate",
+        "aromatic"
+      ],
+      "id": "benzoate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Bicarbonate",
+      "formula": "HCO3-",
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "sodium bicarbonate",
+        "calcium bicarbonate"
+      ],
+      "notes": "Important in temporary hardness and acid-carbonate reactions.",
+      "tags": [
+        "polyatomic anion"
+      ],
+      "id": "bicarbonate",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "",
+      "otherNames": [
+        "Hydrogen carbonate"
+      ]
+    },
+    {
+      "name": "Borate",
+      "formula": "BO3^3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-3",
+      "commonCompounds": [
+        "Na3BO3",
+        "borate minerals"
+      ],
+      "notes": "Generic boron oxyanion family entry.",
+      "tags": [
+        "boron"
+      ],
+      "id": "borate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Bromate",
+      "formula": "BrO3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "KBrO3",
+        "NaBrO3"
+      ],
+      "notes": "Bromine oxyanion and oxidizer.",
+      "tags": [
+        "bromine",
+        "oxidizer"
+      ],
+      "id": "bromate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "carbamate",
+      "name": "Carbamate",
+      "formula": "NH2COO-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NH2COONH4"
+      ],
+      "notes": "Anion in ammonium carbamate, an intermediate in urea synthesis.",
+      "tags": [
+        "urea",
+        "fertilizer"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "carbonate",
+      "name": "Carbonate",
+      "formula": "CO3^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "CaCO3",
+        "Na2CO3"
+      ],
+      "notes": "Reacts with acids to release CO2.",
+      "tags": [
+        "carbon"
+      ]
+    },
+    {
+      "id": "chlorate",
+      "name": "Chlorate",
+      "formula": "ClO3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "KClO3"
+      ],
+      "notes": "Oxidizing chlorine oxyanion.",
+      "tags": [
+        "oxidizer"
+      ]
+    },
+    {
+      "name": "Chlorite",
+      "formula": "ClO2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaClO2"
+      ],
+      "notes": "Chlorine oxyanion used in bleaching/disinfection chemistry.",
+      "tags": [
+        "chlorine",
+        "oxidizer"
+      ],
+      "id": "chlorite",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "chromate",
+      "name": "Chromate",
+      "formula": "CrO4^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "K2CrO4"
+      ],
+      "notes": "Yellow chromium(VI) oxyanion.",
+      "tags": [
+        "oxidizer"
+      ]
+    },
+    {
+      "name": "Citrate",
+      "formula": "C6H5O7^3-",
+      "type": "Polyatomic anion",
+      "charge": "-3",
+      "commonCompounds": [
+        "sodium citrate",
+        "citric acid salts"
+      ],
+      "notes": "Common food/acid-base chemistry ion from citric acid.",
+      "tags": [
+        "polyatomic anion"
+      ],
+      "id": "citrate",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Cyanate",
+      "formula": "CNO-",
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "ammonium cyanate"
+      ],
+      "notes": "Appears in ammonium cyanate, the classic urea synthesis example.",
+      "tags": [
+        "polyatomic anion"
+      ],
+      "id": "cyanate",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "cyanide",
+      "name": "Cyanide",
+      "formula": "CN-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaCN",
+        "KCN"
+      ],
+      "notes": "Highly toxic; strong ligand.",
+      "tags": [
+        "toxic"
+      ]
+    },
+    {
+      "id": "dichromate",
+      "name": "Dichromate",
+      "formula": "Cr2O7^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "K2Cr2O7"
+      ],
+      "notes": "Orange oxidizing ion; chromium(VI) hazard.",
+      "tags": [
+        "oxidizer"
+      ]
+    },
+    {
+      "id": "dihydrogen-phosphate",
+      "name": "Dihydrogen phosphate",
+      "formula": "H2PO4-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaH2PO4"
+      ],
+      "notes": "Part of phosphate buffer systems.",
+      "tags": [
+        "phosphorus"
+      ]
+    },
+    {
+      "name": "Ferricyanide",
+      "formula": "[Fe(CN)6]^3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-3",
+      "commonCompounds": [
+        "K3[Fe(CN)6]"
+      ],
+      "notes": "Iron cyanide complex anion used in redox chemistry.",
+      "tags": [
+        "complex ion"
+      ],
+      "id": "ferricyanide",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Ferrocyanide",
+      "formula": "[Fe(CN)6]^4-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-4",
+      "commonCompounds": [
+        "K4[Fe(CN)6]"
+      ],
+      "notes": "Iron cyanide complex anion; tightly bound cyanide ligand.",
+      "tags": [
+        "complex ion"
+      ],
+      "id": "ferrocyanide",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Formate",
+      "formula": "HCOO-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "HCOONa",
+        "HCOOK"
+      ],
+      "notes": "Conjugate base of formic acid.",
+      "tags": [
+        "carboxylate"
+      ],
+      "id": "formate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Gluconate",
+      "formula": "C6H11O7-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "calcium gluconate",
+        "sodium gluconate"
+      ],
+      "notes": "Carboxylate anion from gluconic acid.",
+      "tags": [
+        "carboxylate",
+        "biochemistry"
+      ],
+      "id": "gluconate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hydrogen-phosphate",
+      "name": "Hydrogen phosphate",
+      "formula": "HPO4^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "Na2HPO4"
+      ],
+      "notes": "Part of phosphate buffer systems.",
+      "tags": [
+        "phosphorus"
+      ]
+    },
+    {
+      "name": "Hydrogen sulfate",
+      "formula": "HSO4-",
+      "otherNames": [
+        "Bisulfate"
+      ],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaHSO4",
+        "KHSO4"
+      ],
+      "notes": "Acid sulfate anion; conjugate base of sulfuric acid first dissociation.",
+      "tags": [
+        "sulfur",
+        "acid salt"
+      ],
+      "id": "hydrogen-sulfate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Hydrogen sulfite",
+      "formula": "HSO3-",
+      "otherNames": [
+        "Bisulfite"
+      ],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaHSO3",
+        "Ca(HSO3)2"
+      ],
+      "notes": "Acid sulfite anion.",
+      "tags": [
+        "sulfur",
+        "acid salt"
+      ],
+      "id": "hydrogen-sulfite",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hydroxide",
+      "name": "Hydroxide",
+      "formula": "OH-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaOH",
+        "Ca(OH)2"
+      ],
+      "notes": "Defines bases in many aqueous reactions.",
+      "tags": [
+        "base"
+      ]
+    },
+    {
+      "id": "hypochlorite",
+      "name": "Hypochlorite",
+      "formula": "ClO-",
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaClO"
+      ],
+      "notes": "Bleach active ion; oxidizing.",
+      "tags": [
+        "oxidizer"
+      ]
+    },
+    {
+      "name": "Iodate",
+      "formula": "IO3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "KIO3",
+        "Ca(IO3)2"
+      ],
+      "notes": "Iodine oxyanion used in iodized salt chemistry.",
+      "tags": [
+        "iodine",
+        "oxidizer"
+      ],
+      "id": "iodate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Lactate",
+      "formula": "C3H5O3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "sodium lactate",
+        "calcium lactate"
+      ],
+      "notes": "Conjugate base of lactic acid.",
+      "tags": [
+        "carboxylate",
+        "biochemistry"
+      ],
+      "id": "lactate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "lauryl-sulfate",
+      "name": "Lauryl sulfate",
+      "formula": "C12H25SO4-",
+      "otherNames": [
+        "Dodecyl sulfate"
+      ],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "Sodium lauryl sulfate"
+      ],
+      "notes": "Detergent/surfactant anion.",
+      "tags": [
+        "detergent",
+        "surfactant"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Malate",
+      "formula": "C4H4O5^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "sodium malate",
+        "malic acid salts"
+      ],
+      "notes": "Carboxylate anion from malic acid.",
+      "tags": [
+        "carboxylate"
+      ],
+      "id": "malate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Manganate",
+      "formula": "MnO4^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "K2MnO4"
+      ],
+      "notes": "Green manganese(VI) oxyanion.",
+      "tags": [
+        "manganese",
+        "oxidizer"
+      ],
+      "id": "manganate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Molybdate",
+      "formula": "MoO4^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "Na2MoO4",
+        "(NH4)6Mo7O24"
+      ],
+      "notes": "Molybdenum oxyanion used in analytical chemistry.",
+      "tags": [
+        "transition metal oxoanion"
+      ],
+      "id": "molybdate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "nitrate",
+      "name": "Nitrate",
+      "formula": "NO3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "KNO3",
+        "AgNO3"
+      ],
+      "notes": "Most nitrate salts are soluble.",
+      "tags": [
+        "nitrogen"
+      ]
+    },
+    {
+      "id": "nitrite",
+      "name": "Nitrite",
+      "formula": "NO2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaNO2",
+        "sodium nitrite",
+        "nitrous acid"
+      ],
+      "notes": "Conjugate base of nitrous acid.",
+      "tags": [
+        "nitrogen",
+        "polyatomic anion"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "oxalate",
+      "name": "Oxalate",
+      "formula": "C2O4^2-",
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "CaC2O4"
+      ],
+      "notes": "Forms insoluble calcium oxalate.",
+      "tags": [
+        "organic"
+      ]
+    },
+    {
+      "name": "Ozonide",
+      "formula": "O3^-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "KO3",
+        "RbO3"
+      ],
+      "notes": "Ozone-derived anion in ozonide salts.",
+      "tags": [
+        "oxygen",
+        "oxidizer"
+      ],
+      "id": "ozonide",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Perborate",
+      "formula": "BO3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaBO3"
+      ],
+      "notes": "Oxygen-bleach boron oxyanion.",
+      "tags": [
+        "boron",
+        "oxidizer"
+      ],
+      "id": "perborate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Perchlorate",
+      "formula": "ClO4-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "KClO4",
+        "NH4ClO4"
+      ],
+      "notes": "Strong oxidizer anion in many salts.",
+      "tags": [
+        "chlorine",
+        "oxidizer"
+      ],
+      "id": "perchlorate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Periodate",
+      "formula": "IO4-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaIO4",
+        "KIO4"
+      ],
+      "notes": "High oxidation-state iodine oxyanion.",
+      "tags": [
+        "iodine",
+        "oxidizer"
+      ],
+      "id": "periodate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "permanganate",
+      "name": "Permanganate",
+      "formula": "MnO4-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "KMnO4"
+      ],
+      "notes": "Strong purple oxidizing ion.",
+      "tags": [
+        "oxidizer"
+      ]
+    },
+    {
+      "name": "Peroxide",
+      "formula": "O2^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "H2O2",
+        "Na2O2"
+      ],
+      "notes": "O-O bonded anion; oxidizing and sometimes bleaching chemistry.",
+      "tags": [
+        "oxygen",
+        "oxidizer"
+      ],
+      "id": "peroxide",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Persulfate",
+      "formula": "S2O8^2-",
+      "otherNames": [
+        "Peroxydisulfate"
+      ],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "K2S2O8",
+        "(NH4)2S2O8"
+      ],
+      "notes": "Strong oxidizing peroxydisulfate ion.",
+      "tags": [
+        "sulfur",
+        "oxidizer"
+      ],
+      "id": "persulfate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "phosphate",
+      "name": "Phosphate",
+      "formula": "PO4^3-",
+      "type": "Polyatomic anion",
+      "charge": "-3",
+      "commonCompounds": [
+        "Ca3(PO4)2"
+      ],
+      "notes": "Important in minerals, DNA, and ATP.",
+      "tags": [
+        "phosphorus"
+      ]
+    },
+    {
+      "id": "silicate",
+      "name": "Silicate",
+      "formula": "SiO3^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "Na2SiO3",
+        "CaSiO3"
+      ],
+      "notes": "Found in silicate materials and slag chemistry.",
+      "tags": [
+        "silicate",
+        "glass"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "stearate",
+      "name": "Stearate",
+      "formula": "C17H35COO-",
+      "otherNames": [
+        "Octadecanoate"
+      ],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "Sodium stearate",
+        "Potassium stearate",
+        "sodium stearate",
+        "calcium stearate"
+      ],
+      "notes": "Soap anion that forms insoluble scum with hard-water cations.",
+      "tags": [
+        "soap",
+        "fatty acid",
+        "polyatomic anion"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "sulfate",
+      "name": "Sulfate",
+      "formula": "SO4^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "Na2SO4",
+        "BaSO4"
+      ],
+      "notes": "Barium sulfate is very insoluble.",
+      "tags": [
+        "sulfur"
+      ]
+    },
+    {
+      "id": "sulfite",
+      "name": "Sulfite",
+      "formula": "SO3^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "Na2SO3"
+      ],
+      "notes": "Can act as reducing agent.",
+      "tags": [
+        "sulfur"
+      ]
+    },
+    {
+      "name": "Superoxide",
+      "formula": "O2^-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "KO2",
+        "RbO2"
+      ],
+      "notes": "Reactive oxygen anion found in superoxide salts.",
+      "tags": [
+        "oxygen",
+        "oxidizer"
+      ],
+      "id": "superoxide",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Tartrate",
+      "formula": "C4H4O6^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "sodium tartrate",
+        "potassium bitartrate"
+      ],
+      "notes": "Carboxylate anion from tartaric acid.",
+      "tags": [
+        "carboxylate"
+      ],
+      "id": "tartrate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Tetraborate",
+      "formula": "B4O7^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "Na2B4O7",
+        "borax"
+      ],
+      "notes": "Borate anion in borax.",
+      "tags": [
+        "boron"
+      ],
+      "id": "tetraborate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Tetrathionate",
+      "formula": "S4O6^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "Na2S4O6"
+      ],
+      "notes": "Polythionate ion formed in iodine-thiosulfate chemistry.",
+      "tags": [
+        "sulfur"
+      ],
+      "id": "tetrathionate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Thiocyanate",
+      "formula": "SCN-",
+      "otherNames": [
+        "Rhodanide"
+      ],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "KSCN",
+        "Fe(SCN)2+ complexes"
+      ],
+      "notes": "Pseudohalide anion used in iron(III) complex tests.",
+      "tags": [
+        "pseudohalide"
+      ],
+      "id": "thiocyanate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "thiosulfate",
+      "name": "Thiosulfate",
+      "formula": "S2O3^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "Na2S2O3"
+      ],
+      "notes": "Used in iodine titration and dechlorination.",
+      "tags": [
+        "sulfur"
+      ]
+    },
+    {
+      "name": "Tungstate",
+      "formula": "WO4^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "Na2WO4",
+        "CaWO4"
+      ],
+      "notes": "Tungsten oxyanion in tungstate salts.",
+      "tags": [
+        "transition metal oxoanion"
+      ],
+      "id": "tungstate",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "ammonium",
+      "name": "Ammonium",
+      "formula": "NH4+",
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "NH4Cl",
+        "NH4NO3"
+      ],
+      "notes": "Conjugate acid of ammonia.",
+      "tags": [
+        "nitrogen"
+      ]
+    },
+    {
+      "name": "Hexaamminecobalt(III)",
+      "formula": "[Co(NH3)6]^3+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "[Co(NH3)6]Cl3"
+      ],
+      "notes": "Classic coordination complex cation.",
+      "tags": [
+        "complex ion"
+      ],
+      "id": "hexaamminecobalt-iii",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hydronium",
+      "name": "Hydronium",
+      "formula": "H3O+",
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "Acidic aqueous solutions"
+      ],
+      "notes": "More realistic form of protonated water.",
+      "tags": [
+        "acid"
+      ]
+    },
+    {
+      "name": "Mercury(I)",
+      "formula": "Hg2^2+",
+      "otherNames": [
+        "Mercurous ion"
+      ],
+      "type": "Polyatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "Hg2Cl2",
+        "Hg2(NO3)2"
+      ],
+      "notes": "Dimeric mercurous cation.",
+      "tags": [
+        "metal cation"
+      ],
+      "id": "mercury-i",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Methylammonium",
+      "formula": "CH3NH3+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "CH3NH3Cl",
+        "methylammonium lead iodide"
+      ],
+      "notes": "Protonated methylamine cation.",
+      "tags": [
+        "ammonium derivative"
+      ],
+      "id": "methylammonium",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Nitronium",
+      "formula": "NO2+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "NO2BF4",
+        "nitrating mixtures"
+      ],
+      "notes": "Reactive nitration electrophile.",
+      "tags": [
+        "nitrogen",
+        "electrophile"
+      ],
+      "id": "nitronium",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "phosphonium",
+      "name": "Phosphonium",
+      "formula": "PH4+",
+      "type": "Polyatomic cation",
+      "charge": "+1"
+    },
+    {
+      "name": "Tetramethylammonium",
+      "formula": "(CH3)4N+",
+      "otherNames": [
+        "TMA"
+      ],
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "(CH3)4NOH",
+        "(CH3)4NCl"
+      ],
+      "notes": "Quaternary ammonium cation.",
+      "tags": [
+        "quaternary ammonium"
+      ],
+      "id": "tetramethylammonium",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "name": "Uranyl",
+      "formula": "UO2^2+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "UO2(NO3)2",
+        "uranyl acetate"
+      ],
+      "notes": "Linear uranium(VI) oxocation.",
+      "tags": [
+        "actinide",
+        "oxo cation"
+      ],
+      "id": "uranyl",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    }
+  ]
+}

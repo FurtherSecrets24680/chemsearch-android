@@ -15,11 +15,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.Backspace
 import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -76,6 +78,7 @@ private enum class ToolCategory(val label: String) {
     ALL("All"),
     VISUALIZE("Visualize"),
     CALCULATORS("Calculators"),
+    REFERENCE("Reference"),
     REACTIONS("Reactions"),
     STOICHIOMETRY("Stoichiometry"),
     STRUCTURE("Structure")
@@ -85,6 +88,7 @@ private val TOOL_CATEGORIES = listOf(
     ToolCategory.ALL,
     ToolCategory.VISUALIZE,
     ToolCategory.CALCULATORS,
+    ToolCategory.REFERENCE,
     ToolCategory.REACTIONS,
     ToolCategory.STOICHIOMETRY,
     ToolCategory.STRUCTURE
@@ -99,7 +103,15 @@ private data class ToolDefinition(
 )
 
 @Composable
-fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, jumpToToolVersion: Int = 0, onNavigateToSearch: () -> Unit = {}) {
+fun ToolsScreen(
+    isDark: Boolean,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+    jumpToTool: Int = 0,
+    jumpToToolVersion: Int = 0,
+    onNavigateToSearch: () -> Unit = {},
+    onSearchCompoundFromTool: (String) -> Unit = {}
+) {
     var selectedTool by remember { mutableStateOf(0) }
     var toolSearch by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf(ToolCategory.ALL) }
@@ -181,6 +193,13 @@ fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, jumpToToolVersion: Int = 0
             category = ToolCategory.STOICHIOMETRY
         ),
         ToolDefinition(
+            id = 10,
+            icon = Icons.AutoMirrored.Filled.MenuBook,
+            title = "Chemical Database",
+            subtitle = "Browse substances, reactions, functional groups, and ions",
+            category = ToolCategory.REFERENCE
+        ),
+        ToolDefinition(
             id = 11,
             icon = Icons.Default.WaterDrop,
             title = "Dilution Calculator",
@@ -211,9 +230,38 @@ fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, jumpToToolVersion: Int = 0
     }
     val visibleTools = if (isReordering) orderedTools else filteredTools
 
+    if (selectedTool == 10) {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(contentPadding)
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) { focusManager.clearFocus() },
+            verticalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 12.dp)
+        ) {
+            TextButton(
+                onClick = { selectedTool = 0; toolSearch = "" },
+                contentPadding = PaddingValues(horizontal = 0.dp)
+            ) {
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, null, modifier = Modifier.size(16.dp))
+                Spacer(Modifier.width(4.dp))
+                Text("Back to Tools")
+            }
+            ChemicalDatabaseTool(
+                modifier = Modifier.weight(1f),
+                onSearchCompound = onSearchCompoundFromTool
+            )
+        }
+        return
+    }
+
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
+            .fillMaxSize()
+            .padding(contentPadding)
+            .verticalScroll(rememberScrollState())
             .clickable(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }
@@ -383,6 +431,7 @@ fun ToolsScreen(isDark: Boolean, jumpToTool: Int = 0, jumpToToolVersion: Int = 0
                     mode = StoichiometryMode.SCALING,
                     title = "Reaction Scaling"
                 )
+                10 -> Unit
                 11 -> DilutionCalculatorTool()
                 12 -> IdealGasLawTool()
             }

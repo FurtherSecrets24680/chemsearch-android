@@ -1,0 +1,5776 @@
+{
+  "version": 1,
+  "substances": [
+    {
+      "id": "acetic-acid",
+      "name": "Acetic acid",
+      "formula": "C2H4O2",
+      "otherNames": [
+        "Ethanoic acid",
+        "Vinegar acid"
+      ],
+      "type": "Acid",
+      "uses": "Vinegar, acetate salts, chemical synthesis. Vinegar, pickling and food preservation.",
+      "notes": "Weak acid with sharp odor.",
+      "tags": [
+        "acid",
+        "daily life"
+      ],
+      "searchQuery": "Acetic acid",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "ascorbic-acid",
+      "name": "Ascorbic acid",
+      "formula": "C6H8O6",
+      "otherNames": [
+        "Vitamin C"
+      ],
+      "type": "Acid",
+      "uses": "Nutrient, antioxidant, food additive.",
+      "notes": "Water-soluble vitamin.",
+      "tags": [
+        "daily life",
+        "vitamin"
+      ],
+      "searchQuery": "Ascorbic acid"
+    },
+    {
+      "id": "aspirin",
+      "name": "Aspirin",
+      "formula": "C9H8O4",
+      "otherNames": [
+        "Acetylsalicylic acid"
+      ],
+      "type": "Acid",
+      "uses": "Pain relief, anti-inflammatory, antiplatelet.",
+      "notes": "Can irritate stomach; avoid with some conditions.",
+      "tags": [
+        "daily life",
+        "medicine"
+      ],
+      "searchQuery": "Aspirin"
+    },
+    {
+      "id": "benzoic-acid",
+      "name": "Benzoic acid",
+      "formula": "C7H6O2",
+      "otherNames": [
+        "Benzenecarboxylic acid"
+      ],
+      "type": "Acid",
+      "uses": "Recommended food preservative in suitable amounts.",
+      "notes": "Weak aromatic carboxylic acid.",
+      "tags": [
+        "acid",
+        "food preservative",
+        "daily life"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "boric-acid",
+      "name": "Boric acid",
+      "formula": "H3BO3",
+      "otherNames": [
+        "Hydrogen borate"
+      ],
+      "type": "Acid",
+      "uses": "Antiseptic/household pest control and buffers.",
+      "notes": "Weak acid; avoid ingestion.",
+      "tags": [
+        "daily life",
+        "household"
+      ],
+      "searchQuery": "Boric acid"
+    },
+    {
+      "id": "carbonic-acid",
+      "name": "Carbonic acid",
+      "formula": "H2CO3",
+      "otherNames": [
+        "Dihydrogen carbonate",
+        "dihydrogen carbonate"
+      ],
+      "type": "Acid",
+      "uses": "Forms when carbon dioxide dissolves in water; important in acid rain and bicarbonate chemistry.",
+      "notes": "Weak acid in dilute water.",
+      "tags": [
+        "beverage",
+        "daily life",
+        "acid"
+      ],
+      "searchQuery": "Carbonic acid",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "citric-acid",
+      "name": "Citric acid",
+      "formula": "C6H8O7",
+      "otherNames": [
+        "2-hydroxypropane-1,2,3-tricarboxylic acid"
+      ],
+      "type": "Acid",
+      "uses": "Food acidulant, cleaning, citrate buffer.",
+      "notes": "Weak organic acid found in citrus fruits.",
+      "tags": [
+        "acid",
+        "daily life"
+      ],
+      "searchQuery": "Citric acid"
+    },
+    {
+      "id": "formic-acid",
+      "name": "Formic acid",
+      "formula": "CH2O2",
+      "otherNames": [
+        "Methanoic acid"
+      ],
+      "type": "Acid",
+      "uses": "Leather/textile processing and preservative uses.",
+      "notes": "Found in ant stings; corrosive in concentrated form.",
+      "tags": [
+        "acid",
+        "daily life"
+      ],
+      "searchQuery": "Formic acid"
+    },
+    {
+      "id": "hydrochloric-acid",
+      "name": "Hydrochloric acid",
+      "formula": "HCl",
+      "otherNames": [
+        "Muriatic acid"
+      ],
+      "type": "Acid",
+      "uses": "Lab acid, pH adjustment, stomach acid component.",
+      "notes": "Corrosive aqueous hydrogen chloride.",
+      "tags": [
+        "acid",
+        "daily life"
+      ],
+      "searchQuery": "Hydrochloric acid"
+    },
+    {
+      "name": "Hydrofluoric acid",
+      "type": "Acid",
+      "uses": "Glass etching, fluorochemical manufacture, and laboratory acid reference.",
+      "notes": "Highly corrosive and systemically toxic; specialist safety controls are essential.",
+      "otherNames": [
+        "HF(aq)"
+      ],
+      "tags": [
+        "acid",
+        "industrial"
+      ],
+      "formula": "HF",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/14917",
+      "id": "hydrofluoric-acid",
+      "searchQuery": "Hydrofluoric acid"
+    },
+    {
+      "name": "Hydrogen iodide",
+      "formula": "HI",
+      "otherNames": [
+        "hydroiodic acid gas"
+      ],
+      "type": "Acid",
+      "uses": "Model reversible reaction product and iodide source.",
+      "notes": "Corrosive acid when dissolved in water; irritating gas.",
+      "tags": [
+        "acid",
+        "reversible reaction"
+      ],
+      "searchQuery": "Hydrogen iodide",
+      "id": "hydrogen-iodide",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "hypochlorous-acid",
+      "name": "Hypochlorous acid",
+      "formula": "HOCl",
+      "otherNames": [
+        "Hydrogen hypochlorite",
+        "HOCl"
+      ],
+      "type": "Acid",
+      "uses": "Disinfection chemistry and chlorine-water equilibria.",
+      "notes": "Oxidizing acid; stability and concentration matter.",
+      "tags": [
+        "acid",
+        "bleach",
+        "disinfectant"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/24341",
+      "searchQuery": "Hypochlorous acid"
+    },
+    {
+      "id": "ibuprofen",
+      "name": "Ibuprofen",
+      "formula": "C13H18O2",
+      "otherNames": [
+        "Advil active ingredient"
+      ],
+      "type": "Acid",
+      "uses": "Pain reliever and anti-inflammatory drug.",
+      "notes": "NSAID; can irritate stomach/kidneys in some cases.",
+      "tags": [
+        "daily life",
+        "medicine"
+      ],
+      "searchQuery": "Ibuprofen"
+    },
+    {
+      "id": "lactic-acid",
+      "name": "Lactic acid",
+      "formula": "C3H6O3",
+      "otherNames": [
+        "Milk acid"
+      ],
+      "type": "Acid",
+      "uses": "Food acidity, cosmetics, bioplastic precursor.",
+      "notes": "Produced in muscles and fermented foods.",
+      "tags": [
+        "daily life",
+        "food"
+      ],
+      "searchQuery": "Lactic acid"
+    },
+    {
+      "id": "malic-acid",
+      "name": "Malic acid",
+      "formula": "C4H6O5",
+      "otherNames": [
+        "Apple acid"
+      ],
+      "type": "Acid",
+      "uses": "Food acid in fruits and flavoring; organic acid example.",
+      "notes": "Irritant as a concentrated solid.",
+      "tags": [
+        "daily life",
+        "food",
+        "acid"
+      ],
+      "searchQuery": "Malic acid",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/525"
+    },
+    {
+      "id": "nitric-acid",
+      "name": "Nitric acid",
+      "formula": "HNO3",
+      "otherNames": [
+        "Aqua fortis"
+      ],
+      "type": "Acid",
+      "uses": "Nitration, fertilizers, metal etching.",
+      "notes": "Corrosive oxidizing acid.",
+      "tags": [
+        "acid",
+        "daily life",
+        "oxidizer"
+      ],
+      "searchQuery": "Nitric acid"
+    },
+    {
+      "name": "Nitrous acid",
+      "formula": "HNO2",
+      "otherNames": [
+        "hydrogen nitrite"
+      ],
+      "type": "Acid",
+      "uses": "Acid-rain and nitrogen oxide reaction product.",
+      "notes": "Unstable acid; concentrated forms require care.",
+      "tags": [
+        "acid",
+        "acid rain"
+      ],
+      "searchQuery": "Nitrous acid",
+      "id": "nitrous-acid",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "oleic-acid",
+      "name": "Oleic acid",
+      "formula": "C18H34O2",
+      "otherNames": [
+        "cis-9-octadecenoic acid"
+      ],
+      "type": "Acid",
+      "uses": "Major fatty acid in olive oil and many fats.",
+      "notes": "Unsaturated fatty acid.",
+      "tags": [
+        "daily life",
+        "food"
+      ],
+      "searchQuery": "Oleic acid"
+    },
+    {
+      "id": "oleum",
+      "name": "Oleum",
+      "formula": "H2S2O7",
+      "otherNames": [
+        "Fuming sulfuric acid",
+        "Disulfuric acid"
+      ],
+      "type": "Acid",
+      "uses": "Intermediate for safely producing concentrated sulfuric acid in the contact process.",
+      "notes": "Prepared by absorbing sulfur trioxide in concentrated sulfuric acid.",
+      "tags": [
+        "acid",
+        "sulfur",
+        "industrial"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "oxalic-acid",
+      "name": "Oxalic acid",
+      "formula": "C2H2O4",
+      "otherNames": [
+        "Ethanedioic acid"
+      ],
+      "type": "Acid",
+      "uses": "Rust removal, cleaning formulations, and oxalate chemistry.",
+      "notes": "Toxic if swallowed; can bind calcium.",
+      "tags": [
+        "cleaner",
+        "daily life",
+        "acid",
+        "cleaning"
+      ],
+      "searchQuery": "Oxalic acid",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/971"
+    },
+    {
+      "id": "palmitic-acid",
+      "name": "Palmitic acid",
+      "formula": "C16H32O2",
+      "otherNames": [
+        "Hexadecanoic acid"
+      ],
+      "type": "Acid",
+      "uses": "Palm oil, soaps, cosmetics.",
+      "notes": "Saturated fatty acid.",
+      "tags": [
+        "daily life",
+        "fatty acid"
+      ],
+      "searchQuery": "Palmitic acid"
+    },
+    {
+      "name": "Perchloric acid",
+      "type": "Acid",
+      "uses": "Strong acid and oxidizer used in analytical chemistry.",
+      "notes": "Powerful oxidizer; incompatible with organics at high concentration.",
+      "otherNames": [
+        "HClO4"
+      ],
+      "tags": [
+        "acid",
+        "oxidizer"
+      ],
+      "formula": "HClO4",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/24247",
+      "id": "perchloric-acid",
+      "searchQuery": "Perchloric acid"
+    },
+    {
+      "id": "phosphoric-acid",
+      "name": "Phosphoric acid",
+      "formula": "H3PO4",
+      "otherNames": [
+        "Orthophosphoric acid"
+      ],
+      "type": "Acid",
+      "uses": "Cola acidity, rust treatment, phosphate production.",
+      "notes": "Triprotic acid; corrosive when concentrated.",
+      "tags": [
+        "daily life",
+        "food"
+      ],
+      "searchQuery": "Phosphoric acid"
+    },
+    {
+      "name": "Silicic acid",
+      "formula": "H4SiO4",
+      "otherNames": [
+        "orthosilicic acid",
+        "Si(OH)4"
+      ],
+      "type": "Acid",
+      "uses": "Hydrolysis product of silicon tetrachloride in school-level reactions.",
+      "notes": "Low hazard in dilute form; lab context matters.",
+      "tags": [
+        "acid",
+        "hydrolysis"
+      ],
+      "searchQuery": "Silicic acid",
+      "id": "silicic-acid",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "stearic-acid",
+      "name": "Stearic acid",
+      "formula": "C18H36O2",
+      "otherNames": [
+        "Octadecanoic acid"
+      ],
+      "type": "Acid",
+      "uses": "Candles, soaps, cosmetics.",
+      "notes": "Long-chain saturated fatty acid.",
+      "tags": [
+        "daily life",
+        "fatty acid"
+      ],
+      "searchQuery": "Stearic acid"
+    },
+    {
+      "id": "sulfuric-acid",
+      "name": "Sulfuric acid",
+      "formula": "H2SO4",
+      "otherNames": [
+        "Oil of vitriol"
+      ],
+      "type": "Acid",
+      "uses": "Batteries, fertilizers, dehydration reactions.",
+      "notes": "Highly corrosive and strongly dehydrating.",
+      "tags": [
+        "acid",
+        "daily life"
+      ],
+      "searchQuery": "Sulfuric acid"
+    },
+    {
+      "id": "sulfurous-acid",
+      "name": "Sulfurous acid",
+      "formula": "H2SO3",
+      "otherNames": [
+        "Sulphurous acid"
+      ],
+      "type": "Acid",
+      "uses": "Forms when sulfur dioxide dissolves in water.",
+      "notes": "Related to acid rain from sulfur-containing fuels.",
+      "tags": [
+        "acid",
+        "sulfur",
+        "acid rain"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Tannic acid",
+      "formula": "C76H52O46",
+      "otherNames": [
+        "tannin",
+        "gallotannic acid"
+      ],
+      "type": "Acid",
+      "uses": "Natural acid/tannin found in tea and plant materials.",
+      "notes": "May irritate in concentrated form; food-level exposure differs from reagent use.",
+      "tags": [
+        "acid",
+        "daily life"
+      ],
+      "searchQuery": "Tannic acid",
+      "id": "tannic-acid",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "tartaric-acid",
+      "name": "Tartaric acid",
+      "formula": "C4H6O6",
+      "otherNames": [
+        "Cream of tartar acid"
+      ],
+      "type": "Acid",
+      "uses": "Food acidulant, baking powder component, and chiral chemistry reference.",
+      "notes": "Irritant in concentrated form; food use differs from reagent use.",
+      "tags": [
+        "daily life",
+        "food",
+        "acid"
+      ],
+      "searchQuery": "Tartaric acid",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/444305"
+    },
+    {
+      "name": "Diethyl hydrogen phosphate",
+      "type": "Acid ester",
+      "uses": "Organophosphate acid ester reference compound.",
+      "notes": "Irritant; organophosphate chemistry requires care.",
+      "otherNames": [],
+      "tags": [
+        "acid ester",
+        "phosphate ester"
+      ],
+      "formula": "C4H11O4P",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/654",
+      "id": "diethyl-hydrogen-phosphate",
+      "searchQuery": "Diethyl hydrogen phosphate"
+    },
+    {
+      "name": "Ethyl hydrogen sulfate",
+      "type": "Acid ester",
+      "uses": "Intermediate/reference for sulfate ester chemistry.",
+      "notes": "Corrosive; alkyl sulfate chemistry needs care.",
+      "otherNames": [],
+      "tags": [
+        "acid ester",
+        "sulfate ester"
+      ],
+      "formula": "C2H6O4S",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6004",
+      "id": "ethyl-hydrogen-sulfate",
+      "searchQuery": "Ethyl hydrogen sulfate"
+    },
+    {
+      "id": "lauryl-hydrogen-sulfate",
+      "name": "Lauryl hydrogen sulfate",
+      "formula": "C12H26O4S",
+      "otherNames": [
+        "Dodecyl hydrogen sulfate"
+      ],
+      "type": "Acid ester",
+      "uses": "Intermediate in sodium lauryl sulfate detergent production.",
+      "notes": "Neutralized with sodium hydroxide to give sodium lauryl sulfate.",
+      "tags": [
+        "detergent",
+        "sulfate",
+        "intermediate"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Methyl dihydrogen phosphate",
+      "type": "Acid ester",
+      "uses": "Phosphate acid ester reference compound.",
+      "notes": "Irritant/acidic chemistry; check SDS for concentration.",
+      "otherNames": [],
+      "tags": [
+        "acid ester",
+        "phosphate ester"
+      ],
+      "formula": "CH5O4P",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/13130",
+      "id": "methyl-dihydrogen-phosphate",
+      "searchQuery": "Methyl dihydrogen phosphate"
+    },
+    {
+      "name": "Methyl hydrogen sulfate",
+      "type": "Acid ester",
+      "uses": "Acid sulfate ester reference compound.",
+      "notes": "Corrosive alkyl sulfate chemistry; handle only with proper controls.",
+      "otherNames": [],
+      "tags": [
+        "acid ester",
+        "sulfate ester"
+      ],
+      "formula": "CH4O4S",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6412",
+      "id": "methyl-hydrogen-sulfate",
+      "searchQuery": "Methyl hydrogen sulfate"
+    },
+    {
+      "name": "1-Butanol",
+      "type": "Alcohol",
+      "uses": "Solvent and organic synthesis alcohol example.",
+      "notes": "Flammable and irritating.",
+      "otherNames": [
+        "n-butanol"
+      ],
+      "tags": [
+        "alcohol",
+        "solvent"
+      ],
+      "formula": "C4H10O",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/263",
+      "id": "1-butanol",
+      "searchQuery": "1-Butanol"
+    },
+    {
+      "name": "Benzyl alcohol",
+      "type": "Alcohol",
+      "uses": "Solvent, preservative, and aromatic alcohol example.",
+      "notes": "Irritant; harmful in high exposure.",
+      "otherNames": [],
+      "tags": [
+        "alcohol",
+        "aromatic"
+      ],
+      "formula": "C7H8O",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/244",
+      "id": "benzyl-alcohol",
+      "searchQuery": "Benzyl alcohol"
+    },
+    {
+      "id": "cholesterol",
+      "name": "Cholesterol",
+      "formula": "C27H46O",
+      "otherNames": [
+        "Cholest-5-en-3-ol"
+      ],
+      "type": "Alcohol",
+      "uses": "Cell membranes and steroid hormone precursor.",
+      "notes": "Sterol lipid, not simply dietary fat.",
+      "tags": [
+        "biology",
+        "daily life"
+      ],
+      "searchQuery": "Cholesterol"
+    },
+    {
+      "id": "ethanol",
+      "name": "Ethanol",
+      "formula": "C2H6O",
+      "otherNames": [
+        "Ethyl alcohol"
+      ],
+      "type": "Alcohol",
+      "uses": "Solvent, disinfectant, fuel additive, beverages.",
+      "notes": "Flammable; intoxicating when consumed.",
+      "tags": [
+        "alcohol",
+        "daily life"
+      ],
+      "searchQuery": "Ethanol"
+    },
+    {
+      "id": "ethylene-glycol",
+      "name": "Ethylene glycol",
+      "formula": "C2H6O2",
+      "otherNames": [
+        "Antifreeze glycol",
+        "ethane-1,2-diol"
+      ],
+      "type": "Alcohol",
+      "uses": "Antifreeze component and diol example.",
+      "notes": "Toxic if swallowed.",
+      "tags": [
+        "coolant",
+        "daily life",
+        "alcohol"
+      ],
+      "searchQuery": "Ethylene glycol",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/174"
+    },
+    {
+      "id": "glycerol",
+      "name": "Glycerol",
+      "formula": "C3H8O3",
+      "otherNames": [
+        "Glycerine",
+        "Glycerin"
+      ],
+      "type": "Alcohol",
+      "uses": "Humectant, cosmetics, food, pharma.",
+      "notes": "Viscous triol; miscible with water.",
+      "tags": [
+        "alcohol",
+        "daily life"
+      ],
+      "searchQuery": "Glycerol"
+    },
+    {
+      "id": "isopropyl-alcohol",
+      "name": "Isopropyl alcohol",
+      "formula": "C3H8O",
+      "otherNames": [
+        "Isopropanol",
+        "Rubbing alcohol",
+        "2-propanol",
+        "propan-2-ol"
+      ],
+      "type": "Alcohol",
+      "uses": "Disinfectant, solvent, and rubbing alcohol component.",
+      "notes": "Flammable; vapors can irritate.",
+      "tags": [
+        "daily life",
+        "solvent",
+        "alcohol"
+      ],
+      "searchQuery": "Isopropyl alcohol",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/3776"
+    },
+    {
+      "id": "lauryl-alcohol",
+      "name": "Lauryl alcohol",
+      "formula": "C12H26O",
+      "otherNames": [
+        "Dodecanol",
+        "1-Dodecanol"
+      ],
+      "type": "Alcohol",
+      "uses": "Raw material for detergent production.",
+      "notes": "Reacts with sulfuric acid to form lauryl hydrogen sulfate.",
+      "tags": [
+        "alcohol",
+        "detergent",
+        "daily life"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "menthol",
+      "name": "Menthol",
+      "formula": "C10H20O",
+      "otherNames": [
+        "Mint alcohol"
+      ],
+      "type": "Alcohol",
+      "uses": "Cooling flavor/fragrance in mints, balms, toothpaste.",
+      "notes": "Terpene alcohol.",
+      "tags": [
+        "daily life",
+        "fragrance"
+      ],
+      "searchQuery": "Menthol"
+    },
+    {
+      "id": "methanol",
+      "name": "Methanol",
+      "formula": "CH4O",
+      "otherNames": [
+        "Methyl alcohol"
+      ],
+      "type": "Alcohol",
+      "uses": "Solvent, antifreeze, fuel, feedstock.",
+      "notes": "Toxic; can cause blindness or death.",
+      "tags": [
+        "alcohol",
+        "daily life"
+      ],
+      "searchQuery": "Methanol"
+    },
+    {
+      "id": "propylene-glycol",
+      "name": "Propylene glycol",
+      "formula": "C3H8O2",
+      "otherNames": [
+        "1,2-propanediol"
+      ],
+      "type": "Alcohol",
+      "uses": "Humectant in foods/cosmetics, antifreeze alternatives, vape liquids.",
+      "notes": "Generally lower toxicity than ethylene glycol.",
+      "tags": [
+        "daily life",
+        "humectant"
+      ],
+      "searchQuery": "Propylene glycol"
+    },
+    {
+      "name": "tert-Butyl alcohol",
+      "type": "Alcohol",
+      "uses": "Solvent and branched alcohol reference.",
+      "notes": "Flammable; irritant.",
+      "otherNames": [
+        "t-butanol",
+        "2-methyl-2-propanol"
+      ],
+      "tags": [
+        "alcohol",
+        "solvent"
+      ],
+      "formula": "C4H10O",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6386",
+      "id": "tert-butyl-alcohol",
+      "searchQuery": "tert-Butyl alcohol"
+    },
+    {
+      "id": "acetaldehyde",
+      "name": "Acetaldehyde",
+      "formula": "C2H4O",
+      "otherNames": [
+        "Ethanal",
+        "ethanal"
+      ],
+      "type": "Aldehyde",
+      "uses": "Industrial intermediate and simple aldehyde reference.",
+      "notes": "Volatile and flammable; suspected carcinogenic risk.",
+      "tags": [
+        "daily life",
+        "organic",
+        "aldehyde"
+      ],
+      "searchQuery": "Acetaldehyde",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/177"
+    },
+    {
+      "id": "benzaldehyde",
+      "name": "Benzaldehyde",
+      "formula": "C7H6O",
+      "otherNames": [
+        "Oil of bitter almonds"
+      ],
+      "type": "Aldehyde",
+      "uses": "Almond-like aroma compound and aromatic aldehyde reference.",
+      "notes": "Irritant; harmful if swallowed in quantity.",
+      "tags": [
+        "aroma",
+        "daily life",
+        "aldehyde",
+        "aromatic"
+      ],
+      "searchQuery": "Benzaldehyde",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/240"
+    },
+    {
+      "name": "Butyraldehyde",
+      "type": "Aldehyde",
+      "uses": "Industrial intermediate and straight-chain aldehyde example.",
+      "notes": "Flammable and irritating.",
+      "otherNames": [
+        "butanal"
+      ],
+      "tags": [
+        "aldehyde"
+      ],
+      "formula": "C4H8O",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/261",
+      "id": "butyraldehyde",
+      "searchQuery": "Butyraldehyde"
+    },
+    {
+      "name": "Cinnamaldehyde",
+      "type": "Aldehyde",
+      "uses": "Cinnamon flavor/aroma compound and conjugated aldehyde example.",
+      "notes": "Skin sensitizer for some people.",
+      "otherNames": [],
+      "tags": [
+        "aldehyde",
+        "daily life"
+      ],
+      "formula": "C9H8O",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/637511",
+      "id": "cinnamaldehyde",
+      "searchQuery": "Cinnamaldehyde"
+    },
+    {
+      "id": "formaldehyde",
+      "name": "Formaldehyde",
+      "formula": "CH2O",
+      "otherNames": [
+        "Methanal"
+      ],
+      "type": "Aldehyde",
+      "uses": "Resins, preservation solutions. Formalin preparation and polymer/resin production.",
+      "notes": "Toxic irritant; use strict ventilation.",
+      "tags": [
+        "aldehyde",
+        "daily life"
+      ],
+      "searchQuery": "Formaldehyde",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Glutaraldehyde",
+      "type": "Aldehyde",
+      "uses": "Disinfectant/sterilant and dialdehyde reference.",
+      "notes": "Toxic irritant and sensitizer; use only with controls.",
+      "otherNames": [],
+      "tags": [
+        "aldehyde",
+        "disinfectant"
+      ],
+      "formula": "C5H8O2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/3485",
+      "id": "glutaraldehyde",
+      "searchQuery": "Glutaraldehyde"
+    },
+    {
+      "id": "propanal",
+      "name": "Propanal",
+      "formula": "C3H6O",
+      "otherNames": [
+        "Propionaldehyde"
+      ],
+      "type": "Aldehyde",
+      "uses": "Example member of the aldehyde homologous series.",
+      "notes": "Contains the aldehyde group -CHO.",
+      "tags": [
+        "aldehyde",
+        "organic"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "vanillin",
+      "name": "Vanillin",
+      "formula": "C8H8O3",
+      "otherNames": [
+        "Vanilla aldehyde"
+      ],
+      "type": "Aldehyde",
+      "uses": "Vanilla flavoring and fragrance.",
+      "notes": "Aromatic compound containing aldehyde, ether, and phenol groups.",
+      "tags": [
+        "daily life",
+        "food"
+      ],
+      "searchQuery": "Vanillin"
+    },
+    {
+      "id": "caffeine",
+      "name": "Caffeine",
+      "formula": "C8H10N4O2",
+      "otherNames": [
+        "Theine",
+        "Guaranine"
+      ],
+      "type": "Alkaloid",
+      "uses": "Stimulant found in coffee, tea, and energy drinks.",
+      "notes": "Excess intake can cause nervousness and sleep disruption.",
+      "tags": [
+        "alkaloid",
+        "stimulant",
+        "daily life"
+      ],
+      "searchQuery": "Caffeine",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/2519"
+    },
+    {
+      "id": "nicotine",
+      "name": "Nicotine",
+      "formula": "C10H14N2",
+      "otherNames": [
+        "Tobacco alkaloid"
+      ],
+      "type": "Alkaloid",
+      "uses": "Alkaloid in tobacco and nicotine products.",
+      "notes": "Highly addictive and toxic in concentrated form.",
+      "tags": [
+        "alkaloid",
+        "stimulant"
+      ],
+      "searchQuery": "Nicotine",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/89594"
+    },
+    {
+      "id": "theobromine",
+      "name": "Theobromine",
+      "formula": "C7H8N4O2",
+      "otherNames": [
+        "Cocoa alkaloid"
+      ],
+      "type": "Alkaloid",
+      "uses": "Alkaloid found in cocoa/chocolate.",
+      "notes": "Toxic to some pets; stimulant effects.",
+      "tags": [
+        "alkaloid",
+        "daily life"
+      ],
+      "searchQuery": "Theobromine",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5429"
+    },
+    {
+      "id": "butane",
+      "name": "Butane",
+      "formula": "C4H10",
+      "otherNames": [
+        "Lighter fluid",
+        "LPG component"
+      ],
+      "type": "Alkane",
+      "uses": "Lighters, portable stoves, aerosol propellant.",
+      "notes": "Highly flammable gas.",
+      "tags": [
+        "daily life",
+        "fuel"
+      ],
+      "searchQuery": "Butane"
+    },
+    {
+      "id": "decane",
+      "name": "Decane",
+      "formula": "C10H22",
+      "otherNames": [
+        "n-Decane"
+      ],
+      "type": "Alkane",
+      "uses": "Kerosene/diesel-range hydrocarbon reference.",
+      "notes": "Combustible liquid.",
+      "tags": [
+        "alkane",
+        "hydrocarbon",
+        "fuel"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/15600",
+      "searchQuery": "Decane"
+    },
+    {
+      "id": "ethane",
+      "name": "Ethane",
+      "formula": "C2H6",
+      "otherNames": [],
+      "type": "Alkane",
+      "uses": "Fuel gas component and petrochemical feedstock.",
+      "notes": "Colorless flammable gas; simple two-carbon alkane.",
+      "tags": [
+        "daily life",
+        "fuel"
+      ],
+      "searchQuery": "Ethane"
+    },
+    {
+      "id": "heptane",
+      "name": "Heptane",
+      "formula": "C7H16",
+      "otherNames": [
+        "n-Heptane"
+      ],
+      "type": "Alkane",
+      "uses": "Octane-rating reference fuel component and nonpolar solvent.",
+      "notes": "Highly flammable.",
+      "tags": [
+        "alkane",
+        "hydrocarbon",
+        "fuel"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/8900",
+      "searchQuery": "Heptane"
+    },
+    {
+      "id": "hexane",
+      "name": "Hexane",
+      "formula": "C6H14",
+      "otherNames": [
+        "n-Hexane"
+      ],
+      "type": "Alkane",
+      "uses": "Nonpolar solvent and gasoline-range hydrocarbon.",
+      "notes": "Highly flammable; neurotoxic with repeated exposure.",
+      "tags": [
+        "alkane",
+        "hydrocarbon",
+        "solvent"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/8058",
+      "searchQuery": "Hexane"
+    },
+    {
+      "id": "methane",
+      "name": "Methane",
+      "formula": "CH4",
+      "otherNames": [
+        "Natural gas"
+      ],
+      "type": "Alkane",
+      "uses": "Fuel, chemical feedstock.",
+      "notes": "Flammable greenhouse gas.",
+      "tags": [
+        "alkane",
+        "daily life",
+        "fuel"
+      ],
+      "searchQuery": "Methane"
+    },
+    {
+      "id": "nonane",
+      "name": "Nonane",
+      "formula": "C9H20",
+      "otherNames": [
+        "n-Nonane"
+      ],
+      "type": "Alkane",
+      "uses": "Hydrocarbon reference and fuel-range compound.",
+      "notes": "Flammable liquid.",
+      "tags": [
+        "alkane",
+        "hydrocarbon",
+        "fuel"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/8141",
+      "searchQuery": "Nonane"
+    },
+    {
+      "id": "octane",
+      "name": "Octane",
+      "formula": "C8H18",
+      "otherNames": [
+        "Gasoline component"
+      ],
+      "type": "Alkane",
+      "uses": "Fuel-reference hydrocarbon and gasoline component.",
+      "notes": "Highly flammable.",
+      "tags": [
+        "daily life",
+        "fuel",
+        "alkane"
+      ],
+      "searchQuery": "Octane",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/356"
+    },
+    {
+      "id": "pentane",
+      "name": "Pentane",
+      "formula": "C5H12",
+      "otherNames": [
+        "n-Pentane"
+      ],
+      "type": "Alkane",
+      "uses": "Solvent and low-boiling hydrocarbon reference.",
+      "notes": "Extremely flammable.",
+      "tags": [
+        "alkane",
+        "hydrocarbon"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/8003",
+      "searchQuery": "Pentane"
+    },
+    {
+      "id": "propane",
+      "name": "Propane",
+      "formula": "C3H8",
+      "otherNames": [
+        "LPG",
+        "Liquefied petroleum gas"
+      ],
+      "type": "Alkane",
+      "uses": "Cooking gas, camping fuel, heating fuel.",
+      "notes": "Highly flammable gas stored as a liquid under pressure.",
+      "tags": [
+        "daily life",
+        "fuel"
+      ],
+      "searchQuery": "Propane"
+    },
+    {
+      "name": "1-Butene",
+      "type": "Alkene",
+      "uses": "Polymer/comonomer feedstock and terminal alkene example.",
+      "notes": "Extremely flammable gas.",
+      "otherNames": [
+        "but-1-ene"
+      ],
+      "tags": [
+        "alkene"
+      ],
+      "formula": "C4H8",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/7844",
+      "id": "1-butene",
+      "searchQuery": "1-Butene"
+    },
+    {
+      "name": "2-Butene",
+      "type": "Alkene",
+      "uses": "Internal alkene isomer reference.",
+      "notes": "Highly flammable gas.",
+      "otherNames": [
+        "but-2-ene"
+      ],
+      "tags": [
+        "alkene",
+        "isomer"
+      ],
+      "formula": "C4H8",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/62695",
+      "id": "2-butene",
+      "searchQuery": "2-Butene"
+    },
+    {
+      "name": "Cyclohexene",
+      "type": "Alkene",
+      "uses": "Cyclic alkene reference and synthesis intermediate.",
+      "notes": "Flammable and irritating.",
+      "otherNames": [],
+      "tags": [
+        "alkene",
+        "cycloalkene"
+      ],
+      "formula": "C6H10",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/8079",
+      "id": "cyclohexene",
+      "searchQuery": "Cyclohexene"
+    },
+    {
+      "id": "ethene",
+      "name": "Ethene",
+      "formula": "C2H4",
+      "otherNames": [
+        "Ethylene"
+      ],
+      "type": "Alkene",
+      "uses": "Monomer for polyethylene; fruit ripening hormone; raw material for ethanol and ethylene glycol.",
+      "notes": "Simplest alkene with a carbon-carbon double bond.",
+      "tags": [
+        "alkene",
+        "hydrocarbon",
+        "polymer"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Isobutylene",
+      "type": "Alkene",
+      "uses": "Fuel additive/polymer feedstock and branched alkene.",
+      "notes": "Extremely flammable gas.",
+      "otherNames": [
+        "2-methylpropene"
+      ],
+      "tags": [
+        "alkene",
+        "polymer feedstock"
+      ],
+      "formula": "C4H8",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/8255",
+      "id": "isobutylene",
+      "searchQuery": "Isobutylene"
+    },
+    {
+      "id": "limonene",
+      "name": "Limonene",
+      "formula": "C10H16",
+      "otherNames": [
+        "Citrus oil"
+      ],
+      "type": "Alkene",
+      "uses": "Citrus scent in cleaners and fragrances.",
+      "notes": "Flammable terpene; can oxidize to allergens.",
+      "tags": [
+        "daily life",
+        "fragrance"
+      ],
+      "searchQuery": "Limonene"
+    },
+    {
+      "id": "propene",
+      "name": "Propene",
+      "formula": "C3H6",
+      "otherNames": [
+        "Propylene",
+        "propylene"
+      ],
+      "type": "Alkene",
+      "uses": "Polypropylene feedstock and simple alkene reference.",
+      "notes": "Extremely flammable gas.",
+      "tags": [
+        "alkene",
+        "hydrocarbon",
+        "polymer",
+        "polymer feedstock"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/8252",
+      "searchQuery": "Propene"
+    },
+    {
+      "name": "1-Butyne",
+      "type": "Alkyne",
+      "uses": "Terminal alkyne isomer reference.",
+      "notes": "Highly flammable.",
+      "otherNames": [
+        "but-1-yne"
+      ],
+      "tags": [
+        "alkyne",
+        "isomer"
+      ],
+      "formula": "C4H6",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/7846",
+      "id": "1-butyne",
+      "searchQuery": "1-Butyne"
+    },
+    {
+      "name": "2-Butyne",
+      "type": "Alkyne",
+      "uses": "Internal alkyne isomer reference.",
+      "notes": "Highly flammable.",
+      "otherNames": [
+        "but-2-yne"
+      ],
+      "tags": [
+        "alkyne",
+        "isomer"
+      ],
+      "formula": "C4H6",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/10419",
+      "id": "2-butyne",
+      "searchQuery": "2-Butyne"
+    },
+    {
+      "id": "ethyne",
+      "name": "Ethyne",
+      "formula": "C2H2",
+      "otherNames": [
+        "Acetylene"
+      ],
+      "type": "Alkyne",
+      "uses": "Prepared from calcium carbide; used in organic synthesis and welding contexts.",
+      "notes": "Simplest alkyne with a carbon-carbon triple bond.",
+      "tags": [
+        "alkyne",
+        "hydrocarbon",
+        "fruit ripening"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Phenylacetylene",
+      "type": "Alkyne",
+      "uses": "Aromatic terminal alkyne synthesis intermediate.",
+      "notes": "Flammable/irritant; handle as organic reagent.",
+      "otherNames": [],
+      "tags": [
+        "alkyne",
+        "aromatic"
+      ],
+      "formula": "C8H6",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/10821",
+      "id": "phenylacetylene",
+      "searchQuery": "Phenylacetylene"
+    },
+    {
+      "id": "propyne",
+      "name": "Propyne",
+      "formula": "C3H4",
+      "otherNames": [
+        "Methylacetylene",
+        "methylacetylene"
+      ],
+      "type": "Alkyne",
+      "uses": "Simple terminal alkyne reference.",
+      "notes": "Highly flammable gas.",
+      "tags": [
+        "alkyne",
+        "hydrocarbon"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6335",
+      "searchQuery": "Propyne"
+    },
+    {
+      "id": "brass",
+      "name": "Brass",
+      "formula": "Cu + Zn",
+      "otherNames": [
+        "Copper-zinc alloy"
+      ],
+      "type": "Alloy",
+      "uses": "Ornaments, ball bearings, electric switches, door knobs and utensils.",
+      "notes": "A copper alloy made by mixing copper with zinc.",
+      "tags": [
+        "alloy",
+        "metal",
+        "daily life"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "bronze",
+      "name": "Bronze",
+      "formula": "Cu + Sn",
+      "otherNames": [
+        "Copper-tin alloy"
+      ],
+      "type": "Alloy",
+      "uses": "Machinery parts, plates, glasses, utensils and historical tools.",
+      "notes": "A copper alloy made by mixing copper with tin.",
+      "tags": [
+        "alloy",
+        "metal",
+        "daily life"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Cast iron",
+      "type": "Alloy",
+      "uses": "Iron-carbon alloy used in cookware, pipes, and machinery.",
+      "notes": "Dust/fumes from cutting or welding require controls.",
+      "otherNames": [],
+      "tags": [
+        "alloy",
+        "daily life"
+      ],
+      "formula": "Fe + C + Si",
+      "sourceLabel": "Britannica alloy reference",
+      "sourceUrl": "https://www.britannica.com/science/alloy",
+      "id": "cast-iron",
+      "searchQuery": "Cast iron"
+    },
+    {
+      "name": "Constantan",
+      "type": "Alloy",
+      "uses": "Copper-nickel resistance alloy used in thermocouples.",
+      "notes": "Metal dust/fumes require controls.",
+      "otherNames": [],
+      "tags": [
+        "alloy"
+      ],
+      "formula": "Cu + Ni",
+      "sourceLabel": "Britannica alloy reference",
+      "sourceUrl": "https://www.britannica.com/science/alloy",
+      "id": "constantan",
+      "searchQuery": "Constantan"
+    },
+    {
+      "id": "duralumin",
+      "name": "Duralumin",
+      "formula": "Al + Cu + Mg + Mn",
+      "otherNames": [
+        "Duralmin"
+      ],
+      "type": "Alloy",
+      "uses": "Aircraft bodies and bicycle parts.",
+      "notes": "Light aluminium alloy containing copper, magnesium, manganese and small amounts of iron.",
+      "tags": [
+        "alloy",
+        "metal",
+        "aircraft"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Nichrome",
+      "type": "Alloy",
+      "uses": "Resistive heating-wire alloy for heaters and toasters.",
+      "notes": "Hot wire burn/fire hazard; nickel sensitivity possible.",
+      "otherNames": [],
+      "tags": [
+        "alloy",
+        "daily life"
+      ],
+      "formula": "Ni + Cr + Fe",
+      "sourceLabel": "Britannica alloy reference",
+      "sourceUrl": "https://www.britannica.com/science/alloy",
+      "id": "nichrome",
+      "searchQuery": "Nichrome"
+    },
+    {
+      "name": "Pewter",
+      "type": "Alloy",
+      "uses": "Tin-rich alloy used in utensils, ornaments, and cast objects.",
+      "notes": "Modern lead-free pewter differs from old lead-containing pewter.",
+      "otherNames": [],
+      "tags": [
+        "alloy"
+      ],
+      "formula": "Sn + Sb + Cu",
+      "sourceLabel": "Britannica alloy reference",
+      "sourceUrl": "https://www.britannica.com/science/alloy",
+      "id": "pewter",
+      "searchQuery": "Pewter"
+    },
+    {
+      "name": "Solder",
+      "type": "Alloy",
+      "uses": "Fusible alloy used to join metals/electronics.",
+      "notes": "Lead solder is toxic; flux fumes can irritate.",
+      "otherNames": [],
+      "tags": [
+        "alloy",
+        "daily life"
+      ],
+      "formula": "Sn + Pb or Sn + Ag + Cu",
+      "sourceLabel": "Britannica alloy reference",
+      "sourceUrl": "https://www.britannica.com/science/alloy",
+      "id": "solder",
+      "searchQuery": "Solder"
+    },
+    {
+      "id": "stainless-steel",
+      "name": "Stainless steel",
+      "formula": "Fe + Cr + Ni",
+      "otherNames": [
+        "Rust-free steel"
+      ],
+      "type": "Alloy",
+      "uses": "Kitchen sinks, knives, forks, chemical containers and surgical tools.",
+      "notes": "Chromium and nickel improve corrosion resistance.",
+      "tags": [
+        "alloy",
+        "metal",
+        "daily life"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "steel",
+      "name": "Steel",
+      "formula": "Fe + C",
+      "otherNames": [
+        "Carbon steel"
+      ],
+      "type": "Alloy",
+      "uses": "Rails, wheels, engines, ships, vehicles, cranes, tools, knives and machinery.",
+      "notes": "Commonly described as iron with a small percentage of carbon.",
+      "tags": [
+        "alloy",
+        "metal",
+        "daily life"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Sterling silver",
+      "type": "Alloy",
+      "uses": "Jewelry and silverware alloy.",
+      "notes": "Low hazard metal alloy; polishing chemicals vary.",
+      "otherNames": [],
+      "tags": [
+        "alloy",
+        "daily life"
+      ],
+      "formula": "Ag + Cu",
+      "sourceLabel": "Britannica alloy reference",
+      "sourceUrl": "https://www.britannica.com/science/alloy",
+      "id": "sterling-silver",
+      "searchQuery": "Sterling silver"
+    },
+    {
+      "name": "Acetamide",
+      "type": "Amide",
+      "uses": "Simple amide reference and organic chemistry example.",
+      "notes": "Irritant; avoid ingestion.",
+      "otherNames": [
+        "ethanamide"
+      ],
+      "tags": [
+        "amide"
+      ],
+      "formula": "C2H5NO",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/178",
+      "id": "acetamide",
+      "searchQuery": "Acetamide"
+    },
+    {
+      "name": "Acrylamide",
+      "type": "Amide",
+      "uses": "Polyacrylamide monomer and amide example.",
+      "notes": "Neurotoxic and probable carcinogenic hazard.",
+      "otherNames": [],
+      "tags": [
+        "amide",
+        "polymer feedstock"
+      ],
+      "formula": "C3H5NO",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6579",
+      "id": "acrylamide",
+      "searchQuery": "Acrylamide"
+    },
+    {
+      "name": "Benzamide",
+      "type": "Amide",
+      "uses": "Aromatic amide reference.",
+      "notes": "Irritant as dust/solid.",
+      "otherNames": [],
+      "tags": [
+        "amide",
+        "aromatic"
+      ],
+      "formula": "C7H7NO",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/2331",
+      "id": "benzamide",
+      "searchQuery": "Benzamide"
+    },
+    {
+      "id": "capsaicin",
+      "name": "Capsaicin",
+      "formula": "C18H27NO3",
+      "otherNames": [
+        "Chili pepper heat compound"
+      ],
+      "type": "Amide",
+      "uses": "Spicy component in chili peppers and topical creams.",
+      "notes": "Activates heat/pain receptors.",
+      "tags": [
+        "daily life",
+        "food"
+      ],
+      "searchQuery": "Capsaicin"
+    },
+    {
+      "name": "Dimethylformamide",
+      "type": "Amide",
+      "uses": "Polar aprotic solvent in synthesis.",
+      "notes": "Toxic; skin absorption hazard.",
+      "otherNames": [
+        "DMF"
+      ],
+      "tags": [
+        "amide",
+        "solvent"
+      ],
+      "formula": "C3H7NO",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6228",
+      "id": "dimethylformamide",
+      "searchQuery": "Dimethylformamide"
+    },
+    {
+      "name": "Formamide",
+      "type": "Amide",
+      "uses": "Polar solvent and simplest amide reference.",
+      "notes": "Reproductive hazard concerns; avoid exposure.",
+      "otherNames": [
+        "methanamide"
+      ],
+      "tags": [
+        "amide"
+      ],
+      "formula": "CH3NO",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/713",
+      "id": "formamide",
+      "searchQuery": "Formamide"
+    },
+    {
+      "id": "paracetamol",
+      "name": "Paracetamol",
+      "formula": "C8H9NO2",
+      "otherNames": [
+        "Acetaminophen",
+        "APAP"
+      ],
+      "type": "Amide",
+      "uses": "Common pain reliever and fever reducer.",
+      "notes": "Overdose can cause severe liver damage.",
+      "tags": [
+        "daily life",
+        "medicine"
+      ],
+      "searchQuery": "Paracetamol"
+    },
+    {
+      "id": "urea",
+      "name": "Urea",
+      "formula": "NH2CONH2",
+      "otherNames": [
+        "Carbamide",
+        "NH2CONH2",
+        "carbamide"
+      ],
+      "type": "Amide",
+      "uses": "Fertilizer, resin raw material, and product of ammonium cyanate rearrangement.",
+      "notes": "Also called carbamide; chemically a diamide of carbonic acid.",
+      "tags": [
+        "amide",
+        "daily life",
+        "fertilizer"
+      ],
+      "searchQuery": "Urea",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Aniline",
+      "type": "Amine",
+      "uses": "Aromatic amine used in dye and polymer chemistry.",
+      "notes": "Toxic; can affect blood oxygen transport.",
+      "otherNames": [],
+      "tags": [
+        "amine",
+        "aromatic"
+      ],
+      "formula": "C6H7N",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6115",
+      "id": "aniline",
+      "searchQuery": "Aniline"
+    },
+    {
+      "name": "Ethanolamine",
+      "type": "Amine",
+      "uses": "Amine-alcohol used in detergents, gas treatment, and synthesis.",
+      "notes": "Corrosive/irritating in concentrated form.",
+      "otherNames": [
+        "2-aminoethanol"
+      ],
+      "tags": [
+        "amine",
+        "alcohol"
+      ],
+      "formula": "C2H7NO",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/700",
+      "id": "ethanolamine",
+      "searchQuery": "Ethanolamine"
+    },
+    {
+      "name": "Ethylamine",
+      "type": "Amine",
+      "uses": "Primary amine reference and synthesis intermediate.",
+      "notes": "Flammable, corrosive, and irritating.",
+      "otherNames": [],
+      "tags": [
+        "amine"
+      ],
+      "formula": "C2H7N",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6341",
+      "id": "ethylamine",
+      "searchQuery": "Ethylamine"
+    },
+    {
+      "name": "Methylamine",
+      "type": "Amine",
+      "uses": "Simple primary amine and synthesis intermediate.",
+      "notes": "Flammable gas/solution; corrosive and irritating.",
+      "otherNames": [],
+      "tags": [
+        "amine"
+      ],
+      "formula": "CH5N",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6329",
+      "id": "methylamine",
+      "searchQuery": "Methylamine"
+    },
+    {
+      "name": "Triethylamine",
+      "type": "Amine",
+      "uses": "Organic base used in synthesis.",
+      "notes": "Flammable, strong odor, corrosive/irritating.",
+      "otherNames": [
+        "TEA"
+      ],
+      "tags": [
+        "amine",
+        "base"
+      ],
+      "formula": "C6H15N",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/8471",
+      "id": "triethylamine",
+      "searchQuery": "Triethylamine"
+    },
+    {
+      "name": "Glycine",
+      "type": "Amino acid",
+      "uses": "Simplest amino acid and biochemistry reference.",
+      "notes": "Simplest amino acid; contains both amine and carboxylic acid functionality.",
+      "otherNames": [],
+      "tags": [
+        "amino acid",
+        "biochemistry",
+        "organic"
+      ],
+      "formula": "C2H5NO2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/750",
+      "id": "glycine",
+      "searchQuery": "Glycine"
+    },
+    {
+      "id": "benzene",
+      "name": "Benzene",
+      "formula": "C6H6",
+      "otherNames": [
+        "Cyclohexatriene"
+      ],
+      "type": "Aromatic",
+      "uses": "Chemical feedstock, solvent historically.",
+      "notes": "Carcinogenic; avoid exposure.",
+      "tags": [
+        "aromatic",
+        "daily life"
+      ],
+      "searchQuery": "Benzene"
+    },
+    {
+      "name": "Chlorobenzene",
+      "type": "Aromatic",
+      "uses": "Aromatic solvent and aryl chloride reference.",
+      "notes": "Flammable and harmful.",
+      "otherNames": [],
+      "tags": [
+        "aromatic",
+        "alkyl halide"
+      ],
+      "formula": "C6H5Cl",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/7964",
+      "id": "chlorobenzene",
+      "searchQuery": "Chlorobenzene"
+    },
+    {
+      "name": "Ethylbenzene",
+      "type": "Aromatic",
+      "uses": "Aromatic hydrocarbon and styrene feedstock.",
+      "notes": "Flammable; vapor hazard.",
+      "otherNames": [],
+      "tags": [
+        "aromatic",
+        "polymer feedstock"
+      ],
+      "formula": "C8H10",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/7500",
+      "id": "ethylbenzene",
+      "searchQuery": "Ethylbenzene"
+    },
+    {
+      "id": "naphthalene",
+      "name": "Naphthalene",
+      "formula": "C10H8",
+      "otherNames": [
+        "Mothball compound"
+      ],
+      "type": "Aromatic",
+      "uses": "Mothball compound and fused-ring aromatic reference.",
+      "notes": "Harmful; possible carcinogenic concern.",
+      "tags": [
+        "aromatic",
+        "hydrocarbon",
+        "daily life"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/931",
+      "searchQuery": "Naphthalene"
+    },
+    {
+      "id": "toluene",
+      "name": "Toluene",
+      "formula": "C7H8",
+      "otherNames": [
+        "Methylbenzene",
+        "methylbenzene"
+      ],
+      "type": "Aromatic",
+      "uses": "Solvent and aromatic hydrocarbon reference.",
+      "notes": "Flammable; repeated exposure can harm the nervous system.",
+      "tags": [
+        "aromatic",
+        "daily life",
+        "solvent"
+      ],
+      "searchQuery": "Toluene",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/1140"
+    },
+    {
+      "name": "Xylene",
+      "type": "Aromatic",
+      "uses": "Solvent and aromatic hydrocarbon isomer mixture/reference.",
+      "notes": "Flammable; vapor irritant.",
+      "otherNames": [
+        "dimethylbenzene"
+      ],
+      "tags": [
+        "aromatic",
+        "solvent"
+      ],
+      "formula": "C8H10",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/7237",
+      "id": "xylene",
+      "searchQuery": "o-Xylene"
+    },
+    {
+      "id": "aluminum-hydroxide",
+      "name": "Aluminum hydroxide",
+      "formula": "Al(OH)3",
+      "otherNames": [
+        "Alumina hydrate"
+      ],
+      "type": "Base",
+      "uses": "Antacid and flame-retardant filler.",
+      "notes": "Amphoteric hydroxide.",
+      "tags": [
+        "daily life",
+        "medicine"
+      ],
+      "searchQuery": "Aluminum hydroxide"
+    },
+    {
+      "id": "ammonia",
+      "name": "Ammonia",
+      "formula": "NH3",
+      "otherNames": [
+        "Azane"
+      ],
+      "type": "Base",
+      "uses": "Fertilizer production, cleaning solutions, refrigerant.",
+      "notes": "Pungent, irritating gas; forms ammonium salts.",
+      "tags": [
+        "base",
+        "daily life"
+      ],
+      "searchQuery": "Ammonia"
+    },
+    {
+      "id": "ammonium-hydroxide",
+      "name": "Ammonium hydroxide",
+      "formula": "NH4OH",
+      "otherNames": [
+        "Ammonia solution",
+        "Aqueous ammonia"
+      ],
+      "type": "Base",
+      "uses": "Glass cleaner component and weak base.",
+      "notes": "Prepared by dissolving ammonia gas in water.",
+      "tags": [
+        "base",
+        "cleaner",
+        "daily life"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Barium hydroxide",
+      "type": "Base",
+      "uses": "Strong base and sulfate-test reagent source of barium ions.",
+      "notes": "Corrosive and toxic barium compound.",
+      "otherNames": [],
+      "tags": [
+        "base"
+      ],
+      "formula": "Ba(OH)2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6093286",
+      "id": "barium-hydroxide",
+      "searchQuery": "Barium hydroxide"
+    },
+    {
+      "id": "calcium-hydroxide",
+      "name": "Calcium hydroxide",
+      "formula": "Ca(OH)2",
+      "otherNames": [
+        "Slaked lime"
+      ],
+      "type": "Base",
+      "uses": "Limewater, mortar, pH adjustment.",
+      "notes": "Sparingly soluble base.",
+      "tags": [
+        "base",
+        "daily life"
+      ],
+      "searchQuery": "Calcium hydroxide"
+    },
+    {
+      "name": "Choline hydroxide",
+      "type": "Base",
+      "uses": "Organic hydroxide base and ionic-liquid precursor.",
+      "notes": "Corrosive alkaline solution.",
+      "otherNames": [],
+      "tags": [
+        "base",
+        "organic"
+      ],
+      "formula": "C5H15NO2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/31255",
+      "id": "choline-hydroxide",
+      "searchQuery": "Choline hydroxide"
+    },
+    {
+      "name": "Lithium hydroxide",
+      "type": "Base",
+      "uses": "Strong base used in CO2 scrubbers and lithium chemistry.",
+      "notes": "Corrosive solid.",
+      "otherNames": [],
+      "tags": [
+        "base"
+      ],
+      "formula": "LiOH",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/3939",
+      "id": "lithium-hydroxide",
+      "searchQuery": "Lithium hydroxide"
+    },
+    {
+      "id": "magnesium-hydroxide",
+      "name": "Magnesium hydroxide",
+      "formula": "Mg(OH)2",
+      "otherNames": [
+        "Milk of magnesia"
+      ],
+      "type": "Base",
+      "uses": "Antacid and laxative.",
+      "notes": "Sparingly soluble base.",
+      "tags": [
+        "daily life",
+        "medicine"
+      ],
+      "searchQuery": "Magnesium hydroxide"
+    },
+    {
+      "id": "potassium-hydroxide",
+      "name": "Potassium hydroxide",
+      "formula": "KOH",
+      "otherNames": [
+        "Caustic potash"
+      ],
+      "type": "Base",
+      "uses": "Alkaline batteries, soap, biodiesel.",
+      "notes": "Strongly caustic and hygroscopic.",
+      "tags": [
+        "base",
+        "daily life"
+      ],
+      "searchQuery": "Potassium hydroxide"
+    },
+    {
+      "id": "sodium-hydroxide",
+      "name": "Sodium hydroxide",
+      "formula": "NaOH",
+      "otherNames": [
+        "Caustic soda",
+        "Lye"
+      ],
+      "type": "Base",
+      "uses": "Soap making, drain cleaner, pH control.",
+      "notes": "Highly caustic; dissolves fats and tissue.",
+      "tags": [
+        "base",
+        "daily life"
+      ],
+      "searchQuery": "Sodium hydroxide"
+    },
+    {
+      "name": "Strontium hydroxide",
+      "type": "Base",
+      "uses": "Strong alkaline earth hydroxide reference.",
+      "notes": "Corrosive; strontium salts require care.",
+      "otherNames": [],
+      "tags": [
+        "base"
+      ],
+      "formula": "Sr(OH)2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/87672",
+      "id": "strontium-hydroxide",
+      "searchQuery": "Strontium hydroxide"
+    },
+    {
+      "name": "Tetramethylammonium hydroxide",
+      "type": "Base",
+      "uses": "Strong organic base used in electronics and analysis.",
+      "notes": "Highly toxic and corrosive.",
+      "otherNames": [
+        "TMAH"
+      ],
+      "tags": [
+        "base",
+        "organic"
+      ],
+      "formula": "(CH3)4NOH",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/60966",
+      "id": "tetramethylammonium-hydroxide",
+      "searchQuery": "Tetramethylammonium hydroxide"
+    },
+    {
+      "id": "cellulose",
+      "name": "Cellulose",
+      "formula": "(C6H10O5)n",
+      "otherNames": [
+        "Plant fiber"
+      ],
+      "type": "Carbohydrate",
+      "uses": "Plant structural polysaccharide, paper/cotton component.",
+      "notes": "Dust can be combustible; low hazard as bulk material.",
+      "tags": [
+        "daily life",
+        "polymer",
+        "carbohydrate"
+      ],
+      "searchQuery": "Cellulose",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "fructose",
+      "name": "Fructose",
+      "formula": "C6H12O6",
+      "otherNames": [
+        "Fruit sugar",
+        "levulose"
+      ],
+      "type": "Carbohydrate",
+      "uses": "Fruit sugar and monosaccharide reference.",
+      "notes": "Food sugar; lab-grade dust can irritate.",
+      "tags": [
+        "daily life",
+        "sugar",
+        "carbohydrate"
+      ],
+      "searchQuery": "Fructose",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/2723872"
+    },
+    {
+      "id": "glucose",
+      "name": "Glucose",
+      "formula": "C6H12O6",
+      "otherNames": [
+        "Dextrose"
+      ],
+      "type": "Carbohydrate",
+      "uses": "Cellular energy source, IV sugar solutions.",
+      "notes": "Reducing sugar; common in biology.",
+      "tags": [
+        "daily life",
+        "sugar"
+      ],
+      "searchQuery": "Glucose"
+    },
+    {
+      "id": "lactose",
+      "name": "Lactose",
+      "formula": "C12H22O11",
+      "otherNames": [
+        "Milk sugar"
+      ],
+      "type": "Carbohydrate",
+      "uses": "Milk sugar and disaccharide reference.",
+      "notes": "Food sugar; intolerance is physiological, not chemical toxicity.",
+      "tags": [
+        "daily life",
+        "sugar",
+        "carbohydrate"
+      ],
+      "searchQuery": "Lactose",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/440995"
+    },
+    {
+      "name": "Maltose",
+      "type": "Carbohydrate",
+      "uses": "Disaccharide from starch breakdown.",
+      "notes": "Food sugar; low hazard in normal use.",
+      "otherNames": [],
+      "tags": [
+        "carbohydrate",
+        "daily life"
+      ],
+      "formula": "C12H22O11",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/439186",
+      "id": "maltose",
+      "searchQuery": "Maltose"
+    },
+    {
+      "name": "Ribose",
+      "type": "Carbohydrate",
+      "uses": "Pentose sugar in RNA and nucleotides.",
+      "notes": "Low hazard as sugar; lab context matters.",
+      "otherNames": [],
+      "tags": [
+        "carbohydrate",
+        "biochemistry"
+      ],
+      "formula": "C5H10O5",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/10975657",
+      "id": "ribose",
+      "searchQuery": "Ribose"
+    },
+    {
+      "id": "starch",
+      "name": "Starch",
+      "formula": "(C6H10O5)n",
+      "otherNames": [
+        "Amylum"
+      ],
+      "type": "Carbohydrate",
+      "uses": "Food/storage polysaccharide and iodine-test substance.",
+      "notes": "Food material; dust can be combustible/irritating.",
+      "tags": [
+        "daily life",
+        "food",
+        "carbohydrate"
+      ],
+      "searchQuery": "Starch",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "sucrose",
+      "name": "Sucrose",
+      "formula": "C12H22O11",
+      "otherNames": [
+        "Table sugar"
+      ],
+      "type": "Carbohydrate",
+      "uses": "Sweetener, food ingredient.",
+      "notes": "Disaccharide of glucose and fructose.",
+      "tags": [
+        "daily life",
+        "sugar"
+      ],
+      "searchQuery": "Sucrose"
+    },
+    {
+      "id": "bleaching-powder",
+      "name": "Bleaching powder",
+      "formula": "Ca(OCl)Cl",
+      "otherNames": [
+        "Calcium oxychloride chloride",
+        "Calcium hypochlorite chloride"
+      ],
+      "type": "Cleaner",
+      "uses": "Bleaching stains and killing germs on floors, commodes and basins.",
+      "notes": "Reacts with water to form hypochlorous acid and nascent oxygen.",
+      "tags": [
+        "cleaner",
+        "salt",
+        "oxidizer"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Household ammonia",
+      "type": "Cleaner",
+      "uses": "Aqueous ammonia cleaner for glass/degreasing.",
+      "notes": "Irritant; never mix with bleach.",
+      "otherNames": [
+        "ammonia solution"
+      ],
+      "tags": [
+        "cleaner",
+        "base",
+        "mixture"
+      ],
+      "formula": "NH3(aq)",
+      "sourceLabel": "CDC cleaning and disinfecting reference",
+      "sourceUrl": "https://www.cdc.gov/hygiene/about/cleaning-and-disinfecting.html",
+      "id": "household-ammonia",
+      "searchQuery": "Household ammonia"
+    },
+    {
+      "id": "sodium-hypochlorite",
+      "name": "Sodium hypochlorite",
+      "formula": "NaOCl",
+      "otherNames": [
+        "Bleach",
+        "bleach solution active"
+      ],
+      "type": "Cleaner",
+      "uses": "Household bleach active ingredient and disinfectant.",
+      "notes": "Corrosive/oxidizing; never mix with acids or ammonia.",
+      "tags": [
+        "cleaner",
+        "salt",
+        "oxidizer",
+        "disinfectant"
+      ],
+      "searchQuery": "Sodium hypochlorite",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/23665760"
+    },
+    {
+      "name": "Sodium perborate",
+      "type": "Cleaner",
+      "uses": "Oxygen bleach ingredient formerly common in detergents.",
+      "notes": "Oxidizer; boron compound restrictions vary by region.",
+      "otherNames": [],
+      "tags": [
+        "cleaner",
+        "oxidizer",
+        "peroxide"
+      ],
+      "formula": "NaBO3",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/517072",
+      "id": "sodium-perborate",
+      "searchQuery": "Sodium perborate"
+    },
+    {
+      "name": "Sodium percarbonate",
+      "type": "Cleaner",
+      "uses": "Oxygen bleach ingredient in laundry and cleaning powders.",
+      "notes": "Oxidizer; irritant.",
+      "otherNames": [],
+      "tags": [
+        "cleaner",
+        "oxidizer",
+        "peroxide"
+      ],
+      "formula": "2Na2CO3.3H2O2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/159762",
+      "id": "sodium-percarbonate",
+      "searchQuery": "Sodium percarbonate"
+    },
+    {
+      "id": "cyclobutane",
+      "name": "Cyclobutane",
+      "formula": "C4H8",
+      "otherNames": [],
+      "type": "Cycloalkane",
+      "uses": "Small-ring cycloalkane reference.",
+      "notes": "Flammable gas.",
+      "tags": [
+        "hydrocarbon",
+        "cycloalkane"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/9250",
+      "searchQuery": "Cyclobutane"
+    },
+    {
+      "name": "Cycloheptane",
+      "type": "Cycloalkane",
+      "uses": "Medium-ring cycloalkane reference.",
+      "notes": "Flammable liquid.",
+      "otherNames": [],
+      "tags": [
+        "cycloalkane"
+      ],
+      "formula": "C7H14",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/9265",
+      "id": "cycloheptane",
+      "searchQuery": "Cycloheptane"
+    },
+    {
+      "id": "cyclohexane",
+      "name": "Cyclohexane",
+      "formula": "C6H12",
+      "otherNames": [
+        "Hexamethylene"
+      ],
+      "type": "Cycloalkane",
+      "uses": "Solvent and hydrocarbon example.",
+      "notes": "Closed-chain saturated hydrocarbon.",
+      "tags": [
+        "hydrocarbon",
+        "cycloalkane"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Cyclopentane",
+      "type": "Cycloalkane",
+      "uses": "Blowing agent/solvent and cycloalkane reference.",
+      "notes": "Highly flammable.",
+      "otherNames": [],
+      "tags": [
+        "cycloalkane"
+      ],
+      "formula": "C5H10",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/9253",
+      "id": "cyclopentane",
+      "searchQuery": "Cyclopentane"
+    },
+    {
+      "id": "cyclopropane",
+      "name": "Cyclopropane",
+      "formula": "C3H6",
+      "otherNames": [],
+      "type": "Cycloalkane",
+      "uses": "Example of saturated closed-chain hydrocarbon.",
+      "notes": "Three-membered cycloalkane ring.",
+      "tags": [
+        "hydrocarbon",
+        "cycloalkane"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Decalin",
+      "type": "Cycloalkane",
+      "uses": "Fused bicyclic cycloalkane solvent/reference.",
+      "notes": "Combustible; irritant.",
+      "otherNames": [
+        "decahydronaphthalene"
+      ],
+      "tags": [
+        "cycloalkane",
+        "solvent"
+      ],
+      "formula": "C10H18",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/7044",
+      "id": "decalin",
+      "searchQuery": "Decalin"
+    },
+    {
+      "name": "Methylcyclohexane",
+      "type": "Cycloalkane",
+      "uses": "Solvent and substituted cycloalkane reference.",
+      "notes": "Flammable liquid.",
+      "otherNames": [],
+      "tags": [
+        "cycloalkane",
+        "solvent"
+      ],
+      "formula": "C7H14",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/7962",
+      "id": "methylcyclohexane",
+      "searchQuery": "Methylcyclohexane"
+    },
+    {
+      "name": "Aluminum",
+      "type": "Element",
+      "uses": "Light structural metal and amphoteric chemistry reference.",
+      "notes": "Dust can be flammable; salts vary in hazard.",
+      "otherNames": [
+        "aluminium"
+      ],
+      "tags": [
+        "element",
+        "metal"
+      ],
+      "formula": "Al",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5359268",
+      "id": "aluminum",
+      "searchQuery": "Aluminum"
+    },
+    {
+      "name": "Arsenic",
+      "formula": "As",
+      "otherNames": [
+        "arsenic element"
+      ],
+      "type": "Element",
+      "uses": "Discussed as a toxic water contaminant; historically used in alloys and compounds.",
+      "notes": "Highly toxic in many forms; chronic exposure is dangerous.",
+      "tags": [
+        "element",
+        "water pollution"
+      ],
+      "searchQuery": "Arsenic",
+      "id": "arsenic",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Calcium",
+      "type": "Element",
+      "uses": "Alkaline earth element found in limestone, bones, and salts.",
+      "notes": "Metal reacts with water/acids; salts vary in hazard.",
+      "otherNames": [],
+      "tags": [
+        "element",
+        "alkaline earth metal"
+      ],
+      "formula": "Ca",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5460341",
+      "id": "calcium",
+      "searchQuery": "Calcium"
+    },
+    {
+      "name": "Carbon",
+      "type": "Element",
+      "uses": "Basis of organic chemistry and fuels.",
+      "notes": "Fine powders may be combustible/dusty.",
+      "otherNames": [],
+      "tags": [
+        "element",
+        "nonmetal"
+      ],
+      "formula": "C",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5462310",
+      "id": "carbon",
+      "searchQuery": "Carbon"
+    },
+    {
+      "name": "Chromium",
+      "type": "Element",
+      "uses": "Stainless steel and plating metal.",
+      "notes": "Hexavalent compounds are highly hazardous.",
+      "otherNames": [],
+      "tags": [
+        "element",
+        "metal"
+      ],
+      "formula": "Cr",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/23976",
+      "id": "chromium",
+      "searchQuery": "Chromium"
+    },
+    {
+      "name": "Copper",
+      "formula": "Cu",
+      "otherNames": [
+        "copper metal"
+      ],
+      "type": "Element",
+      "uses": "Electrode material, conductor, and product in Daniell cell reactions.",
+      "notes": "Metal is low hazard; salts can be harmful and aquatic-toxic.",
+      "tags": [
+        "element",
+        "electrochemistry"
+      ],
+      "searchQuery": "Copper",
+      "id": "copper",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Iron",
+      "formula": "Fe",
+      "otherNames": [
+        "iron metal"
+      ],
+      "type": "Element",
+      "uses": "Rusting, corrosion, and redox examples.",
+      "notes": "Metal filings may irritate; hot iron and dust need care.",
+      "tags": [
+        "element",
+        "corrosion"
+      ],
+      "searchQuery": "Iron",
+      "id": "iron",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Lead",
+      "type": "Element",
+      "uses": "Dense metal found in batteries and older paints/pipes.",
+      "notes": "Toxic cumulative heavy metal.",
+      "otherNames": [],
+      "tags": [
+        "element",
+        "metal"
+      ],
+      "formula": "Pb",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5352425",
+      "id": "lead",
+      "searchQuery": "Lead"
+    },
+    {
+      "name": "Magnesium",
+      "formula": "Mg",
+      "otherNames": [
+        "magnesium metal"
+      ],
+      "type": "Element",
+      "uses": "Burns with a bright flame to form magnesium oxide; reacts with acids.",
+      "notes": "Flammable as ribbon/powder; bright flame can damage eyes.",
+      "tags": [
+        "element",
+        "combustion"
+      ],
+      "searchQuery": "Magnesium",
+      "id": "magnesium",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Mercury",
+      "type": "Element",
+      "uses": "Liquid metal used historically in instruments and amalgams.",
+      "notes": "Toxic vapor and cumulative exposure hazard.",
+      "otherNames": [],
+      "tags": [
+        "element",
+        "metal"
+      ],
+      "formula": "Hg",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/23931",
+      "id": "mercury",
+      "searchQuery": "Mercury"
+    },
+    {
+      "name": "Nickel",
+      "type": "Element",
+      "uses": "Alloys, plating, and battery chemistry metal.",
+      "notes": "Skin sensitizer; compounds vary in hazard.",
+      "otherNames": [],
+      "tags": [
+        "element",
+        "metal"
+      ],
+      "formula": "Ni",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/935",
+      "id": "nickel",
+      "searchQuery": "Nickel"
+    },
+    {
+      "name": "Phosphorus",
+      "type": "Element",
+      "uses": "Nonmetal in phosphates, fertilizers, and matches.",
+      "notes": "White phosphorus is extremely hazardous; allotrope matters.",
+      "otherNames": [],
+      "tags": [
+        "element",
+        "nonmetal"
+      ],
+      "formula": "P",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5462309",
+      "id": "phosphorus",
+      "searchQuery": "Phosphorus"
+    },
+    {
+      "name": "Potassium",
+      "type": "Element",
+      "uses": "Essential element, reactive alkali metal, and salt-forming metal.",
+      "notes": "Reacts violently with water as metal.",
+      "otherNames": [],
+      "tags": [
+        "element",
+        "alkali metal"
+      ],
+      "formula": "K",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5462222",
+      "id": "potassium",
+      "searchQuery": "Potassium"
+    },
+    {
+      "name": "Silver",
+      "formula": "Ag",
+      "otherNames": [
+        "silver metal"
+      ],
+      "type": "Element",
+      "uses": "Electroplating metal and cathode product in silver-ion cells.",
+      "notes": "Soluble silver salts are irritants/oxidizers.",
+      "tags": [
+        "element",
+        "electroplating"
+      ],
+      "searchQuery": "Silver",
+      "id": "silver",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Sodium",
+      "formula": "Na",
+      "otherNames": [
+        "sodium metal"
+      ],
+      "type": "Element",
+      "uses": "Reactive metal in synthesis, redox, and ionic-compound examples.",
+      "notes": "Reacts violently with water; corrosive products may form.",
+      "tags": [
+        "element",
+        "redox"
+      ],
+      "searchQuery": "Sodium",
+      "id": "sodium",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "sulfur",
+      "name": "Sulfur",
+      "formula": "S",
+      "otherNames": [
+        "Sulphur"
+      ],
+      "type": "Element",
+      "uses": "Nonmetal used in vulcanization, fertilizers, and sulfuric acid manufacture.",
+      "notes": "Dust can irritate; burns to sulfur dioxide.",
+      "tags": [
+        "element",
+        "nonmetal",
+        "mineral"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5362487",
+      "searchQuery": "Sulfur"
+    },
+    {
+      "name": "Tin",
+      "type": "Element",
+      "uses": "Tinplate, bronze, and solder-related metal.",
+      "notes": "Metal is low hazard; organotin compounds can be toxic.",
+      "otherNames": [],
+      "tags": [
+        "element",
+        "metal"
+      ],
+      "formula": "Sn",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5352426",
+      "id": "tin",
+      "searchQuery": "Tin"
+    },
+    {
+      "name": "Zinc",
+      "formula": "Zn",
+      "otherNames": [
+        "zinc metal"
+      ],
+      "type": "Element",
+      "uses": "Anode metal in galvanic cells, dry cells, and displacement reactions.",
+      "notes": "Metal dust/fumes can be harmful; zinc salts vary in toxicity.",
+      "tags": [
+        "element",
+        "electrochemistry"
+      ],
+      "searchQuery": "Zinc",
+      "id": "zinc",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Bromine",
+      "type": "Elemental molecule",
+      "uses": "Halogen liquid used in bromide chemistry and flame retardants.",
+      "notes": "Corrosive, toxic vapors.",
+      "otherNames": [],
+      "tags": [
+        "elemental molecule",
+        "halogen"
+      ],
+      "formula": "Br2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/24408",
+      "id": "bromine",
+      "searchQuery": "Bromine"
+    },
+    {
+      "name": "Chlorine",
+      "type": "Elemental molecule",
+      "uses": "Disinfectant gas and halogen reference.",
+      "notes": "Toxic corrosive gas.",
+      "otherNames": [],
+      "tags": [
+        "elemental molecule",
+        "halogen"
+      ],
+      "formula": "Cl2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/24526",
+      "id": "chlorine",
+      "searchQuery": "Chlorine"
+    },
+    {
+      "name": "Fluorine",
+      "type": "Elemental molecule",
+      "uses": "Highly reactive halogen and fluorochemical precursor.",
+      "notes": "Extremely toxic and corrosive gas.",
+      "otherNames": [],
+      "tags": [
+        "elemental molecule",
+        "halogen"
+      ],
+      "formula": "F2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/24524",
+      "id": "fluorine",
+      "searchQuery": "Fluorine"
+    },
+    {
+      "id": "hydrogen",
+      "name": "Hydrogen",
+      "formula": "H2",
+      "otherNames": [
+        "Dihydrogen"
+      ],
+      "type": "Elemental molecule",
+      "uses": "Fuel cells, hydrogenation, ammonia production.",
+      "notes": "Highly flammable gas.",
+      "tags": [
+        "daily life",
+        "fuel",
+        "gas"
+      ],
+      "searchQuery": "Hydrogen"
+    },
+    {
+      "name": "Iodine",
+      "type": "Elemental molecule",
+      "uses": "Halogen antiseptic chemistry and starch test reagent.",
+      "notes": "Irritant; concentrated iodine stains and can harm.",
+      "otherNames": [],
+      "tags": [
+        "elemental molecule",
+        "halogen"
+      ],
+      "formula": "I2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/807",
+      "id": "iodine",
+      "searchQuery": "Iodine"
+    },
+    {
+      "id": "nitrogen",
+      "name": "Nitrogen",
+      "formula": "N2",
+      "otherNames": [
+        "Dinitrogen"
+      ],
+      "type": "Elemental molecule",
+      "uses": "Inert atmosphere, liquid nitrogen cooling, fertilizers.",
+      "notes": "Mostly inert due to strong triple bond.",
+      "tags": [
+        "daily life",
+        "gas"
+      ],
+      "searchQuery": "Nitrogen"
+    },
+    {
+      "id": "oxygen",
+      "name": "Oxygen",
+      "formula": "O2",
+      "otherNames": [
+        "Dioxygen"
+      ],
+      "type": "Elemental molecule",
+      "uses": "Respiration, combustion support, medical oxygen.",
+      "notes": "Strong oxidizer; accelerates fire.",
+      "tags": [
+        "daily life",
+        "gas",
+        "oxidizer",
+        "elemental molecule"
+      ],
+      "searchQuery": "Oxygen"
+    },
+    {
+      "name": "Ozone",
+      "type": "Elemental molecule",
+      "uses": "Oxidant, disinfectant, and atmospheric chemistry species.",
+      "notes": "Toxic respiratory irritant.",
+      "otherNames": [],
+      "tags": [
+        "elemental molecule",
+        "oxidizer"
+      ],
+      "formula": "O3",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/24823",
+      "id": "ozone",
+      "searchQuery": "Ozone"
+    },
+    {
+      "id": "bromoethane",
+      "name": "Bromoethane",
+      "formula": "C2H5Br",
+      "otherNames": [
+        "Ethyl bromide",
+        "ethyl bromide"
+      ],
+      "type": "Haloalkane",
+      "uses": "Ethylating reagent and haloalkane reference.",
+      "notes": "Volatile and harmful; suspected carcinogenic risk.",
+      "tags": [
+        "haloalkane",
+        "organic"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6332",
+      "searchQuery": "Bromoethane"
+    },
+    {
+      "id": "carbon-tetrachloride",
+      "name": "Carbon tetrachloride",
+      "formula": "CCl4",
+      "otherNames": [
+        "Tetrachloromethane",
+        "tetrachloromethane"
+      ],
+      "type": "Haloalkane",
+      "uses": "Historical solvent and chlorinated methane reference.",
+      "notes": "Toxic; liver hazard and ozone-depleting substance.",
+      "tags": [
+        "haloalkane",
+        "organic",
+        "solvent"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5943",
+      "searchQuery": "Carbon tetrachloride"
+    },
+    {
+      "id": "chloroethane",
+      "name": "Chloroethane",
+      "formula": "C2H5Cl",
+      "otherNames": [
+        "Ethyl chloride"
+      ],
+      "type": "Haloalkane",
+      "uses": "Preparation example for ethene with sodium hydroxide.",
+      "notes": "Haloalkane derived from ethane.",
+      "tags": [
+        "haloalkane",
+        "organic"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "chloroform",
+      "name": "Chloroform",
+      "formula": "CHCl3",
+      "otherNames": [
+        "Trichloromethane",
+        "trichloromethane"
+      ],
+      "type": "Haloalkane",
+      "uses": "Chlorinated solvent and haloform example.",
+      "notes": "Toxic; suspected carcinogenic risk.",
+      "tags": [
+        "haloalkane",
+        "organic",
+        "solvent"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6212",
+      "searchQuery": "Chloroform"
+    },
+    {
+      "id": "chloromethane",
+      "name": "Chloromethane",
+      "formula": "CH3Cl",
+      "otherNames": [
+        "Methyl chloride",
+        "methyl chloride"
+      ],
+      "type": "Haloalkane",
+      "uses": "Methylating/refrigerant-history compound and simple alkyl halide.",
+      "notes": "Flammable toxic gas.",
+      "tags": [
+        "haloalkane",
+        "organic"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6327",
+      "searchQuery": "Chloromethane"
+    },
+    {
+      "id": "dibromoethane",
+      "name": "Dibromoethane",
+      "formula": "C2H4Br2",
+      "otherNames": [
+        "1,2-Dibromoethane"
+      ],
+      "type": "Haloalkane",
+      "uses": "Product of bromine addition to ethene.",
+      "notes": "Formation decolorizes bromine solution, showing unsaturation.",
+      "tags": [
+        "haloalkane",
+        "addition reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "dichloromethane",
+      "name": "Dichloromethane",
+      "formula": "CH2Cl2",
+      "otherNames": [
+        "Methylene chloride"
+      ],
+      "type": "Haloalkane",
+      "uses": "Substitution product in methane chlorination.",
+      "notes": "Halogenated methane derivative.",
+      "tags": [
+        "haloalkane",
+        "organic"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Iodoform",
+      "type": "Haloalkane",
+      "uses": "Classic haloform and old antiseptic reference.",
+      "notes": "Irritant; avoid inhaling dust/vapor.",
+      "otherNames": [
+        "triiodomethane"
+      ],
+      "tags": [
+        "haloalkane",
+        "haloform"
+      ],
+      "formula": "CHI3",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6374",
+      "id": "iodoform",
+      "searchQuery": "Iodoform"
+    },
+    {
+      "id": "tetrabromoethane",
+      "name": "Tetrabromoethane",
+      "formula": "C2H2Br4",
+      "otherNames": [
+        "1,1,2,2-Tetrabromoethane"
+      ],
+      "type": "Haloalkane",
+      "uses": "Product of bromine addition to ethyne.",
+      "notes": "Formation decolorizes bromine solution, showing unsaturation.",
+      "tags": [
+        "haloalkane",
+        "addition reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "vinyl-chloride",
+      "name": "Vinyl chloride",
+      "formula": "C2H3Cl",
+      "otherNames": [
+        "Chloroethene"
+      ],
+      "type": "Haloalkene",
+      "uses": "Monomer for polyvinyl chloride (PVC).",
+      "notes": "A chloroalkene monomer for PVC, not an alkyl halide.",
+      "tags": [
+        "haloalkene",
+        "alkene",
+        "polymer feedstock"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Alum",
+      "formula": "KAl(SO4)2.12H2O",
+      "otherNames": [
+        "potassium alum",
+        "fitkari"
+      ],
+      "type": "Hydrate",
+      "uses": "Coagulant in water purification and common hydrated double salt.",
+      "notes": "Irritant in concentrated/dust form; not potable-water guidance.",
+      "tags": [
+        "hydrate",
+        "daily life",
+        "water purification"
+      ],
+      "searchQuery": "Alum",
+      "id": "alum",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Calcium chloride hexahydrate",
+      "formula": "CaCl2.6H2O",
+      "otherNames": [
+        "calcium chloride hydrate"
+      ],
+      "type": "Hydrate",
+      "uses": "Hydrated salt example and desiccant-related chemistry.",
+      "notes": "Irritant; heat may be released when dissolving.",
+      "tags": [
+        "hydrate"
+      ],
+      "searchQuery": "Calcium chloride hexahydrate",
+      "id": "calcium-chloride-hexahydrate",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Cobalt(II) chloride hexahydrate",
+      "type": "Hydrate",
+      "uses": "Humidity indicator and hydrated salt reference.",
+      "notes": "Toxic/sensitizer; cobalt salts need care.",
+      "otherNames": [],
+      "tags": [
+        "hydrate",
+        "indicator"
+      ],
+      "formula": "CoCl2.6H2O",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "id": "cobalt-ii-chloride-hexahydrate",
+      "searchQuery": "Cobalt(II) chloride hexahydrate"
+    },
+    {
+      "name": "Copper(II) sulfate pentahydrate",
+      "formula": "CuSO4.5H2O",
+      "otherNames": [
+        "blue vitriol",
+        "copper sulfate pentahydrate"
+      ],
+      "type": "Hydrate",
+      "uses": "Blue crystalline hydrate used to show water of crystallization.",
+      "notes": "Harmful if swallowed; toxic to aquatic life.",
+      "tags": [
+        "hydrate",
+        "daily life"
+      ],
+      "searchQuery": "Copper(II) sulfate pentahydrate",
+      "id": "copper-ii-sulfate-pentahydrate",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Epsom salt",
+      "type": "Hydrate",
+      "uses": "Bath salt, magnesium source, and hydrate example.",
+      "notes": "May irritate eyes; ingestion dose matters.",
+      "otherNames": [
+        "magnesium sulfate heptahydrate"
+      ],
+      "tags": [
+        "hydrate",
+        "daily life"
+      ],
+      "formula": "MgSO4.7H2O",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "id": "epsom-salt",
+      "searchQuery": "Epsom salt"
+    },
+    {
+      "name": "Ferrous sulfate heptahydrate",
+      "formula": "FeSO4.7H2O",
+      "otherNames": [
+        "green vitriol",
+        "iron(II) sulfate heptahydrate"
+      ],
+      "type": "Hydrate",
+      "uses": "Green crystalline hydrate and iron(II) salt example.",
+      "notes": "Irritant; can be harmful if swallowed.",
+      "tags": [
+        "hydrate",
+        "iron"
+      ],
+      "searchQuery": "Ferrous sulfate heptahydrate",
+      "id": "ferrous-sulfate-heptahydrate",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Glauber's salt",
+      "type": "Hydrate",
+      "uses": "Hydrated sodium sulfate reference and historic laxative salt.",
+      "notes": "May irritate; ingestion dose matters.",
+      "otherNames": [
+        "sodium sulfate decahydrate"
+      ],
+      "tags": [
+        "hydrate"
+      ],
+      "formula": "Na2SO4.10H2O",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "id": "glauber-s-salt",
+      "searchQuery": "Glauber's salt"
+    },
+    {
+      "name": "Magnesium chloride hexahydrate",
+      "formula": "MgCl2.6H2O",
+      "otherNames": [
+        "magnesium chloride hydrate"
+      ],
+      "type": "Hydrate",
+      "uses": "Hydrated salt example and source of magnesium ions.",
+      "notes": "May irritate eyes in concentrated form.",
+      "tags": [
+        "hydrate"
+      ],
+      "searchQuery": "Magnesium chloride hexahydrate",
+      "id": "magnesium-chloride-hexahydrate",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "washing-soda",
+      "name": "Washing soda",
+      "formula": "Na2CO3.10H2O",
+      "otherNames": [
+        "Sodium carbonate decahydrate",
+        "sodium carbonate decahydrate"
+      ],
+      "type": "Hydrate",
+      "uses": "Laundry/water-softening alkali and hydrate example.",
+      "notes": "Alkaline irritant.",
+      "tags": [
+        "salt",
+        "cleaner",
+        "daily life",
+        "hydrate"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "searchQuery": "Washing soda"
+    },
+    {
+      "name": "Zinc sulfate heptahydrate",
+      "formula": "ZnSO4.7H2O",
+      "otherNames": [
+        "white vitriol"
+      ],
+      "type": "Hydrate",
+      "uses": "Hydrated salt example and zinc salt in laboratory chemistry.",
+      "notes": "Irritant; harmful to aquatic life in quantity.",
+      "tags": [
+        "hydrate"
+      ],
+      "searchQuery": "Zinc sulfate heptahydrate",
+      "id": "zinc-sulfate-heptahydrate",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Bromothymol blue",
+      "type": "Indicator",
+      "uses": "pH indicator near neutral range.",
+      "notes": "Dye/indicator; avoid ingestion.",
+      "otherNames": [],
+      "tags": [
+        "indicator",
+        "acid-base"
+      ],
+      "formula": "C27H28Br2O5S",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6450",
+      "id": "bromothymol-blue",
+      "searchQuery": "Bromothymol blue"
+    },
+    {
+      "name": "Litmus",
+      "formula": "mixture",
+      "otherNames": [
+        "litmus paper",
+        "litmus indicator"
+      ],
+      "type": "Indicator",
+      "uses": "Simple acid-base indicator: red in acid, blue in base.",
+      "notes": "Low hazard as paper strips; indicator solutions need normal lab care.",
+      "tags": [
+        "indicator",
+        "acid-base"
+      ],
+      "searchQuery": "Litmus",
+      "id": "litmus",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Methyl orange",
+      "type": "Indicator",
+      "uses": "pH indicator useful around acidic endpoint titrations.",
+      "notes": "Dye/indicator; avoid dust ingestion.",
+      "otherNames": [],
+      "tags": [
+        "indicator",
+        "acid-base"
+      ],
+      "formula": "C14H14N3NaO3S",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/23673835",
+      "id": "methyl-orange",
+      "searchQuery": "Methyl orange"
+    },
+    {
+      "name": "Methyl red",
+      "type": "Indicator",
+      "uses": "pH indicator for acidic transition range.",
+      "notes": "Dye/indicator; avoid dust exposure.",
+      "otherNames": [],
+      "tags": [
+        "indicator",
+        "acid-base"
+      ],
+      "formula": "C15H15N3O2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/10303",
+      "id": "methyl-red",
+      "searchQuery": "Methyl red"
+    },
+    {
+      "name": "Phenolphthalein",
+      "type": "Indicator",
+      "uses": "pH indicator: colorless in acid/neutral, pink in base.",
+      "notes": "Treat as lab chemical; avoid ingestion.",
+      "otherNames": [],
+      "tags": [
+        "indicator",
+        "acid-base"
+      ],
+      "formula": "C20H14O4",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/4764",
+      "id": "phenolphthalein",
+      "searchQuery": "Phenolphthalein"
+    },
+    {
+      "name": "Thymol blue",
+      "type": "Indicator",
+      "uses": "pH indicator with two transition ranges.",
+      "notes": "Dye/indicator; handle as reagent.",
+      "otherNames": [],
+      "tags": [
+        "indicator",
+        "acid-base"
+      ],
+      "formula": "C27H30O5S",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/65565",
+      "id": "thymol-blue",
+      "searchQuery": "Thymol blue"
+    },
+    {
+      "name": "Universal indicator",
+      "formula": "mixture",
+      "otherNames": [
+        "pH indicator mixture"
+      ],
+      "type": "Indicator",
+      "uses": "Shows approximate pH by color change over a broad acid-base range.",
+      "notes": "Treat as a chemical mixture; many solutions are alcohol-based.",
+      "tags": [
+        "indicator",
+        "acid-base"
+      ],
+      "searchQuery": "Universal indicator",
+      "id": "universal-indicator",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "2-Butanone",
+      "type": "Ketone",
+      "uses": "Solvent and simple ketone reference.",
+      "notes": "Highly flammable; vapor irritant.",
+      "otherNames": [
+        "methyl ethyl ketone",
+        "MEK"
+      ],
+      "tags": [
+        "ketone",
+        "solvent"
+      ],
+      "formula": "C4H8O",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6569",
+      "id": "2-butanone",
+      "searchQuery": "2-Butanone"
+    },
+    {
+      "id": "acetone",
+      "name": "Acetone",
+      "formula": "C3H6O",
+      "otherNames": [
+        "Propanone"
+      ],
+      "type": "Ketone",
+      "uses": "Solvent, nail polish remover, lab cleaning.",
+      "notes": "Volatile and flammable.",
+      "tags": [
+        "daily life",
+        "ketone",
+        "solvent"
+      ],
+      "searchQuery": "Acetone"
+    },
+    {
+      "name": "Acetophenone",
+      "type": "Ketone",
+      "uses": "Aromatic ketone used in fragrance and synthesis.",
+      "notes": "Irritant; harmful if swallowed.",
+      "otherNames": [],
+      "tags": [
+        "ketone",
+        "aromatic"
+      ],
+      "formula": "C8H8O",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/7410",
+      "id": "acetophenone",
+      "searchQuery": "Acetophenone"
+    },
+    {
+      "name": "Benzophenone",
+      "type": "Ketone",
+      "uses": "UV absorber and aromatic ketone reference.",
+      "notes": "Irritant; environmental concerns for some uses.",
+      "otherNames": [],
+      "tags": [
+        "ketone",
+        "aromatic"
+      ],
+      "formula": "C13H10O",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/3102",
+      "id": "benzophenone",
+      "searchQuery": "Benzophenone"
+    },
+    {
+      "name": "Camphor",
+      "type": "Ketone",
+      "uses": "Fragrant terpene ketone used in balms and moth repellents.",
+      "notes": "Flammable; harmful if swallowed in quantity.",
+      "otherNames": [],
+      "tags": [
+        "ketone",
+        "daily life"
+      ],
+      "formula": "C10H16O",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/2537",
+      "id": "camphor",
+      "searchQuery": "Camphor"
+    },
+    {
+      "name": "Cyclohexanone",
+      "type": "Ketone",
+      "uses": "Solvent and nylon precursor.",
+      "notes": "Flammable and harmful vapor.",
+      "otherNames": [],
+      "tags": [
+        "ketone",
+        "solvent"
+      ],
+      "formula": "C6H10O",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/7967",
+      "id": "cyclohexanone",
+      "searchQuery": "Cyclohexanone"
+    },
+    {
+      "name": "Air",
+      "type": "Mixture",
+      "uses": "Atmospheric gas mixture for combustion, respiration, and gas-law examples.",
+      "notes": "Compressed/oxygen-enriched air hazards depend on context.",
+      "otherNames": [],
+      "tags": [
+        "mixture",
+        "daily life"
+      ],
+      "formula": "N2 + O2 + Ar + CO2",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "id": "air",
+      "searchQuery": "Air"
+    },
+    {
+      "id": "baking-powder",
+      "name": "Baking powder",
+      "formula": "NaHCO3 + C4H6O6",
+      "otherNames": [
+        "Baking soda and tartaric acid mixture"
+      ],
+      "type": "Mixture",
+      "uses": "Leavening agent for cakes and bread.",
+      "notes": "Produces carbon dioxide when heated/moistened, causing dough or batter to rise.",
+      "tags": [
+        "daily life",
+        "food",
+        "leavening"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "formalin",
+      "name": "Formalin",
+      "formula": "CH2O(aq)",
+      "otherNames": [
+        "Formaldehyde solution"
+      ],
+      "type": "Mixture",
+      "uses": "Laboratory preservation of dead animal bodies and biological specimens.",
+      "notes": "Aqueous formaldehyde solution; unsafe for food preservation.",
+      "tags": [
+        "aldehyde",
+        "preservative",
+        "laboratory"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Rubbing alcohol",
+      "type": "Mixture",
+      "uses": "Antiseptic/cleaning alcohol solution.",
+      "notes": "Flammable; avoid inhalation and ignition sources.",
+      "otherNames": [],
+      "tags": [
+        "mixture",
+        "daily life"
+      ],
+      "formula": "C3H8O(aq)",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "id": "rubbing-alcohol",
+      "searchQuery": "Rubbing alcohol"
+    },
+    {
+      "name": "Seawater",
+      "type": "Mixture",
+      "uses": "Natural saltwater mixture and electrolyte reference.",
+      "notes": "Not potable without treatment.",
+      "otherNames": [],
+      "tags": [
+        "mixture",
+        "daily life"
+      ],
+      "formula": "H2O + dissolved salts",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "id": "seawater",
+      "searchQuery": "Seawater"
+    },
+    {
+      "name": "Tincture of iodine",
+      "type": "Mixture",
+      "uses": "Iodine antiseptic/stain and halogen solution example.",
+      "notes": "Irritant; stains; avoid ingestion.",
+      "otherNames": [],
+      "tags": [
+        "mixture",
+        "daily life"
+      ],
+      "formula": "I2 + KI + ethanol",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "id": "tincture-of-iodine",
+      "searchQuery": "Tincture of iodine"
+    },
+    {
+      "name": "Vinegar",
+      "type": "Mixture",
+      "uses": "Food acid solution and household descaling/cleaning liquid.",
+      "notes": "Acidic irritant; never mix with bleach.",
+      "otherNames": [],
+      "tags": [
+        "mixture",
+        "daily life"
+      ],
+      "formula": "CH3COOH(aq)",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "id": "vinegar",
+      "searchQuery": "Vinegar"
+    },
+    {
+      "name": "Boron trifluoride",
+      "type": "Molecular compound",
+      "uses": "Lewis acid catalyst and boron halide reference.",
+      "notes": "Toxic corrosive gas.",
+      "otherNames": [],
+      "tags": [
+        "molecular compound",
+        "lewis acid"
+      ],
+      "formula": "BF3",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6356",
+      "id": "boron-trifluoride",
+      "searchQuery": "Boron trifluoride"
+    },
+    {
+      "name": "Carbon disulfide",
+      "type": "Molecular compound",
+      "uses": "Solvent and sulfur compound reference.",
+      "notes": "Highly flammable and toxic.",
+      "otherNames": [],
+      "tags": [
+        "molecular compound",
+        "solvent"
+      ],
+      "formula": "CS2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6348",
+      "id": "carbon-disulfide",
+      "searchQuery": "Carbon disulfide"
+    },
+    {
+      "name": "Nitrogen trichloride",
+      "type": "Molecular compound",
+      "uses": "Reactive nitrogen chloride reference and pool-chemistry irritant.",
+      "notes": "Explosive/unstable in concentrated form.",
+      "otherNames": [],
+      "tags": [
+        "molecular compound",
+        "chloride"
+      ],
+      "formula": "NCl3",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/61437",
+      "id": "nitrogen-trichloride",
+      "searchQuery": "Nitrogen trichloride"
+    },
+    {
+      "name": "Phosphorus pentachloride",
+      "formula": "PCl5",
+      "otherNames": [
+        "phosphorus(V) chloride"
+      ],
+      "type": "Molecular compound",
+      "uses": "Chlorination reagent and decomposition example.",
+      "notes": "Reacts with water to release acidic fumes.",
+      "tags": [
+        "chloride",
+        "decomposition"
+      ],
+      "searchQuery": "Phosphorus pentachloride",
+      "id": "phosphorus-pentachloride",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Phosphorus trichloride",
+      "formula": "PCl3",
+      "otherNames": [
+        "phosphorus(III) chloride"
+      ],
+      "type": "Molecular compound",
+      "uses": "Product in phosphorus pentachloride decomposition and reagent in organophosphorus chemistry.",
+      "notes": "Toxic and water-reactive; releases acidic fumes.",
+      "tags": [
+        "chloride"
+      ],
+      "searchQuery": "Phosphorus trichloride",
+      "id": "phosphorus-trichloride",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Silicon tetrachloride",
+      "formula": "SiCl4",
+      "otherNames": [
+        "tetrachlorosilane"
+      ],
+      "type": "Molecular compound",
+      "uses": "Hydrolysis example and silicon chemistry precursor.",
+      "notes": "Fumes in moist air and forms hydrochloric acid.",
+      "tags": [
+        "chloride",
+        "hydrolysis"
+      ],
+      "searchQuery": "Silicon tetrachloride",
+      "id": "silicon-tetrachloride",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Sulfur hexafluoride",
+      "type": "Molecular compound",
+      "uses": "Electrical insulating gas and inert gas reference.",
+      "notes": "Asphyxiant; potent greenhouse gas.",
+      "otherNames": [
+        "SF6"
+      ],
+      "tags": [
+        "molecular compound",
+        "gas"
+      ],
+      "formula": "SF6",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/17358",
+      "id": "sulfur-hexafluoride",
+      "searchQuery": "Sulfur hexafluoride"
+    },
+    {
+      "id": "water",
+      "name": "Water",
+      "formula": "H2O",
+      "otherNames": [
+        "Dihydrogen monoxide"
+      ],
+      "type": "Molecular compound",
+      "uses": "Universal solvent, biological medium, coolant.",
+      "notes": "Neutral liquid at room temperature; expands on freezing.",
+      "tags": [
+        "daily life",
+        "solvent"
+      ],
+      "searchQuery": "Water"
+    },
+    {
+      "name": "Xenon difluoride",
+      "type": "Molecular compound",
+      "uses": "Fluorinating agent and noble-gas compound example.",
+      "notes": "Strong oxidizer/fluorinating reagent.",
+      "otherNames": [],
+      "tags": [
+        "molecular compound",
+        "fluoride"
+      ],
+      "formula": "XeF2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/83674",
+      "id": "xenon-difluoride",
+      "searchQuery": "Xenon difluoride"
+    },
+    {
+      "name": "Adenine",
+      "type": "Nucleobase",
+      "uses": "Nucleobase in DNA/RNA and ATP.",
+      "notes": "Low hazard in small lab quantities; dust may irritate.",
+      "otherNames": [],
+      "tags": [
+        "nucleobase",
+        "biochemistry",
+        "organic"
+      ],
+      "formula": "C5H5N5",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/190",
+      "id": "adenine",
+      "searchQuery": "Adenine"
+    },
+    {
+      "id": "bauxite",
+      "name": "Bauxite",
+      "formula": "Al2O3.2H2O",
+      "otherNames": [
+        "Hydrated aluminium oxide"
+      ],
+      "type": "Ore",
+      "uses": "Main mineral source of aluminium oxide for aluminium extraction.",
+      "notes": "Contains impurities such as iron oxide, titanium oxide and sand; treated with sodium hydroxide during purification.",
+      "tags": [
+        "ore",
+        "mineral",
+        "aluminium"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "calamine",
+      "name": "Calamine",
+      "formula": "ZnCO3",
+      "otherNames": [
+        "Zinc carbonate"
+      ],
+      "type": "Ore",
+      "uses": "Ore of zinc; converted to zinc oxide by calcination.",
+      "notes": "Heating releases carbon dioxide and leaves zinc oxide.",
+      "tags": [
+        "ore",
+        "mineral",
+        "carbonate",
+        "zinc"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Cassiterite",
+      "type": "Ore",
+      "uses": "Main tin ore mineral.",
+      "notes": "Mineral dust hazard depends on processing.",
+      "otherNames": [],
+      "tags": [
+        "ore",
+        "mineral"
+      ],
+      "formula": "SnO2",
+      "sourceLabel": "General mineral chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "id": "cassiterite",
+      "searchQuery": "Cassiterite"
+    },
+    {
+      "id": "chalcocite",
+      "name": "Chalcocite",
+      "formula": "Cu2S",
+      "otherNames": [
+        "Copper(I) sulfide",
+        "Copper glance"
+      ],
+      "type": "Ore",
+      "uses": "Copper ore and possible component of copper corrosion layers.",
+      "notes": "Common copper(I) sulfide mineral; older spellings may vary.",
+      "tags": [
+        "ore",
+        "mineral",
+        "copper",
+        "sulfide"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "chalcopyrite",
+      "name": "Chalcopyrite",
+      "formula": "CuFeS2",
+      "otherNames": [
+        "Copper pyrites"
+      ],
+      "type": "Ore",
+      "uses": "Major ore of copper.",
+      "notes": "Sulfide ore that can produce sulfur dioxide during roasting.",
+      "tags": [
+        "ore",
+        "mineral",
+        "copper",
+        "sulfide"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "chromite",
+      "name": "Chromite",
+      "formula": "FeCr2O4",
+      "otherNames": [
+        "Iron chromium oxide"
+      ],
+      "type": "Ore",
+      "uses": "Major chromium ore mineral.",
+      "notes": "Ore dust may contain hazardous chromium compounds.",
+      "tags": [
+        "ore",
+        "mineral",
+        "oxide"
+      ],
+      "sourceLabel": "General mineral chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "searchQuery": "Chromite"
+    },
+    {
+      "id": "cinnabar",
+      "name": "Cinnabar",
+      "formula": "HgS",
+      "otherNames": [
+        "Mercury(II) sulfide"
+      ],
+      "type": "Ore",
+      "uses": "Mercury sulfide ore mineral.",
+      "notes": "Mercury ore; toxic if processed or heated.",
+      "tags": [
+        "ore",
+        "mineral",
+        "mercury",
+        "sulfide"
+      ],
+      "sourceLabel": "General mineral chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "searchQuery": "Cinnabar"
+    },
+    {
+      "id": "galena",
+      "name": "Galena",
+      "formula": "PbS",
+      "otherNames": [
+        "Lead sulfide",
+        "Lead glance"
+      ],
+      "type": "Ore",
+      "uses": "Lead sulfide ore mineral.",
+      "notes": "Lead ore; toxic dust hazard.",
+      "tags": [
+        "ore",
+        "mineral",
+        "metal extraction",
+        "sulfide"
+      ],
+      "sourceLabel": "General mineral chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "searchQuery": "Galena"
+    },
+    {
+      "id": "hematite",
+      "name": "Hematite",
+      "formula": "Fe2O3",
+      "otherNames": [
+        "Iron(III) oxide mineral"
+      ],
+      "type": "Ore",
+      "uses": "Important ore of iron used in blast-furnace extraction.",
+      "notes": "Reduced by carbon monoxide to produce iron.",
+      "tags": [
+        "ore",
+        "mineral",
+        "iron",
+        "oxide"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Ilmenite",
+      "type": "Ore",
+      "uses": "Iron titanium oxide ore for titanium.",
+      "notes": "Dust inhalation should be avoided.",
+      "otherNames": [],
+      "tags": [
+        "ore",
+        "mineral"
+      ],
+      "formula": "FeTiO3",
+      "sourceLabel": "General mineral chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "id": "ilmenite",
+      "searchQuery": "Ilmenite"
+    },
+    {
+      "id": "iron-pyrite",
+      "name": "Iron pyrite",
+      "formula": "FeS2",
+      "otherNames": [
+        "Pyrite",
+        "Iron disulfide",
+        "Fool's gold"
+      ],
+      "type": "Ore",
+      "uses": "Iron sulfide mineral and source material in mineral chemistry.",
+      "notes": "A sulfide of iron mentioned as an iron mineral.",
+      "tags": [
+        "ore",
+        "mineral",
+        "sulfide"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "limonite",
+      "name": "Limonite",
+      "formula": "Fe2O3.3H2O",
+      "otherNames": [
+        "Hydrated iron(III) oxide ore"
+      ],
+      "type": "Ore",
+      "uses": "Hydrated iron ore.",
+      "notes": "Related to hydrated ferric oxide/rust compositions.",
+      "tags": [
+        "ore",
+        "mineral",
+        "iron",
+        "oxide"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "magnetite",
+      "name": "Magnetite",
+      "formula": "Fe3O4",
+      "otherNames": [
+        "Magnetic iron ore"
+      ],
+      "type": "Ore",
+      "uses": "Iron ore and magnetic mineral.",
+      "notes": "Can be concentrated by magnetic separation.",
+      "tags": [
+        "ore",
+        "mineral",
+        "iron",
+        "oxide"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "rutile",
+      "name": "Rutile",
+      "formula": "TiO2",
+      "otherNames": [
+        "Titanium dioxide mineral"
+      ],
+      "type": "Ore",
+      "uses": "Titanium dioxide mineral and titanium ore.",
+      "notes": "Dust inhalation should be avoided.",
+      "tags": [
+        "ore",
+        "mineral",
+        "oxide"
+      ],
+      "sourceLabel": "General mineral chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "searchQuery": "Rutile"
+    },
+    {
+      "id": "zinc-blende",
+      "name": "Zinc blende",
+      "formula": "ZnS",
+      "otherNames": [
+        "Sphalerite",
+        "Zinc sulfide"
+      ],
+      "type": "Ore",
+      "uses": "Important ore of zinc.",
+      "notes": "Roasting converts zinc sulfide to zinc oxide before reduction.",
+      "tags": [
+        "ore",
+        "mineral",
+        "sulfide",
+        "zinc"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "aluminum-oxide",
+      "name": "Aluminum oxide",
+      "formula": "Al2O3",
+      "otherNames": [
+        "Alumina"
+      ],
+      "type": "Oxide",
+      "uses": "Abrasives, ceramics, aluminum production.",
+      "notes": "Hard amphoteric oxide.",
+      "tags": [
+        "daily life",
+        "oxide"
+      ],
+      "searchQuery": "Aluminum oxide"
+    },
+    {
+      "id": "calcium-oxide",
+      "name": "Calcium oxide",
+      "formula": "CaO",
+      "otherNames": [
+        "Quicklime"
+      ],
+      "type": "Oxide",
+      "uses": "Cement, steelmaking, drying agent.",
+      "notes": "Reacts exothermically with water.",
+      "tags": [
+        "daily life",
+        "oxide"
+      ],
+      "searchQuery": "Calcium oxide"
+    },
+    {
+      "id": "carbon-dioxide",
+      "name": "Carbon dioxide",
+      "formula": "CO2",
+      "otherNames": [
+        "Dry ice gas"
+      ],
+      "type": "Oxide",
+      "uses": "Carbonated drinks, fire extinguishers, photosynthesis reactant.",
+      "notes": "Can displace oxygen in confined spaces.",
+      "tags": [
+        "daily life",
+        "gas",
+        "oxide"
+      ],
+      "searchQuery": "Carbon dioxide"
+    },
+    {
+      "name": "Carbon monoxide",
+      "type": "Oxide",
+      "uses": "Combustion product and reducing gas.",
+      "notes": "Extremely toxic; binds hemoglobin.",
+      "otherNames": [],
+      "tags": [
+        "oxide",
+        "gas"
+      ],
+      "formula": "CO",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/281",
+      "id": "carbon-monoxide",
+      "searchQuery": "Carbon monoxide"
+    },
+    {
+      "id": "hydrated-ferric-oxide",
+      "name": "Hydrated ferric oxide",
+      "formula": "Fe2O3.nH2O",
+      "otherNames": [
+        "Rust",
+        "Hydrated iron(III) oxide"
+      ],
+      "type": "Oxide",
+      "uses": "Corrosion product of iron.",
+      "notes": "Forms slowly from iron in the presence of oxygen and water.",
+      "tags": [
+        "oxide",
+        "corrosion",
+        "rust"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "iron-oxide",
+      "name": "Iron(III) oxide",
+      "formula": "Fe2O3",
+      "otherNames": [
+        "Rust",
+        "Hematite"
+      ],
+      "type": "Oxide",
+      "uses": "Pigments, iron ore.",
+      "notes": "Red-brown solid; common corrosion product.",
+      "tags": [
+        "daily life",
+        "oxide"
+      ],
+      "searchQuery": "Iron(III) oxide"
+    },
+    {
+      "name": "Manganese dioxide",
+      "formula": "MnO2",
+      "otherNames": [
+        "manganese(IV) oxide"
+      ],
+      "type": "Oxide",
+      "uses": "Dry-cell depolarizer/cathode material and catalyst in oxygen preparation.",
+      "notes": "Dust can irritate lungs; avoid inhalation.",
+      "tags": [
+        "oxide",
+        "electrochemistry"
+      ],
+      "searchQuery": "Manganese dioxide",
+      "id": "manganese-dioxide",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Manganese(III) oxide",
+      "formula": "Mn2O3",
+      "otherNames": [
+        "manganic oxide"
+      ],
+      "type": "Oxide",
+      "uses": "Product shown in simplified dry-cell discharge reactions.",
+      "notes": "Dust may irritate the respiratory tract.",
+      "tags": [
+        "oxide",
+        "electrochemistry"
+      ],
+      "searchQuery": "Manganese(III) oxide",
+      "id": "manganese-iii-oxide",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Nitric oxide",
+      "formula": "NO",
+      "otherNames": [
+        "nitrogen monoxide"
+      ],
+      "type": "Oxide",
+      "uses": "High-temperature nitrogen oxidation product and smog precursor.",
+      "notes": "Toxic gas; oxidizes in air to nitrogen dioxide.",
+      "tags": [
+        "oxide",
+        "air pollution"
+      ],
+      "searchQuery": "Nitric oxide",
+      "id": "nitric-oxide",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Nitrogen dioxide",
+      "formula": "NO2",
+      "otherNames": [
+        "nitrogen(IV) oxide"
+      ],
+      "type": "Oxide",
+      "uses": "Air pollutant and precursor to nitric acid in acid rain.",
+      "notes": "Toxic reddish-brown gas; severe respiratory irritant.",
+      "tags": [
+        "oxide",
+        "acid rain"
+      ],
+      "searchQuery": "Nitrogen dioxide",
+      "id": "nitrogen-dioxide",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Nitrous oxide",
+      "type": "Oxide",
+      "uses": "Anesthetic gas and nitrogen oxide reference.",
+      "notes": "Asphyxiant/oxidizer; misuse is dangerous.",
+      "otherNames": [
+        "laughing gas"
+      ],
+      "tags": [
+        "oxide",
+        "gas"
+      ],
+      "formula": "N2O",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/948",
+      "id": "nitrous-oxide",
+      "searchQuery": "Nitrous oxide"
+    },
+    {
+      "name": "Phosphorus pentoxide",
+      "type": "Oxide",
+      "uses": "Dehydrating agent and acidic oxide reference.",
+      "notes": "Reacts strongly with water; corrosive.",
+      "otherNames": [
+        "diphosphorus pentoxide"
+      ],
+      "tags": [
+        "oxide",
+        "dehydrating agent"
+      ],
+      "formula": "P2O5",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6326975",
+      "id": "phosphorus-pentoxide",
+      "searchQuery": "Phosphorus pentoxide"
+    },
+    {
+      "id": "silicon-dioxide",
+      "name": "Silicon dioxide",
+      "formula": "SiO2",
+      "otherNames": [
+        "Silica",
+        "Quartz",
+        "silica"
+      ],
+      "type": "Oxide",
+      "uses": "Quartz/sand/glass component and network oxide.",
+      "notes": "Respirable crystalline silica dust is hazardous.",
+      "tags": [
+        "daily life",
+        "oxide"
+      ],
+      "searchQuery": "Silicon dioxide",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/24261"
+    },
+    {
+      "id": "sulfur-dioxide",
+      "name": "Sulfur dioxide",
+      "formula": "SO2",
+      "otherNames": [
+        "Sulphur dioxide"
+      ],
+      "type": "Oxide",
+      "uses": "Intermediate in sulfuric acid manufacture; produced by burning sulfur.",
+      "notes": "Toxic acidic gas; forms sulfurous acid in rainwater.",
+      "tags": [
+        "oxide",
+        "sulfur",
+        "acid rain"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "sulfur-trioxide",
+      "name": "Sulfur trioxide",
+      "formula": "SO3",
+      "otherNames": [
+        "Sulphur trioxide"
+      ],
+      "type": "Oxide",
+      "uses": "Sulfuric acid precursor and acid-rain intermediate.",
+      "notes": "Fuming corrosive oxide.",
+      "tags": [
+        "oxide",
+        "sulfur",
+        "industrial",
+        "acid rain"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/24682",
+      "searchQuery": "Sulfur trioxide"
+    },
+    {
+      "id": "titanium-dioxide",
+      "name": "Titanium dioxide",
+      "formula": "TiO2",
+      "otherNames": [
+        "Titania",
+        "titania"
+      ],
+      "type": "Oxide",
+      "uses": "White pigment in paints, coatings, and sunscreens.",
+      "notes": "Dust inhalation concerns; product context matters.",
+      "tags": [
+        "daily life",
+        "pigment",
+        "oxide"
+      ],
+      "searchQuery": "Titanium dioxide",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/26042"
+    },
+    {
+      "id": "vanadium-v-oxide",
+      "name": "Vanadium(V) oxide",
+      "formula": "V2O5",
+      "otherNames": [
+        "Vanadium pentoxide"
+      ],
+      "type": "Oxide",
+      "uses": "Catalyst in the contact process for sulfuric acid.",
+      "notes": "Used around 450-500 C for oxidation of sulfur dioxide.",
+      "tags": [
+        "oxide",
+        "catalyst",
+        "industrial"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "zinc-oxide",
+      "name": "Zinc oxide",
+      "formula": "ZnO",
+      "otherNames": [
+        "Zinc white"
+      ],
+      "type": "Oxide",
+      "uses": "Sunscreen, ointments, rubber, and pigment uses.",
+      "notes": "Dust may irritate; aquatic hazard in some forms.",
+      "tags": [
+        "daily life",
+        "medicine",
+        "oxide"
+      ],
+      "searchQuery": "Zinc oxide",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/3007857"
+    },
+    {
+      "name": "Barium peroxide",
+      "type": "Peroxide",
+      "uses": "Oxidizer and historic oxygen/peroxide chemistry reagent.",
+      "notes": "Toxic barium oxidizer.",
+      "otherNames": [],
+      "tags": [
+        "peroxide",
+        "oxidizer"
+      ],
+      "formula": "BaO2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/14773",
+      "id": "barium-peroxide",
+      "searchQuery": "Barium peroxide"
+    },
+    {
+      "name": "Benzoyl peroxide",
+      "type": "Peroxide",
+      "uses": "Acne treatment and polymerization initiator.",
+      "notes": "Oxidizer; can bleach fabrics and irritate skin.",
+      "otherNames": [],
+      "tags": [
+        "peroxide",
+        "daily life"
+      ],
+      "formula": "C14H10O4",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/7187",
+      "id": "benzoyl-peroxide",
+      "searchQuery": "Benzoyl peroxide"
+    },
+    {
+      "name": "Calcium peroxide",
+      "type": "Peroxide",
+      "uses": "Oxygen-release compound and peroxide reference.",
+      "notes": "Oxidizer; irritant.",
+      "otherNames": [],
+      "tags": [
+        "peroxide",
+        "oxidizer"
+      ],
+      "formula": "CaO2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/14779",
+      "id": "calcium-peroxide",
+      "searchQuery": "Calcium peroxide"
+    },
+    {
+      "id": "hydrogen-peroxide",
+      "name": "Hydrogen peroxide",
+      "formula": "H2O2",
+      "otherNames": [
+        "Peroxide"
+      ],
+      "type": "Peroxide",
+      "uses": "Disinfectant, bleaching, oxidation.",
+      "notes": "Decomposes to water and oxygen.",
+      "tags": [
+        "daily life",
+        "oxidizer",
+        "peroxide"
+      ],
+      "searchQuery": "Hydrogen peroxide"
+    },
+    {
+      "name": "Sodium peroxide",
+      "type": "Peroxide",
+      "uses": "Oxidizer and peroxide salt reference.",
+      "notes": "Strong oxidizer; reacts with water/acids.",
+      "otherNames": [],
+      "tags": [
+        "peroxide",
+        "oxidizer"
+      ],
+      "formula": "Na2O2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/14803",
+      "id": "sodium-peroxide",
+      "searchQuery": "Sodium peroxide"
+    },
+    {
+      "name": "Aviation kerosene",
+      "type": "Petroleum fraction",
+      "uses": "Jet-fuel kerosene fraction.",
+      "notes": "Flammable combustible fuel; vapor hazard.",
+      "otherNames": [
+        "jet fuel"
+      ],
+      "tags": [
+        "petroleum fraction",
+        "fuel"
+      ],
+      "formula": "C8-C16 hydrocarbons",
+      "sourceLabel": "EIA petroleum refining reference",
+      "sourceUrl": "https://www.eia.gov/energyexplained/oil-and-petroleum-products/refining-crude-oil.php",
+      "id": "aviation-kerosene",
+      "searchQuery": "Aviation kerosene"
+    },
+    {
+      "id": "bitumen",
+      "name": "Bitumen",
+      "formula": ">C30 hydrocarbons",
+      "otherNames": [
+        "Pitch",
+        "Asphalt"
+      ],
+      "type": "Petroleum fraction",
+      "uses": "Road construction and waterproofing.",
+      "notes": "High-boiling residue from petroleum distillation.",
+      "tags": [
+        "petroleum",
+        "road",
+        "daily life"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "diesel-oil",
+      "name": "Diesel oil",
+      "formula": "C17-C20 hydrocarbons",
+      "otherNames": [
+        "Diesel"
+      ],
+      "type": "Petroleum fraction",
+      "uses": "Vehicle fuel, lubricant and solvent applications.",
+      "notes": "Heavier petroleum fraction than kerosene.",
+      "tags": [
+        "petroleum",
+        "fuel",
+        "daily life"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "gasoline",
+      "name": "Gasoline",
+      "formula": "C5-C10 hydrocarbons",
+      "otherNames": [
+        "Petrol"
+      ],
+      "type": "Petroleum fraction",
+      "uses": "Fuel for vehicle engines.",
+      "notes": "Petroleum fraction with a low boiling range, about 21-70 C in common school-level tables.",
+      "tags": [
+        "petroleum",
+        "fuel",
+        "daily life"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Heavy fuel oil",
+      "type": "Petroleum fraction",
+      "uses": "Residual fuel for ships, boilers, and industrial heating.",
+      "notes": "Combustible and pollutant-rich; handling requires controls.",
+      "otherNames": [],
+      "tags": [
+        "petroleum fraction",
+        "fuel"
+      ],
+      "formula": "C20+ hydrocarbons",
+      "sourceLabel": "EIA petroleum refining reference",
+      "sourceUrl": "https://www.eia.gov/energyexplained/oil-and-petroleum-products/refining-crude-oil.php",
+      "id": "heavy-fuel-oil",
+      "searchQuery": "Heavy fuel oil"
+    },
+    {
+      "id": "kerosene",
+      "name": "Kerosene",
+      "formula": "C11-C16 hydrocarbons",
+      "otherNames": [
+        "Paraffin oil"
+      ],
+      "type": "Petroleum fraction",
+      "uses": "Jet fuel, lamp fuel and heating fuel.",
+      "notes": "Middle petroleum fraction.",
+      "tags": [
+        "petroleum",
+        "fuel",
+        "daily life"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "liquefied-petroleum-gas",
+      "name": "Liquefied petroleum gas",
+      "formula": "C3H8/C4H10",
+      "otherNames": [
+        "LPG",
+        "Cooking gas"
+      ],
+      "type": "Petroleum fraction",
+      "uses": "Cooking fuel and heating fuel.",
+      "notes": "Mainly propane and butane stored as a liquid under pressure.",
+      "tags": [
+        "petroleum",
+        "fuel",
+        "daily life"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Lubricating oil",
+      "type": "Petroleum fraction",
+      "uses": "Heavy petroleum fraction used to reduce friction in engines and machinery.",
+      "notes": "Combustible; used oil may contain hazardous contaminants.",
+      "otherNames": [],
+      "tags": [
+        "petroleum fraction",
+        "daily life"
+      ],
+      "formula": "C20-C50 hydrocarbons",
+      "sourceLabel": "EIA petroleum refining reference",
+      "sourceUrl": "https://www.eia.gov/energyexplained/oil-and-petroleum-products/refining-crude-oil.php",
+      "id": "lubricating-oil",
+      "searchQuery": "Lubricating oil"
+    },
+    {
+      "name": "Mineral spirits",
+      "type": "Petroleum fraction",
+      "uses": "Paint thinner/solvent petroleum fraction.",
+      "notes": "Flammable; vapor irritant.",
+      "otherNames": [
+        "white spirit"
+      ],
+      "tags": [
+        "petroleum fraction",
+        "solvent"
+      ],
+      "formula": "C7-C12 hydrocarbons",
+      "sourceLabel": "EIA petroleum refining reference",
+      "sourceUrl": "https://www.eia.gov/energyexplained/oil-and-petroleum-products/refining-crude-oil.php",
+      "id": "mineral-spirits",
+      "searchQuery": "Mineral spirits"
+    },
+    {
+      "id": "naphtha",
+      "name": "Naphtha",
+      "formula": "C7-C14 hydrocarbons",
+      "otherNames": [
+        "Petroleum naphtha"
+      ],
+      "type": "Petroleum fraction",
+      "uses": "Fuel and petrochemical feedstock.",
+      "notes": "Fraction used to produce chemical substances in petrochemical industries.",
+      "tags": [
+        "petroleum",
+        "fuel",
+        "feedstock"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "paraffin-wax",
+      "name": "Paraffin wax",
+      "formula": "C20-C30 hydrocarbons",
+      "otherNames": [
+        "Petroleum wax"
+      ],
+      "type": "Petroleum fraction",
+      "uses": "Toiletries, candles, coatings and petroleum jelly products.",
+      "notes": "Solid petroleum fraction with long-chain saturated hydrocarbons.",
+      "tags": [
+        "petroleum",
+        "wax",
+        "daily life"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Petroleum coke",
+      "type": "Petroleum fraction",
+      "uses": "Carbon-rich refinery solid used as fuel or industrial carbon source.",
+      "notes": "Dust can irritate and be combustible.",
+      "otherNames": [],
+      "tags": [
+        "petroleum fraction",
+        "fuel"
+      ],
+      "formula": "C-rich solid",
+      "sourceLabel": "EIA petroleum refining reference",
+      "sourceUrl": "https://www.eia.gov/energyexplained/oil-and-petroleum-products/refining-crude-oil.php",
+      "id": "petroleum-coke",
+      "searchQuery": "Petroleum coke"
+    },
+    {
+      "id": "petroleum-gas",
+      "name": "Petroleum gas",
+      "formula": "C1-C4 hydrocarbons",
+      "otherNames": [
+        "Refinery gas"
+      ],
+      "type": "Petroleum fraction",
+      "uses": "Fuel gas and feedstock; can be liquefied under pressure.",
+      "notes": "Lowest boiling petroleum fraction, roughly 0-20 C.",
+      "tags": [
+        "petroleum",
+        "fuel",
+        "hydrocarbon"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "phenol",
+      "name": "Phenol",
+      "formula": "C6H6O",
+      "otherNames": [
+        "Carbolic acid"
+      ],
+      "type": "Phenol",
+      "uses": "Phenolic compound used in resins, disinfectant history, and aromatic chemistry reference.",
+      "notes": "Not an alcohol: its OH group is bonded directly to an aromatic ring.",
+      "tags": [
+        "phenol",
+        "aromatic",
+        "weak acid"
+      ],
+      "searchQuery": "Phenol"
+    },
+    {
+      "name": "Bakelite",
+      "type": "Polymer",
+      "uses": "Phenol-formaldehyde thermoset used in older handles and electrical parts.",
+      "notes": "Dust from machining can irritate.",
+      "otherNames": [
+        "phenol-formaldehyde resin"
+      ],
+      "tags": [
+        "polymer"
+      ],
+      "formula": "phenol-formaldehyde polymer",
+      "sourceLabel": "General polymer chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "id": "bakelite",
+      "searchQuery": "Bakelite"
+    },
+    {
+      "id": "delrin",
+      "name": "Delrin",
+      "formula": "(CH2O)n",
+      "otherNames": [
+        "Polyoxymethylene",
+        "POM"
+      ],
+      "type": "Polymer",
+      "uses": "Chairs, tables, buckets and molded plastic objects.",
+      "notes": "Polymer made from formaldehyde/methanal units.",
+      "tags": [
+        "polymer",
+        "plastic",
+        "aldehyde"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "natural-rubber",
+      "name": "Natural rubber",
+      "formula": "(C5H8)n",
+      "otherNames": [
+        "Polyisoprene"
+      ],
+      "type": "Polymer",
+      "uses": "Elastic material; vulcanized with sulfur for durability.",
+      "notes": "Natural polymer obtained from rubber tree latex.",
+      "tags": [
+        "polymer",
+        "natural polymer",
+        "daily life"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Neoprene",
+      "type": "Polymer",
+      "uses": "Synthetic rubber used in wetsuits, gloves, and gaskets.",
+      "notes": "Burning/degradation fumes hazardous.",
+      "otherNames": [
+        "polychloroprene"
+      ],
+      "tags": [
+        "polymer",
+        "daily life"
+      ],
+      "formula": "(C4H5Cl)n",
+      "sourceLabel": "General polymer chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "id": "neoprene",
+      "searchQuery": "Neoprene"
+    },
+    {
+      "id": "nylon-6-6",
+      "name": "Nylon 6,6",
+      "formula": "(C12H22N2O2)n",
+      "otherNames": [
+        "Nylon 66"
+      ],
+      "type": "Polymer",
+      "uses": "Artificial cloth, rope and toothbrush bristles.",
+      "notes": "Condensation polymer from adipic acid and hexamethylenediamine.",
+      "tags": [
+        "polymer",
+        "plastic",
+        "daily life"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Polycarbonate",
+      "type": "Polymer",
+      "uses": "Transparent engineering plastic for lenses, discs, and housings.",
+      "notes": "Thermal degradation and additives vary.",
+      "otherNames": [],
+      "tags": [
+        "polymer",
+        "daily life"
+      ],
+      "formula": "(C16H14O3)n",
+      "sourceLabel": "General polymer chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "id": "polycarbonate",
+      "searchQuery": "Polycarbonate"
+    },
+    {
+      "id": "polyethylene",
+      "name": "Polyethylene",
+      "formula": "(C2H4)n",
+      "otherNames": [
+        "PE",
+        "Polythene"
+      ],
+      "type": "Polymer",
+      "uses": "Plastic bags, bottles, films, containers. Plastic bags, sheets and durable plastic items.",
+      "notes": "Polymer of ethene. Addition polymer made from ethene.",
+      "tags": [
+        "daily life",
+        "plastic"
+      ],
+      "searchQuery": "Polyethylene",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Polyethylene terephthalate",
+      "type": "Polymer",
+      "uses": "PET bottles, fibers, and films.",
+      "notes": "Stable plastic; recycling/heat context matters.",
+      "otherNames": [
+        "PET"
+      ],
+      "tags": [
+        "polymer",
+        "daily life"
+      ],
+      "formula": "(C10H8O4)n",
+      "sourceLabel": "General polymer chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "id": "polyethylene-terephthalate",
+      "searchQuery": "Polyethylene terephthalate"
+    },
+    {
+      "name": "Polymethyl methacrylate",
+      "type": "Polymer",
+      "uses": "Acrylic glass/Plexiglas material.",
+      "notes": "Combustible; machining dust can irritate.",
+      "otherNames": [
+        "PMMA",
+        "acrylic"
+      ],
+      "tags": [
+        "polymer",
+        "daily life"
+      ],
+      "formula": "(C5H8O2)n",
+      "sourceLabel": "General polymer chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "id": "polymethyl-methacrylate",
+      "searchQuery": "Polymethyl methacrylate"
+    },
+    {
+      "id": "polypropylene",
+      "name": "Polypropylene",
+      "formula": "(C3H6)n",
+      "otherNames": [
+        "Polypropene",
+        "PP"
+      ],
+      "type": "Polymer",
+      "uses": "Ropes, pipes, carpets, bottles and heat-resistant plastic goods.",
+      "notes": "Addition polymer from propene.",
+      "tags": [
+        "polymer",
+        "plastic",
+        "daily life"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Polystyrene",
+      "type": "Polymer",
+      "uses": "Foam/rigid plastic for packaging, insulation, and labware.",
+      "notes": "Combustible plastic; monomer/residue context matters.",
+      "otherNames": [],
+      "tags": [
+        "polymer",
+        "daily life"
+      ],
+      "formula": "(C8H8)n",
+      "sourceLabel": "General polymer chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/",
+      "id": "polystyrene",
+      "searchQuery": "Polystyrene"
+    },
+    {
+      "id": "polytetrafluoroethylene",
+      "name": "Polytetrafluoroethylene",
+      "formula": "(C2F4)n",
+      "otherNames": [
+        "PTFE",
+        "Teflon"
+      ],
+      "type": "Polymer",
+      "uses": "Nonstick coatings, gaskets, chemical-resistant parts.",
+      "notes": "Very low surface energy fluoropolymer.",
+      "tags": [
+        "daily life",
+        "plastic"
+      ],
+      "searchQuery": "Polytetrafluoroethylene"
+    },
+    {
+      "id": "polyvinyl-chloride",
+      "name": "Polyvinyl chloride",
+      "formula": "(C2H3Cl)n",
+      "otherNames": [
+        "PVC",
+        "Vinyl"
+      ],
+      "type": "Polymer",
+      "uses": "Pipes, cable insulation, flooring. Water pipes, wire insulation and medical devices.",
+      "notes": "Chlorinated polymer; additives affect properties. Addition polymer made from vinyl chloride.",
+      "tags": [
+        "daily life",
+        "plastic"
+      ],
+      "searchQuery": "Polyvinyl chloride",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "urea-formaldehyde-resin",
+      "name": "Urea-formaldehyde resin",
+      "formula": "variable polymer",
+      "otherNames": [
+        "UF resin"
+      ],
+      "type": "Polymer",
+      "uses": "Household appliances such as plates, mugs and molded items.",
+      "notes": "Condensation polymer made from urea and formaldehyde.",
+      "tags": [
+        "polymer",
+        "plastic",
+        "aldehyde"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "ammonium-carbamate",
+      "name": "Ammonium carbamate",
+      "formula": "NH2COONH4",
+      "otherNames": [],
+      "type": "Salt",
+      "uses": "Intermediate in industrial urea production.",
+      "notes": "Forms from ammonia and carbon dioxide under pressure.",
+      "tags": [
+        "salt",
+        "fertilizer",
+        "industrial"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "ammonium-chloride",
+      "name": "Ammonium chloride",
+      "formula": "NH4Cl",
+      "otherNames": [
+        "Sal ammoniac"
+      ],
+      "type": "Salt",
+      "uses": "Laboratory preparation of ammonia and byproduct in baking soda preparation.",
+      "notes": "Heating with calcium oxide or calcium hydroxide releases ammonia.",
+      "tags": [
+        "salt",
+        "ammonia",
+        "laboratory"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Ammonium cyanate",
+      "formula": "NH4CNO",
+      "otherNames": [
+        "inorganic urea precursor"
+      ],
+      "type": "Salt",
+      "uses": "Historical example of conversion to urea.",
+      "notes": "Handle as lab chemical; avoid ingestion and dust.",
+      "tags": [
+        "salt",
+        "organic chemistry"
+      ],
+      "searchQuery": "Ammonium cyanate",
+      "id": "ammonium-cyanate",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "ammonium-hydrogen-carbonate",
+      "name": "Ammonium hydrogen carbonate",
+      "formula": "NH4HCO3",
+      "otherNames": [
+        "Ammonium bicarbonate"
+      ],
+      "type": "Salt",
+      "uses": "Intermediate in Solvay-style baking soda preparation.",
+      "notes": "Forms from carbon dioxide, ammonia and water.",
+      "tags": [
+        "salt",
+        "baking soda",
+        "industrial"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "ammonium-nitrate",
+      "name": "Ammonium nitrate",
+      "formula": "NH4NO3",
+      "otherNames": [
+        "AN"
+      ],
+      "type": "Salt",
+      "uses": "Fertilizer, cold packs.",
+      "notes": "Strong oxidizer; controlled due to explosion risk.",
+      "tags": [
+        "daily life",
+        "fertilizer",
+        "oxidizer",
+        "salt"
+      ],
+      "searchQuery": "Ammonium nitrate"
+    },
+    {
+      "id": "ammonium-sulfate",
+      "name": "Ammonium sulfate",
+      "formula": "(NH4)2SO4",
+      "otherNames": [
+        "Ammonium sulphate"
+      ],
+      "type": "Salt",
+      "uses": "Fertilizer and ammonium salt reference.",
+      "notes": "Dust may irritate.",
+      "tags": [
+        "salt",
+        "fertilizer",
+        "agriculture"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6097028",
+      "searchQuery": "Ammonium sulfate"
+    },
+    {
+      "id": "calcium-carbide",
+      "name": "Calcium carbide",
+      "formula": "CaC2",
+      "otherNames": [],
+      "type": "Salt",
+      "uses": "Preparation of acetylene/ethyne gas.",
+      "notes": "Reacts with water to form ethyne and calcium hydroxide.",
+      "tags": [
+        "salt",
+        "alkyne",
+        "industrial"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "calcium-carbonate",
+      "name": "Calcium carbonate",
+      "formula": "CaCO3",
+      "otherNames": [
+        "Limestone",
+        "Chalk",
+        "Calcite"
+      ],
+      "type": "Salt",
+      "uses": "Antacid, cement, filler, shells.",
+      "notes": "Reacts with acids to release carbon dioxide.",
+      "tags": [
+        "carbonate",
+        "daily life",
+        "salt"
+      ],
+      "searchQuery": "Calcium carbonate"
+    },
+    {
+      "id": "calcium-chloride",
+      "name": "Calcium chloride",
+      "formula": "CaCl2",
+      "otherNames": [
+        "De-icer"
+      ],
+      "type": "Salt",
+      "uses": "Road de-icing, drying agent, brines.",
+      "notes": "Hygroscopic; dissolving releases heat.",
+      "tags": [
+        "daily life",
+        "salt"
+      ],
+      "searchQuery": "Calcium chloride"
+    },
+    {
+      "id": "calcium-phosphate",
+      "name": "Calcium phosphate",
+      "formula": "Ca3(PO4)2",
+      "otherNames": [
+        "Tricalcium phosphate"
+      ],
+      "type": "Salt",
+      "uses": "Bone/mineral chemistry and fertilizer reference.",
+      "notes": "Low hazard as mineral; dust may irritate.",
+      "tags": [
+        "daily life",
+        "mineral",
+        "salt"
+      ],
+      "searchQuery": "Calcium phosphate",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/24456"
+    },
+    {
+      "id": "calcium-silicate",
+      "name": "Calcium silicate",
+      "formula": "CaSiO3",
+      "otherNames": [
+        "Blast-furnace slag"
+      ],
+      "type": "Salt",
+      "uses": "Forms as molten slag when calcium oxide reacts with silicon dioxide in iron extraction.",
+      "notes": "Separates gangue from molten iron in the blast furnace.",
+      "tags": [
+        "salt",
+        "slag",
+        "metal extraction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Calcium stearate",
+      "formula": "(C17H35COO)2Ca",
+      "otherNames": [
+        "insoluble calcium soap"
+      ],
+      "type": "Salt",
+      "uses": "Forms scum when soap reacts with calcium ions in hard water.",
+      "notes": "Low hazard solid; dust may irritate.",
+      "tags": [
+        "hard water",
+        "daily life"
+      ],
+      "searchQuery": "Calcium stearate",
+      "id": "calcium-stearate",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "calcium-sulfate",
+      "name": "Calcium sulfate",
+      "formula": "CaSO4",
+      "otherNames": [
+        "Gypsum",
+        "Plaster of Paris source"
+      ],
+      "type": "Salt",
+      "uses": "Drywall, plaster, cement.",
+      "notes": "Hydrates form gypsum/plaster materials.",
+      "tags": [
+        "construction",
+        "daily life"
+      ],
+      "searchQuery": "Calcium sulfate"
+    },
+    {
+      "name": "Copper(II) nitrate",
+      "type": "Salt",
+      "uses": "Copper salt used in precipitation/redox examples.",
+      "notes": "Oxidizer and irritant; harmful if swallowed.",
+      "otherNames": [],
+      "tags": [
+        "salt",
+        "nitrate"
+      ],
+      "formula": "Cu(NO3)2",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/18616",
+      "id": "copper-ii-nitrate",
+      "searchQuery": "Copper(II) nitrate"
+    },
+    {
+      "id": "copper-sulfate",
+      "name": "Copper(II) sulfate",
+      "formula": "CuSO4",
+      "otherNames": [
+        "Blue vitriol"
+      ],
+      "type": "Salt",
+      "uses": "Electroplating, fungicide, lab reagent.",
+      "notes": "Blue hydrate crystals; toxic to aquatic life.",
+      "tags": [
+        "daily life",
+        "salt"
+      ],
+      "searchQuery": "Copper(II) sulfate"
+    },
+    {
+      "id": "cryolite",
+      "name": "Cryolite",
+      "formula": "Na3AlF6",
+      "otherNames": [
+        "Sodium aluminium fluoride"
+      ],
+      "type": "Salt",
+      "uses": "Lowers the melting point of aluminium oxide during aluminium extraction.",
+      "notes": "Molten aluminium oxide with cryolite conducts electricity at lower temperature.",
+      "tags": [
+        "salt",
+        "aluminium",
+        "electrolysis"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Ferric chloride",
+      "formula": "FeCl3",
+      "otherNames": [
+        "iron(III) chloride"
+      ],
+      "type": "Salt",
+      "uses": "Oxidizing chloride salt used in tests, etching, and water-treatment chemistry.",
+      "notes": "Corrosive; stains and can irritate skin and eyes.",
+      "tags": [
+        "iron",
+        "salt"
+      ],
+      "searchQuery": "Ferric chloride",
+      "id": "ferric-chloride",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Ferrous chloride",
+      "formula": "FeCl2",
+      "otherNames": [
+        "iron(II) chloride"
+      ],
+      "type": "Salt",
+      "uses": "Iron(II) salt used in redox examples and as a precursor to iron(III) compounds.",
+      "notes": "Irritant; handle as a laboratory salt.",
+      "tags": [
+        "iron",
+        "salt"
+      ],
+      "searchQuery": "Ferrous chloride",
+      "id": "ferrous-chloride",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Lead(II) iodide",
+      "formula": "PbI2",
+      "otherNames": [
+        "lead iodide"
+      ],
+      "type": "Salt",
+      "uses": "Bright yellow precipitate in lead nitrate and potassium iodide tests.",
+      "notes": "Lead compound; toxic and cumulative.",
+      "tags": [
+        "precipitate",
+        "salt"
+      ],
+      "searchQuery": "Lead(II) iodide",
+      "id": "lead-ii-iodide",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Lead(II) nitrate",
+      "formula": "Pb(NO3)2",
+      "otherNames": [
+        "lead nitrate"
+      ],
+      "type": "Salt",
+      "uses": "Soluble lead salt used in precipitation examples.",
+      "notes": "Toxic oxidizer; lead exposure hazard.",
+      "tags": [
+        "salt",
+        "precipitation"
+      ],
+      "searchQuery": "Lead(II) nitrate",
+      "id": "lead-ii-nitrate",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "magnesium-sulfate",
+      "name": "Magnesium sulfate",
+      "formula": "MgSO4",
+      "otherNames": [
+        "Epsom salt"
+      ],
+      "type": "Salt",
+      "uses": "Bath salts, magnesium supplement, drying agent.",
+      "notes": "Often encountered as heptahydrate.",
+      "tags": [
+        "daily life",
+        "salt"
+      ],
+      "searchQuery": "Magnesium sulfate"
+    },
+    {
+      "id": "monosodium-glutamate",
+      "name": "Monosodium glutamate",
+      "formula": "C5H8NO4Na",
+      "otherNames": [
+        "MSG",
+        "Sodium glutamate"
+      ],
+      "type": "Salt",
+      "uses": "Umami flavor enhancer.",
+      "notes": "Sodium salt of glutamic acid.",
+      "tags": [
+        "daily life",
+        "food"
+      ],
+      "searchQuery": "Monosodium glutamate"
+    },
+    {
+      "id": "potassium-carbonate",
+      "name": "Potassium carbonate",
+      "formula": "K2CO3",
+      "otherNames": [
+        "Pearl ash"
+      ],
+      "type": "Salt",
+      "uses": "Soap/glass making, alkalizing agent.",
+      "notes": "Basic carbonate salt.",
+      "tags": [
+        "base",
+        "daily life"
+      ],
+      "searchQuery": "Potassium carbonate"
+    },
+    {
+      "name": "Potassium dichromate",
+      "type": "Salt",
+      "uses": "Oxidizing chromium salt used in classic redox chemistry.",
+      "notes": "Toxic carcinogenic hexavalent chromium compound.",
+      "otherNames": [],
+      "tags": [
+        "salt",
+        "oxidizer"
+      ],
+      "formula": "K2Cr2O7",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/24502",
+      "id": "potassium-dichromate",
+      "searchQuery": "Potassium dichromate"
+    },
+    {
+      "id": "potassium-iodide",
+      "name": "Potassium iodide",
+      "formula": "KI",
+      "otherNames": [
+        "KI"
+      ],
+      "type": "Salt",
+      "uses": "Iodine source, thyroid protection in emergencies.",
+      "notes": "Iodide can be oxidized to iodine.",
+      "tags": [
+        "daily life",
+        "salt"
+      ],
+      "searchQuery": "Potassium iodide"
+    },
+    {
+      "id": "potassium-nitrate",
+      "name": "Potassium nitrate",
+      "formula": "KNO3",
+      "otherNames": [
+        "Saltpeter"
+      ],
+      "type": "Salt",
+      "uses": "Fertilizer, food curing, fireworks oxidizer.",
+      "notes": "Oxidizing nitrate salt.",
+      "tags": [
+        "daily life",
+        "fertilizer"
+      ],
+      "searchQuery": "Potassium nitrate"
+    },
+    {
+      "id": "potassium-permanganate",
+      "name": "Potassium permanganate",
+      "formula": "KMnO4",
+      "otherNames": [
+        "Permanganate"
+      ],
+      "type": "Salt",
+      "uses": "Oxidizer, disinfectant chemistry, and redox titration reagent.",
+      "notes": "Strong oxidizer; stains and reacts with organics.",
+      "tags": [
+        "daily life",
+        "oxidizer",
+        "salt"
+      ],
+      "searchQuery": "Potassium permanganate",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/516875"
+    },
+    {
+      "id": "silver-nitrate",
+      "name": "Silver nitrate",
+      "formula": "AgNO3",
+      "otherNames": [
+        "Lunar caustic"
+      ],
+      "type": "Salt",
+      "uses": "Chloride test, silvering, antiseptic use.",
+      "notes": "Light-sensitive; stains skin.",
+      "tags": [
+        "daily life",
+        "salt"
+      ],
+      "searchQuery": "Silver nitrate"
+    },
+    {
+      "id": "sodium-acetate",
+      "name": "Sodium acetate",
+      "formula": "CH3COONa",
+      "otherNames": [
+        "Hot ice"
+      ],
+      "type": "Salt",
+      "uses": "Buffer component, hot-ice packs, and acetate salt reference.",
+      "notes": "Low hazard; concentrated solutions may irritate.",
+      "tags": [
+        "buffer",
+        "daily life",
+        "salt"
+      ],
+      "searchQuery": "Sodium acetate",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/517045"
+    },
+    {
+      "id": "sodium-aluminate",
+      "name": "Sodium aluminate",
+      "formula": "NaAlO2",
+      "otherNames": [
+        "Sodium aluminium oxide"
+      ],
+      "type": "Salt",
+      "uses": "Intermediate in purification of bauxite and aluminium oxide preparation.",
+      "notes": "Formed when hydrated aluminium oxide reacts with sodium hydroxide.",
+      "tags": [
+        "salt",
+        "aluminium",
+        "metal extraction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "sodium-benzoate",
+      "name": "Sodium benzoate",
+      "formula": "C6H5COONa",
+      "otherNames": [
+        "Benzoate of soda"
+      ],
+      "type": "Salt",
+      "uses": "Food preservative in acidic foods/drinks.",
+      "notes": "Benzoate salt of benzoic acid.",
+      "tags": [
+        "daily life",
+        "food"
+      ],
+      "searchQuery": "Sodium benzoate"
+    },
+    {
+      "id": "sodium-bicarbonate",
+      "name": "Sodium bicarbonate",
+      "formula": "NaHCO3",
+      "otherNames": [
+        "Baking soda",
+        "Sodium hydrogen carbonate",
+        "Table soda"
+      ],
+      "type": "Salt",
+      "uses": "Baking, antacid, mild cleaning. Leavening agent and antacid-like household chemical.",
+      "notes": "Releases CO2 with acids or heat.",
+      "tags": [
+        "carbonate",
+        "daily life",
+        "salt"
+      ],
+      "searchQuery": "Sodium bicarbonate",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "sodium-borate",
+      "name": "Sodium borate",
+      "formula": "Na2B4O7",
+      "otherNames": [
+        "Borax"
+      ],
+      "type": "Salt",
+      "uses": "Laundry booster, slime recipes, cleaning.",
+      "notes": "Keep away from children; not food-safe.",
+      "tags": [
+        "cleaner",
+        "daily life"
+      ],
+      "searchQuery": "Sodium borate"
+    },
+    {
+      "id": "sodium-carbonate",
+      "name": "Sodium carbonate",
+      "formula": "Na2CO3",
+      "otherNames": [
+        "Washing soda",
+        "Soda ash"
+      ],
+      "type": "Salt",
+      "uses": "Glass making, detergents, water softening. Cleaning material and precursor to washing soda.",
+      "notes": "Basic salt; forms alkaline solutions.",
+      "tags": [
+        "carbonate",
+        "daily life",
+        "salt"
+      ],
+      "searchQuery": "Sodium carbonate",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "sodium-chloride",
+      "name": "Sodium chloride",
+      "formula": "NaCl",
+      "otherNames": [
+        "Table salt",
+        "Halite",
+        "Edible salt"
+      ],
+      "type": "Salt",
+      "uses": "Food seasoning, saline solutions, de-icing. Seasoning, saline preparation, food preservation and raw material for sodium hydroxide.",
+      "notes": "High melting ionic solid; soluble in water.",
+      "tags": [
+        "daily life",
+        "salt"
+      ],
+      "searchQuery": "Sodium chloride",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "sodium-citrate",
+      "name": "Sodium citrate",
+      "formula": "Na3C6H5O7",
+      "otherNames": [
+        "Trisodium citrate"
+      ],
+      "type": "Salt",
+      "uses": "Buffering salt, cheese emulsifier, anticoagulant tubes.",
+      "notes": "Salt of citric acid.",
+      "tags": [
+        "daily life",
+        "food"
+      ],
+      "searchQuery": "Sodium citrate"
+    },
+    {
+      "id": "sodium-fluoride",
+      "name": "Sodium fluoride",
+      "formula": "NaF",
+      "otherNames": [
+        "Fluoride salt"
+      ],
+      "type": "Salt",
+      "uses": "Toothpaste and water fluoridation.",
+      "notes": "Toxic in high doses.",
+      "tags": [
+        "daily life",
+        "dental"
+      ],
+      "searchQuery": "Sodium fluoride"
+    },
+    {
+      "id": "sodium-nitrate",
+      "name": "Sodium nitrate",
+      "formula": "NaNO3",
+      "otherNames": [
+        "Chile saltpeter"
+      ],
+      "type": "Salt",
+      "uses": "Fertilizer, oxidizer, and nitrate salt reference.",
+      "notes": "Oxidizer; ingestion hazard in quantity.",
+      "tags": [
+        "daily life",
+        "oxidizer",
+        "salt"
+      ],
+      "searchQuery": "Sodium nitrate",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/24268"
+    },
+    {
+      "id": "sodium-silicate",
+      "name": "Sodium silicate",
+      "formula": "Na2SiO3",
+      "otherNames": [
+        "Water glass"
+      ],
+      "type": "Salt",
+      "uses": "Component/related material in glass chemistry and cleaners.",
+      "notes": "Glass cleaners are chosen so they do not attack silicate glass.",
+      "tags": [
+        "salt",
+        "silicate",
+        "glass"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "sodium-stearate",
+      "name": "Sodium stearate",
+      "formula": "C18H35NaO2",
+      "otherNames": [
+        "Soap salt"
+      ],
+      "type": "Salt",
+      "uses": "Main component of many soaps.",
+      "notes": "Sodium salt of stearic acid.",
+      "tags": [
+        "salt",
+        "soap",
+        "surfactant"
+      ],
+      "searchQuery": "Sodium stearate"
+    },
+    {
+      "id": "sodium-sulfate",
+      "name": "Sodium sulfate",
+      "formula": "Na2SO4",
+      "otherNames": [
+        "Glauber's salt"
+      ],
+      "type": "Salt",
+      "uses": "Detergents, paper pulping, drying agent.",
+      "notes": "Stable, water-soluble salt.",
+      "tags": [
+        "daily life",
+        "salt"
+      ],
+      "searchQuery": "Sodium sulfate"
+    },
+    {
+      "id": "sodium-tartrate",
+      "name": "Sodium tartrate",
+      "formula": "Na2C4H4O6",
+      "otherNames": [
+        "Disodium tartrate"
+      ],
+      "type": "Salt",
+      "uses": "Product when baking soda reacts with tartaric acid in baking powder.",
+      "notes": "Carbon dioxide from the same reaction causes cakes to rise.",
+      "tags": [
+        "salt",
+        "food chemistry"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "id": "sodium-thiosulfate",
+      "name": "Sodium thiosulfate",
+      "formula": "Na2S2O3",
+      "otherNames": [
+        "Hypo"
+      ],
+      "type": "Salt",
+      "uses": "Iodine titrations, photographic fixer, dechlorination.",
+      "notes": "Reduces iodine to iodide.",
+      "tags": [
+        "daily life",
+        "reducing agent",
+        "salt"
+      ],
+      "searchQuery": "Sodium thiosulfate"
+    },
+    {
+      "id": "trisodium-phosphate",
+      "name": "Trisodium phosphate",
+      "formula": "Na3PO4",
+      "otherNames": [
+        "TSP"
+      ],
+      "type": "Salt",
+      "uses": "Cleaner/building salt and phosphate reference.",
+      "notes": "Alkaline irritant.",
+      "tags": [
+        "salt",
+        "cleaner",
+        "phosphate"
+      ],
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/24243",
+      "searchQuery": "Trisodium phosphate"
+    },
+    {
+      "name": "Zinc chloride",
+      "formula": "ZnCl2",
+      "otherNames": [
+        "butter of zinc"
+      ],
+      "type": "Salt",
+      "uses": "Electrolyte component in dry cells and chloride salt examples.",
+      "notes": "Corrosive and harmful if swallowed.",
+      "tags": [
+        "salt",
+        "electrochemistry"
+      ],
+      "searchQuery": "Zinc chloride",
+      "id": "zinc-chloride",
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Quaternary ammonium compounds",
+      "type": "Surfactant",
+      "uses": "Cationic disinfectant/surfactant family used in many cleaners.",
+      "notes": "A broad family of cationic surfactants/disinfectants rather than one fixed molecule.",
+      "otherNames": [
+        "quats"
+      ],
+      "tags": [
+        "surfactant",
+        "cleaner",
+        "disinfectant"
+      ],
+      "formula": "variable cationic surfactants",
+      "sourceLabel": "CDC cleaning and disinfecting reference",
+      "sourceUrl": "https://www.cdc.gov/hygiene/about/cleaning-and-disinfecting.html",
+      "id": "quaternary-ammonium-compounds",
+      "searchQuery": "Quaternary ammonium compounds"
+    },
+    {
+      "id": "sodium-lauryl-sulfate",
+      "name": "Sodium lauryl sulfate",
+      "formula": "NaC12H25SO4",
+      "otherNames": [
+        "SLS",
+        "Sodium dodecyl sulfate",
+        "Sodium lauryl sulphate",
+        "sodium dodecyl sulfate"
+      ],
+      "type": "Surfactant",
+      "uses": "Surfactant in detergents, toothpaste, and shampoos.",
+      "notes": "An anionic surfactant salt, not a simple inorganic salt.",
+      "tags": [
+        "surfactant",
+        "cleaner",
+        "detergent"
+      ],
+      "searchQuery": "Sodium lauryl sulfate",
+      "sourceLabel": "PubChem",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/3423265"
+    }
+  ]
+}

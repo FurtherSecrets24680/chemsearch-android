@@ -1,0 +1,1085 @@
+{
+  "version": 1,
+  "functionalGroups": [
+    {
+      "id": "arene",
+      "name": "Arene",
+      "generalFormula": "Ar-H",
+      "structure": "benzene ring",
+      "type": "Aromatic group",
+      "namingCue": "benzene derivatives",
+      "example": "Benzene, C6H6",
+      "behavior": "Aromatic ring with resonance stabilization.",
+      "tags": [
+        "aromatic"
+      ]
+    },
+    {
+      "name": "Boronic acid",
+      "generalFormula": "R-B(OH)2",
+      "structure": "R-B(OH)2",
+      "type": "Boron group",
+      "namingCue": "boronic acid",
+      "example": "Phenylboronic acid",
+      "behavior": "Lewis acidic boron group; useful in Suzuki coupling and sugar binding.",
+      "tags": [
+        "boron",
+        "acid"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "boronic-acid"
+    },
+    {
+      "name": "Boronic ester",
+      "generalFormula": "R-B(OR)2",
+      "structure": "R-B(OR)2",
+      "type": "Boron group",
+      "namingCue": "boronate ester",
+      "example": "Pinacol boronate ester",
+      "behavior": "Protected/esterified boronic acid group used in cross-coupling.",
+      "tags": [
+        "boron",
+        "ester"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "boronic-ester"
+    },
+    {
+      "id": "anhydride",
+      "name": "Acid anhydride",
+      "generalFormula": "R-C(=O)-O-C(=O)-R'",
+      "structure": "R-CO-O-CO-R'",
+      "type": "Carbonyl group",
+      "namingCue": "anhydride",
+      "example": "Ethanoic anhydride",
+      "behavior": "Reactive acyl transfer group; hydrolyzes to acids.",
+      "tags": [
+        "carbonyl"
+      ]
+    },
+    {
+      "id": "acid-chloride",
+      "name": "Acid chloride",
+      "generalFormula": "R-C(=O)-Cl",
+      "structure": "R-COCl",
+      "type": "Carbonyl group",
+      "namingCue": "-oyl chloride",
+      "example": "Ethanoyl chloride",
+      "behavior": "Very reactive acyl derivative; reacts with water/alcohols/amines.",
+      "tags": [
+        "carbonyl",
+        "halogen"
+      ]
+    },
+    {
+      "id": "aldehyde",
+      "name": "Aldehyde",
+      "generalFormula": "R-C(=O)H",
+      "structure": "R-CHO",
+      "type": "Carbonyl group",
+      "namingCue": "-al",
+      "example": "Ethanal, CH3CHO",
+      "behavior": "Reactive carbonyl; easily oxidized to carboxylic acids.",
+      "tags": [
+        "carbonyl"
+      ]
+    },
+    {
+      "id": "amide",
+      "name": "Amide",
+      "generalFormula": "R-C(=O)-NR2",
+      "structure": "R-CONH2",
+      "type": "Carbonyl group",
+      "namingCue": "-amide",
+      "example": "Ethanamide, CH3CONH2",
+      "behavior": "Resonance-stabilized carbonyl-nitrogen group; peptide bond family.",
+      "tags": [
+        "carbonyl",
+        "nitrogen"
+      ]
+    },
+    {
+      "name": "Carbamate",
+      "generalFormula": "R-O-C(=O)-NR2",
+      "structure": "RO-CONR2",
+      "type": "Carbonyl group",
+      "namingCue": "carbamate",
+      "example": "Carbaryl",
+      "behavior": "Carbonyl group attached to alkoxy and amino substituents.",
+      "tags": [
+        "carbonyl",
+        "nitrogen",
+        "oxygen"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "carbamate"
+    },
+    {
+      "name": "Carbonate ester",
+      "generalFormula": "R-O-C(=O)-O-R",
+      "structure": "RO-CO-OR",
+      "type": "Carbonyl group",
+      "namingCue": "carbonate",
+      "example": "Dimethyl carbonate",
+      "behavior": "Diester of carbonic acid; carbonyl with two alkoxy substituents.",
+      "tags": [
+        "carbonyl",
+        "oxygen"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "carbonate-ester"
+    },
+    {
+      "id": "carboxylate",
+      "name": "Carboxylate",
+      "generalFormula": "R-C(=O)-O-",
+      "structure": "R-COO-",
+      "type": "Carbonyl group",
+      "namingCue": "-oate salts",
+      "example": "Acetate, CH3COO-",
+      "behavior": "Conjugate base of carboxylic acids; resonance-stabilized.",
+      "tags": [
+        "carbonyl",
+        "acid-base"
+      ]
+    },
+    {
+      "id": "carboxylic-acid",
+      "name": "Carboxylic acid",
+      "generalFormula": "R-C(=O)-OH",
+      "structure": "R-COOH",
+      "type": "Carbonyl group",
+      "namingCue": "-oic acid",
+      "example": "Ethanoic acid, CH3COOH",
+      "behavior": "Weak organic acid; forms salts and esters.",
+      "tags": [
+        "carbonyl",
+        "acid"
+      ]
+    },
+    {
+      "id": "ester",
+      "name": "Ester",
+      "generalFormula": "R-C(=O)-O-R'",
+      "structure": "R-COOR'",
+      "type": "Carbonyl group",
+      "namingCue": "-oate",
+      "example": "Ethyl ethanoate",
+      "behavior": "Often fruity-smelling; hydrolyzes to acid/alcohol.",
+      "tags": [
+        "carbonyl"
+      ]
+    },
+    {
+      "id": "ketone",
+      "name": "Ketone",
+      "generalFormula": "R-C(=O)-R'",
+      "structure": "R-CO-R'",
+      "type": "Carbonyl group",
+      "namingCue": "-one",
+      "example": "Propanone, CH3COCH3",
+      "behavior": "Carbonyl group inside a chain; undergoes nucleophilic addition.",
+      "tags": [
+        "carbonyl"
+      ]
+    },
+    {
+      "name": "Lactam",
+      "generalFormula": "cyclic amide",
+      "structure": "R-C(=O)-NH ring",
+      "type": "Carbonyl group",
+      "namingCue": "-lactam",
+      "example": "beta-Lactam ring",
+      "behavior": "Cyclic amide; beta-lactams are highly reactive strained amides.",
+      "tags": [
+        "carbonyl",
+        "amide",
+        "ring"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "lactam"
+    },
+    {
+      "name": "Lactone",
+      "generalFormula": "cyclic ester",
+      "structure": "R-C(=O)-O ring",
+      "type": "Carbonyl group",
+      "namingCue": "-lactone",
+      "example": "gamma-Butyrolactone",
+      "behavior": "Cyclic ester; hydrolyzes like other esters.",
+      "tags": [
+        "carbonyl",
+        "ester",
+        "ring"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "lactone"
+    },
+    {
+      "name": "Urea group",
+      "generalFormula": "R-NH-C(=O)-NH-R",
+      "structure": "RN-CO-NR",
+      "type": "Carbonyl group",
+      "namingCue": "urea",
+      "example": "Urea, NH2CONH2",
+      "behavior": "Carbonyl bonded to two nitrogens; strong hydrogen bonding.",
+      "tags": [
+        "carbonyl",
+        "nitrogen"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "urea-group"
+    },
+    {
+      "name": "Urethane",
+      "generalFormula": "R-O-C(=O)-NH-R",
+      "structure": "RO-CONH-R",
+      "type": "Carbonyl group",
+      "namingCue": "carbamate / urethane",
+      "example": "Ethyl carbamate",
+      "behavior": "Carbamate ester group; found in polyurethane chemistry.",
+      "tags": [
+        "carbonyl",
+        "nitrogen",
+        "oxygen"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "urethane"
+    },
+    {
+      "name": "Acyl group",
+      "generalFormula": "R-C(=O)-",
+      "structure": "R-CO-",
+      "type": "Carbonyl substituent",
+      "namingCue": "acyl-",
+      "example": "Acetyl group, CH3CO-",
+      "behavior": "Carbonyl-containing substituent found in acyl derivatives.",
+      "tags": [
+        "carbonyl",
+        "substituent"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "acyl-group"
+    },
+    {
+      "name": "Allylic halide",
+      "generalFormula": "R-CH=CH-CH2-X",
+      "structure": "C=C-C-X",
+      "type": "Halogenated group",
+      "namingCue": "allyl halide",
+      "example": "Allyl chloride",
+      "behavior": "Halogen on carbon adjacent to double bond; resonance-stabilized reactions.",
+      "tags": [
+        "halogen",
+        "alkene"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "allylic-halide"
+    },
+    {
+      "name": "Aryl halide",
+      "generalFormula": "Ar-X",
+      "structure": "Ar-X",
+      "type": "Halogenated group",
+      "namingCue": "haloarene",
+      "example": "Chlorobenzene",
+      "behavior": "Halogen directly attached to an aromatic ring; less SN1/SN2 reactive than haloalkanes.",
+      "tags": [
+        "halogen",
+        "aromatic"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "aryl-halide"
+    },
+    {
+      "id": "haloalkane",
+      "name": "Haloalkane",
+      "generalFormula": "R-X (X = F, Cl, Br, I)",
+      "structure": "R-X",
+      "type": "Halogenated group",
+      "namingCue": "halo- prefix",
+      "example": "Chloromethane, CH3Cl",
+      "behavior": "Polar carbon-halogen bond; substitution reactions are common.",
+      "tags": [
+        "halogen"
+      ]
+    },
+    {
+      "name": "Vinyl halide",
+      "generalFormula": "R-C(X)=C-R",
+      "structure": "C=C-X",
+      "type": "Halogenated group",
+      "namingCue": "haloalkene",
+      "example": "Vinyl chloride",
+      "behavior": "Halogen attached to alkene carbon.",
+      "tags": [
+        "halogen",
+        "alkene"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "vinyl-halide"
+    },
+    {
+      "id": "alkane",
+      "name": "Alkane",
+      "generalFormula": "CnH2n+2",
+      "structure": "C-C single bonds",
+      "type": "Hydrocarbon",
+      "namingCue": "-ane",
+      "example": "Methane, CH4",
+      "behavior": "Mostly nonpolar and relatively unreactive; burns as fuel.",
+      "tags": [
+        "hydrocarbon"
+      ]
+    },
+    {
+      "id": "alkene",
+      "name": "Alkene",
+      "generalFormula": "RCH=CHR",
+      "structure": "C=C",
+      "type": "Hydrocarbon",
+      "namingCue": "-ene",
+      "example": "Ethene, C2H4",
+      "behavior": "Undergoes addition reactions; decolorizes bromine.",
+      "tags": [
+        "hydrocarbon"
+      ]
+    },
+    {
+      "id": "alkyne",
+      "name": "Alkyne",
+      "generalFormula": "RC#CR",
+      "structure": "C#C",
+      "type": "Hydrocarbon",
+      "namingCue": "-yne",
+      "example": "Ethyne, C2H2",
+      "behavior": "Linear unsaturated group; undergoes addition reactions.",
+      "tags": [
+        "hydrocarbon"
+      ]
+    },
+    {
+      "name": "Allene",
+      "generalFormula": "R2C=C=CR2",
+      "structure": "C=C=C",
+      "type": "Hydrocarbon",
+      "namingCue": "allene",
+      "example": "Propadiene",
+      "behavior": "Cumulated diene with perpendicular pi systems.",
+      "tags": [
+        "hydrocarbon",
+        "alkene"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "allene"
+    },
+    {
+      "name": "Cycloalkane",
+      "generalFormula": "CnH2n",
+      "structure": "ring alkane",
+      "type": "Hydrocarbon",
+      "namingCue": "cyclo-",
+      "example": "Cyclohexane",
+      "behavior": "Saturated ring hydrocarbon; ring strain varies with ring size.",
+      "tags": [
+        "hydrocarbon",
+        "ring"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "cycloalkane"
+    },
+    {
+      "name": "Diene",
+      "generalFormula": "C=C-C=C",
+      "structure": "two C=C bonds",
+      "type": "Hydrocarbon",
+      "namingCue": "-diene",
+      "example": "1,3-Butadiene",
+      "behavior": "Hydrocarbon with two double bonds; conjugated dienes undergo addition reactions.",
+      "tags": [
+        "hydrocarbon",
+        "alkene"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "diene"
+    },
+    {
+      "id": "alkyl-group",
+      "name": "Alkyl group",
+      "generalFormula": "CnH2n+1-",
+      "structure": "R-",
+      "type": "Hydrocarbon substituent",
+      "namingCue": "Names often end in -yl, such as methyl, ethyl, propyl and butyl.",
+      "example": "Methyl group, CH3-",
+      "behavior": "Single-valence radical formed by removing one hydrogen atom from an alkane.",
+      "tags": [
+        "alkyl",
+        "hydrocarbon"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": ""
+    },
+    {
+      "name": "Aryl group",
+      "generalFormula": "Ar-",
+      "structure": "aromatic substituent",
+      "type": "Hydrocarbon substituent",
+      "namingCue": "aryl- / phenyl-",
+      "example": "Phenyl group, C6H5-",
+      "behavior": "Aromatic substituent derived by removing one H from an arene.",
+      "tags": [
+        "aromatic",
+        "substituent"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "aryl-group"
+    },
+    {
+      "id": "amine",
+      "name": "Amine",
+      "generalFormula": "R-NH2 / R2NH / R3N",
+      "structure": "R-NH2",
+      "type": "Nitrogen group",
+      "namingCue": "-amine",
+      "example": "Methylamine, CH3NH2",
+      "behavior": "Basic nitrogen group; forms ammonium salts.",
+      "tags": [
+        "nitrogen",
+        "base"
+      ]
+    },
+    {
+      "name": "Azide",
+      "generalFormula": "R-N3",
+      "structure": "R-N=N+=N-",
+      "type": "Nitrogen group",
+      "namingCue": "azido-",
+      "example": "Benzyl azide",
+      "behavior": "Nitrogen-rich group used in click chemistry; many azides need care.",
+      "tags": [
+        "nitrogen"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "azide"
+    },
+    {
+      "name": "Azo",
+      "generalFormula": "R-N=N-R",
+      "structure": "R-N=N-R",
+      "type": "Nitrogen group",
+      "namingCue": "azo-",
+      "example": "Azobenzene",
+      "behavior": "Conjugated N=N group; common in dyes and photoisomerization.",
+      "tags": [
+        "nitrogen",
+        "dye"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "azo"
+    },
+    {
+      "name": "Diazonium",
+      "generalFormula": "Ar-N2+",
+      "structure": "Ar-N#N+",
+      "type": "Nitrogen group",
+      "namingCue": "diazonium",
+      "example": "Benzenediazonium chloride",
+      "behavior": "Reactive aryl diazonium group used in substitution and azo coupling.",
+      "tags": [
+        "nitrogen",
+        "aromatic"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "diazonium"
+    },
+    {
+      "name": "Guanidine",
+      "generalFormula": "R-N=C(NH2)-NH2",
+      "structure": "N-C(=N)-N",
+      "type": "Nitrogen group",
+      "namingCue": "guanidino-",
+      "example": "Guanidine",
+      "behavior": "Strongly basic nitrogen-rich functional group.",
+      "tags": [
+        "nitrogen",
+        "base"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "guanidine"
+    },
+    {
+      "name": "Hydrazone",
+      "generalFormula": "R2C=N-NH2",
+      "structure": "C=N-N",
+      "type": "Nitrogen group",
+      "namingCue": "hydrazone",
+      "example": "Acetone hydrazone",
+      "behavior": "Condensation product of hydrazines and carbonyl compounds.",
+      "tags": [
+        "nitrogen",
+        "imine"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "hydrazone"
+    },
+    {
+      "id": "imine",
+      "name": "Imine",
+      "generalFormula": "R2C=NR",
+      "structure": "R-C=N-R'",
+      "type": "Nitrogen group",
+      "namingCue": "imine",
+      "example": "Acetone imine",
+      "behavior": "Carbon-nitrogen double bond; Schiff base family.",
+      "tags": [
+        "nitrogen"
+      ]
+    },
+    {
+      "name": "Isocyanate",
+      "generalFormula": "R-N=C=O",
+      "structure": "R-N=C=O",
+      "type": "Nitrogen group",
+      "namingCue": "isocyanate",
+      "example": "Methyl isocyanate",
+      "behavior": "Highly reactive electrophilic group; reacts with alcohols/amines.",
+      "tags": [
+        "nitrogen",
+        "carbonyl"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "isocyanate"
+    },
+    {
+      "name": "Isothiocyanate",
+      "generalFormula": "R-N=C=S",
+      "structure": "R-N=C=S",
+      "type": "Nitrogen group",
+      "namingCue": "isothiocyanate",
+      "example": "Allyl isothiocyanate",
+      "behavior": "Sulfur analog of isocyanate; found in mustard-family flavor compounds.",
+      "tags": [
+        "nitrogen",
+        "sulfur"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "isothiocyanate"
+    },
+    {
+      "id": "nitrile",
+      "name": "Nitrile",
+      "generalFormula": "R-C#N",
+      "structure": "R-C#N",
+      "type": "Nitrogen group",
+      "namingCue": "-nitrile",
+      "example": "Ethanenitrile, CH3CN",
+      "behavior": "Polar carbon-nitrogen triple bond; can hydrolyze to acids.",
+      "tags": [
+        "nitrogen"
+      ]
+    },
+    {
+      "name": "Nitro",
+      "generalFormula": "R-NO2",
+      "structure": "R-N(=O)=O",
+      "type": "Nitrogen group",
+      "namingCue": "nitro-",
+      "example": "Nitrobenzene",
+      "behavior": "Strong electron-withdrawing group; can be reduced to amines.",
+      "tags": [
+        "nitrogen",
+        "oxidized"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "nitro"
+    },
+    {
+      "name": "Nitroso",
+      "generalFormula": "R-NO",
+      "structure": "R-N=O",
+      "type": "Nitrogen group",
+      "namingCue": "nitroso-",
+      "example": "Nitrosobenzene",
+      "behavior": "Reactive nitrogen-oxygen group; participates in redox and coupling chemistry.",
+      "tags": [
+        "nitrogen",
+        "oxygen"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "nitroso"
+    },
+    {
+      "name": "Oxime",
+      "generalFormula": "R2C=N-OH",
+      "structure": "C=N-OH",
+      "type": "Nitrogen group",
+      "namingCue": "oxime",
+      "example": "Acetaldoxime",
+      "behavior": "Carbonyl derivative formed with hydroxylamine.",
+      "tags": [
+        "nitrogen",
+        "oxygen",
+        "imine"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "oxime"
+    },
+    {
+      "name": "Acetal",
+      "generalFormula": "R2C(OR)2",
+      "structure": "R2C(OR)2",
+      "type": "Oxygen group",
+      "namingCue": "acetal / ketal",
+      "example": "1,1-Diethoxyethane",
+      "behavior": "Carbon bonded to two alkoxy groups; acid-labile carbonyl protecting group.",
+      "tags": [
+        "oxygen",
+        "ether"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "acetal"
+    },
+    {
+      "id": "alcohol",
+      "name": "Alcohol",
+      "generalFormula": "R-OH",
+      "structure": "R-OH",
+      "type": "Oxygen group",
+      "namingCue": "-ol",
+      "example": "Ethanol, C2H5OH",
+      "behavior": "Hydrogen bonding; oxidation and substitution reactions. The OH is attached to a saturated carbon, not directly to an aromatic ring.",
+      "tags": [
+        "oxygen"
+      ]
+    },
+    {
+      "name": "Enol",
+      "generalFormula": "R-C(OH)=C-R",
+      "structure": "C=C-OH",
+      "type": "Oxygen group",
+      "namingCue": "enol",
+      "example": "Vinyl alcohol, CH2=CHOH",
+      "behavior": "Alkene alcohol tautomer; often interconverts with carbonyl compounds.",
+      "tags": [
+        "oxygen",
+        "alkene"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "enol"
+    },
+    {
+      "name": "Epoxide",
+      "generalFormula": "three-membered cyclic ether",
+      "structure": "C-O-C ring",
+      "type": "Oxygen group",
+      "namingCue": "epoxy- / oxirane",
+      "example": "Ethylene oxide",
+      "behavior": "Strained cyclic ether; reactive toward nucleophilic ring opening.",
+      "tags": [
+        "oxygen",
+        "ether",
+        "strained ring"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "epoxide"
+    },
+    {
+      "id": "ether",
+      "name": "Ether",
+      "generalFormula": "R-O-R'",
+      "structure": "R-O-R'",
+      "type": "Oxygen group",
+      "namingCue": "ether",
+      "example": "Dimethyl ether, CH3OCH3",
+      "behavior": "Often relatively unreactive and useful as solvents.",
+      "tags": [
+        "oxygen"
+      ]
+    },
+    {
+      "name": "Hemiacetal",
+      "generalFormula": "R2C(OH)(OR)",
+      "structure": "R2C(OH)(OR)",
+      "type": "Oxygen group",
+      "namingCue": "hemiacetal",
+      "example": "Glucose cyclic hemiacetal",
+      "behavior": "Intermediate between carbonyl and acetal; common in sugars.",
+      "tags": [
+        "oxygen",
+        "carbohydrate"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "hemiacetal"
+    },
+    {
+      "name": "Hydroperoxide",
+      "generalFormula": "R-O-O-H",
+      "structure": "R-OOH",
+      "type": "Oxygen group",
+      "namingCue": "hydroperoxy-",
+      "example": "tert-Butyl hydroperoxide",
+      "behavior": "Organic peroxide bearing OOH; oxidizing and sometimes unstable.",
+      "tags": [
+        "oxygen",
+        "oxidizer"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "hydroperoxide"
+    },
+    {
+      "name": "Peroxide",
+      "generalFormula": "R-O-O-R",
+      "structure": "R-O-O-R",
+      "type": "Oxygen group",
+      "namingCue": "peroxy-",
+      "example": "Benzoyl peroxide",
+      "behavior": "Weak O-O bond; often oxidizing or radical-forming.",
+      "tags": [
+        "oxygen",
+        "oxidizer"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "peroxide"
+    },
+    {
+      "id": "phenol",
+      "name": "Phenol",
+      "generalFormula": "Ar-OH",
+      "structure": "Ar-OH",
+      "type": "Oxygen group",
+      "namingCue": "-phenol",
+      "example": "Phenol, C6H5OH",
+      "behavior": "Aromatic OH group; more acidic than typical alcohols due to resonance stabilization.",
+      "tags": [
+        "oxygen",
+        "aromatic"
+      ]
+    },
+    {
+      "id": "phosphate-ester",
+      "name": "Phosphate ester",
+      "generalFormula": "R-O-PO3H2 / R-O-PO3^2-",
+      "structure": "R-O-PO3",
+      "type": "Phosphorus group",
+      "namingCue": "phosphate",
+      "example": "Methyl phosphate",
+      "behavior": "Important in DNA, ATP, and biochemical energy transfer.",
+      "tags": [
+        "phosphorus",
+        "biology"
+      ]
+    },
+    {
+      "name": "Phosphine",
+      "generalFormula": "R3P",
+      "structure": "R3P",
+      "type": "Phosphorus group",
+      "namingCue": "phosphino-",
+      "example": "Triphenylphosphine",
+      "behavior": "Neutral trivalent phosphorus group; nucleophilic ligand/reagent.",
+      "tags": [
+        "phosphorus",
+        "ligand"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "phosphine"
+    },
+    {
+      "name": "Phosphonate",
+      "generalFormula": "R-PO(OR)2",
+      "structure": "R-P(=O)(OR)2",
+      "type": "Phosphorus group",
+      "namingCue": "phosphonate",
+      "example": "Diethyl methylphosphonate",
+      "behavior": "Carbon-phosphorus bonded phosphorus ester family.",
+      "tags": [
+        "phosphorus",
+        "ester"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "phosphonate"
+    },
+    {
+      "name": "Phosphonic acid",
+      "generalFormula": "R-PO(OH)2",
+      "structure": "R-P(=O)(OH)2",
+      "type": "Phosphorus group",
+      "namingCue": "phosphonic acid",
+      "example": "Methylphosphonic acid",
+      "behavior": "Organophosphorus acid with direct C-P bond.",
+      "tags": [
+        "phosphorus",
+        "acid"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "phosphonic-acid"
+    },
+    {
+      "name": "Silanol",
+      "generalFormula": "R3Si-OH",
+      "structure": "Si-OH",
+      "type": "Silicon group",
+      "namingCue": "silanol",
+      "example": "Trimethylsilanol",
+      "behavior": "Silicon analog of alcohol; condenses to siloxanes.",
+      "tags": [
+        "silicon",
+        "oxygen"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "silanol"
+    },
+    {
+      "name": "Siloxane",
+      "generalFormula": "R3Si-O-SiR3",
+      "structure": "Si-O-Si",
+      "type": "Silicon group",
+      "namingCue": "siloxane",
+      "example": "Polydimethylsiloxane segment",
+      "behavior": "Silicon-oxygen-silicon linkage common in silicones.",
+      "tags": [
+        "silicon",
+        "oxygen",
+        "polymer"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "siloxane"
+    },
+    {
+      "name": "Silyl ether",
+      "generalFormula": "R-O-SiR3",
+      "structure": "R-O-SiR3",
+      "type": "Silicon group",
+      "namingCue": "silyloxy-",
+      "example": "Trimethylsilyl ether",
+      "behavior": "Common protecting group for alcohols.",
+      "tags": [
+        "silicon",
+        "oxygen",
+        "ether"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "silyl-ether"
+    },
+    {
+      "id": "disulfide",
+      "name": "Disulfide",
+      "generalFormula": "R-S-S-R'",
+      "structure": "R-S-S-R'",
+      "type": "Sulfur group",
+      "namingCue": "disulfide",
+      "example": "Cystine linkage",
+      "behavior": "Important in protein crosslinks; reducible to thiols.",
+      "tags": [
+        "sulfur",
+        "biology"
+      ]
+    },
+    {
+      "name": "Dithiocarbamate",
+      "generalFormula": "R2N-C(=S)-S-",
+      "structure": "R2N-CS2-",
+      "type": "Sulfur group",
+      "namingCue": "dithiocarbamate",
+      "example": "Sodium diethyldithiocarbamate",
+      "behavior": "Sulfur-rich ligand group that binds metals strongly.",
+      "tags": [
+        "sulfur",
+        "nitrogen",
+        "ligand"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "dithiocarbamate"
+    },
+    {
+      "id": "sulfide",
+      "name": "Sulfide",
+      "generalFormula": "R-S-R'",
+      "structure": "R-S-R'",
+      "type": "Sulfur group",
+      "namingCue": "sulfide",
+      "example": "Dimethyl sulfide",
+      "behavior": "Sulfur analog of ether; oxidizes to sulfoxides/sulfones.",
+      "tags": [
+        "sulfur"
+      ]
+    },
+    {
+      "name": "Sulfonamide",
+      "generalFormula": "R-S(=O)2-NR2",
+      "structure": "R-SO2NR2",
+      "type": "Sulfur group",
+      "namingCue": "sulfonamide",
+      "example": "Sulfanilamide",
+      "behavior": "Sulfonyl group attached to nitrogen; important medicinal chemistry motif.",
+      "tags": [
+        "sulfur",
+        "nitrogen"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "sulfonamide"
+    },
+    {
+      "name": "Sulfonate",
+      "generalFormula": "R-S(=O)2-O-",
+      "structure": "R-SO3-",
+      "type": "Sulfur group",
+      "namingCue": "sulfonate",
+      "example": "Methanesulfonate",
+      "behavior": "Conjugate base/salt or ester family of sulfonic acids.",
+      "tags": [
+        "sulfur",
+        "acid-base"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "sulfonate"
+    },
+    {
+      "name": "Sulfonate ester",
+      "generalFormula": "R-S(=O)2-O-R",
+      "structure": "R-SO2OR",
+      "type": "Sulfur group",
+      "namingCue": "sulfonate ester",
+      "example": "Methyl tosylate",
+      "behavior": "Excellent leaving-group family in substitution chemistry.",
+      "tags": [
+        "sulfur",
+        "ester"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "sulfonate-ester"
+    },
+    {
+      "name": "Sulfone",
+      "generalFormula": "R-S(=O)2-R",
+      "structure": "R-SO2-R",
+      "type": "Sulfur group",
+      "namingCue": "sulfone",
+      "example": "Dimethyl sulfone",
+      "behavior": "Oxidized thioether with two S=O bonds.",
+      "tags": [
+        "sulfur",
+        "oxidized"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "sulfone"
+    },
+    {
+      "name": "Sulfonic acid",
+      "generalFormula": "R-S(=O)2-OH",
+      "structure": "R-SO3H",
+      "type": "Sulfur group",
+      "namingCue": "sulfonic acid",
+      "example": "Benzenesulfonic acid",
+      "behavior": "Strong organic acid; forms sulfonate salts.",
+      "tags": [
+        "sulfur",
+        "acid"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "sulfonic-acid"
+    },
+    {
+      "name": "Sulfonyl chloride",
+      "generalFormula": "R-S(=O)2-Cl",
+      "structure": "R-SO2Cl",
+      "type": "Sulfur group",
+      "namingCue": "sulfonyl chloride",
+      "example": "Tosyl chloride",
+      "behavior": "Reactive sulfonyl derivative used to make sulfonates and sulfonamides.",
+      "tags": [
+        "sulfur",
+        "halogen"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "sulfonyl-chloride"
+    },
+    {
+      "id": "sulfoxide",
+      "name": "Sulfoxide",
+      "generalFormula": "R-S(=O)-R'",
+      "structure": "R-S(=O)-R'",
+      "type": "Sulfur group",
+      "namingCue": "sulfoxide",
+      "example": "Dimethyl sulfoxide",
+      "behavior": "Polar sulfur-oxygen group; good solvent class.",
+      "tags": [
+        "sulfur"
+      ]
+    },
+    {
+      "name": "Thioester",
+      "generalFormula": "R-C(=O)-S-R",
+      "structure": "R-COSR",
+      "type": "Sulfur group",
+      "namingCue": "thioester",
+      "example": "Acetyl-CoA",
+      "behavior": "Sulfur analog of ester; important in biochemistry and acyl transfer.",
+      "tags": [
+        "sulfur",
+        "carbonyl"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/Courses/can/CHEM_231%3A_Organic_Chemistry_I_Textbook/03%3A_Organic_Compounds-_Functional_Groups_and_Nomenclature/3.01%3A_Functional_Groups",
+      "id": "thioester"
+    },
+    {
+      "id": "thiol",
+      "name": "Thiol",
+      "generalFormula": "R-SH",
+      "structure": "R-SH",
+      "type": "Sulfur group",
+      "namingCue": "-thiol",
+      "example": "Methanethiol, CH3SH",
+      "behavior": "Sulfur analog of alcohol; strong odors; forms disulfides.",
+      "tags": [
+        "sulfur"
+      ]
+    }
+  ]
+}
