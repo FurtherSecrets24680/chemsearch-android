@@ -56,6 +56,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val cacheDirPath by vm.cacheDirPath.collectAsStateWithLifecycle()
     val updateNotificationsEnabled by vm.updateNotificationsEnabled.collectAsStateWithLifecycle()
     val updateStatus by vm.updateStatus.collectAsStateWithLifecycle()
+    val showWelcome by vm.showWelcome.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val snackbar = remember { SnackbarHostState() }
@@ -68,15 +69,18 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     var showSettings by remember { mutableStateOf(false) }
     var showFavorites by remember { mutableStateOf(false) }
 
-    LaunchedEffect(state.error) {
-        state.error?.let { snackbar.showSnackbar(it); vm.clearError() }
-    }
-
-    LaunchedEffect(state.suggestions) {
-        if (state.suggestions.isNotEmpty() && !state.isLoading && !state.hasResult) {
-            showSuggestions = true
-        } else if (state.hasResult || state.isLoading) {
-            showSuggestions = false
+    if (showWelcome) {
+        CompositionLocalProvider(LocalCompactMode provides compactMode) {
+            WelcomeScreen(
+                isDark = isDark,
+                colorScheme = colorScheme,
+                defaultDescSource = defaultDescSource,
+                onSetDarkTheme = { dark -> if (isDark != dark) vm.toggleTheme() },
+                onSetColorScheme = { vm.setColorScheme(it) },
+                onSetDefaultDesc = { vm.setDefaultDescSource(it) },
+                onConfigureAiProvider = { showAiProviderDialog = true },
+                onContinue = { vm.skipWelcome() }
+            )
         }
     }
 
@@ -100,7 +104,11 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         AiProviderDialog(
             selectedProvider = state.aiProvider,
             keyStatus = aiKeyStatus,
+            aiModelCatalogs = aiModelCatalogs,
             onSelect = { provider ->
+                vm.setAiProvider(provider)
+            },
+            onUseProvider = { provider ->
                 vm.setAiProvider(provider)
                 showAiProviderDialog = false
                 if (vm.hasAiKey(provider)) {
@@ -109,12 +117,24 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                     editingAiKeyProvider = provider
                 }
             },
-            onEditKey = { provider ->
-                showAiProviderDialog = false
-                editingAiKeyProvider = provider
-            },
             onDismiss = { showAiProviderDialog = false }
         )
+    }
+
+    if (showWelcome) {
+        return
+    }
+
+    LaunchedEffect(state.error) {
+        state.error?.let { snackbar.showSnackbar(it); vm.clearError() }
+    }
+
+    LaunchedEffect(state.suggestions) {
+        if (state.suggestions.isNotEmpty() && !state.isLoading && !state.hasResult) {
+            showSuggestions = true
+        } else if (state.hasResult || state.isLoading) {
+            showSuggestions = false
+        }
     }
 
     if (showSettings) {
@@ -389,10 +409,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     state = state,
                                     onPubChem = { vm.setDescSource(DescSource.PUBCHEM) },
                                     onWiki = { vm.setDescSource(DescSource.WIKI) },
-                                    onAI = {
-                                        if (vm.hasAiKey(state.aiProvider)) vm.setDescSource(DescSource.AI)
-                                        else showAiProviderDialog = true
-                                    },
+                                    onAI = { vm.setDescSource(DescSource.AI) },
+                                    onConfigureAI = { showAiProviderDialog = true },
                                     onRegenerate = { vm.fetchAiDescription() }
                                 )
                             }
@@ -473,6 +491,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     onClearCache = { vm.clearCache() },
                                     onSetCacheDir = { vm.setCacheDir(it) },
                                     onTestUpdateNotification = { vm.sendDebugUpdateNotification() },
+                                    onShowWelcome = { vm.showWelcomeAgain() },
                                     onSettingsImported = { vm.reloadSettingsFromPreferences() }
                                 )
                                 AppTab.TOOLS -> Unit

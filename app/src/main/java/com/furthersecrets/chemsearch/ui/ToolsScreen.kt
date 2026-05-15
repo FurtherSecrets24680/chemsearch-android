@@ -51,6 +51,11 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.furthersecrets.chemsearch.data.ApiClient
+import com.furthersecrets.chemsearch.data.SdfSource
+import com.furthersecrets.chemsearch.data.buildSdfIdentifierCandidates
+import com.furthersecrets.chemsearch.data.fetchGeneratedSdfFromIdentifiers
+import com.furthersecrets.chemsearch.data.isUsableSdf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -1413,6 +1418,8 @@ fun SmilesVisualizer(isDark: Boolean) {
     var cidResult by remember { mutableStateOf<Long?>(null) }
     var compoundName by remember { mutableStateOf<String?>(null) }
     var sdfData by remember { mutableStateOf<String?>(null) }
+    var sdfSource by remember { mutableStateOf<SdfSource?>(null) }
+    var sdfMessage by remember { mutableStateOf<String?>(null) }
     var activeTab by remember { mutableStateOf(0) } // 0=2D, 1=3D
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
@@ -1451,6 +1458,8 @@ fun SmilesVisualizer(isDark: Boolean) {
             cidResult = null
             compoundName = null
             sdfData = null
+            sdfSource = null
+            sdfMessage = null
             try {
                 val body = okhttp3.FormBody.Builder().add("smiles", smiles).build()
                 val request = okhttp3.Request.Builder()
@@ -1458,7 +1467,7 @@ fun SmilesVisualizer(isDark: Boolean) {
                     .post(body)
                     .build()
                 val response = withContext(Dispatchers.IO) {
-                    com.furthersecrets.chemsearch.data.ApiClient.rawHttp.newCall(request).execute()
+                    ApiClient.rawHttp.newCall(request).execute()
                 }
                 val bodyStr = response.body.string()
                 if (!response.isSuccessful || bodyStr.isBlank()) {
@@ -1476,14 +1485,37 @@ fun SmilesVisualizer(isDark: Boolean) {
                 }
                 val cid = cidElement.asJsonPrimitive.asLong
                 cidResult = cid
+                val props = withContext(Dispatchers.IO) {
+                    runCatching { ApiClient.pubChem.getProperties(cid).propertyTable?.properties?.firstOrNull() }.getOrNull()
+                }
                 val syns = withContext(Dispatchers.IO) {
-                    runCatching { com.furthersecrets.chemsearch.data.ApiClient.pubChem.getSynonyms(cid) }.getOrNull()
+                    runCatching { ApiClient.pubChem.getSynonyms(cid) }.getOrNull()
                 }
-                compoundName = syns?.informationList?.information?.firstOrNull()?.synonym?.firstOrNull()
+                compoundName = props?.title
+                    ?: syns?.informationList?.information?.firstOrNull()?.synonym?.firstOrNull()
                 val sdf = withContext(Dispatchers.IO) {
-                    runCatching { com.furthersecrets.chemsearch.data.ApiClient.pubChem.getSdf(cid).string() }.getOrNull()
+                    runCatching { ApiClient.pubChem.getSdf(cid).string() }.getOrNull()
                 }
-                sdfData = sdf
+                if (sdf != null && isUsableSdf(sdf)) {
+                    sdfData = sdf
+                    sdfSource = SdfSource.PUBCHEM
+                } else {
+                    sdfMessage = "PubChem 3D unavailable. Trying generated fallback..."
+                    val fallback = withContext(Dispatchers.IO) {
+                        fetchGeneratedSdfFromIdentifiers(
+                            buildSdfIdentifierCandidates(
+                                smiles = props?.smiles ?: smiles,
+                                connectivitySmiles = props?.connectivitySmiles,
+                                inchi = props?.inchi,
+                                inchiKey = props?.inchiKey
+                            ),
+                            expectedFormula = props?.molecularFormula
+                        )
+                    }
+                    sdfData = fallback?.sdf
+                    sdfSource = fallback?.source
+                    sdfMessage = fallback?.message ?: "Formula-matched 3D fallback unavailable for this SMILES."
+                }
             } catch (e: Exception) {
                 error = "Error: ${e.message}"
             } finally {
@@ -1629,10 +1661,48 @@ fun SmilesVisualizer(isDark: Boolean) {
                             )
                             1 -> if (sdfData != null) {
                                 Viewer3D(cid = cidResult ?: -1L, sdfData = sdfData!!, isDark = isDark)
+                                if (sdfSource == SdfSource.GENERATED) {
+                                    Surface(
+                                        modifier = Modifier
+                                            .align(Alignment.TopStart)
+                                            .padding(10.dp),
+                                        shape = RoundedCornerShape(999.dp),
+                                        color = MaterialTheme.colorScheme.surface.copy(0.92f),
+                                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.28f))
+                                    ) {
+                                        Row(
+                                            modifier = Modifier.padding(horizontal = 9.dp, vertical = 6.dp),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                        ) {
+                                            Icon(
+                                                Icons.Default.AutoFixHigh,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.primary,
+                                                modifier = Modifier.size(14.dp)
+                                            )
+                                            Text(
+                                                "Generated estimate",
+                                                style = MaterialTheme.typography.labelSmall,
+                                                color = MaterialTheme.colorScheme.primary,
+                                                fontWeight = FontWeight.SemiBold
+                                            )
+                                        }
+                                    }
+                                }
                             } else {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                     Icon(Icons.Default.VisibilityOff, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.3f), modifier = Modifier.size(28.dp))
                                     Text("3D model not available", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                                    sdfMessage?.let { message ->
+                                        Text(
+                                            message,
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.onSurface.copy(0.36f),
+                                            textAlign = TextAlign.Center,
+                                            modifier = Modifier.widthIn(max = 260.dp)
+                                        )
+                                    }
                                 }
                             }
                         }

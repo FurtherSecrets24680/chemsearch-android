@@ -185,6 +185,8 @@ data class ChemUiState(
     val hasResult: Boolean = false,
     val isCached: Boolean = false,
     val sdfData: String? = null,
+    val sdfSource: SdfSource? = null,
+    val sdfMessage: String? = null,
     val isLoadingSdf: Boolean = false,
     val ghsData: GhsData? = null,
     val isLoadingSafety: Boolean = false,
@@ -254,6 +256,7 @@ enum class AiProvider(
     )
 }
 enum class MolTab { TWO_D, THREE_D }
+enum class SdfSource { PUBCHEM, GENERATED }
 enum class AppColorScheme { BLUE, VIOLET, EMERALD, ROSE, AMBER }
 
 data class AiModelCatalog(

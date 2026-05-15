@@ -304,6 +304,10 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
     val molecule by produceState<Molecule3D?>(initialValue = null, cid, sdfData) {
         value = withContext(Dispatchers.Default) { parseSdf(sdfData) }
     }
+    val colorScheme = MaterialTheme.colorScheme
+    val bgColor = lerp(colorScheme.surface, colorScheme.primary, if (isDark) 0.10f else 0.05f)
+    val overlayTextColor = colorScheme.onSurface
+    val baseBondColor = lerp(colorScheme.onSurfaceVariant, colorScheme.primary, if (isDark) 0.16f else 0.10f)
 
     var rotX by remember { mutableFloatStateOf(0.25f) }
     var rotY by remember { mutableFloatStateOf(0f) }
@@ -329,15 +333,19 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
 
     val parsedMolecule = molecule
     if (parsedMolecule == null) {
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(Modifier.fillMaxSize().background(bgColor), contentAlignment = Alignment.Center) {
             CircularProgressIndicator(modifier = Modifier.size(26.dp), strokeWidth = 2.dp)
         }
         return
     }
 
     if (parsedMolecule.atoms.isEmpty()) {
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("Could not parse 3D data", color = Color.White.copy(0.4f), style = MaterialTheme.typography.bodySmall)
+        Box(Modifier.fillMaxSize().background(bgColor), contentAlignment = Alignment.Center) {
+            Text(
+                "Could not parse 3D data",
+                color = overlayTextColor.copy(0.45f),
+                style = MaterialTheme.typography.bodySmall
+            )
         }
         return
     }
@@ -352,8 +360,6 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
         centeredAtoms to extent
     }
 
-    val bgColor = if (isDark) Color(0xFF0F172A) else Color(0xFFF1F5F9)
-    val overlayTextColor = if (isDark) Color.White else Color.Black
     Box(Modifier.fillMaxSize().background(bgColor)) {
 
         Canvas(
@@ -420,7 +426,6 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
                     is DrawCall.BondCall -> it.depth
                 }
             }
-            val baseBondColor = if (isDark) Color(0xFF8899BB) else Color(0xFF64748B)
             drawCalls.forEach { call ->
                 when (call) {
                     is DrawCall.AtomCall -> drawAtom(
@@ -490,7 +495,7 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
             )
             Text(
                 if (autoSpin) "⟳ Auto-spin" else "● Paused",
-                color = if (autoSpin) Color(0xFF3B82F6).copy(0.7f) else overlayTextColor.copy(0.3f),
+                color = if (autoSpin) colorScheme.primary.copy(0.78f) else overlayTextColor.copy(0.3f),
                 fontSize = 9.sp, fontFamily = FontFamily.Monospace
             )
             Text(

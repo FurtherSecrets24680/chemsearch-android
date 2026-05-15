@@ -1,0 +1,12 @@
+# This is a template for local.properties.
+# Android Studio normally generates local.properties automatically.
+# Keep local.properties out of Git because the SDK path is machine-specific.
+
+# Windows example:
+# sdk.dir=C\:\\Users\\your-user\\AppData\\Local\\Android\\Sdk
+
+# macOS example:
+# sdk.dir=/Users/your-user/Library/Android/sdk
+
+# Linux example:
+# sdk.dir=/home/your-user/Android/Sdk

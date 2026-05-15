@@ -905,65 +905,131 @@ private fun CreditRow(name: String, detail: String) {
 
 // API Provider dialog
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AiProviderDialog(
     selectedProvider: AiProvider,
     keyStatus: Map<AiProvider, Boolean>,
+    aiModelCatalogs: Map<AiProvider, AiModelCatalog>,
     onSelect: (AiProvider) -> Unit,
-    onEditKey: (AiProvider) -> Unit,
+    onUseProvider: (AiProvider) -> Unit,
     onDismiss: () -> Unit
 ) {
+    var activeProvider by remember(selectedProvider) { mutableStateOf(selectedProvider) }
+    val activeHasKey = keyStatus[activeProvider] == true
+
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Choose AI Provider", fontWeight = FontWeight.Bold) },
+        title = { Text("AI description source", fontWeight = FontWeight.Bold) },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text("Select the provider for AI descriptions.", style = MaterialTheme.typography.bodyMedium)
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    AiProvider.entries.forEach { provider ->
-                        val selected = selectedProvider == provider
-                        val hasKey = keyStatus[provider] == true
-                        Surface(
-                            onClick = { onSelect(provider) },
-                            shape = RoundedCornerShape(12.dp),
-                            color = if (selected) MaterialTheme.colorScheme.primary.copy(0.12f) else MaterialTheme.colorScheme.surfaceVariant.copy(0.55f),
-                            border = BorderStroke(
-                                1.dp,
-                                if (selected) MaterialTheme.colorScheme.primary.copy(0.4f) else MaterialTheme.colorScheme.outline.copy(0.2f)
-                            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 480.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text(
+                    "Choose which provider should generate this compound description.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.64f)
+                )
+
+                AiProvider.entries.forEach { provider ->
+                    val selected = activeProvider == provider
+                    val hasKey = keyStatus[provider] == true
+                    val catalog = aiModelCatalogs[provider]
+                    val selectedModel = catalog?.selectedModel?.takeIf { it.isNotBlank() } ?: provider.modelName
+                    Surface(
+                        onClick = {
+                            activeProvider = provider
+                            onSelect(provider)
+                        },
+                        shape = RoundedCornerShape(13.dp),
+                        color = if (selected) MaterialTheme.colorScheme.primary.copy(0.1f) else MaterialTheme.colorScheme.surface,
+                        border = BorderStroke(
+                            if (selected) 1.5.dp else 1.dp,
+                            if (selected) MaterialTheme.colorScheme.primary.copy(0.72f)
+                            else MaterialTheme.colorScheme.outline.copy(0.38f)
+                        )
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
-                            Column(
-                                modifier = Modifier.widthIn(min = 132.dp, max = 220.dp).padding(12.dp),
-                                verticalArrangement = Arrangement.spacedBy(4.dp)
+                            Surface(
+                                modifier = Modifier.size(36.dp),
+                                shape = RoundedCornerShape(10.dp),
+                                color = if (hasKey) MaterialTheme.colorScheme.primary.copy(0.12f)
+                                else MaterialTheme.colorScheme.surface
                             ) {
-                                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                Box(contentAlignment = Alignment.Center) {
                                     Icon(
                                         if (hasKey) Icons.Default.Check else Icons.Default.Key,
                                         contentDescription = null,
                                         tint = if (hasKey) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.5f),
-                                        modifier = Modifier.size(15.dp)
+                                        modifier = Modifier.size(19.dp)
                                     )
-                                    Text(provider.shortName, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
                                 }
-                                Text(provider.modelName, style = MaterialTheme.typography.labelSmall, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
-                                TextButton(
-                                    onClick = { onEditKey(provider) },
-                                    contentPadding = PaddingValues(0.dp)
+                            }
+                            Column(
+                                modifier = Modifier.weight(1f),
+                                verticalArrangement = Arrangement.spacedBy(3.dp)
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
-                                    Text(if (hasKey) "Replace key" else "Add key", style = MaterialTheme.typography.labelSmall)
+                                    Text(provider.displayName, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
+                                    Text(
+                                        if (hasKey) "Key saved" else "Needs key",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = if (hasKey) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error.copy(0.82f),
+                                        fontWeight = FontWeight.Bold
+                                    )
                                 }
+                                Text(
+                                    provider.description,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(0.58f)
+                                )
+                                Text(
+                                    selectedModel,
+                                    style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
+                                    color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+                                )
+                            }
+                            if (selected) {
+                                Icon(
+                                    Icons.Default.Check,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(18.dp)
+                                )
                             }
                         }
                     }
                 }
             }
         },
-        confirmButton = {},
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+        confirmButton = {
+            Button(
+                onClick = { onUseProvider(activeProvider) },
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Icon(
+                    if (activeHasKey) Icons.Default.SmartToy else Icons.Default.Key,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(Modifier.width(6.dp))
+                Text(if (activeHasKey) "Use AI" else "Add key")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text("Cancel") }
+        },
         containerColor = MaterialTheme.colorScheme.surface
     )
 }
@@ -1652,6 +1718,7 @@ fun SettingsInline(
     onClearCache: () -> Unit = {},
     onSetCacheDir: (String) -> Boolean = { true },
     onTestUpdateNotification: () -> Unit = {},
+    onShowWelcome: () -> Unit = {},
     onSettingsImported: () -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -1974,6 +2041,7 @@ fun SettingsInline(
                 DebugSettingsSection(
                     prefs = prefs,
                     onTestUpdateNotification = onTestUpdateNotification,
+                    onShowWelcome = onShowWelcome,
                     onDisableDevMode = { persist ->
                         isDevMode = false
                         buildTapCount = 0
@@ -2209,6 +2277,7 @@ object DebugLog {
 fun DebugSettingsSection(
     prefs: android.content.SharedPreferences,
     onTestUpdateNotification: () -> Unit,
+    onShowWelcome: () -> Unit,
     onDisableDevMode: (Boolean) -> Unit
 ) {
     val context = LocalContext.current
@@ -2265,6 +2334,7 @@ fun DebugSettingsSection(
                 "Inspect SharedPreferences" to "Dumps stored app preferences with sensitive keys masked. Raw API keys are never shown or copied from this screen.",
                 "Memory info" to "Shows current heap usage from the JVM runtime and the Android ActivityManager. Useful for spotting memory leaks or unusually high allocations.",
                 "Network diagnostics" to "Runs endpoint checks against PubChem, Wikipedia, GitHub releases, and AI providers. Shows HTTP status, latency, and response previews for each service.",
+                "Show welcome screen" to "Clears the welcome-screen skip flag and opens the first-run welcome screen again.",
                 "API endpoints" to "Copies base URLs for PubChem, Wikipedia, and supported AI providers to your clipboard for manual testing.",
                 "Wipe all SharedPreferences" to "Calls prefs.edit().clear(). Removes API keys, history, favorites, settings, and debug flags. You'll need to unlock debug settings again; restart recommended.",
                 "Force crash" to "Deliberately throws an unhandled RuntimeException. Used to verify that crash reporting / Logcat is working correctly. There is a confirmation step before it fires.",
@@ -2836,6 +2906,18 @@ fun DebugSettingsSection(
                         onTestUpdateNotification()
                         Toast.makeText(context, "Test notification sent", Toast.LENGTH_SHORT).show()
                     }
+                }
+            )
+
+            SettingsActionRow(
+                icon = Icons.Default.WavingHand,
+                title = "Show welcome screen",
+                subtitle = "Replay the first-launch intro",
+                actionLabel = "Open",
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = {
+                    onShowWelcome()
+                    Toast.makeText(context, "Welcome screen restored", Toast.LENGTH_SHORT).show()
                 }
             )
 

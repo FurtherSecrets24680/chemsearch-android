@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
@@ -492,6 +493,130 @@ fun HistorySection(
     }
 }
 
+@Composable
+private fun FormulaHeaderRow(
+    formula: String,
+    compact: Boolean,
+    onCopyFormula: () -> Unit,
+    onFormulaClick: (() -> Unit)?
+) {
+    InlineFormulaLayout(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalGap = if (compact) 6.dp else 8.dp,
+        verticalGap = if (compact) 5.dp else 6.dp,
+        formula = {
+            Text(
+                text = toWrappedSubscriptFormula(formula),
+                style = MaterialTheme.typography.titleLarge.copy(
+                    lineBreak = LineBreak.Simple,
+                    hyphens = Hyphens.None
+                ),
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.ExtraBold,
+                maxLines = Int.MAX_VALUE,
+                overflow = TextOverflow.Visible,
+                modifier = Modifier.clickable { onCopyFormula() }
+            )
+        },
+        action = onFormulaClick?.let { click ->
+            {
+                Surface(
+                    onClick = click,
+                    shape = RoundedCornerShape(999.dp),
+                    color = MaterialTheme.colorScheme.primary.copy(0.09f),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f))
+                ) {
+                    Row(
+                        modifier = Modifier.padding(
+                            horizontal = if (compact) 7.dp else 9.dp,
+                            vertical = if (compact) 3.dp else 4.dp
+                        ),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Biotech,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary.copy(0.75f),
+                            modifier = Modifier.size(if (compact) 11.dp else 12.dp)
+                        )
+                        Text(
+                            "Find isomers",
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            }
+        }
+    )
+}
+
+@Composable
+private fun InlineFormulaLayout(
+    modifier: Modifier = Modifier,
+    horizontalGap: Dp,
+    verticalGap: Dp,
+    formula: @Composable () -> Unit,
+    action: (@Composable () -> Unit)?
+) {
+    Layout(
+        modifier = modifier,
+        content = {
+            formula()
+            if (action != null) action()
+        }
+    ) { measurables, constraints ->
+        val formulaMeasurable = measurables.first()
+        val actionMeasurable = measurables.getOrNull(1)
+        val looseConstraints = constraints.copy(minWidth = 0, minHeight = 0)
+        val actionPlaceable = actionMeasurable?.measure(looseConstraints)
+        val horizontalGapPx = if (actionPlaceable != null) horizontalGap.roundToPx() else 0
+        val verticalGapPx = if (actionPlaceable != null) verticalGap.roundToPx() else 0
+        val availableWidth = constraints.maxWidth
+
+        val formulaSingleLineWidth = formulaMeasurable.maxIntrinsicWidth(constraints.maxHeight)
+        val fitsInline = actionPlaceable == null ||
+            formulaSingleLineWidth + horizontalGapPx + actionPlaceable.width <= availableWidth
+
+        val formulaMaxWidth = if (fitsInline && actionPlaceable != null) {
+            (availableWidth - horizontalGapPx - actionPlaceable.width).coerceAtLeast(0)
+        } else {
+            availableWidth
+        }
+        val formulaPlaceable = formulaMeasurable.measure(
+            constraints.copy(minWidth = 0, maxWidth = formulaMaxWidth)
+        )
+
+        if (fitsInline) {
+            val contentWidth = formulaPlaceable.width + horizontalGapPx + (actionPlaceable?.width ?: 0)
+            val layoutWidth = contentWidth.coerceAtLeast(constraints.minWidth).coerceAtMost(availableWidth)
+            val layoutHeight = maxOf(formulaPlaceable.height, actionPlaceable?.height ?: 0)
+                .coerceAtLeast(constraints.minHeight)
+
+            layout(layoutWidth, layoutHeight) {
+                formulaPlaceable.placeRelative(0, (layoutHeight - formulaPlaceable.height) / 2)
+                actionPlaceable?.placeRelative(
+                    formulaPlaceable.width + horizontalGapPx,
+                    (layoutHeight - actionPlaceable.height) / 2
+                )
+            }
+        } else {
+            val layoutWidth = maxOf(formulaPlaceable.width, actionPlaceable.width)
+                .coerceAtLeast(constraints.minWidth)
+                .coerceAtMost(availableWidth)
+            val layoutHeight = (formulaPlaceable.height + verticalGapPx + actionPlaceable.height)
+                .coerceAtLeast(constraints.minHeight)
+
+            layout(layoutWidth, layoutHeight) {
+                formulaPlaceable.placeRelative(0, 0)
+                actionPlaceable.placeRelative(0, formulaPlaceable.height + verticalGapPx)
+            }
+        }
+    }
+}
+
 // Compound header
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -632,43 +757,15 @@ fun CompoundHeader(
                     )
                 }
                 if (state.formula.isNotBlank()) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp)
-                    ) {
-                        Text(
-                            text = toSubscriptFormula(state.formula),
-                            style = MaterialTheme.typography.titleLarge,
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.ExtraBold,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier
-                                .weight(1f, fill = false)
-                                .clickable {
-                                    cm.setPrimaryClip(ClipData.newPlainText("Formula", state.formula))
-                                    Toast.makeText(context, "Formula copied", Toast.LENGTH_SHORT).show()
-                                }
-                        )
-                        if (onFormulaClick != null) {
-                            Surface(
-                                onClick = onFormulaClick,
-                                shape = RoundedCornerShape(999.dp),
-                                color = MaterialTheme.colorScheme.primary.copy(0.09f),
-                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f))
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(horizontal = if (compact) 7.dp else 9.dp, vertical = if (compact) 3.dp else 4.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                                ) {
-                                    Icon(Icons.Default.Biotech, contentDescription = null, tint = MaterialTheme.colorScheme.primary.copy(0.75f), modifier = Modifier.size(if (compact) 11.dp else 12.dp))
-                                    Text("Find isomers", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.primary)
-                                }
-                            }
-                        }
-                    }
+                    FormulaHeaderRow(
+                        formula = state.formula,
+                        compact = compact,
+                        onCopyFormula = {
+                            cm.setPrimaryClip(ClipData.newPlainText("Formula", state.formula))
+                            Toast.makeText(context, "Formula copied", Toast.LENGTH_SHORT).show()
+                        },
+                        onFormulaClick = onFormulaClick
+                    )
                 }
                 if (state.isCached) {
                     Surface(
@@ -1076,11 +1173,23 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                                     modifier = Modifier.size(if (compact) 24.dp else 28.dp),
                                     strokeWidth = 2.dp
                                 )
-                                Text("Loading 3D model...", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                                Text(
+                                    state.sdfMessage ?: "Loading 3D model...",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(0.4f),
+                                    textAlign = TextAlign.Center
+                                )
                             }
                         } else if (state.sdfData != null) {
                             val isDark = !MaterialTheme.colorScheme.background.luminance().let { it > 0.5f }
                             Viewer3D(cid = state.cid ?: 0, sdfData = state.sdfData, isDark = isDark)
+                            if (state.sdfSource == SdfSource.GENERATED) {
+                                GeneratedSdfBadge(
+                                    modifier = Modifier
+                                        .align(Alignment.TopStart)
+                                        .padding(if (compact) 10.dp else 12.dp)
+                                )
+                            }
                             Row(
                                 modifier = Modifier
                                     .align(Alignment.BottomCenter)
@@ -1112,6 +1221,15 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
                                 )
+                                state.sdfMessage?.let { message ->
+                                    Text(
+                                        message,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurface.copy(0.36f),
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier.widthIn(max = if (compact) 230.dp else 280.dp)
+                                    )
+                                }
                                 Text(
                                     "Learn why →",
                                     style = MaterialTheme.typography.labelSmall,
@@ -1219,6 +1337,39 @@ fun TwoDZoomDialog(cid: Long, onDismiss: () -> Unit) {
     }
 }
 
+@Composable
+private fun GeneratedSdfBadge(modifier: Modifier = Modifier) {
+    val compact = LocalCompactMode.current
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(999.dp),
+        color = MaterialTheme.colorScheme.surface.copy(0.92f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.28f))
+    ) {
+        Row(
+            modifier = Modifier.padding(
+                horizontal = if (compact) 8.dp else 10.dp,
+                vertical = if (compact) 5.dp else 6.dp
+            ),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            Icon(
+                Icons.Default.AutoFixHigh,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(if (compact) 13.dp else 14.dp)
+            )
+            Text(
+                "Generated estimate",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+    }
+}
+
 // Dialog that appears when 3D model is unavailable
 @Composable
 fun No3DModelDialog(onDismiss: () -> Unit) {
@@ -1250,7 +1401,8 @@ fun No3DModelDialog(onDismiss: () -> Unit) {
                 Text(
                     "PubChem pre-computes 3D conformer models for ~90% of its compounds using " +
                             "the OMEGA toolkit and MMFF94s force field. A compound gets no 3D model if " +
-                            "it fails any of these criteria:",
+                            "it fails any of these criteria. ChemSearch also tries a generated SDF fallback " +
+                            "from SMILES, InChI, or InChIKey when PubChem 3D is missing.",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f)
                 )
@@ -1260,6 +1412,7 @@ fun No3DModelDialog(onDismiss: () -> Unit) {
                     "Too flexible : More than 15 rotatable bonds",
                     "Unsupported elements : Only H, C, N, O, F, Si, P, S, Cl, Br and I are supported by the force field. Metals are not supported.",
                     "Salt or mixture : The compound has more than one covalent unit (e.g. NaCl). PubChem may have a 3D model for the parent free base instead",
+                    "Crystal or metallic lattice : SMILES/InChI describe formula/connectivity, not a full extended solid-state lattice",
                     "Too many undefined stereo centres : 6 or more undefined atom or bond stereo centres",
                     "Conformer generation failure : The algorithm could not converge on a stable geometry",
                 )
@@ -1605,7 +1758,14 @@ fun SynonymsSection(synonyms: List<String>, isLoading: Boolean = false) {
 // Description
 
 @Composable
-fun DescriptionSection(state: ChemUiState, onPubChem: () -> Unit, onWiki: () -> Unit, onAI: () -> Unit, onRegenerate: () -> Unit) {
+fun DescriptionSection(
+    state: ChemUiState,
+    onPubChem: () -> Unit,
+    onWiki: () -> Unit,
+    onAI: () -> Unit,
+    onConfigureAI: () -> Unit,
+    onRegenerate: () -> Unit
+) {
     val compact = LocalCompactMode.current
     var expanded by remember(state.descSource, state.pubDescription, state.wikiDescription, state.aiDescription) { mutableStateOf(false) }
     SearchCard(modifier = Modifier.fillMaxWidth(), spacing = 12.dp) {
@@ -1705,6 +1865,21 @@ fun DescriptionSection(state: ChemUiState, onPubChem: () -> Unit, onWiki: () -> 
                         )
                     }
                 }
+            }
+        }
+        if (state.descSource == DescSource.AI) {
+            OutlinedButton(
+                onClick = onConfigureAI,
+                shape = RoundedCornerShape(10.dp),
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = if (compact) 6.dp else 8.dp)
+            ) {
+                Icon(Icons.Default.Settings, null, modifier = Modifier.size(if (compact) 14.dp else 16.dp))
+                Spacer(Modifier.width(6.dp))
+                Text(
+                    "Configure AI provider",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
             }
         }
     }
@@ -1814,6 +1989,30 @@ fun CardSectionHeader(label: String, onInfoClick: () -> Unit) {
 
 fun toSubscriptFormula(formula: String): String {
     return formula.toFormulaSubscript()
+}
+
+private val formulaWrapGroupRegex = Regex("[A-Z][a-z]?\\d*")
+
+fun toWrappedSubscriptFormula(formula: String): String {
+    val builder = StringBuilder()
+    var lastIndex = 0
+
+    formulaWrapGroupRegex.findAll(formula).forEach { match ->
+        if (match.range.first > lastIndex) {
+            builder.append(formula.substring(lastIndex, match.range.first).toFormulaSubscript())
+        }
+        builder.append(match.value.toFormulaSubscript())
+        if (match.range.last < formula.lastIndex) {
+            builder.append('\u200B')
+        }
+        lastIndex = match.range.last + 1
+    }
+
+    if (lastIndex < formula.length) {
+        builder.append(formula.substring(lastIndex).toFormulaSubscript())
+    }
+
+    return builder.toString().trim('\u200B')
 }
 
 // GHS Safety

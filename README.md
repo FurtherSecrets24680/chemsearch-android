@@ -33,11 +33,11 @@ ChemSearch is built for quickly moving from a compound name to useful chemistry:
 | Area | What you get |
 |---|---|
 | Compound search | PubChem lookup by name, CAS, formula, or CID |
-| Structures | 2D image viewer and native 3D ball-and-stick viewer |
+| Structures | 2D image viewer, 3D viewer, and backup 3D loading when PubChem has no model |
 | Reference data | Offline database of substances, ions, functional groups, and reactions |
 | Calculators | Molar mass, oxidation states, reaction balancing, stoichiometry, dilution, gas law |
 | Study workflow | Recent searches, favorites, copy buttons, explanations, synonyms, safety data |
-| Optional AI | Compound descriptions from Gemini, Groq, OpenAI, OpenRouter, or Mistral |
+| Optional AI | Compound descriptions from Gemini, Groq, OpenAI, OpenRouter, or Mistral with an easier provider picker |
 
 The app is designed for chemistry students, teachers, lab prep, quick checks, and anyone who wants a clean chemistry reference on Android.
 
@@ -61,8 +61,6 @@ The debug APK is generated at:
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
----
-
 ## Screenshots
 
 | Search | Light Mode | 3D Viewer |
@@ -84,6 +82,22 @@ app/build/outputs/apk/debug/app-debug.apk
 ---
 
 ## Feature Guide
+
+### Welcome Setup
+
+ChemSearch now opens with a short setup screen for new users.
+
+- Quick app overview.
+- Theme mode choice.
+- Color scheme choice.
+- Default description source choice.
+- Skip option.
+
+Usage:
+
+1. Open the app for the first time.
+2. Choose your preferred look and description source.
+3. Start using ChemSearch, or skip setup.
 
 ### Search
 
@@ -107,10 +121,11 @@ Usage:
 The result page keeps the high-value data near the top.
 
 - Compound name and formula with readable chemical subscripts.
+- Long formulas wrap cleanly instead of being cut off.
 - CID, CAS, and molecular weight in compact summary chips.
 - `MW (g/mol)` labeling for clearer units.
 - Favorite/bookmark button with immediate state update.
-- Inline `Find isomers` action beside the molecular formula.
+- Inline `Find isomers` action beside the molecular formula when space allows.
 - Copy actions for formulas, identifiers, SMILES, summaries, and key values.
 
 Usage:
@@ -125,6 +140,10 @@ Every compound result includes a visual structure area.
 
 - 2D structure image from PubChem.
 - Native 3D model viewer for SDF structures.
+- Backup 3D loading when PubChem does not provide a 3D model.
+- Generated 3D models are labeled as estimates.
+- Formula checks help prevent wrong generated models from being shown.
+- Viewer background follows the selected app color scheme.
 - Drag to rotate.
 - Pinch to zoom.
 - Auto-spin when idle.
@@ -180,6 +199,8 @@ ChemSearch can show descriptions from multiple sources.
 - Wikipedia for general summaries.
 - Optional AI descriptions when an API key is configured.
 - Description source can be changed per compound.
+- AI provider setup is available directly when AI descriptions are selected.
+- Provider options are easier to compare and select.
 - Default source can be set in Settings.
 
 Usage:
@@ -505,6 +526,7 @@ Developer tools include:
 
 - Live log viewer.
 - Verbose logging toggle.
+- Show welcome screen again.
 - Network diagnostics for PubChem, Wikipedia, GitHub, and configured AI providers.
 - SharedPreferences inspector with sensitive values masked.
 - Memory info.
@@ -585,44 +607,93 @@ Android configuration:
 Requirements:
 
 - Android Studio.
-- JDK 11.
+- JDK 17 or newer. The app still targets Java 11 bytecode.
 - Android SDK with API 36 installed.
 
-Debug build:
+Android Studio normally creates `local.properties` for the current machine.
+If you move the project between macOS, Windows, or Linux, update that file so
+`sdk.dir` points to the Android SDK on the current computer. See
+`local.properties.example` for platform-specific examples.
+
+Debug build on macOS/Linux:
 
 ```bash
 ./gradlew assembleDebug
 ```
 
-Install on a connected device:
+Debug build on Windows:
+
+```powershell
+.\gradlew.bat assembleDebug
+```
+
+Install on a connected device on macOS/Linux:
 
 ```bash
 ./gradlew installDebug
 ```
 
-Run Kotlin compile check:
+Install on a connected device on Windows:
+
+```powershell
+.\gradlew.bat installDebug
+```
+
+Run Kotlin compile check on macOS/Linux:
 
 ```bash
 ./gradlew :app:compileDebugKotlin
 ```
 
+Run Kotlin compile check on Windows:
+
+```powershell
+.\gradlew.bat :app:compileDebugKotlin
+```
+
 Debug builds work without AI keys.
+
+### Cross-Platform Notes
+
+- `local.properties` and `keystore.properties` are intentionally ignored because
+  they contain machine-specific paths.
+- `.gitattributes` keeps source files on LF line endings, keeps `gradlew` usable
+  on macOS/Linux, and prevents image/APK/JAR files from being normalized as text.
+- If Windows reports file permission-only changes, run
+  `git config core.filemode false` in this repository.
 
 ### Release Signing
 
-Release builds use `keystore.properties` in the project root when present.
+Release builds use `keystore.properties` in the project root when present. The
+file is intentionally ignored because it contains signing secrets. Use
+`keystore.properties.example` as the template.
 
 ```properties
-storeFile=path/to/your.keystore
+storeFile=../keystores/chemsearch-release.jks
 storePassword=yourStorePassword
-keyAlias=yourKeyAlias
+keyAlias=chemsearch
 keyPassword=yourKeyPassword
 ```
 
-Build a release APK:
+Keep the matching keystore file at:
+
+```text
+keystores/chemsearch-release.jks
+```
+
+The relative `storeFile` path works on Windows, macOS, and Linux as long as the
+keystore is copied to the same project-relative location.
+
+Build a release APK on macOS/Linux:
 
 ```bash
 ./gradlew assembleRelease
+```
+
+Build a release APK on Windows:
+
+```powershell
+.\gradlew.bat assembleRelease
 ```
 
 ---

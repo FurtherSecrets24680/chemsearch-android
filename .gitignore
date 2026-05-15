@@ -17,7 +17,12 @@ local.properties
 
 # Keystore
 keystore.properties
+key.properties
+keystores/
 *.jks
+*.keystore
+*.p12
+*.pfx
 
 # Release outputs
 app/release/

@@ -80,6 +80,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     )
     val updateStatus: StateFlow<UpdateStatus> = _updateStatus.asStateFlow()
 
+    private val _showWelcome = MutableStateFlow(!prefs.getBoolean(PREF_WELCOME_SKIPPED, false))
+    val showWelcome: StateFlow<Boolean> = _showWelcome.asStateFlow()
+
     init {
         DebugLog.verbose = prefs.getBoolean("debug_verbose", false)
         val savedProvider = AiProvider.entries.firstOrNull { it.name == prefs.getString("ai_provider", null) } ?: AiProvider.GEMINI
@@ -101,6 +104,18 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun isAiProviderSet(): Boolean = prefs.contains("ai_provider")
+
+    fun skipWelcome() {
+        _showWelcome.value = false
+        prefs.edit().putBoolean(PREF_WELCOME_SKIPPED, true).apply()
+        DebugLog.d("ChemSearch", "Welcome screen skipped")
+    }
+
+    fun showWelcomeAgain() {
+        prefs.edit().putBoolean(PREF_WELCOME_SKIPPED, false).apply()
+        _showWelcome.value = true
+        DebugLog.d("ChemSearch", "Welcome screen opened from debug settings")
+    }
 
     fun setUpdateNotificationsEnabled(enabled: Boolean) {
         _updateNotificationsEnabled.value = enabled
@@ -272,6 +287,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             it.copy(lastCheckedAt = prefs.getLong(PREF_UPDATE_LAST_CHECK, 0L).takeIf { ts -> ts != 0L })
         }
         _favorites.value = loadFavorites()
+        _showWelcome.value = !prefs.getBoolean(PREF_WELCOME_SKIPPED, false)
 
         val provider = AiProvider.entries.firstOrNull { it.name == prefs.getString("ai_provider", null) }
             ?: AiProvider.GEMINI
@@ -481,7 +497,18 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         searchJob = viewModelScope.launch {
             DebugLog.d("ChemSearch", "Search started: \"$q\"")
             _uiState.update {
-                it.copy(isLoading = true, error = null, suggestions = emptyList(), hasResult = false, isCached = false, sdfData = null, ghsData = null, isLoadingSafety = false)
+                it.copy(
+                    isLoading = true,
+                    error = null,
+                    suggestions = emptyList(),
+                    hasResult = false,
+                    isCached = false,
+                    sdfData = null,
+                    sdfSource = null,
+                    sdfMessage = null,
+                    ghsData = null,
+                    isLoadingSafety = false
+                )
             }
 
             val cachedByName = findCacheByName(q)
@@ -496,6 +523,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                         history = loadHistory(),
                         descSource = savedSource,
                         sdfData = null,
+                        sdfSource = null,
+                        sdfMessage = null,
                         activeTab = MolTab.TWO_D,
                         isLoadingSynonyms = false
                     )
@@ -530,6 +559,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                             descSource = savedSource,
                             ghsData = cached.ghsData,
                             sdfData = null,
+                            sdfSource = null,
+                            sdfMessage = null,
                             activeTab = MolTab.TWO_D,
                             isLoadingSynonyms = false
                         )
@@ -728,19 +759,79 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun fetchSdfData() {
         val cid = _uiState.value.cid ?: return
-        _uiState.update { it.copy(isLoadingSdf = true) }
+        _uiState.update { it.copy(isLoadingSdf = true, sdfData = null, sdfSource = null, sdfMessage = null) }
         DebugLog.d("ChemSearch", "Fetching SDF for CID $cid")
         viewModelScope.launch {
-            try {
-                val sdf = withContext(Dispatchers.IO) {
-                    ApiClient.pubChem.getSdf(cid).string()
+            val pubChemSdf = runCatching {
+                withContext(Dispatchers.IO) { ApiClient.pubChem.getSdf(cid).string() }
+            }
+
+            pubChemSdf.getOrNull()?.takeIf(::isUsableSdf)?.let { sdf ->
+                DebugLog.d("ChemSearch", "PubChem SDF loaded: ${sdf.lines().size} lines, ${sdf.length} bytes")
+                _uiState.update { state ->
+                    if (state.cid == cid) {
+                        state.copy(
+                            isLoadingSdf = false,
+                            sdfData = sdf,
+                            sdfSource = SdfSource.PUBCHEM,
+                            sdfMessage = null
+                        )
+                    } else state
                 }
-                DebugLog.d("ChemSearch", "SDF loaded: ${sdf.lines().size} lines, ${sdf.length} bytes")
-                _uiState.update { it.copy(isLoadingSdf = false, sdfData = sdf) }
-            } catch (e: Exception) {
-                DebugLog.e("ChemSearch", "SDF fetch failed for CID $cid: ${e.message}")
-                Log.e("ChemViewModel", "Error fetching SDF", e)
-                _uiState.update { it.copy(isLoadingSdf = false) }
+                return@launch
+            }
+
+            pubChemSdf.exceptionOrNull()?.let { e ->
+                DebugLog.e("ChemSearch", "PubChem SDF fetch failed for CID $cid: ${e.message}")
+                Log.e("ChemViewModel", "Error fetching PubChem SDF", e)
+            } ?: DebugLog.e("ChemSearch", "PubChem returned unusable SDF for CID $cid")
+
+            val current = _uiState.value.takeIf { it.cid == cid } ?: return@launch
+            val candidates = buildSdfIdentifierCandidates(
+                smiles = current.smiles,
+                connectivitySmiles = current.connectivitySmiles,
+                inchi = current.inchi,
+                inchiKey = current.inchiKey
+            )
+
+            if (candidates.isNotEmpty()) {
+                _uiState.update { state ->
+                    if (state.cid == cid) {
+                        state.copy(sdfMessage = "PubChem 3D unavailable. Trying generated fallback...")
+                    } else state
+                }
+            }
+
+            val fallback = runCatching {
+                withContext(Dispatchers.IO) {
+                    fetchGeneratedSdfFromIdentifiers(candidates, expectedFormula = current.formula)
+                }
+            }.getOrNull()
+
+            _uiState.update { state ->
+                if (state.cid != cid) return@update state
+                if (fallback != null) {
+                    DebugLog.d("ChemSearch", "Generated SDF loaded for CID $cid")
+                    state.copy(
+                        isLoadingSdf = false,
+                        sdfData = fallback.sdf,
+                        sdfSource = fallback.source,
+                        sdfMessage = fallback.message
+                    )
+                } else {
+                    val message = if (candidates.isEmpty()) {
+                        "PubChem 3D unavailable and no SMILES/InChI fallback identifier was found."
+                    } else {
+                        "PubChem 3D and formula-matched generated fallback are unavailable for this compound."
+                    }
+                    DebugLog.e("ChemSearch", message)
+                    state.copy(
+                        isLoadingSdf = false,
+                        sdfData = null,
+                        sdfSource = null,
+                        sdfMessage = message
+                    )
+                }
             }
         }
     }
@@ -986,7 +1077,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             _uiState.update {
                 it.copy(
                     isLoading = true, error = null, hasResult = false,
-                    sdfData = null, ghsData = null, isLoadingSafety = false,
+                    sdfData = null, sdfSource = null, sdfMessage = null, ghsData = null, isLoadingSafety = false,
                     isomerMode = false, isomers = emptyList(),
                     isCached = false
                 )
@@ -1000,7 +1091,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     cached.copy(
                         isLoading = false, hasResult = true,
                         history = loadHistory(), descSource = savedSource,
-                        sdfData = null, activeTab = MolTab.TWO_D,
+                        sdfData = null, sdfSource = null, sdfMessage = null, activeTab = MolTab.TWO_D,
                         isomerMode = false, isomers = emptyList(),
                         isCached = true,
                         isLoadingSynonyms = false
@@ -1468,6 +1559,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         private const val PREF_UPDATE_NOTIFICATIONS = "update_notifications"
         private const val PREF_UPDATE_LAST_CHECK = "update_last_check"
         private const val PREF_UPDATE_LAST_NOTIFIED = "update_last_notified"
+        private const val PREF_WELCOME_SKIPPED = "welcome_skipped"
         private const val UPDATE_CHECK_INTERVAL_MS = 12 * 60 * 60 * 1000L
 
         private val ATOMIC_WEIGHTS = mapOf(
