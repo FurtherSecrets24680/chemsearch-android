@@ -20,9 +20,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.Backspace
+import androidx.compose.material.icons.automirrored.filled.CompareArrows
 import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
-import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.automirrored.filled.ShowChart
+import androidx.compose.material.icons.automirrored.filled.ViewList
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -43,25 +45,44 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.furthersecrets.chemsearch.data.ApiClient
+import com.furthersecrets.chemsearch.data.AiProvider
+import com.furthersecrets.chemsearch.data.CompoundProperty
+import com.furthersecrets.chemsearch.data.DescSource
+import com.furthersecrets.chemsearch.data.GeminiContent
+import com.furthersecrets.chemsearch.data.GeminiPart
+import com.furthersecrets.chemsearch.data.GeminiRequest
+import com.furthersecrets.chemsearch.data.GhsData
+import com.furthersecrets.chemsearch.data.GroqMessage
+import com.furthersecrets.chemsearch.data.GroqRequest
+import com.furthersecrets.chemsearch.data.PhPohInputType
 import com.furthersecrets.chemsearch.data.SdfSource
 import com.furthersecrets.chemsearch.data.buildSdfIdentifierCandidates
 import com.furthersecrets.chemsearch.data.fetchGeneratedSdfFromIdentifiers
+import com.furthersecrets.chemsearch.data.calculatePhPoh
+import com.furthersecrets.chemsearch.data.formatPhPohNumber
+import com.furthersecrets.chemsearch.data.formatCompoundComparisonValue
 import com.furthersecrets.chemsearch.data.isUsableSdf
+import com.furthersecrets.chemsearch.data.parseCompareCompoundInputs
+import com.furthersecrets.chemsearch.data.previewComparisonCellText
+import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 // TOOLS SCREEN
 private const val TOOL_ORDER_PREF = "tool_order"
+private const val TOOL_VIEW_MODE_PREF = "tool_view_mode"
 
 private fun loadToolOrder(prefs: SharedPreferences, defaultIds: List<Int>): List<Int> {
     val stored = prefs.getString(TOOL_ORDER_PREF, null)
@@ -83,17 +104,17 @@ private enum class ToolCategory(val label: String) {
     ALL("All"),
     VISUALIZE("Visualize"),
     CALCULATORS("Calculators"),
-    REFERENCE("Reference"),
     REACTIONS("Reactions"),
     STOICHIOMETRY("Stoichiometry"),
     STRUCTURE("Structure")
 }
 
+private enum class ToolViewMode { LIST, GRID }
+
 private val TOOL_CATEGORIES = listOf(
     ToolCategory.ALL,
     ToolCategory.VISUALIZE,
     ToolCategory.CALCULATORS,
-    ToolCategory.REFERENCE,
     ToolCategory.REACTIONS,
     ToolCategory.STOICHIOMETRY,
     ToolCategory.STRUCTURE
@@ -114,6 +135,10 @@ fun ToolsScreen(
     contentPadding: PaddingValues = PaddingValues(0.dp),
     jumpToTool: Int = 0,
     jumpToToolVersion: Int = 0,
+    defaultDescSource: DescSource = DescSource.PUBCHEM,
+    aiProvider: AiProvider = AiProvider.GEMINI,
+    getAiKey: (AiProvider) -> String? = { null },
+    getSelectedAiModel: (AiProvider) -> String = { it.modelName },
     onNavigateToSearch: () -> Unit = {},
     onSearchCompoundFromTool: (String) -> Unit = {}
 ) {
@@ -124,6 +149,12 @@ fun ToolsScreen(
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val prefs = remember(context) { context.getSharedPreferences("chemsearch_prefs", Context.MODE_PRIVATE) }
+    var toolViewMode by remember {
+        mutableStateOf(
+            ToolViewMode.entries.firstOrNull { it.name == prefs.getString(TOOL_VIEW_MODE_PREF, null) }
+                ?: ToolViewMode.LIST
+        )
+    }
     val compact = LocalCompactMode.current
 
     LaunchedEffect(jumpToTool, jumpToToolVersion) {
@@ -135,32 +166,11 @@ fun ToolsScreen(
 
     val defaultTools = listOf(
         ToolDefinition(
-            id = 1,
-            icon = Icons.Default.ViewInAr,
-            title = "Custom 3D Molecule Viewer",
-            subtitle = "Load any .sdf or .mol file and view it in 3D",
-            category = ToolCategory.VISUALIZE
-        ),
-        ToolDefinition(
             id = 2,
             icon = Icons.Default.Calculate,
             title = "Molar Mass Calculator",
             subtitle = "Enter a molecular formula and get the molar mass",
             category = ToolCategory.CALCULATORS
-        ),
-        ToolDefinition(
-            id = 3,
-            icon = Icons.Default.Science,
-            title = "Oxidation State Finder",
-            subtitle = "Find oxidation states of each element in a compound",
-            category = ToolCategory.CALCULATORS
-        ),
-        ToolDefinition(
-            id = 4,
-            icon = Icons.Default.AccountTree,
-            title = "SMILES Visualizer",
-            subtitle = "Paste a SMILES string to view its 2D and 3D structure",
-            category = ToolCategory.VISUALIZE
         ),
         ToolDefinition(
             id = 5,
@@ -170,11 +180,18 @@ fun ToolsScreen(
             category = ToolCategory.REACTIONS
         ),
         ToolDefinition(
-            id = 6,
-            icon = Icons.Default.Biotech,
-            title = "Isomer Finder",
-            subtitle = "Enter a molecular formula to find its structural isomers",
-            category = ToolCategory.STRUCTURE
+            id = 14,
+            icon = Icons.Default.WaterDrop,
+            title = "pH / pOH Calculator",
+            subtitle = "Convert pH, pOH, [H+], and [OH-]",
+            category = ToolCategory.CALCULATORS
+        ),
+        ToolDefinition(
+            id = 3,
+            icon = Icons.Default.Science,
+            title = "Oxidation State Finder",
+            subtitle = "Find oxidation states of each element in a compound",
+            category = ToolCategory.CALCULATORS
         ),
         ToolDefinition(
             id = 7,
@@ -191,20 +208,6 @@ fun ToolsScreen(
             category = ToolCategory.STOICHIOMETRY
         ),
         ToolDefinition(
-            id = 9,
-            icon = Icons.Default.Tune,
-            title = "Reaction Scaling",
-            subtitle = "Scale reactants for a target product amount",
-            category = ToolCategory.STOICHIOMETRY
-        ),
-        ToolDefinition(
-            id = 10,
-            icon = Icons.AutoMirrored.Filled.MenuBook,
-            title = "Chemical Database",
-            subtitle = "Browse substances, reactions, functional groups, and ions",
-            category = ToolCategory.REFERENCE
-        ),
-        ToolDefinition(
             id = 11,
             icon = Icons.Default.WaterDrop,
             title = "Dilution Calculator",
@@ -217,6 +220,41 @@ fun ToolsScreen(
             title = "Ideal Gas Law",
             subtitle = "Solve PV = nRT for gases",
             category = ToolCategory.CALCULATORS
+        ),
+        ToolDefinition(
+            id = 13,
+            icon = Icons.AutoMirrored.Filled.CompareArrows,
+            title = "Compare Compounds",
+            subtitle = "Compare formulas, mass, identifiers, safety, and structures",
+            category = ToolCategory.CALCULATORS
+        ),
+        ToolDefinition(
+            id = 6,
+            icon = Icons.Default.Biotech,
+            title = "Isomer Finder",
+            subtitle = "Enter a molecular formula to find its structural isomers",
+            category = ToolCategory.STRUCTURE
+        ),
+        ToolDefinition(
+            id = 4,
+            icon = Icons.Default.AccountTree,
+            title = "SMILES Visualizer",
+            subtitle = "Paste a SMILES string to view its 2D and 3D structure",
+            category = ToolCategory.VISUALIZE
+        ),
+        ToolDefinition(
+            id = 1,
+            icon = Icons.Default.ViewInAr,
+            title = "Custom 3D Molecule Viewer",
+            subtitle = "Load any .sdf or .mol file and view it in 3D",
+            category = ToolCategory.VISUALIZE
+        ),
+        ToolDefinition(
+            id = 9,
+            icon = Icons.Default.Tune,
+            title = "Reaction Scaling",
+            subtitle = "Scale reactants for a target product amount",
+            category = ToolCategory.STOICHIOMETRY
         ),
     )
     val defaultToolIds = defaultTools.map { it.id }
@@ -234,33 +272,6 @@ fun ToolsScreen(
         }
     }
     val visibleTools = if (isReordering) orderedTools else filteredTools
-
-    if (selectedTool == 10) {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(contentPadding)
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) { focusManager.clearFocus() },
-            verticalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 12.dp)
-        ) {
-            TextButton(
-                onClick = { selectedTool = 0; toolSearch = "" },
-                contentPadding = PaddingValues(horizontal = 0.dp)
-            ) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, null, modifier = Modifier.size(16.dp))
-                Spacer(Modifier.width(4.dp))
-                Text("Back to Tools")
-            }
-            ChemicalDatabaseTool(
-                modifier = Modifier.weight(1f),
-                onSearchCompound = onSearchCompoundFromTool
-            )
-        }
-        return
-    }
 
     Column(
         modifier = modifier
@@ -284,18 +295,49 @@ fun ToolsScreen(
                 fontWeight = FontWeight.Bold
             )
             if (selectedTool == 0 && defaultTools.size > 1) {
-                TextButton(
-                    onClick = {
-                        val next = !isReordering
-                        isReordering = next
-                        if (next) {
-                            toolSearch = ""
-                            selectedCategory = ToolCategory.ALL
-                        }
-                    },
-                    contentPadding = PaddingValues(horizontal = 8.dp)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(if (isReordering) "Done" else "Reorder")
+                    if (!isReordering) {
+                        ToolViewToggle(
+                            viewMode = toolViewMode,
+                            onViewModeChange = { mode ->
+                                toolViewMode = mode
+                                prefs.edit().putString(TOOL_VIEW_MODE_PREF, mode.name).apply()
+                            }
+                        )
+                    }
+                    IconButton(
+                        onClick = {
+                            toolOrder = defaultToolIds
+                            saveToolOrder(prefs, defaultToolIds)
+                            selectedCategory = ToolCategory.ALL
+                            toolSearch = ""
+                        },
+                        modifier = Modifier.size(if (compact) 34.dp else 38.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.RestartAlt,
+                            contentDescription = "Reset tool order",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(if (compact) 19.dp else 21.dp)
+                        )
+                    }
+                    TextButton(
+                        onClick = {
+                            val next = !isReordering
+                            isReordering = next
+                            if (next) {
+                                toolSearch = ""
+                                selectedCategory = ToolCategory.ALL
+                                toolViewMode = ToolViewMode.LIST
+                            }
+                        },
+                        contentPadding = PaddingValues(horizontal = 8.dp)
+                    ) {
+                        Text(if (isReordering) "Done" else "Reorder")
+                    }
                 }
             }
         }
@@ -375,36 +417,56 @@ fun ToolsScreen(
                     )
                 }
             } else {
-                visibleTools.forEachIndexed { index, tool ->
-                    ToolCard(
-                        icon = tool.icon,
-                        title = tool.title,
-                        subtitle = tool.subtitle,
-                        categoryLabel = tool.category.label,
-                        onClick = { selectedTool = tool.id },
-                        enableSelect = !isReordering,
-                        showReorderControls = isReordering,
-                        canMoveUp = isReordering && index > 0,
-                        canMoveDown = isReordering && index < visibleTools.lastIndex,
-                        onMoveUp = {
-                            if (isReordering && index > 0) {
-                                val updated = toolOrder.toMutableList()
-                                val item = updated.removeAt(index)
-                                updated.add(index - 1, item)
-                                toolOrder = updated
-                                saveToolOrder(prefs, updated)
+                if (!isReordering && toolViewMode == ToolViewMode.GRID) {
+                    visibleTools.chunked(2).forEach { rowTools ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)
+                        ) {
+                            rowTools.forEach { tool ->
+                                ToolGridCard(
+                                    icon = tool.icon,
+                                    title = tool.title,
+                                    subtitle = tool.subtitle,
+                                    onClick = { selectedTool = tool.id },
+                                    modifier = Modifier.weight(1f)
+                                )
                             }
-                        },
-                        onMoveDown = {
-                            if (isReordering && index < visibleTools.lastIndex) {
-                                val updated = toolOrder.toMutableList()
-                                val item = updated.removeAt(index)
-                                updated.add(index + 1, item)
-                                toolOrder = updated
-                                saveToolOrder(prefs, updated)
-                            }
+                            if (rowTools.size == 1) Spacer(Modifier.weight(1f))
                         }
-                    )
+                    }
+                } else {
+                    visibleTools.forEachIndexed { index, tool ->
+                        ToolCard(
+                            icon = tool.icon,
+                            title = tool.title,
+                            subtitle = tool.subtitle,
+                            categoryLabel = tool.category.label,
+                            onClick = { selectedTool = tool.id },
+                            enableSelect = !isReordering,
+                            showReorderControls = isReordering,
+                            canMoveUp = isReordering && index > 0,
+                            canMoveDown = isReordering && index < visibleTools.lastIndex,
+                            onMoveUp = {
+                                if (isReordering && index > 0) {
+                                    val updated = toolOrder.toMutableList()
+                                    val item = updated.removeAt(index)
+                                    updated.add(index - 1, item)
+                                    toolOrder = updated
+                                    saveToolOrder(prefs, updated)
+                                }
+                            },
+                            onMoveDown = {
+                                if (isReordering && index < visibleTools.lastIndex) {
+                                    val updated = toolOrder.toMutableList()
+                                    val item = updated.removeAt(index)
+                                    updated.add(index + 1, item)
+                                    toolOrder = updated
+                                    saveToolOrder(prefs, updated)
+                                }
+                            }
+                        )
+                    }
                 }
             }
         } else {
@@ -436,9 +498,115 @@ fun ToolsScreen(
                     mode = StoichiometryMode.SCALING,
                     title = "Reaction Scaling"
                 )
-                10 -> Unit
                 11 -> DilutionCalculatorTool()
                 12 -> IdealGasLawTool()
+                13 -> CompareCompoundsTool(
+                    defaultDescSource = defaultDescSource,
+                    aiProvider = aiProvider,
+                    getAiKey = getAiKey,
+                    getSelectedAiModel = getSelectedAiModel,
+                    onSearchCompound = onSearchCompoundFromTool
+                )
+                14 -> PhPohCalculatorTool()
+            }
+        }
+    }
+}
+
+@Composable
+private fun ToolViewToggle(
+    viewMode: ToolViewMode,
+    onViewModeChange: (ToolViewMode) -> Unit
+) {
+    val compact = LocalCompactMode.current
+    Surface(
+        shape = RoundedCornerShape(999.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(0.65f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.18f))
+    ) {
+        Row(modifier = Modifier.padding(3.dp), verticalAlignment = Alignment.CenterVertically) {
+            listOf(
+                ToolViewMode.LIST to Icons.AutoMirrored.Filled.ViewList,
+                ToolViewMode.GRID to Icons.Default.GridView
+            ).forEach { (mode, icon) ->
+                val selected = viewMode == mode
+                Surface(
+                    onClick = { onViewModeChange(mode) },
+                    shape = CircleShape,
+                    color = if (selected) MaterialTheme.colorScheme.primary.copy(0.16f) else Color.Transparent,
+                    modifier = Modifier.size(if (compact) 30.dp else 32.dp)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            icon,
+                            contentDescription = if (mode == ToolViewMode.LIST) "List view" else "Grid view",
+                            tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                            modifier = Modifier.size(if (compact) 16.dp else 18.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ToolGridCard(
+    icon: ImageVector,
+    title: String,
+    subtitle: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val compact = LocalCompactMode.current
+    Card(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .aspectRatio(if (compact) 0.92f else 0.95f),
+        shape = RoundedCornerShape(if (compact) 16.dp else 18.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(if (compact) 13.dp else 15.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.Start
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(if (compact) 42.dp else 48.dp)
+                    .background(
+                        MaterialTheme.colorScheme.primary.copy(0.1f),
+                        RoundedCornerShape(if (compact) 11.dp else 12.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    icon,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(if (compact) 22.dp else 25.dp)
+                )
+            }
+            Column(verticalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 5.dp)) {
+                Text(
+                    title,
+                    style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = if (compact) 3 else 3,
+                    letterSpacing = 0.sp
+                )
+                Text(
+                    subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.52f),
+                    maxLines = if (compact) 3 else 3,
+                    overflow = TextOverflow.Ellipsis,
+                    letterSpacing = 0.sp
+                )
             }
         }
     }
@@ -451,6 +619,7 @@ private fun ToolCard(
     subtitle: String,
     categoryLabel: String,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     enableSelect: Boolean = true,
     showReorderControls: Boolean = false,
     canMoveUp: Boolean = false,
@@ -461,7 +630,7 @@ private fun ToolCard(
     val compact = LocalCompactMode.current
     Card(
         onClick = { if (enableSelect) onClick() },
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(if (compact) 14.dp else 16.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
@@ -2143,6 +2312,686 @@ fun ReactionBalancer() {
     }
 }
 
+// TOOL 13 : Compare Compounds
+
+private data class CompareCompound(
+    val query: String,
+    val cid: Long,
+    val name: String,
+    val formula: String,
+    val molecularWeight: String,
+    val iupacName: String,
+    val smiles: String,
+    val connectivitySmiles: String,
+    val inchiKey: String,
+    val inchi: String,
+    val charge: Int?,
+    val covalentUnitCount: Int?,
+    val atomCount: Int?,
+    val bondCount: Int?,
+    val casNumber: String?,
+    val description: String?,
+    val descriptionSource: DescSource,
+    val ghsData: GhsData?
+)
+
+private suspend fun fetchCompareCompound(
+    query: String,
+    descriptionSource: DescSource,
+    aiProvider: AiProvider,
+    aiKey: String?,
+    selectedAiModel: String
+): CompareCompound = withContext(Dispatchers.IO) {
+    val cleanQuery = query.trim()
+    val cid = cleanQuery.toLongOrNull()?.takeIf { it > 0 }
+        ?: ApiClient.pubChem.getCid(cleanQuery).identifierList?.cid?.firstOrNull()
+        ?: throw NoSuchElementException("No compound found for $cleanQuery")
+
+    val props = runCatching { ApiClient.pubChem.getProperties(cid).propertyTable?.properties?.firstOrNull() }
+        .getOrNull()
+        ?: CompoundProperty(cid = cid)
+    val name = props.title?.takeIf { it.isNotBlank() }
+        ?: props.iupacName?.takeIf { it.isNotBlank() }
+        ?: cleanQuery.replaceFirstChar { it.uppercase() }
+    val description = runCatching {
+        fetchCompareDescription(
+            cid = cid,
+            name = name,
+            formula = props.molecularFormula.orEmpty(),
+            source = descriptionSource,
+            aiProvider = aiProvider,
+            aiKey = aiKey,
+            selectedAiModel = selectedAiModel
+        )
+    }.getOrNull()
+    val synonyms = runCatching {
+        ApiClient.pubChem.getSynonyms(cid).informationList?.information?.firstOrNull()?.synonym.orEmpty()
+    }.getOrDefault(emptyList())
+    val safety = runCatching {
+        parseCompareGhsData(ApiClient.pubChemView.getSection(cid, "GHS Classification"))
+    }.getOrNull()
+    val structureCounts = runCatching {
+        extractCompareStructureCounts(ApiClient.pubChem.getRecord(cid))
+    }.getOrDefault(CompareStructureCounts())
+    val casRegex = Regex("""^\d{1,7}-\d{2}-\d$""")
+
+    CompareCompound(
+        query = cleanQuery,
+        cid = cid,
+        name = name,
+        formula = props.molecularFormula.orEmpty(),
+        molecularWeight = props.molecularWeight.orEmpty(),
+        iupacName = props.iupacName.orEmpty(),
+        smiles = props.smiles.orEmpty(),
+        connectivitySmiles = props.connectivitySmiles.orEmpty(),
+        inchiKey = props.inchiKey.orEmpty(),
+        inchi = props.inchi.orEmpty(),
+        charge = props.charge,
+        covalentUnitCount = props.covalentUnitCount,
+        atomCount = structureCounts.atomCount,
+        bondCount = structureCounts.bondCount,
+        casNumber = synonyms.firstOrNull { casRegex.matches(it) },
+        description = description,
+        descriptionSource = descriptionSource,
+        ghsData = safety
+    )
+}
+
+private data class CompareStructureCounts(
+    val atomCount: Int? = null,
+    val bondCount: Int? = null
+)
+
+private fun extractCompareStructureCounts(record: JsonObject?): CompareStructureCounts {
+    val compound = runCatching {
+        record
+            ?.getAsJsonArray("PC_Compounds")
+            ?.firstOrNull()
+            ?.asJsonObject
+    }.getOrNull() ?: return CompareStructureCounts()
+
+    val atomCount = runCatching {
+        compound
+            .getAsJsonObject("atoms")
+            ?.getAsJsonArray("aid")
+            ?.size()
+    }.getOrNull()
+
+    val bondCount = runCatching {
+        compound
+            .getAsJsonObject("bonds")
+            ?.getAsJsonArray("aid1")
+            ?.size()
+    }.getOrNull()
+
+    return CompareStructureCounts(atomCount = atomCount, bondCount = bondCount)
+}
+
+private suspend fun fetchCompareDescription(
+    cid: Long,
+    name: String,
+    formula: String,
+    source: DescSource,
+    aiProvider: AiProvider,
+    aiKey: String?,
+    selectedAiModel: String
+): String? = when (source) {
+    DescSource.PUBCHEM -> fetchComparePubChemDescription(cid)
+    DescSource.WIKI -> fetchCompareWikiDescription(name)
+    DescSource.AI -> fetchCompareAiDescription(name, formula, aiProvider, aiKey, selectedAiModel)
+}
+
+private suspend fun fetchComparePubChemDescription(cid: Long): String? =
+    ApiClient.pubChem.getDescription(cid)
+        .informationList
+        ?.information
+        ?.find { it.description != null }
+        ?.description
+        ?.let { el ->
+            when {
+                el.isJsonPrimitive -> el.asString
+                el.isJsonArray -> el.asJsonArray.mapNotNull {
+                    runCatching { it.asString }.getOrNull()
+                }.joinToString("\n\n")
+                else -> null
+            }
+        }
+
+private suspend fun fetchCompareWikiDescription(name: String): String? {
+    val cleanName = name.trim()
+    if (cleanName.isBlank()) return null
+    val titleCased = cleanName.split(" ")
+        .joinToString(" ") { word -> word.lowercase().replaceFirstChar { it.uppercase() } }
+    return runCatching { ApiClient.wiki.getSummary(titleCased).extract }.getOrNull()
+        ?: runCatching { ApiClient.wiki.getSummary(cleanName.lowercase().replaceFirstChar { it.uppercase() }).extract }.getOrNull()
+}
+
+private suspend fun fetchCompareAiDescription(
+    name: String,
+    formula: String,
+    provider: AiProvider,
+    key: String?,
+    selectedModel: String
+): String? {
+    if (key.isNullOrBlank()) return "No ${provider.shortName} API key set."
+    val prompt = buildString {
+        append("Write a concise 2 sentence chemistry description for $name")
+        if (formula.isNotBlank()) append(" ($formula)")
+        append(". Mention identity and common uses. Keep it clear.")
+    }
+    return if (provider == AiProvider.GEMINI) {
+        val request = GeminiRequest(contents = listOf(GeminiContent(parts = listOf(GeminiPart(prompt)))))
+        ApiClient.gemini.generateContent(selectedModel, key, request)
+            .candidates
+            ?.firstOrNull()
+            ?.content
+            ?.parts
+            ?.firstOrNull()
+            ?.text
+    } else {
+        val api = when (provider) {
+            AiProvider.GROQ -> ApiClient.groq
+            AiProvider.OPENAI -> ApiClient.openAi
+            AiProvider.OPENROUTER -> ApiClient.openRouter
+            AiProvider.MISTRAL -> ApiClient.mistral
+            AiProvider.GEMINI -> error("Gemini uses a separate API")
+        }
+        val request = GroqRequest(
+            model = selectedModel,
+            messages = listOf(GroqMessage(role = "user", content = prompt))
+        )
+        api.generateContent("Bearer $key", request)
+            .choices
+            ?.firstOrNull()
+            ?.message
+            ?.content
+    }
+}
+
+private fun parseCompareGhsData(json: JsonObject): GhsData? {
+    val sections = json.getAsJsonObject("Record")?.getAsJsonArray("Section") ?: return null
+    val flattened = mutableListOf<JsonObject>()
+
+    fun flatten(sectionArray: com.google.gson.JsonArray) {
+        sectionArray.forEach { element ->
+            val section = runCatching { element.asJsonObject }.getOrNull() ?: return@forEach
+            flattened.add(section)
+            section.getAsJsonArray("Section")?.let(::flatten)
+        }
+    }
+
+    flatten(sections)
+
+    var signalWord: String? = null
+    val hazards = mutableListOf<String>()
+    val pictograms = mutableListOf<String>()
+
+    flattened.forEach { section ->
+        val heading = section.get("TOCHeading")?.asString.orEmpty()
+        val information = section.getAsJsonArray("Information") ?: return@forEach
+        information.forEach { infoElement ->
+            val info = runCatching { infoElement.asJsonObject }.getOrNull() ?: return@forEach
+            val name = info.get("Name")?.asString.orEmpty()
+            val strings = info.getAsJsonObject("Value")
+                ?.getAsJsonArray("StringWithMarkup")
+                ?: return@forEach
+
+            when {
+                heading == "GHS Classification" && name.contains("Signal", ignoreCase = true) -> {
+                    signalWord = strings.firstOrNull()?.asJsonObject?.get("String")?.asString
+                }
+                heading == "GHS Classification" && name.contains("Hazard Statement", ignoreCase = true) -> {
+                    strings.mapNotNullTo(hazards) {
+                        runCatching { it.asJsonObject.get("String")?.asString }.getOrNull()
+                    }
+                }
+                heading == "Pictogram(s)" || name.contains("Pictogram", ignoreCase = true) -> {
+                    strings.forEach { stringElement ->
+                        val markup = runCatching { stringElement.asJsonObject.getAsJsonArray("Markup") }.getOrNull()
+                            ?: return@forEach
+                        markup.mapNotNullTo(pictograms) { markupElement ->
+                            val url = runCatching { markupElement.asJsonObject.get("URL")?.asString }.getOrNull()
+                            url?.let { Regex("GHS\\d{2}").find(it)?.value }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    val cleanHazards = hazards
+        .filter { it.isNotBlank() && !it.equals("Not Classified", ignoreCase = true) }
+        .distinct()
+    if (signalWord == null && cleanHazards.isEmpty() && pictograms.isEmpty()) return null
+    return GhsData(signalWord, cleanHazards.take(3), pictograms.distinct())
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun CompareCompoundsTool(
+    defaultDescSource: DescSource,
+    aiProvider: AiProvider,
+    getAiKey: (AiProvider) -> String?,
+    getSelectedAiModel: (AiProvider) -> String,
+    onSearchCompound: (String) -> Unit = {}
+) {
+    var compoundFields by remember {
+        mutableStateOf(
+            listOf(
+                TextFieldValue("caffeine"),
+                TextFieldValue("theobromine")
+            )
+        )
+    }
+    var results by remember { mutableStateOf<List<CompareCompound>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf<String?>(null) }
+    val scope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
+    val compact = LocalCompactMode.current
+
+    fun runCompare(fields: List<TextFieldValue> = compoundFields) {
+        val queries = fields
+            .flatMap { parseCompareCompoundInputs(it.text) }
+            .map { it.trim() }
+            .filter { it.isNotBlank() }
+            .distinctBy { it.lowercase() }
+        if (queries.size < 2) {
+            error = "Enter at least two compounds."
+            return
+        }
+        isLoading = true
+        error = null
+        results = emptyList()
+        focusManager.clearFocus()
+        scope.launch {
+            val loaded = mutableListOf<CompareCompound>()
+            val failures = mutableListOf<String>()
+            queries.take(MAX_COMPARE_COMPOUNDS).forEach { query ->
+                runCatching {
+                    fetchCompareCompound(
+                        query = query,
+                        descriptionSource = defaultDescSource,
+                        aiProvider = aiProvider,
+                        aiKey = getAiKey(aiProvider),
+                        selectedAiModel = getSelectedAiModel(aiProvider)
+                    )
+                }
+                    .onSuccess { loaded.add(it) }
+                    .onFailure { failures.add(query) }
+            }
+            results = loaded
+            error = when {
+                loaded.size < 2 && failures.isNotEmpty() -> "Could not load: ${failures.joinToString(", ")}"
+                failures.isNotEmpty() -> "Skipped: ${failures.joinToString(", ")}"
+                else -> null
+            }
+            isLoading = false
+        }
+    }
+
+    fun setFieldsFromExample(example: String) {
+        val values = parseCompareCompoundInputs(example)
+            .take(MAX_COMPARE_COMPOUNDS)
+            .map { fieldValueAtEnd(it) }
+        compoundFields = values.ifEmpty { compoundFields }
+        runCompare(values)
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(if (compact) 10.dp else 14.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("Compare Compounds", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            IconButton(onClick = { runCompare() }, enabled = !isLoading, modifier = Modifier.size(34.dp)) {
+                Icon(Icons.AutoMirrored.Filled.CompareArrows, contentDescription = "Compare", tint = MaterialTheme.colorScheme.primary)
+            }
+        }
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            compoundFields.forEachIndexed { index, field ->
+                OutlinedTextField(
+                    value = field,
+                    onValueChange = { value ->
+                        compoundFields = compoundFields.toMutableList().also { it[index] = value }
+                    },
+                    label = { Text("Compound ${index + 1}") },
+                    placeholder = { Text("compound ${index + 1}") },
+                    singleLine = true,
+                    leadingIcon = { Icon(Icons.Default.Science, null) },
+                    trailingIcon = {
+                        if (compoundFields.size > MIN_COMPARE_COMPOUNDS) {
+                            IconButton(
+                                onClick = {
+                                    compoundFields = compoundFields.toMutableList().also { it.removeAt(index) }
+                                    results = emptyList()
+                                }
+                            ) {
+                                Icon(Icons.Default.Close, contentDescription = "Remove compound")
+                            }
+                        }
+                    },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                    keyboardActions = KeyboardActions(onDone = { runCompare() }),
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            FilledTonalIconButton(
+                onClick = {
+                    if (compoundFields.size < MAX_COMPARE_COMPOUNDS) {
+                        compoundFields = compoundFields + TextFieldValue("")
+                    }
+                },
+                enabled = compoundFields.size < MAX_COMPARE_COMPOUNDS,
+                modifier = Modifier.size(if (compact) 38.dp else 42.dp)
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Add compound")
+            }
+        }
+
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            listOf(
+                "caffeine vs theobromine",
+                "ethanol vs methanol",
+                "glucose vs fructose"
+            ).forEach { example ->
+                AssistChip(
+                    onClick = { setFieldsFromExample(example) },
+                    label = { Text(example, maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                    leadingIcon = {
+                        Icon(Icons.Default.Bolt, null, modifier = Modifier.size(14.dp))
+                    }
+                )
+            }
+        }
+
+        Button(
+            onClick = { runCompare() },
+            enabled = !isLoading,
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(18.dp),
+                    strokeWidth = 2.dp,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            } else {
+                Icon(Icons.AutoMirrored.Filled.CompareArrows, null, modifier = Modifier.size(18.dp))
+            }
+            Spacer(Modifier.width(8.dp))
+            Text(if (isLoading) "Comparing..." else "Compare")
+        }
+
+        error?.let {
+            Text(
+                it,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error
+            )
+        }
+
+        if (results.isNotEmpty()) {
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                results.forEach { compound ->
+                    CompareCompoundCard(compound = compound, onOpen = { onSearchCompound(compound.cid.toString()) })
+                }
+            }
+            CompareRows(results)
+        }
+    }
+}
+
+private const val MIN_COMPARE_COMPOUNDS = 2
+private const val MAX_COMPARE_COMPOUNDS = 6
+
+@Composable
+private fun CompareCompoundCard(
+    compound: CompareCompound,
+    onOpen: () -> Unit
+) {
+    val compact = LocalCompactMode.current
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.14f))
+    ) {
+        Row(
+            modifier = Modifier.padding(if (compact) 10.dp else 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(0.55f),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.10f))
+            ) {
+                AsyncImage(
+                    model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${compound.cid}/PNG?record_type=2d&image_size=small",
+                    contentDescription = "Structure of ${compound.name}",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.size(if (compact) 64.dp else 78.dp).padding(4.dp)
+                )
+            }
+            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    compound.name,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                if (compound.formula.isNotBlank()) {
+                    Text(
+                        toSubscriptFormula(compound.formula),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+                Text(
+                    "CID ${compound.cid}${compound.molecularWeight.takeIf { it.isNotBlank() }?.let { " · $it g/mol" } ?: ""}",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.48f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            IconButton(onClick = onOpen) {
+                Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = "Open in Search")
+            }
+        }
+    }
+}
+
+@Composable
+private fun CompareRows(results: List<CompareCompound>) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(
+            "COMPARISON",
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 0.8.sp,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+        )
+        CompareSectionLabel("Core")
+        CompareInfoRow("Formula", results) { toSubscriptFormula(it.formula.ifBlank { "—" }) }
+        CompareInfoRow("Molar mass", results) {
+            it.molecularWeight.takeIf { value -> value.isNotBlank() }?.let { value -> "$value g/mol" } ?: "—"
+        }
+        CompareInfoRow("IUPAC name", results, monospace = true) { it.iupacName.ifBlank { "—" } }
+
+        CompareSectionLabel("Identifiers")
+        CompareInfoRow("CID", results, monospace = true) { it.cid.toString() }
+        CompareInfoRow("CAS", results, monospace = true) { it.casNumber ?: "—" }
+        CompareInfoRow("SMILES", results, monospace = true) { it.smiles.ifBlank { "—" } }
+        CompareInfoRow("Connectivity SMILES", results, monospace = true) { it.connectivitySmiles.ifBlank { "—" } }
+        CompareInfoRow("InChIKey", results, monospace = true) { it.inchiKey.ifBlank { "—" } }
+        CompareInfoRow("InChI", results, monospace = true) { it.inchi.ifBlank { "—" } }
+
+        CompareSectionLabel("Structure")
+        CompareInfoRow("Charge", results) { it.charge?.toString() ?: "—" }
+        CompareInfoRow("Covalent units", results) { it.covalentUnitCount?.toString() ?: "—" }
+        CompareInfoRow("Atom count", results) { it.atomCount?.toString() ?: "—" }
+        CompareInfoRow("Bond count", results) { it.bondCount?.toString() ?: "—" }
+
+        CompareSectionLabel("Description & Safety")
+        CompareInfoRow("Safety", results) {
+            it.ghsData?.signalWord ?: it.ghsData?.hazardStatements?.firstOrNull() ?: "—"
+        }
+        val sourceLabel = results.firstOrNull()?.descriptionSource?.compareLabel().orEmpty()
+        CompareDescriptionRow(
+            label = "Description${if (sourceLabel.isBlank()) "" else " ($sourceLabel)"}",
+            compounds = results
+        )
+    }
+}
+
+@Composable
+private fun CompareSectionLabel(label: String) {
+    Text(
+        label.uppercase(),
+        style = MaterialTheme.typography.labelSmall,
+        fontWeight = FontWeight.Bold,
+        letterSpacing = 0.7.sp,
+        color = MaterialTheme.colorScheme.primary.copy(0.72f),
+        modifier = Modifier.padding(top = 6.dp)
+    )
+}
+
+@Composable
+private fun CompareInfoRow(
+    label: String,
+    compounds: List<CompareCompound>,
+    monospace: Boolean = false,
+    valueFor: (CompareCompound) -> String
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Text(
+            label,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.62f)
+        )
+        compounds.forEach { compound ->
+            ExpandableCompareValueCard(
+                compoundName = compound.name,
+                value = valueFor(compound),
+                monospace = monospace
+            )
+        }
+    }
+}
+
+@Composable
+private fun CompareDescriptionRow(
+    label: String,
+    compounds: List<CompareCompound>
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Text(
+            label,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.62f)
+        )
+        compounds.forEach { compound ->
+            ExpandableCompareValueCard(
+                compoundName = compound.name,
+                value = compound.description?.trim().orEmpty().ifBlank { "—" },
+                maxPreviewChars = 180
+            )
+        }
+    }
+}
+
+@Composable
+private fun ExpandableCompareValueCard(
+    compoundName: String,
+    value: String,
+    monospace: Boolean = false,
+    maxPreviewChars: Int = 180
+) {
+    val fullValue = remember(compoundName, value) {
+        formatCompoundComparisonValue(compoundName, value)
+    }
+    val previewValue = remember(fullValue, maxPreviewChars) {
+        previewComparisonCellText(fullValue, maxPreviewChars)
+    }
+    val canExpand = fullValue != previewValue
+    var expanded by remember(fullValue) { mutableStateOf(false) }
+    val displayedValue = if (expanded || !canExpand) fullValue else previewValue
+
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(0.38f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.10f)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(
+                if (canExpand) {
+                    Modifier.clickable { expanded = !expanded }
+                } else {
+                    Modifier
+                }
+            )
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            Text(
+                displayedValue,
+                style = MaterialTheme.typography.bodySmall,
+                fontFamily = if (monospace) FontFamily.Monospace else FontFamily.Default,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.78f)
+            )
+            if (canExpand) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text(
+                        if (expanded) "Tap to collapse" else "Tap to expand",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Icon(
+                        if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(15.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
+private fun DescSource.compareLabel(): String = when (this) {
+    DescSource.PUBCHEM -> "PubChem"
+    DescSource.WIKI -> "Wikipedia"
+    DescSource.AI -> "AI"
+}
+
 // TOOL 6 : Isomer Finder
 
 @Composable
@@ -2416,6 +3265,212 @@ private fun FormulaExplanationCard(
                 explanation,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.7f)
+            )
+        }
+    }
+}
+
+// TOOL 14 : pH / pOH CALCULATOR
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun PhPohCalculatorTool() {
+    var inputType by remember { mutableStateOf(PhPohInputType.PH) }
+    var input by remember { mutableStateOf("7") }
+    var showInfo by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
+    val result = remember(input, inputType) {
+        runCatching { calculatePhPoh(input, inputType) }
+    }
+    val hasInput = input.trim().isNotEmpty()
+
+    if (showInfo) {
+        InfoDialog(
+            title = "pH / pOH Calculator",
+            entries = listOf(
+                "What it solves" to "Enter pH, pOH, [H+], or [OH-] to calculate the other three values.",
+                "Concentration units" to "[H+] and [OH-] are mol/L.",
+                "Assumption" to "Uses pH + pOH = 14 for water at 25 C."
+            ),
+            onDismiss = { showInfo = false }
+        )
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("pH / pOH Calculator", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
+                Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
+            }
+        }
+
+        Text(
+            "Choose the value you know, then enter it below.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.58f)
+        )
+
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            PhPohInputType.entries.forEach { type ->
+                FilterChip(
+                    selected = inputType == type,
+                    onClick = {
+                        inputType = type
+                        focusManager.clearFocus()
+                    },
+                    label = { Text(type.label) },
+                    leadingIcon = if (inputType == type) {
+                        {
+                            Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.size(16.dp))
+                        }
+                    } else null
+                )
+            }
+        }
+
+        OutlinedTextField(
+            value = input,
+            onValueChange = { input = it },
+            label = { Text("Known ${inputType.symbol}") },
+            placeholder = {
+                Text(
+                    if (inputType == PhPohInputType.HYDROGEN || inputType == PhPohInputType.HYDROXIDE) "e.g. 1e-7" else "e.g. 7",
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                )
+            },
+            leadingIcon = { Icon(Icons.Default.WaterDrop, contentDescription = null) },
+            trailingIcon = {
+                if (input.isNotBlank()) {
+                    IconButton(onClick = { input = "" }) {
+                        Icon(Icons.Default.Close, contentDescription = "Clear")
+                    }
+                }
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii, imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+            shape = RoundedCornerShape(12.dp),
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            listOf(
+                Triple("Neutral water", PhPohInputType.PH, "7"),
+                Triple("Acidic pH", PhPohInputType.PH, "3"),
+                Triple("Basic pOH", PhPohInputType.POH, "3"),
+                Triple("[H+] example", PhPohInputType.HYDROGEN, "1e-4")
+            ).forEach { (label, type, value) ->
+                AssistChip(
+                    onClick = {
+                        inputType = type
+                        input = value
+                        focusManager.clearFocus()
+                    },
+                    label = { Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                    leadingIcon = { Icon(Icons.Default.Bolt, null, modifier = Modifier.size(14.dp)) }
+                )
+            }
+        }
+
+        if (result.isFailure && hasInput) {
+            Text(
+                result.exceptionOrNull()?.message ?: "Enter a valid value.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error
+            )
+        }
+
+        result.getOrNull()?.let { values ->
+            PhPohResultCards(values)
+        }
+
+        FormulaExplanationCard(
+            latexFormula = "pH = -log[H^+], pOH = -log[OH^-], pH + pOH = 14",
+            explanation = "At 25 C, pH and pOH add to 14. Lower pH is acidic, higher pH is basic, and pH near 7 is neutral."
+        )
+    }
+}
+
+@Composable
+private fun PhPohResultCards(result: com.furthersecrets.chemsearch.data.PhPohResult) {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Surface(
+            shape = RoundedCornerShape(12.dp),
+            color = when (result.classification) {
+                "Acidic" -> Color(0xFFEF4444).copy(0.12f)
+                "Basic" -> MaterialTheme.colorScheme.primary.copy(0.12f)
+                else -> Color(0xFF22C55E).copy(0.12f)
+            },
+            border = BorderStroke(
+                1.dp,
+                when (result.classification) {
+                    "Acidic" -> Color(0xFFEF4444).copy(0.32f)
+                    "Basic" -> MaterialTheme.colorScheme.primary.copy(0.32f)
+                    else -> Color(0xFF22C55E).copy(0.32f)
+                }
+            )
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text("Solution type", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface.copy(0.62f))
+                Text(result.classification, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+            }
+        }
+
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+            PhPohMetricCard("pH", formatPhPohNumber(result.ph), Modifier.weight(1f))
+            PhPohMetricCard("pOH", formatPhPohNumber(result.poh), Modifier.weight(1f))
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+            PhPohMetricCard("[H+] mol/L", formatPhPohNumber(result.hydrogenConcentration), Modifier.weight(1f))
+            PhPohMetricCard("[OH-] mol/L", formatPhPohNumber(result.hydroxideConcentration), Modifier.weight(1f))
+        }
+    }
+}
+
+@Composable
+private fun PhPohMetricCard(
+    label: String,
+    value: String,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(0.42f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.12f)),
+        modifier = modifier
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(
+                label,
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+            )
+            Text(
+                value,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = FontFamily.Monospace,
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }

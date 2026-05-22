@@ -30,13 +30,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.furthersecrets.chemsearch.ChemViewModel
 import androidx.activity.compose.BackHandler
 import com.furthersecrets.chemsearch.data.AiProvider
 import com.furthersecrets.chemsearch.data.AppColorScheme
 import com.furthersecrets.chemsearch.data.DescSource
 
-enum class AppTab { SEARCH, FAVORITES, RECENT, TOOLS, SETTINGS }
+enum class AppTab(val route: String) {
+    SEARCH("search"),
+    LIBRARY("library"),
+    RECENT("recent"),
+    TOOLS("tools"),
+    SETTINGS("settings");
+
+    companion object {
+        fun fromRoute(route: String?): AppTab =
+            entries.firstOrNull { it.route == route } ?: SEARCH
+    }
+}
 
 // Root
 
@@ -61,7 +77,11 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val focusManager = LocalFocusManager.current
     val snackbar = remember { SnackbarHostState() }
     val favorites by vm.favorites.collectAsStateWithLifecycle()
+    val recentSearches by vm.recentSearches.collectAsStateWithLifecycle()
+    val downloads by vm.downloads.collectAsStateWithLifecycle()
     val isFavorite by vm.isFavorite.collectAsStateWithLifecycle()
+    val isDownloaded by vm.isDownloaded.collectAsStateWithLifecycle()
+    val isSavingOffline by vm.isSavingOffline.collectAsStateWithLifecycle()
 
     var editingAiKeyProvider by remember { mutableStateOf<AiProvider?>(null) }
     var showAiProviderDialog by remember { mutableStateOf(false) }
@@ -176,14 +196,25 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         )
     }
 
-    var selectedTab by rememberSaveable { mutableStateOf(AppTab.SEARCH) }
+    val navController = rememberNavController()
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val selectedTab = AppTab.fromRoute(currentBackStackEntry?.destination?.route)
+    fun navigateToTab(tab: AppTab) {
+        navController.navigate(tab.route) {
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
     var showExitDialog by remember { mutableStateOf(false) }
     var jumpToTool by remember { mutableStateOf(0) }
     var jumpToToolVersion by remember { mutableStateOf(0) }
 
     BackHandler {
         if (selectedTab != AppTab.SEARCH) {
-            selectedTab = AppTab.SEARCH
+            navigateToTab(AppTab.SEARCH)
         } else {
             showExitDialog = true
         }
@@ -224,7 +255,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             ) {
                 listOf(
                     AppTab.SEARCH    to Triple(Icons.Default.Search,    Icons.Default.Search,        "Search"),
-                    AppTab.FAVORITES to Triple(Icons.Default.Bookmark,  Icons.Default.BookmarkBorder,"Favorites"),
+                    AppTab.LIBRARY   to Triple(Icons.Default.Inventory2, Icons.Default.Inventory2,"Library"),
                     AppTab.RECENT    to Triple(Icons.Default.History,   Icons.Default.History,       "Recent"),
                     AppTab.TOOLS     to Triple(Icons.Default.Build,     Icons.Default.Build,         "Tools"),
                     AppTab.SETTINGS  to Triple(Icons.Default.Settings,  Icons.Default.Settings,      "Settings")
@@ -234,7 +265,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                     val isSelected = selectedTab == tab
                     NavigationBarItem(
                         selected = isSelected,
-                        onClick = { selectedTab = tab },
+                        onClick = { navigateToTab(tab) },
                         icon = {
                             Icon(
                                 if (isSelected) selectedIcon else unselectedIcon,
@@ -266,20 +297,12 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            AnimatedContent(
-                targetState = selectedTab,
-                transitionSpec = {
-                    val direction = if (targetState.ordinal > initialState.ordinal) 1 else -1
-                    (slideInHorizontally(
-                        animationSpec = tween(300, easing = FastOutSlowInEasing)
-                    ) { it / 5 * direction } + fadeIn(tween(300))) togetherWith
-                    (slideOutHorizontally(
-                        animationSpec = tween(300, easing = FastOutSlowInEasing)
-                    ) { -it / 5 * direction } + fadeOut(tween(200)))
-                },
+            NavHost(
+                navController = navController,
+                startDestination = AppTab.SEARCH.route,
                 modifier = Modifier.fillMaxSize()
-            ) { tab ->
-                if (tab == AppTab.SEARCH) {
+            ) {
+                composable(AppTab.SEARCH.route) {
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
@@ -322,7 +345,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                         interactionSource = remember { MutableInteractionSource() }
                                     ) {
                                         jumpToTool = 6
-                                        selectedTab = AppTab.TOOLS
+                                        navigateToTab(AppTab.TOOLS)
                                     }
                                     .padding(
                                         horizontal = if (compactMode) 2.dp else 4.dp,
@@ -371,11 +394,12 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                         }
                         if (!state.hasResult && !state.isLoading) {
                             item {
-                                HistorySection(
-                                    history = state.history,
+                            HistorySection(
+                                    recentSearches = recentSearches,
                                     onSelect = { vm.search(it) },
                                     onClear = { vm.clearHistory() },
-                                    onDelete = { vm.removeHistoryItem(it) }
+                                    onDelete = { vm.removeHistoryItem(it) },
+                                    onTogglePin = { vm.toggleRecentPin(it) }
                                 )
                             }
                         }
@@ -386,12 +410,15 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     state,
                                     isFavorite,
                                     onToggleFavorite = { vm.toggleFavorite() },
+                                    isDownloaded = isDownloaded,
+                                    isSavingOffline = isSavingOffline,
+                                    onDownloadOffline = { vm.saveCurrentCompoundOffline() },
                                     onFormulaClick = if (state.formula.isNotBlank()) {{
                                         vm.onIsomerQueryChange(state.formula)
                                         vm.searchIsomers()
                                         jumpToTool = 6
                                         jumpToToolVersion++
-                                        selectedTab = AppTab.TOOLS
+                                        navigateToTab(AppTab.TOOLS)
                                     }} else null
                                 )
                             }
@@ -424,7 +451,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                             item { PubChemCredits() }
                         }
                     }
-                } else if (tab == AppTab.TOOLS) {
+                }
+                composable(AppTab.TOOLS.route) {
                     ToolsScreen(
                         isDark = isDark,
                         modifier = Modifier.fillMaxSize(),
@@ -436,66 +464,95 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                         ),
                         jumpToTool = jumpToTool,
                         jumpToToolVersion = jumpToToolVersion,
-                        onNavigateToSearch = { selectedTab = AppTab.SEARCH },
+                        defaultDescSource = defaultDescSource,
+                        aiProvider = state.aiProvider,
+                        getAiKey = { provider -> vm.getAiKey(provider) },
+                        getSelectedAiModel = { provider -> vm.getSelectedAiModel(provider) },
+                        onNavigateToSearch = { navigateToTab(AppTab.SEARCH) },
                         onSearchCompoundFromTool = { compoundQuery ->
                             vm.search(compoundQuery)
-                            selectedTab = AppTab.SEARCH
+                            navigateToTab(AppTab.SEARCH)
                         }
                     )
-                } else {
+                }
+                composable(AppTab.LIBRARY.route) {
+                    LibraryInline(
+                        favorites = favorites,
+                        downloads = downloads,
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(
+                            start = pageHorizontalPadding,
+                            end = pageHorizontalPadding,
+                            top = pageTopPadding,
+                            bottom = pageBottomPadding
+                        ),
+                        onSelectFavorite = { name -> vm.search(name); navigateToTab(AppTab.SEARCH) },
+                        onSelectDownload = { cid -> vm.openDownloadedCompound(cid); navigateToTab(AppTab.SEARCH) },
+                        onDeleteFavorite = { cid -> vm.deleteFavorite(cid) },
+                        onDeleteDownload = { cid -> vm.deleteDownload(cid) },
+                        onMoveFavorite = { from, to -> vm.moveFavorite(from, to) },
+                        onSearchCompoundFromDatabase = { compoundQuery ->
+                            vm.search(compoundQuery)
+                            navigateToTab(AppTab.SEARCH)
+                        }
+                    )
+                }
+                composable(AppTab.RECENT.route) {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(start = pageHorizontalPadding, end = pageHorizontalPadding, top = pageTopPadding, bottom = pageBottomPadding),
                         verticalArrangement = Arrangement.spacedBy(pageSpacing)
                     ) {
                         item {
-                            when (tab) {
-                                AppTab.RECENT -> HistorySection(
-                                    history = state.history,
-                                    onSelect = { vm.search(it); selectedTab = AppTab.SEARCH },
-                                    onClear = { vm.clearHistory() },
-                                    onDelete = { vm.removeHistoryItem(it) }
-                                )
-                                AppTab.FAVORITES -> FavoritesInline(
-                                    favorites = favorites,
-                                    onSelect = { name -> vm.search(name); selectedTab = AppTab.SEARCH },
-                                    onDelete = { cid -> vm.deleteFavorite(cid) },
-                                    onMoveFavorite = { from, to -> vm.moveFavorite(from, to) }
-                                )
-                                AppTab.SETTINGS -> SettingsInline(
-                                    isDark = isDark,
-                                    colorScheme = colorScheme,
-                                    autoSuggest = autoSuggest,
-                                    compactMode = compactMode,
-                                    defaultDescSource = defaultDescSource,
-                                    aiProvider = state.aiProvider,
-                                    aiKeyStatus = aiKeyStatus,
-                                    aiModelCatalogs = aiModelCatalogs,
-                                    updateNotificationsEnabled = updateNotificationsEnabled,
-                                    updateStatus = updateStatus,
-                                    onToggleTheme = { vm.toggleTheme() },
-                                    onSetColorScheme = { vm.setColorScheme(it) },
-                                    onToggleAutoSuggest = { vm.toggleAutoSuggest() },
-                                    onToggleCompactMode = { vm.setCompactMode(!compactMode) },
-                                    onSetDefaultDesc = { vm.setDefaultDescSource(it) },
-                                    onSetAiProvider = { vm.setAiProvider(it) },
-                                    onSetAiModel = { provider, model -> vm.setAiModel(provider, model) },
-                                    onRefreshAiModels = { provider -> vm.refreshAiModels(provider) },
-                                    onEditAiKey = { provider -> editingAiKeyProvider = provider },
-                                    onClearAiKey = { provider -> vm.clearAiKey(provider) },
-                                    onClearHistory = { vm.clearHistory() },
-                                    onToggleUpdateNotifications = { enabled -> vm.setUpdateNotificationsEnabled(enabled) },
-                                    onCheckForUpdates = { vm.checkForUpdates(manual = true) },
-                                    cacheSizeBytes = cacheSizeBytes,
-                                    cacheDir = cacheDirPath,
-                                    onClearCache = { vm.clearCache() },
-                                    onSetCacheDir = { vm.setCacheDir(it) },
-                                    onTestUpdateNotification = { vm.sendDebugUpdateNotification() },
-                                    onShowWelcome = { vm.showWelcomeAgain() },
-                                    onSettingsImported = { vm.reloadSettingsFromPreferences() }
-                                )
-                                AppTab.TOOLS -> Unit
-                            }
+                            HistorySection(
+                                recentSearches = recentSearches,
+                                onSelect = { vm.search(it); navigateToTab(AppTab.SEARCH) },
+                                onClear = { vm.clearHistory() },
+                                onDelete = { vm.removeHistoryItem(it) },
+                                onTogglePin = { vm.toggleRecentPin(it) }
+                            )
+                        }
+                    }
+                }
+                composable(AppTab.SETTINGS.route) {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(start = pageHorizontalPadding, end = pageHorizontalPadding, top = pageTopPadding, bottom = pageBottomPadding),
+                        verticalArrangement = Arrangement.spacedBy(pageSpacing)
+                    ) {
+                        item {
+                            SettingsInline(
+                                isDark = isDark,
+                                colorScheme = colorScheme,
+                                autoSuggest = autoSuggest,
+                                compactMode = compactMode,
+                                defaultDescSource = defaultDescSource,
+                                aiProvider = state.aiProvider,
+                                aiKeyStatus = aiKeyStatus,
+                                aiModelCatalogs = aiModelCatalogs,
+                                updateNotificationsEnabled = updateNotificationsEnabled,
+                                updateStatus = updateStatus,
+                                onToggleTheme = { vm.toggleTheme() },
+                                onSetColorScheme = { vm.setColorScheme(it) },
+                                onToggleAutoSuggest = { vm.toggleAutoSuggest() },
+                                onToggleCompactMode = { vm.setCompactMode(!compactMode) },
+                                onSetDefaultDesc = { vm.setDefaultDescSource(it) },
+                                onSetAiProvider = { vm.setAiProvider(it) },
+                                onSetAiModel = { provider, model -> vm.setAiModel(provider, model) },
+                                onRefreshAiModels = { provider -> vm.refreshAiModels(provider) },
+                                onEditAiKey = { provider -> editingAiKeyProvider = provider },
+                                onClearAiKey = { provider -> vm.clearAiKey(provider) },
+                                onClearHistory = { vm.clearHistory() },
+                                onToggleUpdateNotifications = { enabled -> vm.setUpdateNotificationsEnabled(enabled) },
+                                onCheckForUpdates = { vm.checkForUpdates(manual = true) },
+                                cacheSizeBytes = cacheSizeBytes,
+                                cacheDir = cacheDirPath,
+                                onClearCache = { vm.clearCache() },
+                                onSetCacheDir = { vm.setCacheDir(it) },
+                                onTestUpdateNotification = { vm.sendDebugUpdateNotification() },
+                                onShowWelcome = { vm.showWelcomeAgain() },
+                                onSettingsImported = { vm.reloadSettingsFromPreferences() }
+                            )
                         }
                     }
                 }

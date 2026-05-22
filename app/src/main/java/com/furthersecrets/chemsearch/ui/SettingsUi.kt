@@ -26,8 +26,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Feed
 import androidx.compose.material.icons.automirrored.filled.HelpOutline
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.automirrored.filled.ViewList
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -42,6 +45,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -1114,11 +1118,11 @@ private val FAQ_ENTRIES = listOf(
     "Why am I not getting results?" to "Check spelling, try a CID or CAS number, or remove extra spaces. Some compounds are not listed in PubChem.",
     "Do I need an API key for AI descriptions?" to "Yes. AI descriptions use your selected provider. Add a key in Settings > AI Provider & Keys. Keys are stored locally on your device.",
     "Where are my API keys stored?" to "Keys are stored locally in app preferences on your device and are not synced.",
-    "Is the app offline?" to "Most features require internet access. Recently viewed compounds may load from cache, but live searches and AI always need a connection.",
+    "Is the app offline?" to "Most features require internet access. Downloaded compounds in Library can be opened later with saved structures, descriptions, synonyms, safety info, and identifiers.",
     "How do autosuggestions work?" to "Autosuggestions query PubChem as you type. You can toggle them in Settings > Search.",
-    "How do I save favorites?" to "Tap the bookmark icon on a compound to add it to Favorites. Favorites are stored locally.",
+    "How do I save favorites?" to "Tap the bookmark icon on a compound, then open Library > Favorites. Favorites are stored locally.",
     "How do I clear history or cache?" to "Go to Settings > Data to clear search history or manage the compound cache.",
-    "How do I download structures?" to "Use the download buttons in the Structure section to save a 2D PNG or 3D SDF file.",
+    "How do I download structures?" to "Use the Structure buttons to save PNG/SDF files, or tap the download icon below the bookmark to save the whole compound in Library > Downloads.",
     "Why is the 3D model missing?" to "Some compounds do not have a 3D SDF available in PubChem. In that case the 3D viewer shows a placeholder.",
     "How do I use the custom 3D viewer?" to "Open Tools > Custom 3D Molecule Viewer and load a .sdf or .mol file from your device.",
     "What does the SMILES visualizer do?" to "Paste a SMILES string to look it up on PubChem and view its 2D or 3D structure when available.",
@@ -1310,6 +1314,838 @@ private fun SortPill(label: String, selected: Boolean, onClick: () -> Unit) {
                 fontWeight = FontWeight.SemiBold,
                 color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
             )
+        }
+    }
+}
+
+private enum class LibraryTab { FAVORITES, DOWNLOADS, DATABASE }
+private enum class LibraryViewMode { LIST, GRID }
+
+private data class LibraryOption(
+    val tab: LibraryTab,
+    val icon: ImageVector,
+    val title: String,
+    val subtitle: String,
+    val countLabel: String? = null,
+    val databaseSummary: ChemicalDatabaseSummary? = null
+)
+
+@Composable
+private fun LibraryOptionCard(
+    icon: ImageVector,
+    title: String,
+    subtitle: String,
+    countLabel: String? = null,
+    databaseSummary: ChemicalDatabaseSummary? = null,
+    selected: Boolean,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    val compact = LocalCompactMode.current
+    Surface(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .aspectRatio(if (compact) 1.18f else 1.25f),
+        shape = RoundedCornerShape(if (compact) 16.dp else 18.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(
+            1.dp,
+            if (selected) MaterialTheme.colorScheme.primary.copy(0.42f)
+            else MaterialTheme.colorScheme.outline.copy(0.18f)
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(if (compact) 13.dp else 15.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.Start
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(if (compact) 42.dp else 48.dp)
+                        .background(
+                            MaterialTheme.colorScheme.primary.copy(if (selected) 0.16f else 0.1f),
+                            RoundedCornerShape(if (compact) 11.dp else 12.dp)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        icon,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(if (compact) 22.dp else 25.dp)
+                    )
+                }
+                if (!countLabel.isNullOrBlank()) {
+                    Surface(
+                        shape = RoundedCornerShape(999.dp),
+                        color = if (selected) MaterialTheme.colorScheme.primary.copy(0.14f) else MaterialTheme.colorScheme.surfaceVariant,
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.12f))
+                    ) {
+                        Text(
+                            countLabel,
+                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.58f),
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+            }
+
+            Column(verticalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 5.dp)) {
+                Text(
+                    title,
+                    style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = if (compact) 2 else 3,
+                    letterSpacing = 0.sp
+                )
+                Text(
+                    subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.52f),
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
+                    letterSpacing = 0.sp
+                )
+                databaseSummary?.let { ChemicalDatabaseSummaryBreakdown(summary = it) }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ChemicalDatabaseSummaryBreakdown(
+    summary: ChemicalDatabaseSummary,
+    modifier: Modifier = Modifier
+) {
+    val compact = LocalCompactMode.current
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(9.dp),
+        color = MaterialTheme.colorScheme.primary.copy(0.08f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.14f))
+    ) {
+        Column(
+            modifier = Modifier.padding(
+                horizontal = if (compact) 8.dp else 9.dp,
+                vertical = if (compact) 5.dp else 6.dp
+            ),
+            verticalArrangement = Arrangement.spacedBy(if (compact) 1.dp else 2.dp)
+        ) {
+            chemicalDatabaseSummaryRows(summary).forEach { row ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        row.label,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        letterSpacing = 0.sp
+                    )
+                    Text(
+                        row.count.toString(),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        letterSpacing = 0.sp
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun LibraryOptionListCard(
+    icon: ImageVector,
+    title: String,
+    subtitle: String,
+    countLabel: String? = null,
+    databaseSummary: ChemicalDatabaseSummary? = null,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    val compact = LocalCompactMode.current
+    Card(
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(if (compact) 14.dp else 16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(if (compact) 12.dp else 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(if (compact) 10.dp else 14.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(if (compact) 44.dp else 52.dp)
+                    .background(
+                        MaterialTheme.colorScheme.primary.copy(0.1f),
+                        RoundedCornerShape(if (compact) 10.dp else 12.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    icon,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(if (compact) 22.dp else 26.dp)
+                )
+            }
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(if (compact) 2.dp else 3.dp)
+            ) {
+                Text(
+                    title,
+                    style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = if (compact) 1 else 2,
+                    overflow = if (compact) TextOverflow.Ellipsis else TextOverflow.Clip
+                )
+                Text(
+                    subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.52f),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+                databaseSummary?.let { ChemicalDatabaseSummaryBreakdown(summary = it) }
+            }
+            if (!countLabel.isNullOrBlank()) {
+                Surface(
+                    shape = RoundedCornerShape(999.dp),
+                    color = MaterialTheme.colorScheme.primary.copy(0.1f),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.16f))
+                ) {
+                    Text(
+                        countLabel,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+            Icon(
+                Icons.Default.ChevronRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface.copy(0.3f),
+                modifier = Modifier.size(if (compact) 18.dp else 22.dp)
+            )
+        }
+    }
+}
+
+@Composable
+private fun LibraryViewToggle(
+    viewMode: LibraryViewMode,
+    onViewModeChange: (LibraryViewMode) -> Unit
+) {
+    Surface(
+        shape = RoundedCornerShape(999.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(0.65f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.18f))
+    ) {
+        Row(modifier = Modifier.padding(3.dp), verticalAlignment = Alignment.CenterVertically) {
+            listOf(
+                LibraryViewMode.LIST to Icons.AutoMirrored.Filled.ViewList,
+                LibraryViewMode.GRID to Icons.Default.GridView
+            ).forEach { (mode, icon) ->
+                val selected = viewMode == mode
+                Surface(
+                    onClick = { onViewModeChange(mode) },
+                    shape = CircleShape,
+                    color = if (selected) MaterialTheme.colorScheme.primary.copy(0.16f) else Color.Transparent,
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            icon,
+                            contentDescription = if (mode == LibraryViewMode.LIST) "List view" else "Grid view",
+                            tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun LibraryEmptyState(
+    icon: ImageVector,
+    title: String,
+    subtitle: String
+) {
+    Box(
+        modifier = Modifier.fillMaxWidth().padding(top = 64.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Box(
+                modifier = Modifier.size(80.dp).background(MaterialTheme.colorScheme.primary.copy(0.08f), CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    icon,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary.copy(0.5f),
+                    modifier = Modifier.size(40.dp)
+                )
+            }
+            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface.copy(0.7f))
+                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.38f), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+            }
+        }
+    }
+}
+
+private fun DownloadedCompound.toFavoriteCardData(): FavoriteCompound =
+    FavoriteCompound(
+        cid = cid,
+        name = name,
+        formula = formula,
+        molecularWeight = molecularWeight,
+        iupacName = iupacName,
+        savedAt = savedAt
+    )
+
+@Composable
+private fun LibraryGridCard(
+    favorite: FavoriteCompound,
+    onSelect: (String) -> Unit,
+    onDelete: (Long) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val compact = LocalCompactMode.current
+    Card(
+        onClick = { onSelect(favorite.name) },
+        modifier = modifier
+            .fillMaxWidth()
+            .aspectRatio(if (compact) 0.88f else 0.92f),
+        shape = RoundedCornerShape(if (compact) 16.dp else 18.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(if (compact) 11.dp else 13.dp),
+            verticalArrangement = Arrangement.spacedBy(if (compact) 7.dp else 8.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(11.dp),
+                    color = MaterialTheme.colorScheme.background,
+                    modifier = Modifier.size(if (compact) 46.dp else 54.dp)
+                ) {
+                    AsyncImage(
+                        model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${favorite.cid}/PNG?record_type=2d&image_size=small",
+                        contentDescription = "Structure of ${favorite.name}",
+                        modifier = Modifier.fillMaxSize().padding(4.dp),
+                        contentScale = ContentScale.Fit
+                    )
+                }
+                IconButton(
+                    onClick = { onDelete(favorite.cid) },
+                    modifier = Modifier.size(if (compact) 28.dp else 30.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Delete,
+                        contentDescription = "Remove",
+                        tint = MaterialTheme.colorScheme.error.copy(0.62f),
+                        modifier = Modifier.size(if (compact) 16.dp else 17.dp)
+                    )
+                }
+            }
+
+            Text(
+                favorite.name,
+                style = if (compact) MaterialTheme.typography.bodySmall else MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                letterSpacing = 0.sp
+            )
+
+            if (favorite.formula.isNotBlank()) {
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colorScheme.primary.copy(0.08f),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.14f))
+                ) {
+                    Text(
+                        toSubscriptFormula(favorite.formula),
+                        modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = FontFamily.Monospace,
+                        color = MaterialTheme.colorScheme.primary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+
+            Text(
+                "CID ${favorite.cid}",
+                style = MaterialTheme.typography.labelSmall,
+                fontFamily = FontFamily.Monospace,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.42f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
+@Composable
+fun LibraryInline(
+    favorites: List<FavoriteCompound>,
+    downloads: List<DownloadedCompound>,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+    onSelectFavorite: (String) -> Unit,
+    onSelectDownload: (Long) -> Unit,
+    onDeleteFavorite: (Long) -> Unit,
+    onDeleteDownload: (Long) -> Unit,
+    onMoveFavorite: (Int, Int) -> Unit,
+    onSearchCompoundFromDatabase: (String) -> Unit = {}
+) {
+    var selectedSection by remember { mutableStateOf<LibraryTab?>(null) }
+    var homeViewMode by remember { mutableStateOf(LibraryViewMode.LIST) }
+    var itemViewMode by remember { mutableStateOf(LibraryViewMode.LIST) }
+    var filterQuery by remember { mutableStateOf("") }
+    var sortMode by remember { mutableStateOf(FavoritesSort.RECENT) }
+    var isReordering by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
+    val databaseEntries = remember(context) { ChemicalDatabase.load(context) }
+    val databaseSummary = remember(databaseEntries) { summarizeChemicalDatabase(databaseEntries) }
+
+    LaunchedEffect(selectedSection, favorites.size) {
+        if (selectedSection != LibraryTab.FAVORITES || favorites.size < 2) isReordering = false
+        filterQuery = ""
+        sortMode = FavoritesSort.RECENT
+        focusManager.clearFocus()
+    }
+
+    val libraryOptions = remember(favorites.size, downloads.size, databaseSummary) {
+        listOf(
+            LibraryOption(
+                tab = LibraryTab.FAVORITES,
+                icon = Icons.Default.Star,
+                title = "Favorites",
+                subtitle = "Saved quick links",
+                countLabel = favorites.size.toString()
+            ),
+            LibraryOption(
+                tab = LibraryTab.DOWNLOADS,
+                icon = Icons.Default.Download,
+                title = "Downloads",
+                subtitle = "Full offline copies",
+                countLabel = downloads.size.toString()
+            ),
+            LibraryOption(
+                tab = LibraryTab.DATABASE,
+                icon = Icons.AutoMirrored.Filled.MenuBook,
+                title = "Chemical Database",
+                subtitle = "Substances and references",
+                databaseSummary = databaseSummary
+            )
+        )
+    }
+
+    @Composable
+    fun SortAndFilterControls(filterLabel: String, matchCount: Int) {
+        OutlinedTextField(
+            value = filterQuery,
+            onValueChange = { filterQuery = it },
+            label = { Text(filterLabel) },
+            leadingIcon = { Icon(Icons.Default.Search, null) },
+            trailingIcon = {
+                if (filterQuery.isNotBlank()) {
+                    IconButton(onClick = { filterQuery = "" }) {
+                        Icon(Icons.Default.Close, contentDescription = "Clear filter")
+                    }
+                }
+            },
+            singleLine = true,
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier.fillMaxWidth()
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "Sort",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+                )
+                if (filterQuery.isNotBlank()) {
+                    Text(
+                        "$matchCount match${if (matchCount == 1) "" else "es"}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                    )
+                }
+            }
+            @OptIn(ExperimentalLayoutApi::class)
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                SortPill(label = "Recent", selected = sortMode == FavoritesSort.RECENT) {
+                    sortMode = FavoritesSort.RECENT
+                }
+                SortPill(label = "A-Z", selected = sortMode == FavoritesSort.NAME) {
+                    sortMode = FavoritesSort.NAME
+                }
+                SortPill(label = "Most atoms", selected = sortMode == FavoritesSort.ATOMS_DESC) {
+                    sortMode = FavoritesSort.ATOMS_DESC
+                }
+                SortPill(label = "Least atoms", selected = sortMode == FavoritesSort.ATOMS_ASC) {
+                    sortMode = FavoritesSort.ATOMS_ASC
+                }
+            }
+        }
+    }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(contentPadding),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            if (selectedSection == null) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Icon(Icons.Default.Inventory2, null, tint = MaterialTheme.colorScheme.primary.copy(0.7f), modifier = Modifier.size(18.dp))
+                    Text("Library", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                }
+                LibraryViewToggle(viewMode = homeViewMode, onViewModeChange = { homeViewMode = it })
+            } else {
+                TextButton(
+                    onClick = {
+                        selectedSection = null
+                        isReordering = false
+                    },
+                    contentPadding = PaddingValues(horizontal = 0.dp)
+                ) {
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, null, modifier = Modifier.size(16.dp))
+                    Spacer(Modifier.width(4.dp))
+                    Text("Back to Library")
+                }
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    if (selectedSection != LibraryTab.DATABASE) {
+                        LibraryViewToggle(viewMode = itemViewMode, onViewModeChange = { itemViewMode = it })
+                    }
+                    if (selectedSection == LibraryTab.FAVORITES && favorites.size > 1) {
+                    TextButton(
+                        onClick = {
+                            val next = !isReordering
+                            isReordering = next
+                            if (next) {
+                                filterQuery = ""
+                                sortMode = FavoritesSort.RECENT
+                                    itemViewMode = LibraryViewMode.LIST
+                                focusManager.clearFocus()
+                            }
+                        },
+                        contentPadding = PaddingValues(horizontal = 8.dp)
+                    ) {
+                        Text(if (isReordering) "Done" else "Reorder")
+                    }
+                    }
+                }
+            }
+        }
+
+        if (selectedSection == null) {
+            Text(
+                "Open saved compounds, offline copies, or built-in reference data.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+            )
+            if (homeViewMode == LibraryViewMode.LIST) {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    libraryOptions.forEach { option ->
+                        LibraryOptionListCard(
+                            icon = option.icon,
+                            title = option.title,
+                            subtitle = option.subtitle,
+                            countLabel = option.countLabel,
+                            databaseSummary = option.databaseSummary,
+                            onClick = { selectedSection = option.tab }
+                        )
+                    }
+                }
+            } else {
+                libraryOptions.chunked(2).forEach { rowItems ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        rowItems.forEach { option ->
+                            LibraryOptionCard(
+                                icon = option.icon,
+                                title = option.title,
+                                subtitle = option.subtitle,
+                                countLabel = option.countLabel,
+                                databaseSummary = option.databaseSummary,
+                                selected = false,
+                                modifier = Modifier.weight(1f),
+                                onClick = { selectedSection = option.tab }
+                            )
+                        }
+                        if (rowItems.size == 1) Spacer(Modifier.weight(1f))
+                    }
+                }
+            }
+            return@Column
+        }
+
+        val section = selectedSection ?: return@Column
+        val sectionTitle = when (section) {
+            LibraryTab.FAVORITES -> "Favorites"
+            LibraryTab.DOWNLOADS -> "Downloads"
+            LibraryTab.DATABASE -> "Chemical Database"
+        }
+        val sectionSubtitle = when (section) {
+            LibraryTab.FAVORITES -> "Saved quick links on this device."
+            LibraryTab.DOWNLOADS -> "Offline compound copies with saved structures and data."
+            LibraryTab.DATABASE -> "Browse substances, reactions, functional groups, and ions."
+        }
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Icon(
+                when (section) {
+                    LibraryTab.FAVORITES -> Icons.Default.Star
+                    LibraryTab.DOWNLOADS -> Icons.Default.Download
+                    LibraryTab.DATABASE -> Icons.AutoMirrored.Filled.MenuBook
+                },
+                null,
+                tint = MaterialTheme.colorScheme.primary.copy(0.7f),
+                modifier = Modifier.size(18.dp)
+            )
+            Column(verticalArrangement = Arrangement.spacedBy(1.dp)) {
+                Text(sectionTitle, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text(sectionSubtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+            }
+        }
+
+        if (isReordering) {
+            Text(
+                "Reorder mode: use the arrows to move favorite items.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
+            )
+        }
+
+        if (section == LibraryTab.DATABASE) {
+            ChemicalDatabaseTool(
+                modifier = Modifier.weight(1f),
+                onSearchCompound = onSearchCompoundFromDatabase
+            )
+            return@Column
+        }
+
+        val normalizedQuery = filterQuery.trim().lowercase(Locale.US)
+        if (section == LibraryTab.FAVORITES) {
+            val filteredFavorites = remember(favorites, normalizedQuery, sortMode) {
+                val base = if (normalizedQuery.isBlank()) {
+                    favorites
+                } else {
+                    favorites.filter { fav ->
+                        fav.name.lowercase(Locale.US).contains(normalizedQuery) ||
+                            fav.formula.lowercase(Locale.US).contains(normalizedQuery) ||
+                            fav.iupacName.lowercase(Locale.US).contains(normalizedQuery) ||
+                            fav.cid.toString().contains(normalizedQuery) ||
+                            fav.molecularWeight.lowercase(Locale.US).contains(normalizedQuery)
+                    }
+                }
+                when (sortMode) {
+                    FavoritesSort.NAME -> base.sortedBy { it.name.lowercase(Locale.US) }
+                    FavoritesSort.ATOMS_DESC -> base.sortedWith(
+                        compareByDescending<FavoriteCompound> { countAtomsInFormula(it.formula) }
+                            .thenBy { it.name.lowercase(Locale.US) }
+                    )
+                    FavoritesSort.ATOMS_ASC -> base.sortedWith(
+                        compareBy<FavoriteCompound> { countAtomsInFormula(it.formula) }
+                            .thenBy { it.name.lowercase(Locale.US) }
+                    )
+                    FavoritesSort.RECENT -> base
+                }
+            }
+            val displayFavorites = if (isReordering) favorites else filteredFavorites
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                if (favorites.isEmpty()) {
+                    LibraryEmptyState(
+                        icon = Icons.Default.Star,
+                        title = "No favorites yet",
+                        subtitle = "Tap the star icon on any compound"
+                    )
+                } else {
+                    if (!isReordering) SortAndFilterControls("Filter favorites", filteredFavorites.size)
+                    if (displayFavorites.isEmpty()) {
+                        LibraryEmptyState(
+                            icon = Icons.Default.Search,
+                            title = "No matches found",
+                            subtitle = "Try a different name, formula, or CID."
+                        )
+                    } else if (itemViewMode == LibraryViewMode.LIST || isReordering) {
+                        displayFavorites.forEachIndexed { index, fav ->
+                            FavoriteCard(
+                                favorite = fav,
+                                onSelect = onSelectFavorite,
+                                onDelete = onDeleteFavorite,
+                                enableSelect = !isReordering,
+                                showReorderControls = isReordering,
+                                canMoveUp = isReordering && index > 0,
+                                canMoveDown = isReordering && index < displayFavorites.lastIndex,
+                                onMoveUp = { if (isReordering && index > 0) onMoveFavorite(index, index - 1) },
+                                onMoveDown = { if (isReordering && index < displayFavorites.lastIndex) onMoveFavorite(index, index + 1) }
+                            )
+                        }
+                    } else {
+                        displayFavorites.chunked(2).forEach { rowItems ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                rowItems.forEach { fav ->
+                                    LibraryGridCard(
+                                        favorite = fav,
+                                        onSelect = onSelectFavorite,
+                                        onDelete = onDeleteFavorite,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                }
+                                if (rowItems.size == 1) Spacer(Modifier.weight(1f))
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            val filteredDownloads = remember(downloads, normalizedQuery, sortMode) {
+                val base = if (normalizedQuery.isBlank()) {
+                    downloads
+                } else {
+                    downloads.filter { item ->
+                        item.name.lowercase(Locale.US).contains(normalizedQuery) ||
+                            item.formula.lowercase(Locale.US).contains(normalizedQuery) ||
+                            item.iupacName.lowercase(Locale.US).contains(normalizedQuery) ||
+                            item.cid.toString().contains(normalizedQuery) ||
+                            item.molecularWeight.lowercase(Locale.US).contains(normalizedQuery)
+                    }
+                }
+                when (sortMode) {
+                    FavoritesSort.NAME -> base.sortedBy { it.name.lowercase(Locale.US) }
+                    FavoritesSort.ATOMS_DESC -> base.sortedWith(
+                        compareByDescending<DownloadedCompound> { countAtomsInFormula(it.formula) }
+                            .thenBy { it.name.lowercase(Locale.US) }
+                    )
+                    FavoritesSort.ATOMS_ASC -> base.sortedWith(
+                        compareBy<DownloadedCompound> { countAtomsInFormula(it.formula) }
+                            .thenBy { it.name.lowercase(Locale.US) }
+                    )
+                    FavoritesSort.RECENT -> base
+                }
+            }
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                if (downloads.isEmpty()) {
+                    LibraryEmptyState(
+                        icon = Icons.Default.Download,
+                        title = "No downloads yet",
+                        subtitle = "Tap the download icon under the bookmark on any compound"
+                    )
+                } else {
+                    SortAndFilterControls("Filter downloads", filteredDownloads.size)
+                    if (filteredDownloads.isEmpty()) {
+                        LibraryEmptyState(
+                            icon = Icons.Default.Search,
+                            title = "No matches found",
+                            subtitle = "Try a different name, formula, or CID."
+                        )
+                    } else if (itemViewMode == LibraryViewMode.LIST) {
+                        filteredDownloads.forEach { item ->
+                            FavoriteCard(
+                                favorite = item.toFavoriteCardData(),
+                                onSelect = { onSelectDownload(item.cid) },
+                                onDelete = onDeleteDownload
+                            )
+                        }
+                    } else {
+                        filteredDownloads.chunked(2).forEach { rowItems ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                rowItems.forEach { item ->
+                                    LibraryGridCard(
+                                        favorite = item.toFavoriteCardData(),
+                                        onSelect = { onSelectDownload(item.cid) },
+                                        onDelete = onDeleteDownload,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                }
+                                if (rowItems.size == 1) Spacer(Modifier.weight(1f))
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -56,6 +56,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.furthersecrets.chemsearch.BuildConfig
 import com.furthersecrets.chemsearch.R
 import com.furthersecrets.chemsearch.data.AppColorScheme
 import com.furthersecrets.chemsearch.data.DescSource
@@ -190,9 +191,9 @@ private fun WelcomeIntroStage(logoFrame: Color) {
             )
         }
 
-        WelcomeTitle(
-            title = "ChemSearch",
-            subtitle = "CHEMISTRY SIMPLIFIED",
+        WelcomeIntroTitle(
+            versionName = BuildConfig.VERSION_NAME,
+            tagline = "CHEMISTRY SIMPLIFIED",
             body = "Search compounds, inspect structures, save useful results, and use practical chemistry tools in one native Android app."
         )
 
@@ -318,6 +319,59 @@ private fun WelcomeDescriptionStage(
                 Text("Configure AI provider", fontWeight = FontWeight.SemiBold)
             }
         }
+    }
+}
+
+@Composable
+private fun WelcomeIntroTitle(
+    versionName: String,
+    tagline: String,
+    body: String
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(5.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "ChemSearch",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.ExtraBold,
+                color = MaterialTheme.colorScheme.onBackground,
+                textAlign = TextAlign.Center
+            )
+            Surface(
+                shape = RoundedCornerShape(999.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.62f),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.18f))
+            ) {
+                Text(
+                    "v$versionName",
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.58f),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+        Text(
+            text = tagline,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.primary,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 1.5.sp,
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = body,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.68f),
+            textAlign = TextAlign.Center
+        )
     }
 }
 

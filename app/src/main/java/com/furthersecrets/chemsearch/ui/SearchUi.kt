@@ -5,14 +5,17 @@ import android.content.ClipboardManager
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Base64
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -35,6 +38,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -245,18 +249,21 @@ fun SuggestionsDropdown(suggestions: List<String>, onSelect: (String) -> Unit) {
 
 @Composable
 fun HistorySection(
-    history: List<String>,
+    recentSearches: List<RecentSearch>,
     onSelect: (String) -> Unit,
     onClear: () -> Unit,
-    onDelete: (String) -> Unit
+    onDelete: (String) -> Unit,
+    onTogglePin: (String) -> Unit
 ) {
     var filterQuery by remember { mutableStateOf("") }
     var showClearConfirm by remember { mutableStateOf(false) }
     val normalizedQuery = filterQuery.trim().lowercase(Locale.US)
-    val filteredHistory = remember(history, normalizedQuery) {
-        if (normalizedQuery.isBlank()) history else history.filter { it.lowercase(Locale.US).contains(normalizedQuery) }
+    val filteredSearches = remember(recentSearches, normalizedQuery) {
+        if (normalizedQuery.isBlank()) recentSearches
+        else recentSearches.filter { it.query.lowercase(Locale.US).contains(normalizedQuery) }
     }
-    val showControls = history.size >= 3
+    val groupedSearches = remember(filteredSearches) { groupRecentSearches(filteredSearches) }
+    val showControls = recentSearches.size >= 3
     val compact = LocalCompactMode.current
 
     if (showClearConfirm) {
@@ -279,7 +286,7 @@ fun HistorySection(
         )
     }
 
-    if (history.isEmpty()) {
+    if (recentSearches.isEmpty()) {
         @Composable
         fun SuggestionPill(label: String, onClick: () -> Unit) {
             Surface(
@@ -382,7 +389,7 @@ fun HistorySection(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    "(${history.size} saved)",
+                    "(${recentSearches.size} saved)",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
                     maxLines = 1,
@@ -422,7 +429,7 @@ fun HistorySection(
             )
         }
 
-        if (filteredHistory.isEmpty()) {
+        if (filteredSearches.isEmpty()) {
             Column(
                 modifier = Modifier.fillMaxWidth().padding(vertical = if (compact) 8.dp else 12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -444,47 +451,65 @@ fun HistorySection(
                 }
             }
         } else {
-            filteredHistory.forEachIndexed { index, item ->
-                val display = item.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString() }
-                Card(
-                    modifier = Modifier.fillMaxWidth().clickable { onSelect(item) },
-                    shape = RoundedCornerShape(if (compact) 12.dp else 14.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(
-                            horizontal = if (compact) 10.dp else 14.dp,
-                            vertical = if (compact) 8.dp else 12.dp
-                        ),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(if (compact) 10.dp else 12.dp)
+            groupedSearches.forEach { group ->
+                Text(
+                    group.label.uppercase(Locale.US),
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 0.8.sp,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.45f),
+                    modifier = Modifier.padding(top = if (compact) 2.dp else 4.dp)
+                )
+                group.searches.forEach { item ->
+                    val display = item.query.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString() }
+                    Card(
+                        modifier = Modifier.fillMaxWidth().clickable { onSelect(item.query) },
+                        shape = RoundedCornerShape(if (compact) 12.dp else 14.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                        border = if (item.pinned) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.22f)) else null
                     ) {
-                        Surface(
-                            shape = RoundedCornerShape(6.dp),
-                            color = MaterialTheme.colorScheme.primary.copy(0.12f)
+                        Row(
+                            modifier = Modifier.padding(
+                                horizontal = if (compact) 10.dp else 14.dp,
+                                vertical = if (compact) 8.dp else 12.dp
+                            ),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)
                         ) {
+                            Surface(
+                                shape = RoundedCornerShape(6.dp),
+                                color = MaterialTheme.colorScheme.primary.copy(if (item.pinned) 0.16f else 0.10f)
+                            ) {
+                                Icon(
+                                    if (item.pinned) Icons.Default.Star else Icons.Default.History,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.padding(5.dp).size(if (compact) 14.dp else 16.dp)
+                                )
+                            }
                             Text(
-                                "${index + 1}",
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                                style = MaterialTheme.typography.labelSmall,
-                                fontFamily = FontFamily.Monospace,
-                                color = MaterialTheme.colorScheme.primary
+                                display,
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.weight(1f),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
-                        }
-                        Text(
-                            display,
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.weight(1f),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        IconButton(onClick = { onDelete(item) }, modifier = Modifier.size(if (compact) 28.dp else 32.dp)) {
-                            Icon(
-                                Icons.Default.DeleteOutline,
-                                contentDescription = "Remove",
-                                tint = MaterialTheme.colorScheme.error.copy(0.6f),
-                                modifier = Modifier.size(if (compact) 16.dp else 18.dp)
-                            )
+                            IconButton(onClick = { onTogglePin(item.query) }, modifier = Modifier.size(if (compact) 28.dp else 32.dp)) {
+                                Icon(
+                                    if (item.pinned) Icons.Default.Star else Icons.Default.StarBorder,
+                                    contentDescription = if (item.pinned) "Unpin" else "Pin",
+                                    tint = if (item.pinned) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.42f),
+                                    modifier = Modifier.size(if (compact) 16.dp else 18.dp)
+                                )
+                            }
+                            IconButton(onClick = { onDelete(item.query) }, modifier = Modifier.size(if (compact) 28.dp else 32.dp)) {
+                                Icon(
+                                    Icons.Default.DeleteOutline,
+                                    contentDescription = "Remove",
+                                    tint = MaterialTheme.colorScheme.error.copy(0.6f),
+                                    modifier = Modifier.size(if (compact) 16.dp else 18.dp)
+                                )
+                            }
                         }
                     }
                 }
@@ -625,6 +650,9 @@ fun CompoundHeader(
     state: ChemUiState,
     isFavorite: Boolean,
     onToggleFavorite: () -> Unit,
+    isDownloaded: Boolean = false,
+    isSavingOffline: Boolean = false,
+    onDownloadOffline: () -> Unit = {},
     onFormulaClick: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
@@ -693,6 +721,26 @@ fun CompoundHeader(
                     )
                 }
             }
+        }
+    }
+
+    @Composable
+    fun StatePill(label: String) {
+        Surface(
+            shape = RoundedCornerShape(999.dp),
+            color = MaterialTheme.colorScheme.surfaceVariant,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.25f))
+        ) {
+            Text(
+                label,
+                modifier = Modifier.padding(
+                    horizontal = if (compact) 7.dp else 8.dp,
+                    vertical = if (compact) 2.dp else 3.dp
+                ),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.6f),
+                fontWeight = FontWeight.SemiBold
+            )
         }
     }
 
@@ -767,40 +815,69 @@ fun CompoundHeader(
                         onFormulaClick = onFormulaClick
                     )
                 }
-                if (state.isCached) {
-                    Surface(
-                        shape = RoundedCornerShape(999.dp),
-                        color = MaterialTheme.colorScheme.surfaceVariant,
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.25f)),
-                        modifier = Modifier.padding(top = if (compact) 2.dp else 4.dp)
+                if (state.isCached || state.isOfflineDownload) {
+                    Row(
+                        modifier = Modifier.padding(top = if (compact) 2.dp else 4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            "Cached",
-                            modifier = Modifier.padding(
-                                horizontal = if (compact) 7.dp else 8.dp,
-                                vertical = if (compact) 2.dp else 3.dp
-                            ),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurface.copy(0.6f),
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        if (state.isCached) {
+                            StatePill("Cached")
+                        }
+                        if (state.isOfflineDownload) {
+                            StatePill("Offline")
+                        }
                     }
                 }
             }
-            Surface(
-                onClick = onToggleFavorite,
-                shape = RoundedCornerShape(if (compact) 12.dp else 14.dp),
-                color = MaterialTheme.colorScheme.primary.copy(if (isFavorite) 0.16f else 0.08f),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(if (isFavorite) 0.35f else 0.16f)),
-                modifier = Modifier.size(if (compact) 42.dp else 48.dp)
+            Column(
+                verticalArrangement = Arrangement.spacedBy(if (compact) 7.dp else 8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(
-                        imageVector = if (isFavorite) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
-                        contentDescription = if (isFavorite) "Remove favorite" else "Add favorite",
-                        tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.45f),
-                        modifier = Modifier.size(if (compact) 22.dp else 24.dp)
-                    )
+                Surface(
+                    onClick = onToggleFavorite,
+                    shape = RoundedCornerShape(if (compact) 12.dp else 14.dp),
+                    color = MaterialTheme.colorScheme.primary.copy(if (isFavorite) 0.16f else 0.08f),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(if (isFavorite) 0.35f else 0.16f)),
+                    modifier = Modifier.size(if (compact) 42.dp else 48.dp)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = if (isFavorite) Icons.Default.Star else Icons.Default.StarBorder,
+                            contentDescription = if (isFavorite) "Remove favorite" else "Add favorite",
+                            tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.45f),
+                            modifier = Modifier.size(if (compact) 22.dp else 24.dp)
+                        )
+                    }
+                }
+                Surface(
+                    onClick = {
+                        if (!isSavingOffline) {
+                            onDownloadOffline()
+                            Toast.makeText(context, "Saving offline copy...", Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    enabled = !isSavingOffline,
+                    shape = RoundedCornerShape(if (compact) 12.dp else 14.dp),
+                    color = MaterialTheme.colorScheme.primary.copy(if (isDownloaded) 0.16f else 0.08f),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(if (isDownloaded) 0.35f else 0.16f)),
+                    modifier = Modifier.size(if (compact) 42.dp else 48.dp)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        if (isSavingOffline) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(if (compact) 17.dp else 19.dp),
+                                strokeWidth = 2.dp
+                            )
+                        } else {
+                            Icon(
+                                Icons.Default.Download,
+                                contentDescription = if (isDownloaded) "Update offline download" else "Download for offline use",
+                                tint = if (isDownloaded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.45f),
+                                modifier = Modifier.size(if (compact) 21.dp else 23.dp)
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -962,6 +1039,39 @@ private suspend fun saveSdfFile(context: Context, compoundName: String, sdfData:
 }
 
 @Composable
+private fun StructurePngImage(
+    cid: Long,
+    offlinePngBase64: String?,
+    contentDescription: String,
+    modifier: Modifier = Modifier
+) {
+    val offlineBitmap = remember(offlinePngBase64) {
+        offlinePngBase64?.let { encoded ->
+            runCatching {
+                val bytes = Base64.decode(encoded, Base64.DEFAULT)
+                BitmapFactory.decodeByteArray(bytes, 0, bytes.size)?.asImageBitmap()
+            }.getOrNull()
+        }
+    }
+
+    if (offlineBitmap != null) {
+        Image(
+            bitmap = offlineBitmap,
+            contentDescription = contentDescription,
+            modifier = modifier,
+            contentScale = ContentScale.Fit
+        )
+    } else {
+        AsyncImage(
+            model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/$cid/PNG?image_size=large",
+            contentDescription = contentDescription,
+            modifier = modifier,
+            contentScale = ContentScale.Fit
+        )
+    }
+}
+
+@Composable
 fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -1052,6 +1162,7 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                 Surface(
                     shape = RoundedCornerShape(50),
                     color = MaterialTheme.colorScheme.outline.copy(0.12f),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.24f)),
                     modifier = Modifier.weight(1f)
                 ) {
                     Row(
@@ -1063,6 +1174,11 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                             onClick = { vm.setTab(MolTab.TWO_D) },
                             shape = RoundedCornerShape(50),
                             color = if (twoDActive) MaterialTheme.colorScheme.primary else Color.Transparent,
+                            border = BorderStroke(
+                                1.dp,
+                                if (twoDActive) MaterialTheme.colorScheme.primary.copy(0.45f)
+                                else MaterialTheme.colorScheme.onSurface.copy(0.18f)
+                            ),
                             modifier = Modifier.weight(1f)
                         ) {
                             Text(
@@ -1079,6 +1195,11 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                             onClick = { vm.setTab(MolTab.THREE_D) },
                             shape = RoundedCornerShape(50),
                             color = if (threeDActive) MaterialTheme.colorScheme.primary else Color.Transparent,
+                            border = BorderStroke(
+                                1.dp,
+                                if (threeDActive) MaterialTheme.colorScheme.primary.copy(0.45f)
+                                else MaterialTheme.colorScheme.onSurface.copy(0.18f)
+                            ),
                             modifier = Modifier.weight(1f)
                         ) {
                             Text(
@@ -1122,7 +1243,11 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                         var showZoom by remember { mutableStateOf(false) }
 
                         if (showZoom) {
-                            TwoDZoomDialog(cid = cid, onDismiss = { showZoom = false })
+                            TwoDZoomDialog(
+                                cid = cid,
+                                offlinePngBase64 = state.offline2dPngBase64,
+                                onDismiss = { showZoom = false }
+                            )
                         }
 
                         Box(
@@ -1142,13 +1267,13 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                                 color = Color.White,
                                 shadowElevation = 1.dp
                             ) {
-                                AsyncImage(
-                                    model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/$cid/PNG?image_size=large",
+                                StructurePngImage(
+                                    cid = cid,
+                                    offlinePngBase64 = state.offline2dPngBase64,
                                     contentDescription = "2D Structure",
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .padding(if (compact) 14.dp else 18.dp),
-                                    contentScale = ContentScale.Fit
+                                        .padding(if (compact) 14.dp else 18.dp)
                                 )
                             }
                             Row(
@@ -1246,7 +1371,11 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
 }
 
 @Composable
-fun TwoDZoomDialog(cid: Long, onDismiss: () -> Unit) {
+fun TwoDZoomDialog(
+    cid: Long,
+    offlinePngBase64: String? = null,
+    onDismiss: () -> Unit
+) {
     var scale by remember { androidx.compose.runtime.mutableFloatStateOf(1f) }
     var offsetX by remember { androidx.compose.runtime.mutableFloatStateOf(0f) }
     var offsetY by remember { androidx.compose.runtime.mutableFloatStateOf(0f) }
@@ -1287,11 +1416,11 @@ fun TwoDZoomDialog(cid: Long, onDismiss: () -> Unit) {
                         interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
                     ) { }
             ) {
-                AsyncImage(
-                    model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/$cid/PNG?image_size=large",
+                StructurePngImage(
+                    cid = cid,
+                    offlinePngBase64 = offlinePngBase64,
                     contentDescription = "2D Structure (zoom)",
-                    modifier = Modifier.fillMaxSize().padding(16.dp),
-                    contentScale = ContentScale.Fit
+                    modifier = Modifier.fillMaxSize().padding(16.dp)
                 )
             }
 
@@ -1987,21 +2116,82 @@ fun CardSectionHeader(label: String, onInfoClick: () -> Unit) {
     }
 }
 
-fun toSubscriptFormula(formula: String): String {
-    return formula.toFormulaSubscript()
-}
+private val superscriptMap = mapOf(
+    '0' to '⁰', '1' to '¹', '2' to '²', '3' to '³', '4' to '⁴',
+    '5' to '⁵', '6' to '⁶', '7' to '⁷', '8' to '⁸', '9' to '⁹',
+    '+' to '⁺', '-' to '⁻'
+)
 
 private val formulaWrapGroupRegex = Regex("[A-Z][a-z]?\\d*")
+private val caretChargeRegex = Regex("""\^([0-9]*[+-]+|[+-]+[0-9]*)$""")
+private val signThenDigitsChargeRegex = Regex("""([+-][0-9]+)$""")
+private val digitsThenSignChargeRegex = Regex("""([0-9]+[+-]+)$""")
+private val signOnlyChargeRegex = Regex("""([+-]+)$""")
+private val singleElementRegex = Regex("""^[A-Z][a-z]?$""")
+
+private fun String.toFormulaDisplay(): String {
+    val text = trim()
+    if (text.isEmpty()) return this
+
+    fun superscriptCharge(charge: String): String {
+        val normalized = if (charge.length > 1 && (charge.first() == '+' || charge.first() == '-') && charge.drop(1).all { it.isDigit() }) {
+            charge.drop(1) + charge.first()
+        } else {
+            charge
+        }
+        return normalized.map { superscriptMap[it] ?: it }.joinToString("")
+    }
+
+    caretChargeRegex.find(text)?.takeIf { it.range.last == text.lastIndex }?.let { match ->
+        val base = text.substring(0, match.range.first)
+        return base.toFormulaSubscript() + superscriptCharge(match.groupValues[1])
+    }
+
+    signThenDigitsChargeRegex.find(text)?.takeIf { it.range.last == text.lastIndex }?.let { match ->
+        val base = text.substring(0, match.range.first)
+        return base.toFormulaSubscript() + superscriptCharge(match.value)
+    }
+
+    digitsThenSignChargeRegex.find(text)?.takeIf { it.range.last == text.lastIndex }?.let { match ->
+        val baseBeforeCharge = text.substring(0, match.range.first)
+        val shouldTreatDigitsAsCharge = baseBeforeCharge.lastOrNull() == ')' ||
+            baseBeforeCharge.lastOrNull() == ']' ||
+            singleElementRegex.matches(baseBeforeCharge)
+        if (shouldTreatDigitsAsCharge) {
+            return baseBeforeCharge.toFormulaSubscript() + superscriptCharge(match.value)
+        }
+    }
+
+    signOnlyChargeRegex.find(text)?.takeIf { it.range.last == text.lastIndex }?.let { match ->
+        val base = text.substring(0, match.range.first)
+        return base.toFormulaSubscript() + superscriptCharge(match.value)
+    }
+
+    return text.toFormulaSubscript()
+}
+
+fun toSubscriptFormula(formula: String): String {
+    return formula.toFormulaDisplay()
+}
 
 fun toWrappedSubscriptFormula(formula: String): String {
+    val trimmed = formula.trim()
+    val hasChargeTail = listOf(
+        caretChargeRegex,
+        signThenDigitsChargeRegex,
+        digitsThenSignChargeRegex,
+        signOnlyChargeRegex
+    ).any { regex -> regex.find(trimmed)?.range?.last == trimmed.lastIndex }
+    if (hasChargeTail) return formula.toFormulaDisplay()
+
     val builder = StringBuilder()
     var lastIndex = 0
 
     formulaWrapGroupRegex.findAll(formula).forEach { match ->
         if (match.range.first > lastIndex) {
-            builder.append(formula.substring(lastIndex, match.range.first).toFormulaSubscript())
+            builder.append(formula.substring(lastIndex, match.range.first).toFormulaDisplay())
         }
-        builder.append(match.value.toFormulaSubscript())
+        builder.append(match.value.toFormulaDisplay())
         if (match.range.last < formula.lastIndex) {
             builder.append('\u200B')
         }
@@ -2009,7 +2199,7 @@ fun toWrappedSubscriptFormula(formula: String): String {
     }
 
     if (lastIndex < formula.length) {
-        builder.append(formula.substring(lastIndex).toFormulaSubscript())
+        builder.append(formula.substring(lastIndex).toFormulaDisplay())
     }
 
     return builder.toString().trim('\u200B')

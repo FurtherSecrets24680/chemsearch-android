@@ -10,6 +10,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.util.Base64
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -17,6 +18,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.furthersecrets.chemsearch.data.*
+import com.furthersecrets.chemsearch.data.local.ChemSearchDatabase
+import com.furthersecrets.chemsearch.data.local.OfflineDownloadRepository
+import com.furthersecrets.chemsearch.data.settings.AppSettingsStore
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.io.IOException
@@ -24,17 +28,36 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import com.furthersecrets.chemsearch.ui.DebugLog
+import okhttp3.Request
 
 class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
     private val prefs = application.getSharedPreferences("chemsearch_prefs", Context.MODE_PRIVATE)
 
     private val gson = Gson()
+    private val settingsStore = AppSettingsStore(application)
+    private val offlineDownloadRepository = OfflineDownloadRepository(
+        dao = ChemSearchDatabase.getInstance(application).downloadedCompoundDao(),
+        prefs = prefs,
+        gson = gson
+    )
     private val _favorites = MutableStateFlow<List<FavoriteCompound>>(loadFavorites())
     val favorites: StateFlow<List<FavoriteCompound>> = _favorites.asStateFlow()
 
+    private val _recentSearches = MutableStateFlow<List<RecentSearch>>(loadRecentSearches())
+    val recentSearches: StateFlow<List<RecentSearch>> = _recentSearches.asStateFlow()
+
+    private val _downloads = MutableStateFlow<List<DownloadedCompound>>(loadDownloads())
+    val downloads: StateFlow<List<DownloadedCompound>> = _downloads.asStateFlow()
+
     private val _isFavorite = MutableStateFlow(false)
     val isFavorite: StateFlow<Boolean> = _isFavorite.asStateFlow()
+
+    private val _isDownloaded = MutableStateFlow(false)
+    val isDownloaded: StateFlow<Boolean> = _isDownloaded.asStateFlow()
+
+    private val _isSavingOffline = MutableStateFlow(false)
+    val isSavingOffline: StateFlow<Boolean> = _isSavingOffline.asStateFlow()
 
     private val _uiState = MutableStateFlow(ChemUiState())
     val uiState: StateFlow<ChemUiState> = _uiState.asStateFlow()
@@ -86,7 +109,30 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     init {
         DebugLog.verbose = prefs.getBoolean("debug_verbose", false)
         val savedProvider = AiProvider.entries.firstOrNull { it.name == prefs.getString("ai_provider", null) } ?: AiProvider.GEMINI
-        _uiState.update { it.copy(history = loadHistory(), aiProvider = savedProvider) }
+        _uiState.update { it.copy(history = recentQueries(), aiProvider = savedProvider) }
+        viewModelScope.launch {
+            settingsStore.migrateSharedPreferencesIfNeeded(prefs)
+            settingsStore.settings.collect { settings ->
+                _isDarkTheme.value = settings.isDarkTheme
+                _colorScheme.value = settings.colorScheme
+                _autoSuggest.value = settings.autoSuggest
+                _compactMode.value = settings.compactMode
+                _defaultDescSource.value = settings.descSource
+                _cacheDirPath.value = settings.cacheDir
+                _updateNotificationsEnabled.value = settings.updateNotificationsEnabled
+                _showWelcome.value = !settings.welcomeSkipped
+            }
+        }
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                offlineDownloadRepository.migrateLegacyDownloadsIfNeeded()
+            }
+            offlineDownloadRepository.downloads
+                .catch { e -> DebugLog.e("ChemSearch", "Download database read failed: ${e.message}") }
+                .collect { downloads ->
+                    _downloads.value = downloads
+                }
+        }
         viewModelScope.launch {
             combine(
                 _uiState.map { it.cid }.distinctUntilChanged(),
@@ -99,6 +145,18 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     _isFavorite.value = isFavoriteNow
                 }
         }
+        viewModelScope.launch {
+            combine(
+                _uiState.map { it.cid }.distinctUntilChanged(),
+                _downloads
+            ) { cid, downloads ->
+                cid?.let { selectedCid -> downloads.any { it.cid == selectedCid } } ?: false
+            }
+                .distinctUntilChanged()
+                .collect { isDownloadedNow ->
+                    _isDownloaded.value = isDownloadedNow
+                }
+        }
         refreshCacheSizeAsync()
         checkForUpdates()
     }
@@ -108,18 +166,21 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun skipWelcome() {
         _showWelcome.value = false
         prefs.edit().putBoolean(PREF_WELCOME_SKIPPED, true).apply()
+        viewModelScope.launch { settingsStore.setWelcomeSkipped(true) }
         DebugLog.d("ChemSearch", "Welcome screen skipped")
     }
 
     fun showWelcomeAgain() {
         prefs.edit().putBoolean(PREF_WELCOME_SKIPPED, false).apply()
         _showWelcome.value = true
+        viewModelScope.launch { settingsStore.setWelcomeSkipped(false) }
         DebugLog.d("ChemSearch", "Welcome screen opened from debug settings")
     }
 
     fun setUpdateNotificationsEnabled(enabled: Boolean) {
         _updateNotificationsEnabled.value = enabled
         prefs.edit().putBoolean(PREF_UPDATE_NOTIFICATIONS, enabled).apply()
+        viewModelScope.launch { settingsStore.setUpdateNotificationsEnabled(enabled) }
         if (enabled) checkForUpdates()
     }
 
@@ -232,16 +293,91 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         prefs.edit().putString("favorites", gson.toJson(list)).apply()
     }
 
+    fun saveCurrentCompoundOffline() {
+        val startState = _uiState.value
+        val cid = startState.cid ?: return
+        if (!startState.hasResult || _isSavingOffline.value) return
+
+        _isSavingOffline.value = true
+        viewModelScope.launch {
+            try {
+                val snapshot = buildOfflineSnapshot(startState)
+                val item = DownloadedCompound(
+                    cid = cid,
+                    name = snapshot.name,
+                    formula = snapshot.formula,
+                    molecularWeight = snapshot.weight,
+                    iupacName = snapshot.iupacName,
+                    state = snapshot,
+                    structurePngBase64 = snapshot.offline2dPngBase64
+                )
+                val updated = listOf(item) + _downloads.value.filterNot { it.cid == cid }
+                _downloads.value = updated
+                withContext(Dispatchers.IO) { offlineDownloadRepository.upsert(item) }
+                _isDownloaded.value = true
+                _uiState.update { current ->
+                    if (current.cid == cid) snapshot.copy(history = current.history) else current
+                }
+                DebugLog.d("ChemSearch", "Downloaded offline compound: ${snapshot.name} (CID $cid)")
+            } catch (e: Exception) {
+                DebugLog.e("ChemSearch", "Offline download failed for CID $cid: ${e.message}")
+                _uiState.update { it.copy(error = "Offline download failed: ${e.message ?: "unknown error"}") }
+            } finally {
+                _isSavingOffline.value = false
+            }
+        }
+    }
+
+    fun openDownloadedCompound(cid: Long) {
+        val downloaded = _downloads.value.firstOrNull { it.cid == cid } ?: return
+        _query.value = downloaded.name
+        saveToHistory(downloaded.name)
+        _uiState.value = downloaded.state.copy(
+            isLoading = false,
+            error = null,
+            hasResult = true,
+            suggestions = emptyList(),
+            history = recentQueries(),
+            isCached = false,
+            isOfflineDownload = true,
+            isLoadingDesc = false,
+            isLoadingSdf = false,
+            isLoadingSafety = false,
+            isLoadingSynonyms = false
+        )
+        DebugLog.d("ChemSearch", "Opened downloaded compound: ${downloaded.name} (CID $cid)")
+    }
+
+    fun deleteDownload(cid: Long) {
+        val updated = _downloads.value.filterNot { it.cid == cid }
+        _downloads.value = updated
+        viewModelScope.launch(Dispatchers.IO) { offlineDownloadRepository.delete(cid) }
+        if (_uiState.value.cid == cid) _isDownloaded.value = false
+        DebugLog.d("ChemSearch", "Deleted offline download for CID $cid")
+    }
+
+    private fun loadDownloads(): List<DownloadedCompound> {
+        val json = prefs.getString("downloads", null) ?: return emptyList()
+        return try {
+            val type = object : TypeToken<List<DownloadedCompound>>() {}.type
+            gson.fromJson(json, type) ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
     fun toggleTheme() {
         val next = !_isDarkTheme.value
         _isDarkTheme.value = next
         prefs.edit().putBoolean("dark_theme", next).apply()
+        viewModelScope.launch { settingsStore.setDarkTheme(next) }
         DebugLog.d("ChemSearch", "Theme → ${if (next) "dark" else "light"}")
     }
 
     fun setColorScheme(scheme: AppColorScheme) {
         _colorScheme.value = scheme
         prefs.edit().putString("color_scheme", scheme.name).apply()
+        viewModelScope.launch { settingsStore.setColorScheme(scheme) }
         DebugLog.d("ChemSearch", "Color scheme → ${scheme.name}")
     }
 
@@ -249,6 +385,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         val next = !_autoSuggest.value
         _autoSuggest.value = next
         prefs.edit().putBoolean("auto_suggest", next).apply()
+        viewModelScope.launch { settingsStore.setAutoSuggest(next) }
         if (!next) _uiState.update { it.copy(suggestions = emptyList()) }
         DebugLog.d("ChemSearch", "Autosuggestions → ${if (next) "on" else "off"}")
     }
@@ -256,6 +393,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun setCompactMode(enabled: Boolean) {
         _compactMode.value = enabled
         prefs.edit().putBoolean("compact_mode", enabled).apply()
+        viewModelScope.launch { settingsStore.setCompactMode(enabled) }
         DebugLog.d("ChemSearch", "Compact mode → ${if (enabled) "on" else "off"}")
     }
 
@@ -288,13 +426,14 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }
         _favorites.value = loadFavorites()
         _showWelcome.value = !prefs.getBoolean(PREF_WELCOME_SKIPPED, false)
+        _recentSearches.value = loadRecentSearches()
 
         val provider = AiProvider.entries.firstOrNull { it.name == prefs.getString("ai_provider", null) }
             ?: AiProvider.GEMINI
         val source = getSavedDescSource()
         _uiState.update { current ->
             current.copy(
-                history = loadHistory(),
+                history = recentQueries(),
                 aiProvider = provider,
                 descSource = source,
                 suggestions = if (_autoSuggest.value) current.suggestions else emptyList()
@@ -362,6 +501,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         if (cleanPath.isBlank()) {
             prefs.edit().remove("cache_dir").apply()
             _cacheDirPath.value = ""
+            viewModelScope.launch { settingsStore.setCacheDir("") }
             refreshCacheSizeAsync()
             DebugLog.d("ChemSearch", "Cache dir reset to default")
             return true
@@ -384,6 +524,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
         prefs.edit().putString("cache_dir", cleanPath).apply()
         _cacheDirPath.value = cleanPath
+        viewModelScope.launch { settingsStore.setCacheDir(cleanPath) }
         refreshCacheSizeAsync()
         DebugLog.d("ChemSearch", "Cache dir set to: $cleanPath")
         return true
@@ -503,6 +644,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     suggestions = emptyList(),
                     hasResult = false,
                     isCached = false,
+                    isOfflineDownload = false,
+                    offline2dPngBase64 = null,
                     sdfData = null,
                     sdfSource = null,
                     sdfMessage = null,
@@ -520,11 +663,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                         isLoading = false,
                         hasResult = true,
                         isCached = true,
-                        history = loadHistory(),
+                        history = recentQueries(),
                         descSource = savedSource,
                         sdfData = null,
                         sdfSource = null,
                         sdfMessage = null,
+                        offline2dPngBase64 = null,
+                        isOfflineDownload = false,
                         activeTab = MolTab.TWO_D,
                         isLoadingSynonyms = false
                     )
@@ -555,12 +700,14 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                             isLoading = false,
                             hasResult = true,
                             isCached = true,
-                            history = loadHistory(),
+                            history = recentQueries(),
                             descSource = savedSource,
                             ghsData = cached.ghsData,
                             sdfData = null,
                             sdfSource = null,
                             sdfMessage = null,
+                            offline2dPngBase64 = null,
+                            isOfflineDownload = false,
                             activeTab = MolTab.TWO_D,
                             isLoadingSynonyms = false
                         )
@@ -632,7 +779,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     aiDescription = null,
                     descSource = savedSource,
                     elementalData = calcElementalData(formula),
-                    history = loadHistory(),
+                    history = recentQueries(),
                     activeTab = MolTab.TWO_D,
                     aiProvider = _uiState.value.aiProvider,
                     isCached = false,
@@ -836,6 +983,126 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    private data class OfflineSdfResult(
+        val sdf: String,
+        val source: SdfSource,
+        val message: String?
+    )
+
+    private suspend fun buildOfflineSnapshot(startState: ChemUiState): ChemUiState {
+        val cid = startState.cid ?: return startState
+        val latest = _uiState.value.takeIf { it.cid == cid } ?: startState
+        val synonyms = latest.synonyms.takeIf { it.size >= 10 } ?: fetchSynonyms(cid)
+        val casRegex = Regex("""^\d{1,7}-\d{2}-\d$""")
+        val pubDescription = latest.pubDescription ?: fetchPubChemDescription(cid)
+        val wikiDescription = latest.wikiDescription ?: fetchWikiDescriptionBlocking(latest.name)
+        val ghsData = latest.ghsData ?: fetchGhsDataBlocking(cid)
+        val sdfResult = fetchSdfForOffline(latest)
+        val pngBase64 = latest.offline2dPngBase64 ?: fetch2dStructurePngBase64(cid)
+
+        return latest.copy(
+            isLoading = false,
+            error = null,
+            hasResult = true,
+            suggestions = emptyList(),
+            synonyms = synonyms,
+            casNumber = synonyms.firstOrNull { casRegex.matches(it) } ?: latest.casNumber,
+            pubDescription = pubDescription,
+            wikiDescription = wikiDescription,
+            ghsData = ghsData,
+            sdfData = sdfResult?.sdf ?: latest.sdfData,
+            sdfSource = sdfResult?.source ?: latest.sdfSource,
+            sdfMessage = sdfResult?.message ?: latest.sdfMessage,
+            offline2dPngBase64 = pngBase64,
+            isOfflineDownload = true,
+            isLoadingDesc = false,
+            isLoadingSdf = false,
+            isLoadingSafety = false,
+            isLoadingSynonyms = false
+        )
+    }
+
+    private suspend fun fetchPubChemDescription(cid: Long): String? = withContext(Dispatchers.IO) {
+        runCatching {
+            ApiClient.pubChem.getDescription(cid)
+                .informationList
+                ?.information
+                ?.find { it.description != null }
+                ?.description
+                ?.let { el ->
+                    when {
+                        el.isJsonPrimitive -> el.asString
+                        el.isJsonArray -> el.asJsonArray.mapNotNull {
+                            runCatching { it.asString }.getOrNull()
+                        }.joinToString("\n\n")
+                        else -> null
+                    }
+                }
+        }.getOrNull()
+    }
+
+    private suspend fun fetchWikiDescriptionBlocking(name: String): String? = withContext(Dispatchers.IO) {
+        val cleanName = name.trim()
+        if (cleanName.isBlank()) return@withContext null
+        val titleCased = cleanName.split(" ")
+            .joinToString(" ") { word -> word.lowercase().replaceFirstChar { it.uppercase() } }
+        runCatching { ApiClient.wiki.getSummary(titleCased).extract }.getOrNull()
+            ?: runCatching { ApiClient.wiki.getSummary(cleanName.lowercase().replaceFirstChar { it.uppercase() }).extract }.getOrNull()
+    }
+
+    private suspend fun fetchGhsDataBlocking(cid: Long): GhsData? = withContext(Dispatchers.IO) {
+        runCatching {
+            parseGhsData(ApiClient.pubChemView.getSection(cid, "GHS Classification"))
+        }.getOrNull()
+    }
+
+    private suspend fun fetchSdfForOffline(state: ChemUiState): OfflineSdfResult? {
+        val cid = state.cid ?: return null
+        state.sdfData?.let { sdf ->
+            return OfflineSdfResult(sdf, state.sdfSource ?: SdfSource.PUBCHEM, state.sdfMessage)
+        }
+
+        val pubChemSdf = runCatching {
+            withContext(Dispatchers.IO) { ApiClient.pubChem.getSdf(cid).string() }
+        }.getOrNull()
+
+        pubChemSdf?.takeIf(::isUsableSdf)?.let { sdf ->
+            return OfflineSdfResult(sdf, SdfSource.PUBCHEM, null)
+        }
+
+        val candidates = buildSdfIdentifierCandidates(
+            smiles = state.smiles,
+            connectivitySmiles = state.connectivitySmiles,
+            inchi = state.inchi,
+            inchiKey = state.inchiKey
+        )
+        if (candidates.isEmpty()) return null
+
+        val fallback = runCatching {
+            withContext(Dispatchers.IO) {
+                fetchGeneratedSdfFromIdentifiers(candidates, expectedFormula = state.formula)
+            }
+        }.getOrNull()
+
+        return fallback?.let {
+            OfflineSdfResult(it.sdf, it.source, it.message)
+        }
+    }
+
+    private suspend fun fetch2dStructurePngBase64(cid: Long): String? = withContext(Dispatchers.IO) {
+        runCatching {
+            val request = Request.Builder()
+                .url("https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/$cid/PNG?image_size=large")
+                .header("User-Agent", "ChemSearch/1.0 (Android; github.com/FurtherSecrets24680)")
+                .build()
+            ApiClient.rawHttp.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) return@runCatching null
+                val bytes = response.body.bytes()
+                Base64.encodeToString(bytes, Base64.NO_WRAP)
+            }
+        }.getOrNull()
+    }
+
     fun clearSuggestions() = _uiState.update { it.copy(suggestions = emptyList()) }
     fun clearError() = _uiState.update { it.copy(error = null) }
 
@@ -845,7 +1112,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         _query.value = ""
         _uiState.update { current ->
             ChemUiState(
-                history = loadHistory(),
+            history = recentQueries(),
                 aiProvider = current.aiProvider,
                 descSource = getSavedDescSource(),
                 suggestions = emptyList()
@@ -992,34 +1259,85 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         AppColorScheme.entries.firstOrNull { it.name == prefs.getString("color_scheme", null) }
             ?: AppColorScheme.BLUE
 
-    private fun saveDescSource(source: DescSource) =
+    private fun saveDescSource(source: DescSource) {
         prefs.edit().putString("desc_source", source.name).apply()
+        viewModelScope.launch { settingsStore.setDescSource(source) }
+    }
 
     private fun loadHistory(): List<String> =
-        prefs.getString("history", "")?.split("||")?.filter { it.isNotBlank() } ?: emptyList()
+        prefs.getString(PREF_HISTORY, "")?.split("||")?.filter { it.isNotBlank() } ?: emptyList()
+
+    private fun loadRecentSearches(): List<RecentSearch> {
+        val json = prefs.getString(PREF_RECENT_SEARCHES, null)
+        val stored = if (json.isNullOrBlank()) {
+            emptyList()
+        } else {
+            runCatching {
+                val type = object : TypeToken<List<RecentSearch>>() {}.type
+                gson.fromJson<List<RecentSearch>>(json, type)
+            }.getOrNull().orEmpty()
+        }
+
+        if (stored.isNotEmpty()) return stored
+            .filter { it.query.isNotBlank() }
+            .distinctBy { it.query.lowercase() }
+
+        return loadHistory().map { query ->
+            RecentSearch(query = query, lastSearchedAt = 0L, pinned = false)
+        }
+    }
+
+    private fun saveRecentSearches(searches: List<RecentSearch>) {
+        val cleaned = searches
+            .filter { it.query.isNotBlank() }
+            .distinctBy { it.query.lowercase() }
+        prefs.edit()
+            .putString(PREF_RECENT_SEARCHES, gson.toJson(cleaned))
+            .putString(PREF_HISTORY, cleaned.joinToString("||") { it.query })
+            .apply()
+    }
+
+    private fun recentQueries(): List<String> = _recentSearches.value.map { it.query }
 
     private fun saveToHistory(name: String) {
-        val updated = loadHistory().toMutableList().apply {
-            removeAll { it.equals(name, ignoreCase = true) }
-            add(0, name)
-        }
-        prefs.edit().putString("history", updated.joinToString("||")).apply()
-        _uiState.update { it.copy(history = updated) }
+        val cleanName = name.trim()
+        if (cleanName.isBlank()) return
+        val existing = _recentSearches.value.firstOrNull { it.query.equals(cleanName, ignoreCase = true) }
+        val updated = listOf(
+            RecentSearch(
+                query = cleanName,
+                lastSearchedAt = System.currentTimeMillis(),
+                pinned = existing?.pinned ?: false
+            )
+        ) + _recentSearches.value.filterNot { it.query.equals(cleanName, ignoreCase = true) }
+        _recentSearches.value = updated
+        saveRecentSearches(updated)
+        _uiState.update { it.copy(history = recentQueries()) }
     }
 
     fun clearHistory() {
-        prefs.edit().remove("history").apply()
+        prefs.edit().remove(PREF_HISTORY).remove(PREF_RECENT_SEARCHES).apply()
+        _recentSearches.value = emptyList()
         _uiState.update { it.copy(history = emptyList()) }
         DebugLog.d("ChemSearch", "Search history cleared")
     }
 
     fun removeHistoryItem(query: String) {
-        val updated = loadHistory().toMutableList().apply {
-            removeAll { it.equals(query, ignoreCase = true) }
-        }
-        prefs.edit().putString("history", updated.joinToString("||")).apply()
-        _uiState.update { it.copy(history = updated) }
+        val updated = _recentSearches.value.filterNot { it.query.equals(query, ignoreCase = true) }
+        _recentSearches.value = updated
+        saveRecentSearches(updated)
+        _uiState.update { it.copy(history = recentQueries()) }
         DebugLog.d("ChemSearch", "Removed recent search: $query")
+    }
+
+    fun toggleRecentPin(query: String) {
+        val updated = _recentSearches.value.map { item ->
+            if (item.query.equals(query, ignoreCase = true)) item.copy(pinned = !item.pinned) else item
+        }
+        _recentSearches.value = updated
+        saveRecentSearches(updated)
+        _uiState.update { it.copy(history = recentQueries()) }
+        DebugLog.d("ChemSearch", "Recent pin toggled: $query")
     }
 
 
@@ -1079,7 +1397,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     isLoading = true, error = null, hasResult = false,
                     sdfData = null, sdfSource = null, sdfMessage = null, ghsData = null, isLoadingSafety = false,
                     isomerMode = false, isomers = emptyList(),
-                    isCached = false
+                    isCached = false,
+                    isOfflineDownload = false,
+                    offline2dPngBase64 = null
                 )
             }
 
@@ -1090,10 +1410,12 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 _uiState.update {
                     cached.copy(
                         isLoading = false, hasResult = true,
-                        history = loadHistory(), descSource = savedSource,
+                        history = recentQueries(), descSource = savedSource,
                         sdfData = null, sdfSource = null, sdfMessage = null, activeTab = MolTab.TWO_D,
                         isomerMode = false, isomers = emptyList(),
                         isCached = true,
+                        isOfflineDownload = false,
+                        offline2dPngBase64 = null,
                         isLoadingSynonyms = false
                     )
                 }
@@ -1162,7 +1484,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     wikiDescription = null, aiDescription = null,
                     descSource = savedSource,
                     elementalData = calcElementalData(formula),
-                    history = loadHistory(),
+                    history = recentQueries(),
                     activeTab = MolTab.TWO_D,
                     aiProvider = _uiState.value.aiProvider,
                     isomerMode = false,
@@ -1560,6 +1882,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         private const val PREF_UPDATE_LAST_CHECK = "update_last_check"
         private const val PREF_UPDATE_LAST_NOTIFIED = "update_last_notified"
         private const val PREF_WELCOME_SKIPPED = "welcome_skipped"
+        private const val PREF_HISTORY = "history"
+        private const val PREF_RECENT_SEARCHES = "recent_searches"
         private const val UPDATE_CHECK_INTERVAL_MS = 12 * 60 * 60 * 1000L
 
         private val ATOMIC_WEIGHTS = mapOf(

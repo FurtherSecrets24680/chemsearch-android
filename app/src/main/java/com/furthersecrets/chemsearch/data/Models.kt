@@ -188,6 +188,8 @@ data class ChemUiState(
     val sdfSource: SdfSource? = null,
     val sdfMessage: String? = null,
     val isLoadingSdf: Boolean = false,
+    val offline2dPngBase64: String? = null,
+    val isOfflineDownload: Boolean = false,
     val ghsData: GhsData? = null,
     val isLoadingSafety: Boolean = false,
     val isomerMode: Boolean = false,
@@ -280,6 +282,17 @@ data class FavoriteCompound(
     val molecularWeight: String,
     val iupacName: String,
     val savedAt: Long = System.currentTimeMillis()
+)
+
+data class DownloadedCompound(
+    val cid: Long,
+    val name: String,
+    val formula: String,
+    val molecularWeight: String,
+    val iupacName: String,
+    val savedAt: Long = System.currentTimeMillis(),
+    val state: ChemUiState,
+    val structurePngBase64: String? = null
 )
 
 // GHS Safety

@@ -119,6 +119,36 @@ data class ChemicalDbEntry(
     val searchText: String = ""
 )
 
+data class ChemicalDatabaseSummary(
+    val substances: Int = 0,
+    val ions: Int = 0,
+    val functionalGroups: Int = 0,
+    val reactions: Int = 0
+)
+
+data class ChemicalDatabaseSummaryRow(
+    val label: String,
+    val count: Int
+)
+
+fun summarizeChemicalDatabase(entries: List<ChemicalDbEntry>): ChemicalDatabaseSummary {
+    val counts = entries.groupingBy { it.category }.eachCount()
+    return ChemicalDatabaseSummary(
+        substances = counts[ChemicalDbCategory.SUBSTANCES] ?: 0,
+        ions = counts[ChemicalDbCategory.IONS] ?: 0,
+        functionalGroups = counts[ChemicalDbCategory.FUNCTIONAL_GROUPS] ?: 0,
+        reactions = counts[ChemicalDbCategory.REACTIONS] ?: 0
+    )
+}
+
+fun chemicalDatabaseSummaryRows(summary: ChemicalDatabaseSummary): List<ChemicalDatabaseSummaryRow> =
+    listOf(
+        ChemicalDatabaseSummaryRow("Substances:", summary.substances),
+        ChemicalDatabaseSummaryRow("Ions:", summary.ions),
+        ChemicalDatabaseSummaryRow("Functional groups:", summary.functionalGroups),
+        ChemicalDatabaseSummaryRow("Reactions:", summary.reactions)
+    )
+
 object ChemicalDatabase {
     private const val SUBSTANCES_ASSET = "chemical_database/substances.json"
     private const val REACTIONS_ASSET = "chemical_database/reactions.json"

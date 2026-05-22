@@ -365,8 +365,8 @@ private fun DatabaseSelectorCard(
                     title,
                     style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.SemiBold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    maxLines = if (compact) 1 else 2,
+                    overflow = if (compact) TextOverflow.Ellipsis else TextOverflow.Clip
                 )
                 Text(
                     subtitle,
