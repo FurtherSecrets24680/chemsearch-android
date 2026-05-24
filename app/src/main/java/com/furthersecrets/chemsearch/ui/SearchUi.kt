@@ -25,10 +25,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.automirrored.filled.OpenInNew
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.rememberCoroutineScope
@@ -842,9 +838,12 @@ fun CompoundHeader(
                     modifier = Modifier.size(if (compact) 42.dp else 48.dp)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        Icon(
-                            imageVector = if (isFavorite) Icons.Default.Star else Icons.Default.StarBorder,
-                            contentDescription = if (isFavorite) "Remove favorite" else "Add favorite",
+                        AnimatedStateIcon(
+                            selected = isFavorite,
+                            selectedIcon = Icons.Default.Star,
+                            unselectedIcon = Icons.Default.StarBorder,
+                            selectedDescription = "Remove favorite",
+                            unselectedDescription = "Add favorite",
                             tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.45f),
                             modifier = Modifier.size(if (compact) 22.dp else 24.dp)
                         )
@@ -870,9 +869,12 @@ fun CompoundHeader(
                                 strokeWidth = 2.dp
                             )
                         } else {
-                            Icon(
-                                Icons.Default.Download,
-                                contentDescription = if (isDownloaded) "Update offline download" else "Download for offline use",
+                            AnimatedStateIcon(
+                                selected = isDownloaded,
+                                selectedIcon = Icons.Default.DownloadDone,
+                                unselectedIcon = Icons.Default.Download,
+                                selectedDescription = "Update offline download",
+                                unselectedDescription = "Download for offline use",
                                 tint = if (isDownloaded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.45f),
                                 modifier = Modifier.size(if (compact) 21.dp else 23.dp)
                             )
@@ -1307,14 +1309,20 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                             }
                         } else if (state.sdfData != null) {
                             val isDark = !MaterialTheme.colorScheme.background.luminance().let { it > 0.5f }
-                            Viewer3D(cid = state.cid ?: 0, sdfData = state.sdfData, isDark = isDark)
-                            if (state.sdfSource == SdfSource.GENERATED) {
-                                GeneratedSdfBadge(
-                                    modifier = Modifier
-                                        .align(Alignment.TopStart)
-                                        .padding(if (compact) 10.dp else 12.dp)
+                            val structureStatus = remember(state.sdfData, state.sdfSource, state.sdfMessage) {
+                                describeStructureStatus(
+                                    hasSdf = true,
+                                    source = state.sdfSource,
+                                    message = state.sdfMessage
                                 )
                             }
+                            Viewer3D(cid = state.cid ?: 0, sdfData = state.sdfData, isDark = isDark)
+                            StructureStatusBadge(
+                                status = structureStatus,
+                                modifier = Modifier
+                                    .align(Alignment.TopStart)
+                                    .padding(if (compact) 10.dp else 12.dp)
+                            )
                             Row(
                                 modifier = Modifier
                                     .align(Alignment.BottomCenter)
@@ -1326,6 +1334,9 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                             }
                         } else {
                             var showWhyDialog by remember { mutableStateOf(false) }
+                            val structureStatus = remember(state.sdfMessage) {
+                                describeStructureStatus(hasSdf = false, source = null, message = state.sdfMessage)
+                            }
 
                             if (showWhyDialog) {
                                 No3DModelDialog(onDismiss = { showWhyDialog = false })
@@ -1346,15 +1357,13 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
                                 )
-                                state.sdfMessage?.let { message ->
-                                    Text(
-                                        message,
-                                        style = MaterialTheme.typography.labelSmall,
-                                        color = MaterialTheme.colorScheme.onSurface.copy(0.36f),
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier.widthIn(max = if (compact) 230.dp else 280.dp)
-                                    )
-                                }
+                                Text(
+                                    structureStatus.detail,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(0.36f),
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.widthIn(max = if (compact) 230.dp else 280.dp)
+                                )
                                 Text(
                                     "Learn why →",
                                     style = MaterialTheme.typography.labelSmall,
@@ -1467,13 +1476,13 @@ fun TwoDZoomDialog(
 }
 
 @Composable
-private fun GeneratedSdfBadge(modifier: Modifier = Modifier) {
+private fun StructureStatusBadge(status: StructureStatus, modifier: Modifier = Modifier) {
     val compact = LocalCompactMode.current
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(999.dp),
         color = MaterialTheme.colorScheme.surface.copy(0.92f),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.28f))
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(if (status.estimated) 0.36f else 0.24f))
     ) {
         Row(
             modifier = Modifier.padding(
@@ -1484,13 +1493,13 @@ private fun GeneratedSdfBadge(modifier: Modifier = Modifier) {
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Icon(
-                Icons.Default.AutoFixHigh,
+                if (status.estimated) Icons.Default.AutoFixHigh else Icons.Default.ViewInAr,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(if (compact) 13.dp else 14.dp)
             )
             Text(
-                "Generated estimate",
+                status.label,
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.SemiBold
@@ -1972,6 +1981,14 @@ fun DescriptionSection(
                 }
             }
             if (state.descSource == DescSource.AI && state.aiDescription != null) {
+                if (state.aiDescriptionBasis.isNotEmpty()) {
+                    Text(
+                        "Based on: ${state.aiDescriptionBasis.joinToString(", ")}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.48f),
+                        lineHeight = if (compact) 15.sp else 16.sp
+                    )
+                }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     TextButton(onClick = onRegenerate, contentPadding = PaddingValues(0.dp)) {
                         Icon(Icons.Default.Refresh, null, modifier = Modifier.size(if (compact) 13.dp else 14.dp))
@@ -2253,6 +2270,12 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
         } else if (ghsData == null) {
             Text("No GHS classification available.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
         } else {
+            val safetySummary = remember(ghsData) { enrichGhsSafety(ghsData, ghsData.retrievedAt) }
+            Text(
+                "Source: ${safetySummary.source.name}",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+            )
             ghsData.signalWord?.let { word ->
                 val isDanger = word.equals("Danger", ignoreCase = true)
                 val badgeColor = if (isDanger) DangerRed else WarningAmber
@@ -2331,7 +2354,7 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
             if (ghsData.hazardStatements.isNotEmpty()) {
                 Text("HAZARD STATEMENTS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.45f), letterSpacing = 0.5.sp)
                 Column(verticalArrangement = Arrangement.spacedBy(if (compact) 5.dp else 7.dp)) {
-                    ghsData.hazardStatements.take(8).forEach { statement ->
+                    safetySummary.hazards.take(8).forEach { hazard ->
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp),
                             verticalAlignment = Alignment.Top
@@ -2343,15 +2366,29 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
                                     .background(MaterialTheme.colorScheme.primary.copy(0.5f), CircleShape)
                             )
                             Text(
-                                statement,
+                                hazard.statement,
                                 style = MaterialTheme.typography.bodySmall,
                                 lineHeight = if (compact) 16.sp else 18.sp,
                                 color = MaterialTheme.colorScheme.onSurface.copy(0.85f)
                             )
                         }
+                        hazard.meaning?.let { meaning ->
+                            Text(
+                                meaning,
+                                modifier = Modifier.padding(start = if (compact) 14.dp else 16.dp),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurface.copy(0.48f)
+                            )
+                        }
                     }
                 }
             }
+            Text(
+                safetySummary.disclaimer,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
+                lineHeight = if (compact) 15.sp else 16.sp
+            )
         }
     }
 }

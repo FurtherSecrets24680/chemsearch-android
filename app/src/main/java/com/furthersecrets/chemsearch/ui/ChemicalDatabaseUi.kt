@@ -15,11 +15,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.MenuBook
-import androidx.compose.material.icons.automirrored.filled.OpenInNew
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -39,6 +34,7 @@ import com.furthersecrets.chemsearch.data.ChemicalDbActionTarget
 import com.furthersecrets.chemsearch.data.ChemicalDbCategory
 import com.furthersecrets.chemsearch.data.ChemicalDbEntry
 import com.furthersecrets.chemsearch.data.ChemicalDbRow
+import com.furthersecrets.chemsearch.data.chemicalDatabaseTotalEntriesLabel
 
 @Composable
 fun ChemicalDatabaseTool(
@@ -82,12 +78,10 @@ fun ChemicalDatabaseTool(
         verticalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 12.dp)
     ) {
         if (selectedEntry == null) {
-            item(key = "database-header") {
-                ChemicalDatabaseHeader(total = entries.size)
-            }
             item(key = "database-search") {
-                ChemicalDatabaseSearchBar(
+                ChemicalDatabaseSearchSection(
                     query = query,
+                    total = entries.size,
                     onQueryChange = { query = it },
                     onSearch = { focusManager.clearFocus() },
                     onClear = { query = "" }
@@ -201,42 +195,32 @@ fun ChemicalDatabaseTool(
 }
 
 @Composable
-private fun ChemicalDatabaseHeader(total: Int) {
+private fun ChemicalDatabaseSearchSection(
+    query: String,
+    total: Int,
+    onQueryChange: (String) -> Unit,
+    onSearch: () -> Unit,
+    onClear: () -> Unit
+) {
     val compact = LocalCompactMode.current
-    Surface(
+    Column(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(if (compact) 14.dp else 18.dp),
-        color = MaterialTheme.colorScheme.primary.copy(0.08f),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f))
+        verticalArrangement = Arrangement.spacedBy(if (compact) 5.dp else 6.dp)
     ) {
-        Row(
-            modifier = Modifier.padding(if (compact) 12.dp else 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(if (compact) 10.dp else 12.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(if (compact) 42.dp else 50.dp)
-                    .background(MaterialTheme.colorScheme.primary.copy(0.12f), RoundedCornerShape(if (compact) 11.dp else 14.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(Icons.AutoMirrored.Filled.MenuBook, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-            }
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                Text(
-                    "Chemical Database",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Black,
-                    letterSpacing = 0.sp
-                )
-                Text(
-                    "$total offline entries for quick reference. Use SDS and lab rules for real safety decisions.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.6f),
-                    lineHeight = 17.sp
-                )
-            }
-        }
+        ChemicalDatabaseSearchBar(
+            query = query,
+            onQueryChange = onQueryChange,
+            onSearch = onSearch,
+            onClear = onClear
+        )
+        Text(
+            chemicalDatabaseTotalEntriesLabel(total),
+            modifier = Modifier.padding(start = if (compact) 2.dp else 4.dp),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.52f),
+            fontWeight = FontWeight.SemiBold,
+            letterSpacing = 0.sp
+        )
     }
 }
 
@@ -328,7 +312,7 @@ private fun DatabaseBrowserHeader(
 
 @Composable
 private fun DatabaseSelectorCard(
-    icon: ImageVector,
+    icon: ChemIconSpec,
     title: String,
     subtitle: String,
     meta: String,
@@ -355,7 +339,7 @@ private fun DatabaseSelectorCard(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(icon, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(if (compact) 22.dp else 26.dp))
+                ChemIcon(icon, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(if (compact) 22.dp else 26.dp))
             }
             Column(
                 modifier = Modifier.weight(1f),
@@ -473,7 +457,7 @@ private fun DatabaseResultCard(
                         .background(MaterialTheme.colorScheme.primary.copy(0.1f), RoundedCornerShape(10.dp)),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(entry.category.icon(), null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(if (compact) 20.dp else 23.dp))
+                    ChemIcon(entry.category.icon(), null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(if (compact) 20.dp else 23.dp))
                 }
                 Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                     Text(
@@ -541,7 +525,7 @@ private fun DatabaseEntryDetail(
                             .background(MaterialTheme.colorScheme.primary.copy(0.1f), RoundedCornerShape(12.dp)),
                         contentAlignment = Alignment.Center
                     ) {
-                        Icon(entry.category.icon(), null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(if (compact) 22.dp else 26.dp))
+                        ChemIcon(entry.category.icon(), null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(if (compact) 22.dp else 26.dp))
                     }
                     Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text(entry.category.label.uppercase(), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
@@ -765,11 +749,11 @@ private fun ChemicalDbEntry.primaryActionIcon(): ImageVector = when (actionTarge
     ChemicalDbActionTarget.COPY_TEXT -> Icons.Default.ContentCopy
 }
 
-private fun ChemicalDbCategory.icon(): ImageVector = when (this) {
-    ChemicalDbCategory.SUBSTANCES -> Icons.Default.Science
-    ChemicalDbCategory.REACTIONS -> Icons.Default.SwapHoriz
-    ChemicalDbCategory.FUNCTIONAL_GROUPS -> Icons.Default.AccountTree
-    ChemicalDbCategory.IONS -> Icons.Default.BubbleChart
+private fun ChemicalDbCategory.icon(): ChemIconSpec = when (this) {
+    ChemicalDbCategory.SUBSTANCES -> ChemAppIcons.FlaskConical
+    ChemicalDbCategory.REACTIONS -> ChemAppIcons.ArrowLeftRight
+    ChemicalDbCategory.FUNCTIONAL_GROUPS -> ChemAppIcons.Network
+    ChemicalDbCategory.IONS -> ChemAppIcons.Atom
 }
 
 private fun String.normalizedSearch(): String =

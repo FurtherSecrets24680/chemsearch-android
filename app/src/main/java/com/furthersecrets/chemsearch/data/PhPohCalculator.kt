@@ -4,6 +4,8 @@ import kotlin.math.abs
 import kotlin.math.log10
 import kotlin.math.pow
 
+const val PH_POH_ASSUMPTION = "Assumes 25 C and pKw = 14.00"
+
 enum class PhPohInputType(val label: String, val symbol: String) {
     PH("pH", "pH"),
     POH("pOH", "pOH"),
@@ -16,7 +18,8 @@ data class PhPohResult(
     val poh: Double,
     val hydrogenConcentration: Double,
     val hydroxideConcentration: Double,
-    val classification: String
+    val classification: String,
+    val assumption: String = PH_POH_ASSUMPTION
 )
 
 fun calculatePhPoh(rawInput: String, inputType: PhPohInputType): PhPohResult {

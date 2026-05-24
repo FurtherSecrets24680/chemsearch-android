@@ -1,0 +1,17 @@
+[
+  { "formula": "H2O", "expected": 18.015, "tolerance": 0.01, "source": "IUPAC standard atomic weights via app atomic-weight table", "notes": "Water." },
+  { "formula": "CO2", "expected": 44.009, "tolerance": 0.01, "source": "IUPAC standard atomic weights via app atomic-weight table", "notes": "Carbon dioxide." },
+  { "formula": "NaCl", "expected": 58.443, "tolerance": 0.02, "source": "IUPAC standard atomic weights via app atomic-weight table", "notes": "Sodium chloride." },
+  { "formula": "C6H12O6", "expected": 180.156, "tolerance": 0.03, "source": "IUPAC standard atomic weights via app atomic-weight table", "notes": "Glucose." },
+  { "formula": "H2SO4", "expected": 98.079, "tolerance": 0.03, "source": "IUPAC standard atomic weights via app atomic-weight table", "notes": "Sulfuric acid." },
+  { "formula": "Ca(OH)2", "expected": 74.092, "tolerance": 0.03, "source": "IUPAC standard atomic weights via app atomic-weight table", "notes": "Calcium hydroxide." },
+  { "formula": "Al2(SO4)3", "expected": 342.147, "tolerance": 0.05, "source": "IUPAC standard atomic weights via app atomic-weight table", "notes": "Aluminum sulfate." },
+  { "formula": "(NH4)2SO4", "expected": 132.139, "tolerance": 0.05, "source": "IUPAC standard atomic weights via app atomic-weight table", "notes": "Ammonium sulfate." },
+  { "formula": "Fe2O3", "expected": 159.687, "tolerance": 0.04, "source": "IUPAC standard atomic weights via app atomic-weight table", "notes": "Iron(III) oxide." },
+  { "formula": "KMnO4", "expected": 158.034, "tolerance": 0.04, "source": "IUPAC standard atomic weights via app atomic-weight table", "notes": "Potassium permanganate." },
+  { "formula": "C2H5OH", "expected": 46.069, "tolerance": 0.02, "source": "IUPAC standard atomic weights via app atomic-weight table", "notes": "Ethanol condensed formula." },
+  { "formula": "CH3COOH", "expected": 60.052, "tolerance": 0.02, "source": "IUPAC standard atomic weights via app atomic-weight table", "notes": "Acetic acid condensed formula." },
+  { "formula": "CuSO4\u00b75H2O", "expected": 249.677, "tolerance": 0.08, "source": "IUPAC standard atomic weights via app atomic-weight table", "notes": "Copper(II) sulfate pentahydrate." },
+  { "formula": "Na2CO3\u00b710H2O", "expected": 286.141, "tolerance": 0.08, "source": "IUPAC standard atomic weights via app atomic-weight table", "notes": "Sodium carbonate decahydrate." },
+  { "formula": "K4[Fe(CN)6]", "expected": 368.343, "tolerance": 0.1, "source": "IUPAC standard atomic weights via app atomic-weight table", "notes": "Potassium ferrocyanide formula parser check." }
+]

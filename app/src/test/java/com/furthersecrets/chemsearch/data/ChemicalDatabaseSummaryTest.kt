@@ -56,6 +56,11 @@ class ChemicalDatabaseSummaryTest {
         )
     }
 
+    @Test
+    fun formatsTotalEntriesLabel() {
+        assertEquals("Total entries: 659", chemicalDatabaseTotalEntriesLabel(659))
+    }
+
     private fun entry(category: ChemicalDbCategory): ChemicalDbEntry =
         ChemicalDbEntry(
             id = category.name,

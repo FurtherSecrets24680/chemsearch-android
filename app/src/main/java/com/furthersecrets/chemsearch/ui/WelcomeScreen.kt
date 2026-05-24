@@ -23,16 +23,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BookmarkBorder
-import androidx.compose.material.icons.filled.Calculate
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.filled.Description
-import androidx.compose.material.icons.filled.LightMode
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.SmartToy
-import androidx.compose.material.icons.filled.ViewInAr
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -201,10 +191,10 @@ private fun WelcomeIntroStage(logoFrame: Color) {
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            WelcomeFeatureRow(Icons.Default.Search, "Compound search", "Look up PubChem data by name, formula, CAS-style identifier, or CID.")
-            WelcomeFeatureRow(Icons.Default.ViewInAr, "2D and 3D structures", "View structure images, rotate 3D models, and save structure files.")
-            WelcomeFeatureRow(Icons.Default.Calculate, "Chemistry tools", "Balance reactions, calculate molar mass, solve stoichiometry, and more.")
-            WelcomeFeatureRow(Icons.Default.BookmarkBorder, "Local workflow", "Keep favorites, recent searches, cached results, and offline reference data.")
+            WelcomeFeatureRow(ChemAppIcons.Search, "Compound search", "Look up PubChem data by name, formula, CAS-style identifier, or CID.")
+            WelcomeFeatureRow(ChemAppIcons.Axis3d, "2D and 3D structures", "View structure images, rotate 3D models, and save structure files.")
+            WelcomeFeatureRow(ChemAppIcons.TestTubes, "Chemistry tools", "Balance reactions, calculate molar mass, solve stoichiometry, and more.")
+            WelcomeFeatureRow(ChemAppIcons.Library, "Local workflow", "Keep favorites, recent searches, cached results, and offline reference data.")
         }
     }
 }
@@ -444,7 +434,7 @@ private fun WelcomeNavigation(
 
 @Composable
 private fun WelcomeFeatureRow(
-    icon: ImageVector,
+    icon: ChemIconSpec,
     title: String,
     description: String
 ) {
@@ -500,7 +490,7 @@ private fun WelcomeChoiceCard(
             modifier = Modifier.padding(13.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            WelcomeIconBox(icon, selected = selected)
+            WelcomeIconBox(icon.asChemIcon(), selected = selected)
             Spacer(Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                 Text(title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
@@ -523,7 +513,7 @@ private fun WelcomeChoiceCard(
 }
 
 @Composable
-private fun WelcomeIconBox(icon: ImageVector, selected: Boolean = false) {
+private fun WelcomeIconBox(icon: ChemIconSpec, selected: Boolean = false) {
     Surface(
         modifier = Modifier.size(38.dp),
         shape = RoundedCornerShape(10.dp),
@@ -532,8 +522,8 @@ private fun WelcomeIconBox(icon: ImageVector, selected: Boolean = false) {
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.12f))
     ) {
         Box(contentAlignment = Alignment.Center) {
-            Icon(
-                imageVector = icon,
+            ChemIcon(
+                icon = icon,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(21.dp)

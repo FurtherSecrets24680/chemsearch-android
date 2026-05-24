@@ -1,22 +1,20 @@
 package com.furthersecrets.chemsearch.ui
 
 import android.app.Activity
-import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.togetherWith
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -30,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -54,6 +53,52 @@ enum class AppTab(val route: String) {
     }
 }
 
+private val mainTabOrder = AppTab.entries.map { it.route }
+
+internal data class MainNavigationItem(
+    val tab: AppTab,
+    val selectedIcon: ChemIconSpec,
+    val unselectedIcon: ChemIconSpec,
+    val label: String
+)
+
+internal val mainNavigationItems = listOf(
+    MainNavigationItem(AppTab.SEARCH, ChemAppIcons.SearchFilled, ChemAppIcons.Search, "Search"),
+    MainNavigationItem(AppTab.LIBRARY, ChemAppIcons.LibraryFilled, ChemAppIcons.Library, "Library"),
+    MainNavigationItem(AppTab.RECENT, ChemAppIcons.HistoryFilled, ChemAppIcons.History, "Recent"),
+    MainNavigationItem(AppTab.TOOLS, ChemAppIcons.WrenchFilled, ChemAppIcons.Wrench, "Tools"),
+    MainNavigationItem(AppTab.SETTINGS, ChemAppIcons.SettingsFilled, ChemAppIcons.Settings, "Settings")
+)
+
+private fun routeIndex(route: String?): Int =
+    mainTabOrder.indexOf(route).takeIf { it >= 0 } ?: 0
+
+private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainTabEnterTransition(): EnterTransition {
+    val forward = routeIndex(targetState.destination.route) >= routeIndex(initialState.destination.route)
+    val direction = if (forward) {
+        AnimatedContentTransitionScope.SlideDirection.Left
+    } else {
+        AnimatedContentTransitionScope.SlideDirection.Right
+    }
+    return slideIntoContainer(
+        towards = direction,
+        animationSpec = tween(ChemMotionMedium, easing = ChemMotionEasing)
+    ) + fadeIn(tween(ChemMotionFast))
+}
+
+private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainTabExitTransition(): ExitTransition {
+    val forward = routeIndex(targetState.destination.route) >= routeIndex(initialState.destination.route)
+    val direction = if (forward) {
+        AnimatedContentTransitionScope.SlideDirection.Left
+    } else {
+        AnimatedContentTransitionScope.SlideDirection.Right
+    }
+    return slideOutOfContainer(
+        towards = direction,
+        animationSpec = tween(ChemMotionMedium, easing = ChemMotionEasing)
+    ) + fadeOut(tween(ChemMotionFast))
+}
+
 // Root
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,6 +110,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val colorScheme by vm.colorScheme.collectAsStateWithLifecycle()
     val autoSuggest by vm.autoSuggest.collectAsStateWithLifecycle()
     val compactMode by vm.compactMode.collectAsStateWithLifecycle()
+    val oledDarkTheme by vm.oledDarkTheme.collectAsStateWithLifecycle()
     val defaultDescSource by vm.defaultDescSource.collectAsStateWithLifecycle()
     val aiKeyStatus by vm.aiKeyStatus.collectAsStateWithLifecycle()
     val aiModelCatalogs by vm.aiModelCatalogs.collectAsStateWithLifecycle()
@@ -163,6 +209,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             colorScheme = colorScheme,
             autoSuggest = autoSuggest,
             compactMode = compactMode,
+            oledDarkTheme = oledDarkTheme,
             defaultDescSource = defaultDescSource,
             aiProvider = state.aiProvider,
             aiKeyStatus = aiKeyStatus,
@@ -173,6 +220,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             onSetColorScheme = { vm.setColorScheme(it) },
             onToggleAutoSuggest = { vm.toggleAutoSuggest() },
             onToggleCompactMode = { vm.setCompactMode(!compactMode) },
+            onToggleOledDarkTheme = { vm.setOledDarkTheme(!oledDarkTheme) },
             onSetDefaultDesc = { vm.setDefaultDescSource(it) },
             onSetAiProvider = { vm.setAiProvider(it) },
             onSetAiModel = { provider, model -> vm.setAiModel(provider, model) },
@@ -253,29 +301,26 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                 containerColor = MaterialTheme.colorScheme.surface,
                 tonalElevation = 0.dp
             ) {
-                listOf(
-                    AppTab.SEARCH    to Triple(Icons.Default.Search,    Icons.Default.Search,        "Search"),
-                    AppTab.LIBRARY   to Triple(Icons.Default.Inventory2, Icons.Default.Inventory2,"Library"),
-                    AppTab.RECENT    to Triple(Icons.Default.History,   Icons.Default.History,       "Recent"),
-                    AppTab.TOOLS     to Triple(Icons.Default.Build,     Icons.Default.Build,         "Tools"),
-                    AppTab.SETTINGS  to Triple(Icons.Default.Settings,  Icons.Default.Settings,      "Settings")
-
-                ).forEach { (tab, triple) ->
-                    val (selectedIcon, unselectedIcon, label) = triple
-                    val isSelected = selectedTab == tab
+                mainNavigationItems.forEach { item ->
+                    val isSelected = selectedTab == item.tab
                     NavigationBarItem(
                         selected = isSelected,
-                        onClick = { navigateToTab(tab) },
+                        onClick = { navigateToTab(item.tab) },
                         icon = {
-                            Icon(
-                                if (isSelected) selectedIcon else unselectedIcon,
-                                contentDescription = label,
+                            AnimatedStateIcon(
+                                selected = isSelected,
+                                selectedIcon = item.selectedIcon,
+                                unselectedIcon = item.unselectedIcon,
+                                selectedDescription = item.label,
+                                unselectedDescription = item.label,
+                                tint = if (isSelected) MaterialTheme.colorScheme.primary
+                                else MaterialTheme.colorScheme.onSurface.copy(0.5f),
                                 modifier = Modifier.size(22.dp)
                             )
                         },
                         label = {
                             Text(
-                                label,
+                                item.label,
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                             )
@@ -300,7 +345,11 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             NavHost(
                 navController = navController,
                 startDestination = AppTab.SEARCH.route,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                enterTransition = { mainTabEnterTransition() },
+                exitTransition = { mainTabExitTransition() },
+                popEnterTransition = { mainTabEnterTransition() },
+                popExitTransition = { mainTabExitTransition() }
             ) {
                 composable(AppTab.SEARCH.route) {
                     LazyColumn(
@@ -526,6 +575,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 colorScheme = colorScheme,
                                 autoSuggest = autoSuggest,
                                 compactMode = compactMode,
+                                oledDarkTheme = oledDarkTheme,
                                 defaultDescSource = defaultDescSource,
                                 aiProvider = state.aiProvider,
                                 aiKeyStatus = aiKeyStatus,
@@ -536,6 +586,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 onSetColorScheme = { vm.setColorScheme(it) },
                                 onToggleAutoSuggest = { vm.toggleAutoSuggest() },
                                 onToggleCompactMode = { vm.setCompactMode(!compactMode) },
+                                onToggleOledDarkTheme = { vm.setOledDarkTheme(!oledDarkTheme) },
                                 onSetDefaultDesc = { vm.setDefaultDescSource(it) },
                                 onSetAiProvider = { vm.setAiProvider(it) },
                                 onSetAiModel = { provider, model -> vm.setAiModel(provider, model) },
@@ -563,8 +614,14 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                 modifier = Modifier
                     .padding(top = suggestionTopPadding, start = pageHorizontalPadding, end = pageHorizontalPadding)
                     .zIndex(10f),
-                enter = fadeIn(),
-                exit = fadeOut()
+                enter = slideInVertically(
+                    animationSpec = tween(ChemMotionMedium, easing = ChemMotionEasing),
+                    initialOffsetY = { -it / 6 }
+                ) + fadeIn(tween(ChemMotionFast)),
+                exit = slideOutVertically(
+                    animationSpec = tween(ChemMotionFast, easing = ChemMotionEasing),
+                    targetOffsetY = { -it / 8 }
+                ) + fadeOut(tween(ChemMotionFast))
             ) {
                 SuggestionsDropdown(
                     suggestions = state.suggestions,

@@ -13,6 +13,7 @@ navigationCompose = "2.9.7"
 room = "2.8.4"
 work = "2.11.2"
 ksp = "2.3.7"
+phosphorIcons = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,6 +37,7 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work" }
+phosphor-icons = { group = "com.adamglin", name = "phosphor-icon", version.ref = "phosphorIcons" }
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version = "2.3.20" }

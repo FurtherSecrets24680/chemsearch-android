@@ -1,0 +1,14 @@
+[
+  { "formula": "HOCl", "charge": 0, "expected": { "H": "+1", "O": "-2", "Cl": "+1" }, "source": "IUPAC oxidation state rules, oxyhalogen example", "notes": "Chlorine is positive in hypochlorous acid." },
+  { "formula": "NaCl", "charge": 0, "expected": { "Na": "+1", "Cl": "-1" }, "source": "IUPAC oxidation state rules, simple ionic compound", "notes": "Simple chloride." },
+  { "formula": "H2O2", "charge": 0, "expected": { "H": "+1", "O": "-1" }, "source": "IUPAC oxidation state rules, peroxide exception", "notes": "Peroxide oxygen exception." },
+  { "formula": "OF2", "charge": 0, "expected": { "F": "-1", "O": "+2" }, "source": "IUPAC oxidation state rules, oxygen fluoride exception", "notes": "Fluorine forces oxygen positive." },
+  { "formula": "KMnO4", "charge": 0, "expected": { "K": "+1", "O": "-2", "Mn": "+7" }, "source": "IUPAC oxidation state rules, permanganate example", "notes": "Single unknown transition metal." },
+  { "formula": "SO4", "charge": -2, "expected": { "O": "-2", "S": "+6" }, "source": "IUPAC oxidation state rules, sulfate ion", "notes": "Charge supplied separately." },
+  { "formula": "NO3", "charge": -1, "expected": { "O": "-2", "N": "+5" }, "source": "IUPAC oxidation state rules, nitrate ion", "notes": "Charge supplied separately." },
+  { "formula": "NH4", "charge": 1, "expected": { "H": "+1", "N": "-3" }, "source": "IUPAC oxidation state rules, ammonium ion", "notes": "Charge supplied separately." },
+  { "formula": "CaH2", "charge": 0, "expected": { "H": "-1", "Ca": "+2" }, "source": "IUPAC oxidation state rules, metal hydride exception", "notes": "Hydrogen is negative in metal hydrides." },
+  { "formula": "ClO3", "charge": -1, "expected": { "O": "-2", "Cl": "+5" }, "source": "IUPAC oxidation state rules, oxychlorine ion", "notes": "Oxyhalogen charge supplied separately." },
+  { "formula": "Fe2O3", "charge": 0, "expected": { "O": "-2", "Fe": "+3" }, "source": "IUPAC oxidation state rules, iron oxide example", "notes": "Single unknown metal." },
+  { "formula": "O2", "charge": 0, "expected": { "O": "0" }, "source": "IUPAC oxidation state rules, free element", "notes": "Elemental molecule has oxidation state zero." }
+]

@@ -19,7 +19,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             val isDark by vm.isDarkTheme.collectAsStateWithLifecycle()
             val colorScheme by vm.colorScheme.collectAsStateWithLifecycle()
-            ChemSearchTheme(darkTheme = isDark, colorScheme = colorScheme) {
+            val oledDarkTheme by vm.oledDarkTheme.collectAsStateWithLifecycle()
+            ChemSearchTheme(
+                darkTheme = isDark,
+                colorScheme = colorScheme,
+                oledDarkTheme = oledDarkTheme
+            ) {
                 MainScreen(vm = vm)
             }
         }

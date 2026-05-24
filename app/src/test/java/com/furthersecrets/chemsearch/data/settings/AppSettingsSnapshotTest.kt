@@ -15,6 +15,7 @@ class AppSettingsSnapshotTest {
             colorSchemeName = "EMERALD",
             autoSuggest = false,
             compactMode = true,
+            oledDarkTheme = true,
             descSourceName = "WIKI",
             cacheDir = "C:\\ChemSearchCache",
             updateNotificationsEnabled = false,
@@ -25,6 +26,7 @@ class AppSettingsSnapshotTest {
         assertEquals(AppColorScheme.EMERALD, snapshot.colorScheme)
         assertFalse(snapshot.autoSuggest)
         assertTrue(snapshot.compactMode)
+        assertTrue(snapshot.oledDarkTheme)
         assertEquals(DescSource.WIKI, snapshot.descSource)
         assertEquals("C:\\ChemSearchCache", snapshot.cacheDir)
         assertFalse(snapshot.updateNotificationsEnabled)
@@ -38,6 +40,7 @@ class AppSettingsSnapshotTest {
             colorSchemeName = "NOT_A_SCHEME",
             autoSuggest = null,
             compactMode = null,
+            oledDarkTheme = null,
             descSourceName = "BAD_SOURCE",
             cacheDir = null,
             updateNotificationsEnabled = null,
@@ -48,6 +51,7 @@ class AppSettingsSnapshotTest {
         assertEquals(AppColorScheme.BLUE, snapshot.colorScheme)
         assertTrue(snapshot.autoSuggest)
         assertFalse(snapshot.compactMode)
+        assertFalse(snapshot.oledDarkTheme)
         assertEquals(DescSource.PUBCHEM, snapshot.descSource)
         assertEquals("", snapshot.cacheDir)
         assertTrue(snapshot.updateNotificationsEnabled)

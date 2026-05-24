@@ -1,0 +1,8 @@
+[
+  { "input": "7", "type": "PH", "expectedPh": 7.0, "expectedPoh": 7.0, "source": "OpenStax Chemistry 2e, pH and pOH at 25 C", "notes": "Neutral water assumption." },
+  { "input": "0", "type": "PH", "expectedPh": 0.0, "expectedPoh": 14.0, "source": "OpenStax Chemistry 2e, pH and pOH at 25 C", "notes": "Strong acid edge value." },
+  { "input": "14", "type": "PH", "expectedPh": 14.0, "expectedPoh": 0.0, "source": "OpenStax Chemistry 2e, pH and pOH at 25 C", "notes": "Strong base edge value." },
+  { "input": "3", "type": "POH", "expectedPh": 11.0, "expectedPoh": 3.0, "source": "OpenStax Chemistry 2e, pH and pOH at 25 C", "notes": "pOH input conversion." },
+  { "input": "1e-3", "type": "HYDROGEN", "expectedPh": 3.0, "expectedPoh": 11.0, "source": "OpenStax Chemistry 2e, pH and hydrogen concentration", "notes": "Hydrogen concentration conversion." },
+  { "input": "1e-5", "type": "HYDROXIDE", "expectedPh": 9.0, "expectedPoh": 5.0, "source": "OpenStax Chemistry 2e, pOH and hydroxide concentration", "notes": "Hydroxide concentration conversion." }
+]

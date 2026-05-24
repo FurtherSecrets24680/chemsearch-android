@@ -1,0 +1,122 @@
+[
+  {
+    "input": "H2O",
+    "expected": { "H": 2, "O": 1 },
+    "source": "OpenStax Chemistry 2e, molecular formulas examples",
+    "notes": "Basic water formula."
+  },
+  {
+    "input": "CO2",
+    "expected": { "C": 1, "O": 2 },
+    "source": "OpenStax Chemistry 2e, molecular formulas examples",
+    "notes": "Basic carbon dioxide formula."
+  },
+  {
+    "input": "C6H12O6",
+    "expected": { "C": 6, "H": 12, "O": 6 },
+    "source": "OpenStax Chemistry 2e, molecular and empirical formulas",
+    "notes": "Glucose molecular formula."
+  },
+  {
+    "input": "Ca(OH)2",
+    "expected": { "Ca": 1, "O": 2, "H": 2 },
+    "source": "OpenStax Chemistry 2e, polyatomic groups examples",
+    "notes": "Parentheses with multiplier."
+  },
+  {
+    "input": "Al2(SO4)3",
+    "expected": { "Al": 2, "S": 3, "O": 12 },
+    "source": "OpenStax Chemistry 2e, ionic compounds examples",
+    "notes": "Nested group multiplier use case."
+  },
+  {
+    "input": "(NH4)2SO4",
+    "expected": { "N": 2, "H": 8, "S": 1, "O": 4 },
+    "source": "OpenStax Chemistry 2e, ammonium sulfate formula example",
+    "notes": "Ammonium group multiplier."
+  },
+  {
+    "input": "Mg(OH)2",
+    "expected": { "Mg": 1, "O": 2, "H": 2 },
+    "source": "OpenStax Chemistry 2e, ionic compounds examples",
+    "notes": "Group multiplier after hydroxide."
+  },
+  {
+    "input": "Fe2(SO4)3",
+    "expected": { "Fe": 2, "S": 3, "O": 12 },
+    "source": "OpenStax Chemistry 2e, ionic compounds examples",
+    "notes": "Transition metal salt formula."
+  },
+  {
+    "input": "K4[Fe(CN)6]",
+    "expected": { "K": 4, "Fe": 1, "C": 6, "N": 6 },
+    "source": "IUPAC Red Book, coordination formula notation",
+    "notes": "Square brackets with nested parentheses."
+  },
+  {
+    "input": "[Co(NH3)6]Cl3",
+    "expected": { "Co": 1, "N": 6, "H": 18, "Cl": 3 },
+    "source": "IUPAC Red Book, coordination formula notation",
+    "notes": "Coordination bracket plus counter ions."
+  },
+  {
+    "input": "CuSO4\u00b75H2O",
+    "expected": { "Cu": 1, "S": 1, "O": 9, "H": 10 },
+    "source": "OpenStax Chemistry 2e, hydrate notation",
+    "notes": "Hydrate middle-dot notation."
+  },
+  {
+    "input": "CuSO4.5H2O",
+    "expected": { "Cu": 1, "S": 1, "O": 9, "H": 10 },
+    "source": "OpenStax Chemistry 2e, hydrate notation",
+    "notes": "Hydrate period notation sometimes copied from plain text."
+  },
+  {
+    "input": "Na2CO3\u00b710H2O",
+    "expected": { "Na": 2, "C": 1, "O": 13, "H": 20 },
+    "source": "OpenStax Chemistry 2e, hydrate notation",
+    "notes": "Hydrate with two-digit water multiplier."
+  },
+  {
+    "input": "BaCl2*2H2O",
+    "expected": { "Ba": 1, "Cl": 2, "H": 4, "O": 2 },
+    "source": "OpenStax Chemistry 2e, hydrate notation",
+    "notes": "Asterisk used as hydrate separator in some typed formulas."
+  },
+  {
+    "input": "NH4+",
+    "expected": { "N": 1, "H": 4 },
+    "source": "IUPAC Red Book, ion formula notation",
+    "notes": "Simple trailing charge sign."
+  },
+  {
+    "input": "SO4^2-",
+    "expected": { "S": 1, "O": 4 },
+    "source": "IUPAC Red Book, ion formula notation",
+    "notes": "Caret charge notation."
+  },
+  {
+    "input": "Fe3+",
+    "expected": { "Fe": 1 },
+    "source": "IUPAC Red Book, ion formula notation",
+    "notes": "Single-atom ion where trailing number belongs to charge."
+  },
+  {
+    "input": "[Fe(CN)6]4-",
+    "expected": { "Fe": 1, "C": 6, "N": 6 },
+    "source": "IUPAC Red Book, coordination formula notation",
+    "notes": "Coordination ion with bracket-level charge."
+  },
+  {
+    "input": "C2H5+",
+    "expected": { "C": 2, "H": 5 },
+    "source": "IUPAC Red Book, ion formula notation",
+    "notes": "Polyatomic ion where final digit remains an atom count."
+  },
+  {
+    "input": "Ca3(PO4)2",
+    "expected": { "Ca": 3, "P": 2, "O": 8 },
+    "source": "OpenStax Chemistry 2e, ionic compounds examples",
+    "notes": "Nested polyatomic ion multiplier."
+  }
+]

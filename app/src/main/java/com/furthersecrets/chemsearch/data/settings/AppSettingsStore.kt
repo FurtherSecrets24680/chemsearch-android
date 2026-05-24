@@ -21,6 +21,7 @@ data class AppSettingsSnapshot(
     val colorScheme: AppColorScheme,
     val autoSuggest: Boolean,
     val compactMode: Boolean,
+    val oledDarkTheme: Boolean,
     val descSource: DescSource,
     val cacheDir: String,
     val updateNotificationsEnabled: Boolean,
@@ -32,6 +33,7 @@ data class AppSettingsSnapshot(
             colorSchemeName: String?,
             autoSuggest: Boolean?,
             compactMode: Boolean?,
+            oledDarkTheme: Boolean?,
             descSourceName: String?,
             cacheDir: String?,
             updateNotificationsEnabled: Boolean?,
@@ -42,6 +44,7 @@ data class AppSettingsSnapshot(
                 colorScheme = AppColorScheme.entries.firstOrNull { it.name == colorSchemeName } ?: AppColorScheme.BLUE,
                 autoSuggest = autoSuggest ?: true,
                 compactMode = compactMode ?: false,
+                oledDarkTheme = oledDarkTheme ?: false,
                 descSource = DescSource.entries.firstOrNull { it.name == descSourceName } ?: DescSource.PUBCHEM,
                 cacheDir = cacheDir ?: "",
                 updateNotificationsEnabled = updateNotificationsEnabled ?: true,
@@ -63,6 +66,7 @@ class AppSettingsStore(private val context: Context) {
                 colorSchemeName = preferences[Keys.COLOR_SCHEME],
                 autoSuggest = preferences[Keys.AUTO_SUGGEST],
                 compactMode = preferences[Keys.COMPACT_MODE],
+                oledDarkTheme = preferences[Keys.OLED_DARK_THEME],
                 descSourceName = preferences[Keys.DESC_SOURCE],
                 cacheDir = preferences[Keys.CACHE_DIR],
                 updateNotificationsEnabled = preferences[Keys.UPDATE_NOTIFICATIONS],
@@ -77,6 +81,7 @@ class AppSettingsStore(private val context: Context) {
             preferences[Keys.COLOR_SCHEME] = prefs.getString("color_scheme", null) ?: AppColorScheme.BLUE.name
             preferences[Keys.AUTO_SUGGEST] = prefs.getBoolean("auto_suggest", true)
             preferences[Keys.COMPACT_MODE] = prefs.getBoolean("compact_mode", false)
+            preferences[Keys.OLED_DARK_THEME] = prefs.getBoolean("oled_dark_theme", false)
             preferences[Keys.DESC_SOURCE] = prefs.getString("desc_source", null) ?: DescSource.PUBCHEM.name
             preferences[Keys.CACHE_DIR] = prefs.getString("cache_dir", null) ?: ""
             preferences[Keys.UPDATE_NOTIFICATIONS] = prefs.getBoolean("update_notifications", true)
@@ -101,6 +106,10 @@ class AppSettingsStore(private val context: Context) {
         dataStore.edit { it[Keys.COMPACT_MODE] = enabled }
     }
 
+    suspend fun setOledDarkTheme(enabled: Boolean) {
+        dataStore.edit { it[Keys.OLED_DARK_THEME] = enabled }
+    }
+
     suspend fun setDescSource(source: DescSource) {
         dataStore.edit { it[Keys.DESC_SOURCE] = source.name }
     }
@@ -122,6 +131,7 @@ class AppSettingsStore(private val context: Context) {
         val COLOR_SCHEME = stringPreferencesKey("color_scheme")
         val AUTO_SUGGEST = booleanPreferencesKey("auto_suggest")
         val COMPACT_MODE = booleanPreferencesKey("compact_mode")
+        val OLED_DARK_THEME = booleanPreferencesKey("oled_dark_theme")
         val DESC_SOURCE = stringPreferencesKey("desc_source")
         val CACHE_DIR = stringPreferencesKey("cache_dir")
         val UPDATE_NOTIFICATIONS = booleanPreferencesKey("update_notifications")

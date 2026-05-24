@@ -74,6 +74,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     private val _compactMode = MutableStateFlow(prefs.getBoolean("compact_mode", false))
     val compactMode: StateFlow<Boolean> = _compactMode.asStateFlow()
 
+    private val _oledDarkTheme = MutableStateFlow(prefs.getBoolean("oled_dark_theme", false))
+    val oledDarkTheme: StateFlow<Boolean> = _oledDarkTheme.asStateFlow()
+
     private val _defaultDescSource = MutableStateFlow(getSavedDescSource())
     val defaultDescSource: StateFlow<DescSource> = _defaultDescSource.asStateFlow()
 
@@ -117,6 +120,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 _colorScheme.value = settings.colorScheme
                 _autoSuggest.value = settings.autoSuggest
                 _compactMode.value = settings.compactMode
+                _oledDarkTheme.value = settings.oledDarkTheme
                 _defaultDescSource.value = settings.descSource
                 _cacheDirPath.value = settings.cacheDir
                 _updateNotificationsEnabled.value = settings.updateNotificationsEnabled
@@ -309,7 +313,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     molecularWeight = snapshot.weight,
                     iupacName = snapshot.iupacName,
                     state = snapshot,
-                    structurePngBase64 = snapshot.offline2dPngBase64
+                    structurePngBase64 = snapshot.offline2dPngBase64,
+                    offlineMetadata = buildOfflineDownloadMetadata(snapshot)
                 )
                 val updated = listOf(item) + _downloads.value.filterNot { it.cid == cid }
                 _downloads.value = updated
@@ -360,10 +365,18 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         val json = prefs.getString("downloads", null) ?: return emptyList()
         return try {
             val type = object : TypeToken<List<DownloadedCompound>>() {}.type
-            gson.fromJson(json, type) ?: emptyList()
+            val restored = gson.fromJson<List<DownloadedCompound>>(json, type) ?: emptyList()
+            restored.map { it.withResolvedOfflineMetadata() }
         } catch (e: Exception) {
             emptyList()
         }
+    }
+
+    private fun DownloadedCompound.withResolvedOfflineMetadata(): DownloadedCompound {
+        val restoredMetadata: OfflineDownloadMetadata? = runCatching { offlineMetadata }.getOrNull()
+        return if (restoredMetadata != null) this else copy(
+            offlineMetadata = buildOfflineDownloadMetadata(state, savedAt)
+        )
     }
 
     fun toggleTheme() {
@@ -397,6 +410,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         DebugLog.d("ChemSearch", "Compact mode → ${if (enabled) "on" else "off"}")
     }
 
+    fun setOledDarkTheme(enabled: Boolean) {
+        _oledDarkTheme.value = enabled
+        prefs.edit().putBoolean("oled_dark_theme", enabled).apply()
+        viewModelScope.launch { settingsStore.setOledDarkTheme(enabled) }
+        DebugLog.d("ChemSearch", "OLED dark mode → ${if (enabled) "on" else "off"}")
+    }
+
     fun setDefaultDescSource(source: DescSource) {
         _defaultDescSource.value = source
         saveDescSource(source)
@@ -416,6 +436,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         _colorScheme.value = getSavedColorScheme()
         _autoSuggest.value = prefs.getBoolean("auto_suggest", true)
         _compactMode.value = prefs.getBoolean("compact_mode", false)
+        _oledDarkTheme.value = prefs.getBoolean("oled_dark_theme", false)
         _defaultDescSource.value = getSavedDescSource()
         _cacheDirPath.value = prefs.getString("cache_dir", "") ?: ""
         refreshCacheSizeAsync()
@@ -650,6 +671,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     sdfSource = null,
                     sdfMessage = null,
                     ghsData = null,
+                    aiDescriptionBasis = emptyList(),
                     isLoadingSafety = false
                 )
             }
@@ -841,16 +863,21 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "No ${provider.shortName} API key set. Add it in Settings.") }
             return
         }
-        _uiState.update { it.copy(isLoadingDesc = true) }
+        val prompt = buildAiDescriptionPrompt(_uiState.value, provider, getSelectedAiModel(provider))
+        loadCachedAiDescription(prompt)?.let { cached ->
+            _uiState.update { it.copy(isLoadingDesc = false, aiDescription = cached, aiDescriptionBasis = prompt.basis) }
+            return
+        }
+        _uiState.update { it.copy(isLoadingDesc = true, aiDescriptionBasis = prompt.basis) }
         DebugLog.d("ChemSearch", "Fetching ${provider.shortName} description for \"$name\"")
         viewModelScope.launch {
-            val prompt = "Write a short 2-3 sentence description of the chemical \"$name\". Include real-world applications. Keep it clear and easy to read."
-            val req = GeminiRequest(contents = listOf(GeminiContent(parts = listOf(GeminiPart(text = prompt)))))
+            val req = GeminiRequest(contents = listOf(GeminiContent(parts = listOf(GeminiPart(text = prompt.text)))))
             try {
                 val response = ApiClient.gemini.generateContent(getSelectedAiModel(provider), key, req)
                 val text = response.candidates?.firstOrNull()?.content?.parts?.firstOrNull()?.text
                 DebugLog.d("ChemSearch", "${provider.shortName} response: ${text?.take(80) ?: "empty"}")
-                _uiState.update { it.copy(isLoadingDesc = false, aiDescription = text ?: "${provider.shortName} returned empty response.") }
+                text?.takeIf { it.isNotBlank() }?.let { saveCachedAiDescription(prompt, it) }
+                _uiState.update { it.copy(isLoadingDesc = false, aiDescription = text ?: "${provider.shortName} returned empty response.", aiDescriptionBasis = prompt.basis) }
             } catch (e: Exception) {
                 DebugLog.e("ChemSearch", "${provider.shortName} error: ${e.message}")
                 _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "${provider.shortName} error: ${e.message}") }
@@ -863,13 +890,17 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "No ${provider.shortName} API key set. Add it in Settings.") }
             return
         }
-        _uiState.update { it.copy(isLoadingDesc = true) }
+        val prompt = buildAiDescriptionPrompt(_uiState.value, provider, getSelectedAiModel(provider))
+        loadCachedAiDescription(prompt)?.let { cached ->
+            _uiState.update { it.copy(isLoadingDesc = false, aiDescription = cached, aiDescriptionBasis = prompt.basis) }
+            return
+        }
+        _uiState.update { it.copy(isLoadingDesc = true, aiDescriptionBasis = prompt.basis) }
         DebugLog.d("ChemSearch", "Fetching ${provider.shortName} description for \"$name\"")
         viewModelScope.launch {
-            val prompt = "Write a short 2-3 sentence description of the chemical \"$name\". Include real-world applications. Keep it clear and easy to read."
             val req = GroqRequest(
                 model = getSelectedAiModel(provider),
-                messages = listOf(GroqMessage(role = "user", content = prompt))
+                messages = listOf(GroqMessage(role = "user", content = prompt.text))
             )
             try {
                 val api = when (provider) {
@@ -882,12 +913,23 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 val response = api.generateContent("Bearer $key", req)
                 val text = response.choices?.firstOrNull()?.message?.content
                 DebugLog.d("ChemSearch", "${provider.shortName} response: ${text?.take(80) ?: "empty"}")
-                _uiState.update { it.copy(isLoadingDesc = false, aiDescription = text ?: "${provider.shortName} returned empty response.") }
+                text?.takeIf { it.isNotBlank() }?.let { saveCachedAiDescription(prompt, it) }
+                _uiState.update { it.copy(isLoadingDesc = false, aiDescription = text ?: "${provider.shortName} returned empty response.", aiDescriptionBasis = prompt.basis) }
             } catch (e: Exception) {
                 DebugLog.e("ChemSearch", "${provider.shortName} error: ${e.message}")
                 _uiState.update { it.copy(isLoadingDesc = false, aiDescription = "${provider.shortName} error: ${e.message}") }
             }
         }
+    }
+
+    private fun loadCachedAiDescription(prompt: AiDescriptionPrompt): String? =
+        prefs.getString("ai_description_${prompt.cacheKey}", null)
+
+    private fun saveCachedAiDescription(prompt: AiDescriptionPrompt, text: String) {
+        prefs.edit()
+            .putString("ai_description_${prompt.cacheKey}", text)
+            .putString("ai_description_basis_${prompt.cacheKey}", gson.toJson(prompt.basis))
+            .apply()
     }
 
     fun setDescSource(source: DescSource) {
@@ -1163,7 +1205,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }
         DebugLog.d("ChemSearch", "${provider.shortName} model → $cleanModel")
         if (_uiState.value.descSource == DescSource.AI && _uiState.value.aiProvider == provider) {
-            _uiState.update { it.copy(aiDescription = null) }
+            _uiState.update { it.copy(aiDescription = null, aiDescriptionBasis = emptyList()) }
             fetchAiDescription()
         }
     }
@@ -1240,7 +1282,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun clearAiKey(provider: AiProvider) {
         SecurePrefs.remove(prefs, provider.keyPref)
         refreshAiKeyStatus()
-        if (_uiState.value.aiProvider == provider) _uiState.update { it.copy(aiDescription = null) }
+        if (_uiState.value.aiProvider == provider) {
+            _uiState.update { it.copy(aiDescription = null, aiDescriptionBasis = emptyList()) }
+        }
     }
 
     fun getGeminiKey(): String? = getAiKey(AiProvider.GEMINI)
@@ -1399,7 +1443,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     isomerMode = false, isomers = emptyList(),
                     isCached = false,
                     isOfflineDownload = false,
-                    offline2dPngBase64 = null
+                    offline2dPngBase64 = null,
+                    aiDescriptionBasis = emptyList()
                 )
             }
 
@@ -1577,72 +1622,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         return StructureCounts(atomCount = atomCount, bondCount = bondCount)
     }
 
-    private fun parseFormula(formula: String): Map<String, Int> {
-        val totalResult = mutableMapOf<String, Int>()
-        val parts = formula.split(Regex("[·.*\\s]")).filter { it.isNotBlank() }
-        for (part in parts) {
-            val multMatch = Regex("^(\\d+)").find(part)
-            val partMult = multMatch?.groupValues?.get(1)?.toInt() ?: 1
-            val cleanPart = if (multMatch != null) part.substring(multMatch.range.last + 1) else part
-            parseBasicFormula(cleanPart).forEach { (el, cnt) ->
-                totalResult[el] = (totalResult[el] ?: 0) + (cnt * partMult)
-            }
-        }
-        return totalResult
-    }
-    private fun parseBasicFormula(formula: String): Map<String, Int> {
-        val result = mutableMapOf<String, Int>()
-        val stack = ArrayDeque<MutableMap<String, Int>>().apply { addLast(result) }
-        var i = 0
-        while (i < formula.length) {
-            when {
-                formula[i] == '(' -> { stack.addLast(mutableMapOf()); i++ }
-                formula[i] == ')' -> {
-                    i++
-                    var numStr = ""
-                    while (i < formula.length && formula[i].isDigit()) numStr += formula[i++]
-                    val mult = numStr.toIntOrNull() ?: 1
-                    val top = stack.removeLast()
-                    top.forEach { (el, cnt) -> stack.last()[el] = (stack.last()[el] ?: 0) + cnt * mult }
-                }
-                formula[i].isUpperCase() -> {
-                    var el = formula[i].toString(); i++
-                    while (i < formula.length && formula[i].isLowerCase()) el += formula[i++]
-                    var numStr = ""
-                    while (i < formula.length && formula[i].isDigit()) numStr += formula[i++]
-                    val cnt = numStr.toIntOrNull() ?: 1
-                    stack.last()[el] = (stack.last()[el] ?: 0) + cnt
-                }
-                else -> i++
-            }
-        }
-        return result
-    }
-
-    private fun gcd(a: Int, b: Int): Int = if (b == 0) a else gcd(b, a % b)
-
     private fun getEmpiricalFormula(formula: String): String {
-        if (formula.isBlank()) return ""
-        val els = parseFormula(formula)
-        if (els.isEmpty()) return formula
-        val d = els.values.reduce { a, b -> gcd(a, b) }
-        return els.entries.joinToString("") { (el, cnt) -> el + if (cnt / d > 1) "${cnt / d}" else "" }
+        return calculateEmpiricalFormula(formula)
     }
 
     private fun calcElementalData(formula: String): List<ElementData> {
-        if (formula.isBlank()) return emptyList()
-        val els = parseFormula(formula)
-        var total = 0.0
-        val raw = els.mapNotNull { (el, cnt) ->
-            val w = ATOMIC_WEIGHTS[el] ?: return@mapNotNull null
-            val mass = w * cnt
-            total += mass
-            el to mass
-        }
-        if (total == 0.0) return emptyList()
-        return raw.map { (el, mass) ->
-            ElementData(el, ((mass / total) * 100).toFloat())
-        }.sortedByDescending { it.percentage }
+        return calculateElementalPercentages(formula)
+            .map { ElementData(it.element, it.percentage.toFloat()) }
     }
 
     fun fetchSafetyData() {
@@ -1772,7 +1758,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
             val dedupedHazards = dedupeHazardStatements(hazardStatements)
             if (dedupedHazards.isEmpty() && signalWord == null && pictogramCodes.isEmpty()) return null
-            GhsData(signalWord, dedupedHazards, pictogramCodes.distinct())
+            GhsData(signalWord, dedupedHazards, pictogramCodes.distinct(), retrievedAt = System.currentTimeMillis())
         } catch (e: Exception) {
             Log.e("ChemViewModel", "GHS parse error", e)
             null
@@ -1813,7 +1799,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             )
         }
         val builder = NotificationCompat.Builder(context, UPDATE_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_stat_chemsearch)
             .setContentTitle("ChemSearch update available")
             .setContentText("Version $latestTag is available")
             .setAutoCancel(true)
@@ -1885,28 +1871,5 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         private const val PREF_HISTORY = "history"
         private const val PREF_RECENT_SEARCHES = "recent_searches"
         private const val UPDATE_CHECK_INTERVAL_MS = 12 * 60 * 60 * 1000L
-
-        private val ATOMIC_WEIGHTS = mapOf(
-            "H" to 1.008, "He" to 4.0026, "Li" to 6.94, "Be" to 9.0122, "B" to 10.81, "C" to 12.011,
-            "N" to 14.007, "O" to 15.999, "F" to 18.998, "Ne" to 20.180, "Na" to 22.990, "Mg" to 24.305,
-            "Al" to 26.982, "Si" to 28.085, "P" to 30.974, "S" to 32.06, "Cl" to 35.45, "Ar" to 39.948,
-            "K" to 39.098, "Ca" to 40.078, "Sc" to 44.956, "Ti" to 47.867, "V" to 50.942, "Cr" to 51.996,
-            "Mn" to 54.938, "Fe" to 55.845, "Co" to 58.933, "Ni" to 58.693, "Cu" to 63.546, "Zn" to 65.38,
-            "Ga" to 69.723, "Ge" to 72.63, "As" to 74.922, "Se" to 78.97, "Br" to 79.904, "Kr" to 83.798,
-            "Rb" to 85.468, "Sr" to 87.62, "Y" to 88.906, "Zr" to 91.224, "Nb" to 92.906, "Mo" to 95.95,
-            "Ru" to 101.07, "Rh" to 102.91, "Pd" to 106.42, "Ag" to 107.87, "Cd" to 112.41, "In" to 114.82,
-            "Sn" to 118.71, "Sb" to 121.76, "Te" to 127.60, "I" to 126.90, "Xe" to 131.29, "Cs" to 132.91,
-            "Ba" to 137.33, "La" to 138.91, "Ce" to 140.12, "Pr" to 140.91, "Nd" to 144.24, "Pm" to 145.0,
-            "Sm" to 150.36, "Eu" to 151.96, "Gd" to 157.25, "Tb" to 158.93, "Dy" to 162.50, "Ho" to 164.93,
-            "Er" to 167.26, "Tm" to 168.93, "Yb" to 173.05, "Lu" to 174.97, "Hf" to 178.49, "Ta" to 180.95,
-            "W" to 183.84, "Re" to 186.21, "Os" to 190.23, "Ir" to 192.22, "Pt" to 195.08, "Au" to 196.97,
-            "Hg" to 200.59, "Tl" to 204.38, "Pb" to 207.2, "Bi" to 208.98, "Po" to 209.0, "At" to 210.0,
-            "Rn" to 222.0, "Fr" to 223.0, "Ra" to 226.0, "Ac" to 227.0, "Th" to 232.04, "Pa" to 231.04,
-            "U" to 238.03, "Np" to 237.0, "Pu" to 244.0, "Am" to 243.0, "Cm" to 247.0, "Bk" to 247.0,
-            "Cf" to 251.0, "Es" to 252.0, "Fm" to 257.0, "Md" to 258.0, "No" to 259.0, "Lr" to 262.0,
-            "Rf" to 267.0, "Db" to 270.0, "Sg" to 271.0, "Bh" to 270.0, "Hs" to 277.0, "Mt" to 276.0,
-            "Ds" to 281.0, "Rg" to 280.0, "Cn" to 285.0, "Nh" to 284.0, "Fl" to 289.0, "Mc" to 288.0,
-            "Lv" to 293.0, "Ts" to 294.0, "Og" to 294.0
-        )
     }
 }

@@ -28,7 +28,7 @@
 
 ## About
 
-ChemSearch is a native Android app for quick chemistry lookup and study work. It combines PubChem search, 2D and 3D structure viewing, safety data, descriptions, references, offline saving, compound comparison, and calculators in a clean Compose interface.
+ChemSearch is a native Android app for quick chemistry lookup and study work. It combines PubChem search, 2D and 3D structure viewing, safety data, descriptions, references, offline saving, compound comparison, and calculators in a clean Compose interface with smooth motion and Phosphor icons.
 
 The app is useful for students, teachers, lab prep, and quick compound checks.
 
@@ -38,16 +38,20 @@ The app is useful for students, teachers, lab prep, and quick compound checks.
 - 2D structure images and an interactive 3D molecule viewer.
 - Backup 3D model loading from SMILES, InChI, or InChIKey when PubChem has no 3D model.
 - Formula display with subscripts, charge superscripts, wrapping, and isomer search.
+- Formula parsing for groups, hydrates, brackets, charges, subscripts, and superscripts.
 - Descriptions from PubChem, Wikipedia, or a configured AI provider.
+- Source labels for generated structures, safety fields, and AI description context.
 - GHS safety information when PubChem provides it.
 - Library with Favorites, offline Downloads, and a searchable Chemical Database.
 - Full offline compound copies with structures, identifiers, descriptions, safety data, and synonyms.
 - Chemical Database cards for substances, ions, functional groups, and reactions.
 - Tools for molar mass, oxidation states, pH/pOH, reaction balancing, isomers, stoichiometry, dilution, gas law, SMILES lookup, and compound comparison.
+- Oxidation state handling for oxyhalogens, peroxides, superoxides, ozonides, hydrides, and mixed-valence cases.
 - Tool and Library screens with list/grid layouts.
 - Compound comparison for formulas, descriptions, identifiers, atom counts, bond counts, and key properties.
 - Search history with pinning and time groups.
-- Light/dark themes, color schemes, compact mode, and onboarding setup.
+- Developer options for network checks across PubChem, Wikipedia, NCI/CADD, GitHub releases, and AI providers.
+- OLED Mode, light/dark themes, color schemes, compact mode, and onboarding setup.
 
 ## Screenshots
 
@@ -72,6 +76,7 @@ The full feature guide belongs in the [GitHub Wiki](https://github.com/FurtherSe
 - [Kotlin](https://kotlinlang.org/)
 - [Jetpack Compose](https://developer.android.com/compose)
 - [Material 3](https://developer.android.com/develop/ui/compose/designsystems/material3)
+- [Phosphor Icons](https://phosphoricons.com/)
 - [AndroidX Room](https://developer.android.com/training/data-storage/room)
 - [AndroidX DataStore](https://developer.android.com/topic/libraries/architecture/datastore)
 - [Retrofit](https://square.github.io/retrofit/)

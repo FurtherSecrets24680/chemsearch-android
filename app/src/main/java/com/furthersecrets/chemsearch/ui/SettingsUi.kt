@@ -25,17 +25,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.Feed
-import androidx.compose.material.icons.automirrored.filled.HelpOutline
-import androidx.compose.material.icons.automirrored.filled.MenuBook
-import androidx.compose.material.icons.automirrored.filled.ViewList
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -66,6 +60,8 @@ import java.util.Locale
 
 private val SECRET_PREF_KEYS = AiProvider.entries.map { it.keyPref }.toSet()
 private val SENSITIVE_PREF_TOKENS = listOf("key", "token", "secret")
+
+internal fun isOledModeControlEnabled(isDark: Boolean): Boolean = isDark
 
 private fun AppColorScheme.label(): String = when (this) {
     AppColorScheme.BLUE -> "Blue"
@@ -337,6 +333,7 @@ private fun AiProviderSettings(
         }
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsSheet(
@@ -344,6 +341,7 @@ fun SettingsSheet(
     colorScheme: AppColorScheme,
     autoSuggest: Boolean,
     compactMode: Boolean,
+    oledDarkTheme: Boolean,
     defaultDescSource: DescSource,
     aiProvider: AiProvider,
     aiKeyStatus: Map<AiProvider, Boolean>,
@@ -354,6 +352,7 @@ fun SettingsSheet(
     onSetColorScheme: (AppColorScheme) -> Unit,
     onToggleAutoSuggest: () -> Unit,
     onToggleCompactMode: () -> Unit,
+    onToggleOledDarkTheme: () -> Unit,
     onSetDefaultDesc: (DescSource) -> Unit,
     onSetAiProvider: (AiProvider) -> Unit,
     onSetAiModel: (AiProvider, String) -> Unit,
@@ -393,6 +392,14 @@ fun SettingsSheet(
                 subtitle = if (isDark) "Currently dark" else "Currently light",
                 checked = isDark,
                 onToggle = onToggleTheme
+            )
+            SettingsToggleRow(
+                icon = Icons.Default.Brightness2,
+                title = "OLED Mode",
+                subtitle = if (isDark) "Use true-black backgrounds and surfaces" else "Turn on dark mode to use OLED Mode",
+                checked = oledDarkTheme,
+                enabled = isOledModeControlEnabled(isDark),
+                onToggle = onToggleOledDarkTheme
             )
             Text(
                 "Color scheme",
@@ -618,21 +625,51 @@ fun SettingsSectionHeader(text: String) {
 }
 
 @Composable
-fun SettingsToggleRow(icon: ImageVector, title: String, subtitle: String, checked: Boolean, onToggle: () -> Unit) {
+fun SettingsToggleRow(
+    icon: ImageVector,
+    title: String,
+    subtitle: String,
+    checked: Boolean,
+    enabled: Boolean = true,
+    onToggle: () -> Unit
+) {
     val compact = LocalCompactMode.current
     Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = if (compact) 2.dp else 6.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .alpha(if (enabled) 1f else 0.45f)
+            .padding(vertical = if (compact) 2.dp else 6.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.spacedBy(if (compact) 10.dp else 12.dp)
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.weight(1f, fill = true)
+        ) {
             Icon(icon, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(if (compact) 18.dp else 20.dp))
-            Column {
-                Text(title, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
-                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+            Column(modifier = Modifier.weight(1f, fill = true)) {
+                Text(
+                    title,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         }
-        Switch(checked = checked, onCheckedChange = { onToggle() })
+        Switch(
+            checked = checked,
+            onCheckedChange = { onToggle() },
+            enabled = enabled
+        )
     }
 }
 
@@ -640,7 +677,10 @@ fun SettingsToggleRow(icon: ImageVector, title: String, subtitle: String, checke
 fun SettingsActionRow(icon: ImageVector, title: String, subtitle: String, actionLabel: String, actionColor: Color, onClick: () -> Unit) {
     val compact = LocalCompactMode.current
     Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = if (compact) 2.dp else 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .chemAnimateContentSize()
+            .padding(vertical = if (compact) 2.dp else 4.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -650,13 +690,13 @@ fun SettingsActionRow(icon: ImageVector, title: String, subtitle: String, action
             modifier = Modifier.weight(1f)
         ) {
             Icon(icon, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(if (compact) 18.dp else 20.dp))
-            Column {
+            Column(modifier = Modifier.chemAnimateContentSize()) {
                 Text(title, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
                 Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
             }
         }
         TextButton(onClick = onClick) {
-            Text(actionLabel, color = actionColor, fontWeight = FontWeight.SemiBold)
+            AnimatedActionLabel(text = actionLabel, color = actionColor)
         }
     }
 }
@@ -767,113 +807,108 @@ private fun AboutCard(onVersionTap: (() -> Unit)? = null) {
     } else {
         Modifier
     }
-    Card(
-        shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-    ) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text("ChemSearch for Android", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Surface(
-                        shape = RoundedCornerShape(6.dp),
-                        color = MaterialTheme.colorScheme.primary.copy(0.12f),
-                        modifier = versionModifier
-                    ) {
-                        Text(
-                            text = "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
-                            style = MaterialTheme.typography.labelSmall,
-                            fontFamily = FontFamily.Monospace,
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Surface(
-                        shape = RoundedCornerShape(6.dp),
-                        color = MaterialTheme.colorScheme.secondary.copy(0.12f)
-                    ) {
-                        Text(
-                            text = if (BuildConfig.DEBUG) "Debug" else "Release",
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.secondary,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Text("ChemSearch for Android", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Surface(
+                    shape = RoundedCornerShape(6.dp),
+                    color = MaterialTheme.colorScheme.primary.copy(0.12f),
+                    modifier = versionModifier
+                ) {
+                    Text(
+                        text = "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = FontFamily.Monospace,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
-                Text(
-                    "Search compounds, view 2D/3D structures, and read safety data.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
-                )
-                Text("Built by FurtherSecrets", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
-                Text(
-                    "Package: ${BuildConfig.APPLICATION_ID}",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontFamily = FontFamily.Monospace,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
-                )
-            }
-
-            HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
-
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text("LINKS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-                LinkRow(
-                    icon = Icons.Default.Code,
-                    title = "GitHub repository",
-                    subtitle = "Source, docs, and releases",
-                    url = "https://github.com/FurtherSecrets24680/chemsearch-android"
-                )
-                LinkRow(
-                    icon = Icons.Default.SystemUpdate,
-                    title = "Latest release",
-                    subtitle = "Download the newest APK",
-                    url = "https://github.com/FurtherSecrets24680/chemsearch-android/releases/latest"
-                )
-                LinkRow(
-                    icon = Icons.Default.BugReport,
-                    title = "Report an issue",
-                    subtitle = "Bug reports and feature requests",
-                    url = "https://github.com/FurtherSecrets24680/chemsearch-android/issues"
-                )
-                LinkRow(
-                    icon = Icons.Default.Description,
-                    title = "License",
-                    subtitle = "View the open-source license",
-                    url = "https://github.com/FurtherSecrets24680/chemsearch-android/blob/main/LICENSE"
-                )
-            }
-
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text("DATA SOURCES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-                listOf(
-                    "PubChem" to "Structures and properties",
-                    "Wikipedia" to "Descriptions",
-                    "Google Gemini" to "AI summaries",
-                    "Groq" to "AI summaries",
-                    "OpenAI" to "AI summaries",
-                    "OpenRouter" to "AI summaries",
-                    "Mistral AI" to "AI summaries"
-                ).forEach { (name, detail) ->
-                    CreditRow(name = name, detail = detail)
+                Surface(
+                    shape = RoundedCornerShape(6.dp),
+                    color = MaterialTheme.colorScheme.secondary.copy(0.12f)
+                ) {
+                    Text(
+                        text = if (BuildConfig.DEBUG) "Debug" else "Release",
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.secondary,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
             }
+            Text(
+                "Search compounds, view 2D/3D structures, and read safety data.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
+            )
+            Text("Built by FurtherSecrets", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+            Text(
+                "Package: ${BuildConfig.APPLICATION_ID}",
+                style = MaterialTheme.typography.labelSmall,
+                fontFamily = FontFamily.Monospace,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+            )
+        }
 
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text("LIBRARIES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-                listOf(
-                    "Jetpack Compose" to "UI",
-                    "Material 3" to "Design",
-                    "Retrofit + OkHttp" to "Networking",
-                    "Coil" to "Images",
-                    "Gson" to "JSON",
-                    "Coroutines" to "Async",
-                    "Custom 3D renderer" to "SDF viewer"
-                ).forEach { (name, detail) ->
-                    CreditRow(name = name, detail = detail)
-                }
+        HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
+
+        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Text("LINKS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+            LinkRow(
+                icon = Icons.Default.Code,
+                title = "GitHub repository",
+                subtitle = "Source, docs, and releases",
+                url = "https://github.com/FurtherSecrets24680/chemsearch-android"
+            )
+            LinkRow(
+                icon = Icons.Default.SystemUpdate,
+                title = "Latest release",
+                subtitle = "Download the newest APK",
+                url = "https://github.com/FurtherSecrets24680/chemsearch-android/releases/latest"
+            )
+            LinkRow(
+                icon = Icons.Default.BugReport,
+                title = "Report an issue",
+                subtitle = "Bug reports and feature requests",
+                url = "https://github.com/FurtherSecrets24680/chemsearch-android/issues"
+            )
+            LinkRow(
+                icon = Icons.Default.Description,
+                title = "License",
+                subtitle = "View the open-source license",
+                url = "https://github.com/FurtherSecrets24680/chemsearch-android/blob/main/LICENSE"
+            )
+        }
+
+        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Text("DATA SOURCES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+            listOf(
+                "PubChem" to "Structures and properties",
+                "Wikipedia" to "Descriptions",
+                "Google Gemini" to "AI summaries",
+                "Groq" to "AI summaries",
+                "OpenAI" to "AI summaries",
+                "OpenRouter" to "AI summaries",
+                "Mistral AI" to "AI summaries"
+            ).forEach { (name, detail) ->
+                CreditRow(name = name, detail = detail)
+            }
+        }
+
+        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Text("LIBRARIES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+            listOf(
+                "Jetpack Compose" to "UI",
+                "Material 3" to "Design",
+                "Retrofit + OkHttp" to "Networking",
+                "Coil" to "Images",
+                "Gson" to "JSON",
+                "Coroutines" to "Async",
+                "Custom 3D renderer" to "SDF viewer"
+            ).forEach { (name, detail) ->
+                CreditRow(name = name, detail = detail)
             }
         }
     }
@@ -1112,20 +1147,26 @@ fun InfoDialog(title: String, entries: List<Pair<String, String>>, onDismiss: ()
 }
 
 private val FAQ_ENTRIES = listOf(
-    "Why use this app instead of PubChem or ChemSpider?" to "It puts the same core data in a fast, mobile-friendly view and comes bundled with useful chemistry tools ( reaction balancing, molar mass, stoichiometry, 3D viewer etc.) so you can study without constantly changing sites.",
+    "Why use this app instead of PubChem or ChemSpider?" to "It puts the same core data in a fast, mobile-friendly view and comes bundled with useful chemistry tools (reaction balancing, molar mass, stoichiometry, 3D viewer, comparison tools, and more) so you can study without constantly changing sites.",
     "Where does compound data come from?" to "Most compound properties, structures, and safety data are pulled from PubChem. Descriptions can also come from Wikipedia or AI depending on your settings.",
     "What can I search for?" to "Search by common name, IUPAC name, CAS number, or CID. Suggestions use PubChem as you type.",
     "Why am I not getting results?" to "Check spelling, try a CID or CAS number, or remove extra spaces. Some compounds are not listed in PubChem.",
+    "What AI providers are supported?" to "ChemSearch supports Google Gemini, Groq Cloud, OpenAI, OpenRouter, and Mistral AI. Each provider needs its own API key.",
     "Do I need an API key for AI descriptions?" to "Yes. AI descriptions use your selected provider. Add a key in Settings > AI Provider & Keys. Keys are stored locally on your device.",
-    "Where are my API keys stored?" to "Keys are stored locally in app preferences on your device and are not synced.",
-    "Is the app offline?" to "Most features require internet access. Downloaded compounds in Library can be opened later with saved structures, descriptions, synonyms, safety info, and identifiers.",
+    "Where are my API keys stored?" to "Keys are stored locally with Android Keystore-backed encryption and are not synced.",
+    "Is the app offline?" to "Most live search features require internet access. Downloaded compounds in Library can be opened later with saved structures, descriptions, synonyms, safety info, and identifiers.",
+    "What is the difference between cache and Downloads?" to "Cache helps repeated searches load faster and can be cleared anytime. Downloads are deliberate offline copies saved in Library with compound data and structures.",
+    "Where are downloaded compounds stored?" to "Downloaded compounds are stored in the app's local Room database on your device. They are not uploaded anywhere by ChemSearch.",
+    "What is the Chemical Database?" to "It is a built-in reference browser for substances, ions, functional groups, and reactions. It uses local JSON data bundled with the app.",
     "How do autosuggestions work?" to "Autosuggestions query PubChem as you type. You can toggle them in Settings > Search.",
-    "How do I save favorites?" to "Tap the bookmark icon on a compound, then open Library > Favorites. Favorites are stored locally.",
+    "How do I save favorites?" to "Tap the star icon on a compound, then open Library > Favorites. Favorites are stored locally.",
     "How do I clear history or cache?" to "Go to Settings > Data to clear search history or manage the compound cache.",
-    "How do I download structures?" to "Use the Structure buttons to save PNG/SDF files, or tap the download icon below the bookmark to save the whole compound in Library > Downloads.",
-    "Why is the 3D model missing?" to "Some compounds do not have a 3D SDF available in PubChem. In that case the 3D viewer shows a placeholder.",
+    "How do I download structures?" to "Use the Structure buttons to save PNG/SDF files, or tap the download icon below the star to save the whole compound in Library > Downloads.",
+    "Why is the 3D model missing?" to "Some compounds do not have a 3D SDF available in PubChem or through the fallback resolver. Metals, salts, ionic compounds, and very large molecules are common cases.",
     "How do I use the custom 3D viewer?" to "Open Tools > Custom 3D Molecule Viewer and load a .sdf or .mol file from your device.",
     "What does the SMILES visualizer do?" to "Paste a SMILES string to look it up on PubChem and view its 2D or 3D structure when available.",
+    "How does Compare Compounds work?" to "Open Tools > Compare Compounds, enter two or more compound names, and compare formula, descriptions, identifiers, atom counts, bond counts, and key properties.",
+    "What does the pH / pOH calculator do?" to "It converts between pH, pOH, hydrogen ion concentration, and hydroxide ion concentration, then classifies the solution as acidic, neutral, or basic.",
     "How does the Reaction Balancer work?" to "It builds an element matrix and solves it with exact arithmetic. Very complex redox reactions or incorrect formulas may fail to balance.",
     "What does the Stoichiometry tool calculate?" to "It balances the reaction, finds the limiting reagent, and computes theoretical yield, excess reagents, and reaction scaling.",
     "How is molar mass calculated?" to "The calculator sums standard atomic weights for each element in the formula. Parentheses and hydrates are supported.",
@@ -1200,6 +1241,7 @@ private fun FavoriteCard(
     onSelect: (String) -> Unit,
     onDelete: (Long) -> Unit,
     modifier: Modifier = Modifier,
+    offlineMetadata: OfflineDownloadMetadata? = null,
     showImage: Boolean = true,
     enableSelect: Boolean = true,
     showReorderControls: Boolean = false,
@@ -1257,6 +1299,7 @@ private fun FavoriteCard(
                     fontFamily = FontFamily.Monospace,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
                 )
+                OfflineAssetChips(metadata = offlineMetadata, maxChips = 4)
             }
             if (showReorderControls) {
                 Column(
@@ -1294,6 +1337,41 @@ private fun FavoriteCard(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun OfflineAssetChips(
+    metadata: OfflineDownloadMetadata?,
+    maxChips: Int,
+    modifier: Modifier = Modifier
+) {
+    val chips = metadata?.assetChips.orEmpty().take(maxChips)
+    if (chips.isEmpty()) return
+
+    FlowRow(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(5.dp),
+        verticalArrangement = Arrangement.spacedBy(5.dp)
+    ) {
+        chips.forEach { label ->
+            Surface(
+                shape = RoundedCornerShape(999.dp),
+                color = MaterialTheme.colorScheme.primary.copy(0.08f),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.16f))
+            ) {
+                Text(
+                    label,
+                    modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.58f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    letterSpacing = 0.sp
+                )
+            }
+        }
+    }
+}
+
 @Composable
 private fun SortPill(label: String, selected: Boolean, onClick: () -> Unit) {
     val background = if (selected) MaterialTheme.colorScheme.primary.copy(0.12f) else MaterialTheme.colorScheme.surfaceVariant
@@ -1323,16 +1401,22 @@ private enum class LibraryViewMode { LIST, GRID }
 
 private data class LibraryOption(
     val tab: LibraryTab,
-    val icon: ImageVector,
+    val icon: ChemIconSpec,
     val title: String,
     val subtitle: String,
     val countLabel: String? = null,
     val databaseSummary: ChemicalDatabaseSummary? = null
 )
 
+private fun LibraryTab.icon(): ChemIconSpec = when (this) {
+    LibraryTab.FAVORITES -> ChemAppIcons.Star
+    LibraryTab.DOWNLOADS -> ChemAppIcons.Download
+    LibraryTab.DATABASE -> ChemAppIcons.Library
+}
+
 @Composable
 private fun LibraryOptionCard(
-    icon: ImageVector,
+    icon: ChemIconSpec,
     title: String,
     subtitle: String,
     countLabel: String? = null,
@@ -1376,7 +1460,7 @@ private fun LibraryOptionCard(
                         ),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
+                    ChemIcon(
                         icon,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
@@ -1476,7 +1560,7 @@ private fun ChemicalDatabaseSummaryBreakdown(
 
 @Composable
 private fun LibraryOptionListCard(
-    icon: ImageVector,
+    icon: ChemIconSpec,
     title: String,
     subtitle: String,
     countLabel: String? = null,
@@ -1507,7 +1591,7 @@ private fun LibraryOptionListCard(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
+                ChemIcon(
                     icon,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
@@ -1645,7 +1729,8 @@ private fun LibraryGridCard(
     favorite: FavoriteCompound,
     onSelect: (String) -> Unit,
     onDelete: (Long) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    offlineMetadata: OfflineDownloadMetadata? = null
 ) {
     val compact = LocalCompactMode.current
     Card(
@@ -1729,6 +1814,7 @@ private fun LibraryGridCard(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
+            OfflineAssetChips(metadata = offlineMetadata, maxChips = 3)
         }
     }
 }
@@ -1768,21 +1854,21 @@ fun LibraryInline(
         listOf(
             LibraryOption(
                 tab = LibraryTab.FAVORITES,
-                icon = Icons.Default.Star,
+                icon = LibraryTab.FAVORITES.icon(),
                 title = "Favorites",
                 subtitle = "Saved quick links",
                 countLabel = favorites.size.toString()
             ),
             LibraryOption(
                 tab = LibraryTab.DOWNLOADS,
-                icon = Icons.Default.Download,
+                icon = LibraryTab.DOWNLOADS.icon(),
                 title = "Downloads",
                 subtitle = "Full offline copies",
                 countLabel = downloads.size.toString()
             ),
             LibraryOption(
                 tab = LibraryTab.DATABASE,
-                icon = Icons.AutoMirrored.Filled.MenuBook,
+                icon = LibraryTab.DATABASE.icon(),
                 title = "Chemical Database",
                 subtitle = "Substances and references",
                 databaseSummary = databaseSummary
@@ -1861,7 +1947,7 @@ fun LibraryInline(
         ) {
             if (selectedSection == null) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Icon(Icons.Default.Inventory2, null, tint = MaterialTheme.colorScheme.primary.copy(0.7f), modifier = Modifier.size(18.dp))
+                    ChemIcon(ChemAppIcons.Library, null, tint = MaterialTheme.colorScheme.primary.copy(0.7f), modifier = Modifier.size(18.dp))
                     Text("Library", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 }
                 LibraryViewToggle(viewMode = homeViewMode, onViewModeChange = { homeViewMode = it })
@@ -1958,12 +2044,8 @@ fun LibraryInline(
             LibraryTab.DATABASE -> "Browse substances, reactions, functional groups, and ions."
         }
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Icon(
-                when (section) {
-                    LibraryTab.FAVORITES -> Icons.Default.Star
-                    LibraryTab.DOWNLOADS -> Icons.Default.Download
-                    LibraryTab.DATABASE -> Icons.AutoMirrored.Filled.MenuBook
-                },
+            ChemIcon(
+                section.icon(),
                 null,
                 tint = MaterialTheme.colorScheme.primary.copy(0.7f),
                 modifier = Modifier.size(18.dp)
@@ -2108,7 +2190,7 @@ fun LibraryInline(
                     LibraryEmptyState(
                         icon = Icons.Default.Download,
                         title = "No downloads yet",
-                        subtitle = "Tap the download icon under the bookmark on any compound"
+                        subtitle = "Tap the download icon under the star on any compound"
                     )
                 } else {
                     SortAndFilterControls("Filter downloads", filteredDownloads.size)
@@ -2123,7 +2205,8 @@ fun LibraryInline(
                             FavoriteCard(
                                 favorite = item.toFavoriteCardData(),
                                 onSelect = { onSelectDownload(item.cid) },
-                                onDelete = onDeleteDownload
+                                onDelete = onDeleteDownload,
+                                offlineMetadata = item.offlineMetadata
                             )
                         }
                     } else {
@@ -2137,7 +2220,8 @@ fun LibraryInline(
                                         favorite = item.toFavoriteCardData(),
                                         onSelect = { onSelectDownload(item.cid) },
                                         onDelete = onDeleteDownload,
-                                        modifier = Modifier.weight(1f)
+                                        modifier = Modifier.weight(1f),
+                                        offlineMetadata = item.offlineMetadata
                                     )
                                 }
                                 if (rowItems.size == 1) Spacer(Modifier.weight(1f))
@@ -2228,11 +2312,11 @@ fun FavoritesSheet(
                                 .background(MaterialTheme.colorScheme.primary.copy(0.08f), CircleShape),
                             contentAlignment = Alignment.Center
                         ) {
-                            Icon(Icons.Default.BookmarkBorder, null, tint = MaterialTheme.colorScheme.primary.copy(0.5f), modifier = Modifier.size(36.dp))
+                            Icon(Icons.Default.StarBorder, null, tint = MaterialTheme.colorScheme.primary.copy(0.5f), modifier = Modifier.size(36.dp))
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
                             Text("No favorites yet", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
-                            Text("Tap the bookmark icon on any compound", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.38f))
+                            Text("Tap the star icon on any compound", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.38f))
                         }
                     }
                 }
@@ -2316,7 +2400,7 @@ fun FavoritesInline(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        Icons.Default.BookmarkBorder,
+                        Icons.Default.StarBorder,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary.copy(0.5f),
                         modifier = Modifier.size(40.dp)
@@ -2337,7 +2421,7 @@ fun FavoritesInline(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Icon(Icons.Default.Bookmark, null, tint = MaterialTheme.colorScheme.primary.copy(0.7f), modifier = Modifier.size(18.dp))
+                Icon(Icons.Default.Star, null, tint = MaterialTheme.colorScheme.primary.copy(0.7f), modifier = Modifier.size(18.dp))
                 Text("Favorites", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             }
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -2488,33 +2572,31 @@ private fun SettingsGroupCard(
     content: @Composable ColumnScope.() -> Unit
 ) {
     val compact = LocalCompactMode.current
-    Card(
-        shape = RoundedCornerShape(if (compact) 12.dp else 14.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = if (compact) 4.dp else 6.dp),
+        verticalArrangement = Arrangement.spacedBy(if (compact) 7.dp else 9.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(if (compact) 11.dp else 14.dp),
-            verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Icon(icon, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
-                Text(title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
-            }
-            if (!subtitle.isNullOrBlank()) {
-                Text(
-                    subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
-                )
-            }
-            content()
+            Icon(icon, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+            Text(title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
         }
+        if (!subtitle.isNullOrBlank()) {
+            Text(
+                subtitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+            )
+        }
+        content()
+        HorizontalDivider(
+            color = MaterialTheme.colorScheme.outline.copy(0.14f),
+            modifier = Modifier.padding(top = if (compact) 4.dp else 6.dp)
+        )
     }
 }
 
@@ -2530,6 +2612,7 @@ fun SettingsInline(
     colorScheme: AppColorScheme,
     autoSuggest: Boolean,
     compactMode: Boolean,
+    oledDarkTheme: Boolean,
     defaultDescSource: DescSource,
     aiProvider: AiProvider,
     aiKeyStatus: Map<AiProvider, Boolean>,
@@ -2540,6 +2623,7 @@ fun SettingsInline(
     onSetColorScheme: (AppColorScheme) -> Unit,
     onToggleAutoSuggest: () -> Unit,
     onToggleCompactMode: () -> Unit,
+    onToggleOledDarkTheme: () -> Unit,
     onSetDefaultDesc: (DescSource) -> Unit,
     onSetAiProvider: (AiProvider) -> Unit,
     onSetAiModel: (AiProvider, String) -> Unit,
@@ -2741,6 +2825,15 @@ fun SettingsInline(
                     }
                 }
             }
+            SettingsGroupDivider()
+            SettingsToggleRow(
+                icon = Icons.Default.Brightness2,
+                title = "OLED Mode",
+                subtitle = if (isDark) "True-black background for every color scheme" else "Turn on dark mode to use OLED Mode",
+                checked = oledDarkTheme,
+                enabled = isOledModeControlEnabled(isDark),
+                onToggle = onToggleOledDarkTheme
+            )
             SettingsGroupDivider()
             Text(
                 "Color scheme",
@@ -2974,98 +3067,33 @@ private fun runNetworkProbe(
 }
 
 private suspend fun runNetworkDiagnosticsChecks(
-    geminiKey: String?,
-    groqKey: String?
+    apiKeys: Map<AiProvider, String?>
 ): List<NetworkProbeResult> = withContext(Dispatchers.IO) {
-    val results = mutableListOf<NetworkProbeResult>()
-
-    results += runNetworkProbe(
-        service = "PubChem Search",
-        endpoint = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/water/cids/JSON",
-        request = Request.Builder()
-            .url("https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/water/cids/JSON")
-            .get()
-            .build()
-    )
-
-    results += runNetworkProbe(
-        service = "PubChem Autocomplete",
-        endpoint = "https://pubchem.ncbi.nlm.nih.gov/rest/autocomplete/compound/caffeine/JSON?limit=3",
-        request = Request.Builder()
-            .url("https://pubchem.ncbi.nlm.nih.gov/rest/autocomplete/compound/caffeine/JSON?limit=3")
-            .get()
-            .build()
-    )
-
-    results += runNetworkProbe(
-        service = "PubChem View",
-        endpoint = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/2244/JSON?heading=GHS%20Classification",
-        request = Request.Builder()
-            .url("https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/2244/JSON?heading=GHS%20Classification")
-            .get()
-            .build()
-    )
-
-    results += runNetworkProbe(
-        service = "Wikipedia",
-        endpoint = "https://en.wikipedia.org/api/rest_v1/page/summary/Water",
-        request = Request.Builder()
-            .url("https://en.wikipedia.org/api/rest_v1/page/summary/Water")
-            .header("User-Agent", "ChemSearch/1.0 (Android; github.com/FurtherSecrets24680)")
-            .header("Accept", "application/json")
-            .get()
-            .build()
-    )
-
-    results += runNetworkProbe(
-        service = "GitHub Releases",
-        endpoint = "https://api.github.com/repos/FurtherSecrets24680/chemsearch-android/releases/latest",
-        request = Request.Builder()
-            .url("https://api.github.com/repos/FurtherSecrets24680/chemsearch-android/releases/latest")
-            .header("User-Agent", "ChemSearch/1.0 (Android; github.com/FurtherSecrets24680)")
-            .header("Accept", "application/vnd.github+json")
-            .get()
-            .build()
-    )
-
-    if (geminiKey.isNullOrBlank()) {
-        results += skippedNetworkProbe(
-            service = "Gemini API",
-            endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent",
-            reason = "Skipped: Gemini API key is not set."
-        )
-    } else {
-        val body = """{"contents":[{"parts":[{"text":"Reply with PONG only."}]}]}"""
-        results += runNetworkProbe(
-            service = "Gemini API",
-            endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent",
-            request = Request.Builder()
-                .url("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=$geminiKey")
-                .post(body.toRequestBody("application/json".toMediaType()))
-                .build()
-        )
+    buildNetworkDiagnosticProbeSpecs().map { spec ->
+        val apiKey = spec.aiProvider?.let { apiKeys[it] }
+        if (spec.requiresApiKey() && apiKey.isNullOrBlank()) {
+            skippedNetworkProbe(
+                service = spec.service,
+                endpoint = spec.endpoint,
+                reason = "Skipped: ${spec.aiProvider?.displayName ?: "Provider"} API key is not set."
+            )
+        } else {
+            val builder = Request.Builder().url(spec.requestUrl(apiKey))
+            spec.headers.forEach { (key, value) -> builder.header(key, value) }
+            when (spec.auth) {
+                NetworkDiagnosticAuth.BEARER -> builder.header("Authorization", "Bearer $apiKey")
+                NetworkDiagnosticAuth.NONE,
+                NetworkDiagnosticAuth.QUERY_KEY -> Unit
+            }
+            val request = when (spec.method) {
+                NetworkDiagnosticMethod.GET -> builder.get().build()
+                NetworkDiagnosticMethod.POST -> builder
+                    .post(spec.body.orEmpty().toRequestBody("application/json".toMediaType()))
+                    .build()
+            }
+            runNetworkProbe(spec.service, spec.endpoint, request)
+        }
     }
-
-    if (groqKey.isNullOrBlank()) {
-        results += skippedNetworkProbe(
-            service = "Groq API",
-            endpoint = "https://api.groq.com/openai/v1/chat/completions",
-            reason = "Skipped: Groq API key is not set."
-        )
-    } else {
-        val body = """{"model":"openai/gpt-oss-120b","messages":[{"role":"user","content":"Reply with PONG only."}],"max_tokens":8,"temperature":0}"""
-        results += runNetworkProbe(
-            service = "Groq API",
-            endpoint = "https://api.groq.com/openai/v1/chat/completions",
-            request = Request.Builder()
-                .url("https://api.groq.com/openai/v1/chat/completions")
-                .header("Authorization", "Bearer $groqKey")
-                .post(body.toRequestBody("application/json".toMediaType()))
-                .build()
-        )
-    }
-
-    results
 }
 
 
@@ -3135,9 +3163,10 @@ fun DebugSettingsSection(
         if (isRunningNetworkDiagnostics) return
         isRunningNetworkDiagnostics = true
         scope.launch {
-            val geminiKey = SecurePrefs.getString(prefs, "gemini_key")
-            val groqKey = SecurePrefs.getString(prefs, "groq_key")
-            val results = runNetworkDiagnosticsChecks(geminiKey, groqKey)
+            val apiKeys = AiProvider.entries.associateWith { provider ->
+                SecurePrefs.getString(prefs, provider.keyPref)
+            }
+            val results = runNetworkDiagnosticsChecks(apiKeys)
             networkDiagnosticsResults = results
             networkDiagnosticsRunAt = System.currentTimeMillis()
             isRunningNetworkDiagnostics = false
@@ -3167,12 +3196,12 @@ fun DebugSettingsSection(
             entries = listOf(
                 "Verbose logging" to "Enables debug/info logs (tagged 'ChemSearch') in Logcat and the in-app buffer. Errors are always captured. Disable to reduce noise.",
                 "Live log viewer" to "Shows the in-app log buffer in real time (up to 200 lines). Verbose logs (D/) only appear when verbose logging is on. Errors (E/) are always captured. You can copy or clear the buffer.",
-                "Inspect SharedPreferences" to "Dumps stored app preferences with sensitive keys masked. Raw API keys are never shown or copied from this screen.",
+                "Inspect SharedPreferences" to "Dumps legacy SharedPreferences and encrypted key records with sensitive values masked. DataStore settings and Room downloads are stored separately.",
                 "Memory info" to "Shows current heap usage from the JVM runtime and the Android ActivityManager. Useful for spotting memory leaks or unusually high allocations.",
-                "Network diagnostics" to "Runs endpoint checks against PubChem, Wikipedia, GitHub releases, and AI providers. Shows HTTP status, latency, and response previews for each service.",
+                "Network diagnostics" to "Runs endpoint checks against PubChem search, autocomplete, GHS data, 2D/3D structures, the NCI/CADD fallback resolver, Wikipedia, GitHub releases, and every configured AI provider. Shows HTTP status, latency, and response previews for each service.",
                 "Show welcome screen" to "Clears the welcome-screen skip flag and opens the first-run welcome screen again.",
-                "API endpoints" to "Copies base URLs for PubChem, Wikipedia, and supported AI providers to your clipboard for manual testing.",
-                "Wipe all SharedPreferences" to "Calls prefs.edit().clear(). Removes API keys, history, favorites, settings, and debug flags. You'll need to unlock debug settings again; restart recommended.",
+                "API endpoints" to "Copies base URLs for PubChem, NCI/CADD, Wikipedia, GitHub releases, and supported AI providers to your clipboard for manual testing.",
+                "Wipe all SharedPreferences" to "Calls prefs.edit().clear(). Removes legacy preference values, encrypted key records, history, favorites, and debug flags. DataStore settings, Room downloads, and app cache files are not deleted by this action; restart recommended.",
                 "Force crash" to "Deliberately throws an unhandled RuntimeException. Used to verify that crash reporting / Logcat is working correctly. There is a confirmation step before it fires.",
                 "Hide debug settings" to "Sets dev_mode=false and hides this section. Tap the build number 5 times in the About card to unlock it again."
             ),
@@ -3325,7 +3354,7 @@ fun DebugSettingsSection(
                     }
                     if (networkDiagnosticsResults.isEmpty() && !isRunningNetworkDiagnostics) {
                         Text(
-                            "Run diagnostics to test PubChem, Wikipedia, GitHub releases, and AI endpoints.",
+                            "Run diagnostics to test PubChem lookup, structures, GHS data, fallback 3D loading, Wikipedia, GitHub releases, and AI endpoints.",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurface.copy(0.65f)
                         )
@@ -3607,7 +3636,7 @@ fun DebugSettingsSection(
         AlertDialog(
             onDismissRequest = { showWipeConfirm = false },
             title = { Text("Wipe all preferences?", fontWeight = FontWeight.Bold) },
-            text = { Text("This clears API keys, history, favorites, settings, and debug flags. You will need to unlock debug settings again.") },
+            text = { Text("This clears legacy preferences, encrypted key records, history, favorites, and debug flags. DataStore settings, Room downloads, and cache files are not deleted. You will need to unlock debug settings again.") },
             confirmButton = {
                 Button(
                     onClick = {
@@ -3643,33 +3672,33 @@ fun DebugSettingsSection(
         )
     }
 
-    Card(
-        shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary.copy(0.06f)),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.3f))
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Icon(Icons.Default.BugReport, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
-                    Text(
-                        "DEBUG SETTINGS",
-                        style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.ExtraBold,
-                        letterSpacing = 1.5.sp,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-                IconButton(onClick = { showInfoDialog = true }, modifier = Modifier.size(24.dp)) {
-                    Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.primary.copy(0.6f), modifier = Modifier.size(16.dp))
-                }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Icon(Icons.Default.BugReport, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+                Text(
+                    "DEBUG SETTINGS",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.ExtraBold,
+                    letterSpacing = 1.5.sp,
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
+            IconButton(onClick = { showInfoDialog = true }, modifier = Modifier.size(24.dp)) {
+                Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.primary.copy(0.6f), modifier = Modifier.size(16.dp))
+            }
+        }
 
-            HorizontalDivider(color = MaterialTheme.colorScheme.primary.copy(0.2f), modifier = Modifier.padding(vertical = 4.dp))
+        HorizontalDivider(color = MaterialTheme.colorScheme.primary.copy(0.2f), modifier = Modifier.padding(vertical = 4.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
@@ -3705,7 +3734,7 @@ fun DebugSettingsSection(
             )
 
             val networkSummary = if (networkDiagnosticsResults.isEmpty()) {
-                "Ping PubChem, Wikipedia, GitHub, Gemini, and Groq"
+                "Ping PubChem, fallback 3D, Wikipedia, GitHub, and AI providers"
             } else {
                 val ok = networkDiagnosticsResults.count { it.state == NetworkProbeState.SUCCESS }
                 val fail = networkDiagnosticsResults.count { it.state == NetworkProbeState.FAILED }
@@ -3761,7 +3790,7 @@ fun DebugSettingsSection(
             SettingsActionRow(
                 icon = Icons.Default.Storage,
                 title = "Inspect SharedPreferences",
-                subtitle = "${prefs.all.size} keys stored",
+                subtitle = "${prefs.all.size} legacy keys stored · secrets masked",
                 actionLabel = "View",
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = { showPrefsDialog = true }
@@ -3781,21 +3810,12 @@ fun DebugSettingsSection(
             SettingsActionRow(
                 icon = Icons.Default.Hub,
                 title = "API endpoints",
-                subtitle = "PubChem · Wikipedia · AI providers",
+                subtitle = "PubChem · NCI/CADD · Wikipedia · GitHub · AI",
                 actionLabel = "Copy",
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = {
                     val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val endpoints = listOf(
-                        "PubChem PUG REST: https://pubchem.ncbi.nlm.nih.gov/rest/pug/",
-                        "PubChem PUG View: https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/",
-                        "Wikipedia REST: https://en.wikipedia.org/api/rest_v1/",
-                        "Gemini: https://generativelanguage.googleapis.com/v1beta/",
-                        "Groq: https://api.groq.com/openai/v1/",
-                        "OpenAI: https://api.openai.com/v1/",
-                        "OpenRouter: https://openrouter.ai/api/v1/",
-                        "Mistral: https://api.mistral.ai/v1/"
-                    ).joinToString("\n")
+                    val endpoints = buildDebugApiEndpointLines().joinToString("\n")
                     cm.setPrimaryClip(ClipData.newPlainText("endpoints", endpoints))
                     Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()
                 }
@@ -3805,7 +3825,7 @@ fun DebugSettingsSection(
             SettingsActionRow(
                 icon = Icons.Default.DeleteSweep,
                 title = "Wipe all SharedPreferences",
-                subtitle = "Clears keys, history, API keys, settings, debug flags",
+                subtitle = "Clears legacy prefs and encrypted key records only",
                 actionLabel = "Wipe",
                 actionColor = MaterialTheme.colorScheme.error,
                 onClick = { showWipeConfirm = true }
@@ -3835,4 +3855,3 @@ fun DebugSettingsSection(
             }
         }
     }
-}

@@ -93,7 +93,7 @@ dependencies {
     implementation(libs.androidx.compose.material3)
 
     implementation("androidx.compose.foundation:foundation")
-    implementation("androidx.compose.material:material-icons-extended")
+    implementation(libs.phosphor.icons)
 
     implementation(libs.androidx.activity.compose)
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0")

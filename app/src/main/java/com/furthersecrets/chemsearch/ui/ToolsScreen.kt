@@ -16,16 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.automirrored.filled.Backspace
-import androidx.compose.material.icons.automirrored.filled.CompareArrows
-import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
-import androidx.compose.material.icons.automirrored.filled.OpenInNew
-import androidx.compose.material.icons.automirrored.filled.ShowChart
-import androidx.compose.material.icons.automirrored.filled.ViewList
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -57,6 +47,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.furthersecrets.chemsearch.data.ApiClient
 import com.furthersecrets.chemsearch.data.AiProvider
+import com.furthersecrets.chemsearch.data.BalancedReactionResult
 import com.furthersecrets.chemsearch.data.CompoundProperty
 import com.furthersecrets.chemsearch.data.DescSource
 import com.furthersecrets.chemsearch.data.GeminiContent
@@ -67,12 +58,16 @@ import com.furthersecrets.chemsearch.data.GroqMessage
 import com.furthersecrets.chemsearch.data.GroqRequest
 import com.furthersecrets.chemsearch.data.PhPohInputType
 import com.furthersecrets.chemsearch.data.SdfSource
+import com.furthersecrets.chemsearch.data.balanceChemicalReaction
 import com.furthersecrets.chemsearch.data.buildSdfIdentifierCandidates
+import com.furthersecrets.chemsearch.data.calculateOxidationStates
 import com.furthersecrets.chemsearch.data.fetchGeneratedSdfFromIdentifiers
 import com.furthersecrets.chemsearch.data.calculatePhPoh
+import com.furthersecrets.chemsearch.data.calculateMolarMass as calculateDomainMolarMass
 import com.furthersecrets.chemsearch.data.formatPhPohNumber
 import com.furthersecrets.chemsearch.data.formatCompoundComparisonValue
 import com.furthersecrets.chemsearch.data.isUsableSdf
+import com.furthersecrets.chemsearch.data.parseFormulaElementCounts
 import com.furthersecrets.chemsearch.data.parseCompareCompoundInputs
 import com.furthersecrets.chemsearch.data.previewComparisonCellText
 import com.google.gson.JsonObject
@@ -122,7 +117,7 @@ private val TOOL_CATEGORIES = listOf(
 
 private data class ToolDefinition(
     val id: Int,
-    val icon: ImageVector,
+    val icon: ChemIconSpec,
     val title: String,
     val subtitle: String,
     val category: ToolCategory
@@ -167,91 +162,91 @@ fun ToolsScreen(
     val defaultTools = listOf(
         ToolDefinition(
             id = 2,
-            icon = Icons.Default.Calculate,
+            icon = ChemAppIcons.Calculator,
             title = "Molar Mass Calculator",
             subtitle = "Enter a molecular formula and get the molar mass",
             category = ToolCategory.CALCULATORS
         ),
         ToolDefinition(
             id = 5,
-            icon = Icons.Default.SwapHoriz,
+            icon = ChemAppIcons.ArrowLeftRight,
             title = "Reaction Balancer",
             subtitle = "Balance any chemical equation automatically",
             category = ToolCategory.REACTIONS
         ),
         ToolDefinition(
             id = 14,
-            icon = Icons.Default.WaterDrop,
+            icon = ChemAppIcons.Droplets,
             title = "pH / pOH Calculator",
             subtitle = "Convert pH, pOH, [H+], and [OH-]",
             category = ToolCategory.CALCULATORS
         ),
         ToolDefinition(
             id = 3,
-            icon = Icons.Default.Science,
+            icon = ChemAppIcons.Atom,
             title = "Oxidation State Finder",
             subtitle = "Find oxidation states of each element in a compound",
             category = ToolCategory.CALCULATORS
         ),
         ToolDefinition(
             id = 7,
-            icon = Icons.Default.FilterAlt,
+            icon = ChemAppIcons.ListFilter,
             title = "Limiting Reagent",
             subtitle = "Find limiting reagent, ratios, and theoretical yield",
             category = ToolCategory.STOICHIOMETRY
         ),
         ToolDefinition(
             id = 8,
-            icon = Icons.AutoMirrored.Filled.ShowChart,
+            icon = ChemAppIcons.Percent,
             title = "Percent Yield",
             subtitle = "Compare actual yield against theoretical yield",
             category = ToolCategory.STOICHIOMETRY
         ),
         ToolDefinition(
             id = 11,
-            icon = Icons.Default.WaterDrop,
+            icon = ChemAppIcons.Droplet,
             title = "Dilution Calculator",
             subtitle = "Solve C₁V₁ = C₂V₂ for solutions",
             category = ToolCategory.CALCULATORS
         ),
         ToolDefinition(
             id = 12,
-            icon = Icons.Default.Air,
+            icon = ChemAppIcons.Wind,
             title = "Ideal Gas Law",
             subtitle = "Solve PV = nRT for gases",
             category = ToolCategory.CALCULATORS
         ),
         ToolDefinition(
             id = 13,
-            icon = Icons.AutoMirrored.Filled.CompareArrows,
+            icon = ChemAppIcons.GitCompareArrows,
             title = "Compare Compounds",
             subtitle = "Compare formulas, mass, identifiers, safety, and structures",
             category = ToolCategory.CALCULATORS
         ),
         ToolDefinition(
             id = 6,
-            icon = Icons.Default.Biotech,
+            icon = ChemAppIcons.Dna,
             title = "Isomer Finder",
             subtitle = "Enter a molecular formula to find its structural isomers",
             category = ToolCategory.STRUCTURE
         ),
         ToolDefinition(
             id = 4,
-            icon = Icons.Default.AccountTree,
+            icon = ChemAppIcons.Network,
             title = "SMILES Visualizer",
             subtitle = "Paste a SMILES string to view its 2D and 3D structure",
             category = ToolCategory.VISUALIZE
         ),
         ToolDefinition(
             id = 1,
-            icon = Icons.Default.ViewInAr,
+            icon = ChemAppIcons.Axis3d,
             title = "Custom 3D Molecule Viewer",
             subtitle = "Load any .sdf or .mol file and view it in 3D",
             category = ToolCategory.VISUALIZE
         ),
         ToolDefinition(
             id = 9,
-            icon = Icons.Default.Tune,
+            icon = ChemAppIcons.SlidersHorizontal,
             title = "Reaction Scaling",
             subtitle = "Scale reactants for a target product amount",
             category = ToolCategory.STOICHIOMETRY
@@ -552,7 +547,7 @@ private fun ToolViewToggle(
 
 @Composable
 private fun ToolGridCard(
-    icon: ImageVector,
+    icon: ChemIconSpec,
     title: String,
     subtitle: String,
     onClick: () -> Unit,
@@ -583,7 +578,7 @@ private fun ToolGridCard(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
+                ChemIcon(
                     icon,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
@@ -614,7 +609,7 @@ private fun ToolGridCard(
 
 @Composable
 private fun ToolCard(
-    icon: ImageVector,
+    icon: ChemIconSpec,
     title: String,
     subtitle: String,
     categoryLabel: String,
@@ -650,7 +645,7 @@ private fun ToolCard(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
+                ChemIcon(
                     icon,
                     null,
                     tint = MaterialTheme.colorScheme.primary,
@@ -888,110 +883,22 @@ fun SdfViewerTool(isDark: Boolean) {
 }
 
 // TOOL 2 : MOLAR MASS CALCULATOR
-private val MOLAR_WEIGHTS = mapOf(
-    "H" to 1.008, "He" to 4.003, "Li" to 6.941, "Be" to 9.012, "B" to 10.811,
-    "C" to 12.011, "N" to 14.007, "O" to 15.999, "F" to 18.998, "Ne" to 20.180,
-    "Na" to 22.990, "Mg" to 24.305, "Al" to 26.982, "Si" to 28.086, "P" to 30.974,
-    "S" to 32.065, "Cl" to 35.453, "Ar" to 39.948, "K" to 39.098, "Ca" to 40.078,
-    "Sc" to 44.956, "Ti" to 47.867, "V" to 50.942, "Cr" to 51.996, "Mn" to 54.938,
-    "Fe" to 55.845, "Co" to 58.933, "Ni" to 58.693, "Cu" to 63.546, "Zn" to 65.38,
-    "Ga" to 69.723, "Ge" to 72.630, "As" to 74.922, "Se" to 78.971, "Br" to 79.904,
-    "Kr" to 83.798, "Rb" to 85.468, "Sr" to 87.620, "Y" to 88.906, "Zr" to 91.224,
-    "Nb" to 92.906, "Mo" to 95.950, "Tc" to 98.0, "Ru" to 101.07, "Rh" to 102.91,
-    "Pd" to 106.42, "Ag" to 107.87, "Cd" to 112.41, "In" to 114.82, "Sn" to 118.71,
-    "Sb" to 121.76, "Te" to 127.60, "I" to 126.90, "Xe" to 131.29, "Cs" to 132.91,
-    "Ba" to 137.33, "La" to 138.91, "Ce" to 140.12, "Pr" to 140.91, "Nd" to 144.24,
-    "Pm" to 145.0, "Sm" to 150.36, "Eu" to 151.96, "Gd" to 157.25, "Tb" to 158.93,
-    "Dy" to 162.50, "Ho" to 164.93, "Er" to 167.26, "Tm" to 168.93, "Yb" to 173.05,
-    "Lu" to 174.97, "Hf" to 178.49, "Ta" to 180.95, "W" to 183.84, "Re" to 186.21,
-    "Os" to 190.23, "Ir" to 192.22, "Pt" to 195.08, "Au" to 196.97, "Hg" to 200.59,
-    "Tl" to 204.38, "Pb" to 207.20, "Bi" to 208.98, "Po" to 209.0, "At" to 210.0,
-    "Rn" to 222.0, "Fr" to 223.0, "Ra" to 226.0, "Ac" to 227.0, "Th" to 232.04,
-    "Pa" to 231.04, "U" to 238.03, "Np" to 237.0, "Pu" to 244.0, "Am" to 243.0,
-    "Cm" to 247.0, "Bk" to 247.0, "Cf" to 251.0, "Es" to 252.0, "Fm" to 257.0,
-    "Md" to 258.0, "No" to 259.0, "Lr" to 262.0, "Rf" to 267.0, "Db" to 270.0,
-    "Sg" to 271.0, "Bh" to 270.0, "Hs" to 277.0, "Mt" to 276.0, "Ds" to 281.0,
-    "Rg" to 280.0, "Cn" to 285.0, "Nh" to 284.0, "Fl" to 289.0, "Mc" to 288.0,
-    "Lv" to 293.0, "Ts" to 294.0, "Og" to 294.0
-)
-
 private data class CalcResult(
     val molarMass: Double,
     val breakdown: List<Triple<String, Int, Double>>,
     val error: String? = null
 )
 
-private fun parseFormulaForCalc(formula: String): Map<String, Int> {
-    val result = mutableMapOf<String, Int>()
-    val stack = ArrayDeque<MutableMap<String, Int>>().apply { addLast(result) }
-    var i = 0
-    val f = formula.trim()
-    while (i < f.length) {
-        when {
-            f[i] == '(' -> { stack.addLast(mutableMapOf()); i++ }
-            f[i] == ')' -> {
-                i++
-                var num = ""
-                while (i < f.length && f[i].isDigit()) num += f[i++]
-                val mult = num.toIntOrNull() ?: 1
-                val top = stack.removeLast()
-                top.forEach { (el, cnt) -> stack.last()[el] = (stack.last()[el] ?: 0) + cnt * mult }
-            }
-            f[i].isUpperCase() -> {
-                var el = f[i].toString(); i++
-                while (i < f.length && f[i].isLowerCase()) el += f[i++]
-                var num = ""
-                while (i < f.length && f[i].isDigit()) num += f[i++]
-                val cnt = num.toIntOrNull() ?: 1
-                stack.last()[el] = (stack.last()[el] ?: 0) + cnt
-            }
-            else -> i++
-        }
-    }
-    return result
-}
+private fun parseFormulaForCalc(formula: String): Map<String, Int> =
+    parseFormulaElementCounts(formula)
 
 private fun calculateMolarMass(formula: String): CalcResult {
-    if (formula.isBlank()) return CalcResult(0.0, emptyList(), "Enter a formula")
-    val normalized = formula.trim()
-    val hydrateRegex = Regex("""[·*](\d*\.?\d*)\s*([A-Z].*)$""")
-    val dotHydrateRegex = Regex("""\.(\d+)([A-Z].*)$""")
-
-    val parts: List<Pair<String, Double>> = run {
-        val hydrateMatch = hydrateRegex.find(normalized)
-        val dotMatch = dotHydrateRegex.find(normalized)
-        val match = hydrateMatch ?: dotMatch
-        if (match != null) {
-            val mainPart = normalized.substring(0, match.range.first)
-            val multiplier = match.groupValues[1].toDoubleOrNull() ?: 1.0
-            val hydratePart = match.groupValues[2]
-            listOf(mainPart to 1.0, hydratePart to multiplier)
-        } else {
-            listOf(normalized to 1.0)
-        }
-    }
-
-    val combined = mutableMapOf<String, Int>()
-    for ((part, multiplier) in parts) {
-        if (part.isBlank()) continue
-        val elements = try { parseFormulaForCalc(part) }
-        catch (e: Exception) { return CalcResult(0.0, emptyList(), "Invalid formula syntax") }
-        for ((el, cnt) in elements) {
-            val scaled = (cnt * multiplier).let { if (it == it.toLong().toDouble()) it.toLong().toInt() else { return CalcResult(0.0, emptyList(), "Non-integer atom count from hydrate multiplier") } }
-            combined[el] = (combined[el] ?: 0) + scaled
-        }
-    }
-
-    if (combined.isEmpty()) return CalcResult(0.0, emptyList(), "Could not parse formula")
-    val unknown = combined.keys.filter { it !in MOLAR_WEIGHTS }
-    if (unknown.isNotEmpty()) return CalcResult(0.0, emptyList(), "Unknown element(s): ${unknown.joinToString(", ")}")
-    var total = 0.0
-    val breakdown = combined.map { (el, cnt) ->
-        val contrib = MOLAR_WEIGHTS[el]!! * cnt
-        total += contrib
-        Triple(el, cnt, contrib)
-    }.sortedByDescending { it.third }
-    return CalcResult(total, breakdown)
+    val result = calculateDomainMolarMass(formula)
+    return CalcResult(
+        molarMass = result.molarMass,
+        breakdown = result.breakdown.map { Triple(it.element, it.count, it.contribution) },
+        error = result.error
+    )
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -1201,221 +1108,19 @@ fun MolarMassCalculator() {
 }
 
 // TOOL 3 : OXIDATION STATE FINDER
-private val GROUP1  = setOf("Li","Na","K","Rb","Cs","Fr")
-private val GROUP2  = setOf("Be","Mg","Ca","Sr","Ba","Ra")
-
 private data class OsResult(
     val states: List<Pair<String, String>> = emptyList(),
     val note: String? = null,
     val error: String? = null
 )
-private fun osSign(v: Int) = if (v > 0) "+$v" else "$v"
-private fun gcdOs(a: Long, b: Long): Long = if (b == 0L) a else gcdOs(b, a % b)
 
 private fun findOxidationStates(formula: String, chargeIn: Int): OsResult {
-    if (formula.isBlank()) return OsResult(error = "Enter a formula")
-    val elements = try { parseFormulaForCalc(formula) }
-    catch (e: Exception) { return OsResult(error = "Invalid formula syntax") }
-    if (elements.isEmpty()) return OsResult(error = "Could not parse formula")
-
-    val oCount = elements["O"] ?: 0
-    val hCount = elements["H"] ?: 0
-    val fCount = elements["F"] ?: 0
-    val hasO = oCount > 0
-    val hasH = hCount > 0
-    val hasF = fCount > 0
-
-    // Free / monoatomic
-    if (elements.size == 1) {
-        val (el, cnt) = elements.entries.first()
-        return if (cnt == 1) OsResult(states = listOf(el to osSign(chargeIn)))
-        else OsResult(states = listOf(el to "0"), note = "Free element. Oxidation state is 0")
-    }
-
-    val alkaliEl   = elements.keys.firstOrNull { it in GROUP1 }
-    val alkalineEl = elements.keys.firstOrNull { it in GROUP2 }
-
-    // OF₂ / higher oxygen fluorides
-    if (elements.size == 2 && hasO && hasF) {
-        val oOs = (chargeIn + fCount) / oCount
-        return OsResult(
-            states = listOf("F" to "-1", "O" to osSign(oOs)),
-            note = "Oxygen fluoride : F is always -1, so O = ${osSign(oOs)}"
-        )
-    }
-
-    // Superoxide  (O = -½)
-    if (alkaliEl != null && elements.size == 2 && hasO) {
-        val mCnt = elements[alkaliEl]!!
-        if (oCount == mCnt * 2) {
-            val metalSum = mCnt * 1
-            if (chargeIn - metalSum == -mCnt) {
-                return OsResult(
-                    states = listOf(alkaliEl to "+1", "O" to "-\u00BD"),
-                    note = "Superoxide : O₂⁻ unit, each O has oxidation state = -½"
-                )
-            }
-        }
-    }
-
-    // Ozonides (O = -⅓)
-    if (alkaliEl != null && elements.size == 2 && hasO) {
-        val mCnt = elements[alkaliEl]!!
-        if (oCount == mCnt * 3 && chargeIn - mCnt == -mCnt) {
-            return OsResult(
-                states = listOf(alkaliEl to "+1", "O" to "-\u2153"),
-                note = "Ozonide : O₃⁻ unit, each O has oxidation state = -⅓"
-            )
-        }
-    }
-
-    // Peroxides  (O = -1)
-    val isPeroxide: Boolean = when {
-        // H₂O₂
-        elements.size == 2 && hasH && hasO && hCount == 2 && oCount == 2 && chargeIn == 0 -> true
-        // Alkali M₂O₂  (Na₂O₂: 2 Na, 2 O, ratio 1:1)
-        alkaliEl != null && elements.size == 2 && hasO &&
-                oCount == elements[alkaliEl]!! && chargeIn == 0 -> true
-        // Alkaline earth MO₂  (BaO₂: 1 Ba, 2 O)
-        alkalineEl != null && elements.size == 2 && hasO &&
-                oCount == elements[alkalineEl]!! * 2 && chargeIn == 0 -> true
-        // Peroxide anion O₂²⁻
-        elements.size == 1 && hasO && oCount == 2 && chargeIn == -2 -> true
-        // Generic: compound with exactly H and O where H:O = 1:1 and charge = 0 (like peroxy acids fragment)
-        else -> false
-    }
-
-    if (isPeroxide) {
-        val res = mutableListOf("O" to "-1")
-        for ((el, cnt) in elements) {
-            if (el == "O") continue
-            val fixedOs = when {
-                el in GROUP1  -> 1
-                el in GROUP2  -> 2
-                el == "H"     -> 1
-                el == "F"     -> -1
-                else          -> null
-            }
-            if (fixedOs != null) {
-                res.add(el to osSign(fixedOs))
-            } else {
-                val knownSumLocal = elements.entries
-                    .filter { it.key != el }
-                    .sumOf { (e, c) ->
-                        when {
-                            e == "O"      -> -1 * c
-                            e in GROUP1   ->  1 * c
-                            e in GROUP2   ->  2 * c
-                            e == "H"      ->  1 * c
-                            else          ->  0
-                        }
-                    }
-                val rem = chargeIn - knownSumLocal
-                res.add(el to if (rem % cnt == 0) osSign(rem / cnt) else "$rem/$cnt")
-            }
-        }
-        return OsResult(states = res, note = "Peroxide compound : O has oxidation state = -1")
-    }
-
-    // Metal hydrides  (H = -1)
-    // Metal hydride: contains H, no O or F, and ALL non-H elements are metals
-    // with fixed oxidation states. This covers binary (NaH), ternary (LiAlH4) and complex hydrides.
-    val metalHydrideMetals = setOf(
-        "Li","Na","K","Rb","Cs","Fr",  // Group 1
-        "Be","Mg","Ca","Sr","Ba","Ra",  // Group 2
-        "Al","Ga","In","Tl",             // Group 13 metals
-        "B"                               // boron hydrides (BH4- etc.)
+    val result = calculateOxidationStates(formula, chargeIn)
+    return OsResult(
+        states = result.states,
+        note = result.note,
+        error = result.error
     )
-    val fixedOsForMetal: (String) -> Int? = { el ->
-        when {
-            el in GROUP1 -> 1
-            el in GROUP2 -> 2
-            el == "Al" || el == "Ga" || el == "In" || el == "Tl" || el == "B" -> 3
-            else -> null
-        }
-    }
-    val isMetalHydride = hasH && !hasO && !hasF &&
-            elements.keys.filter { it != "H" }.all { it in metalHydrideMetals }
-
-    if (isMetalHydride) {
-        val res = mutableListOf("H" to "-1")
-        for ((el, _) in elements) {
-            if (el == "H") continue
-            val metalOs = fixedOsForMetal(el)
-            res.add(el to if (metalOs != null) osSign(metalOs) else "?")
-        }
-        val sum = elements.entries.sumOf { (el, cnt) ->
-            when (el) {
-                "H" -> -1 * cnt
-                else -> (fixedOsForMetal(el) ?: 0) * cnt
-            }
-        }
-        return OsResult(
-            states = res,
-            note = "Metal hydride : H has oxidation state = -1" + if (sum != chargeIn) " (sum = $sum, charge = $chargeIn , check formula)" else ""
-        )
-    }
-
-    val fixed = mutableMapOf<String, Int>()
-    var knownSum = 0
-    val unknowns = mutableListOf<String>()
-
-    for ((el, cnt) in elements) {
-        val os: Int? = when (el) {
-            "F"                                     -> -1
-            in GROUP1                               ->  1
-            in GROUP2                               ->  2
-            "Al","Ga","Sc","Y","La","Lu"            ->  3
-            "Zn","Cd"                               ->  2
-            "Ag"                                    ->  1
-            "In","Tl"                               ->  3
-            // Halogen electronegativity order: F > Cl > Br > I
-            // A halogen is fixed at -1 only when NO more electronegative halogen is present.
-            // If a more electronegative halogen exists, this one becomes the central atom
-            // and is solved algebraically (e.g. ICl3: I=+3,Cl=-1; ClF3: Cl=+3,F=-1)
-            "Cl" -> if (hasF) null else -1
-            "Br" -> if (hasF || elements.containsKey("Cl")) null else -1
-            "I"  -> if (hasF || elements.containsKey("Cl") || elements.containsKey("Br")) null else -1
-            "O"                                     -> -2  // default; special cases above
-            "H"                                     ->  1  // default; hydrides above
-            else                                    ->  null
-        }
-        if (os != null) { fixed[el] = os; knownSum += os * cnt }
-        else unknowns.add(el)
-    }
-
-    return when (unknowns.size) {
-        0 -> {
-            val states = fixed.entries.map { it.key to osSign(it.value) }
-            if (knownSum != chargeIn)
-                OsResult(states = states,
-                    note = "Sum of known oxidation state ($knownSum) ≠ overall charge ($chargeIn). " +
-                            "Possible mixed-valence, peroxo group, or formula error.")
-            else OsResult(states = states)
-        }
-        1 -> {
-            val unknown = unknowns[0]
-            val cnt = elements[unknown]!!
-            val rem = chargeIn - knownSum
-            if (rem % cnt != 0) {
-                val g = gcdOs(Math.abs(rem.toLong()), Math.abs(cnt.toLong())).toInt()
-                val fracStr = "${rem / g}/${cnt / g}"
-                val states = fixed.entries.map { it.key to osSign(it.value) } + listOf(unknown to fracStr)
-                OsResult(states = states,
-                    note = "Non-integer oxidation state for $unknown ($fracStr). It may indicate mixed-valence or a special compound.")
-            } else {
-                fixed[unknown] = rem / cnt
-                OsResult(states = fixed.entries.map { it.key to osSign(it.value) })
-            }
-        }
-        else -> {
-            val states = fixed.entries.map { it.key to osSign(it.value) } +
-                    unknowns.map { it to "?" }
-            OsResult(states = states,
-                error = "Cannot solve! multiple unknown elements: ${unknowns.joinToString(", ")}. " +
-                        "For transition metal complexes, use the charge field to provide additional constraints.")
-        }
-    }
 }
 
 @Composable
@@ -1433,8 +1138,8 @@ fun OxidationStateFinder() {
             title = "Oxidation State Finder",
             entries = listOf(
                 "What is an oxidation state?" to "A number assigned to an atom representing its degree of oxidation. Positive = electrons lost, negative = electrons gained. Used to track electron transfer in redox reactions.",
-                "Rules applied" to "F is always -1. Group 1 = +1, Group 2 = +2. Al, Ga, In, Sc, Y, La, Lu = +3. Zn, Cd = +2. Ag = +1. O defaults to -2 (except peroxides/superoxides). H defaults to +1 (except metal hydrides). Halogens (Cl, Br, I) default to -1 unless a more electronegative halogen is present.",
-                "Halogen priority" to "Electronegativity order: F > Cl > Br > I. In interhalogen compounds, the less electronegative halogen takes a positive OS. Example: ICl3 → I=+3, Cl=-1. ClF3 → Cl=+3, F=-1.",
+                "Rules applied" to "F is always -1. Group 1 = +1, Group 2 = +2. Al, Ga, In, Sc, Y, La, Lu = +3. Zn, Cd = +2. Ag = +1. O defaults to -2 (except peroxides/superoxides). H defaults to +1 (except metal hydrides). Halogens (Cl, Br, I) default to -1 in simple halides, but are solved when bonded with oxygen or a more electronegative halogen.",
+                "Halogen priority" to "Electronegativity order: F > Cl > Br > I. In oxo-halogen compounds and interhalogen compounds, the less electronegative halogen can take a positive OS. Example: HOCl -> Cl=+1. ICl3 -> I=+3, Cl=-1. ClF3 -> Cl=+3, F=-1.",
                 "Special cases handled" to "Peroxides (O=-1): H2O2, Na2O2, BaO2. Superoxides (O=-½): KO2, NaO2. Ozonides (O=-⅓): KO3. Metal hydrides (H=-1): NaH, LiAlH4, NaBH4, CaH2.",
                 "Overall charge" to "For neutral compounds enter 0. For polyatomic ions enter the ion charge. Examples: SO4²⁻ → charge -2. NH4⁺ → charge +1. MnO4⁻ → charge -1.",
                 "Organic compounds" to "For single-carbon compounds (CH4, CO2, CCl4) the result is exact. For multi-carbon compounds, the app calculates an average oxidation state across all carbons, which is chemically meaningful for comparisons but does not reflect individual carbon environments. Ethanol (C2H5OH) has carbons at -3 and -1, but the app returns -2 as the average.",
@@ -1567,7 +1272,7 @@ fun OxidationStateFinder() {
         Text("EXAMPLES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
         @OptIn(ExperimentalLayoutApi::class)
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf("KMnO4" to 0, "H2SO4" to 0, "Fe2O3" to 0, "Cr2O7" to -2, "NH4" to 1, "HNO3" to 0).forEach { (f, c) ->
+            listOf("KMnO4" to 0, "H2SO4" to 0, "HOCl" to 0, "Fe2O3" to 0, "Cr2O7" to -2, "NH4" to 1, "HNO3" to 0).forEach { (f, c) ->
                 FilterChip(
                     selected = formula == f && (chargeInput.toIntOrNull() ?: 0) == c,
                     onClick = { formula = f; chargeInput = c.toString(); focusManager.clearFocus(); result = findOxidationStates(f, c) },
@@ -1884,117 +1589,19 @@ fun SmilesVisualizer(isDark: Boolean) {
 }
 
 // TOOL 5 : REACTION BALANCER
-private data class Frac(val num: Long, val den: Long) {
-    companion object {
-        fun of(n: Long) = Frac(n, 1L)
-        fun zero() = Frac(0L, 1L)
-        fun gcd(a: Long, b: Long): Long = if (b == 0L) a else gcd(b, a % b)
-        fun lcm(a: Long, b: Long): Long = a / gcd(a, b) * b
-    }
-    fun isZero() = num == 0L
-    operator fun unaryMinus() = Frac(-num, den)
-    operator fun plus(o: Frac)  = Frac(num * o.den + o.num * den, den * o.den).r()
-    operator fun minus(o: Frac) = Frac(num * o.den - o.num * den, den * o.den).r()
-    operator fun times(o: Frac) = Frac(num * o.num, den * o.den).r()
-    operator fun div(o: Frac): Frac {
-        if (o.num == 0L) throw ArithmeticException("div by zero")
-        return Frac(num * o.den, den * o.num).r()
-    }
-    private fun r(): Frac {
-        if (num == 0L) return Frac(0L, 1L)
-        val g = gcd(Math.abs(num), Math.abs(den))
-        return if (den < 0) Frac(-num / g, -den / g) else Frac(num / g, den / g)
-    }
-}
-
 private data class BalancerResult(
     val reactants: List<Pair<String, Int>> = emptyList(),
     val products:  List<Pair<String, Int>> = emptyList(),
     val error: String? = null
 )
 
-private fun stripCoeff(s: String): String {
-    var i = 0; while (i < s.length && s[i].isDigit()) i++; return s.substring(i)
-}
-
-private fun tryBalance(matrix: Array<Array<Frac>>, m: Int, n: Int, freeIdx: Int): List<Int>? {
-    val nv = n - 1
-    val colOrder = (0 until n).filter { it != freeIdx }
-    val aug = Array(m) { row ->
-        Array(nv + 1) { col ->
-            if (col < nv) matrix[row][colOrder[col]] else -matrix[row][freeIdx]
-        }
-    }
-    var pr = 0
-    val pivotForCol = IntArray(nv) { -1 }
-    for (col in 0 until nv) {
-        var found = -1
-        for (row in pr until m) { if (!aug[row][col].isZero()) { found = row; break } }
-        if (found == -1) return null
-        if (found != pr) { val t = aug[pr]; aug[pr] = aug[found]; aug[found] = t }
-        val pv = aug[pr][col]
-        if (pv.isZero()) return null
-        for (k in 0..nv) aug[pr][k] = aug[pr][k] / pv
-        for (row in 0 until m) {
-            if (row != pr && !aug[row][col].isZero()) {
-                val f = aug[row][col]
-                for (k in 0..nv) aug[row][k] = aug[row][k] - f * aug[pr][k]
-            }
-        }
-        pivotForCol[col] = pr; pr++
-    }
-    val solNonFree = List(nv) { col ->
-        val r = pivotForCol[col]; if (r < 0) return null; aug[r][nv]
-    }
-    val full = MutableList(n) { Frac.zero() }
-    full[freeIdx] = Frac.of(1)
-    colOrder.forEachIndexed { i, oc -> full[oc] = solNonFree[i] }
-    if (full.any { it.num < 0 }) return null
-    val lcm = full.map { it.den }.fold(1L) { acc, d -> Frac.lcm(acc, d) }
-    val scaled = full.map { (it * Frac.of(lcm)).num }
-    if (scaled.any { it <= 0 }) return null
-    val g = scaled.map { Math.abs(it) }.fold(0L) { acc, v -> Frac.gcd(acc, v) }
-    if (g == 0L) return null
-    return scaled.map { (it / g).toInt() }
-}
-
 private fun balanceReaction(equation: String): BalancerResult {
-    val parts = equation.split(Regex("->|=>|→|⟶"))
-    if (parts.size != 2) return BalancerResult(error = "Use '->' to separate reactants and products.\nExample: H2 + O2 -> H2O")
-    val rStr = parts[0].split("+").map { it.trim() }.filter { it.isNotEmpty() }
-    val pStr = parts[1].split("+").map { it.trim() }.filter { it.isNotEmpty() }
-    if (rStr.isEmpty()) return BalancerResult(error = "No reactants found")
-    if (pStr.isEmpty()) return BalancerResult(error = "No products found")
-    val rFormulas = rStr.map { stripCoeff(it) }
-    val pFormulas = pStr.map { stripCoeff(it) }
-    val all = rFormulas + pFormulas
-    val n = all.size
-    val parsed = all.mapIndexed { i, f ->
-        try { parseFormulaForCalc(f) } catch (e: Exception) {
-            return BalancerResult(error = "Cannot parse: ${all[i]}")
-        }
-    }
-    val elements = parsed.flatMap { it.keys }.distinct().sorted()
-    val m = elements.size
-    if (m == 0) return BalancerResult(error = "No elements found")
-    val matrix = Array(m) { row ->
-        val el = elements[row]
-        Array(n) { col ->
-            val cnt = parsed[col][el] ?: 0
-            val sign = if (col >= rFormulas.size) -1 else 1
-            Frac.of(cnt.toLong() * sign)
-        }
-    }
-    for (freeIdx in n - 1 downTo 0) {
-        val sol = tryBalance(matrix, m, n, freeIdx) ?: continue
-        if (sol.all { it > 0 }) {
-            return BalancerResult(
-                reactants = rFormulas.mapIndexed { i, f -> f to sol[i] },
-                products  = pFormulas.mapIndexed { i, f -> f to sol[rFormulas.size + i] }
-            )
-        }
-    }
-    return BalancerResult(error = "Could not balance this equation. Check that all elements appear on both sides and the equation is valid.")
+    val result: BalancedReactionResult = balanceChemicalReaction(equation)
+    if (result.error != null) return BalancerResult(error = result.error.message)
+    return BalancerResult(
+        reactants = result.reactants.map { it.formula to it.coefficient },
+        products = result.products.map { it.formula to it.coefficient }
+    )
 }
 
 private fun reactionToDisplay(raw: String): String =
@@ -3440,6 +3047,11 @@ private fun PhPohResultCards(result: com.furthersecrets.chemsearch.data.PhPohRes
             PhPohMetricCard("[H+] mol/L", formatPhPohNumber(result.hydrogenConcentration), Modifier.weight(1f))
             PhPohMetricCard("[OH-] mol/L", formatPhPohNumber(result.hydroxideConcentration), Modifier.weight(1f))
         }
+        Text(
+            result.assumption,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.48f)
+        )
     }
 }
 

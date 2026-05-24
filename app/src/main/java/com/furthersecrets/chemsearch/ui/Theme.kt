@@ -146,10 +146,47 @@ private fun lightColors(accent: AppColorScheme) = when (accent) {
 fun ChemSearchTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     colorScheme: AppColorScheme = AppColorScheme.BLUE,
+    oledDarkTheme: Boolean = false,
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colorScheme = if (darkTheme) darkColors(colorScheme) else lightColors(colorScheme),
+        colorScheme = chemSearchColorScheme(
+            darkTheme = darkTheme,
+            colorScheme = colorScheme,
+            oledDarkTheme = oledDarkTheme
+        ),
         content = content
+    )
+}
+
+internal fun chemSearchColorScheme(
+    darkTheme: Boolean,
+    colorScheme: AppColorScheme,
+    oledDarkTheme: Boolean
+): ColorScheme {
+    val colors = if (darkTheme) darkColors(colorScheme) else lightColors(colorScheme)
+    return if (darkTheme && oledDarkTheme) colors.withOledDarkSurfaces() else colors
+}
+
+private fun ColorScheme.withOledDarkSurfaces(): ColorScheme {
+    val black = Color.Black
+    val low = Color(0xFF0A0A0A)
+    val raised = Color(0xFF141414)
+    val variant = Color(0xFF1A1A1A)
+    val high = Color(0xFF222222)
+    return copy(
+        background = black,
+        surface = black,
+        surfaceVariant = variant,
+        surfaceDim = black,
+        surfaceBright = high,
+        surfaceContainerLowest = black,
+        surfaceContainerLow = low,
+        surfaceContainer = raised,
+        surfaceContainerHigh = variant,
+        surfaceContainerHighest = high,
+        inverseSurface = Color(0xFFE5E7EB),
+        outline = outline.copy(alpha = 0.9f),
+        outlineVariant = Color(0xFF333333)
     )
 }

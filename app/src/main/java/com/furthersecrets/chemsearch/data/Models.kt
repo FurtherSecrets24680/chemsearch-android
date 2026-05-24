@@ -174,6 +174,7 @@ data class ChemUiState(
     val pubDescription: String? = null,
     val wikiDescription: String? = null,
     val aiDescription: String? = null,
+    val aiDescriptionBasis: List<String> = emptyList(),
     val descSource: DescSource = DescSource.PUBCHEM,
     val aiProvider: AiProvider = AiProvider.GEMINI,
     val suggestions: List<String> = emptyList(),
@@ -292,7 +293,8 @@ data class DownloadedCompound(
     val iupacName: String,
     val savedAt: Long = System.currentTimeMillis(),
     val state: ChemUiState,
-    val structurePngBase64: String? = null
+    val structurePngBase64: String? = null,
+    val offlineMetadata: OfflineDownloadMetadata = buildOfflineDownloadMetadata(state, savedAt)
 )
 
 // GHS Safety
@@ -300,7 +302,8 @@ data class DownloadedCompound(
 data class GhsData(
     val signalWord: String?,
     val hazardStatements: List<String>,
-    val pictogramCodes: List<String>
+    val pictogramCodes: List<String>,
+    val retrievedAt: Long? = null
 )
 
 data class IsomerItem(

@@ -149,6 +149,8 @@ fun chemicalDatabaseSummaryRows(summary: ChemicalDatabaseSummary): List<Chemical
         ChemicalDatabaseSummaryRow("Reactions:", summary.reactions)
     )
 
+fun chemicalDatabaseTotalEntriesLabel(total: Int): String = "Total entries: $total"
+
 object ChemicalDatabase {
     private const val SUBSTANCES_ASSET = "chemical_database/substances.json"
     private const val REACTIONS_ASSET = "chemical_database/reactions.json"

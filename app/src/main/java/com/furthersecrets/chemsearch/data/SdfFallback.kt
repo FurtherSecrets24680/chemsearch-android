@@ -47,7 +47,7 @@ suspend fun fetchGeneratedSdfFromIdentifiers(
     candidates: List<SdfIdentifierCandidate>,
     expectedFormula: String? = null
 ): SdfLoadResult? {
-    val expectedCounts = parseFormulaElementCounts(expectedFormula)
+    val expectedCounts = formulaElementCountsOrNull(expectedFormula)
     for (candidate in candidates) {
         val sdf = runCatching { fetchCactusSdf(candidate.value) }.getOrNull()
         if (sdf != null && isUsableSdf(sdf) && sdfMatchesExpectedFormula(sdf, expectedCounts)) {
@@ -156,57 +156,10 @@ private fun extractSdfElement(line: String): String {
     return normalizeFormulaElement(raw)
 }
 
-private fun parseFormulaElementCounts(formula: String?): Map<String, Int>? {
+private fun formulaElementCountsOrNull(formula: String?): Map<String, Int>? {
     val clean = formula?.trim().orEmpty()
     if (clean.isBlank()) return null
-
-    val stack = mutableListOf(linkedMapOf<String, Int>())
-    var i = 0
-
-    fun addToCurrent(element: String, count: Int) {
-        val current = stack.last()
-        current[element] = (current[element] ?: 0) + count
-    }
-
-    while (i < clean.length) {
-        val ch = clean[i]
-        when {
-            ch == '(' || ch == '[' -> {
-                stack.add(linkedMapOf())
-                i++
-            }
-
-            ch == ')' || ch == ']' -> {
-                i++
-                val multiplier = readFormulaNumber(clean, i).also { i = it.nextIndex }.value
-                val group = if (stack.size > 1) stack.removeAt(stack.lastIndex) else linkedMapOf()
-                group.forEach { (element, count) -> addToCurrent(element, count * multiplier) }
-            }
-
-            ch.isUpperCase() -> {
-                val start = i
-                i++
-                if (i < clean.length && clean[i].isLowerCase()) i++
-                val element = normalizeFormulaElement(clean.substring(start, i))
-                val number = readFormulaNumber(clean, i).also { i = it.nextIndex }.value
-                if (element.isNotBlank()) addToCurrent(element, number)
-            }
-
-            else -> i++
-        }
-    }
-
-    if (stack.size != 1) return null
-    return stack.single().takeIf { it.isNotEmpty() }
-}
-
-private data class FormulaNumber(val value: Int, val nextIndex: Int)
-
-private fun readFormulaNumber(formula: String, startIndex: Int): FormulaNumber {
-    var i = startIndex
-    while (i < formula.length && formula[i].isDigit()) i++
-    val value = formula.substring(startIndex, i).toIntOrNull()?.takeIf { it > 0 } ?: 1
-    return FormulaNumber(value, i)
+    return runCatching { parseFormulaElementCounts(clean) }.getOrNull()
 }
 
 private fun normalizeFormulaElement(raw: String): String {
