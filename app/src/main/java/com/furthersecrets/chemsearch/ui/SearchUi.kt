@@ -243,6 +243,11 @@ fun SuggestionsDropdown(suggestions: List<String>, onSelect: (String) -> Unit) {
 
 // History (Recents)
 
+private enum class RecentSortMode(val label: String) {
+    NEWEST("Newest first"),
+    OLDEST("Oldest first")
+}
+
 @Composable
 fun HistorySection(
     recentSearches: List<RecentSearch>,
@@ -251,15 +256,15 @@ fun HistorySection(
     onDelete: (String) -> Unit,
     onTogglePin: (String) -> Unit
 ) {
-    var filterQuery by remember { mutableStateOf("") }
     var showClearConfirm by remember { mutableStateOf(false) }
-    val normalizedQuery = filterQuery.trim().lowercase(Locale.US)
-    val filteredSearches = remember(recentSearches, normalizedQuery) {
-        if (normalizedQuery.isBlank()) recentSearches
-        else recentSearches.filter { it.query.lowercase(Locale.US).contains(normalizedQuery) }
+    var sortMode by remember { mutableStateOf(RecentSortMode.NEWEST) }
+    var sortMenuExpanded by remember { mutableStateOf(false) }
+    val groupedSearches = remember(recentSearches, sortMode) {
+        groupRecentSearches(
+            recentSearches,
+            newestFirst = sortMode == RecentSortMode.NEWEST
+        )
     }
-    val groupedSearches = remember(filteredSearches) { groupRecentSearches(filteredSearches) }
-    val showControls = recentSearches.size >= 3
     val compact = LocalCompactMode.current
 
     if (showClearConfirm) {
@@ -271,7 +276,6 @@ fun HistorySection(
                 Button(
                     onClick = {
                         showClearConfirm = false
-                        filterQuery = ""
                         onClear()
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
@@ -392,61 +396,60 @@ fun HistorySection(
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            TextButton(
-                onClick = { showClearConfirm = true },
-                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
-            ) {
-                Text(
-                    "Clear all",
-                    color = MaterialTheme.colorScheme.error,
-                    maxLines = 1,
-                    softWrap = false,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        }
-
-        if (showControls) {
-            OutlinedTextField(
-                value = filterQuery,
-                onValueChange = { filterQuery = it },
-                label = { Text("Filter recents") },
-                leadingIcon = { Icon(Icons.Default.Search, null) },
-                trailingIcon = {
-                    if (filterQuery.isNotBlank()) {
-                        IconButton(onClick = { filterQuery = "" }) {
-                            Icon(Icons.Default.Close, contentDescription = "Clear filter")
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box {
+                    IconButton(
+                        onClick = { sortMenuExpanded = true },
+                        modifier = Modifier.size(if (compact) 34.dp else 38.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.FilterList,
+                            contentDescription = "Sort recents",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(if (compact) 18.dp else 20.dp)
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = sortMenuExpanded,
+                        onDismissRequest = { sortMenuExpanded = false }
+                    ) {
+                        RecentSortMode.entries.forEach { mode ->
+                            DropdownMenuItem(
+                                text = { Text(mode.label) },
+                                leadingIcon = {
+                                    if (sortMode == mode) {
+                                        Icon(
+                                            Icons.Default.Check,
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.primary,
+                                            modifier = Modifier.size(16.dp)
+                                        )
+                                    }
+                                },
+                                onClick = {
+                                    sortMode = mode
+                                    sortMenuExpanded = false
+                                }
+                            )
                         }
                     }
-                },
-                singleLine = true,
-                shape = RoundedCornerShape(if (compact) 10.dp else 12.dp),
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-
-        if (filteredSearches.isEmpty()) {
-            Column(
-                modifier = Modifier.fillMaxWidth().padding(vertical = if (compact) 8.dp else 12.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 6.dp)
-            ) {
-                Text(
-                    "No matches found.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
-                )
-                Text(
-                    "Try a different keyword.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
-                )
-                if (filterQuery.isNotBlank()) {
-                    TextButton(onClick = { filterQuery = "" }) { Text("Clear filter") }
+                }
+                TextButton(
+                    onClick = { showClearConfirm = true },
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                ) {
+                    Text(
+                        "Clear all",
+                        color = MaterialTheme.colorScheme.error,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
             }
-        } else {
+        }
+
+        if (groupedSearches.isNotEmpty()) {
             groupedSearches.forEach { group ->
                 Text(
                     group.label.uppercase(Locale.US),
@@ -477,7 +480,7 @@ fun HistorySection(
                                 color = MaterialTheme.colorScheme.primary.copy(if (item.pinned) 0.16f else 0.10f)
                             ) {
                                 Icon(
-                                    if (item.pinned) Icons.Default.Star else Icons.Default.History,
+                                    if (item.pinned) Icons.Default.PushPin else Icons.Default.History,
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.primary,
                                     modifier = Modifier.padding(5.dp).size(if (compact) 14.dp else 16.dp)
@@ -492,7 +495,7 @@ fun HistorySection(
                             )
                             IconButton(onClick = { onTogglePin(item.query) }, modifier = Modifier.size(if (compact) 28.dp else 32.dp)) {
                                 Icon(
-                                    if (item.pinned) Icons.Default.Star else Icons.Default.StarBorder,
+                                    if (item.pinned) Icons.Default.PushPin else Icons.Default.PushPinBorder,
                                     contentDescription = if (item.pinned) "Unpin" else "Pin",
                                     tint = if (item.pinned) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.42f),
                                     modifier = Modifier.size(if (compact) 16.dp else 18.dp)
@@ -648,6 +651,7 @@ fun CompoundHeader(
     onToggleFavorite: () -> Unit,
     isDownloaded: Boolean = false,
     isSavingOffline: Boolean = false,
+    offlineDownloadProgress: Float? = null,
     onDownloadOffline: () -> Unit = {},
     onFormulaClick: (() -> Unit)? = null
 ) {
@@ -864,9 +868,27 @@ fun CompoundHeader(
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         if (isSavingOffline) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(if (compact) 17.dp else 19.dp),
-                                strokeWidth = 2.dp
+                            val progress = offlineDownloadProgress?.coerceIn(0f, 1f)
+                            if (progress != null) {
+                                CircularProgressIndicator(
+                                    progress = { progress },
+                                    modifier = Modifier.size(if (compact) 30.dp else 34.dp),
+                                    strokeWidth = 3.dp,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    trackColor = MaterialTheme.colorScheme.outline.copy(0.18f)
+                                )
+                            } else {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(if (compact) 17.dp else 19.dp),
+                                    strokeWidth = 2.dp,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                            Icon(
+                                Icons.Default.Download,
+                                contentDescription = "Downloading for offline use",
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(if (compact) 14.dp else 16.dp)
                             )
                         } else {
                             AnimatedStateIcon(

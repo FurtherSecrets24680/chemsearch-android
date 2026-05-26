@@ -35,6 +35,32 @@ class RecentSearchesTest {
     }
 
     @Test
+    fun canGroupRecentSearchesOldestFirst() {
+        val searches = listOf(
+            RecentSearch("glucose", timestamp(daysAgo = 0)),
+            RecentSearch("ethanol", timestamp(daysAgo = 1)),
+            RecentSearch("aspirin", timestamp(daysAgo = 3)),
+            RecentSearch("caffeine", timestamp(daysAgo = 20))
+        )
+
+        val groups = groupRecentSearches(
+            searches,
+            nowMillis = now,
+            zoneId = zone,
+            newestFirst = false
+        )
+
+        assertEquals("Older", groups[0].label)
+        assertEquals(listOf("caffeine"), groups[0].searches.map { it.query })
+        assertEquals("This week", groups[1].label)
+        assertEquals(listOf("aspirin"), groups[1].searches.map { it.query })
+        assertEquals("Yesterday", groups[2].label)
+        assertEquals(listOf("ethanol"), groups[2].searches.map { it.query })
+        assertEquals("Today", groups[3].label)
+        assertEquals(listOf("glucose"), groups[3].searches.map { it.query })
+    }
+
+    @Test
     fun parsingCompareInputAcceptsVsCommasAndNewLines() {
         val inputs = parseCompareCompoundInputs("caffeine vs theobromine, ethanol\nmethanol")
 

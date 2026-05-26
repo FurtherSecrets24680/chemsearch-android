@@ -128,6 +128,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val isFavorite by vm.isFavorite.collectAsStateWithLifecycle()
     val isDownloaded by vm.isDownloaded.collectAsStateWithLifecycle()
     val isSavingOffline by vm.isSavingOffline.collectAsStateWithLifecycle()
+    val offlineDownloadProgress by vm.offlineDownloadProgress.collectAsStateWithLifecycle()
 
     var editingAiKeyProvider by remember { mutableStateOf<AiProvider?>(null) }
     var showAiProviderDialog by remember { mutableStateOf(false) }
@@ -230,6 +231,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             onClearHistory = { vm.clearHistory() },
             onToggleUpdateNotifications = { enabled -> vm.setUpdateNotificationsEnabled(enabled) },
             onCheckForUpdates = { vm.checkForUpdates(manual = true) },
+            onDownloadUpdate = { vm.downloadUpdateApk() },
             onDismiss = { showSettings = false }
         )
     }
@@ -461,6 +463,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     onToggleFavorite = { vm.toggleFavorite() },
                                     isDownloaded = isDownloaded,
                                     isSavingOffline = isSavingOffline,
+                                    offlineDownloadProgress = offlineDownloadProgress,
                                     onDownloadOffline = { vm.saveCurrentCompoundOffline() },
                                     onFormulaClick = if (state.formula.isNotBlank()) {{
                                         vm.onIsomerQueryChange(state.formula)
@@ -513,6 +516,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                         ),
                         jumpToTool = jumpToTool,
                         jumpToToolVersion = jumpToToolVersion,
+                        vm = vm,
                         defaultDescSource = defaultDescSource,
                         aiProvider = state.aiProvider,
                         getAiKey = { provider -> vm.getAiKey(provider) },
@@ -596,6 +600,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 onClearHistory = { vm.clearHistory() },
                                 onToggleUpdateNotifications = { enabled -> vm.setUpdateNotificationsEnabled(enabled) },
                                 onCheckForUpdates = { vm.checkForUpdates(manual = true) },
+                                onDownloadUpdate = { vm.downloadUpdateApk() },
                                 cacheSizeBytes = cacheSizeBytes,
                                 cacheDir = cacheDirPath,
                                 onClearCache = { vm.clearCache() },

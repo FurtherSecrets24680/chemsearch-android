@@ -63,6 +63,31 @@ private val SENSITIVE_PREF_TOKENS = listOf("key", "token", "secret")
 
 internal fun isOledModeControlEnabled(isDark: Boolean): Boolean = isDark
 
+internal fun amoledModeTitle(): String = "AMOLED Mode"
+
+internal fun amoledModeSubtitle(isDark: Boolean): String =
+    if (isDark) "True-black background for every color scheme" else "Turn on dark mode to use AMOLED Mode"
+
+private fun updateDownloadPercent(progress: Float?): Int =
+    ((progress ?: 0f).coerceIn(0f, 1f) * 100f).toInt().coerceIn(0, 100)
+
+internal fun updateDownloadActionLabel(status: UpdateStatus): String =
+    when {
+        status.isDownloadingUpdate -> "${updateDownloadPercent(status.updateDownloadProgress)}%"
+        status.downloadedUpdateApkPath != null -> "Install"
+        else -> "Download"
+    }
+
+internal fun updateDownloadSubtitle(status: UpdateStatus): String {
+    if (status.isDownloadingUpdate) {
+        return "Downloading update… ${updateDownloadPercent(status.updateDownloadProgress)}%"
+    }
+    if (status.downloadedUpdateApkPath != null) {
+        return "Download complete. Tap Install if the prompt closed."
+    }
+    return status.latestVersion?.let { "Latest: $it" } ?: "Update available"
+}
+
 private fun AppColorScheme.label(): String = when (this) {
     AppColorScheme.BLUE -> "Blue"
     AppColorScheme.VIOLET -> "Violet"
@@ -362,6 +387,7 @@ fun SettingsSheet(
     onClearHistory: () -> Unit,
     onToggleUpdateNotifications: (Boolean) -> Unit,
     onCheckForUpdates: () -> Unit,
+    onDownloadUpdate: () -> Unit,
     onDismiss: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -395,8 +421,8 @@ fun SettingsSheet(
             )
             SettingsToggleRow(
                 icon = Icons.Default.Brightness2,
-                title = "OLED Mode",
-                subtitle = if (isDark) "Use true-black backgrounds and surfaces" else "Turn on dark mode to use OLED Mode",
+                title = amoledModeTitle(),
+                subtitle = amoledModeSubtitle(isDark),
                 checked = oledDarkTheme,
                 enabled = isOledModeControlEnabled(isDark),
                 onToggle = onToggleOledDarkTheme
@@ -458,13 +484,21 @@ fun SettingsSheet(
 
             Spacer(Modifier.height(4.dp))
             SettingsSectionHeader("Data")
-            SettingsActionRow(Icons.Default.History, "Search History", "Clear all recent searches", "Clear", MaterialTheme.colorScheme.error, onClearHistory)
+            SettingsActionRow(
+                icon = Icons.Default.History,
+                title = "Search History",
+                subtitle = "Clear all recent searches",
+                actionLabel = "Clear",
+                actionColor = MaterialTheme.colorScheme.error,
+                onClick = onClearHistory
+            )
 
             UpdatesSection(
                 updateNotificationsEnabled = updateNotificationsEnabled,
                 updateStatus = updateStatus,
                 onToggleUpdateNotifications = onToggleUpdateNotifications,
-                onCheckForUpdates = onCheckForUpdates
+                onCheckForUpdates = onCheckForUpdates,
+                onDownloadUpdate = onDownloadUpdate
             )
 
             Spacer(Modifier.height(4.dp))
@@ -674,7 +708,16 @@ fun SettingsToggleRow(
 }
 
 @Composable
-fun SettingsActionRow(icon: ImageVector, title: String, subtitle: String, actionLabel: String, actionColor: Color, onClick: () -> Unit) {
+fun SettingsActionRow(
+    icon: ImageVector,
+    title: String,
+    subtitle: String,
+    actionLabel: String,
+    actionColor: Color,
+    enabled: Boolean = true,
+    progress: Float? = null,
+    onClick: () -> Unit
+) {
     val compact = LocalCompactMode.current
     Row(
         modifier = Modifier
@@ -690,13 +733,42 @@ fun SettingsActionRow(icon: ImageVector, title: String, subtitle: String, action
             modifier = Modifier.weight(1f)
         ) {
             Icon(icon, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(if (compact) 18.dp else 20.dp))
-            Column(modifier = Modifier.chemAnimateContentSize()) {
-                Text(title, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
-                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+            Column(modifier = Modifier.weight(1f).chemAnimateContentSize()) {
+                Text(
+                    title,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         }
-        TextButton(onClick = onClick) {
-            AnimatedActionLabel(text = actionLabel, color = actionColor)
+        TextButton(onClick = onClick, enabled = enabled) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                progress?.let {
+                    CircularProgressIndicator(
+                        progress = { it.coerceIn(0f, 1f) },
+                        modifier = Modifier.size(if (compact) 16.dp else 18.dp),
+                        strokeWidth = 2.dp,
+                        color = actionColor,
+                        trackColor = MaterialTheme.colorScheme.outline.copy(0.18f)
+                    )
+                }
+                AnimatedActionLabel(
+                    text = actionLabel,
+                    color = if (enabled) actionColor else MaterialTheme.colorScheme.onSurface.copy(0.35f)
+                )
+            }
         }
     }
 }
@@ -707,6 +779,7 @@ private fun UpdatesSection(
     updateStatus: UpdateStatus,
     onToggleUpdateNotifications: (Boolean) -> Unit,
     onCheckForUpdates: () -> Unit,
+    onDownloadUpdate: () -> Unit,
     showHeader: Boolean = true
 ) {
     val context = LocalContext.current
@@ -740,7 +813,6 @@ private fun UpdatesSection(
         )
         "Last checked $relative"
     } ?: "Never checked"
-    val updateLink = updateStatus.downloadUrl ?: updateStatus.releaseUrl
     val checkLabel = if (updateStatus.isChecking) "Checking..." else "Check"
 
     if (showHeader) {
@@ -767,19 +839,19 @@ private fun UpdatesSection(
         if (!updateStatus.isChecking) onCheckForUpdates()
     }
     if (updateStatus.updateAvailable) {
-        val latestLabel = updateStatus.latestVersion?.let { "Latest: $it" } ?: "Update available"
         SettingsActionRow(
             icon = Icons.Default.Download,
             title = "Update available",
-            subtitle = latestLabel,
-            actionLabel = "Download",
-            actionColor = MaterialTheme.colorScheme.primary
+            subtitle = updateDownloadSubtitle(updateStatus),
+            actionLabel = updateDownloadActionLabel(updateStatus),
+            actionColor = MaterialTheme.colorScheme.primary,
+            enabled = !updateStatus.isDownloadingUpdate,
+            progress = updateStatus.updateDownloadProgress?.takeIf { updateStatus.isDownloadingUpdate }
         ) {
-            if (updateLink.isNullOrBlank()) {
+            if (updateStatus.downloadUrl.isNullOrBlank() && updateStatus.downloadedUpdateApkPath == null) {
                 Toast.makeText(context, "No download link found", Toast.LENGTH_SHORT).show()
             } else {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateLink))
-                context.startActivity(intent)
+                onDownloadUpdate()
             }
         }
     } else if (updateStatus.latestVersion != null && !updateStatus.isChecking) {
@@ -1420,7 +1492,6 @@ private fun LibraryOptionCard(
     title: String,
     subtitle: String,
     countLabel: String? = null,
-    databaseSummary: ChemicalDatabaseSummary? = null,
     selected: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
@@ -1503,7 +1574,6 @@ private fun LibraryOptionCard(
                     overflow = TextOverflow.Ellipsis,
                     letterSpacing = 0.sp
                 )
-                databaseSummary?.let { ChemicalDatabaseSummaryBreakdown(summary = it) }
             }
         }
     }
@@ -1569,6 +1639,7 @@ private fun LibraryOptionListCard(
     onClick: () -> Unit
 ) {
     val compact = LocalCompactMode.current
+    var showDatabaseSummary by remember(databaseSummary) { mutableStateOf(false) }
     Card(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
@@ -1609,14 +1680,36 @@ private fun LibraryOptionListCard(
                     maxLines = if (compact) 1 else 2,
                     overflow = if (compact) TextOverflow.Ellipsis else TextOverflow.Clip
                 )
-                Text(
-                    subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.52f),
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-                databaseSummary?.let { ChemicalDatabaseSummaryBreakdown(summary = it) }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 6.dp)
+                ) {
+                    Text(
+                        subtitle,
+                        modifier = Modifier.weight(1f),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.52f),
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    if (databaseSummary != null) {
+                        IconButton(
+                            onClick = { showDatabaseSummary = !showDatabaseSummary },
+                            modifier = Modifier.size(if (compact) 26.dp else 30.dp)
+                        ) {
+                            Icon(
+                                Icons.Default.Info,
+                                contentDescription = if (showDatabaseSummary) "Hide database counts" else "Show database counts",
+                                tint = MaterialTheme.colorScheme.primary.copy(if (showDatabaseSummary) 0.86f else 0.58f),
+                                modifier = Modifier.size(if (compact) 15.dp else 17.dp)
+                            )
+                        }
+                    }
+                }
+                databaseSummary?.takeIf { showDatabaseSummary }?.let {
+                    ChemicalDatabaseSummaryBreakdown(summary = it)
+                }
             }
             if (!countLabel.isNullOrBlank()) {
                 Surface(
@@ -2001,7 +2094,7 @@ fun LibraryInline(
                             icon = option.icon,
                             title = option.title,
                             subtitle = option.subtitle,
-                            countLabel = option.countLabel,
+                            countLabel = if (option.databaseSummary == null) option.countLabel else null,
                             databaseSummary = option.databaseSummary,
                             onClick = { selectedSection = option.tab }
                         )
@@ -2018,8 +2111,7 @@ fun LibraryInline(
                                 icon = option.icon,
                                 title = option.title,
                                 subtitle = option.subtitle,
-                                countLabel = option.countLabel,
-                                databaseSummary = option.databaseSummary,
+                                countLabel = if (option.databaseSummary == null) option.countLabel else null,
                                 selected = false,
                                 modifier = Modifier.weight(1f),
                                 onClick = { selectedSection = option.tab }
@@ -2633,6 +2725,7 @@ fun SettingsInline(
     onClearHistory: () -> Unit,
     onToggleUpdateNotifications: (Boolean) -> Unit = {},
     onCheckForUpdates: () -> Unit = {},
+    onDownloadUpdate: () -> Unit = {},
     cacheSizeBytes: Long = 0L,
     cacheDir: String = "",
     onClearCache: () -> Unit = {},
@@ -2828,8 +2921,8 @@ fun SettingsInline(
             SettingsGroupDivider()
             SettingsToggleRow(
                 icon = Icons.Default.Brightness2,
-                title = "OLED Mode",
-                subtitle = if (isDark) "True-black background for every color scheme" else "Turn on dark mode to use OLED Mode",
+                title = amoledModeTitle(),
+                subtitle = amoledModeSubtitle(isDark),
                 checked = oledDarkTheme,
                 enabled = isOledModeControlEnabled(isDark),
                 onToggle = onToggleOledDarkTheme
@@ -2895,7 +2988,14 @@ fun SettingsInline(
             title = "Data & Storage",
             subtitle = "Clear history/cache and import or export local settings."
         ) {
-            SettingsActionRow(Icons.Default.History, "Search History", "Clear all recent searches", "Clear", MaterialTheme.colorScheme.error, onClearHistory)
+            SettingsActionRow(
+                icon = Icons.Default.History,
+                title = "Search History",
+                subtitle = "Clear all recent searches",
+                actionLabel = "Clear",
+                actionColor = MaterialTheme.colorScheme.error,
+                onClick = onClearHistory
+            )
             SettingsActionRow(
                 icon = Icons.Default.Cached,
                 title = "Compound cache",
@@ -2948,6 +3048,7 @@ fun SettingsInline(
                 updateStatus = updateStatus,
                 onToggleUpdateNotifications = onToggleUpdateNotifications,
                 onCheckForUpdates = onCheckForUpdates,
+                onDownloadUpdate = onDownloadUpdate,
                 showHeader = false
             )
             SettingsGroupDivider()

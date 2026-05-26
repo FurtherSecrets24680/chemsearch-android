@@ -18,10 +18,15 @@ data class RecentSearchGroup(
 fun groupRecentSearches(
     searches: List<RecentSearch>,
     nowMillis: Long = System.currentTimeMillis(),
-    zoneId: ZoneId = ZoneId.systemDefault()
+    zoneId: ZoneId = ZoneId.systemDefault(),
+    newestFirst: Boolean = true
 ): List<RecentSearchGroup> {
     val nowDate = Instant.ofEpochMilli(nowMillis).atZone(zoneId).toLocalDate()
-    val sorted = searches.sortedByDescending { it.lastSearchedAt }
+    val sorted = if (newestFirst) {
+        searches.sortedByDescending { it.lastSearchedAt }
+    } else {
+        searches.sortedBy { it.lastSearchedAt }
+    }
     val pinned = sorted.filter { it.pinned }
     val unpinned = sorted.filterNot { it.pinned }
 

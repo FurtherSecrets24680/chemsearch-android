@@ -10,11 +10,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.util.Base64
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.furthersecrets.chemsearch.data.*
@@ -29,6 +31,7 @@ import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import com.furthersecrets.chemsearch.ui.DebugLog
 import okhttp3.Request
+import java.io.File
 
 class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -58,6 +61,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _isSavingOffline = MutableStateFlow(false)
     val isSavingOffline: StateFlow<Boolean> = _isSavingOffline.asStateFlow()
+
+    private val _offlineDownloadProgress = MutableStateFlow<Float?>(null)
+    val offlineDownloadProgress: StateFlow<Float?> = _offlineDownloadProgress.asStateFlow()
 
     private val _uiState = MutableStateFlow(ChemUiState())
     val uiState: StateFlow<ChemUiState> = _uiState.asStateFlow()
@@ -134,7 +140,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             offlineDownloadRepository.downloads
                 .catch { e -> DebugLog.e("ChemSearch", "Download database read failed: ${e.message}") }
                 .collect { downloads ->
-                    _downloads.value = downloads
+                    _downloads.value = downloads.map { it.withResolvedOfflineMetadata() }
                 }
         }
         viewModelScope.launch {
@@ -243,6 +249,172 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun downloadUpdateApk() {
+        val status = _updateStatus.value
+        if (status.isDownloadingUpdate) return
+
+        status.downloadedUpdateApkPath
+            ?.let(::File)
+            ?.takeIf { it.exists() && it.length() > 0L }
+            ?.let { file ->
+                promptInstallUpdate(file)
+                return
+            }
+
+        val downloadUrl = status.downloadUrl?.takeIf { it.isNotBlank() }
+        if (downloadUrl == null) {
+            _updateStatus.update { it.copy(error = "No APK download link found.") }
+            return
+        }
+
+        _updateStatus.update {
+            it.copy(
+                isDownloadingUpdate = true,
+                updateDownloadProgress = 0f,
+                downloadedUpdateApkPath = null,
+                error = null
+            )
+        }
+
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                runCatching {
+                    downloadUpdateApkFile(
+                        url = downloadUrl,
+                        version = status.latestVersion ?: "update"
+                    ) { progress ->
+                        _updateStatus.update {
+                            it.copy(
+                                isDownloadingUpdate = true,
+                                updateDownloadProgress = progress.coerceIn(0f, 1f),
+                                error = null
+                            )
+                        }
+                    }
+                }
+            }
+
+            result.onSuccess { apkFile ->
+                _updateStatus.update {
+                    it.copy(
+                        isDownloadingUpdate = false,
+                        updateDownloadProgress = 1f,
+                        downloadedUpdateApkPath = apkFile.absolutePath,
+                        error = null
+                    )
+                }
+                promptInstallUpdate(apkFile)
+            }.onFailure { e ->
+                _updateStatus.update {
+                    it.copy(
+                        isDownloadingUpdate = false,
+                        updateDownloadProgress = null,
+                        downloadedUpdateApkPath = null,
+                        error = e.message ?: "Update download failed."
+                    )
+                }
+                DebugLog.e("ChemSearch", "Update download failed: ${e.message}")
+            }
+        }
+    }
+
+    private fun downloadUpdateApkFile(
+        url: String,
+        version: String,
+        onProgress: (Float) -> Unit
+    ): File {
+        val context = getApplication<Application>()
+        val safeVersion = version.replace(Regex("""[^A-Za-z0-9._-]"""), "_")
+        val updatesDir = File(context.cacheDir, "updates").apply { mkdirs() }
+        val target = File(updatesDir, "chemsearch-$safeVersion.apk")
+        val temp = File(updatesDir, "chemsearch-$safeVersion.apk.part")
+
+        val request = Request.Builder()
+            .url(url)
+            .header("User-Agent", "ChemSearch/${BuildConfig.VERSION_NAME} (Android; github.com/FurtherSecrets24680)")
+            .build()
+
+        ApiClient.rawHttp.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) {
+                throw IOException("Download failed: HTTP ${response.code}")
+            }
+            val body = response.body
+            val totalBytes = body.contentLength()
+            var copiedBytes = 0L
+            var lastProgress = 0f
+
+            body.byteStream().use { input ->
+                temp.outputStream().use { output ->
+                    val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+                    while (true) {
+                        val read = input.read(buffer)
+                        if (read == -1) break
+                        output.write(buffer, 0, read)
+                        copiedBytes += read
+                        if (totalBytes > 0L) {
+                            val progress = (copiedBytes.toFloat() / totalBytes.toFloat()).coerceIn(0f, 1f)
+                            if (progress - lastProgress >= 0.01f || progress >= 1f) {
+                                lastProgress = progress
+                                onProgress(progress)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (temp.length() == 0L) {
+            temp.delete()
+            throw IOException("Downloaded APK was empty.")
+        }
+        if (target.exists()) target.delete()
+        if (!temp.renameTo(target)) {
+            temp.copyTo(target, overwrite = true)
+            temp.delete()
+        }
+        onProgress(1f)
+        return target
+    }
+
+    private fun promptInstallUpdate(apkFile: File) {
+        val context = getApplication<Application>()
+        if (!apkFile.exists() || apkFile.length() == 0L) {
+            _updateStatus.update {
+                it.copy(
+                    downloadedUpdateApkPath = null,
+                    updateDownloadProgress = null,
+                    error = "Downloaded APK is missing."
+                )
+            }
+            return
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !context.packageManager.canRequestPackageInstalls()) {
+            val settingsIntent = Intent(
+                Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                Uri.parse("package:${context.packageName}")
+            ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            runCatching { context.startActivity(settingsIntent) }
+            _updateStatus.update {
+                it.copy(error = "Allow installs from ChemSearch, then tap Install.")
+            }
+            return
+        }
+
+        val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", apkFile)
+        val installIntent = Intent(Intent.ACTION_VIEW)
+            .setDataAndType(uri, "application/vnd.android.package-archive")
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+        runCatching { context.startActivity(installIntent) }
+            .onFailure { e ->
+                _updateStatus.update {
+                    it.copy(error = e.message ?: "Could not open installer.")
+                }
+            }
+    }
+
     fun toggleFavorite() {
         val state = _uiState.value
         val cid = state.cid ?: return
@@ -287,7 +459,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         val json = prefs.getString("favorites", null) ?: return emptyList()
         return try {
             val type = object : TypeToken<List<FavoriteCompound>>() {}.type
-            gson.fromJson(json, type) ?: emptyList()
+            val favorites = gson.fromJson<List<FavoriteCompound>>(json, type) ?: emptyList()
+            favorites.map { it.withConventionalFormula() }
         } catch (e: Exception) {
             emptyList()
         }
@@ -297,15 +470,23 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         prefs.edit().putString("favorites", gson.toJson(list)).apply()
     }
 
+    private fun FavoriteCompound.withConventionalFormula(): FavoriteCompound {
+        val conventional = formatConventionalFormula(formula)
+        return if (conventional == formula) this else copy(formula = conventional)
+    }
+
     fun saveCurrentCompoundOffline() {
         val startState = _uiState.value
         val cid = startState.cid ?: return
         if (!startState.hasResult || _isSavingOffline.value) return
 
         _isSavingOffline.value = true
+        _offlineDownloadProgress.value = 0f
         viewModelScope.launch {
             try {
-                val snapshot = buildOfflineSnapshot(startState)
+                val snapshot = buildOfflineSnapshot(startState) { progress ->
+                    _offlineDownloadProgress.value = progress
+                }
                 val item = DownloadedCompound(
                     cid = cid,
                     name = snapshot.name,
@@ -319,6 +500,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 val updated = listOf(item) + _downloads.value.filterNot { it.cid == cid }
                 _downloads.value = updated
                 withContext(Dispatchers.IO) { offlineDownloadRepository.upsert(item) }
+                _offlineDownloadProgress.value = 1f
                 _isDownloaded.value = true
                 _uiState.update { current ->
                     if (current.cid == cid) snapshot.copy(history = current.history) else current
@@ -328,7 +510,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 DebugLog.e("ChemSearch", "Offline download failed for CID $cid: ${e.message}")
                 _uiState.update { it.copy(error = "Offline download failed: ${e.message ?: "unknown error"}") }
             } finally {
+                delay(250)
                 _isSavingOffline.value = false
+                _offlineDownloadProgress.value = null
             }
         }
     }
@@ -373,9 +557,25 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun DownloadedCompound.withResolvedOfflineMetadata(): DownloadedCompound {
+        val normalizedState = state.withConventionalFormula()
+        val normalizedFormula = formatConventionalFormula(formula.ifBlank { normalizedState.formula })
+        val normalized = copy(
+            formula = normalizedFormula,
+            state = normalizedState
+        )
         val restoredMetadata: OfflineDownloadMetadata? = runCatching { offlineMetadata }.getOrNull()
-        return if (restoredMetadata != null) this else copy(
-            offlineMetadata = buildOfflineDownloadMetadata(state, savedAt)
+        return if (restoredMetadata != null) normalized else normalized.copy(
+            offlineMetadata = buildOfflineDownloadMetadata(normalizedState, savedAt)
+        )
+    }
+
+    private fun ChemUiState.withConventionalFormula(): ChemUiState {
+        val conventional = formatConventionalFormula(formula)
+        if (conventional == formula) return this
+        return copy(
+            formula = conventional,
+            empiricalFormula = getEmpiricalFormula(conventional),
+            elementalData = calcElementalData(conventional)
         )
     }
 
@@ -414,7 +614,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         _oledDarkTheme.value = enabled
         prefs.edit().putBoolean("oled_dark_theme", enabled).apply()
         viewModelScope.launch { settingsStore.setOledDarkTheme(enabled) }
-        DebugLog.d("ChemSearch", "OLED dark mode → ${if (enabled) "on" else "off"}")
+        DebugLog.d("ChemSearch", "AMOLED mode → ${if (enabled) "on" else "off"}")
     }
 
     fun setDefaultDescSource(source: DescSource) {
@@ -559,7 +759,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             if (!file.exists()) return@withContext null
             try {
                 val json = file.readText()
-                gson.fromJson(json, ChemUiState::class.java)
+                gson.fromJson(json, ChemUiState::class.java)?.withConventionalFormula()
             } catch (e: Exception) {
                 DebugLog.e("ChemSearch", "Cache read failed for CID $cid: ${e.message}")
                 null
@@ -573,7 +773,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 ?.filter { it.isFile && it.extension == "json" }
                 ?.asSequence()
                 ?.mapNotNull { file ->
-                    runCatching { gson.fromJson(file.readText(), ChemUiState::class.java) }.getOrNull()
+                    runCatching {
+                        gson.fromJson(file.readText(), ChemUiState::class.java)?.withConventionalFormula()
+                    }.getOrNull()
                 }
                 ?.firstOrNull { state ->
                     state.name.lowercase() == q ||
@@ -761,7 +963,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 val compoundName = props.title?.takeIf { it.isNotBlank() }
                     ?: props.iupacName?.takeIf { it.isNotBlank() }
                     ?: q
-                val formula = props.molecularFormula ?: ""
+                val formula = formatConventionalFormula(props.molecularFormula ?: "")
 
                 val pubDesc: String? = descItem?.description?.let { el ->
                     when {
@@ -1031,16 +1233,26 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         val message: String?
     )
 
-    private suspend fun buildOfflineSnapshot(startState: ChemUiState): ChemUiState {
+    private suspend fun buildOfflineSnapshot(
+        startState: ChemUiState,
+        onProgress: (Float) -> Unit = {}
+    ): ChemUiState {
         val cid = startState.cid ?: return startState
         val latest = _uiState.value.takeIf { it.cid == cid } ?: startState
+        onProgress(0.08f)
         val synonyms = latest.synonyms.takeIf { it.size >= 10 } ?: fetchSynonyms(cid)
+        onProgress(0.22f)
         val casRegex = Regex("""^\d{1,7}-\d{2}-\d$""")
         val pubDescription = latest.pubDescription ?: fetchPubChemDescription(cid)
+        onProgress(0.36f)
         val wikiDescription = latest.wikiDescription ?: fetchWikiDescriptionBlocking(latest.name)
+        onProgress(0.50f)
         val ghsData = latest.ghsData ?: fetchGhsDataBlocking(cid)
+        onProgress(0.64f)
         val sdfResult = fetchSdfForOffline(latest)
+        onProgress(0.82f)
         val pngBase64 = latest.offline2dPngBase64 ?: fetch2dStructurePngBase64(cid)
+        onProgress(0.94f)
 
         return latest.copy(
             isLoading = false,
@@ -1491,7 +1703,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 val compoundName = props.title?.takeIf { it.isNotBlank() }
                     ?: props.iupacName?.takeIf { it.isNotBlank() }
                     ?: "CID $cid"
-                val formula = props.molecularFormula ?: ""
+                val formula = formatConventionalFormula(props.molecularFormula ?: "")
 
                 val pubDesc: String? = descItem?.description?.let { el ->
                     when {

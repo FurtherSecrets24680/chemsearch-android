@@ -128,11 +128,110 @@ fun parseFormulaElementCounts(formula: String): Map<String, Int> =
         is FormulaParseResult.Failure -> throw FormulaParseException(result.error)
     }
 
+fun formatConventionalFormula(formula: String): String {
+    val cleanFormula = normalizeFormulaText(formula)
+    if (cleanFormula.isBlank()) return formula
+    if (cleanFormula.any { it == '(' || it == ')' || it == '[' || it == ']' || it == '.' || it == '*' || it == '\u00b7' || it == '\u2022' }) {
+        return formula
+    }
+
+    val counts = runCatching { parseFormulaElementCounts(cleanFormula) }.getOrNull() ?: return formula
+    if (counts.size <= 1) return cleanFormula
+
+    val hasCarbon = counts.containsKey("C")
+    val hasMetal = counts.keys.any { it in metalElements }
+    val carbonCount = counts["C"] ?: 0
+
+    val orderedElements = when {
+        hasMetal && (!hasCarbon || carbonCount == 1) -> metalFirstFormulaOrder(counts)
+        !hasCarbon -> inorganicFormulaOrder(counts)
+        else -> counts.keys.toList()
+    }
+
+    return buildFormula(orderedElements, counts)
+}
+
 private data class ParseOutput(
     val elements: MutableMap<String, Int> = linkedMapOf(),
     val index: Int,
     val error: FormulaParseError? = null
 )
+
+private val metalElements = setOf(
+    "Li", "Na", "K", "Rb", "Cs", "Fr",
+    "Be", "Mg", "Ca", "Sr", "Ba", "Ra",
+    "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn",
+    "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd",
+    "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg",
+    "Al", "Ga", "In", "Tl", "Sn", "Pb", "Bi", "Po",
+    "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu",
+    "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr"
+)
+
+private val halogenElements = setOf("F", "Cl", "Br", "I", "At", "Ts")
+private val hydrogenFirstBinaryElements = halogenElements + setOf("S", "Se", "Te")
+private val centralHydrideElements = setOf("B", "N", "P", "As", "Sb", "Si")
+
+private fun metalFirstFormulaOrder(counts: Map<String, Int>): List<String> {
+    val metals = counts.keys.filter { it in metalElements }.sortedWith(elementComparator)
+    val remaining = counts.keys.filterNot { it in metalElements }
+    val central = remaining
+        .filterNot { it == "H" || it == "O" || it in halogenElements }
+        .sortedWith(elementComparator)
+    val halogens = remaining.filter { it in halogenElements }.sortedWith(elementComparator)
+
+    return buildList {
+        addAll(metals)
+        if (central.isNotEmpty()) {
+            if ("H" in remaining) add("H")
+            addAll(central)
+            if ("O" in remaining) add("O")
+            addAll(halogens)
+        } else {
+            addAll(halogens)
+            if ("O" in remaining) add("O")
+            if ("H" in remaining) add("H")
+            addAll(remaining.filterNot { it == "H" || it == "O" || it in halogenElements }.sortedWith(elementComparator))
+        }
+    }.distinct()
+}
+
+private fun inorganicFormulaOrder(counts: Map<String, Int>): List<String> {
+    val elements = counts.keys
+    val nonHydrogen = elements.filterNot { it == "H" }
+
+    if ("H" in elements && "O" in elements) {
+        val central = elements.filterNot { it == "H" || it == "O" }.sortedWith(elementComparator)
+        if (central.isNotEmpty()) return listOf("H") + central + "O"
+    }
+
+    if ("H" in elements && nonHydrogen.size == 1) {
+        val partner = nonHydrogen.first()
+        return if (partner in centralHydrideElements) listOf(partner, "H") else listOf("H", partner)
+    }
+
+    return elements.toList()
+}
+
+private val elementComparator = compareBy<String> { periodicElementOrder[it] ?: Int.MAX_VALUE }.thenBy { it }
+
+private val periodicElementOrder = listOf(
+    "H", "He",
+    "Li", "Be", "B", "C", "N", "O", "F", "Ne",
+    "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar",
+    "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr",
+    "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe",
+    "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu",
+    "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn",
+    "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr",
+    "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"
+).withIndex().associate { it.value to it.index }
+
+private fun buildFormula(elements: List<String>, counts: Map<String, Int>): String =
+    elements.joinToString("") { element ->
+        val count = counts[element] ?: 0
+        if (count <= 1) element else "$element$count"
+    }
 
 private fun parseSequence(input: String, startIndex: Int, close: Char?): ParseOutput {
     val elements = linkedMapOf<String, Int>()

@@ -339,5 +339,8 @@ data class UpdateStatus(
     val releaseUrl: String? = null,
     val changelog: String? = null,
     val lastCheckedAt: Long? = null,
-    val error: String? = null
+    val error: String? = null,
+    val isDownloadingUpdate: Boolean = false,
+    val updateDownloadProgress: Float? = null,
+    val downloadedUpdateApkPath: String? = null
 )

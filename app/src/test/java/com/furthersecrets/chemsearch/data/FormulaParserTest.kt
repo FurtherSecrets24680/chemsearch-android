@@ -36,6 +36,21 @@ class FormulaParserTest {
         assertTrue(error.message.isNotBlank())
     }
 
+    @Test
+    fun formatsPubChemHillFormulasInConventionalInorganicOrder() {
+        assertEquals("NaCl", formatConventionalFormula("ClNa"))
+        assertEquals("H2SO4", formatConventionalFormula("H2O4S"))
+        assertEquals("NaOH", formatConventionalFormula("HNaO"))
+        assertEquals("Na2SO4", formatConventionalFormula("Na2O4S"))
+        assertEquals("NH3", formatConventionalFormula("H3N"))
+    }
+
+    @Test
+    fun keepsOrganicHillFormulasStable() {
+        assertEquals("CH4O", formatConventionalFormula("CH4O"))
+        assertEquals("C153H225N43O49S", formatConventionalFormula("C153H225N43O49S"))
+    }
+
     private fun loadFormulaFixtures(): List<FormulaFixture> {
         val json = requireNotNull(javaClass.classLoader?.getResource("chemistry-fixtures/formula-parsing.json"))
             .readText()

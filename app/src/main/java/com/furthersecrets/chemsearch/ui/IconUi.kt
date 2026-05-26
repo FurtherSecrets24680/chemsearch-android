@@ -98,6 +98,7 @@ object Icons {
         val Download = PhosphorIcons.Bold.DownloadSimple
         val DownloadDone = PhosphorIcons.Bold.CheckCircle
         val Error = PhosphorIcons.Bold.WarningCircle
+        val FilterList = PhosphorIcons.Bold.Funnel
         val FolderOpen = PhosphorIcons.Bold.FolderOpen
         val GridView = PhosphorIcons.Bold.GridFour
         val HealthAndSafety = PhosphorIcons.Bold.ShieldCheck
@@ -113,6 +114,8 @@ object Icons {
         val NotificationsActive = PhosphorIcons.Bold.BellRinging
         val Palette = PhosphorIcons.Bold.Palette
         val Public = PhosphorIcons.Bold.Globe
+        val PushPin = PhosphorIcons.Fill.PushPin
+        val PushPinBorder = PhosphorIcons.Regular.PushPin
         val RadioButtonChecked = PhosphorIcons.Fill.RadioButton
         val Refresh = PhosphorIcons.Bold.ArrowClockwise
         val RestartAlt = PhosphorIcons.Bold.ArrowCounterClockwise

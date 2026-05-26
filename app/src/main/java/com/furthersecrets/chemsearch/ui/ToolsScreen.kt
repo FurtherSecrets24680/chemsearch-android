@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.furthersecrets.chemsearch.ChemViewModel
 import com.furthersecrets.chemsearch.data.ApiClient
 import com.furthersecrets.chemsearch.data.AiProvider
 import com.furthersecrets.chemsearch.data.BalancedReactionResult
@@ -65,6 +66,7 @@ import com.furthersecrets.chemsearch.data.fetchGeneratedSdfFromIdentifiers
 import com.furthersecrets.chemsearch.data.calculatePhPoh
 import com.furthersecrets.chemsearch.data.calculateMolarMass as calculateDomainMolarMass
 import com.furthersecrets.chemsearch.data.formatPhPohNumber
+import com.furthersecrets.chemsearch.data.formatConventionalFormula
 import com.furthersecrets.chemsearch.data.formatCompoundComparisonValue
 import com.furthersecrets.chemsearch.data.isUsableSdf
 import com.furthersecrets.chemsearch.data.parseFormulaElementCounts
@@ -130,6 +132,7 @@ fun ToolsScreen(
     contentPadding: PaddingValues = PaddingValues(0.dp),
     jumpToTool: Int = 0,
     jumpToToolVersion: Int = 0,
+    vm: ChemViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     defaultDescSource: DescSource = DescSource.PUBCHEM,
     aiProvider: AiProvider = AiProvider.GEMINI,
     getAiKey: (AiProvider) -> String? = { null },
@@ -480,7 +483,7 @@ fun ToolsScreen(
                 3 -> OxidationStateFinder()
                 4 -> SmilesVisualizer(isDark = isDark)
                 5 -> ReactionBalancer()
-                6 -> IsomerFinderTool(onNavigateToSearch = onNavigateToSearch)
+                6 -> IsomerFinderTool(vm = vm, onNavigateToSearch = onNavigateToSearch)
                 7 -> StoichiometryCalculator(
                     mode = StoichiometryMode.LIMITING,
                     title = "Limiting Reagent"
@@ -1960,11 +1963,12 @@ private suspend fun fetchCompareCompound(
     val name = props.title?.takeIf { it.isNotBlank() }
         ?: props.iupacName?.takeIf { it.isNotBlank() }
         ?: cleanQuery.replaceFirstChar { it.uppercase() }
+    val formula = formatConventionalFormula(props.molecularFormula.orEmpty())
     val description = runCatching {
         fetchCompareDescription(
             cid = cid,
             name = name,
-            formula = props.molecularFormula.orEmpty(),
+            formula = formula,
             source = descriptionSource,
             aiProvider = aiProvider,
             aiKey = aiKey,
@@ -1986,7 +1990,7 @@ private suspend fun fetchCompareCompound(
         query = cleanQuery,
         cid = cid,
         name = name,
-        formula = props.molecularFormula.orEmpty(),
+        formula = formula,
         molecularWeight = props.molecularWeight.orEmpty(),
         iupacName = props.iupacName.orEmpty(),
         smiles = props.smiles.orEmpty(),
@@ -2602,9 +2606,10 @@ private fun DescSource.compareLabel(): String = when (this) {
 // TOOL 6 : Isomer Finder
 
 @Composable
-fun IsomerFinderTool(onNavigateToSearch: () -> Unit = {}) {
-    val vm: com.furthersecrets.chemsearch.ChemViewModel =
-        androidx.lifecycle.viewmodel.compose.viewModel()
+fun IsomerFinderTool(
+    vm: ChemViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    onNavigateToSearch: () -> Unit = {}
+) {
     val state by vm.uiState.collectAsStateWithLifecycle()
     val focusManager = androidx.compose.ui.platform.LocalFocusManager.current
 
