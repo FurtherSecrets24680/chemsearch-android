@@ -112,6 +112,13 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val compactMode by vm.compactMode.collectAsStateWithLifecycle()
     val oledDarkTheme by vm.oledDarkTheme.collectAsStateWithLifecycle()
     val defaultDescSource by vm.defaultDescSource.collectAsStateWithLifecycle()
+    val defaultStructureView by vm.defaultStructureView.collectAsStateWithLifecycle()
+    val offlineDownloadQuality by vm.offlineDownloadQuality.collectAsStateWithLifecycle()
+    val formulaDisplayStyle by vm.formulaDisplayStyle.collectAsStateWithLifecycle()
+    val cacheSizeLimit by vm.cacheSizeLimit.collectAsStateWithLifecycle()
+    val cacheRetention by vm.cacheRetention.collectAsStateWithLifecycle()
+    val reduceMotion by vm.reduceMotion.collectAsStateWithLifecycle()
+    val highContrastOutlines by vm.highContrastOutlines.collectAsStateWithLifecycle()
     val aiKeyStatus by vm.aiKeyStatus.collectAsStateWithLifecycle()
     val aiModelCatalogs by vm.aiModelCatalogs.collectAsStateWithLifecycle()
     val cacheSizeBytes by vm.cacheSizeBytes.collectAsStateWithLifecycle()
@@ -137,7 +144,10 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     var showFavorites by remember { mutableStateOf(false) }
 
     if (showWelcome) {
-        CompositionLocalProvider(LocalCompactMode provides compactMode) {
+        CompositionLocalProvider(
+            LocalCompactMode provides compactMode,
+            LocalReduceMotion provides reduceMotion
+        ) {
             WelcomeScreen(
                 isDark = isDark,
                 colorScheme = colorScheme,
@@ -212,6 +222,10 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             compactMode = compactMode,
             oledDarkTheme = oledDarkTheme,
             defaultDescSource = defaultDescSource,
+            defaultStructureView = defaultStructureView,
+            formulaDisplayStyle = formulaDisplayStyle,
+            reduceMotion = reduceMotion,
+            highContrastOutlines = highContrastOutlines,
             aiProvider = state.aiProvider,
             aiKeyStatus = aiKeyStatus,
             aiModelCatalogs = aiModelCatalogs,
@@ -223,6 +237,10 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             onToggleCompactMode = { vm.setCompactMode(!compactMode) },
             onToggleOledDarkTheme = { vm.setOledDarkTheme(!oledDarkTheme) },
             onSetDefaultDesc = { vm.setDefaultDescSource(it) },
+            onSetDefaultStructureView = { vm.setDefaultStructureView(it) },
+            onSetFormulaDisplayStyle = { vm.setFormulaDisplayStyle(it) },
+            onToggleReduceMotion = { vm.setReduceMotion(!reduceMotion) },
+            onToggleHighContrastOutlines = { vm.setHighContrastOutlines(!highContrastOutlines) },
             onSetAiProvider = { vm.setAiProvider(it) },
             onSetAiModel = { provider, model -> vm.setAiModel(provider, model) },
             onRefreshAiModels = { provider -> vm.refreshAiModels(provider) },
@@ -294,7 +312,10 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val pageSpacing = if (compactMode) 6.dp else 12.dp
     val suggestionTopPadding = if (compactMode) 124.dp else 148.dp
 
-    CompositionLocalProvider(LocalCompactMode provides compactMode) {
+    CompositionLocalProvider(
+        LocalCompactMode provides compactMode,
+        LocalReduceMotion provides reduceMotion
+    ) {
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar) },
         containerColor = MaterialTheme.colorScheme.background,
@@ -348,10 +369,10 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                 navController = navController,
                 startDestination = AppTab.SEARCH.route,
                 modifier = Modifier.fillMaxSize(),
-                enterTransition = { mainTabEnterTransition() },
-                exitTransition = { mainTabExitTransition() },
-                popEnterTransition = { mainTabEnterTransition() },
-                popExitTransition = { mainTabExitTransition() }
+                enterTransition = { if (reduceMotion) fadeIn(tween(80)) else mainTabEnterTransition() },
+                exitTransition = { if (reduceMotion) fadeOut(tween(80)) else mainTabExitTransition() },
+                popEnterTransition = { if (reduceMotion) fadeIn(tween(80)) else mainTabEnterTransition() },
+                popExitTransition = { if (reduceMotion) fadeOut(tween(80)) else mainTabExitTransition() }
             ) {
                 composable(AppTab.SEARCH.route) {
                     LazyColumn(
@@ -471,7 +492,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                         jumpToTool = 6
                                         jumpToToolVersion++
                                         navigateToTab(AppTab.TOOLS)
-                                    }} else null
+                                    }} else null,
+                                    formulaDisplayStyle = formulaDisplayStyle
                                 )
                             }
                             item { IdentifiersSection(state, context) }
@@ -581,6 +603,13 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 compactMode = compactMode,
                                 oledDarkTheme = oledDarkTheme,
                                 defaultDescSource = defaultDescSource,
+                                defaultStructureView = defaultStructureView,
+                                offlineDownloadQuality = offlineDownloadQuality,
+                                formulaDisplayStyle = formulaDisplayStyle,
+                                cacheSizeLimit = cacheSizeLimit,
+                                cacheRetention = cacheRetention,
+                                reduceMotion = reduceMotion,
+                                highContrastOutlines = highContrastOutlines,
                                 aiProvider = state.aiProvider,
                                 aiKeyStatus = aiKeyStatus,
                                 aiModelCatalogs = aiModelCatalogs,
@@ -592,6 +621,13 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 onToggleCompactMode = { vm.setCompactMode(!compactMode) },
                                 onToggleOledDarkTheme = { vm.setOledDarkTheme(!oledDarkTheme) },
                                 onSetDefaultDesc = { vm.setDefaultDescSource(it) },
+                                onSetDefaultStructureView = { vm.setDefaultStructureView(it) },
+                                onSetOfflineDownloadQuality = { vm.setOfflineDownloadQuality(it) },
+                                onSetFormulaDisplayStyle = { vm.setFormulaDisplayStyle(it) },
+                                onSetCacheSizeLimit = { vm.setCacheSizeLimit(it) },
+                                onSetCacheRetention = { vm.setCacheRetention(it) },
+                                onToggleReduceMotion = { vm.setReduceMotion(!reduceMotion) },
+                                onToggleHighContrastOutlines = { vm.setHighContrastOutlines(!highContrastOutlines) },
                                 onSetAiProvider = { vm.setAiProvider(it) },
                                 onSetAiModel = { provider, model -> vm.setAiModel(provider, model) },
                                 onRefreshAiModels = { provider -> vm.refreshAiModels(provider) },
@@ -619,11 +655,11 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                 modifier = Modifier
                     .padding(top = suggestionTopPadding, start = pageHorizontalPadding, end = pageHorizontalPadding)
                     .zIndex(10f),
-                enter = slideInVertically(
+                enter = if (reduceMotion) fadeIn(tween(80)) else slideInVertically(
                     animationSpec = tween(ChemMotionMedium, easing = ChemMotionEasing),
                     initialOffsetY = { -it / 6 }
                 ) + fadeIn(tween(ChemMotionFast)),
-                exit = slideOutVertically(
+                exit = if (reduceMotion) fadeOut(tween(80)) else slideOutVertically(
                     animationSpec = tween(ChemMotionFast, easing = ChemMotionEasing),
                     targetOffsetY = { -it / 8 }
                 ) + fadeOut(tween(ChemMotionFast))

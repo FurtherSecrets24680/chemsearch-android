@@ -25,8 +25,10 @@ val ChemMotionEasing = CubicBezierEasing(0.22f, 1f, 0.36f, 1f)
 const val ChemMotionFast = 170
 const val ChemMotionMedium = 240
 
+@Composable
 fun Modifier.chemAnimateContentSize(): Modifier =
-    animateContentSize(animationSpec = tween(ChemMotionMedium, easing = ChemMotionEasing))
+    if (LocalReduceMotion.current) this
+    else animateContentSize(animationSpec = tween(ChemMotionMedium, easing = ChemMotionEasing))
 
 @Composable
 fun AnimatedStateIcon(
@@ -38,6 +40,15 @@ fun AnimatedStateIcon(
     tint: Color,
     modifier: Modifier = Modifier
 ) {
+    if (LocalReduceMotion.current) {
+        Icon(
+            imageVector = if (selected) selectedIcon else unselectedIcon,
+            contentDescription = if (selected) selectedDescription else unselectedDescription,
+            tint = tint,
+            modifier = modifier
+        )
+        return
+    }
     AnimatedContent(
         targetState = selected,
         transitionSpec = {
@@ -71,6 +82,15 @@ fun AnimatedStateIcon(
     tint: Color,
     modifier: Modifier = Modifier
 ) {
+    if (LocalReduceMotion.current) {
+        ChemIcon(
+            icon = if (selected) selectedIcon else unselectedIcon,
+            contentDescription = if (selected) selectedDescription else unselectedDescription,
+            tint = tint,
+            modifier = modifier
+        )
+        return
+    }
     AnimatedContent(
         targetState = selected,
         transitionSpec = {

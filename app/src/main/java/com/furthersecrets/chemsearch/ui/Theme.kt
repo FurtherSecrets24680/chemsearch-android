@@ -147,13 +147,15 @@ fun ChemSearchTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     colorScheme: AppColorScheme = AppColorScheme.BLUE,
     oledDarkTheme: Boolean = false,
+    highContrastOutlines: Boolean = false,
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
         colorScheme = chemSearchColorScheme(
             darkTheme = darkTheme,
             colorScheme = colorScheme,
-            oledDarkTheme = oledDarkTheme
+            oledDarkTheme = oledDarkTheme,
+            highContrastOutlines = highContrastOutlines
         ),
         content = content
     )
@@ -162,10 +164,12 @@ fun ChemSearchTheme(
 internal fun chemSearchColorScheme(
     darkTheme: Boolean,
     colorScheme: AppColorScheme,
-    oledDarkTheme: Boolean
+    oledDarkTheme: Boolean,
+    highContrastOutlines: Boolean = false
 ): ColorScheme {
     val colors = if (darkTheme) darkColors(colorScheme) else lightColors(colorScheme)
-    return if (darkTheme && oledDarkTheme) colors.withOledDarkSurfaces() else colors
+    val adjusted = if (darkTheme && oledDarkTheme) colors.withOledDarkSurfaces() else colors
+    return if (highContrastOutlines) adjusted.withHighContrastOutlines(darkTheme) else adjusted
 }
 
 private fun ColorScheme.withOledDarkSurfaces(): ColorScheme {
@@ -190,3 +194,9 @@ private fun ColorScheme.withOledDarkSurfaces(): ColorScheme {
         outlineVariant = Color(0xFF333333)
     )
 }
+
+private fun ColorScheme.withHighContrastOutlines(darkTheme: Boolean): ColorScheme =
+    copy(
+        outline = if (darkTheme) onSurface.copy(alpha = 0.72f) else primary.copy(alpha = 0.62f),
+        outlineVariant = if (darkTheme) onSurface.copy(alpha = 0.42f) else primary.copy(alpha = 0.30f)
+    )

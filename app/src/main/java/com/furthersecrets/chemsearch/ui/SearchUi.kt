@@ -34,6 +34,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -68,9 +70,105 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 import java.util.Locale
 
 // App header
+
+private val HeaderLogoBaseBlue = Color(0xFF2563EB)
+
+internal fun appHeaderLogoHueRotationDegrees(primary: Color): Float =
+    normalizeHueDegrees(colorHueDegrees(primary) - colorHueDegrees(HeaderLogoBaseBlue))
+
+private fun appHeaderLogoColorFilter(primary: Color): ColorFilter =
+    ColorFilter.colorMatrix(hueRotationMatrix(appHeaderLogoHueRotationDegrees(primary)))
+
+private fun colorHueDegrees(color: Color): Float {
+    val red = color.red
+    val green = color.green
+    val blue = color.blue
+    val max = maxOf(red, green, blue)
+    val min = minOf(red, green, blue)
+    val delta = max - min
+    if (delta == 0f) return 0f
+
+    val hue = when (max) {
+        red -> ((green - blue) / delta) % 6f
+        green -> ((blue - red) / delta) + 2f
+        else -> ((red - green) / delta) + 4f
+    } * 60f
+    return if (hue < 0f) hue + 360f else hue
+}
+
+internal fun displayFormulaForStyle(state: ChemUiState, style: FormulaDisplayStyle): String {
+    val rawFormula = runCatching { state.rawFormula }.getOrDefault("").orEmpty()
+    return when (style) {
+        FormulaDisplayStyle.CONVENTIONAL -> appendFormulaCharge(state.formula, state.charge)
+        FormulaDisplayStyle.HILL -> rawFormula.ifBlank { appendFormulaCharge(state.formula, state.charge) }
+    }
+}
+
+private fun formulaChargeSuffix(charge: Int): String =
+    when {
+        charge > 0 -> if (charge == 1) "+" else "^${charge}+"
+        charge < 0 -> if (charge == -1) "-" else "^${-charge}-"
+        else -> ""
+    }
+
+private fun appendFormulaCharge(formula: String, charge: Int): String {
+    val cleanFormula = formula.trim()
+    if (cleanFormula.isBlank() || charge == 0) return cleanFormula
+    val hasChargeTail = listOf(
+        caretChargeRegex,
+        signThenDigitsChargeRegex,
+        digitsThenSignChargeRegex,
+        signOnlyChargeRegex
+    ).any { regex -> regex.find(cleanFormula)?.range?.last == cleanFormula.lastIndex }
+    return if (hasChargeTail) cleanFormula else cleanFormula + formulaChargeSuffix(charge)
+}
+
+private fun normalizeHueDegrees(degrees: Float): Float =
+    when {
+        degrees > 180f -> degrees - 360f
+        degrees < -180f -> degrees + 360f
+        else -> degrees
+    }
+
+private fun hueRotationMatrix(degrees: Float): ColorMatrix {
+    val radians = (degrees * PI / 180.0).toFloat()
+    val cosine = cos(radians)
+    val sine = sin(radians)
+    val luminanceRed = 0.213f
+    val luminanceGreen = 0.715f
+    val luminanceBlue = 0.072f
+
+    return ColorMatrix(
+        floatArrayOf(
+            luminanceRed + cosine * (1 - luminanceRed) + sine * (-luminanceRed),
+            luminanceGreen + cosine * (-luminanceGreen) + sine * (-luminanceGreen),
+            luminanceBlue + cosine * (-luminanceBlue) + sine * (1 - luminanceBlue),
+            0f,
+            0f,
+            luminanceRed + cosine * (-luminanceRed) + sine * 0.143f,
+            luminanceGreen + cosine * (1 - luminanceGreen) + sine * 0.140f,
+            luminanceBlue + cosine * (-luminanceBlue) + sine * -0.283f,
+            0f,
+            0f,
+            luminanceRed + cosine * (-luminanceRed) + sine * -(1 - luminanceRed),
+            luminanceGreen + cosine * (-luminanceGreen) + sine * luminanceGreen,
+            luminanceBlue + cosine * (1 - luminanceBlue) + sine * luminanceBlue,
+            0f,
+            0f,
+            0f,
+            0f,
+            0f,
+            1f,
+            0f
+        )
+    )
+}
 
 @Composable
 fun AppHeader(isDark: Boolean, onToggleTheme: () -> Unit) {
@@ -84,10 +182,10 @@ fun AppHeader(isDark: Boolean, onToggleTheme: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)
         ) {
-            Icon(
+            Image(
                 painter = painterResource(id = R.drawable.chemsearch),
                 contentDescription = null,
-                tint = Color.Unspecified,
+                colorFilter = appHeaderLogoColorFilter(MaterialTheme.colorScheme.primary),
                 modifier = Modifier.size(if (compact) 40.dp else 46.dp)
             )
             Column(verticalArrangement = Arrangement.spacedBy(1.dp)) {
@@ -653,7 +751,8 @@ fun CompoundHeader(
     isSavingOffline: Boolean = false,
     offlineDownloadProgress: Float? = null,
     onDownloadOffline: () -> Unit = {},
-    onFormulaClick: (() -> Unit)? = null
+    onFormulaClick: (() -> Unit)? = null,
+    formulaDisplayStyle: FormulaDisplayStyle = FormulaDisplayStyle.CONVENTIONAL
 ) {
     val context = LocalContext.current
     val cm = remember { context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
@@ -804,12 +903,15 @@ fun CompoundHeader(
                             .clickable { titleToggle() }
                     )
                 }
-                if (state.formula.isNotBlank()) {
+                val displayFormula = remember(state.formula, state.rawFormula, formulaDisplayStyle) {
+                    displayFormulaForStyle(state, formulaDisplayStyle)
+                }
+                if (displayFormula.isNotBlank()) {
                     FormulaHeaderRow(
-                        formula = state.formula,
+                        formula = displayFormula,
                         compact = compact,
                         onCopyFormula = {
-                            cm.setPrimaryClip(ClipData.newPlainText("Formula", state.formula))
+                            cm.setPrimaryClip(ClipData.newPlainText("Formula", displayFormula))
                             Toast.makeText(context, "Formula copied", Toast.LENGTH_SHORT).show()
                         },
                         onFormulaClick = onFormulaClick

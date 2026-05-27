@@ -86,6 +86,27 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     private val _defaultDescSource = MutableStateFlow(getSavedDescSource())
     val defaultDescSource: StateFlow<DescSource> = _defaultDescSource.asStateFlow()
 
+    private val _defaultStructureView = MutableStateFlow(getSavedDefaultStructureView())
+    val defaultStructureView: StateFlow<DefaultStructureView> = _defaultStructureView.asStateFlow()
+
+    private val _offlineDownloadQuality = MutableStateFlow(getSavedOfflineDownloadQuality())
+    val offlineDownloadQuality: StateFlow<OfflineDownloadQuality> = _offlineDownloadQuality.asStateFlow()
+
+    private val _formulaDisplayStyle = MutableStateFlow(getSavedFormulaDisplayStyle())
+    val formulaDisplayStyle: StateFlow<FormulaDisplayStyle> = _formulaDisplayStyle.asStateFlow()
+
+    private val _cacheSizeLimit = MutableStateFlow(getSavedCacheSizeLimit())
+    val cacheSizeLimit: StateFlow<CacheSizeLimit> = _cacheSizeLimit.asStateFlow()
+
+    private val _cacheRetention = MutableStateFlow(getSavedCacheRetention())
+    val cacheRetention: StateFlow<CacheRetention> = _cacheRetention.asStateFlow()
+
+    private val _reduceMotion = MutableStateFlow(prefs.getBoolean("reduce_motion", false))
+    val reduceMotion: StateFlow<Boolean> = _reduceMotion.asStateFlow()
+
+    private val _highContrastOutlines = MutableStateFlow(prefs.getBoolean("high_contrast_outlines", false))
+    val highContrastOutlines: StateFlow<Boolean> = _highContrastOutlines.asStateFlow()
+
     private val _cacheSizeBytes = MutableStateFlow(0L)
     val cacheSizeBytes: StateFlow<Long> = _cacheSizeBytes.asStateFlow()
 
@@ -131,6 +152,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 _cacheDirPath.value = settings.cacheDir
                 _updateNotificationsEnabled.value = settings.updateNotificationsEnabled
                 _showWelcome.value = !settings.welcomeSkipped
+                _defaultStructureView.value = settings.defaultStructureView
+                _offlineDownloadQuality.value = settings.offlineDownloadQuality
+                _formulaDisplayStyle.value = settings.formulaDisplayStyle
+                _cacheSizeLimit.value = settings.cacheSizeLimit
+                _cacheRetention.value = settings.cacheRetention
+                _reduceMotion.value = settings.reduceMotion
+                _highContrastOutlines.value = settings.highContrastOutlines
             }
         }
         viewModelScope.launch {
@@ -484,7 +512,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         _offlineDownloadProgress.value = 0f
         viewModelScope.launch {
             try {
-                val snapshot = buildOfflineSnapshot(startState) { progress ->
+                val snapshot = buildOfflineSnapshot(startState, _offlineDownloadQuality.value) { progress ->
                     _offlineDownloadProgress.value = progress
                 }
                 val item = DownloadedCompound(
@@ -570,10 +598,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun ChemUiState.withConventionalFormula(): ChemUiState {
+        val originalFormula = runCatching { rawFormula }.getOrDefault("").orEmpty()
         val conventional = formatConventionalFormula(formula)
-        if (conventional == formula) return this
+        val safeRawFormula = originalFormula.ifBlank { formula }
+        if (conventional == formula && safeRawFormula == originalFormula) return this
         return copy(
             formula = conventional,
+            rawFormula = safeRawFormula,
             empiricalFormula = getEmpiricalFormula(conventional),
             elementalData = calcElementalData(conventional)
         )
@@ -622,6 +653,57 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         saveDescSource(source)
     }
 
+    fun setDefaultStructureView(view: DefaultStructureView) {
+        _defaultStructureView.value = view
+        prefs.edit().putString("default_structure_view", view.name).apply()
+        viewModelScope.launch { settingsStore.setDefaultStructureView(view) }
+        DebugLog.d("ChemSearch", "Default structure view → ${view.name}")
+    }
+
+    fun setOfflineDownloadQuality(quality: OfflineDownloadQuality) {
+        _offlineDownloadQuality.value = quality
+        prefs.edit().putString("offline_download_quality", quality.name).apply()
+        viewModelScope.launch { settingsStore.setOfflineDownloadQuality(quality) }
+        DebugLog.d("ChemSearch", "Offline download quality → ${quality.name}")
+    }
+
+    fun setFormulaDisplayStyle(style: FormulaDisplayStyle) {
+        _formulaDisplayStyle.value = style
+        prefs.edit().putString("formula_display_style", style.name).apply()
+        viewModelScope.launch { settingsStore.setFormulaDisplayStyle(style) }
+        DebugLog.d("ChemSearch", "Formula display style → ${style.name}")
+    }
+
+    fun setCacheSizeLimit(limit: CacheSizeLimit) {
+        _cacheSizeLimit.value = limit
+        prefs.edit().putString("cache_size_limit", limit.name).apply()
+        viewModelScope.launch { settingsStore.setCacheSizeLimit(limit) }
+        refreshCacheSizeAsync()
+        DebugLog.d("ChemSearch", "Cache size limit → ${limit.name}")
+    }
+
+    fun setCacheRetention(retention: CacheRetention) {
+        _cacheRetention.value = retention
+        prefs.edit().putString("cache_retention", retention.name).apply()
+        viewModelScope.launch { settingsStore.setCacheRetention(retention) }
+        refreshCacheSizeAsync()
+        DebugLog.d("ChemSearch", "Cache retention → ${retention.name}")
+    }
+
+    fun setReduceMotion(enabled: Boolean) {
+        _reduceMotion.value = enabled
+        prefs.edit().putBoolean("reduce_motion", enabled).apply()
+        viewModelScope.launch { settingsStore.setReduceMotion(enabled) }
+        DebugLog.d("ChemSearch", "Reduce motion → ${if (enabled) "on" else "off"}")
+    }
+
+    fun setHighContrastOutlines(enabled: Boolean) {
+        _highContrastOutlines.value = enabled
+        prefs.edit().putBoolean("high_contrast_outlines", enabled).apply()
+        viewModelScope.launch { settingsStore.setHighContrastOutlines(enabled) }
+        DebugLog.d("ChemSearch", "High contrast outlines → ${if (enabled) "on" else "off"}")
+    }
+
     fun setAiProvider(provider: AiProvider) {
         _uiState.update { it.copy(aiProvider = provider) }
         prefs.edit().putString("ai_provider", provider.name).apply()
@@ -638,6 +720,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         _compactMode.value = prefs.getBoolean("compact_mode", false)
         _oledDarkTheme.value = prefs.getBoolean("oled_dark_theme", false)
         _defaultDescSource.value = getSavedDescSource()
+        _defaultStructureView.value = getSavedDefaultStructureView()
+        _offlineDownloadQuality.value = getSavedOfflineDownloadQuality()
+        _formulaDisplayStyle.value = getSavedFormulaDisplayStyle()
+        _cacheSizeLimit.value = getSavedCacheSizeLimit()
+        _cacheRetention.value = getSavedCacheRetention()
+        _reduceMotion.value = prefs.getBoolean("reduce_motion", false)
+        _highContrastOutlines.value = prefs.getBoolean("high_contrast_outlines", false)
         _cacheDirPath.value = prefs.getString("cache_dir", "") ?: ""
         refreshCacheSizeAsync()
         refreshAiKeyStatus()
@@ -703,7 +792,10 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun refreshCacheSizeAsync() {
         viewModelScope.launch {
-            _cacheSizeBytes.value = withContext(Dispatchers.IO) { computeCacheSizeBlocking() }
+            _cacheSizeBytes.value = withContext(Dispatchers.IO) {
+                enforceCachePolicyBlocking()
+                computeCacheSizeBlocking()
+            }
         }
     }
 
@@ -795,6 +887,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             val (fileSizeKb, cacheBytes) = withContext(Dispatchers.IO) {
                 val file = java.io.File(cacheDir, "$cid.json")
                 file.writeText(gson.toJson(state))
+                enforceCachePolicyBlocking()
                 (file.length() / 1024L) to computeCacheSizeBlocking()
             }
             _cacheSizeBytes.value = cacheBytes
@@ -802,6 +895,36 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         } catch (e: Exception) {
             DebugLog.e("ChemSearch", "Cache write failed: ${e.message}")
         }
+    }
+
+    private fun enforceCachePolicyBlocking() {
+        val dir = cacheDir
+        val files = dir.listFiles()
+            ?.filter { it.isFile && it.extension == "json" }
+            .orEmpty()
+        if (files.isEmpty()) return
+
+        val retentionCutoff = _cacheRetention.value.maxAgeMillis?.let { System.currentTimeMillis() - it }
+        val retainedFiles = if (retentionCutoff != null) {
+            files.filter { file ->
+                val expired = file.lastModified() in 1 until retentionCutoff
+                if (expired) file.delete()
+                !expired
+            }
+        } else {
+            files
+        }
+
+        val maxBytes = _cacheSizeLimit.value.maxBytes ?: return
+        var totalBytes = retainedFiles.sumOf { it.length() }
+        if (totalBytes <= maxBytes) return
+        retainedFiles
+            .sortedBy { it.lastModified().takeIf { modified -> modified > 0L } ?: Long.MAX_VALUE }
+            .forEach { file ->
+                if (totalBytes <= maxBytes) return@forEach
+                val length = file.length()
+                if (file.delete()) totalBytes -= length
+            }
     }
 
     private suspend fun fetchSynonyms(cid: Long): List<String> =
@@ -894,10 +1017,11 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                         sdfMessage = null,
                         offline2dPngBase64 = null,
                         isOfflineDownload = false,
-                        activeTab = MolTab.TWO_D,
+                        activeTab = defaultMolTab(),
                         isLoadingSynonyms = false
                     )
                 }
+                if (_uiState.value.activeTab == MolTab.THREE_D) fetchSdfData()
                 saveToHistory(cachedByName.name)
                 cachedByName.cid?.let { loadSynonymsForCurrentCompound(it) }
                 when (savedSource) {
@@ -932,10 +1056,11 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                             sdfMessage = null,
                             offline2dPngBase64 = null,
                             isOfflineDownload = false,
-                            activeTab = MolTab.TWO_D,
+                            activeTab = defaultMolTab(),
                             isLoadingSynonyms = false
                         )
                     }
+                    if (_uiState.value.activeTab == MolTab.THREE_D) fetchSdfData()
                     backfillStructureMetadataIfMissing(cached, cid)
                     saveToHistory(cached.name)
                     loadSynonymsForCurrentCompound(cid)
@@ -963,7 +1088,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 val compoundName = props.title?.takeIf { it.isNotBlank() }
                     ?: props.iupacName?.takeIf { it.isNotBlank() }
                     ?: q
-                val formula = formatConventionalFormula(props.molecularFormula ?: "")
+                val rawFormula = props.molecularFormula ?: ""
+                val formula = formatConventionalFormula(rawFormula)
 
                 val pubDesc: String? = descItem?.description?.let { el ->
                     when {
@@ -985,6 +1111,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     cid = cid,
                     name = compoundName.replaceFirstChar { c -> c.uppercase() },
                     formula = formula,
+                    rawFormula = rawFormula,
                     empiricalFormula = getEmpiricalFormula(formula),
                     weight = props.molecularWeight ?: "",
                     charge = props.charge ?: 0,
@@ -1004,12 +1131,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     descSource = savedSource,
                     elementalData = calcElementalData(formula),
                     history = recentQueries(),
-                    activeTab = MolTab.TWO_D,
+                    activeTab = defaultMolTab(),
                     aiProvider = _uiState.value.aiProvider,
                     isCached = false,
                     isLoadingSynonyms = true
                 )
                 _uiState.update { newState }
+                if (newState.activeTab == MolTab.THREE_D) fetchSdfData()
                 writeCache(newState)
                 loadSynonymsForCurrentCompound(cid, force = true)
 
@@ -1142,11 +1270,21 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun setTab(tab: MolTab) {
+        prefs.edit().putString("last_structure_view", tab.name).apply()
         _uiState.update { it.copy(activeTab = tab) }
         if (tab == MolTab.THREE_D && _uiState.value.sdfData == null) {
             fetchSdfData()
         }
     }
+
+    private fun defaultMolTab(): MolTab =
+        when (_defaultStructureView.value) {
+            DefaultStructureView.TWO_D -> MolTab.TWO_D
+            DefaultStructureView.THREE_D -> MolTab.THREE_D
+            DefaultStructureView.LAST_USED -> MolTab.entries.firstOrNull {
+                it.name == prefs.getString("last_structure_view", null)
+            } ?: MolTab.TWO_D
+        }
 
     private fun fetchSdfData() {
         val cid = _uiState.value.cid ?: return
@@ -1235,23 +1373,43 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
     private suspend fun buildOfflineSnapshot(
         startState: ChemUiState,
+        quality: OfflineDownloadQuality,
         onProgress: (Float) -> Unit = {}
     ): ChemUiState {
         val cid = startState.cid ?: return startState
         val latest = _uiState.value.takeIf { it.cid == cid } ?: startState
         onProgress(0.08f)
-        val synonyms = latest.synonyms.takeIf { it.size >= 10 } ?: fetchSynonyms(cid)
+        val synonyms = when (quality) {
+            OfflineDownloadQuality.COMPLETE -> latest.synonyms.takeIf { it.size >= 10 } ?: fetchSynonyms(cid)
+            else -> latest.synonyms
+        }
         onProgress(0.22f)
         val casRegex = Regex("""^\d{1,7}-\d{2}-\d$""")
-        val pubDescription = latest.pubDescription ?: fetchPubChemDescription(cid)
+        val pubDescription = if (quality == OfflineDownloadQuality.COMPLETE) {
+            latest.pubDescription ?: fetchPubChemDescription(cid)
+        } else {
+            latest.pubDescription
+        }
         onProgress(0.36f)
-        val wikiDescription = latest.wikiDescription ?: fetchWikiDescriptionBlocking(latest.name)
+        val wikiDescription = if (quality == OfflineDownloadQuality.COMPLETE) {
+            latest.wikiDescription ?: fetchWikiDescriptionBlocking(latest.name)
+        } else {
+            latest.wikiDescription
+        }
         onProgress(0.50f)
-        val ghsData = latest.ghsData ?: fetchGhsDataBlocking(cid)
+        val ghsData = if (quality == OfflineDownloadQuality.COMPLETE) {
+            latest.ghsData ?: fetchGhsDataBlocking(cid)
+        } else {
+            latest.ghsData
+        }
         onProgress(0.64f)
-        val sdfResult = fetchSdfForOffline(latest)
+        val sdfResult = if (quality != OfflineDownloadQuality.BASIC) fetchSdfForOffline(latest) else null
         onProgress(0.82f)
-        val pngBase64 = latest.offline2dPngBase64 ?: fetch2dStructurePngBase64(cid)
+        val pngBase64 = if (quality != OfflineDownloadQuality.BASIC) {
+            latest.offline2dPngBase64 ?: fetch2dStructurePngBase64(cid)
+        } else {
+            latest.offline2dPngBase64
+        }
         onProgress(0.94f)
 
         return latest.copy(
@@ -1515,6 +1673,43 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         AppColorScheme.entries.firstOrNull { it.name == prefs.getString("color_scheme", null) }
             ?: AppColorScheme.BLUE
 
+    private fun getSavedDefaultStructureView(): DefaultStructureView =
+        DefaultStructureView.entries.firstOrNull { it.name == prefs.getString("default_structure_view", null) }
+            ?: DefaultStructureView.TWO_D
+
+    private fun getSavedOfflineDownloadQuality(): OfflineDownloadQuality =
+        OfflineDownloadQuality.entries.firstOrNull { it.name == prefs.getString("offline_download_quality", null) }
+            ?: OfflineDownloadQuality.COMPLETE
+
+    private fun getSavedFormulaDisplayStyle(): FormulaDisplayStyle =
+        FormulaDisplayStyle.entries.firstOrNull {
+            it.name == normalizeSavedFormulaDisplayStyleName(prefs.getString("formula_display_style", null))
+        }
+            ?: FormulaDisplayStyle.CONVENTIONAL
+
+    private fun normalizeSavedFormulaDisplayStyleName(name: String?): String? =
+        when (name) {
+            "PUBCHEM" -> FormulaDisplayStyle.HILL.name
+            "CHARGE_FOCUSED" -> FormulaDisplayStyle.CONVENTIONAL.name
+            else -> name
+        }
+
+    private fun getSavedCacheSizeLimit(): CacheSizeLimit =
+        CacheSizeLimit.entries.firstOrNull {
+            it.name == normalizeSavedCacheSizeLimitName(prefs.getString("cache_size_limit", null))
+        }
+            ?: CacheSizeLimit.UNLIMITED
+
+    private fun normalizeSavedCacheSizeLimitName(name: String?): String? =
+        when (name) {
+            "MB_250" -> CacheSizeLimit.UNLIMITED.name
+            else -> name
+        }
+
+    private fun getSavedCacheRetention(): CacheRetention =
+        CacheRetention.entries.firstOrNull { it.name == prefs.getString("cache_retention", null) }
+            ?: CacheRetention.MANUAL
+
     private fun saveDescSource(source: DescSource) {
         prefs.edit().putString("desc_source", source.name).apply()
         viewModelScope.launch { settingsStore.setDescSource(source) }
@@ -1668,7 +1863,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     cached.copy(
                         isLoading = false, hasResult = true,
                         history = recentQueries(), descSource = savedSource,
-                        sdfData = null, sdfSource = null, sdfMessage = null, activeTab = MolTab.TWO_D,
+                        sdfData = null, sdfSource = null, sdfMessage = null, activeTab = defaultMolTab(),
                         isomerMode = false, isomers = emptyList(),
                         isCached = true,
                         isOfflineDownload = false,
@@ -1676,6 +1871,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                         isLoadingSynonyms = false
                     )
                 }
+                if (_uiState.value.activeTab == MolTab.THREE_D) fetchSdfData()
                 backfillStructureMetadataIfMissing(cached, cid)
                 _query.value = cached.name
                 saveToHistory(cached.name)
@@ -1703,7 +1899,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 val compoundName = props.title?.takeIf { it.isNotBlank() }
                     ?: props.iupacName?.takeIf { it.isNotBlank() }
                     ?: "CID $cid"
-                val formula = formatConventionalFormula(props.molecularFormula ?: "")
+                val rawFormula = props.molecularFormula ?: ""
+                val formula = formatConventionalFormula(rawFormula)
 
                 val pubDesc: String? = descItem?.description?.let { el ->
                     when {
@@ -1724,6 +1921,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     cid = cid,
                     name = compoundName.replaceFirstChar { c -> c.uppercase() },
                     formula = formula,
+                    rawFormula = rawFormula,
                     empiricalFormula = getEmpiricalFormula(formula),
                     weight = props.molecularWeight ?: "",
                     charge = props.charge ?: 0,
@@ -1742,7 +1940,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     descSource = savedSource,
                     elementalData = calcElementalData(formula),
                     history = recentQueries(),
-                    activeTab = MolTab.TWO_D,
+                    activeTab = defaultMolTab(),
                     aiProvider = _uiState.value.aiProvider,
                     isomerMode = false,
                     isomers = emptyList(),
@@ -1750,6 +1948,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     isLoadingSynonyms = true
                 )
                 _uiState.update { newState }
+                if (newState.activeTab == MolTab.THREE_D) fetchSdfData()
                 _query.value = compoundName
                 writeCache(newState)
                 loadSynonymsForCurrentCompound(cid, force = true)

@@ -57,6 +57,7 @@ import org.json.JSONObject
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlin.math.roundToInt
 
 private val SECRET_PREF_KEYS = AiProvider.entries.map { it.keyPref }.toSet()
 private val SENSITIVE_PREF_TOKENS = listOf("key", "token", "secret")
@@ -68,19 +69,229 @@ internal fun amoledModeTitle(): String = "AMOLED Mode"
 internal fun amoledModeSubtitle(isDark: Boolean): String =
     if (isDark) "True-black background for every color scheme" else "Turn on dark mode to use AMOLED Mode"
 
+internal fun defaultStructureViewLabel(view: DefaultStructureView): String =
+    when (view) {
+        DefaultStructureView.TWO_D -> "2D"
+        DefaultStructureView.THREE_D -> "3D"
+        DefaultStructureView.LAST_USED -> "Last used"
+    }
+
+internal fun offlineDownloadQualityLabel(quality: OfflineDownloadQuality): String =
+    when (quality) {
+        OfflineDownloadQuality.BASIC -> "Basic"
+        OfflineDownloadQuality.STRUCTURES -> "Structures"
+        OfflineDownloadQuality.COMPLETE -> "Complete"
+    }
+
+internal fun formulaDisplayStyleLabel(style: FormulaDisplayStyle): String =
+    when (style) {
+        FormulaDisplayStyle.CONVENTIONAL -> "Conventional"
+        FormulaDisplayStyle.HILL -> "Hill"
+    }
+
+internal fun descSourceLabel(source: DescSource): String =
+    when (source) {
+        DescSource.PUBCHEM -> "PubChem"
+        DescSource.WIKI -> "Wikipedia"
+        DescSource.AI -> "AI"
+    }
+
+internal fun cacheSizeLimitLabel(limit: CacheSizeLimit): String =
+    when (limit) {
+        CacheSizeLimit.MB_10 -> "10 MB"
+        CacheSizeLimit.MB_50 -> "50 MB"
+        CacheSizeLimit.MB_100 -> "100 MB"
+        CacheSizeLimit.UNLIMITED -> "Unlimited"
+    }
+
+internal fun cacheRetentionLabel(retention: CacheRetention): String =
+    when (retention) {
+        CacheRetention.AUTO_CLEAR_1_DAY -> "Daily"
+        CacheRetention.AUTO_CLEAR_7_DAYS -> "Weekly"
+        CacheRetention.AUTO_CLEAR_30_DAYS -> "Monthly"
+        CacheRetention.MANUAL -> "Manual"
+    }
+
+@Composable
+private fun SettingsDropdownMenu(
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest,
+        shape = RoundedCornerShape(14.dp),
+        containerColor = MaterialTheme.colorScheme.surface,
+        tonalElevation = 0.dp,
+        shadowElevation = 6.dp,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.18f)),
+        content = content
+    )
+}
+
+@Composable
+private fun <T> SettingsDropdownSelector(
+    title: String,
+    subtitle: String? = null,
+    selected: T,
+    options: List<T>,
+    labelFor: (T) -> String,
+    onSelect: (T) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            Text(
+                title,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            if (!subtitle.isNullOrBlank()) {
+                Text(
+                    subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+                )
+            }
+        }
+        Box {
+            Surface(
+                shape = RoundedCornerShape(10.dp),
+                color = MaterialTheme.colorScheme.surface,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f)),
+                modifier = Modifier
+                    .widthIn(min = 104.dp, max = 156.dp)
+                    .clickable { expanded = true }
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Text(
+                        labelFor(selected),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.primary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f, fill = false)
+                    )
+                    Icon(
+                        Icons.Default.ArrowDropDown,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurface.copy(0.48f),
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+            }
+            SettingsDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                options.forEach { option ->
+                    val isSelected = option == selected
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                labelFor(option),
+                                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                            )
+                        },
+                        trailingIcon = {
+                            if (isSelected) Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
+                        },
+                        onClick = {
+                            expanded = false
+                            onSelect(option)
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun <T> SettingsSliderSelector(
+    title: String,
+    subtitle: String? = null,
+    selected: T,
+    options: List<T>,
+    labelFor: (T) -> String,
+    onSelect: (T) -> Unit
+) {
+    val selectedIndex = options.indexOf(selected).coerceAtLeast(0)
+    var sliderValue by remember(selectedIndex, options.size) { mutableFloatStateOf(selectedIndex.toFloat()) }
+
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Text(
+            title,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+        )
+        if (!subtitle.isNullOrBlank()) {
+            Text(
+                subtitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+            )
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            options.forEachIndexed { index, option ->
+                Text(
+                    labelFor(option),
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = if (index == selectedIndex) FontWeight.Bold else FontWeight.Medium,
+                    color = if (index == selectedIndex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.45f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+        Slider(
+            value = sliderValue,
+            onValueChange = { value ->
+                val index = value.roundToInt().coerceIn(0, options.lastIndex)
+                sliderValue = index.toFloat()
+                if (options[index] != selected) onSelect(options[index])
+            },
+            valueRange = 0f..options.lastIndex.toFloat(),
+            steps = (options.size - 2).coerceAtLeast(0),
+            colors = SliderDefaults.colors(
+                thumbColor = MaterialTheme.colorScheme.primary,
+                activeTrackColor = MaterialTheme.colorScheme.primary,
+                inactiveTrackColor = MaterialTheme.colorScheme.outline.copy(0.28f),
+                activeTickColor = MaterialTheme.colorScheme.onPrimary.copy(0.72f),
+                inactiveTickColor = MaterialTheme.colorScheme.onSurface.copy(0.32f)
+            )
+        )
+    }
+}
+
 private fun updateDownloadPercent(progress: Float?): Int =
     ((progress ?: 0f).coerceIn(0f, 1f) * 100f).toInt().coerceIn(0, 100)
 
 internal fun updateDownloadActionLabel(status: UpdateStatus): String =
     when {
-        status.isDownloadingUpdate -> "${updateDownloadPercent(status.updateDownloadProgress)}%"
+        status.isDownloadingUpdate -> ""
         status.downloadedUpdateApkPath != null -> "Install"
         else -> "Download"
     }
 
 internal fun updateDownloadSubtitle(status: UpdateStatus): String {
     if (status.isDownloadingUpdate) {
-        return "Downloading update… ${updateDownloadPercent(status.updateDownloadProgress)}%"
+        return "Downloading update (${updateDownloadPercent(status.updateDownloadProgress)}%)"
     }
     if (status.downloadedUpdateApkPath != null) {
         return "Download complete. Tap Install if the prompt closed."
@@ -213,7 +424,7 @@ private fun AiProviderSettings(
                     Icon(Icons.Default.ArrowDropDown, contentDescription = null, tint = MaterialTheme.colorScheme.onSurface.copy(0.55f))
                 }
             }
-            DropdownMenu(
+            SettingsDropdownMenu(
                 expanded = providerExpanded,
                 onDismissRequest = { providerExpanded = false }
             ) {
@@ -287,7 +498,7 @@ private fun AiProviderSettings(
                     Icon(Icons.Default.ArrowDropDown, contentDescription = null, tint = MaterialTheme.colorScheme.onSurface.copy(0.55f))
                 }
             }
-            DropdownMenu(
+            SettingsDropdownMenu(
                 expanded = modelExpanded,
                 onDismissRequest = { modelExpanded = false }
             ) {
@@ -368,6 +579,10 @@ fun SettingsSheet(
     compactMode: Boolean,
     oledDarkTheme: Boolean,
     defaultDescSource: DescSource,
+    defaultStructureView: DefaultStructureView = DefaultStructureView.TWO_D,
+    formulaDisplayStyle: FormulaDisplayStyle = FormulaDisplayStyle.CONVENTIONAL,
+    reduceMotion: Boolean = false,
+    highContrastOutlines: Boolean = false,
     aiProvider: AiProvider,
     aiKeyStatus: Map<AiProvider, Boolean>,
     aiModelCatalogs: Map<AiProvider, AiModelCatalog>,
@@ -379,6 +594,10 @@ fun SettingsSheet(
     onToggleCompactMode: () -> Unit,
     onToggleOledDarkTheme: () -> Unit,
     onSetDefaultDesc: (DescSource) -> Unit,
+    onSetDefaultStructureView: (DefaultStructureView) -> Unit = {},
+    onSetFormulaDisplayStyle: (FormulaDisplayStyle) -> Unit = {},
+    onToggleReduceMotion: () -> Unit = {},
+    onToggleHighContrastOutlines: () -> Unit = {},
     onSetAiProvider: (AiProvider) -> Unit,
     onSetAiModel: (AiProvider, String) -> Unit,
     onRefreshAiModels: (AiProvider) -> Unit,
@@ -448,11 +667,41 @@ fun SettingsSheet(
                 onToggle = onToggleAutoSuggest
             )
             SettingsToggleRow(
-                icon = Icons.Default.Tune,
+                icon = Icons.Default.GridView,
                 title = "Compact mode",
                 subtitle = "Show more content per screen",
                 checked = compactMode,
                 onToggle = onToggleCompactMode
+            )
+            SettingsToggleRow(
+                icon = Icons.Default.VisibilityOff,
+                title = "Reduce motion",
+                subtitle = "Use calmer transitions and resizing",
+                checked = reduceMotion,
+                onToggle = onToggleReduceMotion
+            )
+            SettingsToggleRow(
+                icon = Icons.Default.Visibility,
+                title = "High contrast outlines",
+                subtitle = "Make cards and controls easier to separate",
+                checked = highContrastOutlines,
+                onToggle = onToggleHighContrastOutlines
+            )
+            SettingsDropdownSelector(
+                title = "Default structure view",
+                subtitle = "Choose which structure tab opens first after search",
+                selected = defaultStructureView,
+                options = DefaultStructureView.entries,
+                labelFor = ::defaultStructureViewLabel,
+                onSelect = onSetDefaultStructureView
+            )
+            SettingsDropdownSelector(
+                title = "Formula display",
+                subtitle = "Conventional uses common element order; Hill keeps PubChem/Hill order",
+                selected = formulaDisplayStyle,
+                options = FormulaDisplayStyle.entries,
+                labelFor = ::formulaDisplayStyleLabel,
+                onSelect = onSetFormulaDisplayStyle
             )
 
             Spacer(Modifier.height(4.dp))
@@ -463,11 +712,14 @@ fun SettingsSheet(
                 color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
                 modifier = Modifier.padding(bottom = 8.dp)
             )
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                listOf(DescSource.PUBCHEM to "PubChem", DescSource.WIKI to "Wikipedia", DescSource.AI to "AI").forEach { (src, label) ->
-                    SourceBtn(label = label, active = defaultDescSource == src) { onSetDefaultDesc(src) }
-                }
-            }
+            SettingsDropdownSelector(
+                title = "Source",
+                subtitle = "Choose which description type appears first",
+                selected = defaultDescSource,
+                options = DescSource.entries,
+                labelFor = ::descSourceLabel,
+                onSelect = onSetDefaultDesc
+            )
 
             Spacer(Modifier.height(4.dp))
             SettingsSectionHeader("AI Provider & Keys")
@@ -764,10 +1016,12 @@ fun SettingsActionRow(
                         trackColor = MaterialTheme.colorScheme.outline.copy(0.18f)
                     )
                 }
-                AnimatedActionLabel(
-                    text = actionLabel,
-                    color = if (enabled) actionColor else MaterialTheme.colorScheme.onSurface.copy(0.35f)
-                )
+                if (actionLabel.isNotBlank()) {
+                    AnimatedActionLabel(
+                        text = actionLabel,
+                        color = if (enabled) actionColor else MaterialTheme.colorScheme.onSurface.copy(0.35f)
+                    )
+                }
             }
         }
     }
@@ -2706,6 +2960,13 @@ fun SettingsInline(
     compactMode: Boolean,
     oledDarkTheme: Boolean,
     defaultDescSource: DescSource,
+    defaultStructureView: DefaultStructureView = DefaultStructureView.TWO_D,
+    offlineDownloadQuality: OfflineDownloadQuality = OfflineDownloadQuality.COMPLETE,
+    formulaDisplayStyle: FormulaDisplayStyle = FormulaDisplayStyle.CONVENTIONAL,
+    cacheSizeLimit: CacheSizeLimit = CacheSizeLimit.UNLIMITED,
+    cacheRetention: CacheRetention = CacheRetention.MANUAL,
+    reduceMotion: Boolean = false,
+    highContrastOutlines: Boolean = false,
     aiProvider: AiProvider,
     aiKeyStatus: Map<AiProvider, Boolean>,
     aiModelCatalogs: Map<AiProvider, AiModelCatalog>,
@@ -2717,6 +2978,13 @@ fun SettingsInline(
     onToggleCompactMode: () -> Unit,
     onToggleOledDarkTheme: () -> Unit,
     onSetDefaultDesc: (DescSource) -> Unit,
+    onSetDefaultStructureView: (DefaultStructureView) -> Unit = {},
+    onSetOfflineDownloadQuality: (OfflineDownloadQuality) -> Unit = {},
+    onSetFormulaDisplayStyle: (FormulaDisplayStyle) -> Unit = {},
+    onSetCacheSizeLimit: (CacheSizeLimit) -> Unit = {},
+    onSetCacheRetention: (CacheRetention) -> Unit = {},
+    onToggleReduceMotion: () -> Unit = {},
+    onToggleHighContrastOutlines: () -> Unit = {},
     onSetAiProvider: (AiProvider) -> Unit,
     onSetAiModel: (AiProvider, String) -> Unit,
     onRefreshAiModels: (AiProvider) -> Unit,
@@ -2889,7 +3157,7 @@ fun SettingsInline(
                             Icon(Icons.Default.ArrowDropDown, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.4f), modifier = Modifier.size(16.dp))
                         }
                     }
-                    DropdownMenu(
+                    SettingsDropdownMenu(
                         expanded = themeDropdownExpanded,
                         onDismissRequest = { themeDropdownExpanded = false }
                     ) {
@@ -2947,23 +3215,55 @@ fun SettingsInline(
             )
             SettingsGroupDivider()
             SettingsToggleRow(
-                icon = Icons.Default.Tune,
+                icon = Icons.Default.GridView,
                 title = "Compact mode",
                 subtitle = "Show more content per screen",
                 checked = compactMode,
                 onToggle = onToggleCompactMode
             )
             SettingsGroupDivider()
-            Text(
-                "Default description source",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+            SettingsToggleRow(
+                icon = Icons.Default.VisibilityOff,
+                title = "Reduce motion",
+                subtitle = "Use calmer transitions and resizing",
+                checked = reduceMotion,
+                onToggle = onToggleReduceMotion
             )
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                listOf(DescSource.PUBCHEM to "PubChem", DescSource.WIKI to "Wikipedia", DescSource.AI to "AI").forEach { (src, label) ->
-                    SourceBtn(label = label, active = defaultDescSource == src) { onSetDefaultDesc(src) }
-                }
-            }
+            SettingsGroupDivider()
+            SettingsToggleRow(
+                icon = Icons.Default.Visibility,
+                title = "High contrast outlines",
+                subtitle = "Make cards and controls easier to separate",
+                checked = highContrastOutlines,
+                onToggle = onToggleHighContrastOutlines
+            )
+            SettingsGroupDivider()
+            SettingsDropdownSelector(
+                title = "Default structure view",
+                subtitle = "Choose which structure tab opens first after search",
+                selected = defaultStructureView,
+                options = DefaultStructureView.entries,
+                labelFor = ::defaultStructureViewLabel,
+                onSelect = onSetDefaultStructureView
+            )
+            SettingsGroupDivider()
+            SettingsDropdownSelector(
+                title = "Formula display",
+                subtitle = "Conventional uses common element order; Hill keeps PubChem/Hill order",
+                selected = formulaDisplayStyle,
+                options = FormulaDisplayStyle.entries,
+                labelFor = ::formulaDisplayStyleLabel,
+                onSelect = onSetFormulaDisplayStyle
+            )
+            SettingsGroupDivider()
+            SettingsDropdownSelector(
+                title = "Default description source",
+                subtitle = "Choose which description type appears first",
+                selected = defaultDescSource,
+                options = DescSource.entries,
+                labelFor = ::descSourceLabel,
+                onSelect = onSetDefaultDesc
+            )
         }
 
         SettingsGroupCard(
@@ -3014,6 +3314,33 @@ fun SettingsInline(
                     cacheDirInput = cacheDir
                     showCacheDirDialog = true
                 }
+            )
+            SettingsGroupDivider()
+            SettingsDropdownSelector(
+                title = "Offline download quality",
+                subtitle = "Pick how much extra data ChemSearch saves for offline viewing",
+                selected = offlineDownloadQuality,
+                options = OfflineDownloadQuality.entries,
+                labelFor = ::offlineDownloadQualityLabel,
+                onSelect = onSetOfflineDownloadQuality
+            )
+            SettingsGroupDivider()
+            SettingsSliderSelector(
+                title = "Cache size limit",
+                subtitle = "Limit temporary compound cache storage",
+                selected = cacheSizeLimit,
+                options = CacheSizeLimit.entries,
+                labelFor = ::cacheSizeLimitLabel,
+                onSelect = onSetCacheSizeLimit
+            )
+            SettingsGroupDivider()
+            SettingsDropdownSelector(
+                title = "Auto-clear cache",
+                subtitle = "Remove old temporary cache files on this schedule",
+                selected = cacheRetention,
+                options = CacheRetention.entries,
+                labelFor = ::cacheRetentionLabel,
+                onSelect = onSetCacheRetention
             )
             SettingsGroupDivider()
             SettingsActionRow(

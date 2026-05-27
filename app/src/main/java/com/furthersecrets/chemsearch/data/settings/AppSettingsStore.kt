@@ -8,7 +8,12 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.furthersecrets.chemsearch.data.AppColorScheme
+import com.furthersecrets.chemsearch.data.CacheRetention
+import com.furthersecrets.chemsearch.data.CacheSizeLimit
 import com.furthersecrets.chemsearch.data.DescSource
+import com.furthersecrets.chemsearch.data.DefaultStructureView
+import com.furthersecrets.chemsearch.data.FormulaDisplayStyle
+import com.furthersecrets.chemsearch.data.OfflineDownloadQuality
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -25,7 +30,14 @@ data class AppSettingsSnapshot(
     val descSource: DescSource,
     val cacheDir: String,
     val updateNotificationsEnabled: Boolean,
-    val welcomeSkipped: Boolean
+    val welcomeSkipped: Boolean,
+    val defaultStructureView: DefaultStructureView,
+    val offlineDownloadQuality: OfflineDownloadQuality,
+    val formulaDisplayStyle: FormulaDisplayStyle,
+    val cacheSizeLimit: CacheSizeLimit,
+    val cacheRetention: CacheRetention,
+    val reduceMotion: Boolean,
+    val highContrastOutlines: Boolean
 ) {
     companion object {
         fun fromRawValues(
@@ -37,7 +49,14 @@ data class AppSettingsSnapshot(
             descSourceName: String?,
             cacheDir: String?,
             updateNotificationsEnabled: Boolean?,
-            welcomeSkipped: Boolean?
+            welcomeSkipped: Boolean?,
+            defaultStructureViewName: String?,
+            offlineDownloadQualityName: String?,
+            formulaDisplayStyleName: String?,
+            cacheSizeLimitName: String?,
+            cacheRetentionName: String?,
+            reduceMotion: Boolean?,
+            highContrastOutlines: Boolean?
         ): AppSettingsSnapshot =
             AppSettingsSnapshot(
                 isDarkTheme = isDarkTheme ?: false,
@@ -48,10 +67,37 @@ data class AppSettingsSnapshot(
                 descSource = DescSource.entries.firstOrNull { it.name == descSourceName } ?: DescSource.PUBCHEM,
                 cacheDir = cacheDir ?: "",
                 updateNotificationsEnabled = updateNotificationsEnabled ?: true,
-                welcomeSkipped = welcomeSkipped ?: false
+                welcomeSkipped = welcomeSkipped ?: false,
+                defaultStructureView = DefaultStructureView.entries.firstOrNull { it.name == defaultStructureViewName }
+                    ?: DefaultStructureView.TWO_D,
+                offlineDownloadQuality = OfflineDownloadQuality.entries.firstOrNull { it.name == offlineDownloadQualityName }
+                    ?: OfflineDownloadQuality.COMPLETE,
+                formulaDisplayStyle = FormulaDisplayStyle.entries.firstOrNull {
+                    it.name == normalizeFormulaDisplayStyleName(formulaDisplayStyleName)
+                }
+                    ?: FormulaDisplayStyle.CONVENTIONAL,
+                cacheSizeLimit = CacheSizeLimit.entries.firstOrNull { it.name == normalizeCacheSizeLimitName(cacheSizeLimitName) }
+                    ?: CacheSizeLimit.UNLIMITED,
+                cacheRetention = CacheRetention.entries.firstOrNull { it.name == cacheRetentionName }
+                    ?: CacheRetention.MANUAL,
+                reduceMotion = reduceMotion ?: false,
+                highContrastOutlines = highContrastOutlines ?: false
             )
     }
 }
+
+private fun normalizeFormulaDisplayStyleName(name: String?): String? =
+    when (name) {
+        "PUBCHEM" -> FormulaDisplayStyle.HILL.name
+        "CHARGE_FOCUSED" -> FormulaDisplayStyle.CONVENTIONAL.name
+        else -> name
+    }
+
+private fun normalizeCacheSizeLimitName(name: String?): String? =
+    when (name) {
+        "MB_250" -> CacheSizeLimit.UNLIMITED.name
+        else -> name
+    }
 
 class AppSettingsStore(private val context: Context) {
     private val dataStore = context.chemSearchSettingsDataStore
@@ -70,7 +116,14 @@ class AppSettingsStore(private val context: Context) {
                 descSourceName = preferences[Keys.DESC_SOURCE],
                 cacheDir = preferences[Keys.CACHE_DIR],
                 updateNotificationsEnabled = preferences[Keys.UPDATE_NOTIFICATIONS],
-                welcomeSkipped = preferences[Keys.WELCOME_SKIPPED]
+                welcomeSkipped = preferences[Keys.WELCOME_SKIPPED],
+                defaultStructureViewName = preferences[Keys.DEFAULT_STRUCTURE_VIEW],
+                offlineDownloadQualityName = preferences[Keys.OFFLINE_DOWNLOAD_QUALITY],
+                formulaDisplayStyleName = preferences[Keys.FORMULA_DISPLAY_STYLE],
+                cacheSizeLimitName = preferences[Keys.CACHE_SIZE_LIMIT],
+                cacheRetentionName = preferences[Keys.CACHE_RETENTION],
+                reduceMotion = preferences[Keys.REDUCE_MOTION],
+                highContrastOutlines = preferences[Keys.HIGH_CONTRAST_OUTLINES]
             )
         }
 
@@ -86,6 +139,18 @@ class AppSettingsStore(private val context: Context) {
             preferences[Keys.CACHE_DIR] = prefs.getString("cache_dir", null) ?: ""
             preferences[Keys.UPDATE_NOTIFICATIONS] = prefs.getBoolean("update_notifications", true)
             preferences[Keys.WELCOME_SKIPPED] = prefs.getBoolean("welcome_skipped", false)
+            preferences[Keys.DEFAULT_STRUCTURE_VIEW] = prefs.getString("default_structure_view", null)
+                ?: DefaultStructureView.TWO_D.name
+            preferences[Keys.OFFLINE_DOWNLOAD_QUALITY] = prefs.getString("offline_download_quality", null)
+                ?: OfflineDownloadQuality.COMPLETE.name
+            preferences[Keys.FORMULA_DISPLAY_STYLE] = prefs.getString("formula_display_style", null)
+                ?: FormulaDisplayStyle.CONVENTIONAL.name
+            preferences[Keys.CACHE_SIZE_LIMIT] = prefs.getString("cache_size_limit", null)
+                ?: CacheSizeLimit.UNLIMITED.name
+            preferences[Keys.CACHE_RETENTION] = prefs.getString("cache_retention", null)
+                ?: CacheRetention.MANUAL.name
+            preferences[Keys.REDUCE_MOTION] = prefs.getBoolean("reduce_motion", false)
+            preferences[Keys.HIGH_CONTRAST_OUTLINES] = prefs.getBoolean("high_contrast_outlines", false)
             preferences[Keys.MIGRATED] = true
         }
     }
@@ -126,6 +191,34 @@ class AppSettingsStore(private val context: Context) {
         dataStore.edit { it[Keys.WELCOME_SKIPPED] = skipped }
     }
 
+    suspend fun setDefaultStructureView(view: DefaultStructureView) {
+        dataStore.edit { it[Keys.DEFAULT_STRUCTURE_VIEW] = view.name }
+    }
+
+    suspend fun setOfflineDownloadQuality(quality: OfflineDownloadQuality) {
+        dataStore.edit { it[Keys.OFFLINE_DOWNLOAD_QUALITY] = quality.name }
+    }
+
+    suspend fun setFormulaDisplayStyle(style: FormulaDisplayStyle) {
+        dataStore.edit { it[Keys.FORMULA_DISPLAY_STYLE] = style.name }
+    }
+
+    suspend fun setCacheSizeLimit(limit: CacheSizeLimit) {
+        dataStore.edit { it[Keys.CACHE_SIZE_LIMIT] = limit.name }
+    }
+
+    suspend fun setCacheRetention(retention: CacheRetention) {
+        dataStore.edit { it[Keys.CACHE_RETENTION] = retention.name }
+    }
+
+    suspend fun setReduceMotion(enabled: Boolean) {
+        dataStore.edit { it[Keys.REDUCE_MOTION] = enabled }
+    }
+
+    suspend fun setHighContrastOutlines(enabled: Boolean) {
+        dataStore.edit { it[Keys.HIGH_CONTRAST_OUTLINES] = enabled }
+    }
+
     private object Keys {
         val DARK_THEME = booleanPreferencesKey("dark_theme")
         val COLOR_SCHEME = stringPreferencesKey("color_scheme")
@@ -136,6 +229,13 @@ class AppSettingsStore(private val context: Context) {
         val CACHE_DIR = stringPreferencesKey("cache_dir")
         val UPDATE_NOTIFICATIONS = booleanPreferencesKey("update_notifications")
         val WELCOME_SKIPPED = booleanPreferencesKey("welcome_skipped")
+        val DEFAULT_STRUCTURE_VIEW = stringPreferencesKey("default_structure_view")
+        val OFFLINE_DOWNLOAD_QUALITY = stringPreferencesKey("offline_download_quality")
+        val FORMULA_DISPLAY_STYLE = stringPreferencesKey("formula_display_style")
+        val CACHE_SIZE_LIMIT = stringPreferencesKey("cache_size_limit")
+        val CACHE_RETENTION = stringPreferencesKey("cache_retention")
+        val REDUCE_MOTION = booleanPreferencesKey("reduce_motion")
+        val HIGH_CONTRAST_OUTLINES = booleanPreferencesKey("high_contrast_outlines")
         val MIGRATED = booleanPreferencesKey("settings_datastore_migrated")
     }
 }

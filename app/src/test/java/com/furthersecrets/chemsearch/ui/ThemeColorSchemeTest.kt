@@ -46,4 +46,48 @@ class ThemeColorSchemeTest {
             assertNotEquals("normal dark background for $accent", Color.Black, normalDark.background)
         }
     }
+
+    @Test
+    fun appHeaderLogoHueShiftsFromBlueTowardThemePrimary() {
+        val blueColors = chemSearchColorScheme(
+            darkTheme = false,
+            colorScheme = AppColorScheme.BLUE,
+            oledDarkTheme = false
+        )
+        assertEquals(0f, appHeaderLogoHueRotationDegrees(blueColors.primary), 0.5f)
+
+        listOf(
+            AppColorScheme.VIOLET,
+            AppColorScheme.EMERALD,
+            AppColorScheme.ROSE,
+            AppColorScheme.AMBER
+        ).forEach { accent ->
+            val colors = chemSearchColorScheme(
+                darkTheme = false,
+                colorScheme = accent,
+                oledDarkTheme = false
+            )
+
+            assertNotEquals(0f, appHeaderLogoHueRotationDegrees(colors.primary), 0.5f)
+        }
+    }
+
+    @Test
+    fun highContrastOutlinesStrengthenOutlineColor() {
+        val normal = chemSearchColorScheme(
+            darkTheme = false,
+            colorScheme = AppColorScheme.EMERALD,
+            oledDarkTheme = false,
+            highContrastOutlines = false
+        )
+        val highContrast = chemSearchColorScheme(
+            darkTheme = false,
+            colorScheme = AppColorScheme.EMERALD,
+            oledDarkTheme = false,
+            highContrastOutlines = true
+        )
+
+        assertNotEquals(normal.outline, highContrast.outline)
+        assertEquals(normal.primary.copy(alpha = 0.62f), highContrast.outline)
+    }
 }

@@ -159,6 +159,7 @@ data class ChemUiState(
     val cid: Long? = null,
     val name: String = "",
     val formula: String = "",
+    val rawFormula: String = "",
     val empiricalFormula: String = "",
     val weight: String = "",
     val charge: Int = 0,
@@ -261,6 +262,21 @@ enum class AiProvider(
 enum class MolTab { TWO_D, THREE_D }
 enum class SdfSource { PUBCHEM, GENERATED }
 enum class AppColorScheme { BLUE, VIOLET, EMERALD, ROSE, AMBER }
+enum class DefaultStructureView { TWO_D, THREE_D, LAST_USED }
+enum class OfflineDownloadQuality { BASIC, STRUCTURES, COMPLETE }
+enum class FormulaDisplayStyle { CONVENTIONAL, HILL }
+enum class CacheSizeLimit(val maxBytes: Long?) {
+    MB_10(10L * 1024L * 1024L),
+    MB_50(50L * 1024L * 1024L),
+    MB_100(100L * 1024L * 1024L),
+    UNLIMITED(null)
+}
+enum class CacheRetention(val maxAgeMillis: Long?) {
+    AUTO_CLEAR_1_DAY(24L * 60L * 60L * 1000L),
+    AUTO_CLEAR_7_DAYS(7L * 24L * 60L * 60L * 1000L),
+    AUTO_CLEAR_30_DAYS(30L * 24L * 60L * 60L * 1000L),
+    MANUAL(null)
+}
 
 data class AiModelCatalog(
     val models: List<String> = emptyList(),
