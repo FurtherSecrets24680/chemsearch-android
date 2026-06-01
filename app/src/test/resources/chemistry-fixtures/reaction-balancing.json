@@ -1,31 +1,31 @@
 [
   {
-    "equation": "H2 + O2 -> H2O",
-    "expected": "2H2 + O2 -> 2H2O",
+    "equation": "H2 + O2 ⟶ H2O",
+    "expected": "2H2 + O2 ⟶ 2H2O",
     "source": "OpenStax Chemistry 2e, balancing chemical equations",
     "notes": "Water formation."
   },
   {
-    "equation": "Fe + O2 -> Fe2O3",
-    "expected": "4Fe + 3O2 -> 2Fe2O3",
+    "equation": "Fe + O2 ⟶ Fe2O3",
+    "expected": "4Fe + 3O2 ⟶ 2Fe2O3",
     "source": "OpenStax Chemistry 2e, balancing chemical equations",
     "notes": "Iron oxidation."
   },
   {
-    "equation": "C3H8 + O2 -> CO2 + H2O",
-    "expected": "C3H8 + 5O2 -> 3CO2 + 4H2O",
+    "equation": "C3H8 + O2 ⟶ CO2 + H2O",
+    "expected": "C3H8 + 5O2 ⟶ 3CO2 + 4H2O",
     "source": "OpenStax Chemistry 2e, combustion equations",
     "notes": "Propane combustion."
   },
   {
-    "equation": "Al + HCl -> AlCl3 + H2",
-    "expected": "2Al + 6HCl -> 2AlCl3 + 3H2",
+    "equation": "Al + HCl ⟶ AlCl3 + H2",
+    "expected": "2Al + 6HCl ⟶ 2AlCl3 + 3H2",
     "source": "OpenStax Chemistry 2e, single replacement reactions",
     "notes": "Aluminum and hydrochloric acid."
   },
   {
-    "equation": "KMnO4 + HCl -> KCl + MnCl2 + H2O + Cl2",
-    "expected": "2KMnO4 + 16HCl -> 2KCl + 2MnCl2 + 8H2O + 5Cl2",
+    "equation": "KMnO4 + HCl ⟶ KCl + MnCl2 + H2O + Cl2",
+    "expected": "2KMnO4 + 16HCl ⟶ 2KCl + 2MnCl2 + 8H2O + 5Cl2",
     "source": "OpenStax Chemistry 2e, redox balancing example class",
     "notes": "Classic permanganate reaction."
   }

@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -27,6 +28,12 @@ import kotlin.math.*
 data class Atom3D(val x: Float, val y: Float, val z: Float, val element: String)
 data class Bond3D(val a1: Int, val a2: Int, val type: Int)
 data class Molecule3D(val atoms: List<Atom3D>, val bonds: List<Bond3D>)
+data class Viewer3DBounds(
+    val centerX: Float,
+    val centerY: Float,
+    val centerZ: Float,
+    val maxExtent: Float
+)
 
 private val elementCleanRegex = Regex("[^A-Za-z]")
 private val whitespaceRegex = Regex("\\s+")
@@ -40,12 +47,15 @@ private fun normalizeElementSymbol(raw: String): String {
 
 // SDF PARSER
 fun parseSdf(sdf: String): Molecule3D {
-    val lines = sdf.lines()
+    val lines = sdf.replace("\r\n", "\n").replace('\r', '\n').lines()
     if (lines.size < 4) return Molecule3D(emptyList(), emptyList())
+    if (lines.any { it.contains("V3000") || it.startsWith("M  V30") }) {
+        return parseV3000Sdf(lines)
+    }
     val countsLine = lines[3]
-    val atomCount = countsLine.substring(0, 3).trim().toIntOrNull()
+    val atomCount = countsLine.take(3).trim().toIntOrNull()
         ?: return Molecule3D(emptyList(), emptyList())
-    val bondCount = countsLine.substring(3, 6).trim().toIntOrNull() ?: 0
+    val bondCount = countsLine.drop(3).take(3).trim().toIntOrNull() ?: 0
     val atoms = mutableListOf<Atom3D>()
     val bonds = mutableListOf<Bond3D>()
 
@@ -96,6 +106,85 @@ fun parseSdf(sdf: String): Molecule3D {
     }
 
     return Molecule3D(atoms, bonds)
+}
+
+private fun parseV3000Sdf(lines: List<String>): Molecule3D {
+    val atoms = mutableListOf<Atom3D>()
+    val bonds = mutableListOf<Bond3D>()
+    val atomIndexByV3000Id = mutableMapOf<Int, Int>()
+    var inAtomBlock = false
+    var inBondBlock = false
+
+    lines.forEach { rawLine ->
+        val line = rawLine.trim()
+        when {
+            line.contains("BEGIN ATOM") -> {
+                inAtomBlock = true
+                inBondBlock = false
+                return@forEach
+            }
+            line.contains("END ATOM") -> {
+                inAtomBlock = false
+                return@forEach
+            }
+            line.contains("BEGIN BOND") -> {
+                inBondBlock = true
+                inAtomBlock = false
+                return@forEach
+            }
+            line.contains("END BOND") -> {
+                inBondBlock = false
+                return@forEach
+            }
+        }
+
+        val payload = line.removePrefix("M  V30").trim()
+        val parts = payload.split(whitespaceRegex).filter { it.isNotBlank() }
+
+        if (inAtomBlock && parts.size >= 5) {
+            val v3000Id = parts[0].toIntOrNull() ?: return@forEach
+            val element = normalizeElementSymbol(parts[1])
+            val x = parts[2].toFloatOrNull() ?: return@forEach
+            val y = parts[3].toFloatOrNull() ?: return@forEach
+            val z = parts[4].toFloatOrNull() ?: return@forEach
+            atomIndexByV3000Id[v3000Id] = atoms.size
+            atoms.add(Atom3D(x, y, z, element))
+        } else if (inBondBlock && parts.size >= 4) {
+            val type = parts[1].toIntOrNull() ?: 1
+            val a1 = atomIndexByV3000Id[parts[2].toIntOrNull()] ?: return@forEach
+            val a2 = atomIndexByV3000Id[parts[3].toIntOrNull()] ?: return@forEach
+            bonds.add(Bond3D(a1, a2, type))
+        }
+    }
+
+    return Molecule3D(atoms, bonds)
+}
+
+fun viewer3DStateKey(cid: Long, sdfData: String): String = "$cid:${sdfData.length}:${sdfData.hashCode()}"
+
+fun calculateViewerBounds(molecule: Molecule3D): Viewer3DBounds {
+    if (molecule.atoms.isEmpty()) {
+        return Viewer3DBounds(0f, 0f, 0f, 1.5f)
+    }
+
+    val minX = molecule.atoms.minOf { it.x }
+    val maxX = molecule.atoms.maxOf { it.x }
+    val minY = molecule.atoms.minOf { it.y }
+    val maxY = molecule.atoms.maxOf { it.y }
+    val minZ = molecule.atoms.minOf { it.z }
+    val maxZ = molecule.atoms.maxOf { it.z }
+
+    val centerX = (minX + maxX) / 2f
+    val centerY = (minY + maxY) / 2f
+    val centerZ = (minZ + maxZ) / 2f
+    val maxExtent = molecule.atoms.maxOf { atom ->
+        val dx = atom.x - centerX
+        val dy = atom.y - centerY
+        val dz = atom.z - centerZ
+        sqrt(dx * dx + dy * dy + dz * dz)
+    }.coerceIn(1.5f, Float.MAX_VALUE)
+
+    return Viewer3DBounds(centerX, centerY, centerZ, maxExtent)
 }
 
 // CPK COLORS & BALL-AND-STICK RADII
@@ -286,12 +375,13 @@ private fun DrawScope.drawAtom(pos: Offset, r: Float, color: Color, depthFactor:
     val hlY = pos.y + ly * r * 0.55f
 
     val shadedColor = lerp(color, Color.Black, depthFactor * 0.18f)
+    val rimColor = if (color.luminance() < 0.24f) Color.White.copy(alpha = 0.38f) else Color.Black.copy(alpha = 0.20f)
     val highlightAlpha = (0.55f - depthFactor * 0.25f).coerceIn(0.2f, 0.55f)
     val softHighlightAlpha = (0.12f - depthFactor * 0.05f).coerceIn(0.05f, 0.12f)
 
     drawCircle(Color.Black.copy(0.28f), r * 1.06f, Offset(pos.x + r * 0.08f, pos.y + r * 0.08f))
     drawCircle(shadedColor, r, pos)
-    drawCircle(Color.Black.copy(0.20f), r, pos, style = Stroke(r * 0.18f))
+    drawCircle(rimColor, r, pos, style = Stroke((r * 0.16f).coerceAtLeast(1.2f)))
     drawCircle(Color.White.copy(highlightAlpha), r * 0.36f, Offset(hlX, hlY))
     drawCircle(Color.White.copy(softHighlightAlpha), r * 0.65f, Offset(pos.x + lx * r * 0.25f, pos.y + ly * r * 0.25f))
 }
@@ -299,6 +389,7 @@ private fun DrawScope.drawAtom(pos: Offset, r: Float, color: Color, depthFactor:
 // MAIN COMPOSABLE
 @Composable
 fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
+    val stateKey = viewer3DStateKey(cid, sdfData)
     val molecule by produceState<Molecule3D?>(initialValue = null, cid, sdfData) {
         value = withContext(Dispatchers.Default) { parseSdf(sdfData) }
     }
@@ -306,20 +397,22 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
     val bgColor = lerp(colorScheme.surface, colorScheme.primary, if (isDark) 0.10f else 0.05f)
     val overlayTextColor = colorScheme.onSurface
     val baseBondColor = lerp(colorScheme.onSurfaceVariant, colorScheme.primary, if (isDark) 0.16f else 0.10f)
+    val reduceMotion = LocalReduceMotion.current
 
     var rotX by remember { mutableFloatStateOf(0.25f) }
     var rotY by remember { mutableFloatStateOf(0f) }
     var zoom by remember { mutableFloatStateOf(1f) }
+    var panOffset by remember { mutableStateOf(Offset.Zero) }
     var isInteracting by remember { mutableStateOf(false) }
-    var autoSpin by remember { mutableStateOf(true) }
+    var autoSpin by remember { mutableStateOf(!reduceMotion) }
 
-    LaunchedEffect(cid) {
-        rotX = 0.25f; rotY = 0f; zoom = 1f; autoSpin = true; isInteracting = false
+    LaunchedEffect(stateKey, reduceMotion) {
+        rotX = 0.25f; rotY = 0f; zoom = 1f; panOffset = Offset.Zero; autoSpin = !reduceMotion; isInteracting = false
     }
 
-    LaunchedEffect(cid) {
+    LaunchedEffect(stateKey, reduceMotion) {
         while (isActive) {
-            if (autoSpin && !isInteracting) {
+            if (autoSpin && !isInteracting && !reduceMotion) {
                 rotY += 0.006f
                 if (rotY > 2 * PI.toFloat()) rotY -= 2 * PI.toFloat()
                 delay(16L)
@@ -349,13 +442,11 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
     }
 
     val (centered, maxExtent) = remember(parsedMolecule) {
-        val avgX = parsedMolecule.atoms.map { it.x }.average().toFloat()
-        val avgY = parsedMolecule.atoms.map { it.y }.average().toFloat()
-        val avgZ = parsedMolecule.atoms.map { it.z }.average().toFloat()
-        val centeredAtoms = parsedMolecule.atoms.map { it.copy(x = it.x - avgX, y = it.y - avgY, z = it.z - avgZ) }
-        val extent = centeredAtoms.maxOf { sqrt(it.x * it.x + it.y * it.y + it.z * it.z) }
-            .coerceIn(1.5f, Float.MAX_VALUE)
-        centeredAtoms to extent
+        val bounds = calculateViewerBounds(parsedMolecule)
+        val centeredAtoms = parsedMolecule.atoms.map {
+            it.copy(x = it.x - bounds.centerX, y = it.y - bounds.centerY, z = it.z - bounds.centerZ)
+        }
+        centeredAtoms to bounds.maxExtent
     }
 
     Box(Modifier.fillMaxSize().background(bgColor)) {
@@ -363,17 +454,21 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
-                .pointerInput(cid) {
+                .pointerInput(stateKey) {
                     detectTransformGestures { _, pan, gestureZoom, _ ->
                         isInteracting = true
                         autoSpin = false
                         zoom = (zoom * gestureZoom).coerceIn(0.25f, 6f)
-                        rotY += pan.x * 0.007f
-                        rotX -= pan.y * 0.007f
-                        rotX = rotX.coerceIn(-PI.toFloat() / 2, PI.toFloat() / 2)
+                        if (abs(gestureZoom - 1f) > 0.01f) {
+                            panOffset += pan
+                        } else {
+                            rotY += pan.x * 0.007f
+                            rotX -= pan.y * 0.007f
+                            rotX = rotX.coerceIn(-PI.toFloat() / 2, PI.toFloat() / 2)
+                        }
                     }
                 }
-                .pointerInput(cid) {
+                .pointerInput(stateKey) {
                     while (true) {
                         awaitPointerEventScope {
                             val event = awaitPointerEvent(PointerEventPass.Final)
@@ -384,8 +479,8 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
                     }
                 }
         ) {
-            val screenCx = size.width / 2f
-            val screenCy = size.height / 2f
+            val screenCx = size.width / 2f + panOffset.x
+            val screenCy = size.height / 2f + panOffset.y
             val viewSize = size.width.coerceAtMost(size.height)
             val baseScale = (viewSize * 0.28f) / maxExtent
             val cameraDist = maxExtent * 3.5f
@@ -449,7 +544,7 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
 
 // Top left: reset button
         IconButton(
-            onClick = { rotX = 0.25f; rotY = 0f; zoom = 1f; autoSpin = true },
+            onClick = { rotX = 0.25f; rotY = 0f; zoom = 1f; panOffset = Offset.Zero; autoSpin = !reduceMotion },
             modifier = Modifier.align(Alignment.TopStart).padding(4.dp).size(32.dp)
         ) {
             Icon(Icons.Default.Refresh, "Reset view", tint = overlayTextColor.copy(0.4f), modifier = Modifier.size(16.dp))
@@ -463,6 +558,7 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
         ) {
             Text("Drag to rotate", color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
             Text("Pinch to zoom",  color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
+            Text("Pinch-drag to pan", color = overlayTextColor.copy(0.30f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
         }
 
         // Bottom left: element legend
@@ -483,7 +579,7 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(10.dp)
-                .clickable { autoSpin = !autoSpin },
+                .clickable(enabled = !reduceMotion) { autoSpin = !autoSpin },
             horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
@@ -492,12 +588,12 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
                 color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace
             )
             Text(
-                if (autoSpin) "⟳ Auto-spin" else "● Paused",
+                if (reduceMotion) "● Motion reduced" else if (autoSpin) "⟳ Auto-spin" else "● Paused",
                 color = if (autoSpin) colorScheme.primary.copy(0.78f) else overlayTextColor.copy(0.3f),
                 fontSize = 9.sp, fontFamily = FontFamily.Monospace
             )
             Text(
-                "Tap to toggle",
+                if (reduceMotion) "Disabled in settings" else "Tap to toggle",
                 color = overlayTextColor.copy(0.25f),
                 fontSize = 8.sp,
                 fontFamily = FontFamily.Monospace

@@ -3,7 +3,7 @@
   "reactions": [
     {
       "name": "Carbon dioxide forms carbonic acid",
-      "equation": "CO2 + H2O <-> H2CO3",
+      "equation": "CO2 + H2O ⇌ H2CO3",
       "type": "Acid formation",
       "conditions": "Carbon dioxide dissolves in water.",
       "observation": "Weak carbonic acid forms.",
@@ -17,7 +17,7 @@
     },
     {
       "name": "Nitrogen dioxide forms mixed acids",
-      "equation": "2NO2 + H2O -> HNO3 + HNO2",
+      "equation": "2NO2 + H2O ⟶ HNO3 + HNO2",
       "type": "Acid formation",
       "conditions": "Nitrogen dioxide dissolves in water.",
       "observation": "Nitric and nitrous acids form.",
@@ -31,7 +31,7 @@
     },
     {
       "name": "Nitrogen dioxide to nitric acid",
-      "equation": "4NO2 + 2H2O + O2 -> 4HNO3",
+      "equation": "4NO2 + 2H2O + O2 ⟶ 4HNO3",
       "type": "Acid formation",
       "conditions": "Nitrogen dioxide reacts with oxygen and water.",
       "observation": "Nitric acid forms.",
@@ -46,7 +46,7 @@
     {
       "id": "sulfur-dioxide-hydration",
       "name": "Sulfur dioxide in rainwater",
-      "equation": "SO2 + H2O -> H2SO3",
+      "equation": "SO2 + H2O ⟶ H2SO3",
       "type": "Acid formation",
       "conditions": "Sulfur dioxide dissolves in water.",
       "observation": "Sulfurous acid forms.",
@@ -60,7 +60,7 @@
     },
     {
       "name": "Sulfur trioxide hydration",
-      "equation": "SO3 + H2O -> H2SO4",
+      "equation": "SO3 + H2O ⟶ H2SO4",
       "type": "Acid formation",
       "conditions": "Sulfur trioxide reacts with water.",
       "observation": "Sulfuric acid forms.",
@@ -74,7 +74,7 @@
     },
     {
       "name": "Calcium bicarbonate with hydrochloric acid",
-      "equation": "Ca(HCO3)2 + 2HCl -> CaCl2 + 2H2O + 2CO2",
+      "equation": "Ca(HCO3)2 + 2HCl ⟶ CaCl2 + 2H2O + 2CO2",
       "type": "Acid-bicarbonate reaction",
       "conditions": "Calcium bicarbonate reacts with hydrochloric acid.",
       "observation": "Carbon dioxide effervescence.",
@@ -88,7 +88,7 @@
     },
     {
       "name": "Sodium bicarbonate with nitric acid",
-      "equation": "NaHCO3 + HNO3 -> NaNO3 + H2O + CO2",
+      "equation": "NaHCO3 + HNO3 ⟶ NaNO3 + H2O + CO2",
       "type": "Acid-bicarbonate reaction",
       "conditions": "Sodium bicarbonate reacts with nitric acid.",
       "observation": "Carbon dioxide bubbles.",
@@ -103,7 +103,7 @@
     {
       "id": "baking-powder-carbon-dioxide-release",
       "name": "Baking powder releases carbon dioxide",
-      "equation": "2NaHCO3 + C4H6O6 -> Na2C4H4O6 + 2CO2 + 2H2O",
+      "equation": "2NaHCO3 + C4H6O6 ⟶ Na2C4H4O6 + 2CO2 + 2H2O",
       "type": "Acid-carbonate reaction",
       "conditions": "Baking soda mixed with tartaric acid and heated/moistened.",
       "observation": "Carbon dioxide bubbles raise cakes and bread.",
@@ -117,7 +117,7 @@
     },
     {
       "name": "Calcium carbonate with nitric acid",
-      "equation": "CaCO3 + 2HNO3 -> Ca(NO3)2 + H2O + CO2",
+      "equation": "CaCO3 + 2HNO3 ⟶ Ca(NO3)2 + H2O + CO2",
       "type": "Acid-carbonate reaction",
       "conditions": "Calcium carbonate reacts with nitric acid.",
       "observation": "Carbon dioxide bubbles form.",
@@ -132,7 +132,7 @@
     {
       "id": "calcium-carbonate-acid",
       "name": "Carbonate with hydrochloric acid",
-      "equation": "CaCO3 + 2HCl -> CaCl2 + CO2 + H2O",
+      "equation": "CaCO3 + 2HCl ⟶ CaCl2 + CO2 + H2O",
       "type": "Acid-carbonate reaction",
       "conditions": "Acid added to carbonate solid.",
       "observation": "Effervescence; solid dissolves.",
@@ -143,7 +143,7 @@
     },
     {
       "name": "Sodium carbonate with sulfuric acid",
-      "equation": "Na2CO3 + H2SO4 -> Na2SO4 + H2O + CO2",
+      "equation": "Na2CO3 + H2SO4 ⟶ Na2SO4 + H2O + CO2",
       "type": "Acid-carbonate reaction",
       "conditions": "Sodium carbonate reacts with dilute sulfuric acid.",
       "observation": "Carbon dioxide effervescence.",
@@ -158,7 +158,7 @@
     {
       "id": "vinegar-baking-soda",
       "name": "Vinegar and baking soda",
-      "equation": "NaHCO3 + CH3COOH -> CH3COONa + CO2 + H2O",
+      "equation": "NaHCO3 + CH3COOH ⟶ CH3COONa + CO2 + H2O",
       "type": "Acid-carbonate reaction",
       "conditions": "Aqueous or moist mixture.",
       "observation": "Fizzing from carbon dioxide gas.",
@@ -170,7 +170,7 @@
     {
       "id": "bromine-alkene",
       "name": "Bromine addition to ethene",
-      "equation": "C2H4 + Br2 -> C2H4Br2",
+      "equation": "C2H4 + Br2 ⟶ C2H4Br2",
       "type": "Addition",
       "conditions": "Bromine solution.",
       "observation": "Orange/brown bromine decolorizes.",
@@ -183,7 +183,7 @@
     {
       "id": "ethyne-bromination",
       "name": "Bromine addition to ethyne",
-      "equation": "C2H2 + 2Br2 -> C2H2Br4",
+      "equation": "C2H2 + 2Br2 ⟶ C2H2Br4",
       "type": "Addition",
       "conditions": "Add bromine solution to ethyne.",
       "observation": "Red bromine color disappears.",
@@ -198,7 +198,7 @@
     {
       "id": "ethene-hydration-to-ethanol",
       "name": "Hydration of ethene to ethanol",
-      "equation": "C2H4 + H2O -> C2H5OH",
+      "equation": "C2H4 + H2O ⟶ C2H5OH",
       "type": "Addition",
       "conditions": "High temperature and pressure with phosphoric acid catalyst.",
       "observation": "Ethanol forms.",
@@ -213,7 +213,7 @@
     {
       "id": "ethyne-hydration-to-ethanal",
       "name": "Hydration of ethyne to ethanal",
-      "equation": "C2H2 + H2O -> CH3CHO",
+      "equation": "C2H2 + H2O ⟶ CH3CHO",
       "type": "Addition",
       "conditions": "20% H2SO4 and 2% HgSO4 at about 80 C.",
       "observation": "Ethanal forms.",
@@ -228,7 +228,7 @@
     {
       "id": "alkene-hydrogenation",
       "name": "Hydrogenation of ethene",
-      "equation": "C2H4 + H2 -> C2H6",
+      "equation": "C2H4 + H2 ⟶ C2H6",
       "type": "Addition",
       "conditions": "Nickel catalyst, heat.",
       "observation": "Double bond becomes single bond.",
@@ -239,7 +239,7 @@
     },
     {
       "name": "Ammonia in water",
-      "equation": "NH3 + H2O <-> NH4+ + OH-",
+      "equation": "NH3 + H2O ⇌ NH4+ + OH-",
       "type": "Base ionization",
       "conditions": "Ammonia dissolves in water.",
       "observation": "Ammonium and hydroxide ions form partially.",
@@ -254,7 +254,7 @@
     {
       "id": "fermentation",
       "name": "Alcoholic fermentation",
-      "equation": "C6H12O6 -> 2C2H5OH + 2CO2",
+      "equation": "C6H12O6 ⟶ 2C2H5OH + 2CO2",
       "type": "Biochemical decomposition",
       "conditions": "Yeast enzymes, low oxygen.",
       "observation": "Ethanol and carbon dioxide form.",
@@ -266,7 +266,7 @@
     {
       "id": "cellular-respiration",
       "name": "Cellular respiration",
-      "equation": "C6H12O6 + 6O2 -> 6CO2 + 6H2O",
+      "equation": "C6H12O6 + 6O2 ⟶ 6CO2 + 6H2O",
       "type": "Biochemical oxidation",
       "conditions": "Cells, enzymes, aerobic conditions.",
       "observation": "Glucose is oxidized to release usable energy.",
@@ -278,7 +278,7 @@
     {
       "id": "ethanol-to-vinegar",
       "name": "Oxidation of ethanol to acetic acid",
-      "equation": "C2H5OH + O2 -> CH3COOH + H2O",
+      "equation": "C2H5OH + O2 ⟶ CH3COOH + H2O",
       "type": "Biochemical oxidation",
       "conditions": "Acetobacter with oxygen, about 25-35 C.",
       "observation": "Vinegar/acetic acid forms from ethanol.",
@@ -293,7 +293,7 @@
     {
       "id": "photosynthesis",
       "name": "Photosynthesis",
-      "equation": "6CO2 + 6H2O -> C6H12O6 + 6O2",
+      "equation": "6CO2 + 6H2O ⟶ C6H12O6 + 6O2",
       "type": "Biochemical synthesis",
       "conditions": "Light, chlorophyll, plant cells.",
       "observation": "Carbon dioxide and water become glucose and oxygen.",
@@ -305,7 +305,7 @@
     {
       "id": "aluminium-hydroxide-calcination",
       "name": "Aluminium hydroxide calcination",
-      "equation": "2Al(OH)3 -> Al2O3 + 3H2O",
+      "equation": "2Al(OH)3 ⟶ Al2O3 + 3H2O",
       "type": "Calcination",
       "conditions": "Heat strongly, about 1100 C.",
       "observation": "Pure aluminium oxide forms and water is removed.",
@@ -320,7 +320,7 @@
     {
       "id": "hydrated-iron-oxide-calcination",
       "name": "Calcination of hydrated iron oxide",
-      "equation": "Fe2O3.3H2O -> Fe2O3 + 3H2O",
+      "equation": "Fe2O3.3H2O ⟶ Fe2O3 + 3H2O",
       "type": "Calcination",
       "conditions": "Heat below melting point.",
       "observation": "Water is removed from hydrated iron oxide.",
@@ -335,7 +335,7 @@
     {
       "id": "zinc-carbonate-calcination",
       "name": "Calcination of zinc carbonate",
-      "equation": "ZnCO3 -> ZnO + CO2",
+      "equation": "ZnCO3 ⟶ ZnO + CO2",
       "type": "Calcination",
       "conditions": "Heat below melting point.",
       "observation": "Carbon dioxide is released and zinc oxide remains.",
@@ -350,7 +350,7 @@
     {
       "id": "copper-oxide-carbon-reduction",
       "name": "Carbon reduction of copper oxide",
-      "equation": "CuO + C -> Cu + CO",
+      "equation": "CuO + C ⟶ Cu + CO",
       "type": "Carbon reduction",
       "conditions": "Heat copper(II) oxide with carbon.",
       "observation": "Copper metal forms.",
@@ -365,7 +365,7 @@
     {
       "id": "lead-oxide-carbon-reduction",
       "name": "Carbon reduction of lead oxide",
-      "equation": "PbO + C -> Pb + CO",
+      "equation": "PbO + C ⟶ Pb + CO",
       "type": "Carbon reduction",
       "conditions": "Heat lead oxide with carbon.",
       "observation": "Lead metal forms.",
@@ -380,7 +380,7 @@
     {
       "id": "zinc-oxide-carbon-reduction",
       "name": "Carbon reduction of zinc oxide",
-      "equation": "ZnO + C -> Zn + CO",
+      "equation": "ZnO + C ⟶ Zn + CO",
       "type": "Carbon reduction",
       "conditions": "Heat zinc oxide with carbon.",
       "observation": "Zinc metal and carbon monoxide form.",
@@ -395,7 +395,7 @@
     {
       "id": "iron-iii-oxide-carbon-monoxide-reduction",
       "name": "Reduction of hematite by carbon monoxide",
-      "equation": "Fe2O3 + 3CO -> 2Fe + 3CO2",
+      "equation": "Fe2O3 + 3CO ⟶ 2Fe + 3CO2",
       "type": "Carbon reduction",
       "conditions": "Blast furnace.",
       "observation": "Iron forms from hematite.",
@@ -410,7 +410,7 @@
     {
       "id": "ammonium-carbamate-formation",
       "name": "Ammonium carbamate formation",
-      "equation": "CO2 + 2NH3 -> NH2COONH4",
+      "equation": "CO2 + 2NH3 ⟶ NH2COONH4",
       "type": "Combination",
       "conditions": "High pressure, about 130-150 C.",
       "observation": "Ammonium carbamate forms.",
@@ -425,7 +425,7 @@
     {
       "id": "ammonium-hydrogen-carbonate-formation",
       "name": "Ammonium hydrogen carbonate formation",
-      "equation": "CO2 + NH3 + H2O -> NH4HCO3",
+      "equation": "CO2 + NH3 + H2O ⟶ NH4HCO3",
       "type": "Combination",
       "conditions": "Pass carbon dioxide into ammoniated brine/water.",
       "observation": "Ammonium hydrogen carbonate forms.",
@@ -440,7 +440,7 @@
     {
       "id": "bleaching-powder-formation",
       "name": "Bleaching powder formation",
-      "equation": "Ca(OH)2 + Cl2 -> Ca(OCl)Cl + H2O",
+      "equation": "Ca(OH)2 + Cl2 ⟶ Ca(OCl)Cl + H2O",
       "type": "Combination",
       "conditions": "Pass chlorine over calcium hydroxide around 40 C.",
       "observation": "Bleaching powder forms.",
@@ -455,7 +455,7 @@
     {
       "id": "oleum-formation",
       "name": "Oleum formation",
-      "equation": "SO3 + H2SO4 -> H2S2O7",
+      "equation": "SO3 + H2SO4 ⟶ H2S2O7",
       "type": "Combination",
       "conditions": "Absorb sulfur trioxide in concentrated sulfuric acid.",
       "observation": "Fuming sulfuric acid forms.",
@@ -470,7 +470,7 @@
     {
       "id": "slaking-quicklime",
       "name": "Slaking quicklime",
-      "equation": "CaO + H2O -> Ca(OH)2 + heat",
+      "equation": "CaO + H2O ⟶ Ca(OH)2 + heat",
       "type": "Combination",
       "conditions": "Add water to quicklime.",
       "observation": "Heat is released and slaked lime forms.",
@@ -485,7 +485,7 @@
     {
       "id": "sodium-carbonate-formation-from-naoh",
       "name": "Sodium carbonate formation from sodium hydroxide",
-      "equation": "2NaOH + CO2 -> Na2CO3 + H2O",
+      "equation": "2NaOH + CO2 ⟶ Na2CO3 + H2O",
       "type": "Combination",
       "conditions": "Pass carbon dioxide through sodium hydroxide solution.",
       "observation": "Sodium carbonate forms.",
@@ -499,7 +499,7 @@
     },
     {
       "name": "Carbon combustion",
-      "equation": "C + O2 -> CO2",
+      "equation": "C + O2 ⟶ CO2",
       "type": "Combustion",
       "conditions": "Burn carbon in sufficient oxygen.",
       "observation": "Carbon dioxide is produced.",
@@ -514,7 +514,7 @@
     {
       "id": "combustion-of-methane",
       "name": "Combustion of methane",
-      "equation": "CH4 + 2O2 -> CO2 + 2H2O + heat",
+      "equation": "CH4 + 2O2 ⟶ CO2 + 2H2O + heat",
       "type": "Combustion",
       "conditions": "Methane burns in oxygen or air.",
       "observation": "Carbon dioxide, water vapor, and heat are produced.",
@@ -528,7 +528,7 @@
     },
     {
       "name": "Hydrogen combustion",
-      "equation": "2H2 + O2 -> 2H2O",
+      "equation": "2H2 + O2 ⟶ 2H2O",
       "type": "Combustion",
       "conditions": "Hydrogen mixed with oxygen and ignited.",
       "observation": "Water forms with release of energy.",
@@ -542,7 +542,7 @@
     },
     {
       "name": "Magnesium combustion",
-      "equation": "2Mg + O2 -> 2MgO",
+      "equation": "2Mg + O2 ⟶ 2MgO",
       "type": "Combustion",
       "conditions": "Ignited magnesium ribbon in air.",
       "observation": "Bright white flame and white magnesium oxide ash.",
@@ -557,7 +557,7 @@
     {
       "id": "sulfur-combustion",
       "name": "Sulfur combustion",
-      "equation": "S + O2 -> SO2",
+      "equation": "S + O2 ⟶ SO2",
       "type": "Combustion",
       "conditions": "Burn sulfur in oxygen or air.",
       "observation": "Blue flame and choking sulfur dioxide gas.",
@@ -573,7 +573,7 @@
     {
       "id": "iodine-starch",
       "name": "Iodine-starch complex",
-      "equation": "I2 + starch -> blue-black complex",
+      "equation": "I2 + starch ⟶ blue-black complex",
       "type": "Complex formation",
       "conditions": "Iodine solution added to starch.",
       "observation": "Blue-black color appears.",
@@ -585,7 +585,7 @@
     {
       "id": "esterification",
       "name": "Esterification",
-      "equation": "CH3COOH + C2H5OH -> CH3COOC2H5 + H2O",
+      "equation": "CH3COOH + C2H5OH ⟶ CH3COOC2H5 + H2O",
       "type": "Condensation",
       "conditions": "Acid catalyst and warming.",
       "observation": "Fruity-smelling ester may form.",
@@ -597,7 +597,7 @@
     {
       "id": "nylon-6-6-formation",
       "name": "Nylon 6,6 formation",
-      "equation": "nHOOC-(CH2)4-COOH + nH2N-(CH2)6-NH2 -> [-OC-(CH2)4-CONH-(CH2)6-NH-]n + 2nH2O",
+      "equation": "nHOOC-(CH2)4-COOH + nH2N-(CH2)6-NH2 ⟶ [-OC-(CH2)4-CONH-(CH2)6-NH-]n + 2nH2O",
       "type": "Condensation polymerization",
       "conditions": "Heat adipic acid with hexamethylenediamine, titanium oxide catalyst.",
       "observation": "Nylon 6,6 and water form.",
@@ -612,7 +612,7 @@
     {
       "id": "rust-ferric-hydroxide-to-hydrated-oxide",
       "name": "Ferric hydroxide to rust",
-      "equation": "2Fe(OH)3 -> Fe2O3.3H2O",
+      "equation": "2Fe(OH)3 ⟶ Fe2O3.3H2O",
       "type": "Corrosion",
       "conditions": "Moist air after iron oxidation steps.",
       "observation": "Hydrated ferric oxide/rust forms.",
@@ -627,7 +627,7 @@
     {
       "id": "rusting-of-iron",
       "name": "Rusting of iron",
-      "equation": "4Fe + 3O2 + 6H2O -> 4Fe(OH)3",
+      "equation": "4Fe + 3O2 + 6H2O ⟶ 4Fe(OH)3",
       "type": "Corrosion",
       "conditions": "Iron exposed to oxygen and moisture.",
       "observation": "Brown hydrated iron(III) oxide rust develops over time.",
@@ -641,7 +641,7 @@
     {
       "id": "sodium-ethanoate-decarboxylation",
       "name": "Decarboxylation of sodium ethanoate",
-      "equation": "CH3COONa + NaOH -> CH4 + Na2CO3",
+      "equation": "CH3COONa + NaOH ⟶ CH4 + Na2CO3",
       "type": "Decarboxylation",
       "conditions": "Heat with soda lime/calcium oxide.",
       "observation": "Methane and sodium carbonate form.",
@@ -656,7 +656,7 @@
     {
       "id": "copper-carbonate-heat",
       "name": "Copper carbonate decomposition",
-      "equation": "CuCO3 -> CuO + CO2",
+      "equation": "CuCO3 ⟶ CuO + CO2",
       "type": "Decomposition",
       "conditions": "Heating copper(II) carbonate.",
       "observation": "Green solid turns black; CO2 evolves.",
@@ -668,7 +668,7 @@
     {
       "id": "hydrogen-peroxide",
       "name": "Hydrogen peroxide decomposition",
-      "equation": "2H2O2 -> 2H2O + O2",
+      "equation": "2H2O2 ⟶ 2H2O + O2",
       "type": "Decomposition",
       "conditions": "Catalyst such as MnO2 or iodide.",
       "observation": "Oxygen bubbles rapidly.",
@@ -680,7 +680,7 @@
     {
       "id": "hypochlorous-acid-decomposition",
       "name": "Hypochlorous acid releases nascent oxygen",
-      "equation": "HOCl -> HCl + [O]",
+      "equation": "HOCl ⟶ HCl + [O]",
       "type": "Decomposition",
       "conditions": "In bleaching/disinfecting action.",
       "observation": "Reactive oxygen bleaches colored substances and kills germs.",
@@ -694,7 +694,7 @@
     },
     {
       "name": "Phosphorus pentachloride decomposition",
-      "equation": "PCl5 -> PCl3 + Cl2",
+      "equation": "PCl5 ⟶ PCl3 + Cl2",
       "type": "Decomposition",
       "conditions": "Heating or equilibrium conditions.",
       "observation": "Phosphorus trichloride and chlorine form.",
@@ -709,7 +709,7 @@
     {
       "id": "ethanol-dehydration-to-ethene",
       "name": "Dehydration of ethanol to ethene",
-      "equation": "C2H5OH -> C2H4 + H2O",
+      "equation": "C2H5OH ⟶ C2H4 + H2O",
       "type": "Dehydration",
       "conditions": "Concentrated sulfuric acid, about 170 C.",
       "observation": "Ethene and water form.",
@@ -723,7 +723,7 @@
     },
     {
       "name": "Ferric hydroxide dehydration to rust",
-      "equation": "2Fe(OH)3 -> Fe2O3.xH2O + H2O",
+      "equation": "2Fe(OH)3 ⟶ Fe2O3.xH2O + H2O",
       "type": "Dehydration",
       "conditions": "Aging of hydrated ferric hydroxide.",
       "observation": "Rust-like hydrated ferric oxide forms.",
@@ -738,7 +738,7 @@
     {
       "id": "urea-from-ammonium-carbamate",
       "name": "Urea from ammonium carbamate",
-      "equation": "NH2COONH4 -> NH2CONH2 + H2O",
+      "equation": "NH2COONH4 ⟶ NH2CONH2 + H2O",
       "type": "Dehydration",
       "conditions": "Industrial urea process after ammonium carbamate formation.",
       "observation": "Urea and water form.",
@@ -753,7 +753,7 @@
     {
       "id": "baking-soda-formation",
       "name": "Baking soda formation from ammonium hydrogen carbonate",
-      "equation": "NH4HCO3 + NaCl -> NaHCO3 + NH4Cl",
+      "equation": "NH4HCO3 + NaCl ⟶ NaHCO3 + NH4Cl",
       "type": "Double displacement",
       "conditions": "Ammonium hydrogen carbonate reacts with sodium chloride.",
       "observation": "Sodium hydrogen carbonate and ammonium chloride form.",
@@ -768,7 +768,7 @@
     {
       "id": "barium-sulfate",
       "name": "Barium sulfate precipitation",
-      "equation": "BaCl2 + Na2SO4 -> BaSO4 + 2NaCl",
+      "equation": "BaCl2 + Na2SO4 ⟶ BaSO4 + 2NaCl",
       "type": "Double displacement",
       "conditions": "Aqueous barium and sulfate salts.",
       "observation": "Dense white precipitate.",
@@ -780,7 +780,7 @@
     {
       "id": "precipitation-agcl",
       "name": "Silver chloride precipitation",
-      "equation": "AgNO3 + NaCl -> AgCl + NaNO3",
+      "equation": "AgNO3 + NaCl ⟶ AgCl + NaNO3",
       "type": "Double displacement",
       "conditions": "Aqueous silver nitrate and chloride solution.",
       "observation": "White precipitate of AgCl forms.",
@@ -791,7 +791,7 @@
     },
     {
       "name": "Copper silver galvanic reaction",
-      "equation": "Cu + 2Ag+ -> Cu^2+ + 2Ag",
+      "equation": "Cu + 2Ag+ ⟶ Cu^2+ + 2Ag",
       "type": "Electrochemical redox",
       "conditions": "Copper and silver-ion half-cells.",
       "observation": "Copper oxidizes while silver ions reduce to silver metal.",
@@ -805,7 +805,7 @@
     },
     {
       "name": "Daniell cell overall reaction",
-      "equation": "Zn + CuSO4 -> ZnSO4 + Cu",
+      "equation": "Zn + CuSO4 ⟶ ZnSO4 + Cu",
       "type": "Electrochemical redox",
       "conditions": "Zinc and copper half-cells connected through salt bridge.",
       "observation": "Zinc dissolves, copper deposits, and electric current flows.",
@@ -819,7 +819,7 @@
     },
     {
       "name": "Dry cell overall reaction",
-      "equation": "Zn + 2NH4+ + 2MnO2 -> Zn^2+ + 2NH3 + Mn2O3 + H2O",
+      "equation": "Zn + 2NH4+ + 2MnO2 ⟶ Zn^2+ + 2NH3 + Mn2O3 + H2O",
       "type": "Electrochemical redox",
       "conditions": "Zinc-carbon dry cell paste with ammonium ions and manganese dioxide.",
       "observation": "Chemical energy converts to electrical energy.",
@@ -834,7 +834,7 @@
     {
       "id": "chlor-alkali-electrolysis",
       "name": "Chlor-alkali electrolysis",
-      "equation": "2NaCl + 2H2O -> H2 + Cl2 + 2NaOH",
+      "equation": "2NaCl + 2H2O ⟶ H2 + Cl2 + 2NaOH",
       "type": "Electrolysis",
       "conditions": "Concentrated brine and direct current.",
       "observation": "Hydrogen, chlorine, and sodium hydroxide are produced.",
@@ -849,7 +849,7 @@
     {
       "id": "electrolysis-water",
       "name": "Electrolysis of water",
-      "equation": "2H2O -> 2H2 + O2",
+      "equation": "2H2O ⟶ 2H2 + O2",
       "type": "Electrolysis",
       "conditions": "Electric current with electrolyte.",
       "observation": "Hydrogen and oxygen gases form.",
@@ -860,7 +860,7 @@
     },
     {
       "name": "Molten sodium chloride electrolysis",
-      "equation": "2NaCl(l) -> 2Na + Cl2",
+      "equation": "2NaCl(l) ⟶ 2Na + Cl2",
       "type": "Electrolysis",
       "conditions": "Molten sodium chloride and electric current.",
       "observation": "Sodium metal forms at cathode and chlorine gas at anode.",
@@ -875,7 +875,7 @@
     {
       "id": "copper-electrorefining-anode",
       "name": "Copper electrorefining anode reaction",
-      "equation": "Cu -> Cu2+ + 2e-",
+      "equation": "Cu ⟶ Cu2+ + 2e-",
       "type": "Electrolysis half-reaction",
       "conditions": "Impure copper anode in copper sulfate solution.",
       "observation": "Copper dissolves from the impure anode.",
@@ -890,7 +890,7 @@
     {
       "id": "copper-electrorefining-cathode",
       "name": "Copper electrorefining cathode reaction",
-      "equation": "Cu2+ + 2e- -> Cu",
+      "equation": "Cu2+ + 2e- ⟶ Cu",
       "type": "Electrolysis half-reaction",
       "conditions": "Pure copper cathode in copper sulfate solution.",
       "observation": "Pure copper plates onto the cathode.",
@@ -904,7 +904,7 @@
     },
     {
       "name": "Nitric oxide formation from air",
-      "equation": "N2 + O2 + heat -> 2NO",
+      "equation": "N2 + O2 + heat ⟶ 2NO",
       "type": "Endothermic synthesis",
       "conditions": "Very high temperature such as lightning or engines.",
       "observation": "Nitric oxide can oxidize further to nitrogen dioxide.",
@@ -918,7 +918,7 @@
     },
     {
       "name": "Ammonium chloride with sodium hydroxide",
-      "equation": "NH4Cl + NaOH -> NH3 + NaCl + H2O",
+      "equation": "NH4Cl + NaOH ⟶ NH3 + NaCl + H2O",
       "type": "Gas evolution",
       "conditions": "Heat ammonium chloride with sodium hydroxide.",
       "observation": "Ammonia gas evolves.",
@@ -933,7 +933,7 @@
     {
       "id": "calcium-carbide-with-water",
       "name": "Calcium carbide produces ethyne",
-      "equation": "CaC2 + 2H2O -> C2H2 + Ca(OH)2",
+      "equation": "CaC2 + 2H2O ⟶ C2H2 + Ca(OH)2",
       "type": "Gas preparation",
       "conditions": "Add water to calcium carbide.",
       "observation": "Ethyne/acetylene gas is released.",
@@ -948,7 +948,7 @@
     {
       "id": "ammonia-from-ammonium-chloride-and-calcium-oxide",
       "name": "Laboratory ammonia from ammonium chloride and calcium oxide",
-      "equation": "2NH4Cl + CaO -> 2NH3 + CaCl2 + H2O",
+      "equation": "2NH4Cl + CaO ⟶ 2NH3 + CaCl2 + H2O",
       "type": "Gas preparation",
       "conditions": "Heat ammonium chloride with calcium oxide.",
       "observation": "Ammonia gas evolves.",
@@ -963,7 +963,7 @@
     {
       "id": "ammonia-from-ammonium-chloride-and-slaked-lime",
       "name": "Laboratory ammonia from ammonium chloride and slaked lime",
-      "equation": "2NH4Cl + Ca(OH)2 -> 2NH3 + CaCl2 + 2H2O",
+      "equation": "2NH4Cl + Ca(OH)2 ⟶ 2NH3 + CaCl2 + 2H2O",
       "type": "Gas preparation",
       "conditions": "Heat ammonium chloride with calcium hydroxide.",
       "observation": "Ammonia gas evolves.",
@@ -977,7 +977,7 @@
     },
     {
       "name": "Calcium chloride hydration",
-      "equation": "CaCl2 + 6H2O -> CaCl2.6H2O",
+      "equation": "CaCl2 + 6H2O ⟶ CaCl2.6H2O",
       "type": "Hydration",
       "conditions": "Calcium chloride binds water during crystallization.",
       "observation": "Hydrated salt forms.",
@@ -991,7 +991,7 @@
     },
     {
       "name": "Copper sulfate hydration",
-      "equation": "CuSO4 + 5H2O -> CuSO4.5H2O",
+      "equation": "CuSO4 + 5H2O ⟶ CuSO4.5H2O",
       "type": "Hydration",
       "conditions": "Anhydrous copper(II) sulfate contacts water.",
       "observation": "White anhydrous salt turns blue.",
@@ -1005,7 +1005,7 @@
     },
     {
       "name": "Ferrous sulfate hydration",
-      "equation": "FeSO4 + 7H2O -> FeSO4.7H2O",
+      "equation": "FeSO4 + 7H2O ⟶ FeSO4.7H2O",
       "type": "Hydration",
       "conditions": "Iron(II) sulfate crystallizes with water.",
       "observation": "Green hydrated crystals form.",
@@ -1020,7 +1020,7 @@
     {
       "id": "oleum-dilution",
       "name": "Oleum dilution to sulfuric acid",
-      "equation": "H2S2O7 + H2O -> 2H2SO4",
+      "equation": "H2S2O7 + H2O ⟶ 2H2SO4",
       "type": "Hydration",
       "conditions": "Carefully add water to oleum.",
       "observation": "Sulfuric acid forms.",
@@ -1035,7 +1035,7 @@
     {
       "id": "washing-soda-crystallization",
       "name": "Washing soda crystallization",
-      "equation": "Na2CO3 + 10H2O -> Na2CO3.10H2O",
+      "equation": "Na2CO3 + 10H2O ⟶ Na2CO3.10H2O",
       "type": "Hydration",
       "conditions": "Crystallization with water.",
       "observation": "Sodium carbonate decahydrate forms.",
@@ -1049,7 +1049,7 @@
     },
     {
       "name": "Zinc sulfate hydration",
-      "equation": "ZnSO4 + 7H2O -> ZnSO4.7H2O",
+      "equation": "ZnSO4 + 7H2O ⟶ ZnSO4.7H2O",
       "type": "Hydration",
       "conditions": "Zinc sulfate crystallizes from water.",
       "observation": "Hydrated crystals form.",
@@ -1064,7 +1064,7 @@
     {
       "id": "methane-from-carbon-dioxide",
       "name": "Methane from carbon dioxide and hydrogen",
-      "equation": "CO2 + 4H2 -> CH4 + 2H2O",
+      "equation": "CO2 + 4H2 ⟶ CH4 + 2H2O",
       "type": "Hydrogenation",
       "conditions": "Nickel catalyst, about 250 C.",
       "observation": "Methane and water form.",
@@ -1078,7 +1078,7 @@
     },
     {
       "name": "Aluminum chloride hydrolysis",
-      "equation": "AlCl3 + 3H2O -> Al(OH)3 + 3HCl",
+      "equation": "AlCl3 + 3H2O ⟶ Al(OH)3 + 3HCl",
       "type": "Hydrolysis",
       "conditions": "Water reacts with aluminum chloride.",
       "observation": "Aluminum hydroxide and hydrochloric acid form.",
@@ -1093,7 +1093,7 @@
     {
       "id": "bleaching-powder-with-water",
       "name": "Bleaching powder reacts with water",
-      "equation": "Ca(OCl)Cl + H2O -> CaCl2 + HOCl",
+      "equation": "Ca(OCl)Cl + H2O ⟶ CaCl2 + HOCl",
       "type": "Hydrolysis",
       "conditions": "Add water to bleaching powder.",
       "observation": "Calcium chloride and hypochlorous acid form.",
@@ -1107,7 +1107,7 @@
     },
     {
       "name": "Chlorine water formation",
-      "equation": "Cl2 + H2O <-> HCl + HOCl",
+      "equation": "Cl2 + H2O ⇌ HCl + HOCl",
       "type": "Hydrolysis",
       "conditions": "Chlorine dissolves in water.",
       "observation": "Hydrochloric acid and hypochlorous acid form.",
@@ -1122,7 +1122,7 @@
     {
       "id": "saponification",
       "name": "Saponification",
-      "equation": "Ester + NaOH -> Alcohol + Sodium carboxylate",
+      "equation": "Ester + NaOH ⟶ Alcohol + Sodium carboxylate",
       "type": "Hydrolysis",
       "conditions": "Base and heat.",
       "observation": "Soap-like salt forms.",
@@ -1133,7 +1133,7 @@
     },
     {
       "name": "Silicon tetrachloride hydrolysis",
-      "equation": "SiCl4 + 4H2O -> H4SiO4 + 4HCl",
+      "equation": "SiCl4 + 4H2O ⟶ H4SiO4 + 4HCl",
       "type": "Hydrolysis",
       "conditions": "Moisture or water reacts with silicon tetrachloride.",
       "observation": "Acidic fumes/products form.",
@@ -1148,7 +1148,7 @@
     {
       "id": "sodium-aluminate-hydrolysis",
       "name": "Sodium aluminate hydrolysis",
-      "equation": "NaAlO2 + 2H2O -> Al(OH)3 + NaOH",
+      "equation": "NaAlO2 + 2H2O ⟶ Al(OH)3 + NaOH",
       "type": "Hydrolysis",
       "conditions": "Add water to hot sodium aluminate solution.",
       "observation": "Aluminium hydroxide separates while sodium hydroxide remains in solution.",
@@ -1163,7 +1163,7 @@
     {
       "id": "sodium-hypochlorite-hydrolysis",
       "name": "Sodium hypochlorite hydrolysis",
-      "equation": "NaOCl + H2O -> NaOH + HOCl",
+      "equation": "NaOCl + H2O ⟶ NaOH + HOCl",
       "type": "Hydrolysis",
       "conditions": "Toilet cleaner diluted with water.",
       "observation": "Hypochlorous acid forms.",
@@ -1178,7 +1178,7 @@
     {
       "id": "urea-hydrolysis-in-soil",
       "name": "Urea hydrolysis in soil",
-      "equation": "NH2CONH2 + 3H2O -> 2NH4+ + 2OH- + CO2",
+      "equation": "NH2CONH2 + 3H2O ⟶ 2NH4+ + 2OH- + CO2",
       "type": "Hydrolysis",
       "conditions": "Urease enzyme in soil.",
       "observation": "Ammonium ions become available to plants.",
@@ -1193,7 +1193,7 @@
     },
     {
       "name": "Acetic acid ionization",
-      "equation": "CH3COOH <-> H+ + CH3COO-",
+      "equation": "CH3COOH ⇌ H+ + CH3COO-",
       "type": "Ionization",
       "conditions": "Acetic acid in water.",
       "observation": "Partial ionization occurs.",
@@ -1207,7 +1207,7 @@
     },
     {
       "name": "Hydrochloric acid ionization",
-      "equation": "HCl -> H+ + Cl-",
+      "equation": "HCl ⟶ H+ + Cl-",
       "type": "Ionization",
       "conditions": "Hydrochloric acid in water.",
       "observation": "Hydrogen and chloride ions form.",
@@ -1221,7 +1221,7 @@
     },
     {
       "name": "Nitric acid ionization",
-      "equation": "HNO3 -> H+ + NO3-",
+      "equation": "HNO3 ⟶ H+ + NO3-",
       "type": "Ionization",
       "conditions": "Nitric acid in water.",
       "observation": "Hydrogen and nitrate ions form.",
@@ -1235,7 +1235,7 @@
     },
     {
       "name": "Potassium hydroxide ionization",
-      "equation": "KOH -> K+ + OH-",
+      "equation": "KOH ⟶ K+ + OH-",
       "type": "Ionization",
       "conditions": "Potassium hydroxide dissolves in water.",
       "observation": "Potassium and hydroxide ions form.",
@@ -1249,7 +1249,7 @@
     },
     {
       "name": "Sodium hydroxide ionization",
-      "equation": "NaOH -> Na+ + OH-",
+      "equation": "NaOH ⟶ Na+ + OH-",
       "type": "Ionization",
       "conditions": "Sodium hydroxide dissolves in water.",
       "observation": "Sodium and hydroxide ions form.",
@@ -1263,7 +1263,7 @@
     },
     {
       "name": "Sulfuric acid ionization",
-      "equation": "H2SO4 -> 2H+ + SO4^2-",
+      "equation": "H2SO4 ⟶ 2H+ + SO4^2-",
       "type": "Ionization",
       "conditions": "Sulfuric acid in water.",
       "observation": "Hydrogen ions and sulfate ions form.",
@@ -1277,7 +1277,7 @@
     },
     {
       "name": "Ammonium cyanate to urea",
-      "equation": "NH4CNO -> NH2CONH2",
+      "equation": "NH4CNO ⟶ NH2CONH2",
       "type": "Isomerization",
       "conditions": "Heating ammonium cyanate.",
       "observation": "Urea forms.",
@@ -1291,7 +1291,7 @@
     },
     {
       "name": "Aluminum hydroxide antacid neutralization",
-      "equation": "Al(OH)3 + 3HCl -> AlCl3 + 3H2O",
+      "equation": "Al(OH)3 + 3HCl ⟶ AlCl3 + 3H2O",
       "type": "Neutralization",
       "conditions": "Aluminum hydroxide reacts with hydrochloric acid.",
       "observation": "Acid is neutralized.",
@@ -1306,7 +1306,7 @@
     {
       "id": "ammonium-sulfate-formation",
       "name": "Ammonium sulfate formation",
-      "equation": "2NH3 + H2SO4 -> (NH4)2SO4",
+      "equation": "2NH3 + H2SO4 ⟶ (NH4)2SO4",
       "type": "Neutralization",
       "conditions": "Ammonia reacts with sulfuric acid.",
       "observation": "Ammonium sulfate forms.",
@@ -1320,7 +1320,7 @@
     },
     {
       "name": "Calcium oxide with hydrochloric acid",
-      "equation": "CaO + 2HCl -> CaCl2 + H2O",
+      "equation": "CaO + 2HCl ⟶ CaCl2 + H2O",
       "type": "Neutralization",
       "conditions": "Basic oxide reacts with hydrochloric acid.",
       "observation": "Salt and water form.",
@@ -1334,7 +1334,7 @@
     },
     {
       "name": "Copper oxide with sulfuric acid",
-      "equation": "CuO + H2SO4 -> CuSO4 + H2O",
+      "equation": "CuO + H2SO4 ⟶ CuSO4 + H2O",
       "type": "Neutralization",
       "conditions": "Warm dilute sulfuric acid reacts with copper(II) oxide.",
       "observation": "Blue copper sulfate solution forms.",
@@ -1349,7 +1349,7 @@
     {
       "id": "ethanoic-acid-neutralization",
       "name": "Ethanoic acid neutralizes sodium hydroxide",
-      "equation": "CH3COOH + NaOH -> CH3COONa + H2O",
+      "equation": "CH3COOH + NaOH ⟶ CH3COONa + H2O",
       "type": "Neutralization",
       "conditions": "Aqueous ethanoic acid and sodium hydroxide.",
       "observation": "Sodium ethanoate and water form.",
@@ -1364,7 +1364,7 @@
     {
       "id": "limestone-neutralizes-acidic-soil",
       "name": "Limestone neutralizes acidic soil",
-      "equation": "CaCO3 + 2H+ -> Ca2+ + CO2 + H2O",
+      "equation": "CaCO3 + 2H+ ⟶ Ca2+ + CO2 + H2O",
       "type": "Neutralization",
       "conditions": "Apply limestone to acidic soil.",
       "observation": "Hydrogen ion concentration decreases.",
@@ -1379,7 +1379,7 @@
     },
     {
       "name": "Magnesium hydroxide antacid neutralization",
-      "equation": "Mg(OH)2 + 2HCl -> MgCl2 + 2H2O",
+      "equation": "Mg(OH)2 + 2HCl ⟶ MgCl2 + 2H2O",
       "type": "Neutralization",
       "conditions": "Magnesium hydroxide reacts with stomach acid.",
       "observation": "Acid is neutralized.",
@@ -1393,7 +1393,7 @@
     },
     {
       "name": "Neutralization net ionic equation",
-      "equation": "H+ + OH- -> H2O",
+      "equation": "H+ + OH- ⟶ H2O",
       "type": "Neutralization",
       "conditions": "Acid and base mixed in aqueous solution.",
       "observation": "Water forms and heat may be released.",
@@ -1408,7 +1408,7 @@
     {
       "id": "sodium-lauryl-sulfate-formation",
       "name": "Sodium lauryl sulfate formation",
-      "equation": "C12H26O4S + NaOH -> C12H25SO4Na + H2O",
+      "equation": "C12H26O4S + NaOH ⟶ C12H25SO4Na + H2O",
       "type": "Neutralization",
       "conditions": "Neutralize lauryl hydrogen sulfate with sodium hydroxide.",
       "observation": "Sodium lauryl sulfate detergent forms.",
@@ -1423,11 +1423,11 @@
     {
       "id": "neutralization",
       "name": "Strong acid-base neutralization",
-      "equation": "HCl + NaOH -> NaCl + H2O",
+      "equation": "HCl + NaOH ⟶ NaCl + H2O",
       "type": "Neutralization",
       "conditions": "Aqueous acid and base.",
       "observation": "Heat may be released; salt and water form.",
-      "notes": "Net ionic form is H+ + OH- -> H2O.",
+      "notes": "Net ionic form is H+ + OH- ⟶ H2O.",
       "tags": [
         "acid-base"
       ]
@@ -1435,7 +1435,7 @@
     {
       "id": "sulfuric-acid-with-calcium-hydroxide",
       "name": "Sulfuric acid neutralizes calcium hydroxide",
-      "equation": "H2SO4 + Ca(OH)2 -> CaSO4 + 2H2O",
+      "equation": "H2SO4 + Ca(OH)2 ⟶ CaSO4 + 2H2O",
       "type": "Neutralization",
       "conditions": "Dilute sulfuric acid with calcium hydroxide.",
       "observation": "Calcium sulfate salt and water form.",
@@ -1450,7 +1450,7 @@
     },
     {
       "name": "Sulfuric acid with sodium hydroxide",
-      "equation": "H2SO4 + 2NaOH -> Na2SO4 + 2H2O",
+      "equation": "H2SO4 + 2NaOH ⟶ Na2SO4 + 2H2O",
       "type": "Neutralization",
       "conditions": "Mix sulfuric acid and sodium hydroxide in correct ratio.",
       "observation": "Sodium sulfate and water form.",
@@ -1465,7 +1465,7 @@
     {
       "id": "bauxite-with-sodium-hydroxide",
       "name": "Bauxite purification with sodium hydroxide",
-      "equation": "Al2O3.2H2O + 2NaOH -> 2NaAlO2 + 3H2O",
+      "equation": "Al2O3.2H2O + 2NaOH ⟶ 2NaAlO2 + 3H2O",
       "type": "Ore processing",
       "conditions": "Heat with sodium hydroxide solution.",
       "observation": "Hydrated aluminium oxide converts into soluble sodium aluminate.",
@@ -1480,7 +1480,7 @@
     {
       "id": "ethanal-oxidation-to-ethanoic-acid",
       "name": "Oxidation of ethanal to ethanoic acid",
-      "equation": "CH3CHO + [O] -> CH3COOH",
+      "equation": "CH3CHO + [O] ⟶ CH3COOH",
       "type": "Oxidation",
       "conditions": "Acidified potassium dichromate.",
       "observation": "Ethanoic acid forms.",
@@ -1495,7 +1495,7 @@
     {
       "id": "ethene-to-ethylene-glycol",
       "name": "Oxidation of ethene to ethylene glycol",
-      "equation": "C2H4 + H2O + [O] -> HOCH2CH2OH",
+      "equation": "C2H4 + H2O + [O] ⟶ HOCH2CH2OH",
       "type": "Oxidation",
       "conditions": "Cold alkaline potassium permanganate.",
       "observation": "Pink permanganate color disappears.",
@@ -1510,7 +1510,7 @@
     {
       "id": "sulfur-dioxide-oxidation",
       "name": "Sulfur dioxide oxidation",
-      "equation": "2SO2 + O2 -> 2SO3",
+      "equation": "2SO2 + O2 ⟶ 2SO3",
       "type": "Oxidation",
       "conditions": "Atmospheric oxygen, catalysts, or contact-process conditions.",
       "observation": "Sulfur trioxide forms.",
@@ -1524,7 +1524,7 @@
     },
     {
       "name": "Daniell cell zinc oxidation",
-      "equation": "Zn -> Zn^2+ + 2e-",
+      "equation": "Zn ⟶ Zn^2+ + 2e-",
       "type": "Oxidation half-reaction",
       "conditions": "Zinc anode in galvanic cell.",
       "observation": "Zinc metal enters solution as zinc ions.",
@@ -1538,7 +1538,7 @@
     },
     {
       "name": "Silver electroplating anode reaction",
-      "equation": "Ag -> Ag+ + e-",
+      "equation": "Ag ⟶ Ag+ + e-",
       "type": "Oxidation half-reaction",
       "conditions": "Silver anode in silver nitrate solution.",
       "observation": "Silver dissolves from the anode.",
@@ -1552,7 +1552,7 @@
     },
     {
       "name": "Water electrolysis anode reaction",
-      "equation": "4OH- -> O2 + 2H2O + 4e-",
+      "equation": "4OH- ⟶ O2 + 2H2O + 4e-",
       "type": "Oxidation half-reaction",
       "conditions": "Anode during electrolysis of water/alkaline solution.",
       "observation": "Oxygen gas bubbles form.",
@@ -1566,7 +1566,7 @@
     },
     {
       "name": "Photosynthesis detailed equation",
-      "equation": "6CO2 + 12H2O -> C6H12O6 + 6O2 + 6H2O",
+      "equation": "6CO2 + 12H2O ⟶ C6H12O6 + 6O2 + 6H2O",
       "type": "Photochemical synthesis",
       "conditions": "Sunlight and chlorophyll.",
       "observation": "Plants store light energy as glucose.",
@@ -1581,7 +1581,7 @@
     {
       "id": "polymerization-ethene",
       "name": "Ethene polymerization",
-      "equation": "nC2H4 -> (C2H4)n",
+      "equation": "nC2H4 ⟶ (C2H4)n",
       "type": "Polymerization",
       "conditions": "Pressure, heat, catalyst.",
       "observation": "Polyethylene polymer forms.",
@@ -1593,7 +1593,7 @@
     {
       "id": "propene-polymerization",
       "name": "Propene polymerization",
-      "equation": "nC3H6 -> (C3H6)n",
+      "equation": "nC3H6 ⟶ (C3H6)n",
       "type": "Polymerization",
       "conditions": "Titanium chloride catalyst, about 140 atm and 120 C.",
       "observation": "Polypropylene/polypropene forms.",
@@ -1608,7 +1608,7 @@
     {
       "id": "vinyl-chloride-polymerization",
       "name": "Vinyl chloride polymerization",
-      "equation": "nC2H3Cl -> (C2H3Cl)n",
+      "equation": "nC2H3Cl ⟶ (C2H3Cl)n",
       "type": "Polymerization",
       "conditions": "High pressure and temperature with organic peroxide.",
       "observation": "Polyvinyl chloride forms.",
@@ -1622,7 +1622,7 @@
     },
     {
       "name": "Aluminum hydroxide precipitation from nitrate",
-      "equation": "Al(NO3)3 + 3NaOH -> Al(OH)3 + 3NaNO3",
+      "equation": "Al(NO3)3 + 3NaOH ⟶ Al(OH)3 + 3NaNO3",
       "type": "Precipitation",
       "conditions": "Aluminum nitrate solution with sodium hydroxide.",
       "observation": "White gelatinous aluminum hydroxide precipitate forms.",
@@ -1637,7 +1637,7 @@
     {
       "id": "limewater-test",
       "name": "Carbon dioxide in limewater",
-      "equation": "CO2 + Ca(OH)2 -> CaCO3 + H2O",
+      "equation": "CO2 + Ca(OH)2 ⟶ CaCO3 + H2O",
       "type": "Precipitation",
       "conditions": "Bubble CO2 into limewater.",
       "observation": "Limewater turns milky.",
@@ -1648,7 +1648,7 @@
     },
     {
       "name": "Copper hydroxide precipitation from nitrate",
-      "equation": "Cu(NO3)2 + 2NaOH -> Cu(OH)2 + 2NaNO3",
+      "equation": "Cu(NO3)2 + 2NaOH ⟶ Cu(OH)2 + 2NaNO3",
       "type": "Precipitation",
       "conditions": "Copper(II) nitrate solution with sodium hydroxide.",
       "observation": "Blue copper(II) hydroxide precipitate forms.",
@@ -1662,7 +1662,7 @@
     },
     {
       "name": "Ferric hydroxide precipitation from nitrate",
-      "equation": "Fe(NO3)3 + 3NaOH -> Fe(OH)3 + 3NaNO3",
+      "equation": "Fe(NO3)3 + 3NaOH ⟶ Fe(OH)3 + 3NaNO3",
       "type": "Precipitation",
       "conditions": "Iron(III) nitrate solution with sodium hydroxide.",
       "observation": "Reddish-brown precipitate forms.",
@@ -1676,7 +1676,7 @@
     },
     {
       "name": "Ferrous hydroxide precipitation",
-      "equation": "FeSO4 + 2NaOH -> Fe(OH)2 + Na2SO4",
+      "equation": "FeSO4 + 2NaOH ⟶ Fe(OH)2 + Na2SO4",
       "type": "Precipitation",
       "conditions": "Mix iron(II) sulfate and sodium hydroxide solutions.",
       "observation": "Greenish iron(II) hydroxide precipitate forms.",
@@ -1690,7 +1690,7 @@
     },
     {
       "name": "Lead iodide precipitation",
-      "equation": "Pb(NO3)2 + 2KI -> PbI2 + 2KNO3",
+      "equation": "Pb(NO3)2 + 2KI ⟶ PbI2 + 2KNO3",
       "type": "Precipitation",
       "conditions": "Mix lead nitrate and potassium iodide solutions.",
       "observation": "Bright yellow lead iodide precipitate forms.",
@@ -1704,7 +1704,7 @@
     },
     {
       "name": "Magnesium sulfate hardness removal",
-      "equation": "MgSO4 + Na2CO3 -> MgCO3 + Na2SO4",
+      "equation": "MgSO4 + Na2CO3 ⟶ MgCO3 + Na2SO4",
       "type": "Precipitation",
       "conditions": "Add sodium carbonate to magnesium sulfate hard water.",
       "observation": "Magnesium carbonate precipitates.",
@@ -1718,7 +1718,7 @@
     },
     {
       "name": "Permanent hardness removal with washing soda",
-      "equation": "CaCl2 + Na2CO3 -> CaCO3 + 2NaCl",
+      "equation": "CaCl2 + Na2CO3 ⟶ CaCO3 + 2NaCl",
       "type": "Precipitation",
       "conditions": "Add sodium carbonate to calcium-containing hard water.",
       "observation": "Calcium carbonate precipitates.",
@@ -1732,7 +1732,7 @@
     },
     {
       "name": "Soap scum formation",
-      "equation": "2C17H35COONa + CaCl2 -> (C17H35COO)2Ca + 2NaCl",
+      "equation": "2C17H35COONa + CaCl2 ⟶ (C17H35COO)2Ca + 2NaCl",
       "type": "Precipitation",
       "conditions": "Soap solution in calcium-containing hard water.",
       "observation": "Insoluble scum forms.",
@@ -1746,7 +1746,7 @@
     },
     {
       "name": "Zinc hydroxide precipitation from nitrate",
-      "equation": "Zn(NO3)2 + 2NaOH -> Zn(OH)2 + 2NaNO3",
+      "equation": "Zn(NO3)2 + 2NaOH ⟶ Zn(OH)2 + 2NaNO3",
       "type": "Precipitation",
       "conditions": "Zinc nitrate solution with sodium hydroxide.",
       "observation": "White zinc hydroxide precipitate forms.",
@@ -1761,7 +1761,7 @@
     {
       "id": "concentrated-sulfuric-acid-with-copper",
       "name": "Concentrated sulfuric acid oxidizes copper",
-      "equation": "Cu + 2H2SO4 -> CuSO4 + SO2 + 2H2O",
+      "equation": "Cu + 2H2SO4 ⟶ CuSO4 + SO2 + 2H2O",
       "type": "Redox",
       "conditions": "Concentrated sulfuric acid.",
       "observation": "Copper sulfate, sulfur dioxide and water form.",
@@ -1776,7 +1776,7 @@
     {
       "id": "thermite",
       "name": "Thermite reaction",
-      "equation": "Fe2O3 + 2Al -> Al2O3 + 2Fe",
+      "equation": "Fe2O3 + 2Al ⟶ Al2O3 + 2Fe",
       "type": "Redox",
       "conditions": "Ignition of aluminum and iron oxide mixture.",
       "observation": "Very high heat; molten iron forms.",
@@ -1787,7 +1787,7 @@
     },
     {
       "name": "Ferric chloride formation",
-      "equation": "2FeCl2 + Cl2 -> 2FeCl3",
+      "equation": "2FeCl2 + Cl2 ⟶ 2FeCl3",
       "type": "Redox synthesis",
       "conditions": "Chlorine oxidizes iron(II) chloride.",
       "observation": "Iron(II) converts to iron(III).",
@@ -1801,7 +1801,7 @@
     },
     {
       "name": "Sodium chloride redox synthesis",
-      "equation": "2Na + Cl2 -> 2NaCl",
+      "equation": "2Na + Cl2 ⟶ 2NaCl",
       "type": "Redox synthesis",
       "conditions": "Sodium metal reacts with chlorine gas.",
       "observation": "Sodium loses electrons and chlorine gains electrons.",
@@ -1816,7 +1816,7 @@
     {
       "id": "silver-mirror",
       "name": "Tollens silver mirror",
-      "equation": "RCHO + 2Ag+ + 3OH- -> RCOO- + 2Ag + 2H2O",
+      "equation": "RCHO + 2Ag+ + 3OH- ⟶ RCOO- + 2Ag + 2H2O",
       "type": "Redox test",
       "conditions": "Tollens reagent with aldehyde.",
       "observation": "Silver mirror or grey silver deposit.",
@@ -1828,7 +1828,7 @@
     },
     {
       "name": "Daniell cell copper reduction",
-      "equation": "Cu^2+ + 2e- -> Cu",
+      "equation": "Cu^2+ + 2e- ⟶ Cu",
       "type": "Reduction half-reaction",
       "conditions": "Copper cathode in galvanic cell.",
       "observation": "Copper metal deposits on the cathode.",
@@ -1842,7 +1842,7 @@
     },
     {
       "name": "Silver electroplating cathode reaction",
-      "equation": "Ag+ + e- -> Ag",
+      "equation": "Ag+ + e- ⟶ Ag",
       "type": "Reduction half-reaction",
       "conditions": "Object to be plated acts as cathode.",
       "observation": "Silver deposits as a thin coating.",
@@ -1856,7 +1856,7 @@
     },
     {
       "name": "Water electrolysis cathode reaction",
-      "equation": "4H+ + 4e- -> 2H2",
+      "equation": "4H+ + 4e- ⟶ 2H2",
       "type": "Reduction half-reaction",
       "conditions": "Cathode during electrolysis of acidified water.",
       "observation": "Hydrogen gas bubbles form.",
@@ -1871,7 +1871,7 @@
     {
       "id": "haber-ammonia-synthesis",
       "name": "Haber ammonia synthesis",
-      "equation": "N2 + 3H2 <-> 2NH3 + heat",
+      "equation": "N2 + 3H2 ⇌ 2NH3 + heat",
       "type": "Reversible synthesis",
       "conditions": "Iron catalyst, high pressure, controlled temperature.",
       "observation": "Ammonia forms reversibly; heat is released.",
@@ -1885,7 +1885,7 @@
     },
     {
       "name": "Hydrogen iodide reversible synthesis",
-      "equation": "H2 + I2 <-> 2HI",
+      "equation": "H2 + I2 ⇌ 2HI",
       "type": "Reversible synthesis",
       "conditions": "Heated hydrogen and iodine vapor.",
       "observation": "A reversible equilibrium forms hydrogen iodide.",
@@ -1900,7 +1900,7 @@
     {
       "id": "cinnabar-roasting",
       "name": "Roasting of cinnabar",
-      "equation": "2HgS + 3O2 -> 2HgO + 2SO2",
+      "equation": "2HgS + 3O2 ⟶ 2HgO + 2SO2",
       "type": "Roasting",
       "conditions": "Heat mercury sulfide in air.",
       "observation": "Mercury(II) oxide and sulfur dioxide form.",
@@ -1915,7 +1915,7 @@
     {
       "id": "galena-roasting",
       "name": "Roasting of galena",
-      "equation": "2PbS + 3O2 -> 2PbO + 2SO2",
+      "equation": "2PbS + 3O2 ⟶ 2PbO + 2SO2",
       "type": "Roasting",
       "conditions": "Heat sulfide ore in air.",
       "observation": "Lead sulfide converts to lead oxide and sulfur dioxide.",
@@ -1931,7 +1931,7 @@
     {
       "id": "zinc-sulfide-roasting",
       "name": "Roasting of zinc sulfide",
-      "equation": "2ZnS + 3O2 -> 2ZnO + 2SO2",
+      "equation": "2ZnS + 3O2 ⟶ 2ZnO + 2SO2",
       "type": "Roasting",
       "conditions": "Heat zinc blende in air.",
       "observation": "Zinc sulfide converts to zinc oxide and sulfur dioxide.",
@@ -1947,7 +1947,7 @@
     {
       "id": "mercury-oxide-self-reduction",
       "name": "Self-reduction of mercury oxide with cinnabar",
-      "equation": "2HgO + HgS -> 3Hg + SO2",
+      "equation": "2HgO + HgS ⟶ 3Hg + SO2",
       "type": "Self reduction",
       "conditions": "Heat reaction mixture.",
       "observation": "Mercury metal and sulfur dioxide form.",
@@ -1962,7 +1962,7 @@
     {
       "id": "iron-copper-displacement",
       "name": "Iron displaces copper",
-      "equation": "Fe + CuSO4 -> FeSO4 + Cu",
+      "equation": "Fe + CuSO4 ⟶ FeSO4 + Cu",
       "type": "Single displacement",
       "conditions": "Iron metal in copper(II) sulfate solution.",
       "observation": "Copper coats the iron; blue solution fades.",
@@ -1973,7 +1973,7 @@
     },
     {
       "name": "Magnesium with sulfuric acid",
-      "equation": "Mg + H2SO4 -> MgSO4 + H2",
+      "equation": "Mg + H2SO4 ⟶ MgSO4 + H2",
       "type": "Single displacement",
       "conditions": "Magnesium metal and dilute sulfuric acid.",
       "observation": "Hydrogen gas evolves.",
@@ -1988,7 +1988,7 @@
     {
       "id": "sodium-water",
       "name": "Sodium with water",
-      "equation": "2Na + 2H2O -> 2NaOH + H2",
+      "equation": "2Na + 2H2O ⟶ 2NaOH + H2",
       "type": "Single displacement",
       "conditions": "Small sodium piece on water.",
       "observation": "Vigorous fizzing; heat; hydrogen gas.",
@@ -2000,7 +2000,7 @@
     {
       "id": "zinc-acid",
       "name": "Zinc with hydrochloric acid",
-      "equation": "Zn + 2HCl -> ZnCl2 + H2",
+      "equation": "Zn + 2HCl ⟶ ZnCl2 + H2",
       "type": "Single displacement",
       "conditions": "Metal plus dilute acid.",
       "observation": "Bubbling hydrogen gas.",
@@ -2012,7 +2012,7 @@
     },
     {
       "name": "Zinc with sulfuric acid",
-      "equation": "Zn + H2SO4 -> ZnSO4 + H2",
+      "equation": "Zn + H2SO4 ⟶ ZnSO4 + H2",
       "type": "Single displacement",
       "conditions": "Dilute sulfuric acid and zinc metal.",
       "observation": "Hydrogen gas bubbles form.",
@@ -2027,7 +2027,7 @@
     {
       "id": "slag-formation",
       "name": "Blast furnace slag formation",
-      "equation": "CaO + SiO2 -> CaSiO3",
+      "equation": "CaO + SiO2 ⟶ CaSiO3",
       "type": "Slag formation",
       "conditions": "Blast furnace.",
       "observation": "Molten calcium silicate slag forms.",
@@ -2043,7 +2043,7 @@
     {
       "id": "bromoethane-hydrolysis",
       "name": "Bromoethane hydrolysis to ethanol",
-      "equation": "C2H5Br + NaOH -> C2H5OH + NaBr",
+      "equation": "C2H5Br + NaOH ⟶ C2H5OH + NaBr",
       "type": "Substitution",
       "conditions": "Heat with aqueous sodium hydroxide.",
       "observation": "Ethanol and sodium bromide form.",
@@ -2058,7 +2058,7 @@
     {
       "id": "methane-chlorination",
       "name": "Chlorination of methane",
-      "equation": "CH4 + Cl2 -> CH3Cl + HCl",
+      "equation": "CH4 + Cl2 ⟶ CH3Cl + HCl",
       "type": "Substitution",
       "conditions": "Ultraviolet light.",
       "observation": "Chloromethane and hydrogen chloride form.",
@@ -2073,7 +2073,7 @@
     {
       "id": "lauryl-alcohol-sulfation",
       "name": "Lauryl alcohol sulfation",
-      "equation": "C12H26O + H2SO4 -> C12H26O4S + H2O",
+      "equation": "C12H26O + H2SO4 ⟶ C12H26O4S + H2O",
       "type": "Sulfation",
       "conditions": "Lauryl alcohol reacts with sulfuric acid.",
       "observation": "Lauryl hydrogen sulfate forms.",
@@ -2087,7 +2087,7 @@
     },
     {
       "name": "Temporary hardness by boiling",
-      "equation": "Ca(HCO3)2 -> CaCO3 + CO2 + H2O",
+      "equation": "Ca(HCO3)2 ⟶ CaCO3 + CO2 + H2O",
       "type": "Thermal decomposition",
       "conditions": "Boiling temporarily hard water.",
       "observation": "Calcium carbonate precipitates.",
@@ -2102,7 +2102,7 @@
     {
       "id": "thermal-decomposition-of-calcium-carbonate",
       "name": "Thermal decomposition of calcium carbonate",
-      "equation": "CaCO3 + heat -> CaO + CO2",
+      "equation": "CaCO3 + heat ⟶ CaO + CO2",
       "type": "Thermal decomposition",
       "conditions": "Strong heating.",
       "observation": "Quicklime and carbon dioxide form.",

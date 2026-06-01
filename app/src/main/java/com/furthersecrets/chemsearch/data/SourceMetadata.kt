@@ -79,11 +79,11 @@ fun buildSourceReliabilityMatrix(): List<SourceMetadata> =
         ),
         SourceMetadata(
             name = "UNECE GHS",
-            url = "https://unece.org/transportdangerous-goods/ghs-pictograms",
+            url = "https://unece.org/transport/dangerous-goods/ghs-pictograms",
             confidence = SourceConfidence.HIGH,
             appliesTo = setOf(AppDataArea.GHS_SAFETY),
             licenseOrPolicy = "UN GHS reference",
-            note = "Use for pictogram names and safety wording policy."
+            note = "Use for official GHS pictogram artwork and safety wording policy."
         ),
         SourceMetadata(
             name = "Android Offline First",

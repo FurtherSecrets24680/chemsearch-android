@@ -27,49 +27,102 @@
 <p align="center">
   <a href="https://github.com/FurtherSecrets24680/chemsearch-android/releases"><strong>Download APK</strong></a>
   -
-  <a href="https://github.com/FurtherSecrets24680/chemsearch-android/wiki"><strong>Wiki</strong></a>
-  -
   <a href="https://github.com/FurtherSecrets24680/chemsearch-android/issues"><strong>Issues</strong></a>
 </p>
 
 ---
 
-## About
+## <img src="https://api.iconify.design/ph:info.svg?color=%233b82f6" width="22" height="22" alt=""/> About
 
 ChemSearch is an Android chemistry app I built to make compound lookup less annoying. Search a compound, check the formula and identifiers, open the 2D or 3D structure, read safety notes, save it for offline use, or jump into calculators when you need a quick result.
 
 It is meant for students, teachers, and quick lab-prep checks. Not a replacement for an SDS or proper lab rules, but handy when you need chemistry data on your phone without bouncing between PubChem, Wikipedia, and separate calculator sites.
 
-## Highlights
+## <img src="https://api.iconify.design/ph:list-checks.svg?color=%233b82f6" width="22" height="22" alt=""/> Highlights
 
-- Search by compound name, CAS number, formula, or PubChem CID.
-- View 2D structures and interactive 3D molecular models.
+- Search by compound name, CAS number, formula, PubChem CID, drawn structure, or a random PubChem compound.
+- Use advanced filters for query type, include/exclude terms, molecular weight, charge, 3D data, and GHS data.
+- Draw a structure in a native editor and search PubChem by exact, similar, substructure, or superstructure matching.
+- View formulas, condensed formulas, identifiers, 2D structures, and interactive 3D molecular models.
 - Save full compound data for offline use, including structures, identifiers, descriptions, synonyms, safety data, and source metadata.
-- Compare several compounds side by side.
-- Browse a built-in chemical database with 659 entries across substances, ions, functional groups, and reactions.
-- Use chemistry tools for molar mass, pH/pOH, oxidation states, reaction balancing, stoichiometry, dilution, gas laws, isomers, and SMILES lookup.
+- Compare several compounds side by side from Search, Tools, or Library selections.
+- Browse a detailed periodic table and a built-in chemical database with 659 entries.
+- Use quick search shortcuts for drawn structures and formula-based isomer search from the main Search screen.
+- Use chemistry tools for molar mass, empirical formulas, pH/pOH, oxidation states, reaction balancing, precipitation, stoichiometry, dilution, gas laws, SMILES lookup, and local 3D files.
 - Choose PubChem, Wikipedia, Gemini, Groq, OpenAI, OpenRouter, or Mistral for descriptions.
 - Use list/grid layouts, tool reordering, pinned recents, formula display modes, light mode, dark mode, AMOLED Mode, compact mode, accessibility options, and multiple color schemes.
 
-## Screenshots
+## <img src="https://api.iconify.design/ph:android-logo.svg?color=%233b82f6" width="22" height="22" alt=""/> Download for Android
 
-| Search | Light Mode | 3D Viewer |
+- Download the latest APK from [GitHub Releases](https://github.com/FurtherSecrets24680/chemsearch-android/releases).
+  - Runs on Android 8.0 Oreo and newer.
+  - Minimum SDK: API 26.
+  - Target SDK: API 34.
+  - Compile SDK: API 36.
+
+
+## <img src="https://api.iconify.design/ph:image-square.svg?color=%233b82f6" width="22" height="22" alt=""/> Screenshots
+
+Click a section to view screenshots.
+
+<details>
+<summary><strong>Search And Results</strong></summary>
+
+| Home | 2D Result | Identifiers |
 |:---:|:---:|:---:|
-| <img src="screenshots/home_dark.jpg" width="220" alt="ChemSearch search screen in dark mode"/> | <img src="screenshots/home_light.jpg" width="220" alt="ChemSearch search screen in light mode"/> | <img src="screenshots/3dmolecule.jpg" width="220" alt="3D molecule viewer"/> |
+| <img src="screenshots/01_home_recent_searches_dark_blue.png" width="220" alt="ChemSearch home screen with recent searches in dark blue theme"/> | <img src="screenshots/05_compound_benzene_2d_dark_blue.png" width="220" alt="Benzene result with 2D structure in dark blue theme"/> | <img src="screenshots/06_compound_identifiers_synonyms_dark_blue.png" width="220" alt="Compound identifiers and synonyms in dark blue theme"/> |
 
-| Library / Favorites | Tools | Identifiers |
+| Description And GHS | 3D Result |
+|:---:|:---:|
+| <img src="screenshots/07_compound_description_ghs_dark_blue.png" width="220" alt="Compound description and GHS pictograms in dark blue theme"/> | <img src="screenshots/14_compound_ibuprofen_3d_dark_blue.png" width="220" alt="Ibuprofen result with 3D molecule viewer in dark blue theme"/> |
+
+</details>
+
+<details>
+<summary><strong>Library And Reference</strong></summary>
+
+| Periodic Table | Chemical Database |
+|:---:|:---:|
+| <img src="screenshots/02_periodic_table_library_dark_blue.png" width="220" alt="Periodic table in Library in dark blue theme"/> | <img src="screenshots/08_chemical_database_library_dark_blue.png" width="220" alt="Chemical Database in Library in dark blue theme"/> |
+
+</details>
+
+<details>
+<summary><strong>Structure And Formula Search</strong></summary>
+
+| Structure Search | Isomer Search |
+|:---:|:---:|
+| <img src="screenshots/15_structure_search_editor_dark_blue.png" width="220" alt="Native structure search editor in dark blue theme"/> | <img src="screenshots/16_isomer_search_results_dark_blue.png" width="220" alt="Isomer search results in dark blue theme"/> |
+
+</details>
+
+<details>
+<summary><strong>Tools</strong></summary>
+
+| Tools List | Reaction Balancer | Molar Mass |
 |:---:|:---:|:---:|
-| <img src="screenshots/favorites.jpg" width="220" alt="Library and favorites screen"/> | <img src="screenshots/tools_page.jpg" width="220" alt="ChemSearch tools screen"/> | <img src="screenshots/iden_ea.jpg" width="220" alt="Compound identifiers section"/> |
+| <img src="screenshots/03_tools_list_dark_blue.png" width="220" alt="Tools list in dark blue theme"/> | <img src="screenshots/09_tool_reaction_balancer_dark_blue.png" width="220" alt="Reaction Balancer tool in dark blue theme"/> | <img src="screenshots/10_tool_molar_mass_dark_blue.png" width="220" alt="Molar Mass Calculator tool in dark blue theme"/> |
 
-| Descriptions | GHS Safety | Molar Mass |
+| Oxidation State | Compare Compounds | Stoichiometry |
 |:---:|:---:|:---:|
-| <img src="screenshots/syn_desc.jpg" width="220" alt="Compound synonyms and description"/> | <img src="screenshots/ghs_safety.jpg" width="220" alt="GHS safety information"/> | <img src="screenshots/tool_mmc.jpg" width="220" alt="Molar mass calculator"/> |
+| <img src="screenshots/11_tool_oxidation_state_dark_blue.png" width="220" alt="Oxidation State Finder tool in dark blue theme"/> | <img src="screenshots/12_tool_compare_compounds_dark_blue.png" width="220" alt="Compare Compounds tool in dark blue theme"/> | <img src="screenshots/13_tool_stoichiometry_dark_blue.png" width="220" alt="Stoichiometry tool in dark blue theme"/> |
 
-| Oxidation States | Reaction Balancer | SMILES Viewer |
+</details>
+
+<details>
+<summary><strong>Themes And Settings</strong></summary>
+
+| Display Settings | Light Blue | Dark Violet |
 |:---:|:---:|:---:|
-| <img src="screenshots/tool_osf.jpg" width="220" alt="Oxidation state finder"/> | <img src="screenshots/tool_rb.jpg" width="220" alt="Reaction balancer"/> | <img src="screenshots/tool_sv.jpg" width="220" alt="SMILES visualizer"/> |
+| <img src="screenshots/04_settings_display_dark_blue.png" width="180" alt="Display settings in dark blue theme"/> | <img src="screenshots/17_compound_benzene_2d_light_blue.png" width="180" alt="Benzene result in light blue theme"/> | <img src="screenshots/18_compound_phenol_3d_dark_violet.png" width="180" alt="Phenol result with 3D viewer in dark violet theme"/> |
 
-## Compound Search
+| Dark Emerald | Dark Rose | Dark Amber |
+|:---:|:---:|:---:|
+| <img src="screenshots/19_compound_aspirin_2d_dark_emerald.png" width="180" alt="Aspirin result in dark emerald theme"/> | <img src="screenshots/20_compound_caffeine_2d_dark_rose.png" width="180" alt="Caffeine result in dark rose theme"/> | <img src="screenshots/21_compound_benzenesulfonyl_3d_dark_amber.png" width="180" alt="Compound result with 3D viewer in dark amber theme"/> |
+
+</details>
+
+## <img src="https://api.iconify.design/ph:magnifying-glass.svg?color=%233b82f6" width="22" height="22" alt=""/> Compound Search
 
 ChemSearch can look up compounds using several common identifiers:
 
@@ -77,40 +130,63 @@ ChemSearch can look up compounds using several common identifiers:
 - CAS number.
 - Molecular formula.
 - PubChem CID.
+- Drawn chemical structure.
 
 Autosuggestions can query PubChem while you type, and repeated searches can load faster from the app cache.
+
+Advanced search can combine a query type, include and exclude terms, molecular weight range, charge, available 3D data, and available GHS data.
 
 The result page focuses on the details people usually need first:
 
 - Compound name and formula.
-- CID, CAS number, and molecular weight.
+- CID, CAS number, molecular weight, condensed formula, and empirical formula when available.
 - IUPAC name, InChI, InChIKey, SMILES, and synonyms.
 - 2D structure image.
 - 3D structure viewer.
-- GHS safety information when available.
+- GHS safety information with official pictograms when available.
 - Descriptions from the selected source.
+- Extra PubChem information such as uses, occurrence notes, classification tags, XLogP, polar surface area, exact mass, hydrogen bond counts, and rotatable bond count.
 - Isomer search from the formula.
 - Favorite and offline download actions.
+
+Extra PubChem information sits behind **Show more information about this substance** so the main result page stays readable for everyday searches.
+
+The empty search screen includes search examples, quick cards for Structure Search and Isomer Search, and a random compound button. Random compound picks a PubChem CID and opens the compound like any other search result.
 
 Formula display supports subscripts, charge superscripts, wrapping for large formulas, and two ordering styles:
 
 - **Conventional**: familiar ordering for common compounds, such as `NaCl`, `H2SO4`, and `NH4+`.
 - **Hill**: PubChem-style Hill ordering, such as `ClNa` or `H4N+` when that is the source formula.
 
-## Structures
+## <img src="https://api.iconify.design/ph:hexagon.svg?color=%233b82f6" width="22" height="22" alt=""/> Structure Search
+
+Structure search uses a native drawing page. Build a molecule from atoms, bonds, templates, and charges, choose how PubChem should match it, and open matching compounds in the normal result page.
+
+The editor includes:
+
+- Common atoms, a full periodic-table picker, bond types, and structure templates.
+- Colored atoms based on common CPK-style colors.
+- Select, drag, undo, redo, delete, clean, duplicate, import, export, and share actions.
+- Exact, similar, substructure, and superstructure search modes.
+- Matching results in a compact dialog with thumbnails, names, formulas, CIDs, and molecular weights.
+
+The editor exports a molfile-style structure for PubChem search. It does not rely on a WebView.
+
+## <img src="https://api.iconify.design/ph:cube.svg?color=%233b82f6" width="22" height="22" alt=""/> Structures
 
 ChemSearch loads structure data from PubChem when it is available.
 
 - 2D structure images are shown directly in the compound page.
-- 3D SDF models open in the built-in viewer.
+- 3D SDF models open in the built-in viewer, including common V2000 and V3000 records.
 - The default structure tab can be set to 2D, 3D, or the last used tab.
+- The native 3D viewer supports drag rotation, pinch zoom, pinch-drag panning, reset, and Reduce Motion-aware auto-spin.
 - If PubChem has no 3D model, ChemSearch can try fallback structure loading from identifiers such as SMILES, InChI, and InChIKey.
 - Generated or fallback structures are labeled so the source is clear.
 - Structure pills include visible outlines in light, dark, and AMOLED themes.
 
 Some atoms, metal compounds, ionic solids, and crystal-like materials do not have a useful standalone 3D molecule. In those cases, ChemSearch explains the missing model or labels the fallback as an estimate instead of presenting it as a confirmed crystal structure.
 
-## Descriptions
+## <img src="https://api.iconify.design/ph:text-align-left.svg?color=%233b82f6" width="22" height="22" alt=""/> Descriptions
 
 Descriptions can come from:
 
@@ -124,15 +200,30 @@ When AI is enabled, ChemSearch uses available compound details such as formula, 
 
 Long descriptions can be expanded and collapsed, including inside the compound comparison tool.
 
-## Library
+## <img src="https://api.iconify.design/ph:books.svg?color=%233b82f6" width="22" height="22" alt=""/> Library
 
-The Library screen groups saved and offline content into three areas:
+The Library screen groups saved compounds and chemistry data into clear areas:
 
 - **Favorites**: saved compounds for quick access.
 - **Downloads**: offline compound copies.
-- **Chemical Database**: built-in reference data for substances, ions, functional groups, and reactions.
+- **Reference**: Periodic Table and Chemical Database.
 
 Library supports list and grid layouts. The Chemical Database card keeps the grid layout clean, while the list layout can show database counts from an info button beside the description.
+
+Favorites, downloads, substances, and ions can be selected for comparison. When two or more comparable items are selected, a compare button opens the Compare Compounds tool with those compounds filled in. Functional groups and reactions stay as read-only database items.
+
+The Periodic Table includes all 118 official elements, group and period layout, lanthanide and actinide rows, element search, compact element dialogs, and full detail pages. Element detail pages include:
+
+- Wikipedia summaries.
+- Electron-shell diagrams with valence-focused explanations.
+- Short and full electronic configurations.
+- Physical properties such as electronegativity, radius, ionization energy, melting point, boiling point, density, and molar heat.
+- Spectral-line images when a reliable source is available.
+- Element images when available.
+- Clickable source links for PubChem, Wikipedia, Wikimedia Commons, and Bowserinator/Periodic-Table-JSON.
+- Info buttons that explain what each card means.
+
+Missing element values are hidden instead of shown as empty or placeholder rows.
 
 The bundled Chemical Database includes:
 
@@ -140,6 +231,8 @@ The bundled Chemical Database includes:
 - Ions: 108.
 - Functional groups: 71.
 - Reactions: 149.
+
+Chemical Database formulas use subscript and superscript formatting where it applies. Values can be copied by tapping them, matching the copy behavior on the main compound page.
 
 Offline downloads save more than a cached result. A downloaded compound can include:
 
@@ -158,7 +251,9 @@ Downloads are stored in the local app database and can show saved asset chips su
 
 The offline save button shows download progress while the compound data is being saved.
 
-## Recent Searches
+Library import and export can move favorites and downloads between installs or devices.
+
+## <img src="https://api.iconify.design/ph:clock-counter-clockwise.svg?color=%233b82f6" width="22" height="22" alt=""/> Recent Searches
 
 The Recent screen keeps search history organized by time.
 
@@ -169,15 +264,16 @@ The Recent screen keeps search history organized by time.
 
 Pinned entries use a pin icon so they are easier to understand at a glance.
 
-## Tools
+## <img src="https://api.iconify.design/ph:wrench.svg?color=%233b82f6" width="22" height="22" alt=""/> Tools
 
 ChemSearch includes practical tools for common chemistry work:
 
 - **Molar Mass Calculator**: parse a formula and calculate molar mass.
+- **Empirical Formula Finder**: calculate empirical and molecular formulas from percent composition, mass data, or a molecular formula.
 - **Oxidation State Finder**: estimate oxidation states for compounds, including oxyhalogens, peroxides, superoxides, ozonides, hydrides, and mixed-valence cases.
 - **pH / pOH Calculator**: convert between pH, pOH, hydrogen ion concentration, and hydroxide ion concentration.
 - **Reaction Balancer**: balance chemical equations.
-- **Isomer Finder**: search isomers from a formula and open a result in the main compound screen.
+- **Precipitate Predictor**: check two aqueous salts for likely precipitates and net ionic equations.
 - **Limiting Reagent**: find limiting reagent, mole ratios, and theoretical yield.
 - **Percent Yield**: compare actual yield against theoretical yield.
 - **Reaction Scaling**: scale reactants for a target product amount.
@@ -189,7 +285,7 @@ ChemSearch includes practical tools for common chemistry work:
 
 The Tools page supports search, categories, list/grid layouts, compact mode, drag-style reordering, and a reset action for returning tools to the default order.
 
-## Display And Settings
+## <img src="https://api.iconify.design/ph:gear-six.svg?color=%233b82f6" width="22" height="22" alt=""/> Display And Settings
 
 ChemSearch includes display settings for different phones and reading styles:
 
@@ -200,6 +296,7 @@ ChemSearch includes display settings for different phones and reading styles:
 - Reduce motion.
 - High contrast outlines.
 - Welcome screen reset for checking onboarding again.
+- Privacy Policy, Terms of Service, and Safety Disclaimer in onboarding and About.
 - Autosuggestions.
 - Default description source.
 - Default structure view.
@@ -210,11 +307,13 @@ ChemSearch includes display settings for different phones and reading styles:
 - Cache size limit: 10 MB, 50 MB, 100 MB, or unlimited.
 - Cache auto-clear schedule: daily, weekly, monthly, or manual.
 - Settings import and export.
+- Library import and export.
 - Internal app update download with progress in Settings.
 - Update notifications.
 - Update install prompt after the APK finishes downloading.
+- About screen with app links, credits, license, privacy notes, and project sources.
 
-## Developer Options
+## <img src="https://api.iconify.design/ph:bug.svg?color=%233b82f6" width="22" height="22" alt=""/> Developer Options
 
 Developer options include checks for the app's main data paths:
 
@@ -230,7 +329,7 @@ Developer options also include masked preference inspection, debug logging, noti
 
 These checks are useful when a data source changes, a network request fails, or a provider key needs testing.
 
-## Built With
+## <img src="https://api.iconify.design/ph:stack.svg?color=%233b82f6" width="22" height="22" alt=""/> Built With
 
 - [Kotlin](https://kotlinlang.org/)
 - [Jetpack Compose](https://developer.android.com/compose)
@@ -246,24 +345,29 @@ These checks are useful when a data source changes, a network request fails, or 
 - [Gson](https://github.com/google/gson)
 - [Coil](https://coil-kt.github.io/coil/compose/)
 - [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html)
+- [Icons8](https://icons8.com/) for the Wikipedia logo used in element details.
 
-## Data Sources
+## <img src="https://api.iconify.design/ph:database.svg?color=%233b82f6" width="22" height="22" alt=""/> Data Sources
 
-- [PubChem PUG REST](https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest) for lookup, properties, synonyms, descriptions, images, isomers, and SDF files.
+- [PubChem PUG REST](https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest) for lookup, structure search, properties, synonyms, descriptions, images, isomers, and SDF files.
 - [PubChem PUG View](https://pubchem.ncbi.nlm.nih.gov/docs/pug-view) for GHS safety data.
+- [UNECE GHS pictograms](https://unece.org/transport/dangerous-goods/ghs-pictograms) for hazard symbol artwork.
+- [PubChem Periodic Table](https://pubchem.ncbi.nlm.nih.gov/periodic-table/) for element properties.
 - PubChem autocomplete for search suggestions.
 - [Wikipedia REST API](https://en.wikipedia.org/api/rest_v1/) for general summaries.
+- [Wikimedia Commons](https://commons.wikimedia.org/) for element images and spectral-line images.
+- [Bowserinator/Periodic-Table-JSON](https://github.com/Bowserinator/Periodic-Table-JSON/) for extra element data, electron shells, image links, and Wikipedia-derived element summaries.
 - [NCI/CADD Chemical Identifier Resolver](https://cactus.nci.nih.gov/chemical/structure) for fallback SDF models.
 - [GitHub Releases](https://docs.github.com/en/rest/releases/releases) for app update checks.
-- Local JSON files in `app/src/main/assets/chemical_database/` for offline reference data.
-- IUPAC, LibreTexts, PubChem, and general chemistry references are used as labels or source links inside the local database where available.
+- Local JSON files in `app/src/main/assets/chemical_database/` for offline chemistry data.
+- IUPAC, LibreTexts, PubChem, and general chemistry pages are used as labels or source links inside the local database where available.
 - Optional AI provider APIs for generated descriptions: Gemini, Groq, OpenAI, OpenRouter, and Mistral.
 
-Safety data is shown as reference information only. Always follow the official SDS, lab rules, and local safety requirements for real handling decisions.
+Safety data is shown for quick checks only. Always follow the official SDS, lab rules, and local safety requirements for real handling decisions.
 
-## Accuracy And Limits
+## <img src="https://api.iconify.design/ph:warning-circle.svg?color=%233b82f6" width="22" height="22" alt=""/> Accuracy And Limits
 
-ChemSearch is a study and reference tool, not a substitute for lab safety rules, an official SDS, or a chemistry instructor.
+ChemSearch is a study and quick chemistry tool, not a substitute for lab safety rules, an official SDS, or a chemistry instructor.
 
 - PubChem and Wikipedia results depend on the source data that is available for a compound.
 - AI descriptions can be useful, but they should be checked against source data for serious work.
@@ -271,16 +375,26 @@ ChemSearch is a study and reference tool, not a substitute for lab safety rules,
 - Ionic, metallic, and crystal structures may not be represented by a single molecular 3D model.
 - The oxidation state and formula tools cover many common study cases, but unusual coordination compounds and edge cases may need manual checking.
 
-## Project Structure
+## <img src="https://api.iconify.design/ph:folders.svg?color=%233b82f6" width="22" height="22" alt=""/> Project Structure
 
 ```text
 .
 |-- app/
-|   `-- src/main/
-|       |-- assets/chemical_database/
-|       |-- java/com/furthersecrets/chemsearch/
-|       `-- res/
-|-- app/src/test/
+|   |-- build.gradle.kts
+|   |-- proguard-rules.pro
+|   `-- src/
+|       |-- main/
+|       |   |-- assets/chemical_database/
+|       |   |-- java/com/furthersecrets/chemsearch/
+|       |   |   |-- data/
+|       |   |   |   |-- local/
+|       |   |   |   `-- settings/
+|       |   |   `-- ui/
+|       |   `-- res/
+|       |-- test/
+|       |   |-- java/com/furthersecrets/chemsearch/
+|       |   `-- resources/chemistry-fixtures/
+|       `-- androidTest/
 |-- .github/
 |-- gradle/
 |   `-- libs.versions.toml
@@ -295,17 +409,19 @@ ChemSearch is a study and reference tool, not a substitute for lab safety rules,
 Useful areas:
 
 - `app/src/main/java/com/furthersecrets/chemsearch/` contains the Android app code.
-- `app/src/main/assets/chemical_database/` contains local reference JSON files.
+- `app/src/main/java/com/furthersecrets/chemsearch/data/` contains API calls, chemistry calculators, parsing, structure search, settings, and offline storage logic.
+- `app/src/main/java/com/furthersecrets/chemsearch/ui/` contains Compose screens, navigation surfaces, icons, themes, settings, Library, Tools, and structure drawing UI.
+- `app/src/main/assets/chemical_database/` contains local chemistry JSON files.
 - `app/src/main/res/` contains icons, images, and Android resources.
 - `app/src/test/` contains unit tests for chemistry parsing, calculators, settings behavior, and UI helper logic.
 - `.github/` contains GitHub project files when present.
 - `screenshots/` contains README screenshots.
 
-## Download
+## <img src="https://api.iconify.design/ph:download-simple.svg?color=%233b82f6" width="22" height="22" alt=""/> Download
 
 Download the latest APK from [GitHub Releases](https://github.com/FurtherSecrets24680/chemsearch-android/releases).
 
-## Build From Source
+## <img src="https://api.iconify.design/ph:terminal-window.svg?color=%233b82f6" width="22" height="22" alt=""/> Build From Source
 
 Requirements:
 
@@ -338,7 +454,7 @@ The debug APK is generated at:
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
-## Signed Release Builds
+## <img src="https://api.iconify.design/ph:key.svg?color=%233b82f6" width="22" height="22" alt=""/> Signed Release Builds
 
 For signed release builds, copy `keystore.properties.example` to `keystore.properties` and keep the keystore in the project-relative path shown in the example file.
 
@@ -364,7 +480,9 @@ The release APK is generated at:
 app/build/outputs/apk/release/app-release.apk
 ```
 
-## Windows And macOS Notes
+Release builds use Android's shrinker and resource shrinking to keep the APK smaller.
+
+## <img src="https://api.iconify.design/ph:desktop.svg?color=%233b82f6" width="22" height="22" alt=""/> Windows And macOS Notes
 
 The project is meant to build on both Windows and macOS.
 
@@ -375,22 +493,19 @@ The project is meant to build on both Windows and macOS.
 - Keep the keystore path project-relative so both operating systems can resolve it.
 - Avoid committing generated build folders.
 
-## Documentation
-
-The full feature guide belongs in the [GitHub Wiki](https://github.com/FurtherSecrets24680/chemsearch-android/wiki). It covers search, Library, downloads, tools, AI descriptions, signing, cross-platform setup, and developer notes.
-
-## Privacy
+## <img src="https://api.iconify.design/ph:shield-check.svg?color=%233b82f6" width="22" height="22" alt=""/> Privacy
 
 - No analytics.
 - No tracking.
 - No app-owned server.
 - Compound data is fetched directly from the selected data source.
+- Drawn structures are sent to PubChem when you use Structure Search.
 - AI requests go directly to the selected AI provider.
 - API keys are encrypted locally with Android Keystore.
 - Settings export can include AI API keys in the JSON backup if keys are saved. Keep exported settings files private.
 - Search history, favorites, downloads, settings, and cache data stay on the device.
 
-## License
+## <img src="https://api.iconify.design/ph:scroll.svg?color=%233b82f6" width="22" height="22" alt=""/> License
 
 MIT License. See [LICENSE](LICENSE) for details.
 

@@ -32,6 +32,15 @@ import com.google.gson.reflect.TypeToken
 import com.furthersecrets.chemsearch.ui.DebugLog
 import okhttp3.Request
 import java.io.File
+import java.util.Locale
+import kotlin.random.Random
+
+internal const val PubChemRandomCompoundUpperBound = 123_880_397L
+
+internal fun randomPubChemCid(
+    random: Random = Random.Default,
+    upperBound: Long = PubChemRandomCompoundUpperBound
+): Long = random.nextLong(upperBound) + 1L
 
 class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -67,6 +76,12 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow(ChemUiState())
     val uiState: StateFlow<ChemUiState> = _uiState.asStateFlow()
+
+    private val _structureSearchState = MutableStateFlow(StructureSearchUiState())
+    val structureSearchState: StateFlow<StructureSearchUiState> = _structureSearchState.asStateFlow()
+
+    private val _advancedSearchState = MutableStateFlow(AdvancedSearchUiState())
+    val advancedSearchState: StateFlow<AdvancedSearchUiState> = _advancedSearchState.asStateFlow()
 
     private val _isDarkTheme = MutableStateFlow(prefs.getBoolean("dark_theme", false))
     val isDarkTheme: StateFlow<Boolean> = _isDarkTheme.asStateFlow()
@@ -560,7 +575,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             isLoadingDesc = false,
             isLoadingSdf = false,
             isLoadingSafety = false,
-            isLoadingSynonyms = false
+            isLoadingSynonyms = false,
+            isLoadingPubChemContext = false
         )
         DebugLog.d("ChemSearch", "Opened downloaded compound: ${downloaded.name} (CID $cid)")
     }
@@ -571,6 +587,64 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) { offlineDownloadRepository.delete(cid) }
         if (_uiState.value.cid == cid) _isDownloaded.value = false
         DebugLog.d("ChemSearch", "Deleted offline download for CID $cid")
+    }
+
+    fun buildLibraryBackupJson(): String =
+        gson.toJson(
+            LibraryBackup(
+                appVersionName = BuildConfig.VERSION_NAME,
+                appVersionCode = BuildConfig.VERSION_CODE,
+                favorites = _favorites.value,
+                downloads = _downloads.value
+            )
+        )
+
+    fun importLibraryBackup(
+        rawJson: String,
+        replace: Boolean,
+        onResult: (Result<LibraryImportResult>) -> Unit
+    ) {
+        viewModelScope.launch {
+            val result = runCatching {
+                val backup = gson.fromJson(rawJson, LibraryBackup::class.java)
+                    ?: throw IllegalArgumentException("Invalid library backup file.")
+                if (backup.format != LIBRARY_BACKUP_FORMAT) {
+                    throw IllegalArgumentException("This is not a ChemSearch library backup.")
+                }
+
+                val (mergedFavorites, importedFavorites) = mergeFavoritesForImport(
+                    current = _favorites.value,
+                    imported = backup.favorites,
+                    replace = replace
+                )
+                val (mergedDownloads, importedDownloads) = mergeDownloadsForImport(
+                    current = _downloads.value,
+                    imported = backup.downloads,
+                    replace = replace
+                )
+
+                _favorites.value = mergedFavorites
+                saveFavorites(mergedFavorites)
+                _downloads.value = mergedDownloads
+                withContext(Dispatchers.IO) {
+                    if (replace) {
+                        offlineDownloadRepository.replaceAll(mergedDownloads)
+                    } else {
+                        offlineDownloadRepository.upsertAll(
+                            mergedDownloads.filter { imported -> backup.downloads.any { it.cid == imported.cid } }
+                        )
+                    }
+                }
+
+                LibraryImportResult(
+                    favoriteCount = importedFavorites,
+                    downloadCount = importedDownloads,
+                    skippedFavorites = backup.favorites.size - importedFavorites,
+                    skippedDownloads = backup.downloads.size - importedDownloads
+                )
+            }
+            onResult(result)
+        }
     }
 
     private fun loadDownloads(): List<DownloadedCompound> {
@@ -996,6 +1070,10 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     sdfSource = null,
                     sdfMessage = null,
                     ghsData = null,
+                    advancedProperties = emptyList(),
+                    classificationTags = emptyList(),
+                    useEntries = emptyList(),
+                    isLoadingPubChemContext = false,
                     aiDescriptionBasis = emptyList(),
                     isLoadingSafety = false
                 )
@@ -1018,12 +1096,14 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                         offline2dPngBase64 = null,
                         isOfflineDownload = false,
                         activeTab = defaultMolTab(),
-                        isLoadingSynonyms = false
+                        isLoadingSynonyms = false,
+                        isLoadingPubChemContext = false
                     )
                 }
                 if (_uiState.value.activeTab == MolTab.THREE_D) fetchSdfData()
                 saveToHistory(cachedByName.name)
                 cachedByName.cid?.let { loadSynonymsForCurrentCompound(it) }
+                cachedByName.cid?.let { loadPubChemExtrasForCurrentCompound(it) }
                 when (savedSource) {
                     DescSource.WIKI -> if (cachedByName.wikiDescription == null) fetchWikiDescription()
                     DescSource.AI   -> if (cachedByName.aiDescription == null) fetchAiDescription()
@@ -1057,13 +1137,15 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                             offline2dPngBase64 = null,
                             isOfflineDownload = false,
                             activeTab = defaultMolTab(),
-                            isLoadingSynonyms = false
+                            isLoadingSynonyms = false,
+                            isLoadingPubChemContext = false
                         )
                     }
                     if (_uiState.value.activeTab == MolTab.THREE_D) fetchSdfData()
                     backfillStructureMetadataIfMissing(cached, cid)
                     saveToHistory(cached.name)
                     loadSynonymsForCurrentCompound(cid)
+                    loadPubChemExtrasForCurrentCompound(cid)
                     when (savedSource) {
                         DescSource.WIKI -> if (cached.wikiDescription == null) fetchWikiDescription()
                         DescSource.AI   -> if (cached.aiDescription == null) fetchAiDescription()
@@ -1134,12 +1216,14 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     activeTab = defaultMolTab(),
                     aiProvider = _uiState.value.aiProvider,
                     isCached = false,
-                    isLoadingSynonyms = true
+                    isLoadingSynonyms = true,
+                    advancedProperties = buildAdvancedProperties(props)
                 )
                 _uiState.update { newState }
                 if (newState.activeTab == MolTab.THREE_D) fetchSdfData()
                 writeCache(newState)
                 loadSynonymsForCurrentCompound(cid, force = true)
+                loadPubChemExtrasForCurrentCompound(cid, force = true)
 
                 when (savedSource) {
                     DescSource.WIKI -> fetchWikiDescription()
@@ -1161,6 +1245,107 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
         }
+    }
+
+    fun updateAdvancedSearchFilters(filters: AdvancedSearchFilters) {
+        _advancedSearchState.update { it.copy(filters = filters, error = null) }
+    }
+
+    fun clearAdvancedSearchResults() {
+        _advancedSearchState.update { it.copy(isLoading = false, results = emptyList(), error = null) }
+    }
+
+    fun searchAdvanced(filters: AdvancedSearchFilters = _advancedSearchState.value.filters) {
+        val normalized = filters.copy(
+            query = normalizeAdvancedSearchQuery(filters.query),
+            maxRecords = filters.maxRecords.coerceIn(1, 50)
+        )
+        if (normalized.query.isBlank()) {
+            _advancedSearchState.update {
+                it.copy(filters = normalized, error = "Enter a name, formula, CID, or CAS number.")
+            }
+            return
+        }
+
+        viewModelScope.launch {
+            _advancedSearchState.update {
+                it.copy(isLoading = true, filters = normalized, results = emptyList(), error = null)
+            }
+            try {
+                val cids = resolveAdvancedSearchCids(normalized)
+                    .distinct()
+                    .take(normalized.maxRecords)
+                if (cids.isEmpty()) throw NoSuchElementException("No candidates found.")
+
+                val cidString = cids.joinToString(",")
+                val properties = ApiClient.pubChem.getAdvancedSearchProperties(cidString)
+                    .propertyTable?.properties
+                    .orEmpty()
+                    .filter { it.cid != null }
+
+                val decorated = properties.map { property ->
+                    val cid = property.cid ?: return@map null
+                    val hasThreeD = if (normalized.requireThreeD) hasPubChem3d(cid) else null
+                    val hasGhs = if (normalized.requireGhs) fetchGhsDataBlocking(cid) != null else null
+                    if (!advancedSearchMatchesFilters(property, normalized, hasThreeD, hasGhs)) return@map null
+                    AdvancedSearchResultItem(
+                        cid = cid,
+                        title = property.title ?: property.iupacName ?: "CID $cid",
+                        formula = property.molecularFormula.orEmpty(),
+                        molecularWeight = property.molecularWeight.orEmpty(),
+                        charge = property.charge,
+                        hasThreeD = hasThreeD,
+                        hasGhs = hasGhs
+                    )
+                }.filterNotNull()
+
+                if (decorated.isEmpty()) throw NoSuchElementException("No compounds matched those filters.")
+                _advancedSearchState.update {
+                    it.copy(isLoading = false, results = decorated, error = null)
+                }
+            } catch (e: Exception) {
+                val msg = when (e) {
+                    is IOException -> "Network error. Check your connection."
+                    is NoSuchElementException -> e.message ?: "No advanced search results."
+                    else -> "Advanced search failed. Try fewer filters."
+                }
+                DebugLog.e("ChemSearch", "Advanced search failed: ${e.message}")
+                _advancedSearchState.update { it.copy(isLoading = false, error = msg) }
+            }
+        }
+    }
+
+    private suspend fun resolveAdvancedSearchCids(filters: AdvancedSearchFilters): List<Long> {
+        val query = filters.query
+        return when (filters.type) {
+            AdvancedSearchType.CID -> query.toLongOrNull()?.takeIf { it > 0 }?.let(::listOf).orEmpty()
+            AdvancedSearchType.FORMULA -> fetchFormulaCids(query, filters.maxRecords)
+            AdvancedSearchType.CAS -> ApiClient.pubChem.getCid(query)
+                .identifierList?.cid?.take(1).orEmpty()
+            AdvancedSearchType.NAME -> {
+                val names = buildList {
+                    add(query)
+                    val suggestions = runCatching {
+                        ApiClient.pubChemAutocomplete.autocomplete(query, limit = 5)
+                            .dictionaryTerms?.compound.orEmpty()
+                    }.getOrDefault(emptyList())
+                    addAll(suggestions)
+                }.distinctBy { it.lowercase(Locale.US) }
+
+                names.mapNotNull { name ->
+                    runCatching {
+                        ApiClient.pubChem.getCid(name).identifierList?.cid?.firstOrNull()
+                    }.getOrNull()
+                }
+            }
+        }
+    }
+
+    private suspend fun hasPubChem3d(cid: Long): Boolean = withContext(Dispatchers.IO) {
+        runCatching {
+            val sdf = ApiClient.pubChem.getSdf(cid, recordType = "3d").string()
+            sdf.contains("V2000") && sdf.contains("M  END")
+        }.getOrDefault(false)
     }
 
     fun fetchWikiDescription() {
@@ -1402,7 +1587,18 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         } else {
             latest.ghsData
         }
-        onProgress(0.64f)
+        onProgress(0.60f)
+        val advancedProperties = if (quality == OfflineDownloadQuality.COMPLETE && latest.advancedProperties.isEmpty()) {
+            fetchAdvancedProperties(cid)
+        } else {
+            latest.advancedProperties
+        }
+        val pubChemContext = if (quality == OfflineDownloadQuality.COMPLETE && latest.classificationTags.isEmpty() && latest.useEntries.isEmpty()) {
+            fetchPubChemCompoundContext(cid)
+        } else {
+            PubChemCompoundContext(latest.classificationTags, latest.useEntries)
+        }
+        onProgress(0.68f)
         val sdfResult = if (quality != OfflineDownloadQuality.BASIC) fetchSdfForOffline(latest) else null
         onProgress(0.82f)
         val pngBase64 = if (quality != OfflineDownloadQuality.BASIC) {
@@ -1422,6 +1618,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             pubDescription = pubDescription,
             wikiDescription = wikiDescription,
             ghsData = ghsData,
+            advancedProperties = advancedProperties,
+            classificationTags = pubChemContext.classificationTags,
+            useEntries = pubChemContext.useEntries,
             sdfData = sdfResult?.sdf ?: latest.sdfData,
             sdfSource = sdfResult?.source ?: latest.sdfSource,
             sdfMessage = sdfResult?.message ?: latest.sdfMessage,
@@ -1430,7 +1629,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             isLoadingDesc = false,
             isLoadingSdf = false,
             isLoadingSafety = false,
-            isLoadingSynonyms = false
+            isLoadingSynonyms = false,
+            isLoadingPubChemContext = false
         )
     }
 
@@ -1466,6 +1666,75 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         runCatching {
             parseGhsData(ApiClient.pubChemView.getSection(cid, "GHS Classification"))
         }.getOrNull()
+    }
+
+    private suspend fun fetchAdvancedProperties(cid: Long): List<AdvancedPropertyRow> = withContext(Dispatchers.IO) {
+        runCatching {
+            ApiClient.pubChem.getProperties(cid)
+                .propertyTable
+                ?.properties
+                ?.firstOrNull()
+                ?.let(::buildAdvancedProperties)
+                .orEmpty()
+        }.getOrDefault(emptyList())
+    }
+
+    private suspend fun fetchPubChemCompoundContext(cid: Long): PubChemCompoundContext = withContext(Dispatchers.IO) {
+        coroutineScope {
+            val classificationHeadings = listOf(
+                "Chemical Classes",
+                "Drug Classes",
+                "MeSH Pharmacological Classification"
+            )
+            val useHeadings = listOf("Uses", "Therapeutic Uses")
+
+            val classificationDeferred = classificationHeadings.map { heading ->
+                async {
+                    runCatching { extractPubChemSectionTexts(ApiClient.pubChemView.getSection(cid, heading)) }
+                        .getOrDefault(emptyList())
+                }
+            }
+            val useDeferred = useHeadings.map { heading ->
+                async {
+                    runCatching { extractPubChemSectionTexts(ApiClient.pubChemView.getSection(cid, heading)) }
+                        .getOrDefault(emptyList())
+                }
+            }
+
+            PubChemCompoundContext(
+                classificationTags = buildPubChemClassificationTags(classificationDeferred.awaitAll().flatten()),
+                useEntries = buildPubChemUseEntries(useDeferred.awaitAll().flatten())
+            )
+        }
+    }
+
+    private fun loadPubChemExtrasForCurrentCompound(cid: Long, force: Boolean = false) {
+        val current = _uiState.value.takeIf { it.cid == cid } ?: return
+        val needsProperties = current.advancedProperties.isEmpty()
+        val needsContext = force || (current.classificationTags.isEmpty() && current.useEntries.isEmpty())
+        if (!needsProperties && !needsContext) return
+
+        _uiState.update { state ->
+            if (state.cid == cid) state.copy(isLoadingPubChemContext = true) else state
+        }
+
+        viewModelScope.launch {
+            val advancedProperties = if (needsProperties) fetchAdvancedProperties(cid) else current.advancedProperties
+            val context = if (needsContext) fetchPubChemCompoundContext(cid) else PubChemCompoundContext(current.classificationTags, current.useEntries)
+            val latest = _uiState.value.takeIf { it.cid == cid } ?: return@launch
+            val updated = latest.copy(
+                advancedProperties = advancedProperties.ifEmpty { latest.advancedProperties },
+                classificationTags = context.classificationTags.ifEmpty { latest.classificationTags },
+                useEntries = context.useEntries.ifEmpty { latest.useEntries },
+                isLoadingPubChemContext = false
+            )
+            _uiState.value = updated
+            writeCache(updated)
+            DebugLog.d(
+                "ChemSearch",
+                "PubChem context loaded for CID $cid: properties=${updated.advancedProperties.size}, classes=${updated.classificationTags.size}, uses=${updated.useEntries.size}"
+            )
+        }
     }
 
     private suspend fun fetchSdfForOffline(state: ChemUiState): OfflineSdfResult? {
@@ -1794,38 +2063,81 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
 
     fun onIsomerQueryChange(q: String) {
-        _uiState.update { it.copy(isomerQuery = q, isomers = emptyList(), isomerError = null) }
+        _uiState.update {
+            it.copy(
+                isomerQuery = q,
+                isomers = emptyList(),
+                isomerResultLimit = 20,
+                isomerCanLoadMore = false,
+                isLoadingMoreIsomers = false,
+                isomerError = null
+            )
+        }
     }
 
     fun searchIsomers() {
         val formula = _uiState.value.isomerQuery.trim()
         if (formula.isBlank()) return
+        loadIsomers(formula = formula, maxRecords = 20, isLoadMore = false)
+    }
 
+    fun loadMoreIsomers() {
+        val state = _uiState.value
+        val formula = state.isomerQuery.trim()
+        if (formula.isBlank() || state.isLoadingIsomers || state.isLoadingMoreIsomers || !state.isomerCanLoadMore) return
+        val nextLimit = if (state.isomerResultLimit < 20) 20 else state.isomerResultLimit + 20
+        loadIsomers(formula = formula, maxRecords = nextLimit, isLoadMore = true)
+    }
+
+    private fun loadIsomers(formula: String, maxRecords: Int, isLoadMore: Boolean) {
         viewModelScope.launch {
-            DebugLog.d("ChemSearch", "Isomer search: \"$formula\"")
+            DebugLog.d("ChemSearch", "Isomer search: \"$formula\" limit=$maxRecords")
             _uiState.update {
-                it.copy(isLoadingIsomers = true, isomers = emptyList(), isomerError = null)
+                if (isLoadMore) {
+                    it.copy(isLoadingMoreIsomers = true, isomerError = null)
+                } else {
+                    it.copy(
+                        isLoadingIsomers = true,
+                        isLoadingMoreIsomers = false,
+                        isomers = emptyList(),
+                        isomerResultLimit = maxRecords,
+                        isomerCanLoadMore = false,
+                        isomerError = null
+                    )
+                }
             }
             try {
-                val cidResponse = ApiClient.pubChem.getIsomerCids(formula)
-                val cids = cidResponse.identifierList?.cid?.take(20)
-                    ?: throw NoSuchElementException("No isomers found for $formula.")
+                val cids = fetchFormulaCids(formula, maxRecords).take(maxRecords)
+                if (cids.isEmpty()) throw NoSuchElementException("No isomers found for $formula.")
 
                 DebugLog.d("ChemSearch", "Isomers: ${cids.size} CIDs for $formula")
 
                 val cidString = cids.joinToString(",")
-                val titleMap: Map<Long, String> = runCatching {
+                val titleMap: Map<Long, TitleProperty> = runCatching {
                     ApiClient.pubChem.getTitles(cidString)
                         .propertyTable?.properties
-                        ?.mapNotNull { p -> p.cid?.let { it to (p.title ?: "Unnamed Compound") } }
+                        ?.mapNotNull { p -> p.cid?.let { it to p } }
                         ?.toMap()
                 }.getOrNull() ?: emptyMap()
 
                 val isomers = cids.map { cid ->
-                    IsomerItem(cid = cid, title = titleMap[cid] ?: "CID $cid")
+                    val property = titleMap[cid]
+                    IsomerItem(
+                        cid = cid,
+                        title = property?.title ?: "CID $cid",
+                        isIsotope = (property?.isotopeAtomCount ?: 0) > 0
+                    )
                 }
                 DebugLog.d("ChemSearch", "Isomers loaded: ${isomers.size} items")
-                _uiState.update { it.copy(isLoadingIsomers = false, isomers = isomers) }
+                _uiState.update {
+                    it.copy(
+                        isLoadingIsomers = false,
+                        isLoadingMoreIsomers = false,
+                        isomers = isomers,
+                        isomerResultLimit = maxRecords,
+                        isomerCanLoadMore = cids.size >= maxRecords
+                    )
+                }
 
             } catch (e: Exception) {
                 val msg = when (e) {
@@ -1834,9 +2146,225 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     else -> "No isomers found for \"$formula\". Check the formula and try again."
                 }
                 DebugLog.e("ChemSearch", "Isomer search failed: ${e.message}")
-                _uiState.update { it.copy(isLoadingIsomers = false, isomerError = msg) }
+                _uiState.update {
+                    it.copy(
+                        isLoadingIsomers = false,
+                        isLoadingMoreIsomers = false,
+                        isomerCanLoadMore = if (isLoadMore) false else it.isomerCanLoadMore,
+                        isomerError = msg
+                    )
+                }
             }
         }
+    }
+
+    private suspend fun fetchFormulaCids(formula: String, maxRecords: Int): List<Long> {
+        var status = pubChemCidLookupStatus(ApiClient.pubChem.getIsomerCids(formula, maxRecords))
+        repeat(8) { attempt ->
+            when (status) {
+                is PubChemCidLookupStatus.Ready -> return status.cids
+                is PubChemCidLookupStatus.Empty -> return emptyList()
+                is PubChemCidLookupStatus.Waiting -> {
+                    delay(700L + attempt * 250L)
+                    status = pubChemCidLookupStatus(ApiClient.pubChem.getCidsByListKey(status.listKey))
+                }
+            }
+        }
+
+        return when (val finalStatus = status) {
+            is PubChemCidLookupStatus.Ready -> finalStatus.cids
+            else -> emptyList()
+        }
+    }
+
+    fun setStructureSearchMode(mode: StructureSearchMode) {
+        _structureSearchState.update { it.copy(mode = mode, error = null) }
+    }
+
+    fun setStructureSimilarityThreshold(threshold: Int) {
+        _structureSearchState.update { it.copy(similarityThreshold = threshold.coerceIn(70, 99), error = null) }
+    }
+
+    fun setStructureMaxRecords(maxRecords: Int) {
+        _structureSearchState.update { it.copy(maxRecords = maxRecords.coerceIn(5, 100), error = null) }
+    }
+
+    fun clearStructureSearchResults() {
+        _structureSearchState.update { it.copy(isLoading = false, results = emptyList(), error = null, searchedMolfile = null) }
+    }
+
+    fun standardizeStructure(sketch: StructureSketch) {
+        if (sketch.atoms.isEmpty()) {
+            _structureSearchState.update {
+                it.copy(error = "Draw or import a structure before cleaning it.")
+            }
+            return
+        }
+        viewModelScope.launch {
+            _structureSearchState.update {
+                it.copy(isStandardizing = true, error = null, standardizeMessage = null, standardizedSketch = null)
+            }
+            try {
+                val sdf = ApiClient.pubChem.standardizeSdf(sketch.toMolfile()).string()
+                val standardized = StructureSketch.fromMolfile(sdf)
+                if (standardized.atoms.isEmpty()) throw IllegalArgumentException("PubChem could not clean this drawing.")
+                _structureSearchState.update {
+                    it.copy(
+                        isStandardizing = false,
+                        standardizedSketch = standardized,
+                        standardizeMessage = "Structure cleaned with PubChem standardization."
+                    )
+                }
+            } catch (e: Exception) {
+                DebugLog.e("ChemSearch", "Structure standardization failed: ${e.message}")
+                _structureSearchState.update {
+                    it.copy(
+                        isStandardizing = false,
+                        error = when (e) {
+                            is IOException -> "Network error. Check your connection."
+                            else -> e.message ?: "Could not clean this structure."
+                        }
+                    )
+                }
+            }
+        }
+    }
+
+    fun importStructureText(text: String) {
+        val input = text.trim()
+        if (input.isBlank()) {
+            _structureSearchState.update { it.copy(error = "Paste a SMILES, InChI, or molfile first.") }
+            return
+        }
+        viewModelScope.launch {
+            _structureSearchState.update {
+                it.copy(isStandardizing = true, error = null, standardizeMessage = null, standardizedSketch = null)
+            }
+            try {
+                val imported = if (input.contains("M  END") || input.contains("V2000")) {
+                    StructureSketch.fromMolfile(input)
+                } else {
+                    val sdf = if (input.startsWith("InChI=", ignoreCase = true)) {
+                        ApiClient.pubChem.standardizeInchi(input).string()
+                    } else {
+                        ApiClient.pubChem.standardizeSmiles(input).string()
+                    }
+                    StructureSketch.fromMolfile(sdf)
+                }
+                if (imported.atoms.isEmpty()) throw IllegalArgumentException("Could not read that structure.")
+                _structureSearchState.update {
+                    it.copy(
+                        isStandardizing = false,
+                        standardizedSketch = imported,
+                        standardizeMessage = "Imported ${imported.formula.ifBlank { "structure" }}."
+                    )
+                }
+            } catch (e: Exception) {
+                DebugLog.e("ChemSearch", "Structure import failed: ${e.message}")
+                _structureSearchState.update {
+                    it.copy(
+                        isStandardizing = false,
+                        error = when (e) {
+                            is IOException -> "Network error. Check your connection."
+                            else -> "Could not import that structure. Try a valid SMILES, InChI, or V2000 molfile."
+                        }
+                    )
+                }
+            }
+        }
+    }
+
+    fun consumeStructureSketchUpdate() {
+        _structureSearchState.update { it.copy(standardizedSketch = null) }
+    }
+
+    fun searchByStructure(sketch: StructureSketch) {
+        val currentState = _structureSearchState.value
+        val mode = currentState.mode
+        val maxRecords = currentState.maxRecords
+        val threshold = currentState.similarityThreshold
+        if (!sketch.canSearch) {
+            _structureSearchState.update {
+                it.copy(
+                    isLoading = false,
+                    error = StructureSearchWarning.forSketch(sketch).firstOrNull()?.message
+                        ?: "Draw at least two connected atoms before searching.",
+                    results = emptyList()
+                )
+            }
+            return
+        }
+        val molfile = sketch.toMolfile()
+        viewModelScope.launch {
+            DebugLog.d("ChemSearch", "Structure search: ${mode.name}")
+            _structureSearchState.update {
+                it.copy(
+                    isLoading = true,
+                    results = emptyList(),
+                    error = null,
+                    searchedMolfile = molfile
+                )
+            }
+            try {
+                val response = ApiClient.pubChem.searchStructureBySdf(
+                    operation = mode.pubChemOperation,
+                    sdf = molfile,
+                    maxRecords = maxRecords,
+                    threshold = if (mode == StructureSearchMode.SIMILAR) threshold else null
+                )
+                val cids = response.identifierList?.cid?.take(maxRecords).orEmpty()
+                if (cids.isEmpty()) throw NoSuchElementException("No structure matches found.")
+
+                val propertyMap = loadStructurePropertiesForCids(cids)
+                val results = cids.map { cid ->
+                    val property = propertyMap[cid]
+                    StructureSearchResultItem(
+                        cid = cid,
+                        title = property?.title ?: "CID $cid",
+                        formula = property?.molecularFormula.orEmpty(),
+                        molecularWeight = property?.molecularWeight.orEmpty()
+                    )
+                }
+                DebugLog.d("ChemSearch", "Structure search loaded ${results.size} results")
+                _structureSearchState.update {
+                    it.copy(
+                        isLoading = false,
+                        results = results,
+                        error = null
+                    )
+                }
+            } catch (e: Exception) {
+                val msg = when (e) {
+                    is IOException -> "Network error. Check your connection."
+                    is NoSuchElementException -> e.message ?: "No structure matches found."
+                    else -> "Structure search failed. Try a simpler drawing."
+                }
+                DebugLog.e("ChemSearch", "Structure search failed: ${e.message}")
+                _structureSearchState.update { it.copy(isLoading = false, error = msg) }
+            }
+        }
+    }
+
+    private suspend fun loadStructurePropertiesForCids(cids: List<Long>): Map<Long, CompoundProperty> {
+        if (cids.isEmpty()) return emptyMap()
+        val cidString = cids.joinToString(",")
+        return runCatching {
+            ApiClient.pubChem.getStructureResultProperties(cidString)
+                .propertyTable?.properties
+                ?.mapNotNull { property -> property.cid?.let { it to property } }
+                ?.toMap()
+        }.getOrNull() ?: emptyMap()
+    }
+
+    private suspend fun loadTitlesForCids(cids: List<Long>): Map<Long, String> {
+        if (cids.isEmpty()) return emptyMap()
+        val cidString = cids.joinToString(",")
+        return runCatching {
+            ApiClient.pubChem.getTitles(cidString)
+                .propertyTable?.properties
+                ?.mapNotNull { property -> property.cid?.let { it to (property.title ?: "CID $it") } }
+                ?.toMap()
+        }.getOrNull() ?: emptyMap()
     }
 
     fun searchByCid(cid: Long) {
@@ -1851,6 +2379,10 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     isCached = false,
                     isOfflineDownload = false,
                     offline2dPngBase64 = null,
+                    advancedProperties = emptyList(),
+                    classificationTags = emptyList(),
+                    useEntries = emptyList(),
+                    isLoadingPubChemContext = false,
                     aiDescriptionBasis = emptyList()
                 )
             }
@@ -1868,7 +2400,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                         isCached = true,
                         isOfflineDownload = false,
                         offline2dPngBase64 = null,
-                        isLoadingSynonyms = false
+                        isLoadingSynonyms = false,
+                        isLoadingPubChemContext = false
                     )
                 }
                 if (_uiState.value.activeTab == MolTab.THREE_D) fetchSdfData()
@@ -1876,6 +2409,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 _query.value = cached.name
                 saveToHistory(cached.name)
                 loadSynonymsForCurrentCompound(cid)
+                loadPubChemExtrasForCurrentCompound(cid)
                 when (savedSource) {
                     DescSource.WIKI -> if (cached.wikiDescription == null) fetchWikiDescription()
                     DescSource.AI   -> if (cached.aiDescription == null) fetchAiDescription()
@@ -1945,13 +2479,15 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     isomerMode = false,
                     isomers = emptyList(),
                     isCached = false,
-                    isLoadingSynonyms = true
+                    isLoadingSynonyms = true,
+                    advancedProperties = buildAdvancedProperties(props)
                 )
                 _uiState.update { newState }
                 if (newState.activeTab == MolTab.THREE_D) fetchSdfData()
                 _query.value = compoundName
                 writeCache(newState)
                 loadSynonymsForCurrentCompound(cid, force = true)
+                loadPubChemExtrasForCurrentCompound(cid, force = true)
 
                 when (savedSource) {
                     DescSource.WIKI -> fetchWikiDescription()
@@ -1969,6 +2505,10 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 _uiState.update { it.copy(isLoading = false, error = msg) }
             }
         }
+    }
+
+    fun searchRandomCompound() {
+        searchByCid(randomPubChemCid())
     }
 
     private data class StructureCounts(

@@ -19,7 +19,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalUriHandler
@@ -34,12 +34,16 @@ import com.furthersecrets.chemsearch.data.ChemicalDbActionTarget
 import com.furthersecrets.chemsearch.data.ChemicalDbCategory
 import com.furthersecrets.chemsearch.data.ChemicalDbEntry
 import com.furthersecrets.chemsearch.data.ChemicalDbRow
+import com.furthersecrets.chemsearch.data.LibrarySelectionItem
 import com.furthersecrets.chemsearch.data.chemicalDatabaseTotalEntriesLabel
+import com.furthersecrets.chemsearch.data.toComparableLibrarySelectionItem
 
 @Composable
 fun ChemicalDatabaseTool(
     modifier: Modifier = Modifier,
-    onSearchCompound: (String) -> Unit = {}
+    onSearchCompound: (String) -> Unit = {},
+    selectedLibraryKeys: Set<String> = emptySet(),
+    onToggleLibrarySelection: ((LibrarySelectionItem) -> Unit)? = null
 ) {
     val compact = LocalCompactMode.current
     val context = LocalContext.current
@@ -163,10 +167,12 @@ fun ChemicalDatabaseTool(
                             key = { entry -> "${entry.category.name}:${entry.id}" },
                             contentType = { entry -> entry.category }
                         ) { entry ->
+                            val selectionItem = entry.toComparableLibrarySelectionItem()
                             DatabaseResultCard(
                                 entry = entry,
                                 onClick = { selectedEntry = entry },
-                                onCopy = { value, label -> copyToClipboard(context, clipboard, label, value) }
+                                selected = selectionItem?.key?.let { it in selectedLibraryKeys } == true,
+                                onToggleSelection = selectionItem?.let { item -> onToggleLibrarySelection?.let { toggle -> { toggle(item) } } }
                             )
                         }
                     }
@@ -184,10 +190,13 @@ fun ChemicalDatabaseTool(
                 }
             }
             item(key = "entry-detail-${selectedEntry!!.category.name}:${selectedEntry!!.id}") {
+                val selectionItem = selectedEntry!!.toComparableLibrarySelectionItem()
                 DatabaseEntryDetail(
                     entry = selectedEntry!!,
                     onSearchCompound = onSearchCompound,
-                    onCopy = { value, label -> copyToClipboard(context, clipboard, label, value) }
+                    onCopy = { value, label -> copyToClipboard(context, clipboard, label, value) },
+                    selected = selectionItem?.key?.let { it in selectedLibraryKeys } == true,
+                    onToggleSelection = selectionItem?.let { item -> onToggleLibrarySelection?.let { toggle -> { toggle(item) } } }
                 )
             }
         }
@@ -433,15 +442,19 @@ private fun ChemicalDatabaseSearchBar(
 private fun DatabaseResultCard(
     entry: ChemicalDbEntry,
     onClick: () -> Unit,
-    onCopy: (String, String) -> Unit
+    selected: Boolean = false,
+    onToggleSelection: (() -> Unit)? = null
 ) {
     val compact = LocalCompactMode.current
-    val displayFormula = remember(entry.formula) { toSubscriptFormula(entry.formula) }
+    val displayFormula = remember(entry.category, entry.formula) {
+        chemicalDatabaseDisplayText(entry.primaryFormulaLabel(), entry.formula)
+    }
     Card(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(if (compact) 14.dp else 16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = if (selected) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.42f)) else null
     ) {
         Column(
             modifier = Modifier.padding(if (compact) 12.dp else 14.dp),
@@ -478,11 +491,11 @@ private fun DatabaseResultCard(
                         )
                     }
                 }
-                IconButton(
-                    onClick = { onCopy(entry.actionValue, entry.copyLabel()) },
-                    modifier = Modifier.size(if (compact) 28.dp else 32.dp)
-                ) {
-                    Icon(Icons.Default.ContentCopy, contentDescription = "Copy", tint = MaterialTheme.colorScheme.onSurface.copy(0.38f), modifier = Modifier.size(16.dp))
+                if (onToggleSelection != null) {
+                    DatabaseSelectionToggle(
+                        selected = selected,
+                        onClick = onToggleSelection
+                    )
                 }
             }
             Text(
@@ -501,11 +514,15 @@ private fun DatabaseResultCard(
 private fun DatabaseEntryDetail(
     entry: ChemicalDbEntry,
     onSearchCompound: (String) -> Unit,
-    onCopy: (String, String) -> Unit
+    onCopy: (String, String) -> Unit,
+    selected: Boolean = false,
+    onToggleSelection: (() -> Unit)? = null
 ) {
     val compact = LocalCompactMode.current
     val uriHandler = LocalUriHandler.current
-    val displayFormula = remember(entry.formula) { toSubscriptFormula(entry.formula) }
+    val displayFormula = remember(entry.category, entry.formula) {
+        chemicalDatabaseDisplayText(entry.primaryFormulaLabel(), entry.formula)
+    }
 
     Column(verticalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 12.dp)) {
         Surface(
@@ -539,39 +556,32 @@ private fun DatabaseEntryDetail(
                             )
                         }
                     }
+                    if (onToggleSelection != null) {
+                        DatabaseSelectionToggle(
+                            selected = selected,
+                            onClick = onToggleSelection
+                        )
+                    }
                 }
 
                 Text(entry.summary, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(0.72f), lineHeight = 20.sp)
                 TagRow(tags = listOf(entry.category.label) + entry.tags)
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Button(
-                        onClick = {
-                            if (entry.actionTarget == ChemicalDbActionTarget.SEARCH_COMPOUND) {
-                                onSearchCompound(entry.searchQuery)
-                            } else {
-                                onCopy(entry.actionValue, entry.copyLabel())
-                            }
-                        },
-                        shape = RoundedCornerShape(999.dp),
-                        modifier = Modifier.weight(1f)
+                if (entry.actionTarget == ChemicalDbActionTarget.SEARCH_COMPOUND) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(entry.primaryActionIcon(), null, modifier = Modifier.size(16.dp))
-                        Spacer(Modifier.width(6.dp))
-                        Text(entry.primaryActionLabel(), maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    }
-                    OutlinedButton(
-                        onClick = { onCopy(entry.actionValue, entry.copyLabel()) },
-                        shape = RoundedCornerShape(999.dp),
-                        contentPadding = PaddingValues(horizontal = 12.dp)
-                    ) {
-                        Icon(Icons.Default.ContentCopy, null, modifier = Modifier.size(16.dp))
-                        Spacer(Modifier.width(6.dp))
-                        Text("Copy")
+                        Button(
+                            onClick = { onSearchCompound(entry.searchQuery) },
+                            shape = RoundedCornerShape(999.dp),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Icon(Icons.Default.Search, null, modifier = Modifier.size(16.dp))
+                            Spacer(Modifier.width(6.dp))
+                            Text("Search in ChemSearch", maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        }
                     }
                 }
             }
@@ -645,10 +655,10 @@ private fun DetailSectionCard(
             rows.forEachIndexed { index, row ->
                 val label = row.label
                 val value = row.value
-                val isFormulaValue = label.isFormulaLike() || value.looksFormulaLike()
-                val displayValue = remember(value, isFormulaValue) {
-                    if (isFormulaValue) toSubscriptFormula(value) else value
+                val displayValue = remember(label, value) {
+                    chemicalDatabaseDisplayText(label, value)
                 }
+                val isFormulaValue = shouldFormatChemicalDatabaseValue(label, value)
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -667,7 +677,6 @@ private fun DetailSectionCard(
                             lineHeight = 18.sp
                         )
                     }
-                    Icon(Icons.Default.ContentCopy, contentDescription = "Copy $label", tint = MaterialTheme.colorScheme.onSurface.copy(0.25f), modifier = Modifier.size(15.dp))
                 }
                 if (index < rows.lastIndex) {
                     HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.12f))
@@ -731,22 +740,91 @@ private fun copyToClipboard(
     Toast.makeText(context, "$label copied", Toast.LENGTH_SHORT).show()
 }
 
-private fun ChemicalDbEntry.copyLabel(): String = when (actionTarget) {
-    ChemicalDbActionTarget.SEARCH_COMPOUND -> if (formula.isBlank()) title else "Formula"
-    ChemicalDbActionTarget.COPY_EQUATION -> "Equation"
-    ChemicalDbActionTarget.COPY_TEXT -> category.label
+@Composable
+private fun DatabaseSelectionToggle(
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    val compact = LocalCompactMode.current
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier.size(if (compact) 28.dp else 32.dp)
+    ) {
+        Surface(
+            shape = androidx.compose.foundation.shape.CircleShape,
+            color = if (selected) MaterialTheme.colorScheme.primary else Color.Transparent,
+            border = BorderStroke(
+                1.dp,
+                if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline.copy(0.48f)
+            ),
+            modifier = Modifier.size(if (compact) 21.dp else 23.dp)
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                if (selected) {
+                    Icon(
+                        Icons.Default.Check,
+                        contentDescription = "Selected",
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.size(if (compact) 12.dp else 13.dp)
+                    )
+                }
+            }
+        }
+    }
 }
 
-private fun ChemicalDbEntry.primaryActionLabel(): String = when (actionTarget) {
-    ChemicalDbActionTarget.SEARCH_COMPOUND -> "Search in ChemSearch"
-    ChemicalDbActionTarget.COPY_EQUATION -> "Copy equation"
-    ChemicalDbActionTarget.COPY_TEXT -> "Copy reference"
+private fun ChemicalDbEntry.primaryFormulaLabel(): String = when (category) {
+    ChemicalDbCategory.REACTIONS -> "Equation"
+    ChemicalDbCategory.FUNCTIONAL_GROUPS -> "Structure"
+    else -> "Formula"
 }
 
-private fun ChemicalDbEntry.primaryActionIcon(): ImageVector = when (actionTarget) {
-    ChemicalDbActionTarget.SEARCH_COMPOUND -> Icons.Default.Search
-    ChemicalDbActionTarget.COPY_EQUATION -> Icons.Default.ContentCopy
-    ChemicalDbActionTarget.COPY_TEXT -> Icons.Default.ContentCopy
+internal fun chemicalDatabaseDisplayText(label: String, value: String): String =
+    if (shouldFormatChemicalDatabaseValue(label, value)) {
+        if (label.contains("equation", ignoreCase = true)) {
+            toChemicalExpressionDisplay(value)
+        } else {
+            formatChemicalDatabaseNotation(value)
+        }
+    } else {
+        value
+    }
+
+internal fun shouldFormatChemicalDatabaseValue(label: String, value: String): Boolean {
+    val cleanLabel = label.lowercase()
+    val strongLabel = listOf(
+        "formula",
+        "equation",
+        "structure",
+        "charge",
+        "common compounds"
+    ).any { cleanLabel.contains(it) }
+    return strongLabel || (cleanLabel.contains("example") && value.looksChemicalNotation())
+}
+
+private val chemicalNotationTokenRegex = Regex("""[A-Za-z0-9\[\]()^+\-.*]+""")
+private val chemicalElementRegex = Regex("""[A-Z][a-z]?""")
+private val electronTokenRegex = Regex("""\d*e[+-]""")
+
+private fun formatChemicalDatabaseNotation(value: String): String =
+    chemicalNotationTokenRegex.replace(value) { match ->
+        val token = match.value
+        if (token.looksChemicalNotation()) toSubscriptFormula(token) else token
+    }
+
+private fun String.looksChemicalNotation(): Boolean {
+    val text = trim()
+    if (text.isBlank()) return false
+    if (electronTokenRegex.matches(text)) return true
+
+    val elementMatches = chemicalElementRegex.findAll(text).toList()
+    val elementCount = elementMatches.size
+    val hasElement = elementCount > 0 || text.contains("R-") || text.contains("Ar-")
+    val hasSignal = text.any { it.isDigit() } ||
+        text.any { it == '^' || it == '+' || it == '-' || it == '[' || it == ']' || it == '(' || it == ')' } ||
+        elementCount >= 2
+
+    return hasElement && hasSignal
 }
 
 private fun ChemicalDbCategory.icon(): ChemIconSpec = when (this) {
@@ -768,19 +846,6 @@ private fun String.normalizedSearch(): String =
         .replace("₇", "7")
         .replace("₈", "8")
         .replace("₉", "9")
-
-private fun String.isFormulaLike(): Boolean =
-    contains("formula", ignoreCase = true) ||
-        contains("equation", ignoreCase = true) ||
-        contains("structure", ignoreCase = true) ||
-        contains("charge", ignoreCase = true)
-
-private fun String.looksFormulaLike(): Boolean {
-    if (length > 90) return false
-    val hasFormulaSignal = any { it.isDigit() } || contains("->") || contains("=") || contains("#") || contains("+") || contains("-")
-    val hasElementSignal = Regex("""\b[A-Z][a-z]?\b""").containsMatchIn(this) || contains("R-") || contains("Ar-")
-    return hasFormulaSignal && hasElementSignal
-}
 
 private fun List<String>.sortedByTypePriority(): List<String> {
     val priority = listOf(

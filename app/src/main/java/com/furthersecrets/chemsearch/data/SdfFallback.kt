@@ -83,11 +83,18 @@ fun isUsableSdf(sdf: String): Boolean {
     if (leading.isBlank()) return false
     if (leading.startsWith("<", ignoreCase = true)) return false
     if (leading.contains("<html", ignoreCase = true)) return false
-    if (leading.contains("not found", ignoreCase = true) && !leading.contains("V2000")) return false
+    if (
+        leading.contains("not found", ignoreCase = true) &&
+        !leading.contains("V2000") &&
+        !leading.contains("V3000")
+    ) return false
 
     val normalized = sdf.replace("\r\n", "\n").replace('\r', '\n')
     val lines = normalized.lines()
     if (lines.size < 4) return false
+    if (lines.any { it.contains("V3000") || it.trim().startsWith("M  V30") }) {
+        return isUsableV3000Sdf(lines)
+    }
 
     val atomCount = parseSdfAtomCount(lines[3]) ?: return false
     if (atomCount <= 0) return false
@@ -97,6 +104,43 @@ fun isUsableSdf(sdf: String): Boolean {
         if (hasSdfCoordinateLine(lines[index])) coordinateLines++
     }
     return coordinateLines == atomCount
+}
+
+private fun isUsableV3000Sdf(lines: List<String>): Boolean {
+    val declaredAtomCount = lines
+        .mapNotNull(::parseV3000CountsAtomCount)
+        .firstOrNull()
+        ?: return false
+    if (declaredAtomCount <= 0) return false
+
+    var inAtomBlock = false
+    var coordinateLines = 0
+    lines.forEach { rawLine ->
+        val line = rawLine.trim()
+        when {
+            line.contains("BEGIN ATOM") -> {
+                inAtomBlock = true
+                return@forEach
+            }
+            line.contains("END ATOM") -> {
+                inAtomBlock = false
+                return@forEach
+            }
+        }
+
+        if (inAtomBlock && parseV3000AtomElement(line).isNotBlank()) {
+            coordinateLines++
+        }
+    }
+
+    return coordinateLines == declaredAtomCount
+}
+
+private fun parseV3000CountsAtomCount(line: String): Int? {
+    val parts = line.trim().split(sdfWhitespaceRegex)
+    val countsIndex = parts.indexOfFirst { it.equals("COUNTS", ignoreCase = true) }
+    if (countsIndex < 0) return null
+    return parts.getOrNull(countsIndex + 1)?.toIntOrNull()
 }
 
 private fun parseSdfAtomCount(countsLine: String): Int? {
@@ -134,6 +178,9 @@ private fun sdfMatchesExpectedFormula(sdf: String, expectedCounts: Map<String, I
 
 private fun parseSdfElementCounts(sdf: String): Map<String, Int> {
     val lines = sdf.replace("\r\n", "\n").replace('\r', '\n').lines()
+    if (lines.any { it.contains("V3000") || it.trim().startsWith("M  V30") }) {
+        return parseV3000ElementCounts(lines)
+    }
     val atomCount = lines.getOrNull(3)?.let(::parseSdfAtomCount) ?: return emptyMap()
     val counts = linkedMapOf<String, Int>()
 
@@ -145,6 +192,43 @@ private fun parseSdfElementCounts(sdf: String): Map<String, Int> {
     }
 
     return counts
+}
+
+private fun parseV3000ElementCounts(lines: List<String>): Map<String, Int> {
+    val counts = linkedMapOf<String, Int>()
+    var inAtomBlock = false
+
+    lines.forEach { rawLine ->
+        val line = rawLine.trim()
+        when {
+            line.contains("BEGIN ATOM") -> {
+                inAtomBlock = true
+                return@forEach
+            }
+            line.contains("END ATOM") -> {
+                inAtomBlock = false
+                return@forEach
+            }
+        }
+
+        if (inAtomBlock) {
+            val element = parseV3000AtomElement(line)
+            if (element.isNotBlank()) counts[element] = (counts[element] ?: 0) + 1
+        }
+    }
+
+    return counts
+}
+
+private fun parseV3000AtomElement(line: String): String {
+    val payload = line.trim().removePrefix("M  V30").trim()
+    val parts = payload.split(sdfWhitespaceRegex)
+    if (parts.size < 5) return ""
+    if (parts[0].toIntOrNull() == null) return ""
+    if (parts[2].toDoubleOrNull() == null) return ""
+    if (parts[3].toDoubleOrNull() == null) return ""
+    if (parts[4].toDoubleOrNull() == null) return ""
+    return normalizeFormulaElement(parts[1])
 }
 
 private fun extractSdfElement(line: String): String {

@@ -23,16 +23,14 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**Device**
+ - Device: [e.g. Pixel 7, Galaxy A52, Windows Subsystem for Android]
+ - Android version: [e.g. Android 14]
+ - ChemSearch version: [e.g. 1.13.0]
+ - Install type: [e.g. GitHub release APK, debug APK, built from source]
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**Affected area**
+ - [e.g. search, structure viewer, downloads, library, settings, tools]
 
 **Additional context**
 Add any other context about the problem here.

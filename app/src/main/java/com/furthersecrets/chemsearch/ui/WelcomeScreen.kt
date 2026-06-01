@@ -1,5 +1,13 @@
 package com.furthersecrets.chemsearch.ui
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -66,13 +74,21 @@ fun WelcomeScreen(
     val compact = LocalCompactMode.current
     val scrollState = rememberScrollState()
     var stage by remember { mutableIntStateOf(0) }
-    val stageCount = 3
+    var selectedLegalDocument by remember { androidx.compose.runtime.mutableStateOf<LegalDocument?>(null) }
+    val stageCount = 4
     val spacing = if (compact) 10.dp else 14.dp
     val horizontalPadding = if (compact) 16.dp else 22.dp
     val logoFrame = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) {
         Color(0xFF111827)
     } else {
         Color(0xFF1F2933)
+    }
+
+    selectedLegalDocument?.let { document ->
+        LegalDocumentDialog(
+            document = document,
+            onDismiss = { selectedLegalDocument = null }
+        )
     }
 
     Surface(
@@ -97,20 +113,18 @@ fun WelcomeScreen(
             ) {
                 WelcomeProgress(stage = stage, stageCount = stageCount)
 
-                when (stage) {
-                    0 -> WelcomeIntroStage(logoFrame = logoFrame)
-                    1 -> WelcomeAppearanceStage(
-                        isDark = isDark,
-                        colorScheme = colorScheme,
-                        onSetDarkTheme = onSetDarkTheme,
-                        onSetColorScheme = onSetColorScheme
-                    )
-                    2 -> WelcomeDescriptionStage(
-                        defaultDescSource = defaultDescSource,
-                        onSetDefaultDesc = onSetDefaultDesc,
-                        onConfigureAiProvider = onConfigureAiProvider
-                    )
-                }
+                WelcomeStageContent(
+                    stage = stage,
+                    logoFrame = logoFrame,
+                    isDark = isDark,
+                    colorScheme = colorScheme,
+                    defaultDescSource = defaultDescSource,
+                    onSetDarkTheme = onSetDarkTheme,
+                    onSetColorScheme = onSetColorScheme,
+                    onSetDefaultDesc = onSetDefaultDesc,
+                    onConfigureAiProvider = onConfigureAiProvider,
+                    onOpenLegalDocument = { selectedLegalDocument = it }
+                )
 
                 WelcomeNavigation(
                     stage = stage,
@@ -124,6 +138,100 @@ fun WelcomeScreen(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun WelcomeStageContent(
+    stage: Int,
+    logoFrame: Color,
+    isDark: Boolean,
+    colorScheme: AppColorScheme,
+    defaultDescSource: DescSource,
+    onSetDarkTheme: (Boolean) -> Unit,
+    onSetColorScheme: (AppColorScheme) -> Unit,
+    onSetDefaultDesc: (DescSource) -> Unit,
+    onConfigureAiProvider: () -> Unit,
+    onOpenLegalDocument: (LegalDocument) -> Unit
+) {
+    if (LocalReduceMotion.current) {
+        WelcomeStage(
+            stage = stage,
+            logoFrame = logoFrame,
+            isDark = isDark,
+            colorScheme = colorScheme,
+            defaultDescSource = defaultDescSource,
+            onSetDarkTheme = onSetDarkTheme,
+            onSetColorScheme = onSetColorScheme,
+            onSetDefaultDesc = onSetDefaultDesc,
+            onConfigureAiProvider = onConfigureAiProvider,
+            onOpenLegalDocument = onOpenLegalDocument
+        )
+        return
+    }
+
+    AnimatedContent(
+        targetState = stage,
+        transitionSpec = {
+            val forward = targetState > initialState
+            val enterOffset: (Int) -> Int = { fullWidth -> if (forward) fullWidth / 5 else -fullWidth / 5 }
+            val exitOffset: (Int) -> Int = { fullWidth -> if (forward) -fullWidth / 6 else fullWidth / 6 }
+            (slideInHorizontally(
+                animationSpec = tween(ChemMotionMedium, easing = ChemMotionEasing),
+                initialOffsetX = enterOffset
+            ) + fadeIn(tween(ChemMotionFast))) togetherWith
+                (slideOutHorizontally(
+                    animationSpec = tween(ChemMotionMedium, easing = ChemMotionEasing),
+                    targetOffsetX = exitOffset
+                ) + fadeOut(tween(ChemMotionFast))) using
+                SizeTransform(clip = false)
+        },
+        label = "WelcomeStageContent"
+    ) { targetStage ->
+        WelcomeStage(
+            stage = targetStage,
+            logoFrame = logoFrame,
+            isDark = isDark,
+            colorScheme = colorScheme,
+            defaultDescSource = defaultDescSource,
+            onSetDarkTheme = onSetDarkTheme,
+            onSetColorScheme = onSetColorScheme,
+            onSetDefaultDesc = onSetDefaultDesc,
+            onConfigureAiProvider = onConfigureAiProvider,
+            onOpenLegalDocument = onOpenLegalDocument
+        )
+    }
+}
+
+@Composable
+private fun WelcomeStage(
+    stage: Int,
+    logoFrame: Color,
+    isDark: Boolean,
+    colorScheme: AppColorScheme,
+    defaultDescSource: DescSource,
+    onSetDarkTheme: (Boolean) -> Unit,
+    onSetColorScheme: (AppColorScheme) -> Unit,
+    onSetDefaultDesc: (DescSource) -> Unit,
+    onConfigureAiProvider: () -> Unit,
+    onOpenLegalDocument: (LegalDocument) -> Unit
+) {
+    when (stage) {
+        0 -> WelcomeIntroStage(logoFrame = logoFrame)
+        1 -> WelcomeAppearanceStage(
+            isDark = isDark,
+            colorScheme = colorScheme,
+            onSetDarkTheme = onSetDarkTheme,
+            onSetColorScheme = onSetColorScheme
+        )
+        2 -> WelcomeDescriptionStage(
+            defaultDescSource = defaultDescSource,
+            onSetDefaultDesc = onSetDefaultDesc,
+            onConfigureAiProvider = onConfigureAiProvider
+        )
+        3 -> WelcomeLegalStage(
+            onOpenDocument = onOpenLegalDocument
+        )
     }
 }
 
@@ -194,7 +302,7 @@ private fun WelcomeIntroStage(logoFrame: Color) {
             WelcomeFeatureRow(ChemAppIcons.Search, "Compound search", "Look up PubChem data by name, formula, CAS-style identifier, or CID.")
             WelcomeFeatureRow(ChemAppIcons.Axis3d, "2D and 3D structures", "View structure images, rotate 3D models, and save structure files.")
             WelcomeFeatureRow(ChemAppIcons.TestTubes, "Chemistry tools", "Balance reactions, calculate molar mass, solve stoichiometry, and more.")
-            WelcomeFeatureRow(ChemAppIcons.Library, "Local workflow", "Keep favorites, recent searches, cached results, and offline reference data.")
+            WelcomeFeatureRow(ChemAppIcons.Library, "Local workflow", "Keep favorites, recent searches, cached results, and offline chemistry data.")
         }
     }
 }
@@ -307,6 +415,71 @@ private fun WelcomeDescriptionStage(
                 Icon(Icons.Default.SmartToy, null, modifier = Modifier.size(17.dp))
                 Spacer(Modifier.width(8.dp))
                 Text("Configure AI provider", fontWeight = FontWeight.SemiBold)
+            }
+        }
+    }
+}
+
+@Composable
+private fun WelcomeLegalStage(
+    onOpenDocument: (LegalDocument) -> Unit
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(14.dp), modifier = Modifier.fillMaxWidth()) {
+        WelcomeTitle(
+            title = "Before you start",
+            subtitle = "PRIVACY AND SAFETY",
+            body = "ChemSearch uses public chemistry sources and optional AI providers. Chemical information is for study and quick checks."
+        )
+
+        legalDocuments.forEach { document ->
+            WelcomeLegalCard(
+                document = document,
+                onClick = { onOpenDocument(document) }
+            )
+        }
+
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(14.dp),
+            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.18f))
+        ) {
+            Text(
+                "Always follow SDS documents, lab rules, labels, and official guidance before handling chemicals.",
+                modifier = Modifier.padding(13.dp),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.72f),
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+    }
+}
+
+@Composable
+private fun WelcomeLegalCard(
+    document: LegalDocument,
+    onClick: () -> Unit
+) {
+    Surface(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(14.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
+    ) {
+        Row(
+            modifier = Modifier.padding(13.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            WelcomeIconBox(legalDocumentIcon(document.type).asChemIcon())
+            Spacer(Modifier.width(12.dp))
+            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                Text(document.title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                Text(
+                    document.summary,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.64f)
+                )
             }
         }
     }

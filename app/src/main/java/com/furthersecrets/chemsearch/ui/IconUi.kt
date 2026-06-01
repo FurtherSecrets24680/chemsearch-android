@@ -43,7 +43,9 @@ object ChemAppIcons {
     val Axis3d = PhosphorIcons.Bold.ThreeD.asChemIcon()
     val ArrowLeftRight = PhosphorIcons.Bold.ArrowsLeftRight.asChemIcon()
     val Calculator = PhosphorIcons.Bold.Calculator.asChemIcon()
+    val Cube = PhosphorIcons.Bold.Cube.asChemIcon()
     val Database = PhosphorIcons.Bold.Database.asChemIcon()
+    val Dice = PhosphorIcons.Bold.DiceFive.asChemIcon()
     val Dna = PhosphorIcons.Bold.Dna.asChemIcon()
     val Download = PhosphorIcons.Bold.DownloadSimple.asChemIcon()
     val Droplet = PhosphorIcons.Bold.Drop.asChemIcon()
@@ -74,6 +76,7 @@ object Icons {
     object Default {
         val Add = PhosphorIcons.Bold.Plus
         val Air = PhosphorIcons.Bold.Wind
+        val Atom = PhosphorIcons.Bold.Atom
         val ArrowDropDown = PhosphorIcons.Bold.CaretDown
         val AutoFixHigh = PhosphorIcons.Bold.MagicWand
         val Biotech = PhosphorIcons.Bold.Flask
@@ -90,6 +93,7 @@ object Icons {
         val Close = PhosphorIcons.Bold.X
         val Code = PhosphorIcons.Bold.Code
         val ContentCopy = PhosphorIcons.Bold.Copy
+        val Cursor = PhosphorIcons.Bold.Cursor
         val DarkMode = PhosphorIcons.Bold.Moon
         val Delete = PhosphorIcons.Bold.Trash
         val DeleteOutline = PhosphorIcons.Bold.Trash

@@ -230,7 +230,13 @@ private fun HeaderIconButton(onClick: () -> Unit, icon: ImageVector, description
 // Search bar
 
 @Composable
-fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearch: () -> Unit, onClear: () -> Unit) {
+fun SearchBar(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    onSearch: () -> Unit,
+    onClear: () -> Unit,
+    onAdvancedSearch: (() -> Unit)? = null
+) {
     val compact = LocalCompactMode.current
     OutlinedTextField(
         value = query,
@@ -240,7 +246,7 @@ fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearch: () -> Un
             .heightIn(min = if (compact) 58.dp else 66.dp),
         placeholder = {
             Text(
-                "Search name, CAS, formula, or CID",
+                "Search any compound..",
                 color = MaterialTheme.colorScheme.onSurface.copy(0.38f),
                 maxLines = 1,
                 softWrap = false,
@@ -265,6 +271,23 @@ fun SearchBar(query: String, onQueryChange: (String) -> Unit, onSearch: () -> Un
                             tint = MaterialTheme.colorScheme.onSurface.copy(0.45f),
                             modifier = Modifier.size(if (compact) 16.dp else 18.dp)
                         )
+                    }
+                }
+                if (onAdvancedSearch != null) {
+                    IconButton(onClick = onAdvancedSearch) {
+                        Box(
+                            modifier = Modifier
+                                .size(if (compact) 34.dp else 40.dp)
+                                .background(MaterialTheme.colorScheme.primary.copy(0.1f), CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                Icons.Default.FilterList,
+                                "Advanced search",
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(if (compact) 17.dp else 20.dp)
+                            )
+                        }
                     }
                 }
                 IconButton(onClick = onSearch) {
@@ -357,13 +380,18 @@ fun HistorySection(
     var showClearConfirm by remember { mutableStateOf(false) }
     var sortMode by remember { mutableStateOf(RecentSortMode.NEWEST) }
     var sortMenuExpanded by remember { mutableStateOf(false) }
-    val groupedSearches = remember(recentSearches, sortMode) {
-        groupRecentSearches(
+    val displaySearches = remember(recentSearches, sortMode) {
+        recentSearchesForDisplay(
             recentSearches,
             newestFirst = sortMode == RecentSortMode.NEWEST
         )
     }
     val compact = LocalCompactMode.current
+    val recentDividerColor = if (MaterialTheme.colorScheme.surface.luminance() < 0.35f) {
+        Color.White.copy(alpha = 0.10f)
+    } else {
+        Color.Black.copy(alpha = 0.08f)
+    }
 
     if (showClearConfirm) {
         AlertDialog(
@@ -385,26 +413,6 @@ fun HistorySection(
     }
 
     if (recentSearches.isEmpty()) {
-        @Composable
-        fun SuggestionPill(label: String, onClick: () -> Unit) {
-            Surface(
-                shape = RoundedCornerShape(999.dp),
-                color = MaterialTheme.colorScheme.surfaceVariant
-            ) {
-                Text(
-                    label,
-                    modifier = Modifier
-                        .clickable { onClick() }
-                        .padding(
-                            horizontal = if (compact) 8.dp else 10.dp,
-                            vertical = if (compact) 5.dp else 6.dp
-                        ),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.7f)
-                )
-            }
-        }
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -442,21 +450,11 @@ fun HistorySection(
                         color = MaterialTheme.colorScheme.onSurface.copy(0.7f)
                     )
                     Text(
-                        "Try caffeine, aspirin, ethanol...",
+                        "Type a compound name, formula, CID, or CAS.",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(0.38f)
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.38f),
+                        textAlign = TextAlign.Center
                     )
-                    Spacer(Modifier.height(if (compact) 2.dp else 4.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp)) {
-                        listOf("caffeine", "aspirin").forEach { label ->
-                            SuggestionPill(label = label) { onSelect(label) }
-                        }
-                    }
-                    Row(horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp)) {
-                        listOf("ethanol", "glucose").forEach { label ->
-                            SuggestionPill(label = label) { onSelect(label) }
-                        }
-                    }
                 }
             }
         }
@@ -486,13 +484,6 @@ fun HistorySection(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Text(
-                    "(${recentSearches.size} saved)",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box {
@@ -507,7 +498,7 @@ fun HistorySection(
                             modifier = Modifier.size(if (compact) 18.dp else 20.dp)
                         )
                     }
-                    DropdownMenu(
+                    SettingsDropdownMenu(
                         expanded = sortMenuExpanded,
                         onDismissRequest = { sortMenuExpanded = false }
                     ) {
@@ -547,41 +538,38 @@ fun HistorySection(
             }
         }
 
-        if (groupedSearches.isNotEmpty()) {
-            groupedSearches.forEach { group ->
-                Text(
-                    group.label.uppercase(Locale.US),
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 0.8.sp,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.45f),
-                    modifier = Modifier.padding(top = if (compact) 2.dp else 4.dp)
-                )
-                group.searches.forEach { item ->
-                    val display = item.query.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString() }
-                    Card(
-                        modifier = Modifier.fillMaxWidth().clickable { onSelect(item.query) },
-                        shape = RoundedCornerShape(if (compact) 12.dp else 14.dp),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                        border = if (item.pinned) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.22f)) else null
-                    ) {
+        if (displaySearches.isNotEmpty()) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(if (compact) 14.dp else 18.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface.copy(if (compact) 0.92f else 0.96f)
+                ),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.10f))
+            ) {
+                Column {
+                    displaySearches.forEachIndexed { index, item ->
+                        val display = item.query.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString() }
                         Row(
-                            modifier = Modifier.padding(
-                                horizontal = if (compact) 10.dp else 14.dp,
-                                vertical = if (compact) 8.dp else 12.dp
-                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { onSelect(item.query) }
+                                .padding(
+                                    horizontal = if (compact) 10.dp else 12.dp,
+                                    vertical = if (compact) 7.dp else 9.dp
+                                ),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)
                         ) {
                             Surface(
-                                shape = RoundedCornerShape(6.dp),
+                                shape = RoundedCornerShape(if (compact) 8.dp else 10.dp),
                                 color = MaterialTheme.colorScheme.primary.copy(if (item.pinned) 0.16f else 0.10f)
                             ) {
                                 Icon(
-                                    if (item.pinned) Icons.Default.PushPin else Icons.Default.History,
+                                    Icons.Default.History,
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.primary,
-                                    modifier = Modifier.padding(5.dp).size(if (compact) 14.dp else 16.dp)
+                                    modifier = Modifier.padding(if (compact) 6.dp else 7.dp).size(if (compact) 14.dp else 16.dp)
                                 )
                             }
                             Text(
@@ -608,7 +596,23 @@ fun HistorySection(
                                 )
                             }
                         }
+                        if (index < displaySearches.lastIndex) {
+                            HorizontalDivider(
+                                modifier = Modifier.padding(horizontal = if (compact) 10.dp else 12.dp),
+                                color = recentDividerColor
+                            )
+                        }
                     }
+                    Text(
+                        recentSearchCountLabel(recentSearches.size),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = if (compact) 3.dp else 5.dp, bottom = if (compact) 7.dp else 9.dp),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.44f),
+                        maxLines = 1
+                    )
                 }
             }
         }
@@ -657,7 +661,7 @@ private fun FormulaHeaderRow(
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Icon(
-                            Icons.Default.Biotech,
+                            Icons.Default.Atom,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary.copy(0.75f),
                             modifier = Modifier.size(if (compact) 11.dp else 12.dp)
@@ -1433,20 +1437,7 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                             }
                         } else if (state.sdfData != null) {
                             val isDark = !MaterialTheme.colorScheme.background.luminance().let { it > 0.5f }
-                            val structureStatus = remember(state.sdfData, state.sdfSource, state.sdfMessage) {
-                                describeStructureStatus(
-                                    hasSdf = true,
-                                    source = state.sdfSource,
-                                    message = state.sdfMessage
-                                )
-                            }
                             Viewer3D(cid = state.cid ?: 0, sdfData = state.sdfData, isDark = isDark)
-                            StructureStatusBadge(
-                                status = structureStatus,
-                                modifier = Modifier
-                                    .align(Alignment.TopStart)
-                                    .padding(if (compact) 10.dp else 12.dp)
-                            )
                             Row(
                                 modifier = Modifier
                                     .align(Alignment.BottomCenter)
@@ -1720,6 +1711,7 @@ fun IdentifiersSection(state: ChemUiState, context: Context) {
                 "IUPAC Name" to "The systematic name assigned by the International Union of Pure and Applied Chemistry. Uniquely describes the structure using a standard naming convention.",
                 "CID" to "PubChem Compound ID (CID) is a unique number assigned by the PubChem database to identify this exact compound.",
                 "CAS Number" to "Chemical Abstracts Service registry number. A globally recognized unique identifier assigned to every chemical substance.",
+                "Condensed Formula" to "A compact structure formula generated from SMILES connectivity when the app can read the structure confidently.",
                 "SMILES" to "Simplified Molecular Input Line Entry System. A text notation that describes the molecular structure using atoms and bonds in a single line.",
                 "InChI" to "International Chemical Identifier. A standard text identifier for chemical substances designed to be unique and non-proprietary.",
                 "InChIKey" to "A fixed-length, hashed version of the full InChI. Easier to search and index than the full InChI string.",
@@ -1734,7 +1726,11 @@ fun IdentifiersSection(state: ChemUiState, context: Context) {
 
     SearchCard(modifier = Modifier.fillMaxWidth(), spacing = 10.dp) {
         CardSectionHeader("Identifiers") { showInfo = true }
+        val condensedFormula = remember(state.connectivitySmiles, state.smiles) {
+            buildBestCondensedFormula(state.connectivitySmiles, state.smiles)
+        }
         val rows = buildList {
+            if (!condensedFormula.isNullOrBlank()) add(Triple("Condensed Formula", toChemicalExpressionDisplay(condensedFormula), true))
             if (state.iupacName.isNotBlank()) add(Triple("IUPAC Name", state.iupacName, false))
             if (state.connectivitySmiles.isNotBlank()) add(Triple("SMILES (Connectivity)", state.connectivitySmiles, true))
             if (state.smiles.isNotBlank() && state.smiles != state.connectivitySmiles) add(Triple("SMILES (Full)", state.smiles, true))
@@ -1751,12 +1747,255 @@ fun IdentifiersSection(state: ChemUiState, context: Context) {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun ClassificationTagsSection(tags: List<String>, isLoading: Boolean) {
+    if (tags.isEmpty() && !isLoading) return
+    var showInfo by remember { mutableStateOf(false) }
+    val compact = LocalCompactMode.current
+    if (showInfo) {
+        InfoDialog(
+            title = "Classification",
+            entries = classificationInfoEntries(),
+            onDismiss = { showInfo = false }
+        )
+    }
+    SearchCard(modifier = Modifier.fillMaxWidth(), spacing = if (compact) 8.dp else 10.dp) {
+        CardSectionHeader("Classification") { showInfo = true }
+        if (tags.isNotEmpty()) {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp),
+                verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp)
+            ) {
+                tags.forEach { tag ->
+                    Surface(
+                        shape = RoundedCornerShape(999.dp),
+                        color = MaterialTheme.colorScheme.primary.copy(0.08f),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.20f))
+                    ) {
+                        Text(
+                            tag,
+                            modifier = Modifier.padding(
+                                horizontal = if (compact) 8.dp else 10.dp,
+                                vertical = if (compact) 4.dp else 5.dp
+                            ),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.primary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+            }
+        } else {
+            Text(
+                "Loading PubChem categories...",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.50f)
+            )
+        }
+    }
+}
+
+@Composable
+fun UsesAndOccurrenceSection(entries: List<CompoundUseEntry>, isLoading: Boolean) {
+    if (entries.isEmpty() && !isLoading) return
+    var showInfo by remember { mutableStateOf(false) }
+    var expanded by remember(entries) { mutableStateOf(false) }
+    val compact = LocalCompactMode.current
+    if (showInfo) {
+        InfoDialog(
+            title = "Uses & Occurrence",
+            entries = usesOccurrenceInfoEntries(),
+            onDismiss = { showInfo = false }
+        )
+    }
+    SearchCard(modifier = Modifier.fillMaxWidth(), spacing = if (compact) 8.dp else 10.dp) {
+        CardSectionHeader("Uses & Occurrence") { showInfo = true }
+        if (entries.isEmpty()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                CircularProgressIndicator(modifier = Modifier.size(14.dp), strokeWidth = 2.dp)
+                Text(
+                    "Loading PubChem use notes...",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.50f)
+                )
+            }
+        } else {
+            val visibleEntries = if (expanded) entries else entries.take(2)
+            val bulletLines = remember(visibleEntries) { compoundUseBulletLines(visibleEntries) }
+            Column(verticalArrangement = Arrangement.spacedBy(if (compact) 7.dp else 9.dp)) {
+                bulletLines.forEach { line ->
+                    Text(
+                        line,
+                        style = MaterialTheme.typography.bodySmall,
+                        lineHeight = if (compact) 17.sp else 18.sp,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.78f),
+                        maxLines = if (expanded) Int.MAX_VALUE else 3,
+                        overflow = if (expanded) TextOverflow.Visible else TextOverflow.Ellipsis
+                    )
+                }
+            }
+            if (entries.size > 2) {
+                TextButton(
+                    onClick = { expanded = !expanded },
+                    contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
+                ) {
+                    Text(
+                        if (expanded) "Show less" else "Show ${entries.size - 2} more",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+            }
+            Text(
+                "Source: PubChem annotations",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.42f)
+            )
+        }
+    }
+}
+
+@Composable
+fun AdvancedPropertiesSection(properties: List<AdvancedPropertyRow>, isLoading: Boolean) {
+    if (properties.isEmpty() && !isLoading) return
+    var showInfo by remember { mutableStateOf(false) }
+    var expanded by remember(properties) { mutableStateOf(false) }
+    val compact = LocalCompactMode.current
+    if (showInfo) {
+        InfoDialog(
+            title = "Advanced Properties",
+            entries = advancedPropertiesInfoEntries(),
+            onDismiss = { showInfo = false }
+        )
+    }
+    SearchCard(modifier = Modifier.fillMaxWidth(), spacing = if (compact) 8.dp else 10.dp) {
+        CardSectionHeader("Advanced Properties") { showInfo = true }
+        if (properties.isEmpty()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                CircularProgressIndicator(modifier = Modifier.size(14.dp), strokeWidth = 2.dp)
+                Text(
+                    "Loading PubChem properties...",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.50f)
+                )
+            }
+        } else {
+            val visibleRows = if (expanded) properties else properties.take(8)
+            visibleRows.chunked(2).forEach { row ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp)
+                ) {
+                    row.forEach { property ->
+                        AdvancedPropertyTile(
+                            property = property,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    if (row.size == 1) Spacer(Modifier.weight(1f))
+                }
+            }
+            if (properties.size > 8) {
+                TextButton(
+                    onClick = { expanded = !expanded },
+                    contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
+                ) {
+                    Text(
+                        if (expanded) "Show less" else "Show ${properties.size - 8} more",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+            }
+        }
+    }
+}
+
+internal fun advancedPropertiesInfoEntries(): List<Pair<String, String>> = listOf(
+    "What this shows" to "Extra PubChem computed properties for people who want a deeper look than formula, mass, identifiers, and safety.",
+    "Why this is hidden by default" to "These values are useful, but they can feel technical during normal lookup. The main result page keeps them behind the more-information link.",
+    "XLogP" to "Estimated oil/water partition value. Higher values usually mean the substance is more hydrophobic; lower or negative values usually mean it is more water-friendly.",
+    "TPSA" to "Topological polar surface area. This helps compare how much polar surface a molecule has, which often matters for solubility and biological movement.",
+    "Complexity" to "A PubChem score based on structural features such as rings, branching, atoms, bonds, and stereochemistry. It is useful for comparison, not as a difficulty grade.",
+    "Mass values" to "Exact mass and monoisotopic mass use isotope masses. They are most useful for mass spectrometry and precise analytical work.",
+    "3D values" to "3D fields appear only when PubChem has conformer data. Missing 3D values do not mean the compound is invalid."
+)
+
+internal fun classificationInfoEntries(): List<Pair<String, String>> = listOf(
+    "What these tags mean" to "These are short category labels pulled from PubChem annotations, such as chemical classes, drug classes, and MeSH-style subject categories.",
+    "Why some tags look strange" to "PubChem can attach source-indexing terms like Breast feeding, Lactation, Milk, or Human when a substance appears in medical, exposure, or drug reference sources. They are source categories, not always plain-language descriptions of the substance.",
+    "How to read them" to "Use these chips as quick clues, not final labels. A tag tells you the substance appears in that data category somewhere in PubChem.",
+    "Why it can be empty" to "Some simple or uncommon substances do not have useful public classification annotations, so ChemSearch hides the card when there is nothing helpful to show."
+)
+
+internal fun usesOccurrenceInfoEntries(): List<Pair<String, String>> = listOf(
+    "What this shows" to "Short PubChem annotation snippets about reported uses, roles, occurrence, or source notes when PubChem has readable data.",
+    "Why bullets may vary" to "These notes come from different PubChem sources, so one substance may have detailed use notes while another has only one short category or none at all.",
+    "Safety note" to "These bullets are quick reference notes, not instructions for using, dosing, making, storing, or handling chemicals.",
+    "Why it can be empty" to "Many substances do not have public use annotations in PubChem. In that case, ChemSearch simply hides the card."
+)
+
+internal fun identifierDividerAlpha(isDarkSurface: Boolean): Float =
+    if (isDarkSurface) 0.10f else 0.08f
+
+@Composable
+private fun AdvancedPropertyTile(property: AdvancedPropertyRow, modifier: Modifier = Modifier) {
+    val compact = LocalCompactMode.current
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(if (compact) 10.dp else 12.dp),
+        color = MaterialTheme.colorScheme.primary.copy(0.07f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.14f))
+    ) {
+        Column(
+            modifier = Modifier.padding(
+                horizontal = if (compact) 8.dp else 10.dp,
+                vertical = if (compact) 7.dp else 9.dp
+            ),
+            verticalArrangement = Arrangement.spacedBy(if (compact) 2.dp else 3.dp)
+        ) {
+            Text(
+                property.label,
+                modifier = Modifier.heightIn(min = if (compact) 26.dp else 30.dp),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.52f),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                property.value,
+                style = MaterialTheme.typography.bodySmall,
+                fontFamily = FontFamily.Monospace,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.88f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
 @Composable
 fun IdentifierRow(label: String, value: String, context: Context, mono: Boolean = true) {
     val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     var expanded by remember { mutableStateOf(false) }
     val isLong = value.length > 80
     val compact = LocalCompactMode.current
+    val dividerColor = if (MaterialTheme.colorScheme.surface.luminance() < 0.35f) {
+        Color.White.copy(alpha = identifierDividerAlpha(isDarkSurface = true))
+    } else {
+        Color.Black.copy(alpha = identifierDividerAlpha(isDarkSurface = false))
+    }
 
     Column(
         modifier = Modifier
@@ -1819,7 +2058,7 @@ fun IdentifierRow(label: String, value: String, context: Context, mono: Boolean 
         }
         HorizontalDivider(
             modifier = Modifier.padding(top = if (compact) 4.dp else 6.dp),
-            color = MaterialTheme.colorScheme.outline.copy(0.12f)
+            color = dividerColor
         )
     }
 }
@@ -2315,6 +2554,33 @@ fun toSubscriptFormula(formula: String): String {
     return formula.toFormulaDisplay()
 }
 
+fun toChemicalExpressionDisplay(expression: String): String {
+    val normalized = expression
+        .replace("<->", "⇌")
+        .replace("↔", "⇌")
+        .replace("⇄", "⇌")
+        .replace("->", "⟶")
+        .replace("→", "⟶")
+
+    return Regex("""\S+""").replace(normalized) { match ->
+        match.value.toChemicalExpressionTokenDisplay()
+    }
+}
+
+private fun String.toChemicalExpressionTokenDisplay(): String {
+    if (this == "+" || this == "⟶" || this == "⇌") return this
+
+    val stateMatch = Regex("""^(.*?)(\((?:aq|s|l|g)\))$""").matchEntire(this)
+    val withoutState = stateMatch?.groupValues?.get(1) ?: this
+    val state = stateMatch?.groupValues?.get(2).orEmpty()
+
+    val coefficientMatch = Regex("""^(\d+)([A-Z].*|e[+-])$""").matchEntire(withoutState)
+    val coefficient = coefficientMatch?.groupValues?.get(1).orEmpty()
+    val formula = coefficientMatch?.groupValues?.get(2) ?: withoutState
+
+    return coefficient + formula.toFormulaDisplay() + state
+}
+
 fun toWrappedSubscriptFormula(formula: String): String {
     val trimmed = formula.trim()
     val hasChargeTail = listOf(
@@ -2354,13 +2620,17 @@ private val ghsLabel = mapOf(
     "GHS07" to "Harmful", "GHS08" to "Health Hazard", "GHS09" to "Environmental"
 )
 
-private fun ghsIcon(code: String): ImageVector = when (code) {
-    "GHS04" -> Icons.Default.Air
-    "GHS05" -> Icons.Default.Science
-    "GHS08" -> Icons.Default.HealthAndSafety
-    "GHS09" -> Icons.Default.Public
-    "GHS06" -> Icons.Default.Error
-    else -> Icons.Default.Warning
+private fun ghsPictogramRes(code: String): Int? = when (code) {
+    "GHS01" -> R.drawable.ghs_pictogram_ghs01
+    "GHS02" -> R.drawable.ghs_pictogram_ghs02
+    "GHS03" -> R.drawable.ghs_pictogram_ghs03
+    "GHS04" -> R.drawable.ghs_pictogram_ghs04
+    "GHS05" -> R.drawable.ghs_pictogram_ghs05
+    "GHS06" -> R.drawable.ghs_pictogram_ghs06
+    "GHS07" -> R.drawable.ghs_pictogram_ghs07
+    "GHS08" -> R.drawable.ghs_pictogram_ghs08
+    "GHS09" -> R.drawable.ghs_pictogram_ghs09
+    else -> null
 }
 
 private val DangerRed = Color(0xFFDC2626)
@@ -2378,9 +2648,9 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
                 entries = listOf(
                     "What is GHS?" to "The Globally Harmonized System of Classification and Labelling of Chemicals (GHS) is a UN standard for communicating chemical hazards worldwide.",
                     "Signal Word" to "'Danger' indicates a more severe hazard. 'Warning' indicates a less severe hazard.",
-                    "Pictograms" to "Standardized symbols (GHS01–GHS09) that visually communicate the type of hazard (e.g flammability, toxicity, corrosion, etc.)",
+                    "Pictograms" to "Standardized symbols (GHS01–GHS09) that visually communicate the type of hazard, such as flammability, toxicity, corrosion, or environmental harm.",
                     "Hazard Statements" to "Standardized H-codes that describe the nature and degree of hazard. For example, H225 means 'Highly flammable liquid and vapour'.",
-                    "Data source" to "GHS data is sourced from PubChem's aggregated classification records, which combine data from multiple regulatory bodies."
+                    "Data source" to "GHS data is sourced from PubChem's aggregated classification records. Pictogram artwork uses the official UNECE GHS symbols."
                 ),
                 onDismiss = { showInfo = false }
             )
@@ -2441,6 +2711,7 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
                     verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp)
                 ) {
                     ghsData.pictogramCodes.forEach { code ->
+                        val pictogramRes = ghsPictogramRes(code)
                         Surface(
                             shape = RoundedCornerShape(if (compact) 10.dp else 12.dp),
                             color = MaterialTheme.colorScheme.surfaceVariant,
@@ -2456,16 +2727,27 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .size(if (compact) 34.dp else 38.dp)
-                                        .background(MaterialTheme.colorScheme.error.copy(0.08f), CircleShape),
+                                        .size(if (compact) 42.dp else 48.dp),
                                     contentAlignment = Alignment.Center
                                 ) {
-                                    Icon(
-                                        ghsIcon(code),
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.error.copy(0.82f),
-                                        modifier = Modifier.size(if (compact) 18.dp else 21.dp)
-                                    )
+                                    if (pictogramRes != null) {
+                                        Image(
+                                            painter = painterResource(id = pictogramRes),
+                                            contentDescription = ghsLabel[code] ?: code,
+                                            modifier = Modifier.fillMaxSize(),
+                                            contentScale = ContentScale.Fit
+                                        )
+                                    } else {
+                                        Icon(
+                                            Icons.Default.Warning,
+                                            contentDescription = ghsLabel[code] ?: code,
+                                            tint = MaterialTheme.colorScheme.error.copy(0.82f),
+                                            modifier = Modifier
+                                                .size(if (compact) 30.dp else 34.dp)
+                                                .background(MaterialTheme.colorScheme.error.copy(0.08f), CircleShape)
+                                                .padding(if (compact) 6.dp else 7.dp)
+                                        )
+                                    }
                                 }
                                 Text(code, style = MaterialTheme.typography.labelSmall, fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                                 Text(ghsLabel[code] ?: "", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f), fontSize = 9.sp, textAlign = TextAlign.Center)

@@ -18,7 +18,7 @@ interface PubChemApi {
         @Path("name") name: String
     ): CidResponse
 
-    @GET("compound/cid/{cid}/property/MolecularFormula,MolecularWeight,IUPACName,SMILES,ConnectivitySMILES,InChIKey,InChI,Charge,CovalentUnitCount,Title/JSON")
+    @GET("compound/cid/{cid}/property/MolecularFormula,MolecularWeight,IUPACName,SMILES,ConnectivitySMILES,InChIKey,InChI,Charge,CovalentUnitCount,Title,XLogP,ExactMass,MonoisotopicMass,TPSA,Complexity,HBondDonorCount,HBondAcceptorCount,RotatableBondCount,HeavyAtomCount,IsotopeAtomCount,AtomStereoCount,DefinedAtomStereoCount,UndefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount,UndefinedBondStereoCount,Volume3D,FeatureCount3D,FeatureAcceptorCount3D,FeatureDonorCount3D,FeatureAnionCount3D,FeatureCationCount3D,FeatureRingCount3D,FeatureHydrophobeCount3D,ConformerModelRMSD3D,EffectiveRotorCount3D,ConformerCount3D/JSON")
     suspend fun getProperties(@Path("cid") cid: Long): PropertiesResponse
 
     @GET("compound/cid/{cid}/record/JSON")
@@ -36,16 +36,58 @@ interface PubChemApi {
         @Query("record_type") recordType: String = "3d"
     ): ResponseBody
 
-    @GET("compound/fastformula/{formula}/cids/JSON")
+    @GET("compound/formula/{formula}/cids/JSON")
     suspend fun getIsomerCids(
         @Path("formula") formula: String,
         @Query("MaxRecords") maxRecords: Int = 20
     ): CidResponse
 
-    @GET("compound/cid/{cids}/property/Title/JSON")
+    @GET("compound/listkey/{listKey}/cids/JSON")
+    suspend fun getCidsByListKey(
+        @Path("listKey") listKey: String
+    ): CidResponse
+
+    @GET("compound/cid/{cids}/property/Title,IsotopeAtomCount/JSON")
     suspend fun getTitles(
         @Path("cids", encoded = true) cids: String
     ): TitleResponse
+
+    @GET("compound/cid/{cids}/property/Title,MolecularFormula,MolecularWeight/JSON")
+    suspend fun getStructureResultProperties(
+        @Path("cids", encoded = true) cids: String
+    ): PropertiesResponse
+
+    @GET("compound/cid/{cids}/property/Title,MolecularFormula,MolecularWeight,Charge/JSON")
+    suspend fun getAdvancedSearchProperties(
+        @Path("cids", encoded = true) cids: String
+    ): PropertiesResponse
+
+    @FormUrlEncoded
+    @POST("compound/{operation}/sdf/cids/JSON")
+    suspend fun searchStructureBySdf(
+        @Path("operation") operation: String,
+        @Field("sdf") sdf: String,
+        @Query("MaxRecords") maxRecords: Int = 30,
+        @Query("Threshold") threshold: Int? = null
+    ): CidResponse
+
+    @FormUrlEncoded
+    @POST("standardize/sdf/SDF")
+    suspend fun standardizeSdf(
+        @Field("sdf") sdf: String
+    ): ResponseBody
+
+    @FormUrlEncoded
+    @POST("standardize/smiles/SDF")
+    suspend fun standardizeSmiles(
+        @Field("smiles") smiles: String
+    ): ResponseBody
+
+    @FormUrlEncoded
+    @POST("standardize/inchi/SDF")
+    suspend fun standardizeInchi(
+        @Field("inchi") inchi: String
+    ): ResponseBody
 }
 
 // PubChem Autocomplete

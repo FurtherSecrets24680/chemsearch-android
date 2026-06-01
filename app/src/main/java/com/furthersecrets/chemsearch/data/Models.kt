@@ -6,11 +6,17 @@ import com.google.gson.annotations.SerializedName
 // PubChem CID
 
 data class CidResponse(
-    @SerializedName("IdentifierList") val identifierList: IdentifierList?
+    @SerializedName("IdentifierList") val identifierList: IdentifierList?,
+    @SerializedName("Waiting") val waiting: WaitingResponse? = null
 )
 
 data class IdentifierList(
     @SerializedName("CID") val cid: List<Long>?
+)
+
+data class WaitingResponse(
+    @SerializedName("ListKey") val listKey: String?,
+    @SerializedName("Message") val message: String?
 )
 
 // PubChem Properties
@@ -34,7 +40,34 @@ data class CompoundProperty(
     @SerializedName("InChI") val inchi: String? = null,
     @SerializedName("Charge") val charge: Int? = null,
     @SerializedName("CovalentUnitCount") val covalentUnitCount: Int? = null,
-    @SerializedName("Title") val title: String? = null
+    @SerializedName("Title") val title: String? = null,
+    @SerializedName("XLogP") val xLogP: Double? = null,
+    @SerializedName("ExactMass") val exactMass: String? = null,
+    @SerializedName("MonoisotopicMass") val monoisotopicMass: String? = null,
+    @SerializedName("TPSA") val tpsa: Double? = null,
+    @SerializedName("Complexity") val complexity: Double? = null,
+    @SerializedName("HBondDonorCount") val hBondDonorCount: Int? = null,
+    @SerializedName("HBondAcceptorCount") val hBondAcceptorCount: Int? = null,
+    @SerializedName("RotatableBondCount") val rotatableBondCount: Int? = null,
+    @SerializedName("HeavyAtomCount") val heavyAtomCount: Int? = null,
+    @SerializedName("IsotopeAtomCount") val isotopeAtomCount: Int? = null,
+    @SerializedName("AtomStereoCount") val atomStereoCount: Int? = null,
+    @SerializedName("DefinedAtomStereoCount") val definedAtomStereoCount: Int? = null,
+    @SerializedName("UndefinedAtomStereoCount") val undefinedAtomStereoCount: Int? = null,
+    @SerializedName("BondStereoCount") val bondStereoCount: Int? = null,
+    @SerializedName("DefinedBondStereoCount") val definedBondStereoCount: Int? = null,
+    @SerializedName("UndefinedBondStereoCount") val undefinedBondStereoCount: Int? = null,
+    @SerializedName("Volume3D") val volume3d: Double? = null,
+    @SerializedName("FeatureCount3D") val featureCount3d: Int? = null,
+    @SerializedName("FeatureAcceptorCount3D") val featureAcceptorCount3d: Int? = null,
+    @SerializedName("FeatureDonorCount3D") val featureDonorCount3d: Int? = null,
+    @SerializedName("FeatureAnionCount3D") val featureAnionCount3d: Int? = null,
+    @SerializedName("FeatureCationCount3D") val featureCationCount3d: Int? = null,
+    @SerializedName("FeatureRingCount3D") val featureRingCount3d: Int? = null,
+    @SerializedName("FeatureHydrophobeCount3D") val featureHydrophobeCount3d: Int? = null,
+    @SerializedName("ConformerModelRMSD3D") val conformerModelRmsd3d: Double? = null,
+    @SerializedName("EffectiveRotorCount3D") val effectiveRotorCount3d: Double? = null,
+    @SerializedName("ConformerCount3D") val conformerCount3d: Int? = null
 )
 
 // PubChem Synonyms
@@ -194,13 +227,41 @@ data class ChemUiState(
     val isOfflineDownload: Boolean = false,
     val ghsData: GhsData? = null,
     val isLoadingSafety: Boolean = false,
+    val advancedProperties: List<AdvancedPropertyRow> = emptyList(),
+    val classificationTags: List<String> = emptyList(),
+    val useEntries: List<CompoundUseEntry> = emptyList(),
+    val isLoadingPubChemContext: Boolean = false,
     val isomerMode: Boolean = false,
     val isomerQuery: String = "",
     val isomers: List<IsomerItem> = emptyList(),
+    val isomerResultLimit: Int = 20,
+    val isomerCanLoadMore: Boolean = false,
     val isLoadingIsomers: Boolean = false,
+    val isLoadingMoreIsomers: Boolean = false,
     val isomerError: String? = null,
     val isLoadingSynonyms: Boolean = false,
 
+)
+
+data class AdvancedPropertyRow(
+    val label: String,
+    val value: String
+)
+
+data class CompoundUseEntry(
+    val label: String,
+    val text: String
+)
+
+data class PubChemCompoundContext(
+    val classificationTags: List<String> = emptyList(),
+    val useEntries: List<CompoundUseEntry> = emptyList()
+)
+
+data class PubChemSectionText(
+    val heading: String,
+    val name: String?,
+    val text: String
 )
 
 enum class DescSource { PUBCHEM, WIKI, AI }
@@ -324,7 +385,8 @@ data class GhsData(
 
 data class IsomerItem(
     val cid: Long,
-    val title: String
+    val title: String,
+    val isIsotope: Boolean = false
 )
 
 data class TitleResponse(
@@ -337,7 +399,8 @@ data class TitlePropertyTable(
 
 data class TitleProperty(
     @SerializedName("CID") val cid: Long?,
-    @SerializedName("Title") val title: String?
+    @SerializedName("Title") val title: String?,
+    @SerializedName("IsotopeAtomCount") val isotopeAtomCount: Int? = null
 )
 
 data class ReleaseInfo(

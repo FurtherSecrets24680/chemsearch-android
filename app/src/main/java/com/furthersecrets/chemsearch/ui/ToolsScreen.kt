@@ -1,7 +1,6 @@
 package com.furthersecrets.chemsearch.ui
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -77,54 +76,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-// TOOLS SCREEN
-private const val TOOL_ORDER_PREF = "tool_order"
-private const val TOOL_VIEW_MODE_PREF = "tool_view_mode"
-
-private fun loadToolOrder(prefs: SharedPreferences, defaultIds: List<Int>): List<Int> {
-    val stored = prefs.getString(TOOL_ORDER_PREF, null)
-        ?.split(',')
-        ?.mapNotNull { it.toIntOrNull() }
-        ?: emptyList()
-    val order = stored.filter { it in defaultIds }.toMutableList()
-    defaultIds.forEach { id ->
-        if (id !in order) order.add(id)
-    }
-    return order
-}
-
-private fun saveToolOrder(prefs: SharedPreferences, order: List<Int>) {
-    prefs.edit().putString(TOOL_ORDER_PREF, order.joinToString(",")).apply()
-}
-
-private enum class ToolCategory(val label: String) {
-    ALL("All"),
-    VISUALIZE("Visualize"),
-    CALCULATORS("Calculators"),
-    REACTIONS("Reactions"),
-    STOICHIOMETRY("Stoichiometry"),
-    STRUCTURE("Structure")
-}
-
-private enum class ToolViewMode { LIST, GRID }
-
-private val TOOL_CATEGORIES = listOf(
-    ToolCategory.ALL,
-    ToolCategory.VISUALIZE,
-    ToolCategory.CALCULATORS,
-    ToolCategory.REACTIONS,
-    ToolCategory.STOICHIOMETRY,
-    ToolCategory.STRUCTURE
-)
-
-private data class ToolDefinition(
-    val id: Int,
-    val icon: ChemIconSpec,
-    val title: String,
-    val subtitle: String,
-    val category: ToolCategory
-)
-
 @Composable
 fun ToolsScreen(
     isDark: Boolean,
@@ -137,7 +88,8 @@ fun ToolsScreen(
     aiProvider: AiProvider = AiProvider.GEMINI,
     getAiKey: (AiProvider) -> String? = { null },
     getSelectedAiModel: (AiProvider) -> String = { it.modelName },
-    onNavigateToSearch: () -> Unit = {},
+    prefillCompareCompounds: List<String> = emptyList(),
+    prefillCompareVersion: Int = 0,
     onSearchCompoundFromTool: (String) -> Unit = {}
 ) {
     var selectedTool by remember { mutableStateOf(0) }
@@ -162,99 +114,7 @@ fun ToolsScreen(
         if (selectedTool != 0 && isReordering) isReordering = false
     }
 
-    val defaultTools = listOf(
-        ToolDefinition(
-            id = 2,
-            icon = ChemAppIcons.Calculator,
-            title = "Molar Mass Calculator",
-            subtitle = "Enter a molecular formula and get the molar mass",
-            category = ToolCategory.CALCULATORS
-        ),
-        ToolDefinition(
-            id = 5,
-            icon = ChemAppIcons.ArrowLeftRight,
-            title = "Reaction Balancer",
-            subtitle = "Balance any chemical equation automatically",
-            category = ToolCategory.REACTIONS
-        ),
-        ToolDefinition(
-            id = 14,
-            icon = ChemAppIcons.Droplets,
-            title = "pH / pOH Calculator",
-            subtitle = "Convert pH, pOH, [H+], and [OH-]",
-            category = ToolCategory.CALCULATORS
-        ),
-        ToolDefinition(
-            id = 3,
-            icon = ChemAppIcons.Atom,
-            title = "Oxidation State Finder",
-            subtitle = "Find oxidation states of each element in a compound",
-            category = ToolCategory.CALCULATORS
-        ),
-        ToolDefinition(
-            id = 7,
-            icon = ChemAppIcons.ListFilter,
-            title = "Limiting Reagent",
-            subtitle = "Find limiting reagent, ratios, and theoretical yield",
-            category = ToolCategory.STOICHIOMETRY
-        ),
-        ToolDefinition(
-            id = 8,
-            icon = ChemAppIcons.Percent,
-            title = "Percent Yield",
-            subtitle = "Compare actual yield against theoretical yield",
-            category = ToolCategory.STOICHIOMETRY
-        ),
-        ToolDefinition(
-            id = 11,
-            icon = ChemAppIcons.Droplet,
-            title = "Dilution Calculator",
-            subtitle = "Solve C₁V₁ = C₂V₂ for solutions",
-            category = ToolCategory.CALCULATORS
-        ),
-        ToolDefinition(
-            id = 12,
-            icon = ChemAppIcons.Wind,
-            title = "Ideal Gas Law",
-            subtitle = "Solve PV = nRT for gases",
-            category = ToolCategory.CALCULATORS
-        ),
-        ToolDefinition(
-            id = 13,
-            icon = ChemAppIcons.GitCompareArrows,
-            title = "Compare Compounds",
-            subtitle = "Compare formulas, mass, identifiers, safety, and structures",
-            category = ToolCategory.CALCULATORS
-        ),
-        ToolDefinition(
-            id = 6,
-            icon = ChemAppIcons.Dna,
-            title = "Isomer Finder",
-            subtitle = "Enter a molecular formula to find its structural isomers",
-            category = ToolCategory.STRUCTURE
-        ),
-        ToolDefinition(
-            id = 4,
-            icon = ChemAppIcons.Network,
-            title = "SMILES Visualizer",
-            subtitle = "Paste a SMILES string to view its 2D and 3D structure",
-            category = ToolCategory.VISUALIZE
-        ),
-        ToolDefinition(
-            id = 1,
-            icon = ChemAppIcons.Axis3d,
-            title = "Custom 3D Molecule Viewer",
-            subtitle = "Load any .sdf or .mol file and view it in 3D",
-            category = ToolCategory.VISUALIZE
-        ),
-        ToolDefinition(
-            id = 9,
-            icon = ChemAppIcons.SlidersHorizontal,
-            title = "Reaction Scaling",
-            subtitle = "Scale reactants for a target product amount",
-            category = ToolCategory.STOICHIOMETRY
-        ),
-    )
+    val defaultTools = DEFAULT_TOOLS
     val defaultToolIds = defaultTools.map { it.id }
     var toolOrder by remember { mutableStateOf(loadToolOrder(prefs, defaultToolIds)) }
     val toolsById = defaultTools.associateBy { it.id }
@@ -483,7 +343,6 @@ fun ToolsScreen(
                 3 -> OxidationStateFinder()
                 4 -> SmilesVisualizer(isDark = isDark)
                 5 -> ReactionBalancer()
-                6 -> IsomerFinderTool(vm = vm, onNavigateToSearch = onNavigateToSearch)
                 7 -> StoichiometryCalculator(
                     mode = StoichiometryMode.LIMITING,
                     title = "Limiting Reagent"
@@ -503,9 +362,13 @@ fun ToolsScreen(
                     aiProvider = aiProvider,
                     getAiKey = getAiKey,
                     getSelectedAiModel = getSelectedAiModel,
+                    prefillCompounds = prefillCompareCompounds,
+                    prefillVersion = prefillCompareVersion,
                     onSearchCompound = onSearchCompoundFromTool
                 )
                 14 -> PhPohCalculatorTool()
+                15 -> PrecipitatePredictorTool()
+                16 -> EmpiricalFormulaFinderTool()
             }
         }
     }
@@ -1102,6 +965,7 @@ fun MolarMassCalculator() {
                 FilterChip(
                     selected = isActive,
                     onClick = { input = fieldValueAtEnd(ex); focusManager.clearFocus() },
+                    colors = chemFilterChipColors(),
                     label = { Text(toSubscriptFormula(ex), style = MaterialTheme.typography.labelMedium, fontFamily = FontFamily.Monospace) }
                 )
             }
@@ -1142,7 +1006,7 @@ fun OxidationStateFinder() {
             entries = listOf(
                 "What is an oxidation state?" to "A number assigned to an atom representing its degree of oxidation. Positive = electrons lost, negative = electrons gained. Used to track electron transfer in redox reactions.",
                 "Rules applied" to "F is always -1. Group 1 = +1, Group 2 = +2. Al, Ga, In, Sc, Y, La, Lu = +3. Zn, Cd = +2. Ag = +1. O defaults to -2 (except peroxides/superoxides). H defaults to +1 (except metal hydrides). Halogens (Cl, Br, I) default to -1 in simple halides, but are solved when bonded with oxygen or a more electronegative halogen.",
-                "Halogen priority" to "Electronegativity order: F > Cl > Br > I. In oxo-halogen compounds and interhalogen compounds, the less electronegative halogen can take a positive OS. Example: HOCl -> Cl=+1. ICl3 -> I=+3, Cl=-1. ClF3 -> Cl=+3, F=-1.",
+                "Halogen priority" to "Electronegativity order: F > Cl > Br > I. In oxo-halogen compounds and interhalogen compounds, the less electronegative halogen can take a positive OS. Example: HOCl ⟶ Cl=+1. ICl3 ⟶ I=+3, Cl=-1. ClF3 ⟶ Cl=+3, F=-1.",
                 "Special cases handled" to "Peroxides (O=-1): H2O2, Na2O2, BaO2. Superoxides (O=-½): KO2, NaO2. Ozonides (O=-⅓): KO3. Metal hydrides (H=-1): NaH, LiAlH4, NaBH4, CaH2.",
                 "Overall charge" to "For neutral compounds enter 0. For polyatomic ions enter the ion charge. Examples: SO4²⁻ → charge -2. NH4⁺ → charge +1. MnO4⁻ → charge -1.",
                 "Organic compounds" to "For single-carbon compounds (CH4, CO2, CCl4) the result is exact. For multi-carbon compounds, the app calculates an average oxidation state across all carbons, which is chemically meaningful for comparisons but does not reflect individual carbon environments. Ethanol (C2H5OH) has carbons at -3 and -1, but the app returns -2 as the average.",
@@ -1279,6 +1143,7 @@ fun OxidationStateFinder() {
                 FilterChip(
                     selected = formula == f && (chargeInput.toIntOrNull() ?: 0) == c,
                     onClick = { formula = f; chargeInput = c.toString(); focusManager.clearFocus(); result = findOxidationStates(f, c) },
+                    colors = chemFilterChipColors(),
                     label = { Text(toSubscriptFormula(f) + if (c != 0) " (${if (c > 0) "+$c" else "$c"})" else "", style = MaterialTheme.typography.labelMedium) }
                 )
             }
@@ -1442,6 +1307,7 @@ fun SmilesVisualizer(isDark: Boolean) {
                 FilterChip(
                     selected = input == smiles,
                     onClick = { input = smiles; cidResult = null; error = null },
+                    colors = chemFilterChipColors(),
                     label = { Text(name, style = MaterialTheme.typography.labelMedium) }
                 )
             }
@@ -1608,9 +1474,7 @@ private fun balanceReaction(equation: String): BalancerResult {
 }
 
 private fun reactionToDisplay(raw: String): String =
-    raw.replace("->", "→")
-        .map { subscriptMap[it] ?: it }
-        .joinToString("")
+    toChemicalExpressionDisplay(raw)
 
 private fun fieldValueAtEnd(text: String): TextFieldValue =
     TextFieldValue(text = text, selection = TextRange(text.length))
@@ -1627,28 +1491,30 @@ private fun insertIntoField(current: TextFieldValue, insert: String): TextFieldV
 
 private fun normalizeEquationField(value: TextFieldValue): TextFieldValue {
     val raw = value.text
-    val normalized = raw.replace("->", "→")
+    val normalized = raw.replace("->", "⟶").replace("→", "⟶")
     if (raw == normalized) return value
 
     val start = raw
         .substring(0, value.selection.start.coerceIn(0, raw.length))
-        .replace("->", "→")
+        .replace("->", "⟶")
+        .replace("→", "⟶")
         .length
     val end = raw
         .substring(0, value.selection.end.coerceIn(0, raw.length))
-        .replace("->", "→")
+        .replace("->", "⟶")
+        .replace("→", "⟶")
         .length
     return value.copy(text = normalized, selection = TextRange(start, end))
 }
 
 private fun swapEquationSides(input: String): String {
-    val normalized = input.replace("→", "->")
+    val normalized = input.replace("⟶", "->").replace("→", "->")
     val parts = normalized.split("->")
     if (parts.size < 2) return input
     val left = parts.first().trim()
     val right = parts.drop(1).joinToString("->").trim()
     if (left.isBlank() || right.isBlank()) return input
-    return "$right → $left"
+    return "$right ⟶ $left"
 }
 
 @Composable
@@ -1658,11 +1524,11 @@ fun ReactionBalancer() {
     val focusManager = LocalFocusManager.current
 
     val examples = listOf(
-        "H2 + O2 -> H2O",
-        "Fe + O2 -> Fe2O3",
-        "C3H8 + O2 -> CO2 + H2O",
-        "Al + HCl -> AlCl3 + H2",
-        "KMnO4 + HCl -> KCl + MnCl2 + H2O + Cl2"
+        "H2 + O2 ⟶ H2O",
+        "Fe + O2 ⟶ Fe2O3",
+        "C3H8 + O2 ⟶ CO2 + H2O",
+        "Al + HCl ⟶ AlCl3 + H2",
+        "KMnO4 + HCl ⟶ KCl + MnCl2 + H2O + Cl2"
     )
 
     var showInfo by remember { mutableStateOf(false) }
@@ -1670,8 +1536,8 @@ fun ReactionBalancer() {
         InfoDialog(
             title = "Reaction Balancer",
             entries = listOf(
-                "How to enter equations" to "Type reactants on the left and products on the right, separated by '->'. Separate compounds with '+'. Example: H2 + O2 -> H2O",
-                "Coefficients" to "Do not enter coefficients. The app determines them. H2 + O2 -> H2O, not 2H2 + O2 -> 2H2O.",
+                "How to enter equations" to "Type reactants on the left and products on the right, separated by '⟶'. Separate compounds with '+'. Example: H2 + O2 ⟶ H2O",
+                "Coefficients" to "Do not enter coefficients. The app determines them. H2 + O2 ⟶ H2O, not 2H2 + O2 ⟶ 2H2O.",
                 "How it works" to "The balancer builds a matrix of element counts and solves the system using Gaussian elimination with exact rational arithmetic to find integer coefficients.",
                 "Supported formulas" to "Standard molecular formulas with parentheses are supported, e.g. Ca(OH)2, Al2(SO4)3.",
                 "Limitations" to "Equations that cannot be balanced by integer stoichiometry (e.g. some redox reactions requiring half-reaction method) may not solve correctly.",
@@ -1705,7 +1571,7 @@ fun ReactionBalancer() {
                 if (textChanged) result = null
             },
             label = { Text("Chemical Equation") },
-            placeholder = { Text("H2 + O2 -> H2O", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+            placeholder = { Text("H2 + O2 ⟶ H2O", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(14.dp),
             singleLine = true,
@@ -1713,7 +1579,7 @@ fun ReactionBalancer() {
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
                 focusManager.clearFocus()
-                result = balanceReaction(input.text.replace("→", "->"))
+                result = balanceReaction(input.text.replace("⟶", "->").replace("→", "->"))
             }),
             trailingIcon = {
                 if (input.text.isNotBlank()) {
@@ -1739,7 +1605,7 @@ fun ReactionBalancer() {
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                listOf("+" to " + ", "→" to " → ", "(" to "(", ")" to ")").forEach { (label, insert) ->
+                listOf("+" to " + ", "⟶" to " ⟶ ", "(" to "(", ")" to ")").forEach { (label, insert) ->
                     Surface(
                         onClick = { input = insertIntoField(input, insert); result = null },
                         shape = RoundedCornerShape(8.dp),
@@ -1778,7 +1644,7 @@ fun ReactionBalancer() {
         }
 
         Button(
-            onClick = { focusManager.clearFocus(); result = balanceReaction(input.text.replace("→", "->")) },
+            onClick = { focusManager.clearFocus(); result = balanceReaction(input.text.replace("⟶", "->").replace("→", "->")) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
             enabled = input.text.isNotBlank()
@@ -1904,17 +1770,17 @@ fun ReactionBalancer() {
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             examples.forEach { ex ->
                 Surface(
-                    onClick = { input = fieldValueAtEnd(ex.replace("->", "→")); result = null },
+                    onClick = { input = fieldValueAtEnd(ex); result = null },
                     shape = RoundedCornerShape(10.dp),
-                    color = if (input.text.replace("→", "->") == ex) MaterialTheme.colorScheme.primary.copy(0.1f) else MaterialTheme.colorScheme.surfaceVariant.copy(0.5f),
-                    border = if (input.text.replace("→", "->") == ex) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.4f)) else null
+                    color = if (input.text == ex) MaterialTheme.colorScheme.primary.copy(0.1f) else MaterialTheme.colorScheme.surfaceVariant.copy(0.5f),
+                    border = if (input.text == ex) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.4f)) else null
                 ) {
                     Text(
                         reactionToDisplay(ex),
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                         style = MaterialTheme.typography.bodySmall,
                         fontFamily = FontFamily.Monospace,
-                        color = if (input.text.replace("→", "->") == ex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
+                        color = if (input.text == ex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
                     )
                 }
             }
@@ -2184,15 +2050,18 @@ fun CompareCompoundsTool(
     aiProvider: AiProvider,
     getAiKey: (AiProvider) -> String?,
     getSelectedAiModel: (AiProvider) -> String,
+    prefillCompounds: List<String> = emptyList(),
+    prefillVersion: Int = 0,
     onSearchCompound: (String) -> Unit = {}
 ) {
-    var compoundFields by remember {
-        mutableStateOf(
-            listOf(
-                TextFieldValue("caffeine"),
-                TextFieldValue("theobromine")
-            )
+    val defaultCompareFields = remember {
+        listOf(
+            TextFieldValue("caffeine"),
+            TextFieldValue("theobromine")
         )
+    }
+    var compoundFields by remember {
+        mutableStateOf(defaultCompareFields)
     }
     var results by remember { mutableStateOf<List<CompareCompound>>(emptyList()) }
     var isLoading by remember { mutableStateOf(false) }
@@ -2247,6 +2116,20 @@ fun CompareCompoundsTool(
             .map { fieldValueAtEnd(it) }
         compoundFields = values.ifEmpty { compoundFields }
         runCompare(values)
+    }
+
+    LaunchedEffect(prefillVersion) {
+        val values = prefillCompounds
+            .flatMap { parseCompareCompoundInputs(it) }
+            .map { it.trim() }
+            .filter { it.isNotBlank() }
+            .distinctBy { it.lowercase() }
+            .take(MAX_COMPARE_COMPOUNDS)
+            .map { fieldValueAtEnd(it) }
+        if (prefillVersion > 0 && values.size >= MIN_COMPARE_COMPOUNDS) {
+            compoundFields = values
+            runCompare(values)
+        }
     }
 
     Column(
@@ -2321,6 +2204,8 @@ fun CompareCompoundsTool(
             ).forEach { example ->
                 AssistChip(
                     onClick = { setFieldsFromExample(example) },
+                    colors = chemAssistChipColors(),
+                    border = chemAssistChipBorder(),
                     label = { Text(example, maxLines = 1, overflow = TextOverflow.Ellipsis) },
                     leadingIcon = {
                         Icon(Icons.Default.Bolt, null, modifier = Modifier.size(14.dp))
@@ -2603,92 +2488,6 @@ private fun DescSource.compareLabel(): String = when (this) {
     DescSource.AI -> "AI"
 }
 
-// TOOL 6 : Isomer Finder
-
-@Composable
-fun IsomerFinderTool(
-    vm: ChemViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    onNavigateToSearch: () -> Unit = {}
-) {
-    val state by vm.uiState.collectAsStateWithLifecycle()
-    val focusManager = androidx.compose.ui.platform.LocalFocusManager.current
-
-    var showInfo by remember { mutableStateOf(false) }
-    if (showInfo) {
-        InfoDialog(
-            title = "Isomer Finder",
-            entries = listOf(
-                "How to use" to "Enter any molecular formula (e.g. C₆H₆ or C₆H₁₂O₆). The app instantly shows up to 20 known isomers with the exact same formula.",
-                "What are isomers?" to "Isomers are different compounds that have the same molecular formula but different atom connectivity or 3D arrangement.",
-                "How it works" to "The app queries PubChem’s official API in real-time.",
-                "Supported formulas" to "Standard molecular formulas with parentheses are fully supported, e.g. Ca(OH)₂, C₆H₅OH, Al₂(SO₄)₃, or complex ones like C₁₇H₃₅COOH.",
-                "What you get" to "A list of all matching PubChem compounds with names, 2D structures, CIDs, and quick links to full details.",
-                "Limitations" to "Only experimentally known compounds from PubChem are shown. Very rare or brand-new compounds may not appear yet."
-            ),
-            onDismiss = { showInfo = false }
-        )
-    }
-
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(14.dp)
-    ) {
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text("Isomer Finder", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
-                    Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
-                }
-            }
-            Text(
-                "Enter a molecular formula to find up to 20 structural isomers from PubChem. " +
-                        "Tap any result to load it in the Search tab.",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-            )
-        }
-
-        IsomerSearchBar(
-            query = state.isomerQuery,
-            onQueryChange = { vm.onIsomerQueryChange(it) },
-            onSearch = {
-                focusManager.clearFocus()
-                vm.searchIsomers()
-            },
-            onClear = { vm.onIsomerQueryChange("") }
-        )
-
-        if (state.isLoadingIsomers) {
-            IsomerLoadingState()
-        }
-
-        state.isomerError?.let { IsomerErrorState(it) }
-
-        if (state.isomers.isNotEmpty()) {
-            IsomerResultsHeader(
-                formula = state.isomerQuery.trim(),
-                count = state.isomers.size
-            )
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                state.isomers.forEach { isomer ->
-                    IsomerCard(
-                        isomer = isomer,
-                        onClick = {
-                            focusManager.clearFocus()
-                            onNavigateToSearch()
-                            vm.searchByCid(isomer.cid)
-                        }
-                    )
-                }
-            }
-        }
-    }
-}
-
 private data class SolveResult(val value: Double?, val error: String? = null)
 
 private enum class DilutionSolve(val label: String, val unit: String) {
@@ -2940,6 +2739,7 @@ fun PhPohCalculatorTool() {
                         focusManager.clearFocus()
                     },
                     label = { Text(type.label) },
+                    colors = chemFilterChipColors(),
                     leadingIcon = if (inputType == type) {
                         {
                             Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.size(16.dp))
@@ -2990,6 +2790,8 @@ fun PhPohCalculatorTool() {
                         input = value
                         focusManager.clearFocus()
                     },
+                    colors = chemAssistChipColors(),
+                    border = chemAssistChipBorder(),
                     label = { Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
                     leadingIcon = { Icon(Icons.Default.Bolt, null, modifier = Modifier.size(14.dp)) }
                 )
@@ -3567,11 +3369,11 @@ private fun StoichiometryCalculator(
     val showScaling = mode == StoichiometryMode.SCALING
 
     val examples = listOf(
-        "H2 + O2 -> H2O",
-        "C3H8 + O2 -> CO2 + H2O",
-        "N2 + H2 -> NH3",
-        "CaCO3 -> CaO + CO2",
-        "Fe2O3 + CO -> Fe + CO2"
+        "H2 + O2 ⟶ H2O",
+        "C3H8 + O2 ⟶ CO2 + H2O",
+        "N2 + H2 ⟶ NH3",
+        "CaCO3 ⟶ CaO + CO2",
+        "Fe2O3 + CO ⟶ Fe + CO2"
     )
 
     var showInfo by remember { mutableStateOf(false) }
@@ -3642,7 +3444,7 @@ private fun StoichiometryCalculator(
                 if (textChanged) result = null
             },
             label = { Text("Chemical Equation") },
-            placeholder = { Text("H2 + O2 -> H2O", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+            placeholder = { Text("H2 + O2 ⟶ H2O", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(14.dp),
             singleLine = true,
@@ -3650,7 +3452,7 @@ private fun StoichiometryCalculator(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
                 focusManager.clearFocus()
-                result = balanceReaction(equation.text.replace("→", "->"))
+                result = balanceReaction(equation.text.replace("⟶", "->").replace("→", "->"))
             }),
             trailingIcon = {
                 if (equation.text.isNotBlank()) {
@@ -3676,7 +3478,7 @@ private fun StoichiometryCalculator(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                listOf("+" to " + ", "→" to " → ", "(" to "(", ")" to ")").forEach { (label, insert) ->
+                listOf("+" to " + ", "⟶" to " ⟶ ", "(" to "(", ")" to ")").forEach { (label, insert) ->
                     Surface(
                         onClick = { equation = insertIntoField(equation, insert); result = null },
                         shape = RoundedCornerShape(8.dp),
@@ -3715,7 +3517,7 @@ private fun StoichiometryCalculator(
         }
 
         Button(
-            onClick = { focusManager.clearFocus(); result = balanceReaction(equation.text.replace("→", "->")) },
+            onClick = { focusManager.clearFocus(); result = balanceReaction(equation.text.replace("⟶", "->").replace("→", "->")) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
             enabled = equation.text.isNotBlank()
@@ -4225,17 +4027,17 @@ private fun StoichiometryCalculator(
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             examples.forEach { ex ->
                 Surface(
-                    onClick = { equation = fieldValueAtEnd(ex.replace("->", "→")); result = null },
+                    onClick = { equation = fieldValueAtEnd(ex); result = null },
                     shape = RoundedCornerShape(10.dp),
-                    color = if (equation.text.replace("→", "->") == ex) MaterialTheme.colorScheme.primary.copy(0.1f) else MaterialTheme.colorScheme.surfaceVariant.copy(0.5f),
-                    border = if (equation.text.replace("→", "->") == ex) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.4f)) else null
+                    color = if (equation.text == ex) MaterialTheme.colorScheme.primary.copy(0.1f) else MaterialTheme.colorScheme.surfaceVariant.copy(0.5f),
+                    border = if (equation.text == ex) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.4f)) else null
                 ) {
                     Text(
                         reactionToDisplay(ex),
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                         style = MaterialTheme.typography.bodySmall,
                         fontFamily = FontFamily.Monospace,
-                        color = if (equation.text.replace("→", "->") == ex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
+                        color = if (equation.text == ex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
                     )
                 }
             }

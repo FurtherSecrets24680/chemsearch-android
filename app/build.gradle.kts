@@ -7,31 +7,54 @@ if (keystorePropertiesFile.exists()) {
 }
 
 fun gitVersionCode(): Int {
-    return runGit("rev-list", "--count", "HEAD")?.toIntOrNull() ?: 1
+    val baseCode = runGit("rev-list", "--count", "HEAD")?.toIntOrNull() ?: 1
+    return if (gitHasWorkingTreeChanges()) baseCode + 1 else baseCode
 }
 
 fun gitVersionName(): String {
+    localVersionNameOverride()?.let { return it }
+
+    val isDirty = gitHasWorkingTreeChanges()
     val headTag = runGit("tag", "--points-at", "HEAD", "--sort=-v:refname")
         ?.lineSequence()
         ?.firstOrNull { it.isNotBlank() }
-    if (headTag != null) return headTag
+    if (headTag != null) return if (isDirty) "$headTag-dev" else headTag
 
     val tag = runGit("describe", "--tags", "--abbrev=0")
     if (tag != null) {
         val commitsSinceTag = runGit("rev-list", "$tag..HEAD", "--count")?.toIntOrNull() ?: 0
-        return if (commitsSinceTag == 0) tag else "$tag+$commitsSinceTag"
+        val version = if (commitsSinceTag == 0) tag else "$tag+$commitsSinceTag"
+        return if (isDirty) "$version-dev" else version
     }
-    return runGit("rev-parse", "--short", "HEAD") ?: "1.1.0"
+    val version = runGit("rev-parse", "--short", "HEAD") ?: "1.1.0"
+    return if (isDirty) "$version-dev" else version
+}
+
+fun localVersionNameOverride(): String? {
+    val gradleOverride = findProperty("chemsearch.versionName") as? String
+    val envOverride = System.getenv("CHEMSEARCH_VERSION_NAME")
+    return listOf(gradleOverride, envOverride)
+        .firstOrNull { !it.isNullOrBlank() }
+        ?.trim()
+}
+
+fun gitHasWorkingTreeChanges(): Boolean {
+    return runGitAllowBlank("status", "--porcelain")?.isNotBlank() == true
 }
 
 fun runGit(vararg args: String): String? {
+    val output = runGitAllowBlank(*args) ?: return null
+    return output.takeIf { it.isNotBlank() }
+}
+
+fun runGitAllowBlank(vararg args: String): String? {
     return try {
         val process = ProcessBuilder("git", *args)
             .directory(rootProject.projectDir)
             .redirectErrorStream(true)
             .start()
         val output = process.inputStream.bufferedReader().readText().trim()
-        if (process.waitFor() != 0 || output.isBlank()) null else output
+        if (process.waitFor() != 0) null else output
     } catch (_: Exception) {
         null
     }
@@ -78,8 +101,12 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
-            isShrinkResources = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             signingConfigs.findByName("release")?.let { signingConfig = it }
         }
     }

@@ -22,4 +22,7 @@ interface DownloadedCompoundDao {
 
     @Query("DELETE FROM downloaded_compounds WHERE cid = :cid")
     suspend fun delete(cid: Long)
+
+    @Query("DELETE FROM downloaded_compounds")
+    suspend fun clearAll()
 }

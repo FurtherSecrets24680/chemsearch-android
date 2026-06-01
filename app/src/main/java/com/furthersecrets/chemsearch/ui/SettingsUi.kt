@@ -17,10 +17,12 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,6 +37,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -45,6 +48,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.furthersecrets.chemsearch.BuildConfig
+import com.furthersecrets.chemsearch.R
 import com.furthersecrets.chemsearch.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -52,14 +56,11 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONArray
-import org.json.JSONObject
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.math.roundToInt
 
-private val SECRET_PREF_KEYS = AiProvider.entries.map { it.keyPref }.toSet()
 private val SENSITIVE_PREF_TOKENS = listOf("key", "token", "secret")
 
 internal fun isOledModeControlEnabled(isDark: Boolean): Boolean = isDark
@@ -113,7 +114,7 @@ internal fun cacheRetentionLabel(retention: CacheRetention): String =
     }
 
 @Composable
-private fun SettingsDropdownMenu(
+fun SettingsDropdownMenu(
     expanded: Boolean,
     onDismissRequest: () -> Unit,
     content: @Composable ColumnScope.() -> Unit
@@ -607,6 +608,7 @@ fun SettingsSheet(
     onToggleUpdateNotifications: (Boolean) -> Unit,
     onCheckForUpdates: () -> Unit,
     onDownloadUpdate: () -> Unit,
+    onOpenAbout: () -> Unit = {},
     onDismiss: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -769,133 +771,17 @@ fun SettingsSheet(
             )
 
             Spacer(Modifier.height(4.dp))
-            SettingsSectionHeader("About")
-            AboutCard()
+            SettingsActionRow(
+                icon = Icons.Default.Info,
+                title = "About ChemSearch",
+                subtitle = "App info, links, data sources, and credits",
+                actionLabel = "Open",
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = onOpenAbout
+            )
         }
 
     }
-}
-
-private fun buildSettingsBackupJson(prefs: android.content.SharedPreferences): String {
-    val root = JSONObject()
-    root.put("format", "chemsearch_settings")
-    root.put("version", 2)
-    root.put("exported_at", System.currentTimeMillis())
-    root.put("app_version_name", BuildConfig.VERSION_NAME)
-    root.put("app_version_code", BuildConfig.VERSION_CODE)
-    root.put("includes_api_keys", true)
-    val entries = JSONObject()
-    val apiKeys = JSONObject()
-
-    prefs.all.toSortedMap().forEach { (key, value) ->
-        if (key in SECRET_PREF_KEYS) {
-            SecurePrefs.getString(prefs, key)
-                ?.takeIf { it.isNotBlank() }
-                ?.let { apiKeys.put(key, it) }
-            return@forEach
-        }
-        val item = JSONObject()
-        when (value) {
-            is Boolean -> {
-                item.put("type", "boolean")
-                item.put("value", value)
-            }
-            is Int -> {
-                item.put("type", "int")
-                item.put("value", value)
-            }
-            is Long -> {
-                item.put("type", "long")
-                item.put("value", value)
-            }
-            is Float -> {
-                item.put("type", "float")
-                item.put("value", value)
-            }
-            is String -> {
-                item.put("type", "string")
-                item.put("value", value)
-            }
-            is Set<*> -> {
-                item.put("type", "string_set")
-                val arr = JSONArray()
-                value.filterIsInstance<String>().forEach(arr::put)
-                item.put("value", arr)
-            }
-            else -> return@forEach
-        }
-        entries.put(key, item)
-    }
-
-    root.put("entries", entries)
-    root.put("api_keys", apiKeys)
-    root.put("included_sensitive_keys", JSONArray().apply {
-        SECRET_PREF_KEYS.sorted()
-            .filter { apiKeys.has(it) }
-            .forEach(::put)
-    })
-    return root.toString(2)
-}
-
-private fun restoreSettingsFromBackup(
-    prefs: android.content.SharedPreferences,
-    rawJson: String
-): Int {
-    val root = JSONObject(rawJson)
-    val entries = root.optJSONObject("entries")
-        ?: throw IllegalArgumentException("Invalid settings backup file.")
-    val apiKeys = root.optJSONObject("api_keys")
-    val shouldPreserveExistingSecrets = apiKeys == null
-    val preservedSecrets = if (shouldPreserveExistingSecrets) SECRET_PREF_KEYS.mapNotNull { key ->
-        prefs.getString(key, null)?.let { key to it }
-    }.toMap() else emptyMap()
-    val editor = prefs.edit().clear()
-    var restored = 0
-
-    val keys = entries.keys()
-    while (keys.hasNext()) {
-        val key = keys.next()
-        if (key in SECRET_PREF_KEYS) continue
-        val item = entries.optJSONObject(key) ?: continue
-        when (item.optString("type")) {
-            "boolean" -> editor.putBoolean(key, item.optBoolean("value"))
-            "int" -> editor.putInt(key, item.optInt("value"))
-            "long" -> editor.putLong(key, item.optLong("value"))
-            "float" -> editor.putFloat(key, item.optDouble("value").toFloat())
-            "string" -> editor.putString(key, item.optString("value"))
-            "string_set" -> {
-                val set = buildSet {
-                    val arr = item.optJSONArray("value") ?: JSONArray()
-                    for (idx in 0 until arr.length()) {
-                        add(arr.optString(idx))
-                    }
-                }
-                editor.putStringSet(key, set)
-            }
-            else -> continue
-        }
-        restored++
-    }
-
-    preservedSecrets.forEach { (key, value) ->
-        editor.putString(key, value)
-    }
-
-    editor.apply()
-
-    if (apiKeys != null) {
-        SECRET_PREF_KEYS.forEach { key ->
-            val value = apiKeys.optString(key, "").trim()
-            if (value.isNotBlank()) {
-                SecurePrefs.putString(prefs, key, value)
-                restored++
-            } else {
-                SecurePrefs.remove(prefs, key)
-            }
-        }
-    }
-
-    return restored
 }
 
 @Composable
@@ -1127,16 +1013,87 @@ private fun UpdatesSection(
 }
 
 @Composable
-private fun AboutCard(onVersionTap: (() -> Unit)? = null) {
+private fun AboutCard(
+    onVersionTap: (() -> Unit)? = null,
+    onOpenLegalDocument: (LegalDocument) -> Unit = {}
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(18.dp)) {
+        AboutHero(onVersionTap = onVersionTap)
+        AboutLegalSection(onOpenDocument = onOpenLegalDocument)
+        AboutSection(
+            title = "APP LINKS",
+            entries = aboutAppLinks,
+            iconFor = ::aboutAppLinkIcon
+        )
+        AboutSection(
+            title = "CHEMISTRY DATA",
+            entries = aboutDataCredits,
+            iconFor = ::aboutDataCreditIcon
+        )
+        AboutSection(
+            title = "AI PROVIDERS",
+            entries = aboutAiProviderCredits,
+            iconFor = { Icons.Default.SmartToy }
+        )
+        AboutSection(
+            title = "BUILT WITH",
+            entries = aboutTechnologyCredits,
+            iconFor = ::aboutTechnologyCreditIcon
+        )
+    }
+}
+
+@Composable
+private fun AboutHero(onVersionTap: (() -> Unit)?) {
     val versionModifier = if (onVersionTap != null) {
         Modifier.clickable { onVersionTap() }
     } else {
         Modifier
     }
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text("ChemSearch for Android", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+
+    Surface(
+        shape = RoundedCornerShape(24.dp),
+        color = MaterialTheme.colorScheme.primary.copy(0.08f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f)),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 18.dp, vertical = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Surface(
+                shape = RoundedCornerShape(28.dp),
+                color = MaterialTheme.colorScheme.surface,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.18f)),
+                tonalElevation = 0.dp,
+                shadowElevation = 3.dp
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.chemsearch),
+                    contentDescription = "ChemSearch app icon",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .size(128.dp)
+                        .padding(10.dp)
+                )
+            }
+            Text(
+                "ChemSearch",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.ExtraBold,
+                letterSpacing = 0.sp,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                "Chemistry simplified for Android.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.66f)
+            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Surface(
                     shape = RoundedCornerShape(6.dp),
                     color = MaterialTheme.colorScheme.primary.copy(0.12f),
@@ -1165,11 +1122,22 @@ private fun AboutCard(onVersionTap: (() -> Unit)? = null) {
                 }
             }
             Text(
-                "Search compounds, view 2D/3D structures, and read safety data.",
+                "Search compounds, draw structures, view 2D/3D models, save offline data, compare compounds, and use chemistry tools.",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
+                color = MaterialTheme.colorScheme.onSurface.copy(0.58f)
             )
-            Text("Built by FurtherSecrets", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Icon(Icons.Default.Code, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
+                Text(
+                    "Built by FurtherSecrets",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
             Text(
                 "Package: ${BuildConfig.APPLICATION_ID}",
                 style = MaterialTheme.typography.labelSmall,
@@ -1177,96 +1145,240 @@ private fun AboutCard(onVersionTap: (() -> Unit)? = null) {
                 color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
             )
         }
+    }
+}
 
-        HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
+@Composable
+fun AboutScreen(
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(16.dp)
+) {
+    val context = LocalContext.current
+    val prefs = remember { context.getSharedPreferences("chemsearch_prefs", Context.MODE_PRIVATE) }
+    var buildTapCount by remember { mutableIntStateOf(0) }
+    var selectedLegalDocument by remember { mutableStateOf<LegalDocument?>(null) }
 
-        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text("LINKS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-            LinkRow(
-                icon = Icons.Default.Code,
-                title = "GitHub repository",
-                subtitle = "Source, docs, and releases",
-                url = "https://github.com/FurtherSecrets24680/chemsearch-android"
-            )
-            LinkRow(
-                icon = Icons.Default.SystemUpdate,
-                title = "Latest release",
-                subtitle = "Download the newest APK",
-                url = "https://github.com/FurtherSecrets24680/chemsearch-android/releases/latest"
-            )
-            LinkRow(
-                icon = Icons.Default.BugReport,
-                title = "Report an issue",
-                subtitle = "Bug reports and feature requests",
-                url = "https://github.com/FurtherSecrets24680/chemsearch-android/issues"
-            )
-            LinkRow(
-                icon = Icons.Default.Description,
-                title = "License",
-                subtitle = "View the open-source license",
-                url = "https://github.com/FurtherSecrets24680/chemsearch-android/blob/main/LICENSE"
-            )
-        }
+    selectedLegalDocument?.let { document ->
+        LegalDocumentDialog(
+            document = document,
+            onDismiss = { selectedLegalDocument = null }
+        )
+    }
 
-        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text("DATA SOURCES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-            listOf(
-                "PubChem" to "Structures and properties",
-                "Wikipedia" to "Descriptions",
-                "Google Gemini" to "AI summaries",
-                "Groq" to "AI summaries",
-                "OpenAI" to "AI summaries",
-                "OpenRouter" to "AI summaries",
-                "Mistral AI" to "AI summaries"
-            ).forEach { (name, detail) ->
-                CreditRow(name = name, detail = detail)
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = contentPadding,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                IconButton(onClick = onBack, modifier = Modifier.size(42.dp)) {
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = MaterialTheme.colorScheme.primary)
+                }
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        "About ChemSearch",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.ExtraBold,
+                        letterSpacing = 0.sp
+                    )
+                    Text(
+                        "App info, links, data sources, and credits.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.56f)
+                    )
+                }
             }
         }
 
-        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text("LIBRARIES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-            listOf(
-                "Jetpack Compose" to "UI",
-                "Material 3" to "Design",
-                "Retrofit + OkHttp" to "Networking",
-                "Coil" to "Images",
-                "Gson" to "JSON",
-                "Coroutines" to "Async",
-                "Custom 3D renderer" to "SDF viewer"
-            ).forEach { (name, detail) ->
-                CreditRow(name = name, detail = detail)
-            }
+        item {
+            AboutCard(
+                onVersionTap = {
+                    buildTapCount++
+                    when (buildTapCount) {
+                        3 -> Toast.makeText(context, "2 more taps to unlock debug settings", Toast.LENGTH_SHORT).show()
+                        4 -> Toast.makeText(context, "1 more tap to unlock debug settings", Toast.LENGTH_SHORT).show()
+                        5 -> {
+                            prefs.edit().putBoolean("dev_mode", true).apply()
+                            Toast.makeText(context, "Debug settings unlocked", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                },
+                onOpenLegalDocument = { selectedLegalDocument = it }
+            )
         }
     }
 }
 
 @Composable
-private fun LinkRow(icon: ImageVector, title: String, subtitle: String, url: String) {
+private fun AboutLegalSection(onOpenDocument: (LegalDocument) -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Text(
+            "LEGAL AND SAFETY",
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+        )
+        legalDocuments.forEach { document ->
+            AboutLegalRow(document = document, onClick = { onOpenDocument(document) })
+        }
+    }
+}
+
+@Composable
+private fun AboutLegalRow(document: LegalDocument, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(vertical = 7.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Surface(
+            shape = RoundedCornerShape(10.dp),
+            color = MaterialTheme.colorScheme.primary.copy(0.1f)
+        ) {
+            Icon(
+                legalDocumentIcon(document.type),
+                null,
+                modifier = Modifier.padding(8.dp).size(18.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
+        }
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                document.title,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.primary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                document.summary,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        Icon(
+            Icons.AutoMirrored.Filled.ArrowForward,
+            null,
+            modifier = Modifier.size(16.dp),
+            tint = MaterialTheme.colorScheme.onSurface.copy(0.36f)
+        )
+    }
+}
+
+@Composable
+private fun AboutSection(
+    title: String,
+    entries: List<AboutCreditEntry>,
+    iconFor: (AboutCreditEntry) -> ImageVector
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Text(
+            title,
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+        )
+        entries.forEach { entry ->
+            AboutSourceRow(entry = entry, icon = iconFor(entry))
+        }
+    }
+}
+
+@Composable
+private fun AboutSourceRow(entry: AboutCreditEntry, icon: ImageVector) {
     val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url))) }
-            .padding(vertical = 4.dp),
+            .clickable { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(entry.url))) }
+            .padding(vertical = 7.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Icon(icon, null, modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
-        Column {
-            Text(title, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.primary)
-            Text(subtitle, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+        Surface(
+            shape = RoundedCornerShape(10.dp),
+            color = MaterialTheme.colorScheme.primary.copy(0.1f)
+        ) {
+            Icon(
+                icon,
+                null,
+                modifier = Modifier.padding(8.dp).size(18.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
         }
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                entry.title,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.primary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                entry.detail,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        Icon(
+            Icons.AutoMirrored.Filled.OpenInNew,
+            null,
+            modifier = Modifier.size(16.dp),
+            tint = MaterialTheme.colorScheme.onSurface.copy(0.36f)
+        )
     }
 }
 
-@Composable
-private fun CreditRow(name: String, detail: String) {
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(name, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Medium)
-        Text(detail, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+private fun aboutAppLinkIcon(entry: AboutCreditEntry): ImageVector =
+    when (entry.title) {
+        "GitHub repository" -> Icons.Default.Code
+        "Latest release" -> Icons.Default.SystemUpdate
+        "Wiki" -> Icons.AutoMirrored.Filled.MenuBook
+        "Issue tracker" -> Icons.Default.BugReport
+        "Product Hunt" -> Icons.Default.Public
+        "License" -> Icons.Default.Description
+        else -> Icons.AutoMirrored.Filled.OpenInNew
     }
-}
 
+private fun aboutDataCreditIcon(entry: AboutCreditEntry): ImageVector =
+    when {
+        entry.title.contains("PubChem") -> Icons.Default.Storage
+        entry.title.contains("Wikipedia") -> Icons.Default.Public
+        entry.title.contains("Bowserinator") -> Icons.AutoMirrored.Filled.MenuBook
+        entry.title.contains("NCI") -> Icons.Default.Science
+        entry.title.contains("IUPAC") -> Icons.AutoMirrored.Filled.MenuBook
+        entry.title.contains("GHS") -> Icons.Default.HealthAndSafety
+        else -> Icons.Default.Info
+    }
+
+private fun aboutTechnologyCreditIcon(entry: AboutCreditEntry): ImageVector =
+    when {
+        entry.title.contains("Compose") || entry.title.contains("Material") -> Icons.Default.Palette
+        entry.title.contains("Navigation") -> Icons.AutoMirrored.Filled.ArrowForward
+        entry.title.contains("Room") || entry.title.contains("DataStore") -> Icons.Default.Storage
+        entry.title.contains("WorkManager") -> Icons.Default.Cached
+        entry.title.contains("Retrofit") || entry.title.contains("OkHttp") -> Icons.Default.Hub
+        entry.title.contains("Coil") -> Icons.Default.Visibility
+        entry.title.contains("Gson") -> Icons.Default.Code
+        entry.title.contains("Coroutines") -> Icons.Default.Bolt
+        entry.title.contains("Phosphor") -> Icons.Default.Star
+        else -> Icons.Default.Code
+    }
 
 // API Provider dialog
 
@@ -1483,7 +1595,7 @@ private val FAQ_ENTRIES = listOf(
     "Is the app offline?" to "Most live search features require internet access. Downloaded compounds in Library can be opened later with saved structures, descriptions, synonyms, safety info, and identifiers.",
     "What is the difference between cache and Downloads?" to "Cache helps repeated searches load faster and can be cleared anytime. Downloads are deliberate offline copies saved in Library with compound data and structures.",
     "Where are downloaded compounds stored?" to "Downloaded compounds are stored in the app's local Room database on your device. They are not uploaded anywhere by ChemSearch.",
-    "What is the Chemical Database?" to "It is a built-in reference browser for substances, ions, functional groups, and reactions. It uses local JSON data bundled with the app.",
+    "What is the Chemical Database?" to "It is a built-in browser for substances, ions, functional groups, and reactions. It uses local JSON data bundled with the app.",
     "How do autosuggestions work?" to "Autosuggestions query PubChem as you type. You can toggle them in Settings > Search.",
     "How do I save favorites?" to "Tap the star icon on a compound, then open Library > Favorites. Favorites are stored locally.",
     "How do I clear history or cache?" to "Go to Settings > Data to clear search history or manage the compound cache.",
@@ -1499,8 +1611,8 @@ private val FAQ_ENTRIES = listOf(
     "Why does oxidation state show a fraction or question mark?" to "Some formulas need a charge to solve, and some have multiple unknown elements. The tool shows averages or unknowns in those cases.",
     "How does the Isomer Finder work?" to "It queries PubChem for matching formulas and returns up to 20 results.",
     "Are update notifications optional?" to "Yes. You can toggle update notifications in Settings. Manual update checks are also available.",
-    "Is safety info official?" to "GHS data is aggregated from multiple sources in PubChem. It is for reference only and does not replace an official SDS.",
-    "How do I unlock debug settings?" to "Tap the build number in the About card five times to reveal the developer tools."
+    "Is safety info official?" to "GHS data is aggregated from multiple sources in PubChem. Use it for quick checks only; it does not replace an official SDS.",
+    "How do I unlock debug settings?" to "Tap the build number on the About screen five times to reveal the developer tools."
 )
 
 // Favorites sheet
@@ -1573,6 +1685,9 @@ private fun FavoriteCard(
     showReorderControls: Boolean = false,
     canMoveUp: Boolean = false,
     canMoveDown: Boolean = false,
+    selectionItem: LibrarySelectionItem? = null,
+    selected: Boolean = false,
+    onToggleSelection: (LibrarySelectionItem) -> Unit = {},
     onMoveUp: () -> Unit = {},
     onMoveDown: () -> Unit = {}
 ) {
@@ -1582,7 +1697,8 @@ private fun FavoriteCard(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        border = if (selected) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.42f)) else null
     ) {
         Row(
             modifier = Modifier.padding(if (compact) 9.dp else 12.dp).fillMaxWidth(),
@@ -1656,6 +1772,12 @@ private fun FavoriteCard(
                     }
                 }
             }
+            if (selectionItem != null && !showReorderControls) {
+                LibrarySelectionToggle(
+                    selected = selected,
+                    onClick = { onToggleSelection(selectionItem) }
+                )
+            }
             IconButton(onClick = { onDelete(favorite.cid) }) {
                 Icon(Icons.Default.Delete, contentDescription = "Remove", tint = MaterialTheme.colorScheme.error.copy(0.65f), modifier = Modifier.size(18.dp))
             }
@@ -1722,7 +1844,7 @@ private fun SortPill(label: String, selected: Boolean, onClick: () -> Unit) {
     }
 }
 
-private enum class LibraryTab { FAVORITES, DOWNLOADS, DATABASE }
+private enum class LibraryTab { FAVORITES, DOWNLOADS, DATABASE, PERIODIC_TABLE }
 private enum class LibraryViewMode { LIST, GRID }
 
 private data class LibraryOption(
@@ -1738,6 +1860,44 @@ private fun LibraryTab.icon(): ChemIconSpec = when (this) {
     LibraryTab.FAVORITES -> ChemAppIcons.Star
     LibraryTab.DOWNLOADS -> ChemAppIcons.Download
     LibraryTab.DATABASE -> ChemAppIcons.Library
+    LibraryTab.PERIODIC_TABLE -> ChemAppIcons.Atom
+}
+
+@Composable
+private fun LibraryHomeSectionTitle(title: String, modifier: Modifier = Modifier) {
+    Text(
+        title,
+        modifier = modifier.fillMaxWidth(),
+        style = MaterialTheme.typography.labelMedium,
+        color = MaterialTheme.colorScheme.primary,
+        fontWeight = FontWeight.Bold
+    )
+}
+
+@Composable
+private fun LibraryOptionGridRows(
+    options: List<LibraryOption>,
+    onSelect: (LibraryTab) -> Unit
+) {
+    options.chunked(2).forEach { rowItems ->
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            rowItems.forEach { option ->
+                LibraryOptionCard(
+                    icon = option.icon,
+                    title = option.title,
+                    subtitle = option.subtitle,
+                    countLabel = if (option.databaseSummary == null) option.countLabel else null,
+                    selected = false,
+                    modifier = Modifier.weight(1f),
+                    onClick = { onSelect(option.tab) }
+                )
+            }
+            if (rowItems.size == 1) Spacer(Modifier.weight(1f))
+        }
+    }
 }
 
 @Composable
@@ -2072,12 +2232,49 @@ private fun DownloadedCompound.toFavoriteCardData(): FavoriteCompound =
     )
 
 @Composable
+private fun LibrarySelectionToggle(
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val compact = LocalCompactMode.current
+    IconButton(
+        onClick = onClick,
+        modifier = modifier.size(if (compact) 30.dp else 34.dp)
+    ) {
+        Surface(
+            shape = CircleShape,
+            color = if (selected) MaterialTheme.colorScheme.primary else Color.Transparent,
+            border = BorderStroke(
+                1.dp,
+                if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline.copy(0.48f)
+            ),
+            modifier = Modifier.size(if (compact) 22.dp else 24.dp)
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                if (selected) {
+                    Icon(
+                        Icons.Default.Check,
+                        contentDescription = "Selected",
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.size(if (compact) 13.dp else 14.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
 private fun LibraryGridCard(
     favorite: FavoriteCompound,
     onSelect: (String) -> Unit,
     onDelete: (Long) -> Unit,
     modifier: Modifier = Modifier,
-    offlineMetadata: OfflineDownloadMetadata? = null
+    offlineMetadata: OfflineDownloadMetadata? = null,
+    selectionItem: LibrarySelectionItem? = null,
+    selected: Boolean = false,
+    onToggleSelection: (LibrarySelectionItem) -> Unit = {}
 ) {
     val compact = LocalCompactMode.current
     Card(
@@ -2087,7 +2284,8 @@ private fun LibraryGridCard(
             .aspectRatio(if (compact) 0.88f else 0.92f),
         shape = RoundedCornerShape(if (compact) 16.dp else 18.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        border = if (selected) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.42f)) else null
     ) {
         Column(
             modifier = Modifier
@@ -2112,16 +2310,24 @@ private fun LibraryGridCard(
                         contentScale = ContentScale.Fit
                     )
                 }
-                IconButton(
-                    onClick = { onDelete(favorite.cid) },
-                    modifier = Modifier.size(if (compact) 28.dp else 30.dp)
-                ) {
-                    Icon(
-                        Icons.Default.Delete,
-                        contentDescription = "Remove",
-                        tint = MaterialTheme.colorScheme.error.copy(0.62f),
-                        modifier = Modifier.size(if (compact) 16.dp else 17.dp)
-                    )
+                Row(horizontalArrangement = Arrangement.spacedBy(2.dp), verticalAlignment = Alignment.CenterVertically) {
+                    selectionItem?.let { item ->
+                        LibrarySelectionToggle(
+                            selected = selected,
+                            onClick = { onToggleSelection(item) }
+                        )
+                    }
+                    IconButton(
+                        onClick = { onDelete(favorite.cid) },
+                        modifier = Modifier.size(if (compact) 28.dp else 30.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Delete,
+                            contentDescription = "Remove",
+                            tint = MaterialTheme.colorScheme.error.copy(0.62f),
+                            modifier = Modifier.size(if (compact) 16.dp else 17.dp)
+                        )
+                    }
                 }
             }
 
@@ -2177,7 +2383,10 @@ fun LibraryInline(
     onDeleteFavorite: (Long) -> Unit,
     onDeleteDownload: (Long) -> Unit,
     onMoveFavorite: (Int, Int) -> Unit,
-    onSearchCompoundFromDatabase: (String) -> Unit = {}
+    onSearchCompoundFromDatabase: (String) -> Unit = {},
+    onCompareSelected: (List<String>) -> Unit = {},
+    onBuildLibraryBackupJson: () -> String = { "" },
+    onImportLibraryBackup: (String, Boolean, (Result<LibraryImportResult>) -> Unit) -> Unit = { _, _, _ -> }
 ) {
     var selectedSection by remember { mutableStateOf<LibraryTab?>(null) }
     var homeViewMode by remember { mutableStateOf(LibraryViewMode.LIST) }
@@ -2185,10 +2394,107 @@ fun LibraryInline(
     var filterQuery by remember { mutableStateOf("") }
     var sortMode by remember { mutableStateOf(FavoritesSort.RECENT) }
     var isReordering by remember { mutableStateOf(false) }
+    val selectedLibraryItems = remember { mutableStateListOf<LibrarySelectionItem>() }
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
     val databaseEntries = remember(context) { ChemicalDatabase.load(context) }
     val databaseSummary = remember(databaseEntries) { summarizeChemicalDatabase(databaseEntries) }
+    val selectedLibraryKeys = selectedLibraryItems.map { it.key }.toSet()
+    var pendingLibraryImportJson by remember { mutableStateOf<String?>(null) }
+
+    val exportLibraryLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("application/json")
+    ) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        runCatching {
+            val json = onBuildLibraryBackupJson()
+            context.contentResolver.openOutputStream(uri)?.bufferedWriter()?.use { writer ->
+                writer.write(json)
+            } ?: error("Unable to open file for export")
+        }.onSuccess {
+            Toast.makeText(context, "Library exported", Toast.LENGTH_SHORT).show()
+        }.onFailure { e ->
+            Toast.makeText(context, "Export failed: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+    val importLibraryLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        runCatching {
+            context.contentResolver.openInputStream(uri)?.bufferedReader()?.use { reader ->
+                reader.readText()
+            } ?: error("Unable to open file for import")
+        }.onSuccess {
+            pendingLibraryImportJson = it
+        }.onFailure { e ->
+            Toast.makeText(context, "Import failed: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    pendingLibraryImportJson?.let { rawJson ->
+        AlertDialog(
+            onDismissRequest = { pendingLibraryImportJson = null },
+            title = { Text("Import Library", fontWeight = FontWeight.Bold) },
+            text = {
+                Text(
+                    "Merge the backup with your current Library, or replace current favorites and downloads with the backup file.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.65f)
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        pendingLibraryImportJson = null
+                        onImportLibraryBackup(rawJson, false) { result ->
+                            result.onSuccess { imported ->
+                                Toast.makeText(
+                                    context,
+                                    "Imported ${imported.favoriteCount} favorites and ${imported.downloadCount} downloads",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }.onFailure { e ->
+                                Toast.makeText(context, "Import failed: ${e.message}", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    },
+                    shape = RoundedCornerShape(12.dp)
+                ) { Text("Merge") }
+            },
+            dismissButton = {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    TextButton(onClick = { pendingLibraryImportJson = null }) { Text("Cancel") }
+                    TextButton(
+                        onClick = {
+                            pendingLibraryImportJson = null
+                            onImportLibraryBackup(rawJson, true) { result ->
+                                result.onSuccess { imported ->
+                                    Toast.makeText(
+                                        context,
+                                        "Replaced Library with ${imported.favoriteCount} favorites and ${imported.downloadCount} downloads",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }.onFailure { e ->
+                                    Toast.makeText(context, "Import failed: ${e.message}", Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        }
+                    ) { Text("Replace") }
+                }
+            },
+            containerColor = MaterialTheme.colorScheme.surface
+        )
+    }
+
+    fun toggleLibrarySelection(item: LibrarySelectionItem) {
+        val existingIndex = selectedLibraryItems.indexOfFirst { it.key == item.key }
+        if (existingIndex >= 0) {
+            selectedLibraryItems.removeAt(existingIndex)
+        } else {
+            selectedLibraryItems.add(item)
+        }
+    }
 
     LaunchedEffect(selectedSection, favorites.size) {
         if (selectedSection != LibraryTab.FAVORITES || favorites.size < 2) isReordering = false
@@ -2197,7 +2503,16 @@ fun LibraryInline(
         focusManager.clearFocus()
     }
 
-    val libraryOptions = remember(favorites.size, downloads.size, databaseSummary) {
+    LaunchedEffect(favorites, downloads, databaseEntries) {
+        val validKeys = buildSet {
+            favorites.forEach { add(it.toLibrarySelectionItem().key) }
+            downloads.forEach { add(it.toLibrarySelectionItem().key) }
+            databaseEntries.mapNotNull { it.toComparableLibrarySelectionItem() }.forEach { add(it.key) }
+        }
+        selectedLibraryItems.removeAll { it.key !in validKeys }
+    }
+
+    val savedLibraryOptions = remember(favorites.size, downloads.size) {
         listOf(
             LibraryOption(
                 tab = LibraryTab.FAVORITES,
@@ -2212,12 +2527,23 @@ fun LibraryInline(
                 title = "Downloads",
                 subtitle = "Full offline copies",
                 countLabel = downloads.size.toString()
+            )
+        )
+    }
+    val referenceLibraryOptions = remember(databaseSummary) {
+        listOf(
+            LibraryOption(
+                tab = LibraryTab.PERIODIC_TABLE,
+                icon = LibraryTab.PERIODIC_TABLE.icon(),
+                title = "Periodic Table",
+                subtitle = "All 118 elements offline",
+                countLabel = PeriodicTableElements.size.toString()
             ),
             LibraryOption(
                 tab = LibraryTab.DATABASE,
                 icon = LibraryTab.DATABASE.icon(),
                 title = "Chemical Database",
-                subtitle = "Substances and references",
+                subtitle = "Substances, ions, groups, reactions",
                 databaseSummary = databaseSummary
             )
         )
@@ -2281,10 +2607,13 @@ fun LibraryInline(
         }
     }
 
-    Column(
+    Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(contentPadding),
+            .padding(contentPadding)
+    ) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Row(
@@ -2297,7 +2626,21 @@ fun LibraryInline(
                     ChemIcon(ChemAppIcons.Library, null, tint = MaterialTheme.colorScheme.primary.copy(0.7f), modifier = Modifier.size(18.dp))
                     Text("Library", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 }
-                LibraryViewToggle(viewMode = homeViewMode, onViewModeChange = { homeViewMode = it })
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    IconButton(
+                        onClick = { exportLibraryLauncher.launch("chemsearch-library-${System.currentTimeMillis()}.json") },
+                        modifier = Modifier.size(34.dp)
+                    ) {
+                        Icon(Icons.Default.Description, contentDescription = "Export Library", modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
+                    }
+                    IconButton(
+                        onClick = { importLibraryLauncher.launch(arrayOf("application/json", "text/plain")) },
+                        modifier = Modifier.size(34.dp)
+                    ) {
+                        Icon(Icons.Default.FolderOpen, contentDescription = "Import Library", modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
+                    }
+                    LibraryViewToggle(viewMode = homeViewMode, onViewModeChange = { homeViewMode = it })
+                }
             } else {
                 TextButton(
                     onClick = {
@@ -2311,7 +2654,7 @@ fun LibraryInline(
                     Text("Back to Library")
                 }
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    if (selectedSection != LibraryTab.DATABASE) {
+                    if (selectedSection != LibraryTab.DATABASE && selectedSection != LibraryTab.PERIODIC_TABLE) {
                         LibraryViewToggle(viewMode = itemViewMode, onViewModeChange = { itemViewMode = it })
                     }
                     if (selectedSection == LibraryTab.FAVORITES && favorites.size > 1) {
@@ -2337,13 +2680,24 @@ fun LibraryInline(
 
         if (selectedSection == null) {
             Text(
-                "Open saved compounds, offline copies, or built-in reference data.",
+                "Open saved compounds, offline copies, the periodic table, or the chemical database.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
             )
             if (homeViewMode == LibraryViewMode.LIST) {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    libraryOptions.forEach { option ->
+                    savedLibraryOptions.forEach { option ->
+                        LibraryOptionListCard(
+                            icon = option.icon,
+                            title = option.title,
+                            subtitle = option.subtitle,
+                            countLabel = if (option.databaseSummary == null) option.countLabel else null,
+                            databaseSummary = option.databaseSummary,
+                            onClick = { selectedSection = option.tab }
+                        )
+                    }
+                    LibraryHomeSectionTitle("Reference", modifier = Modifier.padding(top = 8.dp))
+                    referenceLibraryOptions.forEach { option ->
                         LibraryOptionListCard(
                             icon = option.icon,
                             title = option.title,
@@ -2355,25 +2709,15 @@ fun LibraryInline(
                     }
                 }
             } else {
-                libraryOptions.chunked(2).forEach { rowItems ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        rowItems.forEach { option ->
-                            LibraryOptionCard(
-                                icon = option.icon,
-                                title = option.title,
-                                subtitle = option.subtitle,
-                                countLabel = if (option.databaseSummary == null) option.countLabel else null,
-                                selected = false,
-                                modifier = Modifier.weight(1f),
-                                onClick = { selectedSection = option.tab }
-                            )
-                        }
-                        if (rowItems.size == 1) Spacer(Modifier.weight(1f))
-                    }
-                }
+                LibraryOptionGridRows(
+                    options = savedLibraryOptions,
+                    onSelect = { selectedSection = it }
+                )
+                LibraryHomeSectionTitle("Reference", modifier = Modifier.padding(top = 8.dp))
+                LibraryOptionGridRows(
+                    options = referenceLibraryOptions,
+                    onSelect = { selectedSection = it }
+                )
             }
             return@Column
         }
@@ -2383,11 +2727,13 @@ fun LibraryInline(
             LibraryTab.FAVORITES -> "Favorites"
             LibraryTab.DOWNLOADS -> "Downloads"
             LibraryTab.DATABASE -> "Chemical Database"
+            LibraryTab.PERIODIC_TABLE -> "Periodic Table"
         }
         val sectionSubtitle = when (section) {
             LibraryTab.FAVORITES -> "Saved quick links on this device."
             LibraryTab.DOWNLOADS -> "Offline compound copies with saved structures and data."
             LibraryTab.DATABASE -> "Browse substances, reactions, functional groups, and ions."
+            LibraryTab.PERIODIC_TABLE -> "Browse all elements, groups, masses, and common oxidation states."
         }
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             ChemIcon(
@@ -2413,7 +2759,16 @@ fun LibraryInline(
         if (section == LibraryTab.DATABASE) {
             ChemicalDatabaseTool(
                 modifier = Modifier.weight(1f),
-                onSearchCompound = onSearchCompoundFromDatabase
+                onSearchCompound = onSearchCompoundFromDatabase,
+                selectedLibraryKeys = selectedLibraryKeys,
+                onToggleLibrarySelection = ::toggleLibrarySelection
+            )
+            return@Column
+        }
+
+        if (section == LibraryTab.PERIODIC_TABLE) {
+            PeriodicTableLibraryScreen(
+                modifier = Modifier.weight(1f)
             )
             return@Column
         }
@@ -2468,6 +2823,7 @@ fun LibraryInline(
                         )
                     } else if (itemViewMode == LibraryViewMode.LIST || isReordering) {
                         displayFavorites.forEachIndexed { index, fav ->
+                            val selectionItem = fav.toLibrarySelectionItem()
                             FavoriteCard(
                                 favorite = fav,
                                 onSelect = onSelectFavorite,
@@ -2476,6 +2832,9 @@ fun LibraryInline(
                                 showReorderControls = isReordering,
                                 canMoveUp = isReordering && index > 0,
                                 canMoveDown = isReordering && index < displayFavorites.lastIndex,
+                                selectionItem = if (isReordering) null else selectionItem,
+                                selected = selectionItem.key in selectedLibraryKeys,
+                                onToggleSelection = ::toggleLibrarySelection,
                                 onMoveUp = { if (isReordering && index > 0) onMoveFavorite(index, index - 1) },
                                 onMoveDown = { if (isReordering && index < displayFavorites.lastIndex) onMoveFavorite(index, index + 1) }
                             )
@@ -2487,11 +2846,15 @@ fun LibraryInline(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 rowItems.forEach { fav ->
+                                    val selectionItem = fav.toLibrarySelectionItem()
                                     LibraryGridCard(
                                         favorite = fav,
                                         onSelect = onSelectFavorite,
                                         onDelete = onDeleteFavorite,
-                                        modifier = Modifier.weight(1f)
+                                        modifier = Modifier.weight(1f),
+                                        selectionItem = selectionItem,
+                                        selected = selectionItem.key in selectedLibraryKeys,
+                                        onToggleSelection = ::toggleLibrarySelection
                                     )
                                 }
                                 if (rowItems.size == 1) Spacer(Modifier.weight(1f))
@@ -2548,11 +2911,15 @@ fun LibraryInline(
                         )
                     } else if (itemViewMode == LibraryViewMode.LIST) {
                         filteredDownloads.forEach { item ->
+                            val selectionItem = item.toLibrarySelectionItem()
                             FavoriteCard(
                                 favorite = item.toFavoriteCardData(),
                                 onSelect = { onSelectDownload(item.cid) },
                                 onDelete = onDeleteDownload,
-                                offlineMetadata = item.offlineMetadata
+                                offlineMetadata = item.offlineMetadata,
+                                selectionItem = selectionItem,
+                                selected = selectionItem.key in selectedLibraryKeys,
+                                onToggleSelection = ::toggleLibrarySelection
                             )
                         }
                     } else {
@@ -2562,12 +2929,16 @@ fun LibraryInline(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 rowItems.forEach { item ->
+                                    val selectionItem = item.toLibrarySelectionItem()
                                     LibraryGridCard(
                                         favorite = item.toFavoriteCardData(),
                                         onSelect = { onSelectDownload(item.cid) },
                                         onDelete = onDeleteDownload,
                                         modifier = Modifier.weight(1f),
-                                        offlineMetadata = item.offlineMetadata
+                                        offlineMetadata = item.offlineMetadata,
+                                        selectionItem = selectionItem,
+                                        selected = selectionItem.key in selectedLibraryKeys,
+                                        onToggleSelection = ::toggleLibrarySelection
                                     )
                                 }
                                 if (rowItems.size == 1) Spacer(Modifier.weight(1f))
@@ -2577,6 +2948,31 @@ fun LibraryInline(
                 }
             }
         }
+    }
+    if (shouldShowLibraryCompareButton(selectedLibraryItems.size)) {
+        ExtendedFloatingActionButton(
+            onClick = {
+                val queries = buildLibraryCompareQueries(selectedLibraryItems)
+                if (queries.size >= 2) {
+                    selectedLibraryItems.clear()
+                    onCompareSelected(queries)
+                } else {
+                    Toast.makeText(context, "Select two different compounds to compare", Toast.LENGTH_SHORT).show()
+                }
+            },
+            icon = {
+                Icon(Icons.AutoMirrored.Filled.CompareArrows, contentDescription = null, modifier = Modifier.size(18.dp))
+            },
+            text = {
+                Text("Compare", fontWeight = FontWeight.Bold)
+            },
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 10.dp),
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
+        )
+    }
     }
 }
 
@@ -3000,11 +3396,11 @@ fun SettingsInline(
     onSetCacheDir: (String) -> Boolean = { true },
     onTestUpdateNotification: () -> Unit = {},
     onShowWelcome: () -> Unit = {},
+    onOpenAbout: () -> Unit = {},
     onSettingsImported: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences("chemsearch_prefs", Context.MODE_PRIVATE) }
-    var buildTapCount by remember { mutableIntStateOf(0) }
     var isDevMode by remember { mutableStateOf(prefs.getBoolean("dev_mode", false)) }
     var themeDropdownExpanded by remember { mutableStateOf(false) }
     var showFaqDialog by remember { mutableStateOf(false) }
@@ -3401,7 +3797,6 @@ fun SettingsInline(
                     onShowWelcome = onShowWelcome,
                     onDisableDevMode = { persist ->
                         isDevMode = false
-                        buildTapCount = 0
                         if (persist) {
                             prefs.edit().putBoolean("dev_mode", false).apply()
                         }
@@ -3410,23 +3805,14 @@ fun SettingsInline(
             }
         }
 
-        SettingsGroupCard(
+        SettingsActionRow(
             icon = Icons.Default.Info,
-            title = "About ChemSearch"
-        ) {
-            AboutCard(onVersionTap = {
-                buildTapCount++
-                when (buildTapCount) {
-                    3 -> Toast.makeText(context, "2 more taps to unlock debug settings", Toast.LENGTH_SHORT).show()
-                    4 -> Toast.makeText(context, "1 more tap to unlock debug settings", Toast.LENGTH_SHORT).show()
-                    5 -> {
-                        isDevMode = true
-                        prefs.edit().putBoolean("dev_mode", true).apply()
-                        Toast.makeText(context, "Debug settings unlocked", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            })
-        }
+            title = "About ChemSearch",
+            subtitle = "App info, links, data sources, and credits",
+            actionLabel = "Open",
+            actionColor = MaterialTheme.colorScheme.primary,
+            onClick = onOpenAbout
+        )
     }
 }
 
@@ -3631,7 +4017,7 @@ fun DebugSettingsSection(
                 "API endpoints" to "Copies base URLs for PubChem, NCI/CADD, Wikipedia, GitHub releases, and supported AI providers to your clipboard for manual testing.",
                 "Wipe all SharedPreferences" to "Calls prefs.edit().clear(). Removes legacy preference values, encrypted key records, history, favorites, and debug flags. DataStore settings, Room downloads, and app cache files are not deleted by this action; restart recommended.",
                 "Force crash" to "Deliberately throws an unhandled RuntimeException. Used to verify that crash reporting / Logcat is working correctly. There is a confirmation step before it fires.",
-                "Hide debug settings" to "Sets dev_mode=false and hides this section. Tap the build number 5 times in the About card to unlock it again."
+                "Hide debug settings" to "Sets dev_mode=false and hides this section. Tap the build number 5 times on the About screen to unlock it again."
             ),
             onDismiss = { showInfoDialog = false }
         )

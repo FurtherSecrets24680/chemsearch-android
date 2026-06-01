@@ -61,6 +61,26 @@ class RecentSearchesTest {
     }
 
     @Test
+    fun recentDisplayListKeepsPinnedItemsFirstWithoutDateGroups() {
+        val searches = listOf(
+            RecentSearch("glucose", timestamp(daysAgo = 0)),
+            RecentSearch("ethanol", timestamp(daysAgo = 1), pinned = true),
+            RecentSearch("aspirin", timestamp(daysAgo = 3)),
+            RecentSearch("caffeine", timestamp(daysAgo = 20), pinned = true)
+        )
+
+        val display = recentSearchesForDisplay(searches, newestFirst = true)
+
+        assertEquals(listOf("ethanol", "caffeine", "glucose", "aspirin"), display.map { it.query })
+    }
+
+    @Test
+    fun recentSearchCountLabelUsesSavedSearchesCopy() {
+        assertEquals("1 saved search", recentSearchCountLabel(1))
+        assertEquals("4 saved searches", recentSearchCountLabel(4))
+    }
+
+    @Test
     fun parsingCompareInputAcceptsVsCommasAndNewLines() {
         val inputs = parseCompareCompoundInputs("caffeine vs theobromine, ethanol\nmethanol")
 

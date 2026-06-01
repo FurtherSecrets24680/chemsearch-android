@@ -35,7 +35,7 @@ data class BalancedReactionResult(
         fun termText(term: BalancedTerm): String =
             if (term.coefficient == 1) term.formula else "${term.coefficient}${term.formula}"
         return reactants.joinToString(" + ", transform = ::termText) +
-            " -> " +
+            " ⟶ " +
             products.joinToString(" + ", transform = ::termText)
     }
 }
@@ -43,7 +43,7 @@ data class BalancedReactionResult(
 fun balanceChemicalReaction(equation: String): BalancedReactionResult {
     val parts = equation.replace("→", "->").replace("⟶", "->").replace("=>", "->").split("->")
     if (parts.size != 2) {
-        return BalancedReactionResult(error = ReactionBalanceError(ReactionBalanceErrorCode.MISSING_ARROW, "Use '->' between reactants and products."))
+        return BalancedReactionResult(error = ReactionBalanceError(ReactionBalanceErrorCode.MISSING_ARROW, "Use '⟶' between reactants and products."))
     }
 
     val reactants = splitReactionSide(parts[0])

@@ -19,6 +19,19 @@ class OfflineDownloadRepository(
         dao.upsert(download.toEntity(gson))
     }
 
+    suspend fun replaceAll(downloads: List<DownloadedCompound>) {
+        dao.clearAll()
+        if (downloads.isNotEmpty()) {
+            dao.upsertAll(downloads.map { it.toEntity(gson) })
+        }
+    }
+
+    suspend fun upsertAll(downloads: List<DownloadedCompound>) {
+        if (downloads.isNotEmpty()) {
+            dao.upsertAll(downloads.map { it.toEntity(gson) })
+        }
+    }
+
     suspend fun delete(cid: Long) {
         dao.delete(cid)
     }

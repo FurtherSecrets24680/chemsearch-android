@@ -50,6 +50,21 @@ fun groupRecentSearches(
     return grouped.map { (label, items) -> RecentSearchGroup(label, items) }
 }
 
+fun recentSearchesForDisplay(
+    searches: List<RecentSearch>,
+    newestFirst: Boolean = true
+): List<RecentSearch> {
+    val sorted = if (newestFirst) {
+        searches.sortedByDescending { it.lastSearchedAt }
+    } else {
+        searches.sortedBy { it.lastSearchedAt }
+    }
+    return sorted.filter { it.pinned } + sorted.filterNot { it.pinned }
+}
+
+fun recentSearchCountLabel(count: Int): String =
+    if (count == 1) "1 saved search" else "$count saved searches"
+
 fun parseCompareCompoundInputs(raw: String): List<String> =
     raw
         .replace(Regex("\\bvs\\b", RegexOption.IGNORE_CASE), "\n")
