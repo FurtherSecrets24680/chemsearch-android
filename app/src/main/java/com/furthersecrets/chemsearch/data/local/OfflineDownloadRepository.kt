@@ -21,14 +21,20 @@ class OfflineDownloadRepository(
 
     suspend fun replaceAll(downloads: List<DownloadedCompound>) {
         dao.clearAll()
-        if (downloads.isNotEmpty()) {
-            dao.upsertAll(downloads.map { it.toEntity(gson) })
+        val entities = downloads.mapNotNull { download ->
+            runCatching { download.toEntity(gson) }.getOrNull()
+        }
+        if (entities.isNotEmpty()) {
+            dao.upsertAll(entities)
         }
     }
 
     suspend fun upsertAll(downloads: List<DownloadedCompound>) {
-        if (downloads.isNotEmpty()) {
-            dao.upsertAll(downloads.map { it.toEntity(gson) })
+        val entities = downloads.mapNotNull { download ->
+            runCatching { download.toEntity(gson) }.getOrNull()
+        }
+        if (entities.isNotEmpty()) {
+            dao.upsertAll(entities)
         }
     }
 
@@ -39,8 +45,11 @@ class OfflineDownloadRepository(
     suspend fun migrateLegacyDownloadsIfNeeded() {
         if (prefs.getBoolean(PREF_ROOM_MIGRATED, false)) return
         val legacyDownloads = loadLegacyDownloads()
-        if (legacyDownloads.isNotEmpty()) {
-            dao.upsertAll(legacyDownloads.map { it.toEntity(gson) })
+        val entities = legacyDownloads.mapNotNull { download ->
+            runCatching { download.toEntity(gson) }.getOrNull()
+        }
+        if (entities.isNotEmpty()) {
+            dao.upsertAll(entities)
         }
         prefs.edit().putBoolean(PREF_ROOM_MIGRATED, true).apply()
     }

@@ -40,14 +40,8 @@ fun DownloadedCompoundEntity.toDomain(gson: Gson = downloadedCompoundGson): Down
             hasResult = true
         )
 
-    return DownloadedCompound(
-        cid = cid,
-        name = name,
-        formula = formula,
-        molecularWeight = molecularWeight,
-        iupacName = iupacName,
-        savedAt = savedAt,
-        state = state.copy(
+    val safeState = runCatching {
+        state.copy(
             cid = state.cid ?: cid,
             name = state.name.ifBlank { name },
             formula = state.formula.ifBlank { formula },
@@ -61,7 +55,27 @@ fun DownloadedCompoundEntity.toDomain(gson: Gson = downloadedCompoundGson): Down
             isLoadingSdf = false,
             isLoadingSafety = false,
             isLoadingSynonyms = false
-        ),
+        )
+    }.getOrElse {
+        ChemUiState(
+            cid = cid,
+            name = name,
+            formula = formula,
+            weight = molecularWeight,
+            iupacName = iupacName,
+            hasResult = true,
+            isOfflineDownload = true
+        )
+    }
+
+    return DownloadedCompound(
+        cid = cid,
+        name = name,
+        formula = formula,
+        molecularWeight = molecularWeight,
+        iupacName = iupacName,
+        savedAt = savedAt,
+        state = safeState,
         structurePngBase64 = structurePngBase64
     )
 }

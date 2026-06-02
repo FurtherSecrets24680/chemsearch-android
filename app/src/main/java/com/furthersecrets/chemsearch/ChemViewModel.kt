@@ -183,7 +183,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             offlineDownloadRepository.downloads
                 .catch { e -> DebugLog.e("ChemSearch", "Download database read failed: ${e.message}") }
                 .collect { downloads ->
-                    _downloads.value = downloads.map { it.withResolvedOfflineMetadata() }
+                    _downloads.value = downloads.mapNotNull { it.normalizedOrNull() }
                 }
         }
         viewModelScope.launch {
@@ -503,7 +503,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         return try {
             val type = object : TypeToken<List<FavoriteCompound>>() {}.type
             val favorites = gson.fromJson<List<FavoriteCompound>>(json, type) ?: emptyList()
-            favorites.map { it.withConventionalFormula() }
+            favorites.mapNotNull { it.normalizedOrNull() }
         } catch (e: Exception) {
             emptyList()
         }
@@ -513,9 +513,23 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         prefs.edit().putString("favorites", gson.toJson(list)).apply()
     }
 
-    private fun FavoriteCompound.withConventionalFormula(): FavoriteCompound {
-        val conventional = formatConventionalFormula(formula)
-        return if (conventional == formula) this else copy(formula = conventional)
+    private fun FavoriteCompound.normalizedOrNull(): FavoriteCompound? {
+        val safeCid = runCatching { cid }.getOrNull()?.takeIf { it > 0L } ?: return null
+        val safeFormula = runCatching { formula }.getOrNull()?.trim().orEmpty()
+        val safeName = runCatching { name }.getOrNull()?.trim().orEmpty()
+        val safeWeight = runCatching { molecularWeight }.getOrNull()?.trim().orEmpty()
+        val safeIupacName = runCatching { iupacName }.getOrNull()?.trim().orEmpty()
+        val safeSavedAt = runCatching { savedAt }.getOrNull()?.takeIf { it > 0L }
+            ?: System.currentTimeMillis()
+        val conventional = formatConventionalFormula(safeFormula)
+        return FavoriteCompound(
+            cid = safeCid,
+            name = safeName.ifBlank { conventional.ifBlank { "CID $safeCid" } },
+            formula = conventional,
+            molecularWeight = safeWeight,
+            iupacName = safeIupacName,
+            savedAt = safeSavedAt
+        )
     }
 
     fun saveCurrentCompoundOffline() {
@@ -652,22 +666,66 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         return try {
             val type = object : TypeToken<List<DownloadedCompound>>() {}.type
             val restored = gson.fromJson<List<DownloadedCompound>>(json, type) ?: emptyList()
-            restored.map { it.withResolvedOfflineMetadata() }
+            restored.mapNotNull { it.normalizedOrNull() }
         } catch (e: Exception) {
             emptyList()
         }
     }
 
-    private fun DownloadedCompound.withResolvedOfflineMetadata(): DownloadedCompound {
-        val normalizedState = state.withConventionalFormula()
-        val normalizedFormula = formatConventionalFormula(formula.ifBlank { normalizedState.formula })
-        val normalized = copy(
-            formula = normalizedFormula,
-            state = normalizedState
+    private fun DownloadedCompound.normalizedOrNull(): DownloadedCompound? {
+        val safeCid = runCatching { cid }.getOrNull()?.takeIf { it > 0L } ?: return null
+        val rawState = runCatching { state }.getOrNull()
+        val safeName = runCatching { name }.getOrNull()?.trim().orEmpty()
+        val safeFormula = runCatching { formula }.getOrNull()?.trim().orEmpty()
+        val safeWeight = runCatching { molecularWeight }.getOrNull()?.trim().orEmpty()
+        val safeIupacName = runCatching { iupacName }.getOrNull()?.trim().orEmpty()
+        val safeSavedAt = runCatching { savedAt }.getOrNull()?.takeIf { it > 0L }
+            ?: System.currentTimeMillis()
+        val safeStructurePngBase64 = runCatching { structurePngBase64 }.getOrNull()
+        val fallbackState = ChemUiState(
+            cid = safeCid,
+            name = safeName,
+            formula = safeFormula,
+            weight = safeWeight,
+            iupacName = safeIupacName,
+            hasResult = true,
+            isOfflineDownload = true
         )
-        val restoredMetadata: OfflineDownloadMetadata? = runCatching { offlineMetadata }.getOrNull()
-        return if (restoredMetadata != null) normalized else normalized.copy(
-            offlineMetadata = buildOfflineDownloadMetadata(normalizedState, savedAt)
+        val normalizedState = runCatching {
+            (rawState ?: fallbackState).copy(
+                cid = rawState?.cid ?: safeCid,
+                name = runCatching { rawState?.name }.getOrNull()?.trim().orEmpty()
+                    .ifBlank { safeName },
+                formula = runCatching { rawState?.formula }.getOrNull()?.trim().orEmpty()
+                    .ifBlank { safeFormula },
+                weight = runCatching { rawState?.weight }.getOrNull()?.trim().orEmpty()
+                    .ifBlank { safeWeight },
+                iupacName = runCatching { rawState?.iupacName }.getOrNull()?.trim().orEmpty()
+                    .ifBlank { safeIupacName },
+                hasResult = true,
+                isOfflineDownload = true,
+                isLoading = false,
+                error = null,
+                isLoadingDesc = false,
+                isLoadingSdf = false,
+                isLoadingSafety = false,
+                isLoadingSynonyms = false
+            ).withConventionalFormula()
+        }.getOrElse { fallbackState.withConventionalFormula() }
+        val normalizedFormula = formatConventionalFormula(
+            safeFormula.ifBlank { normalizedState.formula }
+        )
+        val restoredMetadata = runCatching { offlineMetadata }.getOrNull()
+        return DownloadedCompound(
+            cid = safeCid,
+            name = safeName.ifBlank { normalizedState.name.ifBlank { "CID $safeCid" } },
+            formula = normalizedFormula,
+            molecularWeight = safeWeight.ifBlank { normalizedState.weight },
+            iupacName = safeIupacName.ifBlank { normalizedState.iupacName },
+            savedAt = safeSavedAt,
+            state = normalizedState.copy(formula = normalizedFormula),
+            structurePngBase64 = safeStructurePngBase64,
+            offlineMetadata = restoredMetadata ?: buildOfflineDownloadMetadata(normalizedState, safeSavedAt)
         )
     }
 
@@ -1999,7 +2057,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }
 
         if (stored.isNotEmpty()) return stored
-            .filter { it.query.isNotBlank() }
+            .mapNotNull { it.normalizedOrNull() }
             .distinctBy { it.query.lowercase() }
 
         return loadHistory().map { query ->
@@ -2009,12 +2067,23 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun saveRecentSearches(searches: List<RecentSearch>) {
         val cleaned = searches
-            .filter { it.query.isNotBlank() }
+            .mapNotNull { it.normalizedOrNull() }
             .distinctBy { it.query.lowercase() }
         prefs.edit()
             .putString(PREF_RECENT_SEARCHES, gson.toJson(cleaned))
             .putString(PREF_HISTORY, cleaned.joinToString("||") { it.query })
             .apply()
+    }
+
+    private fun RecentSearch.normalizedOrNull(): RecentSearch? {
+        val safeQuery = runCatching { query }.getOrNull()?.trim().orEmpty()
+        if (safeQuery.isBlank()) return null
+        return RecentSearch(
+            query = safeQuery,
+            lastSearchedAt = runCatching { lastSearchedAt }.getOrNull()?.takeIf { it > 0L }
+                ?: System.currentTimeMillis(),
+            pinned = runCatching { pinned }.getOrNull() ?: false
+        )
     }
 
     private fun recentQueries(): List<String> = _recentSearches.value.map { it.query }
