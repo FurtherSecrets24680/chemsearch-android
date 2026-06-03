@@ -2679,45 +2679,53 @@ fun LibraryInline(
         }
 
         if (selectedSection == null) {
-            Text(
-                "Open saved compounds, offline copies, the periodic table, or the chemical database.",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
-            )
-            if (homeViewMode == LibraryViewMode.LIST) {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    savedLibraryOptions.forEach { option ->
-                        LibraryOptionListCard(
-                            icon = option.icon,
-                            title = option.title,
-                            subtitle = option.subtitle,
-                            countLabel = if (option.databaseSummary == null) option.countLabel else null,
-                            databaseSummary = option.databaseSummary,
-                            onClick = { selectedSection = option.tab }
-                        )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text(
+                    "Open saved compounds, offline copies, the periodic table, or the chemical database.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+                )
+                if (homeViewMode == LibraryViewMode.LIST) {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        savedLibraryOptions.forEach { option ->
+                            LibraryOptionListCard(
+                                icon = option.icon,
+                                title = option.title,
+                                subtitle = option.subtitle,
+                                countLabel = if (option.databaseSummary == null) option.countLabel else null,
+                                databaseSummary = option.databaseSummary,
+                                onClick = { selectedSection = option.tab }
+                            )
+                        }
+                        LibraryHomeSectionTitle("Reference", modifier = Modifier.padding(top = 8.dp))
+                        referenceLibraryOptions.forEach { option ->
+                            LibraryOptionListCard(
+                                icon = option.icon,
+                                title = option.title,
+                                subtitle = option.subtitle,
+                                countLabel = if (option.databaseSummary == null) option.countLabel else null,
+                                databaseSummary = option.databaseSummary,
+                                onClick = { selectedSection = option.tab }
+                            )
+                        }
                     }
+                } else {
+                    LibraryOptionGridRows(
+                        options = savedLibraryOptions,
+                        onSelect = { selectedSection = it }
+                    )
                     LibraryHomeSectionTitle("Reference", modifier = Modifier.padding(top = 8.dp))
-                    referenceLibraryOptions.forEach { option ->
-                        LibraryOptionListCard(
-                            icon = option.icon,
-                            title = option.title,
-                            subtitle = option.subtitle,
-                            countLabel = if (option.databaseSummary == null) option.countLabel else null,
-                            databaseSummary = option.databaseSummary,
-                            onClick = { selectedSection = option.tab }
-                        )
-                    }
+                    LibraryOptionGridRows(
+                        options = referenceLibraryOptions,
+                        onSelect = { selectedSection = it }
+                    )
                 }
-            } else {
-                LibraryOptionGridRows(
-                    options = savedLibraryOptions,
-                    onSelect = { selectedSection = it }
-                )
-                LibraryHomeSectionTitle("Reference", modifier = Modifier.padding(top = 8.dp))
-                LibraryOptionGridRows(
-                    options = referenceLibraryOptions,
-                    onSelect = { selectedSection = it }
-                )
             }
             return@Column
         }
