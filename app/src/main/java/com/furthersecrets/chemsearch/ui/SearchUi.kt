@@ -78,6 +78,18 @@ import java.util.Locale
 // App header
 
 private val HeaderLogoBaseBlue = Color(0xFF2563EB)
+private val PubChemStructureBackground = Color(0xFFF5F5F5)
+
+private fun copyTextWithFeedback(
+    context: Context,
+    label: String,
+    value: String,
+    message: String = "$label copied"
+) {
+    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    clipboard.setPrimaryClip(ClipData.newPlainText(label, value))
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+}
 
 internal fun appHeaderLogoHueRotationDegrees(primary: Color): Float =
     normalizeHueDegrees(colorHueDegrees(primary) - colorHueDegrees(HeaderLogoBaseBlue))
@@ -362,6 +374,66 @@ fun SuggestionsDropdown(suggestions: List<String>, onSelect: (String) -> Unit) {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun SearchCorrectionCard(
+    failedQuery: String?,
+    suggestions: List<String>,
+    onSelect: (String) -> Unit
+) {
+    if (suggestions.isEmpty()) return
+    val compact = LocalCompactMode.current
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = if (compact) 2.dp else 4.dp,
+                vertical = if (compact) 2.dp else 4.dp
+            ),
+        verticalArrangement = Arrangement.spacedBy(if (compact) 2.dp else 3.dp)
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(if (compact) 5.dp else 6.dp)) {
+            Text(
+                failedQuery?.let { "No match for \"$it\"" } ?: "No match found",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.56f),
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                "Did you mean:",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.42f)
+            )
+        }
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 5.dp),
+            verticalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 5.dp)
+        ) {
+            suggestions.forEach { suggestion ->
+                Surface(
+                    onClick = { onSelect(suggestion) },
+                    shape = RoundedCornerShape(999.dp),
+                    color = MaterialTheme.colorScheme.primary.copy(0.10f),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.24f))
+                ) {
+                    Text(
+                        suggestion,
+                        modifier = Modifier.padding(
+                            horizontal = if (compact) 8.dp else 10.dp,
+                            vertical = if (compact) 4.dp else 5.dp
+                        ),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+        }
+    }
+}
+
 // History (Recents)
 
 private enum class RecentSortMode(val label: String) {
@@ -380,8 +452,8 @@ fun HistorySection(
     var showClearConfirm by remember { mutableStateOf(false) }
     var sortMode by remember { mutableStateOf(RecentSortMode.NEWEST) }
     var sortMenuExpanded by remember { mutableStateOf(false) }
-    val displaySearches = remember(recentSearches, sortMode) {
-        recentSearchesForDisplay(
+    val displayGroups = remember(recentSearches, sortMode) {
+        groupRecentSearches(
             recentSearches,
             newestFirst = sortMode == RecentSortMode.NEWEST
         )
@@ -538,7 +610,7 @@ fun HistorySection(
             }
         }
 
-        if (displaySearches.isNotEmpty()) {
+        if (displayGroups.isNotEmpty()) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(if (compact) 14.dp else 18.dp),
@@ -548,59 +620,77 @@ fun HistorySection(
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.10f))
             ) {
                 Column {
-                    displaySearches.forEachIndexed { index, item ->
-                        val display = item.query.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString() }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable { onSelect(item.query) }
-                                .padding(
-                                    horizontal = if (compact) 10.dp else 12.dp,
-                                    vertical = if (compact) 7.dp else 9.dp
-                                ),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)
-                        ) {
-                            Surface(
-                                shape = RoundedCornerShape(if (compact) 8.dp else 10.dp),
-                                color = MaterialTheme.colorScheme.primary.copy(if (item.pinned) 0.16f else 0.10f)
+                    val totalRows = displayGroups.sumOf { it.searches.size }
+                    var renderedRows = 0
+                    displayGroups.forEach { group ->
+                        Text(
+                            group.label,
+                            modifier = Modifier.padding(
+                                start = if (compact) 10.dp else 12.dp,
+                                end = if (compact) 10.dp else 12.dp,
+                                top = if (renderedRows == 0) 10.dp else 12.dp,
+                                bottom = if (compact) 3.dp else 4.dp
+                            ),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.primary.copy(0.76f),
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1
+                        )
+                        group.searches.forEach { item ->
+                            val display = item.query.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString() }
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable { onSelect(item.query) }
+                                    .padding(
+                                        horizontal = if (compact) 10.dp else 12.dp,
+                                        vertical = if (compact) 7.dp else 9.dp
+                                    ),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)
                             ) {
-                                Icon(
-                                    Icons.Default.History,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.primary,
-                                    modifier = Modifier.padding(if (compact) 6.dp else 7.dp).size(if (compact) 14.dp else 16.dp)
+                                Surface(
+                                    shape = RoundedCornerShape(if (compact) 8.dp else 10.dp),
+                                    color = MaterialTheme.colorScheme.primary.copy(if (item.pinned) 0.16f else 0.10f)
+                                ) {
+                                    Icon(
+                                        Icons.Default.History,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.primary,
+                                        modifier = Modifier.padding(if (compact) 6.dp else 7.dp).size(if (compact) 14.dp else 16.dp)
+                                    )
+                                }
+                                Text(
+                                    display,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    modifier = Modifier.weight(1f),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                                IconButton(onClick = { onTogglePin(item.query) }, modifier = Modifier.size(if (compact) 28.dp else 32.dp)) {
+                                    Icon(
+                                        if (item.pinned) Icons.Default.PushPin else Icons.Default.PushPinBorder,
+                                        contentDescription = if (item.pinned) "Unpin" else "Pin",
+                                        tint = if (item.pinned) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.42f),
+                                        modifier = Modifier.size(if (compact) 16.dp else 18.dp)
+                                    )
+                                }
+                                IconButton(onClick = { onDelete(item.query) }, modifier = Modifier.size(if (compact) 28.dp else 32.dp)) {
+                                    Icon(
+                                        Icons.Default.DeleteOutline,
+                                        contentDescription = "Remove",
+                                        tint = MaterialTheme.colorScheme.error.copy(0.6f),
+                                        modifier = Modifier.size(if (compact) 16.dp else 18.dp)
+                                    )
+                                }
+                            }
+                            renderedRows++
+                            if (renderedRows < totalRows) {
+                                HorizontalDivider(
+                                    modifier = Modifier.padding(horizontal = if (compact) 10.dp else 12.dp),
+                                    color = recentDividerColor
                                 )
                             }
-                            Text(
-                                display,
-                                style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.weight(1f),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                            IconButton(onClick = { onTogglePin(item.query) }, modifier = Modifier.size(if (compact) 28.dp else 32.dp)) {
-                                Icon(
-                                    if (item.pinned) Icons.Default.PushPin else Icons.Default.PushPinBorder,
-                                    contentDescription = if (item.pinned) "Unpin" else "Pin",
-                                    tint = if (item.pinned) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.42f),
-                                    modifier = Modifier.size(if (compact) 16.dp else 18.dp)
-                                )
-                            }
-                            IconButton(onClick = { onDelete(item.query) }, modifier = Modifier.size(if (compact) 28.dp else 32.dp)) {
-                                Icon(
-                                    Icons.Default.DeleteOutline,
-                                    contentDescription = "Remove",
-                                    tint = MaterialTheme.colorScheme.error.copy(0.6f),
-                                    modifier = Modifier.size(if (compact) 16.dp else 18.dp)
-                                )
-                            }
-                        }
-                        if (index < displaySearches.lastIndex) {
-                            HorizontalDivider(
-                                modifier = Modifier.padding(horizontal = if (compact) 10.dp else 12.dp),
-                                color = recentDividerColor
-                            )
                         }
                     }
                     Text(
@@ -1019,17 +1109,17 @@ fun CompoundHeader(
         ) {
             state.cid?.let {
                 StatChip(Icons.Default.Science, "CID", it.toString(), modifier = Modifier.weight(1f)) {
-                    cm.setPrimaryClip(ClipData.newPlainText("CID", it.toString()))
+                    copyTextWithFeedback(context, "CID", it.toString())
                 }
             }
             state.casNumber?.let {
                 StatChip(Icons.Default.Info, "CAS", it, modifier = Modifier.weight(1f)) {
-                    cm.setPrimaryClip(ClipData.newPlainText("CAS", it))
+                    copyTextWithFeedback(context, "CAS", it)
                 }
             }
             if (state.weight.isNotBlank()) {
                 StatChip(Icons.Default.Scale, "MW (g/mol)", "${state.weight} g/mol", displayValue = state.weight, modifier = Modifier.weight(1f)) {
-                    cm.setPrimaryClip(ClipData.newPlainText("MW", "${state.weight} g/mol"))
+                    copyTextWithFeedback(context, "MW", "${state.weight} g/mol")
                 }
             }
         }
@@ -1072,6 +1162,7 @@ private fun CompactIdentifier(label: String, value: String, onCopy: () -> Unit) 
 
 @Composable
 fun ClickableIdentifier(label: String, value: String, cm: ClipboardManager) {
+    val context = LocalContext.current
     Text(
         text = buildAnnotatedString {
             withStyle(SpanStyle(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.45f))) { append("$label: ") }
@@ -1079,7 +1170,10 @@ fun ClickableIdentifier(label: String, value: String, cm: ClipboardManager) {
         },
         style = MaterialTheme.typography.bodyMedium,
         softWrap = false,
-        modifier = Modifier.clickable { cm.setPrimaryClip(ClipData.newPlainText(label, value)) }
+        modifier = Modifier.clickable {
+            cm.setPrimaryClip(ClipData.newPlainText(label, value))
+            Toast.makeText(context, "$label copied", Toast.LENGTH_SHORT).show()
+        }
     )
 }
 
@@ -1289,75 +1383,64 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)
             ) {
-                Surface(
-                    shape = RoundedCornerShape(50),
-                    color = MaterialTheme.colorScheme.outline.copy(0.12f),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.24f)),
-                    modifier = Modifier.weight(1f)
+                Row(
+                    modifier = Modifier.weight(1f),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp)
                 ) {
-                    Row(
-                        modifier = Modifier.padding(if (compact) 3.dp else 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                    val twoDActive = state.activeTab == MolTab.TWO_D
+                    Surface(
+                        onClick = { vm.setTab(MolTab.TWO_D) },
+                        shape = RoundedCornerShape(50),
+                        color = if (twoDActive) MaterialTheme.colorScheme.primary else Color.Transparent,
+                        border = BorderStroke(
+                            1.dp,
+                            if (twoDActive) MaterialTheme.colorScheme.primary.copy(0.45f)
+                            else MaterialTheme.colorScheme.onSurface.copy(0.18f)
+                        ),
+                        modifier = Modifier.weight(1f)
                     ) {
-                        val twoDActive = state.activeTab == MolTab.TWO_D
-                        Surface(
-                            onClick = { vm.setTab(MolTab.TWO_D) },
-                            shape = RoundedCornerShape(50),
-                            color = if (twoDActive) MaterialTheme.colorScheme.primary else Color.Transparent,
-                            border = BorderStroke(
-                                1.dp,
-                                if (twoDActive) MaterialTheme.colorScheme.primary.copy(0.45f)
-                                else MaterialTheme.colorScheme.onSurface.copy(0.18f)
-                            ),
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            Text(
-                                "2D Structure",
-                                modifier = Modifier.padding(vertical = if (compact) 7.dp else 8.dp),
-                                color = if (twoDActive) Color.White else MaterialTheme.colorScheme.onSurface.copy(0.55f),
-                                style = MaterialTheme.typography.labelMedium,
-                                fontWeight = FontWeight.SemiBold,
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                        val threeDActive = state.activeTab == MolTab.THREE_D
-                        Surface(
-                            onClick = { vm.setTab(MolTab.THREE_D) },
-                            shape = RoundedCornerShape(50),
-                            color = if (threeDActive) MaterialTheme.colorScheme.primary else Color.Transparent,
-                            border = BorderStroke(
-                                1.dp,
-                                if (threeDActive) MaterialTheme.colorScheme.primary.copy(0.45f)
-                                else MaterialTheme.colorScheme.onSurface.copy(0.18f)
-                            ),
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            Text(
-                                "3D Model",
-                                modifier = Modifier.padding(vertical = if (compact) 7.dp else 8.dp),
-                                color = if (threeDActive) Color.White else MaterialTheme.colorScheme.onSurface.copy(0.55f),
-                                style = MaterialTheme.typography.labelMedium,
-                                fontWeight = FontWeight.SemiBold,
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                    }
-                }
-                Surface(
-                    onClick = { shareCompound() },
-                    shape = RoundedCornerShape(if (compact) 12.dp else 14.dp),
-                    color = MaterialTheme.colorScheme.primary.copy(0.08f),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f)),
-                    modifier = Modifier.size(if (compact) 38.dp else 44.dp)
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Icon(
-                            Icons.Default.Share,
-                            contentDescription = "Share compound",
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(if (compact) 18.dp else 20.dp)
+                        Text(
+                            "2D Structure",
+                            modifier = Modifier.padding(vertical = if (compact) 7.dp else 8.dp),
+                            color = if (twoDActive) Color.White else MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            textAlign = TextAlign.Center
                         )
                     }
+                    val threeDActive = state.activeTab == MolTab.THREE_D
+                    Surface(
+                        onClick = { vm.setTab(MolTab.THREE_D) },
+                        shape = RoundedCornerShape(50),
+                        color = if (threeDActive) MaterialTheme.colorScheme.primary else Color.Transparent,
+                        border = BorderStroke(
+                            1.dp,
+                            if (threeDActive) MaterialTheme.colorScheme.primary.copy(0.45f)
+                            else MaterialTheme.colorScheme.onSurface.copy(0.18f)
+                        ),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(
+                            "3D Model",
+                            modifier = Modifier.padding(vertical = if (compact) 7.dp else 8.dp),
+                            color = if (threeDActive) Color.White else MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+                IconButton(
+                    onClick = { shareCompound() },
+                    modifier = Modifier.size(if (compact) 38.dp else 44.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Share,
+                        contentDescription = "Share compound",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(if (compact) 18.dp else 20.dp)
+                    )
                 }
             }
 
@@ -1394,7 +1477,7 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                                     .fillMaxSize()
                                     .clickable { showZoom = true },
                                 shape = RoundedCornerShape(if (compact) 16.dp else 20.dp),
-                                color = Color.White,
+                                color = PubChemStructureBackground,
                                 shadowElevation = 1.dp
                             ) {
                                 StructurePngImage(
@@ -1406,15 +1489,27 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                                         .padding(if (compact) 14.dp else 18.dp)
                                 )
                             }
-                            Row(
+                            Surface(
+                                onClick = { trigger2dDownload(cid) },
                                 modifier = Modifier
-                                    .align(Alignment.BottomCenter)
-                                    .padding(bottom = if (compact) 10.dp else 14.dp),
-                                horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 12.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                                    .align(Alignment.BottomEnd)
+                                    .padding(
+                                        end = if (compact) 12.dp else 16.dp,
+                                        bottom = if (compact) 12.dp else 16.dp
+                                    )
+                                    .size(if (compact) 38.dp else 42.dp),
+                                shape = CircleShape,
+                                color = MaterialTheme.colorScheme.primary,
+                                shadowElevation = 4.dp
                             ) {
-                                ViewerActionButton(Icons.AutoMirrored.Filled.OpenInNew, "Expand") { showZoom = true }
-                                ViewerActionButton(Icons.Default.Download, "Download") { trigger2dDownload(cid) }
+                                Box(contentAlignment = Alignment.Center) {
+                                    Icon(
+                                        Icons.Default.Download,
+                                        contentDescription = "Download 2D structure",
+                                        tint = Color.White,
+                                        modifier = Modifier.size(if (compact) 17.dp else 19.dp)
+                                    )
+                                }
                             }
                         }
                     }
@@ -1987,7 +2082,6 @@ private fun AdvancedPropertyTile(property: AdvancedPropertyRow, modifier: Modifi
 
 @Composable
 fun IdentifierRow(label: String, value: String, context: Context, mono: Boolean = true) {
-    val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     var expanded by remember { mutableStateOf(false) }
     val isLong = value.length > 80
     val compact = LocalCompactMode.current
@@ -2004,7 +2098,7 @@ fun IdentifierRow(label: String, value: String, context: Context, mono: Boolean 
                 when {
                     isLong && !expanded -> expanded = true
                     isLong && expanded -> expanded = false
-                    else -> cm.setPrimaryClip(ClipData.newPlainText(label, value))
+                    else -> copyTextWithFeedback(context, label, value)
                 }
             }
     ) {
@@ -2047,7 +2141,7 @@ fun IdentifierRow(label: String, value: String, context: Context, mono: Boolean 
                 horizontalArrangement = Arrangement.End
             ) {
                 TextButton(
-                    onClick = { cm.setPrimaryClip(ClipData.newPlainText(label, value)) },
+                    onClick = { copyTextWithFeedback(context, label, value) },
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp)
                 ) {
                     Icon(Icons.Default.ContentCopy, null, modifier = Modifier.size(13.dp))
@@ -2192,7 +2286,7 @@ fun SynonymsSection(synonyms: List<String>, isLoading: Boolean = false) {
                         border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f)),
                         modifier = Modifier.clickable {
                             cm.setPrimaryClip(ClipData.newPlainText("Synonym", syn))
-                            Toast.makeText(context, "Copied: $syn", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Synonym copied", Toast.LENGTH_SHORT).show()
                         }
                     ) {
                         Text(

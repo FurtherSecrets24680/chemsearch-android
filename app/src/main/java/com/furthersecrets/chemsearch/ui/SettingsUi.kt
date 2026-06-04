@@ -20,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -32,6 +33,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -42,6 +44,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -316,52 +319,69 @@ private fun AppColorScheme.previewColor(): Color = when (this) {
     AppColorScheme.AMBER -> Color(0xFFD97706)
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ColorSchemePicker(
     colorScheme: AppColorScheme,
     onSetColorScheme: (AppColorScheme) -> Unit
 ) {
-    FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         AppColorScheme.entries.forEach { scheme ->
             val selected = colorScheme == scheme
-            Surface(
-                onClick = { onSetColorScheme(scheme) },
-                shape = RoundedCornerShape(999.dp),
-                color = if (selected) scheme.previewColor().copy(0.14f) else MaterialTheme.colorScheme.surface,
-                border = BorderStroke(
-                    1.dp,
-                    if (selected) scheme.previewColor().copy(0.75f) else MaterialTheme.colorScheme.outline.copy(0.24f)
-                )
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickable { onSetColorScheme(scheme) }
+                    .padding(vertical = 3.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 7.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(7.dp)
+                Box(
+                    modifier = Modifier
+                        .size(38.dp)
+                        .background(
+                            if (selected) scheme.previewColor().copy(0.14f) else Color.Transparent,
+                            CircleShape
+                        )
+                        .border(
+                            width = 1.dp,
+                            color = if (selected) scheme.previewColor().copy(0.72f) else Color.Transparent,
+                            shape = CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(12.dp)
+                            .size(30.dp)
                             .background(scheme.previewColor(), CircleShape)
-                    )
-                    Text(
-                        scheme.label(),
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = if (selected) scheme.previewColor() else MaterialTheme.colorScheme.onSurface.copy(0.72f)
-                    )
-                    if (selected) {
-                        Icon(
-                            Icons.Default.Check,
-                            contentDescription = null,
-                            tint = scheme.previewColor(),
-                            modifier = Modifier.size(14.dp)
-                        )
+                            .border(1.dp, MaterialTheme.colorScheme.background.copy(0.28f), CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (selected) {
+                            Icon(
+                                Icons.Default.Check,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier.size(15.dp)
+                            )
+                        }
                     }
                 }
+                Text(
+                    scheme.label(),
+                    style = MaterialTheme.typography.labelSmall,
+                    fontSize = 10.sp,
+                    lineHeight = 11.sp,
+                    fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = if (selected) scheme.previewColor() else MaterialTheme.colorScheme.onSurface.copy(0.62f),
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
     }
@@ -1585,34 +1605,48 @@ fun InfoDialog(title: String, entries: List<Pair<String, String>>, onDismiss: ()
 }
 
 private val FAQ_ENTRIES = listOf(
-    "Why use this app instead of PubChem or ChemSpider?" to "It puts the same core data in a fast, mobile-friendly view and comes bundled with useful chemistry tools (reaction balancing, molar mass, stoichiometry, 3D viewer, comparison tools, and more) so you can study without constantly changing sites.",
-    "Where does compound data come from?" to "Most compound properties, structures, and safety data are pulled from PubChem. Descriptions can also come from Wikipedia or AI depending on your settings.",
-    "What can I search for?" to "Search by common name, IUPAC name, CAS number, or CID. Suggestions use PubChem as you type.",
-    "Why am I not getting results?" to "Check spelling, try a CID or CAS number, or remove extra spaces. Some compounds are not listed in PubChem.",
-    "What AI providers are supported?" to "ChemSearch supports Google Gemini, Groq Cloud, OpenAI, OpenRouter, and Mistral AI. Each provider needs its own API key.",
-    "Do I need an API key for AI descriptions?" to "Yes. AI descriptions use your selected provider. Add a key in Settings > AI Provider & Keys. Keys are stored locally on your device.",
-    "Where are my API keys stored?" to "Keys are stored locally with Android Keystore-backed encryption and are not synced.",
-    "Is the app offline?" to "Most live search features require internet access. Downloaded compounds in Library can be opened later with saved structures, descriptions, synonyms, safety info, and identifiers.",
-    "What is the difference between cache and Downloads?" to "Cache helps repeated searches load faster and can be cleared anytime. Downloads are deliberate offline copies saved in Library with compound data and structures.",
-    "Where are downloaded compounds stored?" to "Downloaded compounds are stored in the app's local Room database on your device. They are not uploaded anywhere by ChemSearch.",
-    "What is the Chemical Database?" to "It is a built-in browser for substances, ions, functional groups, and reactions. It uses local JSON data bundled with the app.",
-    "How do autosuggestions work?" to "Autosuggestions query PubChem as you type. You can toggle them in Settings > Search.",
-    "How do I save favorites?" to "Tap the star icon on a compound, then open Library > Favorites. Favorites are stored locally.",
-    "How do I clear history or cache?" to "Go to Settings > Data to clear search history or manage the compound cache.",
-    "How do I download structures?" to "Use the Structure buttons to save PNG/SDF files, or tap the download icon below the star to save the whole compound in Library > Downloads.",
-    "Why is the 3D model missing?" to "Some compounds do not have a 3D SDF available in PubChem or through the fallback resolver. Metals, salts, ionic compounds, and very large molecules are common cases.",
-    "How do I use the custom 3D viewer?" to "Open Tools > Custom 3D Molecule Viewer and load a .sdf or .mol file from your device.",
-    "What does the SMILES visualizer do?" to "Paste a SMILES string to look it up on PubChem and view its 2D or 3D structure when available.",
-    "How does Compare Compounds work?" to "Open Tools > Compare Compounds, enter two or more compound names, and compare formula, descriptions, identifiers, atom counts, bond counts, and key properties.",
-    "What does the pH / pOH calculator do?" to "It converts between pH, pOH, hydrogen ion concentration, and hydroxide ion concentration, then classifies the solution as acidic, neutral, or basic.",
-    "How does the Reaction Balancer work?" to "It builds an element matrix and solves it with exact arithmetic. Very complex redox reactions or incorrect formulas may fail to balance.",
-    "What does the Stoichiometry tool calculate?" to "It balances the reaction, finds the limiting reagent, and computes theoretical yield, excess reagents, and reaction scaling.",
-    "How is molar mass calculated?" to "The calculator sums standard atomic weights for each element in the formula. Parentheses and hydrates are supported.",
-    "Why does oxidation state show a fraction or question mark?" to "Some formulas need a charge to solve, and some have multiple unknown elements. The tool shows averages or unknowns in those cases.",
-    "How does the Isomer Finder work?" to "It queries PubChem for matching formulas and returns up to 20 results.",
-    "Are update notifications optional?" to "Yes. You can toggle update notifications in Settings. Manual update checks are also available.",
-    "Is safety info official?" to "GHS data is aggregated from multiple sources in PubChem. Use it for quick checks only; it does not replace an official SDS.",
-    "How do I unlock debug settings?" to "Tap the build number on the About screen five times to reveal the developer tools."
+    "What is ChemSearch for?" to "ChemSearch is for quick chemistry lookup, study, and reference. It brings compound search, structures, safety summaries, offline saving, references, and calculators into one Android app.",
+    "Is ChemSearch a replacement for PubChem?" to "No. ChemSearch uses PubChem as a main data source and presents useful parts in a phone-friendly way. Open PubChem directly when you need the full record or original source trail.",
+    "Where does compound data come from?" to "Most compound properties, identifiers, structures, synonyms, classifications, and GHS summaries come from PubChem. Some descriptions can come from Wikipedia or your selected AI provider, depending on settings.",
+    "Where does periodic table data come from?" to "Periodic table details are bundled from public reference data, including PubChem, Wikipedia, and Bowserinator/Periodic-Table-JSON. Some fields are hidden when a value is not listed.",
+    "Can I trust the data?" to "Use ChemSearch for study and quick checks. Chemical databases can disagree because names, tautomers, salts, hydrates, stereochemistry, and standardization rules are complicated. For lab, medical, legal, or regulatory decisions, verify with official sources.",
+    "Is the safety information official?" to "No. GHS cards are quick reference summaries from PubChem data. They do not replace a supplier Safety Data Sheet, lab policy, teacher instructions, or local safety rules.",
+    "Why can safety data be missing or different from an SDS?" to "Safety data depends on source, purity, mixture, concentration, physical form, region, and update date. A supplier SDS is written for a specific product; ChemSearch usually shows substance-level reference data.",
+    "Does ChemSearch give lab procedure or synthesis advice?" to "No. ChemSearch is for lookup and learning. It does not verify experimental procedures, exposure limits, dosages, storage compatibility, or safe handling steps.",
+    "What can I search for?" to "You can search by common name, IUPAC name, CAS number, PubChem CID, formula, or drawn structure. Some modes work better for exact identifiers than short names.",
+    "Why did my search fail?" to "Try a spelling correction, CID, CAS number, or a more specific name. Very broad names, unofficial names, unstable structures, and compounds absent from PubChem may not return a useful match.",
+    "Why are Did you mean suggestions sometimes missing?" to "ChemSearch only shows close spelling matches. It hides loose PubChem autocomplete results when they look unrelated, so it may show nothing instead of a bad suggestion.",
+    "What is the difference between normal search and isomer search?" to "Normal search tries to find one best compound. Isomer Search treats the input as a molecular formula and lists compounds with the same formula.",
+    "Why do formulas sometimes look different from textbooks?" to "ChemSearch can show formulas in different styles. Hill order sorts carbon, hydrogen, then the rest alphabetically. Conventional order tries to show the familiar chemistry form, such as NaCl or H2SO4.",
+    "Why do ions sometimes need charges shown separately?" to "Formula text and charge text are different pieces of data. ChemSearch tries to keep charges visible with superscripts, but some source records may store ions in unusual formats.",
+    "Why does a 2D structure not show every hydrogen?" to "Many chemical diagrams omit hydrogens on carbon unless they matter for clarity. That is normal for skeletal and PubChem-style 2D structures.",
+    "Why is a 3D model missing?" to "Some compounds do not have a PubChem 3D conformer. Salts, metals, coordination compounds, ionic records, very flexible molecules, and very large molecules are common cases.",
+    "Are 3D models exact real shapes?" to "No. PubChem 3D conformers are computed models, not guaranteed experimental structures. They are useful for visualization, but they may not represent the exact shape in a crystal, solvent, protein pocket, or classroom model.",
+    "Why do bond orders look different in 3D?" to "3D coordinate files focus on atom positions and connectivity. Bond order, aromaticity, charge placement, and tautomer form can be interpreted differently by different tools.",
+    "What does Structure Search do?" to "Structure Search sends the drawn molecule as a structure query and looks for matching PubChem compounds. Invalid valence, incomplete drawings, or very complex sketches may fail.",
+    "Why does Structure Search return a different compound than expected?" to "Small drawing differences can change the search, especially with charges, aromatic rings, tautomers, stereochemistry, salts, and implicit hydrogens. Use exact identifiers when you need one specific record.",
+    "Can AI descriptions be wrong?" to "Yes. AI text can sound confident while missing details or mixing facts. Use AI descriptions as a plain-language helper, not as the final source for safety, exams, lab work, or citations.",
+    "What data is sent to AI providers?" to "Only when you request an AI description, ChemSearch sends compound context to the provider you selected. That provider handles the request under its own terms and privacy policy.",
+    "Do I need an API key for AI descriptions?" to "Yes. Google Gemini, Groq Cloud, OpenAI, OpenRouter, and Mistral AI each need their own API key. Add keys in Settings > AI Provider & Keys.",
+    "Where are API keys stored?" to "API keys are stored locally with Android Keystore-backed encryption. ChemSearch does not sync them to a ChemSearch account.",
+    "Does ChemSearch collect my searches?" to "ChemSearch has no account system. Search history, favorites, downloads, and cache are stored on your device. Live searches still contact external services such as PubChem, Wikipedia, GitHub updates, or your chosen AI provider when needed.",
+    "What works offline?" to "The built-in Library references, calculators, favorites, and downloaded compounds can work offline. Live compound lookup, fresh descriptions, structure search, update checks, and AI descriptions need internet access.",
+    "What is the difference between cache and Downloads?" to "Cache makes repeat searches faster and may be cleared automatically. Downloads are intentional offline compound saves with identifiers, descriptions, structures, synonyms, safety info, and source data when available.",
+    "Where are downloaded compounds stored?" to "Downloaded compounds are stored in the app's local Room database on your device. Uninstalling the app can remove them unless you export or back them up first.",
+    "How do I save a compound?" to "Use the star for Favorites or the download button for a full offline save. Favorites are quick bookmarks; Downloads are meant for offline reading.",
+    "Can I compare saved compounds?" to "Yes. Select two or more compounds in Favorites, Downloads, or supported Chemical Database entries, then use the floating Compare button.",
+    "What is the Chemical Database?" to "It is a bundled reference for common substances, ions, functional groups, and reactions. It is useful offline, but it is not as broad as PubChem.",
+    "Why can I compare substances and ions but not reactions or functional groups?" to "Compare Compounds expects compound-like records with formulas and identifiers. Reactions and functional groups are reference entries, not full compound records.",
+    "Why do some classification tags look unrelated?" to "Classification and annotation tags come from source records. A tag can describe a data context, literature category, assay topic, or indexing term; it does not always mean the compound is mainly used for that topic.",
+    "Why are some names very long or truncated?" to "Some IUPAC names and biomolecule names are too long for compact screens. Tap the name or expand control when available to see the full text.",
+    "How is molar mass calculated?" to "The calculator sums standard atomic weights from the parsed formula. Parentheses, nested groups, hydrates, and common formula notation are supported.",
+    "Why can oxidation states be wrong for unusual formulas?" to "Oxidation state rules need assumptions about bonds, charges, and known exceptions. The tool handles common chemistry, but coordination compounds and ambiguous formulas may need manual checking.",
+    "Why can reaction balancing fail?" to "The balancer uses formula parsing and exact arithmetic. It may fail when formulas are invalid, charges are missing, or the reaction needs chemistry context beyond atom conservation.",
+    "Can I use the tools for homework?" to "Yes, as a checker and learning aid. Still show your work, because the app gives answers and summaries, not your teacher's required reasoning steps.",
+    "How do app updates work?" to "ChemSearch can check GitHub releases, download the APK inside the app, and then hand it to Android's installer. You can also update manually from GitHub.",
+    "Are update notifications optional?" to "Yes. You can turn update notifications on or off in Settings and still check manually whenever you want.",
+    "How do I clear history or cache?" to "Open Settings > Data. You can clear recent searches, manage cache size, choose auto-clear timing, and remove saved temporary data.",
+    "How do I unlock debug settings?" to "Tap the build number on the About screen five times. Debug settings are for diagnostics, endpoint checks, logs, and development testing."
 )
 
 // Favorites sheet
@@ -1852,9 +1886,11 @@ private data class LibraryOption(
     val icon: ChemIconSpec,
     val title: String,
     val subtitle: String,
-    val countLabel: String? = null,
-    val databaseSummary: ChemicalDatabaseSummary? = null
+    val countLabel: String? = null
 )
+
+private fun ChemicalDatabaseSummary.totalEntries(): Int =
+    substances + ions + functionalGroups + reactions
 
 private fun LibraryTab.icon(): ChemIconSpec = when (this) {
     LibraryTab.FAVORITES -> ChemAppIcons.Star
@@ -1889,7 +1925,7 @@ private fun LibraryOptionGridRows(
                     icon = option.icon,
                     title = option.title,
                     subtitle = option.subtitle,
-                    countLabel = if (option.databaseSummary == null) option.countLabel else null,
+                    countLabel = option.countLabel,
                     selected = false,
                     modifier = Modifier.weight(1f),
                     onClick = { onSelect(option.tab) }
@@ -2048,12 +2084,10 @@ private fun LibraryOptionListCard(
     title: String,
     subtitle: String,
     countLabel: String? = null,
-    databaseSummary: ChemicalDatabaseSummary? = null,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
     val compact = LocalCompactMode.current
-    var showDatabaseSummary by remember(databaseSummary) { mutableStateOf(false) }
     Card(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
@@ -2107,22 +2141,6 @@ private fun LibraryOptionListCard(
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
-                    if (databaseSummary != null) {
-                        IconButton(
-                            onClick = { showDatabaseSummary = !showDatabaseSummary },
-                            modifier = Modifier.size(if (compact) 26.dp else 30.dp)
-                        ) {
-                            Icon(
-                                Icons.Default.Info,
-                                contentDescription = if (showDatabaseSummary) "Hide database counts" else "Show database counts",
-                                tint = MaterialTheme.colorScheme.primary.copy(if (showDatabaseSummary) 0.86f else 0.58f),
-                                modifier = Modifier.size(if (compact) 15.dp else 17.dp)
-                            )
-                        }
-                    }
-                }
-                databaseSummary?.takeIf { showDatabaseSummary }?.let {
-                    ChemicalDatabaseSummaryBreakdown(summary = it)
                 }
             }
             if (!countLabel.isNullOrBlank()) {
@@ -2544,7 +2562,7 @@ fun LibraryInline(
                 icon = LibraryTab.DATABASE.icon(),
                 title = "Chemical Database",
                 subtitle = "Substances, ions, groups, reactions",
-                databaseSummary = databaseSummary
+                countLabel = databaseSummary.totalEntries().toString()
             )
         )
     }
@@ -2654,7 +2672,7 @@ fun LibraryInline(
                     Text("Back to Library")
                 }
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    if (selectedSection != LibraryTab.DATABASE && selectedSection != LibraryTab.PERIODIC_TABLE) {
+                    if (selectedSection == LibraryTab.FAVORITES || selectedSection == LibraryTab.DOWNLOADS) {
                         LibraryViewToggle(viewMode = itemViewMode, onViewModeChange = { itemViewMode = it })
                     }
                     if (selectedSection == LibraryTab.FAVORITES && favorites.size > 1) {
@@ -2698,8 +2716,7 @@ fun LibraryInline(
                                 icon = option.icon,
                                 title = option.title,
                                 subtitle = option.subtitle,
-                                countLabel = if (option.databaseSummary == null) option.countLabel else null,
-                                databaseSummary = option.databaseSummary,
+                                countLabel = option.countLabel,
                                 onClick = { selectedSection = option.tab }
                             )
                         }
@@ -2709,8 +2726,7 @@ fun LibraryInline(
                                 icon = option.icon,
                                 title = option.title,
                                 subtitle = option.subtitle,
-                                countLabel = if (option.databaseSummary == null) option.countLabel else null,
-                                databaseSummary = option.databaseSummary,
+                                countLabel = option.countLabel,
                                 onClick = { selectedSection = option.tab }
                             )
                         }

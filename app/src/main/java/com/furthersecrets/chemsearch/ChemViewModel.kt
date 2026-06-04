@@ -489,6 +489,15 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         if (_uiState.value.cid == cid) _isFavorite.value = false
     }
 
+    fun restoreFavorite(favorite: FavoriteCompound) {
+        val normalized = favorite.normalizedOrNull() ?: return
+        val updated = listOf(normalized) + _favorites.value.filterNot { it.cid == normalized.cid }
+        _favorites.value = updated
+        saveFavorites(updated)
+        if (_uiState.value.cid == normalized.cid) _isFavorite.value = true
+        DebugLog.d("ChemSearch", "Restored favorite: ${normalized.name} (CID ${normalized.cid})")
+    }
+
     fun moveFavorite(fromIndex: Int, toIndex: Int) {
         val current = _favorites.value.toMutableList()
         if (fromIndex !in current.indices || toIndex !in current.indices) return
@@ -601,6 +610,15 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) { offlineDownloadRepository.delete(cid) }
         if (_uiState.value.cid == cid) _isDownloaded.value = false
         DebugLog.d("ChemSearch", "Deleted offline download for CID $cid")
+    }
+
+    fun restoreDownload(download: DownloadedCompound) {
+        val normalized = download.normalizedOrNull() ?: return
+        val updated = listOf(normalized) + _downloads.value.filterNot { it.cid == normalized.cid }
+        _downloads.value = updated
+        viewModelScope.launch(Dispatchers.IO) { offlineDownloadRepository.upsert(normalized) }
+        if (_uiState.value.cid == normalized.cid) _isDownloaded.value = true
+        DebugLog.d("ChemSearch", "Restored offline download: ${normalized.name} (CID ${normalized.cid})")
     }
 
     fun buildLibraryBackupJson(): String =
@@ -893,8 +911,18 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun onQueryChange(q: String) {
         _query.value = q
         autocompleteJob?.cancel()
+        _uiState.update {
+            it.copy(
+                failedSearchQuery = null,
+                searchCorrectionSuggestions = emptyList()
+            )
+        }
         if (!_autoSuggest.value || q.length < 2) {
-            _uiState.update { it.copy(suggestions = emptyList()) }
+            _uiState.update {
+                it.copy(
+                    suggestions = emptyList(),
+                )
+            }
             return
         }
         autocompleteJob = viewModelScope.launch {
@@ -903,7 +931,11 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 val res = ApiClient.pubChemAutocomplete.autocomplete(q)
                 val suggestions = res.dictionaryTerms?.compound ?: emptyList()
                 DebugLog.d("ChemSearch", "Autocomplete \"$q\" → ${suggestions.size} results")
-                _uiState.update { it.copy(suggestions = suggestions) }
+                _uiState.update {
+                    it.copy(
+                        suggestions = suggestions,
+                    )
+                }
             } catch (e: Exception) {
                 DebugLog.e("ChemSearch", "Autocomplete error for \"$q\": ${e.message}")
                 _uiState.update { it.copy(suggestions = emptyList()) }
@@ -1120,6 +1152,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     isLoading = true,
                     error = null,
                     suggestions = emptyList(),
+                    failedSearchQuery = null,
+                    searchCorrectionSuggestions = emptyList(),
                     hasResult = false,
                     isCached = false,
                     isOfflineDownload = false,
@@ -1297,13 +1331,28 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     is NoSuchElementException -> e.message ?: "Not found"
                     else -> "Chemical not found. Try a different name or spelling."
                 }
+                val corrections = if (e is IOException) emptyList() else fetchSearchCorrectionSuggestions(q)
                 DebugLog.e("ChemSearch", "Search failed for \"$q\": ${e::class.simpleName} — ${e.message}")
                 _uiState.update {
-                    it.copy(isLoading = false, error = msg)
+                    it.copy(
+                        isLoading = false,
+                        error = msg,
+                        failedSearchQuery = q,
+                        searchCorrectionSuggestions = corrections
+                    )
                 }
             }
         }
     }
+
+    private suspend fun fetchSearchCorrectionSuggestions(query: String): List<String> =
+        runCatching {
+            val suggestions = ApiClient.pubChemAutocomplete.autocomplete(query, limit = 8)
+                .dictionaryTerms
+                ?.compound
+                .orEmpty()
+            cleanSearchCorrectionSuggestions(query, suggestions)
+        }.getOrDefault(emptyList())
 
     fun updateAdvancedSearchFilters(filters: AdvancedSearchFilters) {
         _advancedSearchState.update { it.copy(filters = filters, error = null) }
@@ -1854,7 +1903,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             history = recentQueries(),
                 aiProvider = current.aiProvider,
                 descSource = getSavedDescSource(),
-                suggestions = emptyList()
+                suggestions = emptyList(),
+                failedSearchQuery = null,
+                searchCorrectionSuggestions = emptyList()
             )
         }
     }
@@ -2117,6 +2168,27 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         saveRecentSearches(updated)
         _uiState.update { it.copy(history = recentQueries()) }
         DebugLog.d("ChemSearch", "Removed recent search: $query")
+    }
+
+    fun restoreRecentSearch(search: RecentSearch) {
+        val normalized = search.normalizedOrNull() ?: return
+        val updated = listOf(normalized) + _recentSearches.value.filterNot {
+            it.query.equals(normalized.query, ignoreCase = true)
+        }
+        _recentSearches.value = updated
+        saveRecentSearches(updated)
+        _uiState.update { it.copy(history = recentQueries()) }
+        DebugLog.d("ChemSearch", "Restored recent search: ${normalized.query}")
+    }
+
+    fun restoreRecentSearches(searches: List<RecentSearch>) {
+        val cleaned = searches
+            .mapNotNull { it.normalizedOrNull() }
+            .distinctBy { it.query.lowercase() }
+        _recentSearches.value = cleaned
+        saveRecentSearches(cleaned)
+        _uiState.update { it.copy(history = recentQueries()) }
+        DebugLog.d("ChemSearch", "Restored ${cleaned.size} recent searches")
     }
 
     fun toggleRecentPin(query: String) {
@@ -2443,6 +2515,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             _uiState.update {
                 it.copy(
                     isLoading = true, error = null, hasResult = false,
+                    failedSearchQuery = null,
+                    searchCorrectionSuggestions = emptyList(),
                     sdfData = null, sdfSource = null, sdfMessage = null, ghsData = null, isLoadingSafety = false,
                     isomerMode = false, isomers = emptyList(),
                     isCached = false,

@@ -62,6 +62,7 @@ object ChemAppIcons {
     val SearchFilled = PhosphorIcons.Fill.MagnifyingGlass.asChemIcon()
     val Settings = PhosphorIcons.Bold.GearSix.asChemIcon()
     val SettingsFilled = PhosphorIcons.Fill.GearSix.asChemIcon()
+    val Trend = PhosphorIcons.Bold.ChartLineUp.asChemIcon()
     val SlidersHorizontal = PhosphorIcons.Bold.SlidersHorizontal.asChemIcon()
     val Star = PhosphorIcons.Fill.Star.asChemIcon()
     val TestTubes = PhosphorIcons.Bold.TestTube.asChemIcon()

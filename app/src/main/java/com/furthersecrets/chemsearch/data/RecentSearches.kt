@@ -37,7 +37,8 @@ fun groupRecentSearches(
         return when {
             date == nowDate -> "Today"
             date == nowDate.minusDays(1) -> "Yesterday"
-            date.isWithinThisWeek(nowDate) -> "This week"
+            date.isWithinPreviousDays(nowDate, days = 7) -> "Previous 7 days"
+            date.isWithinPreviousDays(nowDate, days = 30) -> "Previous 30 days"
             else -> "Older"
         }
     }
@@ -64,6 +65,45 @@ fun recentSearchesForDisplay(
 
 fun recentSearchCountLabel(count: Int): String =
     if (count == 1) "1 saved search" else "$count saved searches"
+
+fun cleanSearchCorrectionSuggestions(
+    query: String,
+    suggestions: List<String>,
+    limit: Int = 4
+): List<String> {
+    val normalizedQuery = normalizeCorrectionTerm(query)
+    if (normalizedQuery.length < 3) return emptyList()
+
+    data class RankedCorrection(
+        val text: String,
+        val normalized: String,
+        val distance: Int,
+        val sourceIndex: Int
+    )
+
+    return suggestions
+        .flatMapIndexed { index, suggestion ->
+            correctionCandidates(suggestion).map { candidate -> candidate to index }
+        }
+        .mapNotNull { (candidate, sourceIndex) ->
+            val normalizedCandidate = normalizeCorrectionTerm(candidate)
+            if (!isCloseCorrection(normalizedQuery, normalizedCandidate)) return@mapNotNull null
+            RankedCorrection(
+                text = candidate.trim(),
+                normalized = normalizedCandidate,
+                distance = levenshteinDistance(normalizedQuery, normalizedCandidate),
+                sourceIndex = sourceIndex
+            )
+        }
+        .distinctBy { it.normalized }
+        .sortedWith(
+            compareBy<RankedCorrection> { it.distance }
+                .thenBy { it.normalized.length }
+                .thenBy { it.sourceIndex }
+        )
+        .take(limit)
+        .map { it.text }
+}
 
 fun parseCompareCompoundInputs(raw: String): List<String> =
     raw
@@ -92,5 +132,64 @@ fun previewComparisonCellText(text: String, maxChars: Int = 180): String {
     return clean.take(maxChars - 1).trimEnd() + "…"
 }
 
-private fun LocalDate.isWithinThisWeek(nowDate: LocalDate): Boolean =
-    this.isAfter(nowDate.minusDays(7)) && this.isBefore(nowDate.minusDays(1))
+private fun LocalDate.isWithinPreviousDays(nowDate: LocalDate, days: Long): Boolean =
+    this.isAfter(nowDate.minusDays(days)) && this.isBefore(nowDate.minusDays(1))
+
+private fun correctionCandidates(suggestion: String): List<String> {
+    val clean = suggestion.trim().replace(Regex("\\s+"), " ")
+    if (clean.isBlank()) return emptyList()
+    val rootToken = if (clean.any { it.isDigit() } || clean.any { it == '(' || it == ')' || it == '-' }) {
+        Regex("[A-Za-z][A-Za-z0-9]*")
+            .findAll(clean)
+            .map { it.value }
+            .filter { it.length >= 3 }
+            .lastOrNull()
+    } else {
+        null
+    }
+    return listOfNotNull(clean, rootToken)
+        .distinctBy { normalizeCorrectionTerm(it) }
+}
+
+private fun normalizeCorrectionTerm(value: String): String =
+    value.lowercase().filter { it.isLetterOrDigit() }
+
+private fun isCloseCorrection(query: String, candidate: String): Boolean {
+    if (candidate.isBlank() || candidate == query) return false
+    if (candidate.firstOrNull() != query.firstOrNull()) return false
+
+    val lengthDelta = kotlin.math.abs(candidate.length - query.length)
+    if (lengthDelta > maxOf(4, query.length / 2)) return false
+
+    val distance = levenshteinDistance(query, candidate)
+    val allowedDistance = when {
+        query.length <= 4 -> 1
+        query.length <= 8 -> 2
+        else -> maxOf(2, query.length / 4)
+    }
+    return distance <= allowedDistance
+}
+
+private fun levenshteinDistance(a: String, b: String): Int {
+    if (a == b) return 0
+    if (a.isEmpty()) return b.length
+    if (b.isEmpty()) return a.length
+
+    var previous = IntArray(b.length + 1) { it }
+    var current = IntArray(b.length + 1)
+    for (i in 1..a.length) {
+        current[0] = i
+        for (j in 1..b.length) {
+            val substitutionCost = if (a[i - 1] == b[j - 1]) 0 else 1
+            current[j] = minOf(
+                current[j - 1] + 1,
+                previous[j] + 1,
+                previous[j - 1] + substitutionCost
+            )
+        }
+        val swap = previous
+        previous = current
+        current = swap
+    }
+    return previous[b.length]
+}

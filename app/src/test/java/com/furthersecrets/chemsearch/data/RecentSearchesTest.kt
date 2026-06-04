@@ -10,12 +10,13 @@ class RecentSearchesTest {
     private val now = LocalDateTime.of(2026, 5, 22, 10, 0).atZone(zone).toInstant().toEpochMilli()
 
     @Test
-    fun groupsPinnedTodayYesterdayThisWeekAndOlder() {
+    fun groupsPinnedTodayYesterdayRecentMonthAndOlder() {
         val searches = listOf(
             RecentSearch("glucose", timestamp(daysAgo = 0)),
             RecentSearch("ethanol", timestamp(daysAgo = 1)),
             RecentSearch("aspirin", timestamp(daysAgo = 3)),
             RecentSearch("caffeine", timestamp(daysAgo = 20)),
+            RecentSearch("quinine", timestamp(daysAgo = 45)),
             RecentSearch("methanol", timestamp(daysAgo = 0), pinned = true),
             RecentSearch("legacy", 0L)
         )
@@ -28,10 +29,12 @@ class RecentSearchesTest {
         assertEquals(listOf("glucose"), groups[1].searches.map { it.query })
         assertEquals("Yesterday", groups[2].label)
         assertEquals(listOf("ethanol"), groups[2].searches.map { it.query })
-        assertEquals("This week", groups[3].label)
+        assertEquals("Previous 7 days", groups[3].label)
         assertEquals(listOf("aspirin"), groups[3].searches.map { it.query })
-        assertEquals("Older", groups[4].label)
-        assertEquals(listOf("caffeine", "legacy"), groups[4].searches.map { it.query })
+        assertEquals("Previous 30 days", groups[4].label)
+        assertEquals(listOf("caffeine"), groups[4].searches.map { it.query })
+        assertEquals("Older", groups[5].label)
+        assertEquals(listOf("quinine", "legacy"), groups[5].searches.map { it.query })
     }
 
     @Test
@@ -50,9 +53,9 @@ class RecentSearchesTest {
             newestFirst = false
         )
 
-        assertEquals("Older", groups[0].label)
+        assertEquals("Previous 30 days", groups[0].label)
         assertEquals(listOf("caffeine"), groups[0].searches.map { it.query })
-        assertEquals("This week", groups[1].label)
+        assertEquals("Previous 7 days", groups[1].label)
         assertEquals(listOf("aspirin"), groups[1].searches.map { it.query })
         assertEquals("Yesterday", groups[2].label)
         assertEquals(listOf("ethanol"), groups[2].searches.map { it.query })
@@ -117,6 +120,46 @@ class RecentSearchesTest {
 
         assertEquals(40, preview.length)
         assertEquals("…", preview.last().toString())
+    }
+
+    @Test
+    fun searchCorrectionSuggestionsRemoveDuplicatesAndOriginalQuery() {
+        val suggestions = cleanSearchCorrectionSuggestions(
+            query = "ethnol",
+            suggestions = listOf(" ethanol ", "Ethanol", "ethnol", "", "ethyl alcohol", "methanol"),
+            limit = 3
+        )
+
+        assertEquals(listOf("ethanol"), suggestions)
+    }
+
+    @Test
+    fun searchCorrectionSuggestionsRejectLongSubstitutedCompounds() {
+        val suggestions = cleanSearchCorrectionSuggestions(
+            query = "ethunol",
+            suggestions = listOf(
+                "2-(cyclopropylamino)ethanol",
+                "2-(Dimethylamino)ethanol",
+                "2-(3-Nitrophenyl)ethanol",
+                "2-(2-Ethoxyethoxy)ethanol"
+            )
+        )
+
+        assertEquals(listOf("ethanol"), suggestions)
+    }
+
+    @Test
+    fun searchCorrectionSuggestionsReturnNothingWhenNoCloseMatchExists() {
+        val suggestions = cleanSearchCorrectionSuggestions(
+            query = "benzne",
+            suggestions = listOf(
+                "benzyl alcohol",
+                "benzenesulfonamide",
+                "4-bromobenzaldehyde"
+            )
+        )
+
+        assertEquals(emptyList<String>(), suggestions)
     }
 
     private fun timestamp(daysAgo: Long): Long =

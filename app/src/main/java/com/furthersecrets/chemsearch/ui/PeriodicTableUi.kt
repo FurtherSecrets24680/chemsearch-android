@@ -7,11 +7,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -25,6 +27,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -59,6 +62,11 @@ import com.furthersecrets.chemsearch.data.ApiClient
 import com.furthersecrets.chemsearch.data.ElementCategory
 import com.furthersecrets.chemsearch.data.PeriodicElement
 import com.furthersecrets.chemsearch.data.PeriodicTableElements
+import com.furthersecrets.chemsearch.data.PeriodicTrendMetric
+import com.furthersecrets.chemsearch.data.PeriodicTrendPoint
+import com.furthersecrets.chemsearch.data.periodicTrendPoints
+import com.furthersecrets.chemsearch.data.periodicTrendSummary
+import com.furthersecrets.chemsearch.data.unitLabel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import kotlinx.coroutines.Dispatchers
@@ -77,6 +85,7 @@ fun PeriodicTableLibraryScreen(
     var query by remember { mutableStateOf("") }
     var selectedElement by remember { mutableStateOf<PeriodicElement?>(null) }
     var fullDetailElement by remember { mutableStateOf<PeriodicElement?>(null) }
+    var showTrends by remember { mutableStateOf(false) }
     val normalizedQuery = query.trim().lowercase(Locale.US)
     val matchingElements = remember(normalizedQuery) {
         if (normalizedQuery.isBlank()) {
@@ -130,8 +139,16 @@ fun PeriodicTableLibraryScreen(
         )
 
         if (normalizedQuery.isBlank()) {
-            PeriodicTableGrid(onElementClick = { selectedElement = it })
-            PeriodicLegend()
+            PeriodicModeToggle(
+                showTrends = showTrends,
+                onShowTrendsChange = { showTrends = it }
+            )
+            if (showTrends) {
+                PeriodicTrendsPanel(onElementClick = { selectedElement = it })
+            } else {
+                PeriodicTableGrid(onElementClick = { selectedElement = it })
+                PeriodicLegend()
+            }
         } else {
             Text(
                 "${matchingElements.size} element${if (matchingElements.size == 1) "" else "s"}",
@@ -194,6 +211,319 @@ private fun PeriodicTableGrid(onElementClick: (PeriodicElement) -> Unit) {
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun PeriodicModeToggle(
+    showTrends: Boolean,
+    onShowTrendsChange: (Boolean) -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        PeriodicModeButton(
+            label = "Table",
+            icon = ChemAppIcons.Atom,
+            selected = !showTrends,
+            onClick = { onShowTrendsChange(false) }
+        )
+        PeriodicModeButton(
+            label = "Trends",
+            icon = ChemAppIcons.Trend,
+            selected = showTrends,
+            onClick = { onShowTrendsChange(true) }
+        )
+    }
+}
+
+@Composable
+private fun PeriodicModeButton(
+    label: String,
+    icon: ChemIconSpec,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    Surface(
+        onClick = onClick,
+        shape = RoundedCornerShape(999.dp),
+        color = if (selected) MaterialTheme.colorScheme.primary.copy(0.16f) else Color.Transparent
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 7.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            ChemIcon(
+                icon,
+                contentDescription = null,
+                tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.58f),
+                modifier = Modifier.size(16.dp)
+            )
+            Text(
+                label,
+                style = MaterialTheme.typography.labelMedium,
+                color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.62f),
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+@Composable
+private fun PeriodicTrendsPanel(
+    onElementClick: (PeriodicElement) -> Unit
+) {
+    var selectedMetric by remember { mutableStateOf(PeriodicTrendMetric.ELECTRONEGATIVITY) }
+    val points = remember(selectedMetric) { periodicTrendPoints(PeriodicTableElements, selectedMetric) }
+    val pointsBySymbol = remember(points) { points.associateBy { it.element.symbol } }
+    val summary = remember(selectedMetric) { periodicTrendSummary(PeriodicTableElements, selectedMetric) }
+
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Text(
+            "Compare listed element properties across the whole table. Darker tiles mean higher values for the selected property.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
+        )
+        Row(
+            modifier = Modifier.horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            PeriodicTrendMetric.entries.forEach { metric ->
+                PeriodicTrendMetricChip(
+                    metric = metric,
+                    selected = metric == selectedMetric,
+                    onClick = { selectedMetric = metric }
+                )
+            }
+        }
+        PeriodicTrendSummaryCard(summary = summary)
+        PeriodicTrendHeatmap(
+            metric = selectedMetric,
+            pointsBySymbol = pointsBySymbol,
+            onElementClick = onElementClick
+        )
+    }
+}
+
+@Composable
+private fun PeriodicTrendMetricChip(
+    metric: PeriodicTrendMetric,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    Surface(
+        onClick = onClick,
+        shape = RoundedCornerShape(999.dp),
+        color = if (selected) MaterialTheme.colorScheme.primary.copy(0.14f) else MaterialTheme.colorScheme.surface,
+        border = BorderStroke(
+            1.dp,
+            if (selected) MaterialTheme.colorScheme.primary.copy(0.42f) else MaterialTheme.colorScheme.outline.copy(0.18f)
+        )
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 11.dp, vertical = 7.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            Text(
+                metric.shortLabel,
+                style = MaterialTheme.typography.labelMedium,
+                color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.68f),
+                fontWeight = FontWeight.Bold,
+                maxLines = 1
+            )
+        }
+    }
+}
+
+@Composable
+private fun PeriodicTrendSummaryCard(
+    summary: com.furthersecrets.chemsearch.data.PeriodicTrendSummary
+) {
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.16f))
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(14.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                ChemIcon(
+                    ChemAppIcons.Trend,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(20.dp)
+                )
+                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    Text(summary.metric.label, fontWeight = FontWeight.Bold)
+                    Text(
+                        summary.metric.description,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
+                    )
+                }
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+                PeriodicTrendFact("Lowest", summary.lowest, Modifier.weight(1f))
+                PeriodicTrendFact("Highest", summary.highest, Modifier.weight(1f))
+            }
+            Text(
+                "${summary.totalElements} listed values · Range ${summary.rangeLabel}",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.46f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun PeriodicTrendFact(
+    label: String,
+    value: String,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.primary.copy(0.08f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.13f))
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            Text(
+                label,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                value,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
+@Composable
+private fun PeriodicTrendHeatmap(
+    metric: PeriodicTrendMetric,
+    pointsBySymbol: Map<String, PeriodicTrendPoint>,
+    onElementClick: (PeriodicElement) -> Unit
+) {
+    val horizontalScroll = rememberScrollState()
+    val tileSize = 58.dp
+    val rowLabelWidth = 82.dp
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(horizontalScroll),
+        verticalArrangement = Arrangement.spacedBy(5.dp)
+    ) {
+        Row(horizontalArrangement = Arrangement.spacedBy(5.dp), verticalAlignment = Alignment.CenterVertically) {
+            Spacer(Modifier.width(rowLabelWidth))
+            (1..18).forEach { group ->
+                Box(Modifier.size(tileSize, 22.dp), contentAlignment = Alignment.Center) {
+                    Text(
+                        group.toString(),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.42f),
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1
+                    )
+                }
+            }
+        }
+        (1..9).forEach { row ->
+            if (row == 8) Spacer(Modifier.height(10.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(5.dp), verticalAlignment = Alignment.CenterVertically) {
+                PeriodicRowLabel(row = row, modifier = Modifier.width(rowLabelWidth).height(tileSize))
+                (1..18).forEach { column ->
+                    val element = PeriodicTableElements.firstOrNull {
+                        it.tableRow == row && it.tableColumn == column
+                    }
+                    if (element == null) {
+                        Spacer(Modifier.size(tileSize))
+                    } else {
+                        PeriodicTrendTile(
+                            element = element,
+                            point = pointsBySymbol[element.symbol],
+                            metric = metric,
+                            modifier = Modifier.size(tileSize),
+                            onClick = { onElementClick(element) }
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PeriodicTrendTile(
+    element: PeriodicElement,
+    point: PeriodicTrendPoint?,
+    metric: PeriodicTrendMetric,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    val baseColor = MaterialTheme.colorScheme.primary
+    val fillAlpha = point?.let { 0.08f + (it.normalized * 0.34f) } ?: 0.04f
+    val borderAlpha = point?.let { 0.18f + (it.normalized * 0.42f) } ?: 0.12f
+    Surface(
+        onClick = onClick,
+        modifier = modifier,
+        shape = RoundedCornerShape(10.dp),
+        color = baseColor.copy(alpha = fillAlpha),
+        border = BorderStroke(1.dp, baseColor.copy(alpha = borderAlpha))
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize().padding(4.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(
+                    element.atomicNumber.toString(),
+                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 8.sp),
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.46f),
+                    maxLines = 1
+                )
+                Text(
+                    metric.shortLabel,
+                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 7.sp),
+                    color = baseColor.copy(alpha = if (point == null) 0.38f else 0.76f),
+                    maxLines = 1
+                )
+            }
+            Text(
+                element.symbol,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Black,
+                color = if (point == null) MaterialTheme.colorScheme.onSurface.copy(0.42f) else baseColor,
+                maxLines = 1
+            )
+            Text(
+                point?.let { "${it.valueLabel}${metric.unitLabel()}" } ?: "n/a",
+                style = MaterialTheme.typography.labelSmall.copy(fontSize = 7.sp),
+                color = MaterialTheme.colorScheme.onSurface.copy(if (point == null) 0.34f else 0.58f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         }
     }
 }
@@ -379,12 +709,16 @@ private fun ElementDetailDialog(
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                ElementFactRow("Element type", element.groupBlock)
-                ElementFactRow("Atomic mass", withUnit(element.atomicWeightLabel, "u"))
-                ElementFactRow("Group / period", "Group ${element.group}, period ${element.period}")
-                ElementFactRow("Standard state", element.standardState)
-                ElementFactRow("Electron configuration", toElectronConfigurationDisplay(element.electronConfiguration))
-                ElementFactRow("Oxidation states", element.commonOxidationStates)
+                ElementFactList(
+                    facts = listOf(
+                        ElementFactItem("Element type", element.groupBlock),
+                        ElementFactItem("Atomic mass", withUnit(element.atomicWeightLabel, "u")),
+                        ElementFactItem("Group / period", "Group ${element.group}, period ${element.period}"),
+                        ElementFactItem("Standard state", element.standardState),
+                        ElementFactItem("Electron configuration", toElectronConfigurationDisplay(element.electronConfiguration)),
+                        ElementFactItem("Oxidation states", element.commonOxidationStates)
+                    )
+                )
             }
         },
         confirmButton = {
@@ -693,7 +1027,11 @@ private fun ElectronShellCard(element: PeriodicElement, color: Color) {
                 }
             }
         }
-        ElementFactRow(periodicElectronConfigurationLabel, electronConfigurationText(element, showFull = showFullConfiguration))
+        ElementFactList(
+            facts = listOf(
+                ElementFactItem(periodicElectronConfigurationLabel, electronConfigurationText(element, showFull = showFullConfiguration))
+            )
+        )
         Text(
             text = if (showFullConfiguration) "Show short configuration" else "Show full configuration",
             modifier = Modifier
@@ -754,9 +1092,7 @@ private fun ElementPhysicalPropertiesCard(element: PeriodicElement, color: Color
     if (facts.isEmpty()) return
 
     DetailCard(title = periodicPhysicalPropertiesCardTitle, accent = color) {
-        facts.forEach { fact ->
-            ElementFactRow(fact.label, fact.value)
-        }
+        ElementFactList(facts = facts)
     }
 }
 
@@ -765,36 +1101,48 @@ private fun ElementAllFactsCard(element: PeriodicElement, color: Color) {
     val extra = element.extraProperties
     DetailCard(title = "More Details", accent = color) {
         DetailSubhead(periodicMoreDetailsSectionTitles[0])
-        ElementFactRow("Name", element.pubChemName)
-        ElementFactRow("Symbol", element.symbol)
-        ElementFactRow("Atomic number", element.atomicNumber.toString())
-        ElementFactRow("Category", element.category.label)
-        ElementFactRow("Group / period", "Group ${element.group}, period ${element.period}")
-        ElementFactRow("Standard state", element.standardState)
-        ElementFactRow("Year discovered", element.yearDiscovered)
-        extra?.let {
-            ElementFactRow("Appearance", it.appearance.ifMissing("Not listed"))
-            ElementFactRow("Discovered by", it.discoveredBy.ifMissing("Not listed"))
-            ElementFactRow("Named by", it.namedBy.ifMissing("Not listed"))
-            ElementFactRow("Orbital block", it.block.ifMissing("Not listed"))
-        }
+        ElementFactList(
+            facts = buildList {
+                add(ElementFactItem("Name", element.pubChemName))
+                add(ElementFactItem("Symbol", element.symbol))
+                add(ElementFactItem("Atomic number", element.atomicNumber.toString()))
+                add(ElementFactItem("Category", element.category.label))
+                add(ElementFactItem("Group / period", "Group ${element.group}, period ${element.period}"))
+                add(ElementFactItem("Standard state", element.standardState))
+                add(ElementFactItem("Year discovered", element.yearDiscovered))
+                extra?.let {
+                    add(ElementFactItem("Appearance", it.appearance.ifMissing("Not listed")))
+                    add(ElementFactItem("Discovered by", it.discoveredBy.ifMissing("Not listed")))
+                    add(ElementFactItem("Named by", it.namedBy.ifMissing("Not listed")))
+                    add(ElementFactItem("Orbital block", it.block.ifMissing("Not listed")))
+                }
+            }
+        )
 
         DetailSubhead(periodicMoreDetailsSectionTitles[1])
-        ElementFactRow("Atomic mass", withUnit(element.atomicWeightLabel, "u"))
-        ElementFactRow("Model color", element.cpkHexColor.takeIf { !it.isMissingValue() }?.let { "#$it" } ?: element.cpkHexColor)
+        ElementFactList(
+            facts = listOf(
+                ElementFactItem("Atomic mass", withUnit(element.atomicWeightLabel, "u")),
+                ElementFactItem("Model color", element.cpkHexColor.takeIf { !it.isMissingValue() }?.let { "#$it" } ?: element.cpkHexColor)
+            )
+        )
 
         DetailSubhead(periodicMoreDetailsSectionTitles[2])
         val electronConfiguration = toElectronConfigurationDisplay(element.electronConfiguration)
-        ElementFactRow("Electron configuration", electronConfiguration)
-        ElementFactRow("Shell distribution", electronShellCounts(element).joinToString(" · "))
-        ElementFactRow("Oxidation states", element.commonOxidationStates)
-        extra?.let {
-            val expandedConfiguration = toElectronConfigurationDisplay(it.electronConfigurationSemantic.removePrefix("*"))
-            if (!expandedConfiguration.isMissingValue() && expandedConfiguration != electronConfiguration) {
-                ElementFactRow("Expanded configuration", expandedConfiguration)
+        ElementFactList(
+            facts = buildList {
+                add(ElementFactItem("Electron configuration", electronConfiguration))
+                add(ElementFactItem("Shell distribution", electronShellCounts(element).joinToString(" · ")))
+                add(ElementFactItem("Oxidation states", element.commonOxidationStates))
+                extra?.let {
+                    val expandedConfiguration = toElectronConfigurationDisplay(it.electronConfigurationSemantic.removePrefix("*"))
+                    if (!expandedConfiguration.isMissingValue() && expandedConfiguration != electronConfiguration) {
+                        add(ElementFactItem("Expanded configuration", expandedConfiguration))
+                    }
+                    add(ElementFactItem("Ionization energies", formatJsonArrayList(it.ionizationEnergiesKjMol, "kJ/mol")))
+                }
             }
-            ElementFactRow("Ionization energies", formatJsonArrayList(it.ionizationEnergiesKjMol, "kJ/mol"))
-        }
+        )
 
     }
 }
@@ -1287,7 +1635,7 @@ private fun directWikipediaFileImageUrl(url: String): String {
 private fun ElementFactRow(label: String, value: String) {
     if (value.isMissingValue()) return
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Top
     ) {
@@ -1302,10 +1650,34 @@ private fun ElementFactRow(label: String, value: String) {
             value,
             modifier = Modifier.weight(1.1f),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurface.copy(0.75f),
+            color = MaterialTheme.colorScheme.onSurface.copy(0.82f),
             textAlign = TextAlign.End
         )
     }
+}
+
+@Composable
+private fun ElementFactList(facts: List<ElementFactItem>) {
+    val visibleFacts = facts.filterNot { it.value.isMissingValue() }
+    if (visibleFacts.isEmpty()) return
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        visibleFacts.forEachIndexed { index, fact ->
+            ElementFactRow(fact.label, fact.value)
+            if (index < visibleFacts.lastIndex) {
+                PeriodicDetailDivider()
+            }
+        }
+    }
+}
+
+@Composable
+private fun PeriodicDetailDivider() {
+    HorizontalDivider(
+        modifier = Modifier.padding(vertical = 7.dp),
+        color = MaterialTheme.colorScheme.outline.copy(alpha = if (MaterialTheme.colorScheme.surface.luminance() < 0.5f) 0.18f else 0.24f),
+        thickness = 1.dp
+    )
 }
 
 @Composable

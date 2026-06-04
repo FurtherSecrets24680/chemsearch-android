@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
 import android.graphics.Typeface
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.BorderStroke
@@ -316,6 +317,7 @@ fun StructureSearchScreen(
             onCopy = { molfile ->
                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
                 clipboard.setPrimaryClip(ClipData.newPlainText("ChemSearch molfile", molfile))
+                Toast.makeText(context, "Structure copied", Toast.LENGTH_SHORT).show()
             },
             onShare = { molfile ->
                 val shareIntent = Intent(Intent.ACTION_SEND).apply {

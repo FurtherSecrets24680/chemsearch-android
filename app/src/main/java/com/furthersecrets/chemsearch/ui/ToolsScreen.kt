@@ -6,6 +6,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -20,10 +21,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -40,8 +46,11 @@ import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.furthersecrets.chemsearch.ChemViewModel
@@ -75,6 +84,7 @@ import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.roundToInt
 
 @Composable
 fun ToolsScreen(
@@ -130,6 +140,15 @@ fun ToolsScreen(
         }
     }
     val visibleTools = if (isReordering) orderedTools else filteredTools
+    fun moveTool(fromIndex: Int, toIndex: Int) {
+        if (fromIndex == toIndex) return
+        if (fromIndex !in toolOrder.indices || toIndex !in toolOrder.indices) return
+        val updated = toolOrder.toMutableList()
+        val item = updated.removeAt(fromIndex)
+        updated.add(toIndex, item)
+        toolOrder = updated
+        saveToolOrder(prefs, updated)
+    }
 
     Column(
         modifier = modifier
@@ -157,15 +176,13 @@ fun ToolsScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    if (!isReordering) {
-                        ToolViewToggle(
-                            viewMode = toolViewMode,
-                            onViewModeChange = { mode ->
-                                toolViewMode = mode
-                                prefs.edit().putString(TOOL_VIEW_MODE_PREF, mode.name).apply()
-                            }
-                        )
-                    }
+                    ToolViewToggle(
+                        viewMode = toolViewMode,
+                        onViewModeChange = { mode ->
+                            toolViewMode = mode
+                            prefs.edit().putString(TOOL_VIEW_MODE_PREF, mode.name).apply()
+                        }
+                    )
                     IconButton(
                         onClick = {
                             toolOrder = defaultToolIds
@@ -189,7 +206,6 @@ fun ToolsScreen(
                             if (next) {
                                 toolSearch = ""
                                 selectedCategory = ToolCategory.ALL
-                                toolViewMode = ToolViewMode.LIST
                             }
                         },
                         contentPadding = PaddingValues(horizontal = 8.dp)
@@ -201,7 +217,7 @@ fun ToolsScreen(
         }
         if (selectedTool == 0 && isReordering) {
             Text(
-                "Reorder mode: use the arrows to move tools.",
+                "Reorder mode: long press and drag tools to rearrange them.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
             )
@@ -275,55 +291,64 @@ fun ToolsScreen(
                     )
                 }
             } else {
-                if (!isReordering && toolViewMode == ToolViewMode.GRID) {
-                    visibleTools.chunked(2).forEach { rowTools ->
+                if (toolViewMode == ToolViewMode.GRID) {
+                    val cardGap = if (compact) 8.dp else 10.dp
+                    visibleTools.chunked(2).forEachIndexed { rowIndex, rowTools ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)
+                            horizontalArrangement = Arrangement.spacedBy(cardGap)
                         ) {
-                            rowTools.forEach { tool ->
-                                ToolGridCard(
-                                    icon = tool.icon,
-                                    title = tool.title,
-                                    subtitle = tool.subtitle,
-                                    onClick = { selectedTool = tool.id },
-                                    modifier = Modifier.weight(1f)
-                                )
+                            rowTools.forEachIndexed { columnIndex, tool ->
+                                val index = rowIndex * 2 + columnIndex
+                                key(tool.id) {
+                                    ReorderableToolItem(
+                                        index = index,
+                                        itemCount = visibleTools.size,
+                                        columns = 2,
+                                        enabled = isReordering,
+                                        horizontalGap = cardGap,
+                                        verticalGap = if (compact) 8.dp else 12.dp,
+                                        onMove = { from, to -> moveTool(from, to) },
+                                        modifier = Modifier.weight(1f)
+                                    ) {
+                                        ToolGridCard(
+                                            icon = tool.icon,
+                                            title = tool.title,
+                                            subtitle = tool.subtitle,
+                                            onClick = { selectedTool = tool.id },
+                                            enableSelect = !isReordering,
+                                            showDragHandle = isReordering,
+                                            modifier = Modifier.fillMaxWidth()
+                                        )
+                                    }
+                                }
                             }
                             if (rowTools.size == 1) Spacer(Modifier.weight(1f))
                         }
                     }
                 } else {
                     visibleTools.forEachIndexed { index, tool ->
-                        ToolCard(
-                            icon = tool.icon,
-                            title = tool.title,
-                            subtitle = tool.subtitle,
-                            categoryLabel = tool.category.label,
-                            onClick = { selectedTool = tool.id },
-                            enableSelect = !isReordering,
-                            showReorderControls = isReordering,
-                            canMoveUp = isReordering && index > 0,
-                            canMoveDown = isReordering && index < visibleTools.lastIndex,
-                            onMoveUp = {
-                                if (isReordering && index > 0) {
-                                    val updated = toolOrder.toMutableList()
-                                    val item = updated.removeAt(index)
-                                    updated.add(index - 1, item)
-                                    toolOrder = updated
-                                    saveToolOrder(prefs, updated)
-                                }
-                            },
-                            onMoveDown = {
-                                if (isReordering && index < visibleTools.lastIndex) {
-                                    val updated = toolOrder.toMutableList()
-                                    val item = updated.removeAt(index)
-                                    updated.add(index + 1, item)
-                                    toolOrder = updated
-                                    saveToolOrder(prefs, updated)
-                                }
+                        key(tool.id) {
+                            ReorderableToolItem(
+                                index = index,
+                                itemCount = visibleTools.size,
+                                columns = 1,
+                                enabled = isReordering,
+                                horizontalGap = 0.dp,
+                                verticalGap = if (compact) 8.dp else 12.dp,
+                                onMove = { from, to -> moveTool(from, to) }
+                            ) {
+                                ToolCard(
+                                    icon = tool.icon,
+                                    title = tool.title,
+                                    subtitle = tool.subtitle,
+                                    categoryLabel = tool.category.label,
+                                    onClick = { selectedTool = tool.id },
+                                    enableSelect = !isReordering,
+                                    showDragHandle = isReordering
+                                )
                             }
-                        )
+                        }
                     }
                 }
             }
@@ -375,6 +400,122 @@ fun ToolsScreen(
 }
 
 @Composable
+private fun ReorderableToolItem(
+    index: Int,
+    itemCount: Int,
+    columns: Int,
+    enabled: Boolean,
+    horizontalGap: Dp,
+    verticalGap: Dp,
+    onMove: (fromIndex: Int, toIndex: Int) -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    val density = LocalDensity.current
+    val horizontalGapPx = with(density) { horizontalGap.toPx() }
+    val verticalGapPx = with(density) { verticalGap.toPx() }
+    var dragOffset by remember { mutableStateOf(Offset.Zero) }
+    var itemSize by remember { mutableStateOf(IntSize.Zero) }
+    var isDragging by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = modifier
+            .zIndex(if (isDragging) 1f else 0f)
+            .graphicsLayer {
+                translationX = dragOffset.x
+                translationY = dragOffset.y
+            }
+            .onSizeChanged { itemSize = it }
+            .pointerInput(enabled, index, itemCount, columns, itemSize) {
+                if (!enabled) return@pointerInput
+                detectDragGesturesAfterLongPress(
+                    onDragStart = {
+                        isDragging = true
+                        dragOffset = Offset.Zero
+                    },
+                    onDragCancel = {
+                        isDragging = false
+                        dragOffset = Offset.Zero
+                    },
+                    onDragEnd = {
+                        val targetIndex = toolReorderTargetIndex(
+                            index = index,
+                            itemCount = itemCount,
+                            columns = columns,
+                            dragOffset = dragOffset,
+                            itemSize = itemSize,
+                            horizontalGapPx = horizontalGapPx,
+                            verticalGapPx = verticalGapPx
+                        )
+                        isDragging = false
+                        dragOffset = Offset.Zero
+                        onMove(index, targetIndex)
+                    },
+                    onDrag = { _, dragAmount ->
+                        dragOffset = boundedToolDragOffset(
+                            index = index,
+                            itemCount = itemCount,
+                            columns = columns,
+                            nextOffset = dragOffset + dragAmount,
+                            itemSize = itemSize,
+                            horizontalGapPx = horizontalGapPx,
+                            verticalGapPx = verticalGapPx
+                        )
+                    }
+                )
+            }
+    ) {
+        content()
+    }
+}
+
+private fun toolReorderTargetIndex(
+    index: Int,
+    itemCount: Int,
+    columns: Int,
+    dragOffset: Offset,
+    itemSize: IntSize,
+    horizontalGapPx: Float,
+    verticalGapPx: Float
+): Int {
+    if (itemCount <= 1 || itemSize.width <= 0 || itemSize.height <= 0) return index
+    val safeColumns = columns.coerceAtLeast(1)
+    val rowDelta = (dragOffset.y / (itemSize.height + verticalGapPx).coerceAtLeast(1f)).roundToInt()
+    val columnDelta = if (safeColumns == 1) {
+        0
+    } else {
+        (dragOffset.x / (itemSize.width + horizontalGapPx).coerceAtLeast(1f)).roundToInt()
+    }
+    return (index + rowDelta * safeColumns + columnDelta).coerceIn(0, itemCount - 1)
+}
+
+private fun boundedToolDragOffset(
+    index: Int,
+    itemCount: Int,
+    columns: Int,
+    nextOffset: Offset,
+    itemSize: IntSize,
+    horizontalGapPx: Float,
+    verticalGapPx: Float
+): Offset {
+    if (itemCount <= 1 || itemSize.width <= 0 || itemSize.height <= 0) return Offset.Zero
+    val safeColumns = columns.coerceAtLeast(1)
+    val rowStep = (itemSize.height + verticalGapPx).coerceAtLeast(1f)
+    val columnStep = (itemSize.width + horizontalGapPx).coerceAtLeast(1f)
+    val currentRow = index / safeColumns
+    val currentColumn = index % safeColumns
+    val lastRow = (itemCount - 1) / safeColumns
+    val minY = -currentRow * rowStep
+    val maxY = (lastRow - currentRow) * rowStep
+    val minX = if (safeColumns == 1) 0f else -currentColumn * columnStep
+    val maxX = if (safeColumns == 1) 0f else (safeColumns - 1 - currentColumn) * columnStep
+    return Offset(
+        x = nextOffset.x.coerceIn(minX, maxX),
+        y = nextOffset.y.coerceIn(minY, maxY)
+    )
+}
+
+@Composable
 private fun ToolViewToggle(
     viewMode: ToolViewMode,
     onViewModeChange: (ToolViewMode) -> Unit
@@ -417,56 +558,74 @@ private fun ToolGridCard(
     title: String,
     subtitle: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enableSelect: Boolean = true,
+    showDragHandle: Boolean = false
 ) {
     val compact = LocalCompactMode.current
     Card(
-        onClick = onClick,
+        onClick = { if (enableSelect) onClick() },
         modifier = modifier
             .fillMaxWidth()
             .aspectRatio(if (compact) 0.92f else 0.95f),
         shape = RoundedCornerShape(if (compact) 16.dp else 18.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(if (compact) 13.dp else 15.dp),
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.Start
+                .padding(if (compact) 13.dp else 15.dp)
         ) {
-            Box(
+            Column(
                 modifier = Modifier
-                    .size(if (compact) 42.dp else 48.dp)
-                    .background(
-                        MaterialTheme.colorScheme.primary.copy(0.1f),
-                        RoundedCornerShape(if (compact) 11.dp else 12.dp)
-                    ),
-                contentAlignment = Alignment.Center
+                    .fillMaxSize()
+                    .padding(end = if (showDragHandle) 18.dp else 0.dp),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.Start
             ) {
-                ChemIcon(
-                    icon,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(if (compact) 22.dp else 25.dp)
-                )
+                Box(
+                    modifier = Modifier
+                        .size(if (compact) 42.dp else 48.dp)
+                        .background(
+                            MaterialTheme.colorScheme.primary.copy(0.1f),
+                            RoundedCornerShape(if (compact) 11.dp else 12.dp)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    ChemIcon(
+                        icon,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(if (compact) 22.dp else 25.dp)
+                    )
+                }
+                Column(verticalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 5.dp)) {
+                    Text(
+                        title,
+                        style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = if (compact) 3 else 3,
+                        letterSpacing = 0.sp
+                    )
+                    Text(
+                        subtitle,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.52f),
+                        maxLines = if (compact) 3 else 3,
+                        overflow = TextOverflow.Ellipsis,
+                        letterSpacing = 0.sp
+                    )
+                }
             }
-            Column(verticalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 5.dp)) {
-                Text(
-                    title,
-                    style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = if (compact) 3 else 3,
-                    letterSpacing = 0.sp
-                )
-                Text(
-                    subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.52f),
-                    maxLines = if (compact) 3 else 3,
-                    overflow = TextOverflow.Ellipsis,
-                    letterSpacing = 0.sp
+            if (showDragHandle) {
+                Icon(
+                    Icons.Default.SwapHoriz,
+                    contentDescription = "Drag to reorder",
+                    tint = MaterialTheme.colorScheme.onSurface.copy(0.42f),
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .size(if (compact) 18.dp else 20.dp)
                 )
             }
         }
@@ -483,6 +642,7 @@ private fun ToolCard(
     modifier: Modifier = Modifier,
     enableSelect: Boolean = true,
     showReorderControls: Boolean = false,
+    showDragHandle: Boolean = false,
     canMoveUp: Boolean = false,
     canMoveDown: Boolean = false,
     onMoveUp: () -> Unit = {},
@@ -532,7 +692,14 @@ private fun ToolCard(
                 Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
             }
 
-            if (showReorderControls) {
+            if (showDragHandle) {
+                Icon(
+                    Icons.Default.SwapHoriz,
+                    contentDescription = "Drag to reorder",
+                    tint = MaterialTheme.colorScheme.onSurface.copy(0.42f),
+                    modifier = Modifier.size(if (compact) 18.dp else 22.dp)
+                )
+            } else if (showReorderControls) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(2.dp),
                     horizontalAlignment = Alignment.CenterHorizontally

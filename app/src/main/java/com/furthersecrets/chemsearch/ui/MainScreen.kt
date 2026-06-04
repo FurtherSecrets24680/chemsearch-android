@@ -51,6 +51,7 @@ import com.furthersecrets.chemsearch.data.AiProvider
 import com.furthersecrets.chemsearch.data.AppColorScheme
 import com.furthersecrets.chemsearch.data.ChemUiState
 import com.furthersecrets.chemsearch.data.DescSource
+import kotlinx.coroutines.launch
 
 enum class AppTab(val route: String) {
     SEARCH("search"),
@@ -518,6 +519,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val snackbar = remember { SnackbarHostState() }
+    val snackbarScope = rememberCoroutineScope()
     val favorites by vm.favorites.collectAsStateWithLifecycle()
     val recentSearches by vm.recentSearches.collectAsStateWithLifecycle()
     val downloads by vm.downloads.collectAsStateWithLifecycle()
@@ -532,6 +534,57 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     var showSettings by remember { mutableStateOf(false) }
     var showFavorites by remember { mutableStateOf(false) }
     var showAdvancedSearch by remember { mutableStateOf(false) }
+
+    fun showUndoSnackbar(message: String, onUndo: () -> Unit) {
+        snackbarScope.launch {
+            val result = snackbar.showSnackbar(
+                message = message,
+                actionLabel = "Undo",
+                withDismissAction = true
+            )
+            if (result == SnackbarResult.ActionPerformed) onUndo()
+        }
+    }
+
+    fun removeRecentWithUndo(query: String) {
+        val removed = recentSearches.firstOrNull { it.query.equals(query, ignoreCase = true) }
+        vm.removeHistoryItem(query)
+        removed?.let { item ->
+            showUndoSnackbar("Removed ${item.query}") {
+                vm.restoreRecentSearch(item)
+            }
+        }
+    }
+
+    fun clearHistoryWithUndo() {
+        val snapshot = recentSearches
+        vm.clearHistory()
+        if (snapshot.isNotEmpty()) {
+            showUndoSnackbar("Cleared ${snapshot.size} recent search${if (snapshot.size == 1) "" else "es"}") {
+                vm.restoreRecentSearches(snapshot)
+            }
+        }
+    }
+
+    fun deleteFavoriteWithUndo(cid: Long) {
+        val removed = favorites.firstOrNull { it.cid == cid }
+        vm.deleteFavorite(cid)
+        removed?.let { favorite ->
+            showUndoSnackbar("Removed ${favorite.name}") {
+                vm.restoreFavorite(favorite)
+            }
+        }
+    }
+
+    fun deleteDownloadWithUndo(cid: Long) {
+        val removed = downloads.firstOrNull { it.cid == cid }
+        vm.deleteDownload(cid)
+        removed?.let { download ->
+            showUndoSnackbar("Deleted ${download.name}") {
+                vm.restoreDownload(download)
+            }
+        }
+    }
 
     if (showWelcome) {
         CompositionLocalProvider(
@@ -651,7 +704,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             onRefreshAiModels = { provider -> vm.refreshAiModels(provider) },
             onEditAiKey = { provider -> editingAiKeyProvider = provider; showSettings = false },
             onClearAiKey = { provider -> vm.clearAiKey(provider) },
-            onClearHistory = { vm.clearHistory() },
+            onClearHistory = { clearHistoryWithUndo() },
             onToggleUpdateNotifications = { enabled -> vm.setUpdateNotificationsEnabled(enabled) },
             onCheckForUpdates = { vm.checkForUpdates(manual = true) },
             onDownloadUpdate = { vm.downloadUpdateApk() },
@@ -667,7 +720,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         FavoritesSheet(
             favorites = favorites,
             onSelect = { name -> vm.search(name); showFavorites = false },
-            onDelete = { cid -> vm.deleteFavorite(cid) },
+            onDelete = { cid -> deleteFavoriteWithUndo(cid) },
             onMoveFavorite = { from, to -> vm.moveFavorite(from, to) },
             onDismiss = { showFavorites = false }
         )
@@ -734,7 +787,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
 
     val pageHorizontalPadding = if (compactMode) 12.dp else 16.dp
     val pageTopPadding = if (compactMode) 8.dp else 20.dp
-    val pageBottomPadding = if (compactMode) 18.dp else 40.dp
+    val pageBottomPadding = if (compactMode) 4.dp else 8.dp
     val pageSpacing = if (compactMode) 6.dp else 12.dp
     val suggestionTopPadding = if (compactMode) 124.dp else 148.dp
 
@@ -846,6 +899,19 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     }
                                 )
                             }
+                            if (!state.hasResult && !state.isLoading && state.searchCorrectionSuggestions.isNotEmpty()) {
+                                item {
+                                    SearchCorrectionCard(
+                                        failedQuery = state.failedSearchQuery,
+                                        suggestions = state.searchCorrectionSuggestions,
+                                        onSelect = {
+                                            showSuggestions = false
+                                            focusManager.clearFocus()
+                                            vm.search(it)
+                                        }
+                                    )
+                                }
+                            }
 
                             if (!state.hasResult && !state.isLoading && query.isBlank()) {
                                 item {
@@ -898,8 +964,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 HistorySection(
                                         recentSearches = recentSearches,
                                         onSelect = { vm.search(it) },
-                                        onClear = { vm.clearHistory() },
-                                        onDelete = { vm.removeHistoryItem(it) },
+                                        onClear = { clearHistoryWithUndo() },
+                                        onDelete = { removeRecentWithUndo(it) },
                                         onTogglePin = { vm.toggleRecentPin(it) }
                                     )
                                 }
@@ -1065,8 +1131,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                         ),
                         onSelectFavorite = { name -> vm.search(name); navigateToTab(AppTab.SEARCH) },
                         onSelectDownload = { cid -> vm.openDownloadedCompound(cid); navigateToTab(AppTab.SEARCH) },
-                        onDeleteFavorite = { cid -> vm.deleteFavorite(cid) },
-                        onDeleteDownload = { cid -> vm.deleteDownload(cid) },
+                        onDeleteFavorite = { cid -> deleteFavoriteWithUndo(cid) },
+                        onDeleteDownload = { cid -> deleteDownloadWithUndo(cid) },
                         onMoveFavorite = { from, to -> vm.moveFavorite(from, to) },
                         onSearchCompoundFromDatabase = { compoundQuery ->
                             vm.search(compoundQuery)
@@ -1091,8 +1157,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                             HistorySection(
                                 recentSearches = recentSearches,
                                 onSelect = { vm.search(it); navigateToTab(AppTab.SEARCH) },
-                                onClear = { vm.clearHistory() },
-                                onDelete = { vm.removeHistoryItem(it) },
+                                onClear = { clearHistoryWithUndo() },
+                                onDelete = { removeRecentWithUndo(it) },
                                 onTogglePin = { vm.toggleRecentPin(it) }
                             )
                         }
@@ -1142,7 +1208,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 onRefreshAiModels = { provider -> vm.refreshAiModels(provider) },
                                 onEditAiKey = { provider -> editingAiKeyProvider = provider },
                                 onClearAiKey = { provider -> vm.clearAiKey(provider) },
-                                onClearHistory = { vm.clearHistory() },
+                                onClearHistory = { clearHistoryWithUndo() },
                                 onToggleUpdateNotifications = { enabled -> vm.setUpdateNotificationsEnabled(enabled) },
                                 onCheckForUpdates = { vm.checkForUpdates(manual = true) },
                                 onDownloadUpdate = { vm.downloadUpdateApk() },

@@ -46,7 +46,7 @@ It is meant for students, teachers, and quick lab-prep checks. Not a replacement
 - View formulas, condensed formulas, identifiers, 2D structures, and interactive 3D molecular models.
 - Save full compound data for offline use, including structures, identifiers, descriptions, synonyms, safety data, and source metadata.
 - Compare several compounds side by side from Search, Tools, or Library selections.
-- Browse a detailed periodic table and a built-in chemical database with 659 entries.
+- Browse a detailed periodic table with trend comparisons and a built-in chemical database with 659 entries.
 - Use quick search shortcuts for drawn structures and formula-based isomer search from the main Search screen.
 - Use chemistry tools for molar mass, empirical formulas, pH/pOH, oxidation states, reaction balancing, precipitation, stoichiometry, dilution, gas laws, SMILES lookup, and local 3D files.
 - Choose PubChem, Wikipedia, Gemini, Groq, OpenAI, OpenRouter, or Mistral for descriptions.
@@ -208,20 +208,22 @@ The Library screen groups saved compounds and chemistry data into clear areas:
 - **Downloads**: offline compound copies.
 - **Reference**: Periodic Table and Chemical Database.
 
-Library supports list and grid layouts. The Chemical Database card keeps the grid layout clean, while the list layout can show database counts from an info button beside the description.
+Library supports list and grid layouts. Reference cards show compact entry-count pills so the screen stays easy to scan.
 
 Favorites, downloads, substances, and ions can be selected for comparison. When two or more comparable items are selected, a compare button opens the Compare Compounds tool with those compounds filled in. Functional groups and reactions stay as read-only database items.
 
-The Periodic Table includes all 118 official elements, group and period layout, lanthanide and actinide rows, element search, compact element dialogs, and full detail pages. Element detail pages include:
+The Periodic Table includes all 118 official elements, group and period layout, lanthanide and actinide rows, element search, trend comparisons, compact element dialogs, and full detail pages. Element detail pages include:
 
 - Wikipedia summaries.
 - Electron-shell diagrams with valence-focused explanations.
 - Short and full electronic configurations.
 - Physical properties such as electronegativity, radius, ionization energy, melting point, boiling point, density, and molar heat.
+- Trend views for comparing listed element properties across the table.
 - Spectral-line images when a reliable source is available.
 - Element images when available.
 - Clickable source links for PubChem, Wikipedia, Wikimedia Commons, and Bowserinator/Periodic-Table-JSON.
 - Info buttons that explain what each card means.
+- Divided detail rows for easier reading on small screens.
 
 Missing element values are hidden instead of shown as empty or placeholder rows.
 
@@ -283,7 +285,7 @@ ChemSearch includes practical tools for common chemistry work:
 - **Custom 3D Molecule Viewer**: load local `.sdf` or `.mol` files.
 - **Compare Compounds**: compare formulas, descriptions, identifiers, atom counts, bond counts, molecular weight, and other properties across several compounds.
 
-The Tools page supports search, categories, list/grid layouts, compact mode, drag-style reordering, and a reset action for returning tools to the default order.
+The Tools page supports search, categories, list/grid layouts, compact mode, drag reordering, and a reset action for returning tools to the default order.
 
 ## <img src="https://api.iconify.design/ph:gear-six.svg?color=%233b82f6" width="22" height="22" alt=""/> Display And Settings
 

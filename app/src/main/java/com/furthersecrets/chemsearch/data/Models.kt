@@ -212,6 +212,8 @@ data class ChemUiState(
     val descSource: DescSource = DescSource.PUBCHEM,
     val aiProvider: AiProvider = AiProvider.GEMINI,
     val suggestions: List<String> = emptyList(),
+    val failedSearchQuery: String? = null,
+    val searchCorrectionSuggestions: List<String> = emptyList(),
     val history: List<String> = emptyList(),
     val activeTab: MolTab = MolTab.TWO_D,
     val isLoadingDesc: Boolean = false,
