@@ -14,7 +14,7 @@
     <img src="https://img.shields.io/github/v/release/FurtherSecrets24680/chemsearch-android?style=for-the-badge" alt="Latest Release"/>
   </a>
   <a href="https://github.com/FurtherSecrets24680/chemsearch-android/releases">
-    <img src="https://img.shields.io/github/downloads/FurtherSecrets24680/chemsearch-android/total?style=for-the-badge&amp;color=7C4DFF&amp;label=Downloads" alt="Total Downloads"/>
+    <img src="https://img.shields.io/github/downloads/FurtherSecrets24680/chemsearch-android/total?style=for-the-badge&amp;color=FF8A00&amp;label=Downloads" alt="Total Downloads"/>
   </a>
   <img src="https://img.shields.io/badge/Android-8.0%2B-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android 8.0+"/>
   <img src="https://img.shields.io/badge/Kotlin-Compose-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin and Compose"/>
