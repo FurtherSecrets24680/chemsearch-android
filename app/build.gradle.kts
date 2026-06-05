@@ -6,28 +6,10 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(keystorePropertiesFile.inputStream())
 }
 
-fun gitVersionCode(): Int {
-    val baseCode = runGit("rev-list", "--count", "HEAD")?.toIntOrNull() ?: 1
-    return if (gitHasWorkingTreeChanges()) baseCode + 1 else baseCode
-}
-
-fun gitVersionName(): String {
-    localVersionNameOverride()?.let { return it }
-
-    val isDirty = gitHasWorkingTreeChanges()
-    val headTag = runGit("tag", "--points-at", "HEAD", "--sort=-v:refname")
-        ?.lineSequence()
-        ?.firstOrNull { it.isNotBlank() }
-    if (headTag != null) return if (isDirty) "$headTag-dev" else headTag
-
-    val tag = runGit("describe", "--tags", "--abbrev=0")
-    if (tag != null) {
-        val commitsSinceTag = runGit("rev-list", "$tag..HEAD", "--count")?.toIntOrNull() ?: 0
-        val version = if (commitsSinceTag == 0) tag else "$tag+$commitsSinceTag"
-        return if (isDirty) "$version-dev" else version
-    }
-    val version = runGit("rev-parse", "--short", "HEAD") ?: "1.1.0"
-    return if (isDirty) "$version-dev" else version
+val versionPropertiesFile = rootProject.file("version.properties")
+val versionProperties = Properties()
+if (versionPropertiesFile.exists()) {
+    versionProperties.load(versionPropertiesFile.inputStream())
 }
 
 fun localVersionNameOverride(): String? {
@@ -38,27 +20,24 @@ fun localVersionNameOverride(): String? {
         ?.trim()
 }
 
-fun gitHasWorkingTreeChanges(): Boolean {
-    return runGitAllowBlank("status", "--porcelain")?.isNotBlank() == true
+fun localVersionCodeOverride(): Int? {
+    val gradleOverride = findProperty("chemsearch.versionCode") as? String
+    val envOverride = System.getenv("CHEMSEARCH_VERSION_CODE")
+    return listOf(gradleOverride, envOverride)
+        .firstOrNull { !it.isNullOrBlank() }
+        ?.trim()
+        ?.toIntOrNull()
 }
 
-fun runGit(vararg args: String): String? {
-    val output = runGitAllowBlank(*args) ?: return null
-    return output.takeIf { it.isNotBlank() }
-}
+fun appVersionName(): String =
+    localVersionNameOverride()
+        ?: versionProperties.getProperty("VERSION_NAME")?.trim()?.takeIf { it.isNotBlank() }
+        ?: "1.0.0"
 
-fun runGitAllowBlank(vararg args: String): String? {
-    return try {
-        val process = ProcessBuilder("git", *args)
-            .directory(rootProject.projectDir)
-            .redirectErrorStream(true)
-            .start()
-        val output = process.inputStream.bufferedReader().readText().trim()
-        if (process.waitFor() != 0) null else output
-    } catch (_: Exception) {
-        null
-    }
-}
+fun appVersionCode(): Int =
+    localVersionCodeOverride()
+        ?: versionProperties.getProperty("VERSION_CODE")?.trim()?.toIntOrNull()
+        ?: 1
 
 plugins {
     id("com.android.application")
@@ -74,8 +53,8 @@ android {
         applicationId = "com.furthersecrets.chemsearch"
         minSdk = 26
         targetSdk = 34
-        versionCode = gitVersionCode()
-        versionName = gitVersionName()
+        versionCode = appVersionCode()
+        versionName = appVersionName()
     }
 
     compileOptions {
@@ -86,6 +65,20 @@ android {
     buildFeatures {
         buildConfig = true
         compose = true
+    }
+
+    flavorDimensions += "distribution"
+    productFlavors {
+        create("github") {
+            dimension = "distribution"
+            buildConfigField("boolean", "FDROID_BUILD", "false")
+            buildConfigField("boolean", "GITHUB_UPDATES_ENABLED", "true")
+        }
+        create("fdroid") {
+            dimension = "distribution"
+            buildConfigField("boolean", "FDROID_BUILD", "true")
+            buildConfigField("boolean", "GITHUB_UPDATES_ENABLED", "false")
+        }
     }
 
     if (keystorePropertiesFile.exists()) {

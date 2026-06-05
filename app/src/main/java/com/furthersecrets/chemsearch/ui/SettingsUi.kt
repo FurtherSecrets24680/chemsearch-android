@@ -767,13 +767,17 @@ fun SettingsSheet(
                 onClick = onClearHistory
             )
 
-            UpdatesSection(
-                updateNotificationsEnabled = updateNotificationsEnabled,
-                updateStatus = updateStatus,
-                onToggleUpdateNotifications = onToggleUpdateNotifications,
-                onCheckForUpdates = onCheckForUpdates,
-                onDownloadUpdate = onDownloadUpdate
-            )
+            if (BuildConfig.GITHUB_UPDATES_ENABLED) {
+                UpdatesSection(
+                    updateNotificationsEnabled = updateNotificationsEnabled,
+                    updateStatus = updateStatus,
+                    onToggleUpdateNotifications = onToggleUpdateNotifications,
+                    onCheckForUpdates = onCheckForUpdates,
+                    onDownloadUpdate = onDownloadUpdate
+                )
+            } else {
+                FdroidUpdatesSection()
+            }
 
             Spacer(Modifier.height(4.dp))
             SettingsSectionHeader("FAQ")
@@ -1030,6 +1034,25 @@ private fun UpdatesSection(
             modifier = Modifier.padding(start = 32.dp, top = 2.dp)
         )
     }
+}
+
+@Composable
+private fun FdroidUpdatesSection(
+    showHeader: Boolean = true
+) {
+    if (showHeader) {
+        Spacer(Modifier.height(4.dp))
+        SettingsSectionHeader("Updates")
+    }
+    SettingsActionRow(
+        icon = Icons.Default.SystemUpdate,
+        title = "Updates",
+        subtitle = "F-Droid handles updates for this build.",
+        actionLabel = "F-Droid",
+        actionColor = MaterialTheme.colorScheme.onSurface.copy(0.45f),
+        enabled = false,
+        onClick = {}
+    )
 }
 
 @Composable
@@ -3788,16 +3811,24 @@ fun SettingsInline(
         SettingsGroupCard(
             icon = Icons.Default.SystemUpdate,
             title = "Updates & Help",
-            subtitle = "Control update checks and open support resources."
+            subtitle = if (BuildConfig.GITHUB_UPDATES_ENABLED) {
+                "Control update checks and open support resources."
+            } else {
+                "F-Droid updates and support resources."
+            }
         ) {
-            UpdatesSection(
-                updateNotificationsEnabled = updateNotificationsEnabled,
-                updateStatus = updateStatus,
-                onToggleUpdateNotifications = onToggleUpdateNotifications,
-                onCheckForUpdates = onCheckForUpdates,
-                onDownloadUpdate = onDownloadUpdate,
-                showHeader = false
-            )
+            if (BuildConfig.GITHUB_UPDATES_ENABLED) {
+                UpdatesSection(
+                    updateNotificationsEnabled = updateNotificationsEnabled,
+                    updateStatus = updateStatus,
+                    onToggleUpdateNotifications = onToggleUpdateNotifications,
+                    onCheckForUpdates = onCheckForUpdates,
+                    onDownloadUpdate = onDownloadUpdate,
+                    showHeader = false
+                )
+            } else {
+                FdroidUpdatesSection(showHeader = false)
+            }
             SettingsGroupDivider()
             SettingsActionRow(
                 icon = Icons.AutoMirrored.Filled.HelpOutline,
@@ -4593,24 +4624,25 @@ fun DebugSettingsSection(
                 }
             )
 
-            // Update notification test
-            SettingsActionRow(
-                icon = Icons.Default.NotificationsActive,
-                title = "Test update notification",
-                subtitle = "Send a sample update notification now",
-                actionLabel = "Send",
-                actionColor = MaterialTheme.colorScheme.primary,
-                onClick = {
-                    val hasPermission = Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
-                        ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
-                    if (!hasPermission) {
-                        Toast.makeText(context, "Grant notification permission first", Toast.LENGTH_SHORT).show()
-                    } else {
-                        onTestUpdateNotification()
-                        Toast.makeText(context, "Test notification sent", Toast.LENGTH_SHORT).show()
+            if (BuildConfig.GITHUB_UPDATES_ENABLED) {
+                SettingsActionRow(
+                    icon = Icons.Default.NotificationsActive,
+                    title = "Test update notification",
+                    subtitle = "Send a sample update notification now",
+                    actionLabel = "Send",
+                    actionColor = MaterialTheme.colorScheme.primary,
+                    onClick = {
+                        val hasPermission = Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+                            ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+                        if (!hasPermission) {
+                            Toast.makeText(context, "Grant notification permission first", Toast.LENGTH_SHORT).show()
+                        } else {
+                            onTestUpdateNotification()
+                            Toast.makeText(context, "Test notification sent", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
-            )
+                )
+            }
 
             SettingsActionRow(
                 icon = Icons.Default.WavingHand,

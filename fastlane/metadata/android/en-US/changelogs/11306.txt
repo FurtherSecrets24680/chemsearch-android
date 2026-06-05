@@ -1,0 +1,5 @@
+F-Droid-ready build flavor.
+
+The F-Droid build removes the in-app APK updater and installer permission.
+GitHub builds keep the existing updater.
+AI providers remain optional, so F-Droid metadata marks NonFreeNet.

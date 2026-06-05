@@ -303,9 +303,9 @@ ChemSearch includes display settings for different phones and reading styles:
 - Cache size limit: 10 MB, 50 MB, 100 MB, or unlimited.
 - Cache auto-clear schedule: daily, weekly, monthly, or manual.
 - Settings import and export.
-- Internal app update download with progress in Settings.
-- Update notifications.
-- Update install prompt after the APK finishes downloading.
+- Internal app update download with progress in Settings for GitHub builds.
+- Update notifications for GitHub builds.
+- Update install prompt after the APK finishes downloading in GitHub builds.
 - About screen with app links, credits, license, privacy notes, and project sources.
 
 ## <img src="https://api.iconify.design/ph:bug.svg?color=%233b82f6" width="22" height="22" alt=""/> Developer Options
@@ -317,7 +317,7 @@ Developer options include checks for the app's main data paths:
 - PubChem safety data.
 - Wikipedia descriptions.
 - NCI/CADD fallback structures.
-- GitHub release checks.
+- GitHub release checks in GitHub builds.
 - Configured AI providers.
 
 Developer options also include debug logs, notification tests, cache and storage summaries, welcome-screen reset, and cleanup tools. Tap the build number five times in the About card to unlock these options.
@@ -374,10 +374,14 @@ ChemSearch is a study and quick chemistry tool, not a substitute for lab safety 
 
 ```text
 .
+|-- fastlane/
+|   `-- metadata/android/en-US/
+|-- metadata/
 |-- app/
 |   |-- build.gradle.kts
 |   |-- proguard-rules.pro
 |   `-- src/
+|       |-- fdroid/
 |       |-- main/
 |       |   |-- assets/chemical_database/
 |       |   |-- java/com/furthersecrets/chemsearch/
@@ -396,6 +400,7 @@ ChemSearch is a study and quick chemistry tool, not a substitute for lab safety 
 |-- screenshots/
 |-- keystore.properties.example
 |-- local.properties.example
+|-- version.properties
 |-- build.gradle.kts
 |-- settings.gradle.kts
 `-- README.md
@@ -403,14 +408,18 @@ ChemSearch is a study and quick chemistry tool, not a substitute for lab safety 
 
 Useful areas:
 
+- `fastlane/metadata/android/en-US/` contains store listing text and release notes that F-Droid can read from the source repo.
+- `metadata/` contains a draft F-Droid metadata file for the F-Droid data repository.
 - `app/src/main/java/com/furthersecrets/chemsearch/` contains the Android app code.
 - `app/src/main/java/com/furthersecrets/chemsearch/data/` contains API calls, chemistry calculators, parsing, structure search, settings, and offline storage logic.
 - `app/src/main/java/com/furthersecrets/chemsearch/ui/` contains Compose screens, navigation surfaces, icons, themes, settings, Library, Tools, and structure drawing UI.
+- `app/src/fdroid/` contains F-Droid-specific manifest changes.
 - `app/src/main/assets/chemical_database/` contains local chemistry JSON files.
 - `app/src/main/res/` contains icons, images, and Android resources.
 - `app/src/test/` contains unit tests for chemistry parsing, calculators, settings behavior, and UI helper logic.
 - `.github/` contains GitHub project files when present.
 - `screenshots/` contains README screenshots.
+- `version.properties` contains the app version name and version code used by every build variant.
 
 ## <img src="https://api.iconify.design/ph:terminal-window.svg?color=%233b82f6" width="22" height="22" alt=""/> Build From Source
 
@@ -430,19 +439,30 @@ cd chemsearch-android
 Build a debug APK on macOS or Linux:
 
 ```bash
-./gradlew assembleDebug
+./gradlew :app:assembleGithubDebug
 ```
 
 Build a debug APK on Windows:
 
 ```powershell
-.\gradlew.bat assembleDebug
+.\gradlew.bat :app:assembleGithubDebug
 ```
 
 The debug APK is generated at:
 
 ```text
-app/build/outputs/apk/debug/app-debug.apk
+app/build/outputs/apk/github/debug/app-github-debug.apk
+```
+
+ChemSearch has two distribution flavors:
+
+- `github`: the normal GitHub build with in-app update checks and APK install prompts.
+- `fdroid`: the F-Droid build without the GitHub APK updater or installer permission. AI providers stay available as optional user-configured features, so the F-Droid metadata declares `NonFreeNet`.
+
+Build the F-Droid variant locally:
+
+```powershell
+.\gradlew.bat :app:assembleFdroidRelease
 ```
 
 ## <img src="https://api.iconify.design/ph:key.svg?color=%233b82f6" width="22" height="22" alt=""/> Signed Release Builds
@@ -462,13 +482,13 @@ keystores/
 Build the release APK:
 
 ```powershell
-.\gradlew.bat assembleRelease
+.\gradlew.bat :app:assembleGithubRelease
 ```
 
 The release APK is generated at:
 
 ```text
-app/build/outputs/apk/release/app-release.apk
+app/build/outputs/apk/github/release/app-github-release.apk
 ```
 
 Release builds use Android's shrinker and resource shrinking to keep the APK smaller.

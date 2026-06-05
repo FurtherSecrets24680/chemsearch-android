@@ -211,7 +211,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 }
         }
         refreshCacheSizeAsync()
-        checkForUpdates()
+        if (BuildConfig.GITHUB_UPDATES_ENABLED) {
+            checkForUpdates()
+        }
     }
 
     fun isAiProviderSet(): Boolean = prefs.contains("ai_provider")
@@ -231,6 +233,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun setUpdateNotificationsEnabled(enabled: Boolean) {
+        if (!BuildConfig.GITHUB_UPDATES_ENABLED) return
         _updateNotificationsEnabled.value = enabled
         prefs.edit().putBoolean(PREF_UPDATE_NOTIFICATIONS, enabled).apply()
         viewModelScope.launch { settingsStore.setUpdateNotificationsEnabled(enabled) }
@@ -238,6 +241,18 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun checkForUpdates(manual: Boolean = false) {
+        if (!BuildConfig.GITHUB_UPDATES_ENABLED) {
+            if (manual) {
+                _updateStatus.update {
+                    it.copy(
+                        isChecking = false,
+                        updateAvailable = false,
+                        error = "Updates are handled by F-Droid for this build."
+                    )
+                }
+            }
+            return
+        }
         if (_updateStatus.value.isChecking) return
         val now = System.currentTimeMillis()
         if (!manual) {
@@ -293,6 +308,12 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun downloadUpdateApk() {
+        if (!BuildConfig.GITHUB_UPDATES_ENABLED) {
+            _updateStatus.update {
+                it.copy(error = "Updates are handled by F-Droid for this build.")
+            }
+            return
+        }
         val status = _updateStatus.value
         if (status.isDownloadingUpdate) return
 
@@ -2860,6 +2881,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun maybeNotifyUpdate(latestTag: String, downloadUrl: String?, releaseUrl: String?) {
+        if (!BuildConfig.GITHUB_UPDATES_ENABLED) return
         if (!_updateNotificationsEnabled.value) return
         val lastNotified = prefs.getString(PREF_UPDATE_LAST_NOTIFIED, null)
         if (latestTag.equals(lastNotified, ignoreCase = true)) return
@@ -2868,6 +2890,10 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun sendDebugUpdateNotification() {
+        if (!BuildConfig.GITHUB_UPDATES_ENABLED) {
+            DebugLog.d("ChemSearch", "Update notification skipped in F-Droid build")
+            return
+        }
         val debugTag = "debug-${System.currentTimeMillis() % 100000}"
         val url = _updateStatus.value.downloadUrl
             ?: _updateStatus.value.releaseUrl
