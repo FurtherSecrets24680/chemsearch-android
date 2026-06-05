@@ -6,12 +6,15 @@
 
 <p align="center">
   <strong>ChemSearch: Chemistry simplified.</strong><br/>
-  Compound search, structures, offline saves, and practical chemistry tools for Android.
+  Search compounds, structures, reference and use practical & useful chemistry tools.
 </p>
 
 <p align="center">
   <a href="https://github.com/FurtherSecrets24680/chemsearch-android/releases">
     <img src="https://img.shields.io/github/v/release/FurtherSecrets24680/chemsearch-android?style=for-the-badge" alt="Latest Release"/>
+  </a>
+  <a href="https://github.com/FurtherSecrets24680/chemsearch-android/releases">
+    <img src="https://img.shields.io/github/downloads/FurtherSecrets24680/chemsearch-android/total?style=for-the-badge&amp;color=7C4DFF&amp;label=Downloads" alt="Total Downloads"/>
   </a>
   <img src="https://img.shields.io/badge/Android-8.0%2B-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android 8.0+"/>
   <img src="https://img.shields.io/badge/Kotlin-Compose-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin and Compose"/>
@@ -34,27 +37,27 @@
 
 ## <img src="https://api.iconify.design/ph:info.svg?color=%233b82f6" width="22" height="22" alt=""/> About
 
-ChemSearch is an Android chemistry app I built to make compound lookup less annoying. Search a compound, check the formula and identifiers, open the 2D or 3D structure, read safety notes, save it for offline use, or jump into calculators when you need a quick result.
+ChemSearch is a chemistry app for Android I built to make compound lookup less annoying. Search a compound, check the formula and identifiers, open the 2D or 3D structure, read safety notes, save it for offline use, or jump into calculators when you need a quick result. Also includes extra study references such as a Periodic Table and a chemical database containing a list of common substances, ions, functional groups and chemical reactions.
 
-It is meant for students, teachers, and quick lab-prep checks. Not a replacement for an SDS or proper lab rules, but handy when you need chemistry data on your phone without bouncing between PubChem, Wikipedia, and separate calculator sites.
+It is meant for students, teachers and quick lab-prep checks. Not a replacement for an SDS or proper lab rules, but handy when you need chemistry data on your phone without bouncing between different websites.
 
 ## <img src="https://api.iconify.design/ph:list-checks.svg?color=%233b82f6" width="22" height="22" alt=""/> Highlights
 
-- Search by compound name, CAS number, formula, PubChem CID, drawn structure, or a random PubChem compound.
+- Search by compound name, CAS number, formula, CID, drawn structure, or a random compound out of 123 million compounds from **Pubchem**, the world's largest collection of freely accessible chemical information.
 - Use advanced filters for query type, include/exclude terms, molecular weight, charge, 3D data, and GHS data.
-- Draw a structure in a native editor and search PubChem by exact, similar, substructure, or superstructure matching.
+- Draw a structure in the structure editor and search PubChem by exact, similar, substructure, or superstructure matching.
 - View formulas, condensed formulas, identifiers, 2D structures, and interactive 3D molecular models.
-- Save full compound data for offline use, including structures, identifiers, descriptions, synonyms, safety data, and source metadata.
+- Save full compound data for offline use, including structures, identifiers, descriptions, synonyms, and safety data.
 - Compare several compounds side by side from Search, Tools, or Library selections.
-- Browse a detailed periodic table with trend comparisons and a built-in chemical database with 659 entries.
-- Use quick search shortcuts for drawn structures and formula-based isomer search from the main Search screen.
-- Use chemistry tools for molar mass, empirical formulas, pH/pOH, oxidation states, reaction balancing, precipitation, stoichiometry, dilution, gas laws, SMILES lookup, and local 3D files.
-- Choose PubChem, Wikipedia, Gemini, Groq, OpenAI, OpenRouter, or Mistral for descriptions.
-- Use list/grid layouts, tool reordering, pinned recents, formula display modes, light mode, dark mode, AMOLED Mode, compact mode, accessibility options, and multiple color schemes.
+- Browse a detailed periodic table with trend comparisons and a built-in chemical database with 600+ entries.
+- Use chemistry tools for molar mass, empirical formulas, pH/pOH, oxidation states, reaction balancing, precipitation, stoichiometry, dilution, gas laws, SMILES lookup etc.
+- For descriptions, choose out of PubChem, Wikipedia or several AI providers (e.g. Gemini, OpenAI, Groq etc.)
+- Choose appearances based on your preference - light/dark mode and different color schemes.
 
 ## <img src="https://api.iconify.design/ph:android-logo.svg?color=%233b82f6" width="22" height="22" alt=""/> Download for Android
 
 - Download the latest APK from [GitHub Releases](https://github.com/FurtherSecrets24680/chemsearch-android/releases).
+
   - Runs on Android 8.0 Oreo and newer.
   - Minimum SDK: API 26.
   - Target SDK: API 34.
@@ -126,13 +129,15 @@ Click a section to view screenshots.
 
 ChemSearch can look up compounds using several common identifiers:
 
-- Name, such as `glucose`, `sodium chloride`, or `sulfuric acid`.
+- Name, such as `glucose`, `sodium chloride`, `sulfuric acid` or `1,3-dibromopropane`
 - CAS number.
 - Molecular formula.
-- PubChem CID.
+- PubChem CID (Compound Identifier)
 - Drawn chemical structure.
 
 Autosuggestions can query PubChem while you type, and repeated searches can load faster from the app cache.
+
+When a search has no match or there is a typo, ChemSearch can suggest close spellings.
 
 Advanced search can combine a query type, include and exclude terms, molecular weight range, charge, available 3D data, and available GHS data.
 
@@ -142,18 +147,20 @@ The result page focuses on the details people usually need first:
 - CID, CAS number, molecular weight, condensed formula, and empirical formula when available.
 - IUPAC name, InChI, InChIKey, SMILES, and synonyms.
 - 2D structure image.
-- 3D structure viewer.
+- 3D structure model.
 - GHS safety information with official pictograms when available.
-- Descriptions from the selected source.
-- Extra PubChem information such as uses, occurrence notes, classification tags, XLogP, polar surface area, exact mass, hydrogen bond counts, and rotatable bond count.
+- Descriptions from the selected source. (Available sources are PubChem, Wikipedia or AI)
+- Advanced PubChem information such as uses, occurrence notes, classification tags, XLogP, polar surface area, exact mass, hydrogen bond counts, and rotatable bond count.
 - Isomer search from the formula.
-- Favorite and offline download actions.
+- Favorite and offline download options..
 
 Extra PubChem information sits behind **Show more information about this substance** so the main result page stays readable for everyday searches.
 
-The empty search screen includes search examples, quick cards for Structure Search and Isomer Search, and a random compound button. Random compound picks a PubChem CID and opens the compound like any other search result.
+Tap identifiers and quick stats to copy them.
 
-Formula display supports subscripts, charge superscripts, wrapping for large formulas, and two ordering styles:
+The main home page includes search examples, quick cards for Structure Search and Isomer Search, and a random compound button. Random compound picks a PubChem CID from 123 million available compounds and opens it like any other search result.
+
+Formula display supports 2 ordering styles:
 
 - **Conventional**: familiar ordering for common compounds, such as `NaCl`, `H2SO4`, and `NH4+`.
 - **Hill**: PubChem-style Hill ordering, such as `ClNa` or `H4N+` when that is the source formula.
@@ -168,21 +175,19 @@ The editor includes:
 - Colored atoms based on common CPK-style colors.
 - Select, drag, undo, redo, delete, clean, duplicate, import, export, and share actions.
 - Exact, similar, substructure, and superstructure search modes.
-- Matching results in a compact dialog with thumbnails, names, formulas, CIDs, and molecular weights.
+- Matching results in a pop-up dialog.
 
-The editor exports a molfile-style structure for PubChem search. It does not rely on a WebView.
 
 ## <img src="https://api.iconify.design/ph:cube.svg?color=%233b82f6" width="22" height="22" alt=""/> Structures
 
 ChemSearch loads structure data from PubChem when it is available.
 
 - 2D structure images are shown directly in the compound page.
-- 3D SDF models open in the built-in viewer, including common V2000 and V3000 records.
-- The default structure tab can be set to 2D, 3D, or the last used tab.
-- The native 3D viewer supports drag rotation, pinch zoom, pinch-drag panning, reset, and Reduce Motion-aware auto-spin.
-- If PubChem has no 3D model, ChemSearch can try fallback structure loading from identifiers such as SMILES, InChI, and InChIKey.
-- Generated or fallback structures are labeled so the source is clear.
-- Structure pills include visible outlines in light, dark, and AMOLED themes.
+- 2D structure images can be tapped to expand and downloaded from the image area.
+- 3D models open in the built-in viewer. (The viewer is completely native and does not use any WebView components)
+- The default structure tab can be set to 2D, 3D, or the last used tab in settings.
+- The native 3D viewer supports drag rotation, pinch zoom, pinch-drag panning, reset and auto-spin.
+- If PubChem has no 3D model, ChemSearch can try fallback structure loading from identifiers such as SMILES, InChI, and InChIKey (Fallback structures are marked in the viewer).
 
 Some atoms, metal compounds, ionic solids, and crystal-like materials do not have a useful standalone 3D molecule. In those cases, ChemSearch explains the missing model or labels the fallback as an estimate instead of presenting it as a confirmed crystal structure.
 
@@ -198,35 +203,29 @@ AI descriptions are optional. Supported providers are Google Gemini, Groq Cloud,
 
 When AI is enabled, ChemSearch uses available compound details such as formula, identifiers, safety data, and source context to keep the generated text grounded. API keys are stored locally with Android Keystore.
 
-Long descriptions can be expanded and collapsed, including inside the compound comparison tool.
-
 ## <img src="https://api.iconify.design/ph:books.svg?color=%233b82f6" width="22" height="22" alt=""/> Library
 
-The Library screen groups saved compounds and chemistry data into clear areas:
+The Library page contains your saved favorites, downloads and useful references for chemistry:
 
-- **Favorites**: saved compounds for quick access.
-- **Downloads**: offline compound copies.
+- **Favorites**: Saved compounds for quick access.
+- **Downloads**: Saved compounds for offline viewing.
 - **Reference**: Periodic Table and Chemical Database.
 
-Library supports list and grid layouts. Reference cards show compact entry-count pills so the screen stays easy to scan.
+Removing a favorite or downloaded compound shows an undo option, which helps when cleaning up saved items.
 
-Favorites, downloads, substances, and ions can be selected for comparison. When two or more comparable items are selected, a compare button opens the Compare Compounds tool with those compounds filled in. Functional groups and reactions stay as read-only database items.
+Favorites, downloads, substances, and ions can be selected for comparison. When two or more comparable items are selected, a compare button opens the Compare Compounds tool with those compounds filled in.
 
-The Periodic Table includes all 118 official elements, group and period layout, lanthanide and actinide rows, element search, trend comparisons, compact element dialogs, and full detail pages. Element detail pages include:
+### Periodic Table
+The Periodic Table includes all 118 official elements, element search, trend comparisons, short element dialogs, and full detail pages. Element detail pages include:
 
 - Wikipedia summaries.
-- Electron-shell diagrams with valence-focused explanations.
-- Short and full electronic configurations.
+- Element images.
+- Electron-shell diagrams with Short and full electronic configurations.
 - Physical properties such as electronegativity, radius, ionization energy, melting point, boiling point, density, and molar heat.
-- Trend views for comparing listed element properties across the table.
-- Spectral-line images when a reliable source is available.
-- Element images when available.
-- Clickable source links for PubChem, Wikipedia, Wikimedia Commons, and Bowserinator/Periodic-Table-JSON.
-- Info buttons that explain what each card means.
-- Divided detail rows for easier reading on small screens.
+- Spectral-line images.
+- Trend views for comparing listed element properties across the table and trend metrics for electronegativity, atomic radius, ionization energy, density, melting point, and boiling point.
 
-Missing element values are hidden instead of shown as empty or placeholder rows.
-
+### Chemical Database
 The bundled Chemical Database includes:
 
 - Substances: 331.
@@ -234,8 +233,7 @@ The bundled Chemical Database includes:
 - Functional groups: 71.
 - Reactions: 149.
 
-Chemical Database formulas use subscript and superscript formatting where it applies. Values can be copied by tapping them, matching the copy behavior on the main compound page.
-
+### Offline Downloads
 Offline downloads save more than a cached result. A downloaded compound can include:
 
 - Basic compound details.
@@ -245,11 +243,11 @@ Offline downloads save more than a cached result. A downloaded compound can incl
 - Descriptions.
 - Synonyms.
 - GHS safety information.
-- Source metadata.
+- Data source notes.
 
 Offline download quality can be set to Basic, Structures, or Complete depending on how much data you want to save.
 
-Downloads are stored in the local app database and can show saved asset chips such as 2D, 3D, safety, synonyms, descriptions, and identifiers. Older offline copies can be marked stale so you know when a refresh may be useful.
+Downloads are stored in the local app database. Saved compounds show what data is available, such as 2D, 3D, safety, synonyms, descriptions, and identifiers.
 
 The offline save button shows download progress while the compound data is being saved.
 
@@ -261,31 +259,29 @@ The Recent screen keeps search history organized by time.
 
 - Pin important searches.
 - Sort by newest or oldest from the filter menu.
-- Remove single entries.
-- Clear all recent searches.
-
-Pinned entries use a pin icon so they are easier to understand at a glance.
+- Browse groups for pinned items, today, yesterday, previous 7 days, previous 30 days, and older searches.
+- Remove single entries and clear all recent searches.
 
 ## <img src="https://api.iconify.design/ph:wrench.svg?color=%233b82f6" width="22" height="22" alt=""/> Tools
 
-ChemSearch includes practical tools for common chemistry work:
+ChemSearch includes 14 practical tools for common chemistry activities:
 
-- **Molar Mass Calculator**: parse a formula and calculate molar mass.
-- **Empirical Formula Finder**: calculate empirical and molecular formulas from percent composition, mass data, or a molecular formula.
-- **Oxidation State Finder**: estimate oxidation states for compounds, including oxyhalogens, peroxides, superoxides, ozonides, hydrides, and mixed-valence cases.
-- **pH / pOH Calculator**: convert between pH, pOH, hydrogen ion concentration, and hydroxide ion concentration.
-- **Reaction Balancer**: balance chemical equations.
-- **Precipitate Predictor**: check two aqueous salts for likely precipitates and net ionic equations.
-- **Limiting Reagent**: find limiting reagent, mole ratios, and theoretical yield.
-- **Percent Yield**: compare actual yield against theoretical yield.
-- **Reaction Scaling**: scale reactants for a target product amount.
-- **Dilution Calculator**: calculate concentration and volume changes.
-- **Ideal Gas Law**: work with pressure, volume, amount, and temperature.
-- **SMILES Visualizer**: open structure data from SMILES input.
-- **Custom 3D Molecule Viewer**: load local `.sdf` or `.mol` files.
-- **Compare Compounds**: compare formulas, descriptions, identifiers, atom counts, bond counts, molecular weight, and other properties across several compounds.
+- **Molar Mass Calculator**: Parse a formula and calculate molar mass.
+- **Empirical Formula Finder**: Calculate empirical and molecular formulas from percent composition, mass data, or a molecular formula.
+- **Oxidation State Finder**: Estimate oxidation states for compounds, including oxyhalogens, peroxides, superoxides, ozonides, hydrides, and mixed-valence cases.
+- **pH / pOH Calculator**: Convert between pH, pOH, hydrogen ion concentration, and hydroxide ion concentration.
+- **Reaction Balancer**: Balance chemical equations.
+- **Precipitate Predictor**: Check two aqueous salts for likely precipitates and net ionic equations.
+- **Limiting Reagent**: Lind limiting reagent, mole ratios, and theoretical yield.
+- **Percent Yield**: Compare actual yield against theoretical yield.
+- **Reaction Scaling**: Scale reactants for a target product amount.
+- **Dilution Calculator**: Calculate concentration and volume changes by calculation using the formula: **C<sub>1</sub>V<sub>1</sub> = C<sub>2</sub>V<sub>2</sub>**
+- **Ideal Gas Law**: Work with pressure, volume, amount, and temperature by calculation using the Ideal gas law : **PV = nRT**
+- **SMILES Visualizer**: Open structure data from SMILES input.
+- **Custom 3D Molecule Viewer**: Load local `.sdf` or `.mol` files.
+- **Compare Compounds**: Compare formulas, descriptions, identifiers, atom counts, bond counts, molecular weight, and other properties across several compounds.
 
-The Tools page supports search, categories, list/grid layouts, compact mode, drag reordering, and a reset action for returning tools to the default order.
+The Tools page supports search, categories, list/grid layouts, compact mode, long-press drag reordering, and a reset action for returning tools to the default order.
 
 ## <img src="https://api.iconify.design/ph:gear-six.svg?color=%233b82f6" width="22" height="22" alt=""/> Display And Settings
 
@@ -293,12 +289,10 @@ ChemSearch includes display settings for different phones and reading styles:
 
 - Light and dark theme.
 - AMOLED Mode for true-black backgrounds in dark mode.
-- Color schemes.
+- Color schemes (Blue, Violet, Emerald, Rose & Amber)
 - Compact mode.
 - Reduce motion.
 - High contrast outlines.
-- Welcome screen reset for checking onboarding again.
-- Privacy Policy, Terms of Service, and Safety Disclaimer in onboarding and About.
 - Autosuggestions.
 - Default description source.
 - Default structure view.
@@ -309,7 +303,6 @@ ChemSearch includes display settings for different phones and reading styles:
 - Cache size limit: 10 MB, 50 MB, 100 MB, or unlimited.
 - Cache auto-clear schedule: daily, weekly, monthly, or manual.
 - Settings import and export.
-- Library import and export.
 - Internal app update download with progress in Settings.
 - Update notifications.
 - Update install prompt after the APK finishes downloading.
@@ -327,7 +320,7 @@ Developer options include checks for the app's main data paths:
 - GitHub release checks.
 - Configured AI providers.
 
-Developer options also include masked preference inspection, debug logging, notification testing, welcome-screen reset, cache and storage summaries, and legacy preference cleanup. Tap the build number five times in the About card to unlock these options.
+Developer options also include debug logs, notification tests, cache and storage summaries, welcome-screen reset, and cleanup tools. Tap the build number five times in the About card to unlock these options.
 
 These checks are useful when a data source changes, a network request fails, or a provider key needs testing.
 
@@ -419,10 +412,6 @@ Useful areas:
 - `.github/` contains GitHub project files when present.
 - `screenshots/` contains README screenshots.
 
-## <img src="https://api.iconify.design/ph:download-simple.svg?color=%233b82f6" width="22" height="22" alt=""/> Download
-
-Download the latest APK from [GitHub Releases](https://github.com/FurtherSecrets24680/chemsearch-android/releases).
-
 ## <img src="https://api.iconify.design/ph:terminal-window.svg?color=%233b82f6" width="22" height="22" alt=""/> Build From Source
 
 Requirements:
@@ -483,17 +472,6 @@ app/build/outputs/apk/release/app-release.apk
 ```
 
 Release builds use Android's shrinker and resource shrinking to keep the APK smaller.
-
-## <img src="https://api.iconify.design/ph:desktop.svg?color=%233b82f6" width="22" height="22" alt=""/> Windows And macOS Notes
-
-The project is meant to build on both Windows and macOS.
-
-- Use `gradlew.bat` on Windows.
-- Use `./gradlew` on macOS and Linux.
-- Keep Android SDK paths in `local.properties`, not in Git.
-- Keep signing secrets in `keystore.properties`, not in Git.
-- Keep the keystore path project-relative so both operating systems can resolve it.
-- Avoid committing generated build folders.
 
 ## <img src="https://api.iconify.design/ph:shield-check.svg?color=%233b82f6" width="22" height="22" alt=""/> Privacy
 
