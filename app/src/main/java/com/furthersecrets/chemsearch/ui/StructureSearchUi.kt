@@ -41,7 +41,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -2166,11 +2165,9 @@ private fun StructureSearchControls(
                         Text(mode.label, fontWeight = FontWeight.Bold)
                         Icon(Icons.Default.KeyboardArrowDown, null, modifier = Modifier.size(16.dp))
                     }
-                    DropdownMenu(
+                    SettingsDropdownMenu(
                         expanded = expanded,
-                        onDismissRequest = { expanded = false },
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        shape = RoundedCornerShape(16.dp)
+                        onDismissRequest = { expanded = false }
                     ) {
                         StructureSearchMode.entries.forEach { item ->
                             DropdownMenuItem(
@@ -2207,11 +2204,9 @@ private fun StructureSearchControls(
                         Spacer(Modifier.width(4.dp))
                         Icon(Icons.Default.KeyboardArrowDown, null, modifier = Modifier.size(16.dp))
                     }
-                    DropdownMenu(
+                    SettingsDropdownMenu(
                         expanded = maxRecordsExpanded,
-                        onDismissRequest = { maxRecordsExpanded = false },
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        shape = RoundedCornerShape(16.dp)
+                        onDismissRequest = { maxRecordsExpanded = false }
                     ) {
                         listOf(10, 20, 30, 50).forEach { value ->
                             DropdownMenuItem(
@@ -2234,11 +2229,9 @@ private fun StructureSearchControls(
                         Spacer(Modifier.width(4.dp))
                         Icon(Icons.Default.KeyboardArrowDown, null, modifier = Modifier.size(16.dp))
                     }
-                    DropdownMenu(
+                    SettingsDropdownMenu(
                         expanded = thresholdExpanded,
-                        onDismissRequest = { thresholdExpanded = false },
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        shape = RoundedCornerShape(16.dp)
+                        onDismissRequest = { thresholdExpanded = false }
                     ) {
                         listOf(70, 80, 85, 90, 95).forEach { value ->
                             DropdownMenuItem(

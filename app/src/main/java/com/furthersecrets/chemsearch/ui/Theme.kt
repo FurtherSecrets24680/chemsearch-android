@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 import com.furthersecrets.chemsearch.data.AppColorScheme
 
 private fun darkColors(accent: AppColorScheme) = when (accent) {
@@ -169,7 +170,35 @@ internal fun chemSearchColorScheme(
 ): ColorScheme {
     val colors = if (darkTheme) darkColors(colorScheme) else lightColors(colorScheme)
     val adjusted = if (darkTheme && oledDarkTheme) colors.withOledDarkSurfaces() else colors
-    return if (highContrastOutlines) adjusted.withHighContrastOutlines(darkTheme) else adjusted
+    val themed = adjusted.withConsistentMaterialRoles(darkTheme)
+    return if (highContrastOutlines) themed.withHighContrastOutlines(darkTheme) else themed
+}
+
+private fun ColorScheme.withConsistentMaterialRoles(darkTheme: Boolean): ColorScheme {
+    val neutralSurface = if (darkTheme) surfaceVariant else surface
+    val subtleSurface = if (darkTheme) lerp(surface, surfaceVariant, 0.40f) else surfaceVariant
+    val selectedContainer = lerp(surface, primary, if (darkTheme) 0.20f else 0.13f)
+    val quietSelectedContainer = lerp(surface, primary, if (darkTheme) 0.18f else 0.11f)
+    val quietErrorContainer = lerp(surface, error, if (darkTheme) 0.16f else 0.10f)
+    val quietOutlineVariant = lerp(surface, outline, if (darkTheme) 0.72f else 0.80f)
+    return copy(
+        secondary = primary,
+        onSecondary = onPrimary,
+        secondaryContainer = selectedContainer,
+        onSecondaryContainer = primary,
+        tertiary = primary,
+        onTertiary = onPrimary,
+        tertiaryContainer = quietSelectedContainer,
+        onTertiaryContainer = primary,
+        errorContainer = quietErrorContainer,
+        onErrorContainer = error,
+        outlineVariant = quietOutlineVariant,
+        surfaceContainerLowest = surface,
+        surfaceContainerLow = subtleSurface,
+        surfaceContainer = neutralSurface,
+        surfaceContainerHigh = neutralSurface,
+        surfaceContainerHighest = neutralSurface
+    )
 }
 
 private fun ColorScheme.withOledDarkSurfaces(): ColorScheme {

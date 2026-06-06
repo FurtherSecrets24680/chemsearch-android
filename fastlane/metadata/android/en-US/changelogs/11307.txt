@@ -1,0 +1,5 @@
+Cleaner F-Droid settings and app theme polish.
+
+F-Droid builds no longer show GitHub APK update rows or update notification FAQ entries.
+Dropdowns, chips, and menu surfaces use more consistent app colors.
+GitHub builds keep the in-app update checker.

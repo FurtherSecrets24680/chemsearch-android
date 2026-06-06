@@ -3126,7 +3126,7 @@ fun DilutionCalculatorTool() {
                         Icon(Icons.Default.KeyboardArrowDown, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onSurface.copy(0.6f))
                     }
                 }
-                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                SettingsDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                     DilutionSolve.values().forEach { option ->
                         DropdownMenuItem(
                             text = { Text(option.label) },
@@ -3279,7 +3279,7 @@ fun IdealGasLawTool() {
                         Icon(Icons.Default.KeyboardArrowDown, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onSurface.copy(0.6f))
                     }
                 }
-                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                SettingsDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                     GasSolve.values().forEach { option ->
                         DropdownMenuItem(
                             text = { Text(option.label) },
@@ -3497,7 +3497,7 @@ private fun StoichUnitDropdown(
                 Icon(Icons.Default.KeyboardArrowDown, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onSurface.copy(0.6f))
             }
         }
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+        SettingsDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             StoichUnit.values().forEach { option ->
                 DropdownMenuItem(
                     text = { Text(option.label, fontFamily = FontFamily.Monospace) },
@@ -4032,7 +4032,7 @@ private fun StoichiometryCalculator(
                                         Icon(Icons.Default.KeyboardArrowDown, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onSurface.copy(0.6f))
                                     }
                                 }
-                                DropdownMenu(expanded = productMenuExpanded, onDismissRequest = { productMenuExpanded = false }) {
+                                SettingsDropdownMenu(expanded = productMenuExpanded, onDismissRequest = { productMenuExpanded = false }) {
                                     products.forEachIndexed { idx, (formula, _) ->
                                         DropdownMenuItem(
                                             text = { Text(toSubscriptFormula(formula), fontFamily = FontFamily.Monospace) },

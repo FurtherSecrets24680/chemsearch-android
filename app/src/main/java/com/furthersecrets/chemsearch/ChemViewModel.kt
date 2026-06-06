@@ -242,15 +242,6 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
     fun checkForUpdates(manual: Boolean = false) {
         if (!BuildConfig.GITHUB_UPDATES_ENABLED) {
-            if (manual) {
-                _updateStatus.update {
-                    it.copy(
-                        isChecking = false,
-                        updateAvailable = false,
-                        error = "Updates are handled by F-Droid for this build."
-                    )
-                }
-            }
             return
         }
         if (_updateStatus.value.isChecking) return
@@ -309,9 +300,6 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
     fun downloadUpdateApk() {
         if (!BuildConfig.GITHUB_UPDATES_ENABLED) {
-            _updateStatus.update {
-                it.copy(error = "Updates are handled by F-Droid for this build.")
-            }
             return
         }
         val status = _updateStatus.value

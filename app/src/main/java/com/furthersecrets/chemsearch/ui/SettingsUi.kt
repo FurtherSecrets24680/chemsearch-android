@@ -775,15 +775,13 @@ fun SettingsSheet(
                     onCheckForUpdates = onCheckForUpdates,
                     onDownloadUpdate = onDownloadUpdate
                 )
-            } else {
-                FdroidUpdatesSection()
             }
 
             Spacer(Modifier.height(4.dp))
             SettingsSectionHeader("FAQ")
             var showFaqDialogSheet by remember { mutableStateOf(false) }
             if (showFaqDialogSheet) {
-                InfoDialog(title = "FAQ", entries = FAQ_ENTRIES, onDismiss = { showFaqDialogSheet = false })
+                InfoDialog(title = "FAQ", entries = faqEntriesForCurrentBuild(), onDismiss = { showFaqDialogSheet = false })
             }
             SettingsActionRow(
                 icon = Icons.AutoMirrored.Filled.HelpOutline,
@@ -1034,25 +1032,6 @@ private fun UpdatesSection(
             modifier = Modifier.padding(start = 32.dp, top = 2.dp)
         )
     }
-}
-
-@Composable
-private fun FdroidUpdatesSection(
-    showHeader: Boolean = true
-) {
-    if (showHeader) {
-        Spacer(Modifier.height(4.dp))
-        SettingsSectionHeader("Updates")
-    }
-    SettingsActionRow(
-        icon = Icons.Default.SystemUpdate,
-        title = "Updates",
-        subtitle = "F-Droid handles updates for this build.",
-        actionLabel = "F-Droid",
-        actionColor = MaterialTheme.colorScheme.onSurface.copy(0.45f),
-        enabled = false,
-        onClick = {}
-    )
 }
 
 @Composable
@@ -1671,6 +1650,19 @@ private val FAQ_ENTRIES = listOf(
     "How do I clear history or cache?" to "Open Settings > Data. You can clear recent searches, manage cache size, choose auto-clear timing, and remove saved temporary data.",
     "How do I unlock debug settings?" to "Tap the build number on the About screen five times. Debug settings are for diagnostics, endpoint checks, logs, and development testing."
 )
+
+private fun faqEntriesForCurrentBuild(): List<Pair<String, String>> {
+    if (BuildConfig.GITHUB_UPDATES_ENABLED) return FAQ_ENTRIES
+    return FAQ_ENTRIES.mapNotNull { (question, answer) ->
+        when (question) {
+            "How do app updates work?",
+            "Are update notifications optional?" -> null
+            "Does ChemSearch collect my searches?" -> question to answer.replace(", GitHub updates", "")
+            "What works offline?" -> question to answer.replace(", update checks", "")
+            else -> question to answer
+        }
+    }
+}
 
 // Favorites sheet
 
@@ -3487,7 +3479,7 @@ fun SettingsInline(
     }
 
     if (showFaqDialog) {
-        InfoDialog(title = "FAQ", entries = FAQ_ENTRIES, onDismiss = { showFaqDialog = false })
+        InfoDialog(title = "FAQ", entries = faqEntriesForCurrentBuild(), onDismiss = { showFaqDialog = false })
     }
 
     if (showCacheDirDialog) {
@@ -3551,7 +3543,11 @@ fun SettingsInline(
     ) {
         Text("Settings", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         Text(
-            "Customize search, AI, storage, and app updates.",
+            if (BuildConfig.GITHUB_UPDATES_ENABLED) {
+                "Customize search, AI, storage, and app updates."
+            } else {
+                "Customize search, AI, storage, and support options."
+            },
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
         )
@@ -3810,11 +3806,11 @@ fun SettingsInline(
 
         SettingsGroupCard(
             icon = Icons.Default.SystemUpdate,
-            title = "Updates & Help",
+            title = if (BuildConfig.GITHUB_UPDATES_ENABLED) "Updates & Help" else "Help",
             subtitle = if (BuildConfig.GITHUB_UPDATES_ENABLED) {
                 "Control update checks and open support resources."
             } else {
-                "F-Droid updates and support resources."
+                "FAQ and support resources."
             }
         ) {
             if (BuildConfig.GITHUB_UPDATES_ENABLED) {
@@ -3826,10 +3822,8 @@ fun SettingsInline(
                     onDownloadUpdate = onDownloadUpdate,
                     showHeader = false
                 )
-            } else {
-                FdroidUpdatesSection(showHeader = false)
+                SettingsGroupDivider()
             }
-            SettingsGroupDivider()
             SettingsActionRow(
                 icon = Icons.AutoMirrored.Filled.HelpOutline,
                 title = "Frequently asked questions",
