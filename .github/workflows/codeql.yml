@@ -14,7 +14,7 @@ permissions:
   security-events: write
 
 jobs:
-  analyze:
+  analyze-java-kotlin:
     name: Analyze Java/Kotlin
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -40,10 +40,7 @@ jobs:
 
       - name: Configure Gradle memory for CodeQL
         run: |
-          {
-            echo "kotlin.daemon.jvmargs=-Xmx2048m"
-            echo "org.gradle.workers.max=2"
-          } >> gradle.properties
+          printf '\nkotlin.daemon.jvmargs=-Xmx2048m\norg.gradle.workers.max=2\n' >> gradle.properties
 
       - name: Build app for CodeQL
         run: ./gradlew --no-daemon :app:assembleGithubDebug
@@ -52,3 +49,22 @@ jobs:
         uses: github/codeql-action/analyze@v4
         with:
           category: "/language:java-kotlin"
+
+  analyze-actions:
+    name: Analyze GitHub Actions
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: actions
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:actions"
