@@ -22,18 +22,23 @@
 </p>
 
 <p align="center">
+  <a href="https://f-droid.org/packages/com.furthersecrets.chemsearch">
+    <img src="https://f-droid.org/badge/get-it-on.png"
+         alt="Get it on F-Droid"
+         height="70" align="middle">
+  </a>
+  &nbsp;&nbsp;
   <a href="https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/FurtherSecrets24680/chemsearch-android" target="_blank" rel="noopener noreferrer">
-    <img alt="Get it on Obtainium" width="181" height="54" src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png">
+    <img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png"
+         alt="Get it on Obtainium"
+         height="70" align="middle">
   </a>
+  &nbsp;&nbsp;
   <a href="https://www.producthunt.com/products/chemsearch?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-chemsearch" target="_blank" rel="noopener noreferrer">
-    <img alt="ChemSearch - Chemistry Simplified. | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1104309&amp;theme=dark&amp;t=1774183145053">
+    <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1104309&amp;theme=dark&amp;t=1774183145053"
+         alt="ChemSearch - Chemistry Simplified. | Product Hunt"
+         height="70" align="middle" style="margin-bottom: 2px;">
   </a>
-</p>
-
-<p align="center">
-  <a href="https://github.com/FurtherSecrets24680/chemsearch-android/releases"><strong>Download APK</strong></a>
-  -
-  <a href="https://github.com/FurtherSecrets24680/chemsearch-android/issues"><strong>Issues</strong></a>
 </p>
 
 ---
