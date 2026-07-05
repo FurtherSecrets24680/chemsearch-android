@@ -81,11 +81,11 @@ Click a section to view screenshots.
 
 | Home | 2D Result | Identifiers |
 |:---:|:---:|:---:|
-| <img src="screenshots/01_home_recent_searches_dark_blue.png" width="220" alt="ChemSearch home screen with recent searches in dark blue theme"/> | <img src="screenshots/05_compound_benzene_2d_dark_blue.png" width="220" alt="Benzene result with 2D structure in dark blue theme"/> | <img src="screenshots/06_compound_identifiers_synonyms_dark_blue.png" width="220" alt="Compound identifiers and synonyms in dark blue theme"/> |
+| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/01_home_recent_searches_dark_blue.png" width="220" alt="ChemSearch home screen with recent searches in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/05_compound_benzene_2d_dark_blue.png" width="220" alt="Benzene result with 2D structure in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/06_compound_identifiers_synonyms_dark_blue.png" width="220" alt="Compound identifiers and synonyms in dark blue theme"/> |
 
 | Description And GHS | 3D Result |
 |:---:|:---:|
-| <img src="screenshots/07_compound_description_ghs_dark_blue.png" width="220" alt="Compound description and GHS pictograms in dark blue theme"/> | <img src="screenshots/14_compound_ibuprofen_3d_dark_blue.png" width="220" alt="Ibuprofen result with 3D molecule viewer in dark blue theme"/> |
+| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/07_compound_description_ghs_dark_blue.png" width="220" alt="Compound description and GHS pictograms in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/14_compound_ibuprofen_3d_dark_blue.png" width="220" alt="Ibuprofen result with 3D molecule viewer in dark blue theme"/> |
 
 </details>
 
@@ -94,7 +94,7 @@ Click a section to view screenshots.
 
 | Periodic Table | Chemical Database |
 |:---:|:---:|
-| <img src="screenshots/02_periodic_table_library_dark_blue.png" width="220" alt="Periodic table in Library in dark blue theme"/> | <img src="screenshots/08_chemical_database_library_dark_blue.png" width="220" alt="Chemical Database in Library in dark blue theme"/> |
+| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/02_periodic_table_library_dark_blue.png" width="220" alt="Periodic table in Library in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/08_chemical_database_library_dark_blue.png" width="220" alt="Chemical Database in Library in dark blue theme"/> |
 
 </details>
 
@@ -103,7 +103,7 @@ Click a section to view screenshots.
 
 | Structure Search | Isomer Search |
 |:---:|:---:|
-| <img src="screenshots/15_structure_search_editor_dark_blue.png" width="220" alt="Native structure search editor in dark blue theme"/> | <img src="screenshots/16_isomer_search_results_dark_blue.png" width="220" alt="Isomer search results in dark blue theme"/> |
+| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/15_structure_search_editor_dark_blue.png" width="220" alt="Native structure search editor in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/16_isomer_search_results_dark_blue.png" width="220" alt="Isomer search results in dark blue theme"/> |
 
 </details>
 
@@ -112,11 +112,11 @@ Click a section to view screenshots.
 
 | Tools List | Reaction Balancer | Molar Mass |
 |:---:|:---:|:---:|
-| <img src="screenshots/03_tools_list_dark_blue.png" width="220" alt="Tools list in dark blue theme"/> | <img src="screenshots/09_tool_reaction_balancer_dark_blue.png" width="220" alt="Reaction Balancer tool in dark blue theme"/> | <img src="screenshots/10_tool_molar_mass_dark_blue.png" width="220" alt="Molar Mass Calculator tool in dark blue theme"/> |
+| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/03_tools_list_dark_blue.png" width="220" alt="Tools list in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/09_tool_reaction_balancer_dark_blue.png" width="220" alt="Reaction Balancer tool in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/10_tool_molar_mass_dark_blue.png" width="220" alt="Molar Mass Calculator tool in dark blue theme"/> |
 
 | Oxidation State | Compare Compounds | Stoichiometry |
 |:---:|:---:|:---:|
-| <img src="screenshots/11_tool_oxidation_state_dark_blue.png" width="220" alt="Oxidation State Finder tool in dark blue theme"/> | <img src="screenshots/12_tool_compare_compounds_dark_blue.png" width="220" alt="Compare Compounds tool in dark blue theme"/> | <img src="screenshots/13_tool_stoichiometry_dark_blue.png" width="220" alt="Stoichiometry tool in dark blue theme"/> |
+| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/11_tool_oxidation_state_dark_blue.png" width="220" alt="Oxidation State Finder tool in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/12_tool_compare_compounds_dark_blue.png" width="220" alt="Compare Compounds tool in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/13_tool_stoichiometry_dark_blue.png" width="220" alt="Stoichiometry tool in dark blue theme"/> |
 
 </details>
 
@@ -125,11 +125,11 @@ Click a section to view screenshots.
 
 | Display Settings | Light Blue | Dark Violet |
 |:---:|:---:|:---:|
-| <img src="screenshots/04_settings_display_dark_blue.png" width="180" alt="Display settings in dark blue theme"/> | <img src="screenshots/17_compound_benzene_2d_light_blue.png" width="180" alt="Benzene result in light blue theme"/> | <img src="screenshots/18_compound_phenol_3d_dark_violet.png" width="180" alt="Phenol result with 3D viewer in dark violet theme"/> |
+| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/04_settings_display_dark_blue.png" width="180" alt="Display settings in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/17_compound_benzene_2d_light_blue.png" width="180" alt="Benzene result in light blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/18_compound_phenol_3d_dark_violet.png" width="180" alt="Phenol result with 3D viewer in dark violet theme"/> |
 
 | Dark Emerald | Dark Rose | Dark Amber |
 |:---:|:---:|:---:|
-| <img src="screenshots/19_compound_aspirin_2d_dark_emerald.png" width="180" alt="Aspirin result in dark emerald theme"/> | <img src="screenshots/20_compound_caffeine_2d_dark_rose.png" width="180" alt="Caffeine result in dark rose theme"/> | <img src="screenshots/21_compound_benzenesulfonyl_3d_dark_amber.png" width="180" alt="Compound result with 3D viewer in dark amber theme"/> |
+| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/19_compound_aspirin_2d_dark_emerald.png" width="180" alt="Aspirin result in dark emerald theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/20_compound_caffeine_2d_dark_rose.png" width="180" alt="Caffeine result in dark rose theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/21_compound_benzenesulfonyl_3d_dark_amber.png" width="180" alt="Compound result with 3D viewer in dark amber theme"/> |
 
 </details>
 
@@ -405,7 +405,7 @@ ChemSearch is a study and quick chemistry tool, not a substitute for lab safety 
 |-- .github/
 |-- gradle/
 |   `-- libs.versions.toml
-|-- screenshots/
+|-- fastlane/metadata/android/en-US/images/phoneScreenshots/
 |-- keystore.properties.example
 |-- local.properties.example
 |-- version.properties
@@ -426,7 +426,7 @@ Useful areas:
 - `app/src/main/res/` contains icons, images, and Android resources.
 - `app/src/test/` contains unit tests for chemistry parsing, calculators, settings behavior, and UI helper logic.
 - `.github/` contains GitHub project files when present.
-- `screenshots/` contains README screenshots.
+- `fastlane/metadata/android/en-US/images/phoneScreenshots/` contains README screenshots.
 - `version.properties` contains the app version name and version code used by every build variant.
 
 ## <img src="https://api.iconify.design/ph:terminal-window.svg?color=%233b82f6" width="22" height="22" alt=""/> Build From Source
