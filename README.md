@@ -520,9 +520,9 @@ MIT License. See [LICENSE](LICENSE) for details.
 ---
 
 <a href="https://www.star-history.com/?repos=furthersecrets24680%2Fchemsearch-android&type=timeline&logscale=&legend=top-left">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=furthersecrets24680/chemsearch-android&type=timeline&theme=dark&legend=top-left" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=furthersecrets24680/chemsearch-android&type=timeline&legend=top-left" />
-    <img alt="Star History Chart" src="https://api.star-history.com/image?repos=furthersecrets24680/chemsearch-android&type=timeline&legend=top-left" />
-  </picture>
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=furthersecrets24680/chemsearch-android&type=timeline&theme=dark&logscale&legend=top-left&sealed_token=WwcSlk8vt0tJbz_9klm4Yj9YnbLuPYy6Zwm1HJKwLWpDRnp60TjbmP7O3cl3SX7QJ1zmrUgiC9-3QW9VgqouL3-EJXs0Ss5-ZjkB9FUzAp1Gb6M2hqO5oI6YEaPrRbkmNFKeowefS8j5_I7pcn_bbQEplm7T_uxJXeg2ODWjIoFSF_Tszb8hdWfplDTl" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=furthersecrets24680/chemsearch-android&type=timeline&logscale&legend=top-left&sealed_token=WwcSlk8vt0tJbz_9klm4Yj9YnbLuPYy6Zwm1HJKwLWpDRnp60TjbmP7O3cl3SX7QJ1zmrUgiC9-3QW9VgqouL3-EJXs0Ss5-ZjkB9FUzAp1Gb6M2hqO5oI6YEaPrRbkmNFKeowefS8j5_I7pcn_bbQEplm7T_uxJXeg2ODWjIoFSF_Tszb8hdWfplDTl" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=furthersecrets24680/chemsearch-android&type=timeline&logscale&legend=top-left&sealed_token=WwcSlk8vt0tJbz_9klm4Yj9YnbLuPYy6Zwm1HJKwLWpDRnp60TjbmP7O3cl3SX7QJ1zmrUgiC9-3QW9VgqouL3-EJXs0Ss5-ZjkB9FUzAp1Gb6M2hqO5oI6YEaPrRbkmNFKeowefS8j5_I7pcn_bbQEplm7T_uxJXeg2ODWjIoFSF_Tszb8hdWfplDTl" />
+ </picture>
 </a>
