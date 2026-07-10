@@ -81,13 +81,20 @@ android {
         }
     }
 
-    if (keystorePropertiesFile.exists()) {
-        signingConfigs {
-            create("release") {
+    signingConfigs {
+        create("release") {
+            if (keystorePropertiesFile.exists()) {
+                // Local compilation path
                 storeFile = file(keystoreProperties["storeFile"] as String)
                 storePassword = keystoreProperties["storePassword"] as String
                 keyAlias = keystoreProperties["keyAlias"] as String
                 keyPassword = keystoreProperties["keyPassword"] as String
+            } else if (!System.getenv("CM_KEYSTORE_PATH").isNullOrBlank()) {
+                // Codemagic CI compilation path
+                storeFile = file(System.getenv("CM_KEYSTORE_PATH"))
+                storePassword = System.getenv("CM_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("CM_KEY_ALIAS")
+                keyPassword = System.getenv("CM_KEY_PASSWORD")
             }
         }
     }
@@ -100,7 +107,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfigs.findByName("release")?.let { signingConfig = it }
+
+            signingConfigs.findByName("release")?.let { config ->
+                if (config.storeFile != null) {
+                    signingConfig = config
+                }
+            }
         }
     }
 }
