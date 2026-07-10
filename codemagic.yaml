@@ -1,0 +1,58 @@
+# Codemagic CI/CD configuration for ChemSearch Android
+# Reference: https://docs.codemagic.io/yaml-basic-configuration/yaml-getting-started/
+
+workflows:
+  android-debug:
+    name: Android Debug Build
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      vars:
+        PACKAGE_NAME: "com.furthersecrets.chemsearch"
+      java: 17
+    triggering:
+      events:
+        - push
+        - pull_request
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+    scripts:
+      - name: Set Android SDK location
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+      - name: Build Debug APKs (Github & F-droid)
+        script: |
+          chmod +x gradlew
+          ./gradlew :app:assembleGithubDebug :app:assembleFdroidDebug
+    artifacts:
+      - app/build/outputs/apk/**/*.apk
+
+  android-release:
+    name: Android Release Build
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    environment:
+      vars:
+        PACKAGE_NAME: "com.furthersecrets.chemsearch"
+      java: 17
+    triggering:
+      events:
+        - tag
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+    scripts:
+      - name: Set Android SDK location
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+      - name: Build Release APKs & App Bundles (Github & F-droid)
+        script: |
+          chmod +x gradlew
+          ./gradlew :app:assembleGithubRelease :app:assembleFdroidRelease \
+                    :app:bundleGithubRelease :app:bundleFdroidRelease
+    artifacts:
+      - app/build/outputs/apk/**/*.apk
+      - app/build/outputs/bundle/**/*.aab
