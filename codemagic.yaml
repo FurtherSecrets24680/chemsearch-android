@@ -5,11 +5,10 @@ workflows:
   android-debug:
     name: Android Debug Build
     max_build_duration: 60
-    instance_type: mac_mini_m2
+    instance_type: linux_x2
     environment:
       vars:
         PACKAGE_NAME: "com.furthersecrets.chemsearch"
-      java: 17
     triggering:
       events:
         - push
@@ -32,11 +31,12 @@ workflows:
   android-release:
     name: Android Release Build
     max_build_duration: 120
-    instance_type: mac_mini_m2
+    instance_type: linux_x2
     environment:
+      android_signing:
+        - chemsearch
       vars:
         PACKAGE_NAME: "com.furthersecrets.chemsearch"
-      java: 17
     triggering:
       events:
         - tag
