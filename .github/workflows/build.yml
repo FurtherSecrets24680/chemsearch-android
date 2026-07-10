@@ -1,4 +1,4 @@
-name: Debug APK Build
+name: APK Build
 
 on:
   workflow_dispatch:
@@ -6,6 +6,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - variant: GithubDebug
+            task: assembleGithubDebug
+            path: app/build/outputs/apk/github/debug/*.apk
+            artifact: chemsearch-github-debug
+          - variant: GithubRelease
+            task: assembleGithubRelease
+            path: app/build/outputs/apk/github/release/*.apk
+            artifact: chemsearch-github-release
+          - variant: FdroidDebug
+            task: assembleFdroidDebug
+            path: app/build/outputs/apk/fdroid/debug/*.apk
+            artifact: chemsearch-fdroid-debug
+          - variant: FdroidRelease
+            task: assembleFdroidRelease
+            path: app/build/outputs/apk/fdroid/release/*.apk
+            artifact: chemsearch-fdroid-release
 
     steps:
       - name: Checkout code
@@ -20,11 +39,11 @@ jobs:
       - name: Grant execute permission to gradlew
         run: chmod +x ./gradlew
 
-      - name: Build debug APK
-        run: ./gradlew :app:assembleGithubDebug
+      - name: Build APK
+        run: ./gradlew :app:${{ matrix.task }}
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: chemsearch-github-debug
-          path: app/build/outputs/apk/github/debug/*.apk
+          name: ${{ matrix.artifact }}
+          path: ${{ matrix.path }}
