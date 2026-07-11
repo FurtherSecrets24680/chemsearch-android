@@ -1,0 +1,3 @@
+- Improved build system compatibility and stability.
+- Technical updates: Upgraded internal build tools to Gradle 9.6.0.
+- General maintenance and project cleanup.
