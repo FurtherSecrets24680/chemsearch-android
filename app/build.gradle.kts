@@ -83,18 +83,18 @@ android {
 
     signingConfigs {
         create("release") {
-            if (keystorePropertiesFile.exists()) {
+            if (System.getenv("CM_KEYSTORE_PATH") != null) {
+                // Codemagic CI compilation path (Prioritized)
+                storeFile = file(System.getenv("CM_KEYSTORE_PATH"))
+                storePassword = System.getenv("CM_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("CM_KEY_ALIAS")
+                keyPassword = System.getenv("CM_KEY_PASSWORD")
+            } else if (keystorePropertiesFile.exists()) {
                 // Local compilation path
                 storeFile = file(keystoreProperties["storeFile"] as String)
                 storePassword = keystoreProperties["storePassword"] as String
                 keyAlias = keystoreProperties["keyAlias"] as String
                 keyPassword = keystoreProperties["keyPassword"] as String
-            } else if (!System.getenv("CM_KEYSTORE_PATH").isNullOrBlank()) {
-                // Codemagic CI compilation path
-                storeFile = file(System.getenv("CM_KEYSTORE_PATH"))
-                storePassword = System.getenv("CM_KEYSTORE_PASSWORD")
-                keyAlias = System.getenv("CM_KEY_ALIAS")
-                keyPassword = System.getenv("CM_KEY_PASSWORD")
             }
         }
     }
@@ -108,14 +108,13 @@ android {
                 "proguard-rules.pro"
             )
 
-            signingConfigs.findByName("release")?.let { config ->
-                if (config.storeFile != null) {
-                    signingConfig = config
-                }
+            // Force-apply the release signing configuration on CI or if local credentials exist.
+            // If there's an issue with your credentials, the build will fail explicitly with an error.
+            if (System.getenv("CM_KEYSTORE_PATH") != null || keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.getByName("release")
             }
         }
     }
-}
 
 dependencies {
     implementation(platform(libs.androidx.compose.bom))

@@ -47,6 +47,15 @@ workflows:
           include: true
           source: true
     scripts:
+      - name: Verify Code Signing Environment
+        script: |
+          echo "CM_KEYSTORE_PATH is set: ${CM_KEYSTORE_PATH:+"yes"}"
+          echo "CM_KEY_ALIAS is set: ${CM_KEY_ALIAS:+"yes"}"
+          echo "CM_KEYSTORE_PASSWORD is set: ${CM_KEYSTORE_PASSWORD:+"yes"}"
+          echo "CM_KEY_PASSWORD is set: ${CM_KEY_PASSWORD:+"yes"}"
+      - name: Set Android SDK location
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
       - name: Set Android SDK location
         script: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
