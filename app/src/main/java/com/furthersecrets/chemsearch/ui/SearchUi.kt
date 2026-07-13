@@ -1123,6 +1123,33 @@ fun CompoundHeader(
                 }
             }
         }
+        state.cid?.let { cid ->
+            OutlinedButton(
+                onClick = {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://pubchem.ncbi.nlm.nih.gov/compound/$cid"))
+                    context.startActivity(intent)
+                },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(if (compact) 12.dp else 14.dp),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f)),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = MaterialTheme.colorScheme.primary.copy(0.08f),
+                    contentColor = MaterialTheme.colorScheme.primary
+                ),
+                contentPadding = PaddingValues(vertical = if (compact) 8.dp else 12.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                    contentDescription = null,
+                    modifier = Modifier.size(if (compact) 16.dp else 18.dp)
+                )
+                Spacer(modifier = Modifier.width(if (compact) 6.dp else 8.dp))
+                Text(
+                    text = "View in PubChem",
+                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold)
+                )
+            }
+        }
     }
 }
 
