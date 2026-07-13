@@ -78,9 +78,10 @@ It is meant for students, teachers and quick lab-prep checks. Not a replacement 
   4. Click on the completed workflow run to open its summary page, scroll down to the **Artifacts** section at the bottom, and download the build artifact (e.g., `chemsearch-github-release` or `chemsearch-github-debug`).
   5. The downloaded file is a ZIP archive. Extract it to retrieve the `.apk` installation file.
   6. If you encounter any issues during the build or installation, please report them in the [Issues](https://github.com/FurtherSecrets24680/chemsearch-android/issues) section.
-     > [!NOTE]
-     >
-     > Before installing the new debug APK, you **must first uninstall** any previous version of the app already installed on your device. Android security policies block updates between builds signed with different keys (e.g., debug vs. release keys, or different developers' signing certificates). Installing over a mismatching signature will fail with a signature error.
+
+> [!NOTE]
+>
+> Before installing the new debug APK, you **must first uninstall** any previous version of the app already installed on your device. Android security policies block updates between builds signed with different keys (e.g., debug vs. release keys, or different developers' signing certificates). Installing over a mismatching signature will fail with a signature error.
 
 ## <img src="https://api.iconify.design/ph:image-square.svg?color=%233b82f6" width="22" height="22" alt=""/> Screenshots
 
