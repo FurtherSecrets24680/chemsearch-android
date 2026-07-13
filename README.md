@@ -64,12 +64,24 @@ It is meant for students, teachers and quick lab-prep checks. Not a replacement 
 
 ## <img src="https://api.iconify.design/ph:android-logo.svg?color=%233b82f6" width="22" height="22" alt=""/> Download for Android
 
-- Download the latest APK from [GitHub Releases](https://github.com/FurtherSecrets24680/chemsearch-android/releases).
-
+- Download the latest stable APK from [GitHub Releases](https://github.com/FurtherSecrets24680/chemsearch-android/releases) or [F-Droid](https://f-droid.org/packages/com.furthersecrets.chemsearch/)
   - Runs on Android 8.0 Oreo and newer.
   - Minimum SDK: API 26.
   - Target SDK: API 34.
   - Compile SDK: API 36.
+
+
+
+- **Preview Builds via GitHub Actions**:
+  If you want to preview the latest unreleased changes, you can trigger a build manually using GitHub Actions:
+    1. Go to the [APK build workflow](https://github.com/FurtherSecrets24680/chemsearch-android/actions/workflows/build.yml) in **Actions** tab.
+    2. Click the **Run workflow** dropdown, choose the branch (e.g., `main`), and click **Run workflow**.
+    3. Wait 3–5 minutes for the build workflow to finish running.
+    4. Click on the completed workflow run to open its summary page, scroll down to the **Artifacts** section at the bottom, and download the build artifact (e.g., `chemsearch-github-release` or `chemsearch-github-debug`).
+    5. The downloaded file is a ZIP archive. Extract it to retrieve the `.apk` installation file.
+    6. If you encounter any issues during the build or installation, please report them in the [Issues](https://github.com/FurtherSecrets24680/chemsearch-android/issues) section.
+    > [!NOTE]
+     Before installing the new debug APK, you **must first uninstall** any previous version of the app already installed on your device. Android security policies block updates between builds signed with different keys (e.g., debug vs. release keys, or different developers' signing certificates). Installing over a mismatching signature will fail with a signature error.
 
 
 ## <img src="https://api.iconify.design/ph:image-square.svg?color=%233b82f6" width="22" height="22" alt=""/> Screenshots
@@ -79,12 +91,12 @@ Click a section to view screenshots.
 <details>
 <summary><strong>Search And Results</strong></summary>
 
-| Home | 2D Result | Identifiers |
-|:---:|:---:|:---:|
+|                                                                            Home                                                                             |                                                                    2D Result                                                                     |                                                                    Identifiers                                                                    |
+| :---------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------: |
 | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="220" alt="ChemSearch home screen with recent searches in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="220" alt="Benzene result with 2D structure in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="220" alt="Compound identifiers and synonyms in dark blue theme"/> |
 
-| Description And GHS | 3D Result |
-|:---:|:---:|
+|                                                                   Description And GHS                                                                   |                                                                         3D Result                                                                         |
+| :-----------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------: |
 | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="220" alt="Compound description and GHS pictograms in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/14.png" width="220" alt="Ibuprofen result with 3D molecule viewer in dark blue theme"/> |
 
 </details>
@@ -92,8 +104,8 @@ Click a section to view screenshots.
 <details>
 <summary><strong>Library And Reference</strong></summary>
 
-| Periodic Table | Chemical Database |
-|:---:|:---:|
+|                                                              Periodic Table                                                               |                                                              Chemical Database                                                               |
+| :---------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------: |
 | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="220" alt="Periodic table in Library in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/8.png" width="220" alt="Chemical Database in Library in dark blue theme"/> |
 
 </details>
@@ -101,8 +113,8 @@ Click a section to view screenshots.
 <details>
 <summary><strong>Structure And Formula Search</strong></summary>
 
-| Structure Search | Isomer Search |
-|:---:|:---:|
+|                                                                Structure Search                                                                 |                                                             Isomer Search                                                              |
+| :---------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------: |
 | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/15.png" width="220" alt="Native structure search editor in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/16.png" width="220" alt="Isomer search results in dark blue theme"/> |
 
 </details>
@@ -110,12 +122,12 @@ Click a section to view screenshots.
 <details>
 <summary><strong>Tools</strong></summary>
 
-| Tools List | Reaction Balancer | Molar Mass |
-|:---:|:---:|:---:|
+|                                                         Tools List                                                         |                                                           Reaction Balancer                                                            |                                                                 Molar Mass                                                                  |
+| :------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------: |
 | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="220" alt="Tools list in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/9.png" width="220" alt="Reaction Balancer tool in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/10.png" width="220" alt="Molar Mass Calculator tool in dark blue theme"/> |
 
-| Oxidation State | Compare Compounds | Stoichiometry |
-|:---:|:---:|:---:|
+|                                                               Oxidation State                                                                |                                                            Compare Compounds                                                            |                                                            Stoichiometry                                                            |
+| :------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------: |
 | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/11.png" width="220" alt="Oxidation State Finder tool in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/12.png" width="220" alt="Compare Compounds tool in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/13.png" width="220" alt="Stoichiometry tool in dark blue theme"/> |
 
 </details>
@@ -123,12 +135,12 @@ Click a section to view screenshots.
 <details>
 <summary><strong>Themes And Settings</strong></summary>
 
-| Display Settings | Light Blue | Dark Violet |
-|:---:|:---:|:---:|
+|                                                         Display Settings                                                         |                                                            Light Blue                                                            |                                                                   Dark Violet                                                                   |
+| :------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------: |
 | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="180" alt="Display settings in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/17.png" width="180" alt="Benzene result in light blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/18.png" width="180" alt="Phenol result with 3D viewer in dark violet theme"/> |
 
-| Dark Emerald | Dark Rose | Dark Amber |
-|:---:|:---:|:---:|
+|                                                            Dark Emerald                                                            |                                                            Dark Rose                                                             |                                                                    Dark Amber                                                                    |
+| :--------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------: |
 | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/19.png" width="180" alt="Aspirin result in dark emerald theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/20.png" width="180" alt="Caffeine result in dark rose theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/21.png" width="180" alt="Compound result with 3D viewer in dark amber theme"/> |
 
 </details>
@@ -185,7 +197,6 @@ The editor includes:
 - Exact, similar, substructure, and superstructure search modes.
 - Matching results in a pop-up dialog.
 
-
 ## <img src="https://api.iconify.design/ph:cube.svg?color=%233b82f6" width="22" height="22" alt=""/> Structures
 
 ChemSearch loads structure data from PubChem when it is available.
@@ -224,6 +235,7 @@ Removing a favorite or downloaded compound shows an undo option, which helps whe
 Favorites, downloads, substances, and ions can be selected for comparison. When two or more comparable items are selected, a compare button opens the Compare Compounds tool with those compounds filled in.
 
 ### Periodic Table
+
 The Periodic Table includes all 118 official elements, element search, trend comparisons, short element dialogs, and full detail pages. Element detail pages include:
 
 - Wikipedia summaries.
@@ -234,6 +246,7 @@ The Periodic Table includes all 118 official elements, element search, trend com
 - Trend views for comparing listed element properties across the table and trend metrics for electronegativity, atomic radius, ionization energy, density, melting point, and boiling point.
 
 ### Chemical Database
+
 The bundled Chemical Database includes:
 
 - Substances: 331.
@@ -242,6 +255,7 @@ The bundled Chemical Database includes:
 - Reactions: 149.
 
 ### Offline Downloads
+
 Offline downloads save more than a cached result. A downloaded compound can include:
 
 - Basic compound details.
