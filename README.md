@@ -51,16 +51,16 @@ It is meant for students, teachers and quick lab-prep checks. Not a replacement 
 
 ## <img src="https://api.iconify.design/ph:list-checks.svg?color=%233b82f6" width="22" height="22" alt=""/> Highlights
 
-- Search by compound name, CAS number, formula, CID, drawn structure, or a random compound out of 123 million compounds from **Pubchem**, the world's largest collection of freely accessible chemical information.
-- Use advanced filters for query type, include/exclude terms, molecular weight, charge, 3D data, and GHS data.
-- Draw a structure in the structure editor and search PubChem by exact, similar, substructure, or superstructure matching.
-- View formulas, condensed formulas, identifiers, 2D structures, and interactive 3D molecular models.
-- Save full compound data for offline use, including structures, identifiers, descriptions, synonyms, and safety data.
-- Compare several compounds side by side from Search, Tools, or Library selections.
-- Browse a detailed periodic table with trend comparisons and a built-in chemical database with 600+ entries.
-- Use chemistry tools for molar mass, empirical formulas, pH/pOH, oxidation states, reaction balancing, precipitation, stoichiometry, dilution, gas laws, SMILES lookup etc.
-- For descriptions, choose out of PubChem, Wikipedia or several AI providers (e.g. Gemini, OpenAI, Groq etc.)
-- Choose appearances based on your preference - light/dark mode and different color schemes.
+- **Comprehensive Search:** Search by compound name, CAS number, formula, CID, drawn structure, or a random compound out of 123 million compounds from PubChem, the world's largest collection of freely accessible chemical information.
+- **Advanced Filtering:** Use advanced filters for query type, include/exclude terms, molecular weight, charge, 3D data, and GHS data.
+- **Structure Matching:** Draw a structure in the structure editor and search PubChem by exact, similar, substructure, or superstructure matching.
+- **Interactive Visualization:** View formulas, condensed formulas, identifiers, 2D structures, and interactive 3D molecular models.
+- **Offline Access:** Save full compound data for offline use, including structures, identifiers, descriptions, synonyms, and safety data.
+- **Side-by-Side Comparison:** Compare several compounds side by side from Search, Tools, or Library selections.
+- **Periodic Table:** Browse a detailed periodic table with trend comparisons and a built-in chemical database with 600+ entries.
+- **Chemistry Toolkit:** Use chemistry tools for molar mass, empirical formulas, pH/pOH, oxidation states, reaction balancing, precipitation, stoichiometry, dilution, gas laws, SMILES lookup, etc.
+- **Multi-Source Descriptions:** For descriptions, choose out of PubChem, Wikipedia, or several AI providers (e.g., Gemini, OpenAI, Groq, etc.).
+- **Custom Appearance:** Choose appearances based on your preference - light/dark mode and different color schemes.
 
 ## <img src="https://api.iconify.design/ph:android-logo.svg?color=%233b82f6" width="22" height="22" alt=""/> Download for Android
 
@@ -80,7 +80,6 @@ It is meant for students, teachers and quick lab-prep checks. Not a replacement 
   6. If you encounter any issues during the build or installation, please report them in the [Issues](https://github.com/FurtherSecrets24680/chemsearch-android/issues) section.
 
 > [!NOTE]
->
 > Before installing the new debug APK, you **must first uninstall** any previous version of the app already installed on your device. Android security policies block updates between builds signed with different keys (e.g., debug vs. release keys, or different developers' signing certificates). Installing over a mismatching signature will fail with a signature error.
 
 ## <img src="https://api.iconify.design/ph:image-square.svg?color=%233b82f6" width="22" height="22" alt=""/> Screenshots
