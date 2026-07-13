@@ -70,19 +70,17 @@ It is meant for students, teachers and quick lab-prep checks. Not a replacement 
   - Target SDK: API 34.
   - Compile SDK: API 36.
 
-
-
 - **Preview Builds via GitHub Actions**:
   If you want to preview the latest unreleased changes, you can trigger a build manually using GitHub Actions:
-    1. Go to the [APK build workflow](https://github.com/FurtherSecrets24680/chemsearch-android/actions/workflows/build.yml) in **Actions** tab.
-    2. Click the **Run workflow** dropdown, choose the branch (e.g., `main`), and click **Run workflow**.
-    3. Wait 3–5 minutes for the build workflow to finish running.
-    4. Click on the completed workflow run to open its summary page, scroll down to the **Artifacts** section at the bottom, and download the build artifact (e.g., `chemsearch-github-release` or `chemsearch-github-debug`).
-    5. The downloaded file is a ZIP archive. Extract it to retrieve the `.apk` installation file.
-    6. If you encounter any issues during the build or installation, please report them in the [Issues](https://github.com/FurtherSecrets24680/chemsearch-android/issues) section.
-    > [!NOTE]
-     Before installing the new debug APK, you **must first uninstall** any previous version of the app already installed on your device. Android security policies block updates between builds signed with different keys (e.g., debug vs. release keys, or different developers' signing certificates). Installing over a mismatching signature will fail with a signature error.
-
+  1. Go to the [APK build workflow](https://github.com/FurtherSecrets24680/chemsearch-android/actions/workflows/build.yml) in **Actions** tab.
+  2. Click the **Run workflow** dropdown, choose the branch (e.g., `main`), and click **Run workflow**.
+  3. Wait 3–5 minutes for the build workflow to finish running.
+  4. Click on the completed workflow run to open its summary page, scroll down to the **Artifacts** section at the bottom, and download the build artifact (e.g., `chemsearch-github-release` or `chemsearch-github-debug`).
+  5. The downloaded file is a ZIP archive. Extract it to retrieve the `.apk` installation file.
+  6. If you encounter any issues during the build or installation, please report them in the [Issues](https://github.com/FurtherSecrets24680/chemsearch-android/issues) section.
+     > [!NOTE]
+     >
+     > Before installing the new debug APK, you **must first uninstall** any previous version of the app already installed on your device. Android security policies block updates between builds signed with different keys (e.g., debug vs. release keys, or different developers' signing certificates). Installing over a mismatching signature will fail with a signature error.
 
 ## <img src="https://api.iconify.design/ph:image-square.svg?color=%233b82f6" width="22" height="22" alt=""/> Screenshots
 
