@@ -325,6 +325,15 @@ enum class AiProvider(
 enum class MolTab { TWO_D, THREE_D }
 enum class SdfSource { PUBCHEM, GENERATED }
 enum class AppColorScheme { BLUE, VIOLET, EMERALD, ROSE, AMBER }
+enum class AppLanguage(val preferenceKey: String, val localeTag: String?, val displayName: String) {
+    SYSTEM("system", null, "System default"),
+    ENGLISH("en", "en", "English");
+
+    companion object {
+        fun fromPreferenceKey(key: String?): AppLanguage =
+            entries.firstOrNull { it.preferenceKey == key } ?: SYSTEM
+    }
+}
 enum class DefaultStructureView { TWO_D, THREE_D, LAST_USED }
 enum class OfflineDownloadQuality { BASIC, STRUCTURES, COMPLETE }
 enum class FormulaDisplayStyle { CONVENTIONAL, HILL }

@@ -1,5 +1,7 @@
 package com.furthersecrets.chemsearch.ui
 
+import com.furthersecrets.chemsearch.R
+import androidx.compose.ui.res.stringResource
 import android.content.Context
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -166,8 +168,7 @@ fun ToolsScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                "Tools",
+            Text(stringResource(R.string.ui_tools),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
@@ -194,7 +195,7 @@ fun ToolsScreen(
                     ) {
                         Icon(
                             Icons.Default.RestartAlt,
-                            contentDescription = "Reset tool order",
+                            contentDescription = stringResource(R.string.ui_reset_tool_order),
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(if (compact) 19.dp else 21.dp)
                         )
@@ -216,8 +217,7 @@ fun ToolsScreen(
             }
         }
         if (selectedTool == 0 && isReordering) {
-            Text(
-                "Reorder mode: long press and drag tools to rearrange them.",
+            Text(stringResource(R.string.ui_reorder_mode_long_press_and_drag_tools_to),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
             )
@@ -231,8 +231,7 @@ fun ToolsScreen(
                         onValueChange = { toolSearch = it },
                         modifier = Modifier.fillMaxWidth(),
                         placeholder = {
-                            Text(
-                                "Search tools…",
+                            Text(stringResource(R.string.ui_search_tools),
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
                             )
                         },
@@ -246,7 +245,7 @@ fun ToolsScreen(
                         trailingIcon = {
                             if (toolSearch.isNotEmpty()) {
                                 IconButton(onClick = { toolSearch = "" }) {
-                                    Icon(Icons.Default.Close, contentDescription = "Clear search",
+                                    Icon(Icons.Default.Close, contentDescription = stringResource(R.string.ui_clear_search),
                                         tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
                                         modifier = Modifier.size(16.dp))
                                 }
@@ -359,7 +358,7 @@ fun ToolsScreen(
             ) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, null, modifier = Modifier.size(16.dp))
                 Spacer(Modifier.width(4.dp))
-                Text("Back to Tools")
+                Text(stringResource(R.string.ui_back_to_tools))
             }
 
             when (selectedTool) {
@@ -621,7 +620,7 @@ private fun ToolGridCard(
             if (showDragHandle) {
                 Icon(
                     Icons.Default.SwapHoriz,
-                    contentDescription = "Drag to reorder",
+                    contentDescription = stringResource(R.string.ui_drag_to_reorder),
                     tint = MaterialTheme.colorScheme.onSurface.copy(0.42f),
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -695,7 +694,7 @@ private fun ToolCard(
             if (showDragHandle) {
                 Icon(
                     Icons.Default.SwapHoriz,
-                    contentDescription = "Drag to reorder",
+                    contentDescription = stringResource(R.string.ui_drag_to_reorder),
                     tint = MaterialTheme.colorScheme.onSurface.copy(0.42f),
                     modifier = Modifier.size(if (compact) 18.dp else 22.dp)
                 )
@@ -711,7 +710,7 @@ private fun ToolCard(
                     ) {
                         Icon(
                             Icons.Default.KeyboardArrowUp,
-                            contentDescription = "Move up",
+                            contentDescription = stringResource(R.string.ui_move_up),
                             tint = MaterialTheme.colorScheme.onSurface.copy(if (canMoveUp) 0.6f else 0.25f),
                             modifier = Modifier.size(if (compact) 18.dp else 24.dp)
                         )
@@ -723,7 +722,7 @@ private fun ToolCard(
                     ) {
                         Icon(
                             Icons.Default.KeyboardArrowDown,
-                            contentDescription = "Move down",
+                            contentDescription = stringResource(R.string.ui_move_down),
                             tint = MaterialTheme.colorScheme.onSurface.copy(if (canMoveDown) 0.6f else 0.25f),
                             modifier = Modifier.size(if (compact) 18.dp else 24.dp)
                         )
@@ -831,9 +830,9 @@ fun SdfViewerTool(isDark: Boolean) {
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Custom 3D Molecule Viewer", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.ui_custom_3d_molecule_viewer), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
-                Icon(Icons.Default.Info, contentDescription = "Info", tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
+                Icon(Icons.Default.Info, contentDescription = stringResource(R.string.ui_info), tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
             }
         }
         if (sdfContent == null) {
@@ -856,9 +855,8 @@ fun SdfViewerTool(isDark: Boolean) {
                         contentAlignment = Alignment.Center
                     ) { Icon(Icons.Default.FolderOpen, null, tint = MaterialTheme.colorScheme.primary.copy(0.6f), modifier = Modifier.size(40.dp)) }
                     Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text("No file loaded", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
-                        Text(
-                            "Load any .sdf or .mol file from your device to view it in 3D",
+                        Text(stringResource(R.string.ui_no_file_loaded), style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
+                        Text(stringResource(R.string.ui_load_any_sdf_or_mol_file_from_your),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
                             textAlign = androidx.compose.ui.text.style.TextAlign.Center
@@ -870,7 +868,7 @@ fun SdfViewerTool(isDark: Boolean) {
                     ) {
                         Icon(Icons.Default.FolderOpen, null, modifier = Modifier.size(16.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text("Choose File")
+                        Text(stringResource(R.string.ui_choose_file))
                     }
                 }
             }
@@ -888,7 +886,7 @@ fun SdfViewerTool(isDark: Boolean) {
                     Icon(Icons.AutoMirrored.Filled.InsertDriveFile, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
                     Text(fileName ?: "file.sdf", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f))
                     TextButton(onClick = { filePicker.launch("*/*") }, contentPadding = PaddingValues(horizontal = 8.dp)) {
-                        Text("Change", style = MaterialTheme.typography.labelMedium)
+                        Text(stringResource(R.string.ui_change), style = MaterialTheme.typography.labelMedium)
                     }
                 }
             }
@@ -968,17 +966,17 @@ fun MolarMassCalculator() {
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Molar Mass Calculator", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.ui_molar_mass_calculator), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
-                Icon(Icons.Default.Info, contentDescription = "Info", tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
+                Icon(Icons.Default.Info, contentDescription = stringResource(R.string.ui_info), tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
             }
         }
 
         OutlinedTextField(
             value = input,
             onValueChange = { input = it },
-            label = { Text("Molecular Formula") },
-            placeholder = { Text("e.g. H2O, Ca(OH)2, CuSO4·5H2O", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+            label = { Text(stringResource(R.string.ui_molecular_formula_2)) },
+            placeholder = { Text(stringResource(R.string.ui_e_g_h2o_ca_oh_2_cuso4_5h2o), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(14.dp),
             singleLine = true,
@@ -1001,7 +999,7 @@ fun MolarMassCalculator() {
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Insert:", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+            Text(stringResource(R.string.ui_insert), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
             listOf("(" to "(", ")" to ")", "·" to "·").forEach { (label, insert) ->
                 Surface(
                     onClick = { input = insertIntoField(input, insert) },
@@ -1050,7 +1048,7 @@ fun MolarMassCalculator() {
 
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                                Text("MOLAR MASS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                                Text(stringResource(R.string.ui_molar_mass), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
                                 Text(toSubscriptFormula(input.text), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
                             }
                             Surface(
@@ -1071,8 +1069,7 @@ fun MolarMassCalculator() {
 
                         HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.12f))
 
-                        Text(
-                            "ELEMENTAL BREAKDOWN",
+                        Text(stringResource(R.string.ui_elemental_breakdown),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             letterSpacing = 0.8.sp,
@@ -1083,9 +1080,9 @@ fun MolarMassCalculator() {
                             modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text("Element", modifier = Modifier.weight(1.2f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-                            Text("Count", modifier = Modifier.weight(1f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-                            Text("g/mol", modifier = Modifier.weight(1.3f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                            Text(stringResource(R.string.ui_element), modifier = Modifier.weight(1.2f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                            Text(stringResource(R.string.ui_count), modifier = Modifier.weight(1f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                            Text(stringResource(R.string.ui_g_mol), modifier = Modifier.weight(1.3f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
                             Text("%", modifier = Modifier.weight(0.7f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f), textAlign = androidx.compose.ui.text.style.TextAlign.End)
                         }
 
@@ -1102,8 +1099,8 @@ fun MolarMassCalculator() {
                                         }
                                     }
                                     Text("×$cnt", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.onSurface.copy(0.7f))
-                                    Text("%.3f".format(contrib), modifier = Modifier.weight(1.3f), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
-                                    Text("%.1f%%".format(pct), modifier = Modifier.weight(0.7f), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.primary, textAlign = androidx.compose.ui.text.style.TextAlign.End)
+                                    Text(stringResource(R.string.ui_3f).format(contrib), modifier = Modifier.weight(1.3f), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
+                                    Text(stringResource(R.string.ui_1f).format(pct), modifier = Modifier.weight(0.7f), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.primary, textAlign = androidx.compose.ui.text.style.TextAlign.End)
                                 }
                                 Box(modifier = Modifier.fillMaxWidth().height(4.dp).clip(RoundedCornerShape(2.dp)).background(MaterialTheme.colorScheme.outline.copy(0.1f))) {
                                     Box(modifier = Modifier.fillMaxHeight().fillMaxWidth(pct / 100f).clip(RoundedCornerShape(2.dp)).background(MaterialTheme.colorScheme.primary.copy(0.65f)))
@@ -1115,8 +1112,7 @@ fun MolarMassCalculator() {
             }
         }
 
-        Text(
-            "EXAMPLES",
+        Text(stringResource(R.string.ui_examples_2),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
             letterSpacing = 0.8.sp,
@@ -1193,7 +1189,7 @@ fun OxidationStateFinder() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Oxidation State Finder", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.ui_oxidation_state_finder), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
                 Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
             }
@@ -1203,8 +1199,8 @@ fun OxidationStateFinder() {
             OutlinedTextField(
                 value = formula,
                 onValueChange = { formula = it; result = null },
-                label = { Text("Formula") },
-                placeholder = { Text("e.g. KMnO4", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                label = { Text(stringResource(R.string.ui_formula)) },
+                placeholder = { Text(stringResource(R.string.ui_e_g_kmno4), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(14.dp),
                 singleLine = true,
@@ -1214,7 +1210,7 @@ fun OxidationStateFinder() {
             OutlinedTextField(
                 value = chargeInput,
                 onValueChange = { chargeInput = it; result = null },
-                label = { Text("Charge") },
+                label = { Text(stringResource(R.string.ui_charge)) },
                 placeholder = { Text("0", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.width(90.dp),
                 shape = RoundedCornerShape(14.dp),
@@ -1236,7 +1232,7 @@ fun OxidationStateFinder() {
             shape = RoundedCornerShape(12.dp),
             enabled = formula.isNotBlank()
         ) {
-            Text("Find Oxidation States")
+            Text(stringResource(R.string.ui_find_oxidation_states))
         }
 
         result?.let { res ->
@@ -1251,7 +1247,7 @@ fun OxidationStateFinder() {
                 ) {
                     Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                            Text("OXIDATION STATES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                            Text(stringResource(R.string.ui_oxidation_states), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
                             Text(
                                 toSubscriptFormula(formula) + if ((chargeInput.toIntOrNull() ?: 0) != 0) " (${if ((chargeInput.toIntOrNull() ?: 0) > 0) "+${chargeInput}" else chargeInput})" else "",
                                 style = MaterialTheme.typography.bodySmall,
@@ -1303,7 +1299,7 @@ fun OxidationStateFinder() {
             }
         }
 
-        Text("EXAMPLES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+        Text(stringResource(R.string.ui_examples), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
         @OptIn(ExperimentalLayoutApi::class)
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf("KMnO4" to 0, "H2SO4" to 0, "HOCl" to 0, "Fe2O3" to 0, "Cr2O7" to -2, "NH4" to 1, "HNO3" to 0).forEach { (f, c) ->
@@ -1442,7 +1438,7 @@ fun SmilesVisualizer(isDark: Boolean) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("SMILES Visualizer", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.ui_smiles_visualizer), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
                 Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
             }
@@ -1451,8 +1447,8 @@ fun SmilesVisualizer(isDark: Boolean) {
         OutlinedTextField(
             value = input,
             onValueChange = { input = it; cidResult = null; error = null },
-            label = { Text("SMILES String") },
-            placeholder = { Text("e.g. CCO", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+            label = { Text(stringResource(R.string.ui_smiles_string)) },
+            placeholder = { Text(stringResource(R.string.ui_e_g_cco), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(14.dp),
             singleLine = true,
@@ -1467,7 +1463,7 @@ fun SmilesVisualizer(isDark: Boolean) {
             }
         )
 
-        Text("EXAMPLES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+        Text(stringResource(R.string.ui_examples), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
         @OptIn(ExperimentalLayoutApi::class)
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             examples.forEach { (name, smiles) ->
@@ -1565,7 +1561,7 @@ fun SmilesVisualizer(isDark: Boolean) {
                         when (activeTab) {
                             0 -> AsyncImage(
                                 model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/$cidResult/PNG?image_size=large",
-                                contentDescription = "2D Structure",
+                                contentDescription = stringResource(R.string.ui_2d_structure),
                                 modifier = Modifier.fillMaxSize().padding(12.dp),
                                 contentScale = ContentScale.Fit
                             )
@@ -1591,8 +1587,7 @@ fun SmilesVisualizer(isDark: Boolean) {
                                                 tint = MaterialTheme.colorScheme.primary,
                                                 modifier = Modifier.size(14.dp)
                                             )
-                                            Text(
-                                                "Generated estimate",
+                                            Text(stringResource(R.string.ui_generated_estimate),
                                                 style = MaterialTheme.typography.labelSmall,
                                                 color = MaterialTheme.colorScheme.primary,
                                                 fontWeight = FontWeight.SemiBold
@@ -1603,7 +1598,7 @@ fun SmilesVisualizer(isDark: Boolean) {
                             } else {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                     Icon(Icons.Default.VisibilityOff, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.3f), modifier = Modifier.size(28.dp))
-                                    Text("3D model not available", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                                    Text(stringResource(R.string.ui_3d_model_not_available), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
                                     sdfMessage?.let { message ->
                                         Text(
                                             message,
@@ -1723,7 +1718,7 @@ fun ReactionBalancer() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Reaction Balancer", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.ui_reaction_balancer), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
                 Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
             }
@@ -1737,8 +1732,8 @@ fun ReactionBalancer() {
                 input = normalized
                 if (textChanged) result = null
             },
-            label = { Text("Chemical Equation") },
-            placeholder = { Text("H2 + O2 ⟶ H2O", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+            label = { Text(stringResource(R.string.ui_chemical_equation)) },
+            placeholder = { Text(stringResource(R.string.ui_h2_o2_h2o), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(14.dp),
             singleLine = true,
@@ -1762,8 +1757,7 @@ fun ReactionBalancer() {
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                "Insert:",
+            Text(stringResource(R.string.ui_insert_2),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
             )
@@ -1802,7 +1796,7 @@ fun ReactionBalancer() {
                 ) {
                     Icon(
                         Icons.Default.SwapHoriz,
-                        contentDescription = "Swap sides",
+                        contentDescription = stringResource(R.string.ui_swap_sides),
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp).size(14.dp)
                     )
@@ -1818,7 +1812,7 @@ fun ReactionBalancer() {
         ) {
             Icon(Icons.Default.SwapHoriz, null, modifier = Modifier.size(16.dp))
             Spacer(Modifier.width(8.dp))
-            Text("Balance")
+            Text(stringResource(R.string.ui_balance))
         }
 
         result?.let { res ->
@@ -1833,7 +1827,7 @@ fun ReactionBalancer() {
                 ) {
                     Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
 
-                        Text("BALANCED EQUATION", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                        Text(stringResource(R.string.ui_balanced_equation), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
 
                         @OptIn(ExperimentalLayoutApi::class)
                         FlowRow(
@@ -1888,16 +1882,16 @@ fun ReactionBalancer() {
 
                         HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
 
-                        Text("ATOM COUNT VERIFICATION", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                        Text(stringResource(R.string.ui_atom_count_verification), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
 
                         val allElements = (res.reactants + res.products).flatMap { (f, _) ->
                             try { parseFormulaForCalc(f).keys } catch (e: Exception) { emptySet() }
                         }.distinct().sorted()
 
                         Row(modifier = Modifier.fillMaxWidth()) {
-                            Text("Element", modifier = Modifier.weight(1f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-                            Text("Reactants", modifier = Modifier.weight(1f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary.copy(0.7f), textAlign = TextAlign.Center)
-                            Text("Products", modifier = Modifier.weight(1f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.secondary.copy(0.7f), textAlign = TextAlign.Center)
+                            Text(stringResource(R.string.ui_element), modifier = Modifier.weight(1f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                            Text(stringResource(R.string.ui_reactants), modifier = Modifier.weight(1f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary.copy(0.7f), textAlign = TextAlign.Center)
+                            Text(stringResource(R.string.ui_products), modifier = Modifier.weight(1f), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.secondary.copy(0.7f), textAlign = TextAlign.Center)
                             Text("✓", modifier = Modifier.width(24.dp), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f), textAlign = TextAlign.Center)
                         }
 
@@ -1933,7 +1927,7 @@ fun ReactionBalancer() {
             }
         }
 
-        Text("EXAMPLES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+        Text(stringResource(R.string.ui_examples), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             examples.forEach { ex ->
                 Surface(
@@ -2308,9 +2302,9 @@ fun CompareCompoundsTool(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Compare Compounds", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.ui_compare_compounds), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             IconButton(onClick = { runCompare() }, enabled = !isLoading, modifier = Modifier.size(34.dp)) {
-                Icon(Icons.AutoMirrored.Filled.CompareArrows, contentDescription = "Compare", tint = MaterialTheme.colorScheme.primary)
+                Icon(Icons.AutoMirrored.Filled.CompareArrows, contentDescription = stringResource(R.string.ui_compare), tint = MaterialTheme.colorScheme.primary)
             }
         }
 
@@ -2336,7 +2330,7 @@ fun CompareCompoundsTool(
                                     results = emptyList()
                                 }
                             ) {
-                                Icon(Icons.Default.Close, contentDescription = "Remove compound")
+                                Icon(Icons.Default.Close, contentDescription = stringResource(R.string.ui_remove_compound))
                             }
                         }
                     },
@@ -2356,7 +2350,7 @@ fun CompareCompoundsTool(
                 enabled = compoundFields.size < MAX_COMPARE_COMPOUNDS,
                 modifier = Modifier.size(if (compact) 38.dp else 42.dp)
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add compound")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.ui_add_compound))
             }
         }
 
@@ -2478,7 +2472,7 @@ private fun CompareCompoundCard(
                 )
             }
             IconButton(onClick = onOpen) {
-                Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = "Open in Search")
+                Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = stringResource(R.string.ui_open_in_search))
             }
         }
     }
@@ -2487,8 +2481,7 @@ private fun CompareCompoundCard(
 @Composable
 private fun CompareRows(results: List<CompareCompound>) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(
-            "COMPARISON",
+        Text(stringResource(R.string.ui_comparison),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
             letterSpacing = 0.8.sp,
@@ -2828,8 +2821,7 @@ private fun FormulaExplanationCard(
             modifier = Modifier.padding(12.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(
-                "Explanation for Formula",
+            Text(stringResource(R.string.ui_explanation_for_formula),
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
@@ -2882,14 +2874,13 @@ fun PhPohCalculatorTool() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("pH / pOH Calculator", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.ui_ph_poh_calculator), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
                 Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
             }
         }
 
-        Text(
-            "Choose the value you know, then enter it below.",
+        Text(stringResource(R.string.ui_choose_the_value_you_know_then_enter_it),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(0.58f)
         )
@@ -2930,7 +2921,7 @@ fun PhPohCalculatorTool() {
             trailingIcon = {
                 if (input.isNotBlank()) {
                     IconButton(onClick = { input = "" }) {
-                        Icon(Icons.Default.Close, contentDescription = "Clear")
+                        Icon(Icons.Default.Close, contentDescription = stringResource(R.string.ui_clear))
                     }
                 }
             },
@@ -3008,7 +2999,7 @@ private fun PhPohResultCards(result: com.furthersecrets.chemsearch.data.PhPohRes
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Solution type", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface.copy(0.62f))
+                Text(stringResource(R.string.ui_solution_type), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface.copy(0.62f))
                 Text(result.classification, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
             }
         }
@@ -3097,7 +3088,7 @@ fun DilutionCalculatorTool() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Dilution Calculator", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.ui_dilution_calculator), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
                 Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
             }
@@ -3108,7 +3099,7 @@ fun DilutionCalculatorTool() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Text("Solve for", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+            Text(stringResource(R.string.ui_solve_for), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
             var expanded by remember { mutableStateOf(false) }
             Box {
                 Surface(
@@ -3145,8 +3136,8 @@ fun DilutionCalculatorTool() {
             OutlinedTextField(
                 value = if (solveFor == DilutionSolve.C1) solvedText else c1,
                 onValueChange = { c1 = it },
-                label = { Text("C₁ (M)") },
-                placeholder = { Text("e.g. 1.0", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                label = { Text(stringResource(R.string.ui_c_m)) },
+                placeholder = { Text(stringResource(R.string.ui_e_g_1_0), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
                 singleLine = true,
@@ -3155,8 +3146,8 @@ fun DilutionCalculatorTool() {
             OutlinedTextField(
                 value = if (solveFor == DilutionSolve.V1) solvedText else v1,
                 onValueChange = { v1 = it },
-                label = { Text("V₁ (mL)") },
-                placeholder = { Text("e.g. 25", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                label = { Text(stringResource(R.string.ui_v_ml)) },
+                placeholder = { Text(stringResource(R.string.ui_e_g_25), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
                 singleLine = true,
@@ -3168,8 +3159,8 @@ fun DilutionCalculatorTool() {
             OutlinedTextField(
                 value = if (solveFor == DilutionSolve.C2) solvedText else c2,
                 onValueChange = { c2 = it },
-                label = { Text("C₂ (M)") },
-                placeholder = { Text("e.g. 0.5", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                label = { Text(stringResource(R.string.ui_c_m_2)) },
+                placeholder = { Text(stringResource(R.string.ui_e_g_0_5), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
                 singleLine = true,
@@ -3178,8 +3169,8 @@ fun DilutionCalculatorTool() {
             OutlinedTextField(
                 value = if (solveFor == DilutionSolve.V2) solvedText else v2,
                 onValueChange = { v2 = it },
-                label = { Text("V₂ (mL)") },
-                placeholder = { Text("e.g. 50", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                label = { Text(stringResource(R.string.ui_v_ml_2)) },
+                placeholder = { Text(stringResource(R.string.ui_e_g_50), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
                 singleLine = true,
@@ -3250,7 +3241,7 @@ fun IdealGasLawTool() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Ideal Gas Law", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.ui_ideal_gas_law), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
                 Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
             }
@@ -3261,7 +3252,7 @@ fun IdealGasLawTool() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Text("Solve for", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+            Text(stringResource(R.string.ui_solve_for), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
             var expanded by remember { mutableStateOf(false) }
             Box {
                 Surface(
@@ -3298,8 +3289,8 @@ fun IdealGasLawTool() {
             OutlinedTextField(
                 value = if (solveFor == GasSolve.PRESSURE) solvedText else pressure,
                 onValueChange = { pressure = it },
-                label = { Text("Pressure (atm)") },
-                placeholder = { Text("e.g. 1.0", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                label = { Text(stringResource(R.string.ui_pressure_atm)) },
+                placeholder = { Text(stringResource(R.string.ui_e_g_1_0), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
                 singleLine = true,
@@ -3308,8 +3299,8 @@ fun IdealGasLawTool() {
             OutlinedTextField(
                 value = if (solveFor == GasSolve.VOLUME) solvedText else volume,
                 onValueChange = { volume = it },
-                label = { Text("Volume (L)") },
-                placeholder = { Text("e.g. 2.5", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                label = { Text(stringResource(R.string.ui_volume_l)) },
+                placeholder = { Text(stringResource(R.string.ui_e_g_2_5), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
                 singleLine = true,
@@ -3321,8 +3312,8 @@ fun IdealGasLawTool() {
             OutlinedTextField(
                 value = if (solveFor == GasSolve.MOLES) solvedText else moles,
                 onValueChange = { moles = it },
-                label = { Text("Moles (mol)") },
-                placeholder = { Text("e.g. 0.5", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                label = { Text(stringResource(R.string.ui_moles_mol)) },
+                placeholder = { Text(stringResource(R.string.ui_e_g_0_5), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
                 singleLine = true,
@@ -3331,8 +3322,8 @@ fun IdealGasLawTool() {
             OutlinedTextField(
                 value = if (solveFor == GasSolve.TEMPERATURE) solvedText else temperature,
                 onValueChange = { temperature = it },
-                label = { Text("Temperature (K)") },
-                placeholder = { Text("e.g. 298", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                label = { Text(stringResource(R.string.ui_temperature_k)) },
+                placeholder = { Text(stringResource(R.string.ui_e_g_298), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
                 singleLine = true,
@@ -3340,7 +3331,7 @@ fun IdealGasLawTool() {
             )
         }
 
-        Text("R = 0.082057 L·atm/mol·K", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+        Text(stringResource(R.string.ui_r_0_082057_l_atm_mol_k), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
 
         if (result.error != null && hasAnyInput) {
             Text(result.error, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
@@ -3610,8 +3601,8 @@ private fun StoichiometryCalculator(
                 equation = normalized
                 if (textChanged) result = null
             },
-            label = { Text("Chemical Equation") },
-            placeholder = { Text("H2 + O2 ⟶ H2O", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+            label = { Text(stringResource(R.string.ui_chemical_equation)) },
+            placeholder = { Text(stringResource(R.string.ui_h2_o2_h2o), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(14.dp),
             singleLine = true,
@@ -3635,8 +3626,7 @@ private fun StoichiometryCalculator(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                "Insert:",
+            Text(stringResource(R.string.ui_insert_2),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
             )
@@ -3675,7 +3665,7 @@ private fun StoichiometryCalculator(
                 ) {
                     Icon(
                         Icons.Default.SwapHoriz,
-                        contentDescription = "Swap sides",
+                        contentDescription = stringResource(R.string.ui_swap_sides),
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp).size(14.dp)
                     )
@@ -3691,19 +3681,19 @@ private fun StoichiometryCalculator(
         ) {
             Icon(Icons.Default.Calculate, null, modifier = Modifier.size(16.dp))
             Spacer(Modifier.width(8.dp))
-            Text("Balance & Calculate")
+            Text(stringResource(R.string.ui_balance_calculate))
         }
 
         OutlinedTextField(
             value = molarVolumeInput,
             onValueChange = { molarVolumeInput = it },
-            label = { Text("Gas molar volume (L/mol)") },
+            label = { Text(stringResource(R.string.ui_gas_molar_volume_l_mol)) },
             placeholder = { Text(DEFAULT_MOLAR_VOLUME.toString(), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(14.dp),
             singleLine = true,
             isError = molarVolumeError,
-            supportingText = if (molarVolumeError) {{ Text("Enter a valid molar volume (e.g. 22.414)") }} else null
+            supportingText = if (molarVolumeError) {{ Text(stringResource(R.string.ui_enter_a_valid_molar_volume_e_g_22)) }} else null
         )
 
         result?.let { res ->
@@ -3717,7 +3707,7 @@ private fun StoichiometryCalculator(
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                 ) {
                     Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Text("BALANCED EQUATION", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                        Text(stringResource(R.string.ui_balanced_equation), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
 
                         @OptIn(ExperimentalLayoutApi::class)
                         FlowRow(
@@ -3773,7 +3763,7 @@ private fun StoichiometryCalculator(
                 }
 
                 if (showReactantInputs && reactantInputs.isNotEmpty()) {
-                    Text("REACTANT AMOUNTS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                    Text(stringResource(R.string.ui_reactant_amounts), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
                 }
 
                 val reactantMoles = reactantInputs.map { input ->
@@ -3826,7 +3816,7 @@ private fun StoichiometryCalculator(
                                             reactantInputs[index] = updated
                                         },
                                         label = { Text(if (input.unit == StoichUnit.MOLARITY) "Molarity (M)" else "Amount") },
-                                        placeholder = { Text("e.g. 2.5", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                                        placeholder = { Text(stringResource(R.string.ui_e_g_2_5), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                                         modifier = Modifier.weight(1f),
                                         shape = RoundedCornerShape(12.dp),
                                         singleLine = true
@@ -3843,8 +3833,8 @@ private fun StoichiometryCalculator(
                                     OutlinedTextField(
                                         value = input.volume,
                                         onValueChange = { reactantInputs[index] = input.copy(volume = it) },
-                                        label = { Text("Volume (mL)") },
-                                        placeholder = { Text("e.g. 250", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                                        label = { Text(stringResource(R.string.ui_volume_ml)) },
+                                        placeholder = { Text(stringResource(R.string.ui_e_g_250), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                                         modifier = Modifier.fillMaxWidth(),
                                         shape = RoundedCornerShape(12.dp),
                                         singleLine = true
@@ -3854,7 +3844,7 @@ private fun StoichiometryCalculator(
                                 OutlinedTextField(
                                     value = input.purity,
                                     onValueChange = { reactantInputs[index] = input.copy(purity = it) },
-                                    label = { Text("Purity % (optional)") },
+                                    label = { Text(stringResource(R.string.ui_purity_optional)) },
                                     placeholder = { Text("100", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                                     modifier = Modifier.fillMaxWidth(),
                                     shape = RoundedCornerShape(12.dp),
@@ -3874,7 +3864,7 @@ private fun StoichiometryCalculator(
                                         )
                                     }
                                     else -> {
-                                        Text("Enter an amount to compute moles.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                                        Text(stringResource(R.string.ui_enter_an_amount_to_compute_moles), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
                                     }
                                 }
                             }
@@ -3896,7 +3886,7 @@ private fun StoichiometryCalculator(
                             },
                             contentPadding = PaddingValues(horizontal = 0.dp)
                         ) {
-                            Text("Clear all amounts", style = MaterialTheme.typography.labelMedium)
+                            Text(stringResource(R.string.ui_clear_all_amounts), style = MaterialTheme.typography.labelMedium)
                         }
                     }
                 }
@@ -3916,11 +3906,10 @@ private fun StoichiometryCalculator(
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                     ) {
                         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                            Text("STOICHIOMETRY SUMMARY", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                            Text(stringResource(R.string.ui_stoichiometry_summary), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
 
                             if (limitingData == null) {
-                                Text(
-                                    "Enter valid amounts for all reactants to determine the limiting reagent.",
+                                Text(stringResource(R.string.ui_enter_valid_amounts_for_all_reactants_to_determine),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
                                 )
@@ -3932,7 +3921,7 @@ private fun StoichiometryCalculator(
 
                                 Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                                     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                                        Text("Limiting reagent", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+                                        Text(stringResource(R.string.ui_limiting_reagent), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
                                         Text(toSubscriptFormula(limitingFormula), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, fontFamily = FontFamily.Monospace)
                                     }
                                     Column(horizontalAlignment = Alignment.End) {
@@ -3946,7 +3935,7 @@ private fun StoichiometryCalculator(
                                 Text("Reaction extent: ${formatNumber(extent)} mol", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.65f))
 
                                 HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
-                                Text("MOLE RATIOS (relative to limiting reagent)", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                                Text(stringResource(R.string.ui_mole_ratios_relative_to_limiting_reagent), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
 
                                 (res.reactants + res.products).forEach { (formula, coeff) ->
                                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -3956,7 +3945,7 @@ private fun StoichiometryCalculator(
                                 }
 
                                 HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
-                                Text("THEORETICAL YIELD", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                                Text(stringResource(R.string.ui_theoretical_yield), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
 
                                 res.products.forEach { (formula, coeff) ->
                                     val moles = extent * coeff
@@ -3975,7 +3964,7 @@ private fun StoichiometryCalculator(
                                 }
 
                                 HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
-                                Text("EXCESS REACTANTS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                                Text(stringResource(R.string.ui_excess_reactants), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
 
                                 reactantMoles.forEach { (input, info) ->
                                     val available = info.moles ?: return@forEach
@@ -4027,7 +4016,7 @@ private fun StoichiometryCalculator(
                                         verticalAlignment = Alignment.CenterVertically,
                                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                                     ) {
-                                        Text("Target product:", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                                        Text(stringResource(R.string.ui_target_product), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
                                         Text(toSubscriptFormula(selectedProduct.first), style = MaterialTheme.typography.labelMedium, fontFamily = FontFamily.Monospace)
                                         Icon(Icons.Default.KeyboardArrowDown, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onSurface.copy(0.6f))
                                     }
@@ -4046,7 +4035,7 @@ private fun StoichiometryCalculator(
                             }
 
                             if (showYield) {
-                                Text("Actual yield (optional)", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                                Text(stringResource(R.string.ui_actual_yield_optional), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
                                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                                     OutlinedTextField(
                                         value = if (actualUnit == StoichUnit.MOLARITY) actualMolarity else actualAmount,
@@ -4054,7 +4043,7 @@ private fun StoichiometryCalculator(
                                             if (actualUnit == StoichUnit.MOLARITY) actualMolarity = value else actualAmount = value
                                         },
                                         label = { Text(if (actualUnit == StoichUnit.MOLARITY) "Molarity (M)" else "Amount") },
-                                        placeholder = { Text("e.g. 1.25", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                                        placeholder = { Text(stringResource(R.string.ui_e_g_1_25), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                                         modifier = Modifier.weight(1f),
                                         shape = RoundedCornerShape(12.dp),
                                         singleLine = true
@@ -4069,8 +4058,8 @@ private fun StoichiometryCalculator(
                                     OutlinedTextField(
                                         value = actualVolume,
                                         onValueChange = { actualVolume = it },
-                                        label = { Text("Volume (mL)") },
-                                        placeholder = { Text("e.g. 100", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                                        label = { Text(stringResource(R.string.ui_volume_ml)) },
+                                        placeholder = { Text(stringResource(R.string.ui_e_g_100), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                                         modifier = Modifier.fillMaxWidth(),
                                         shape = RoundedCornerShape(12.dp),
                                         singleLine = true
@@ -4109,7 +4098,7 @@ private fun StoichiometryCalculator(
                                 } else if (actualInfo.error != null) {
                                     Text(actualInfo.error, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                                 } else if (actualProvided && limitingData == null) {
-                                    Text("Need limiting reagent to compute percent yield.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
+                                    Text(stringResource(R.string.ui_need_limiting_reagent_to_compute_percent_yield), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
                                 }
                             }
 
@@ -4118,7 +4107,7 @@ private fun StoichiometryCalculator(
                             }
 
                             if (showScaling) {
-                                Text("Desired product amount", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                                Text(stringResource(R.string.ui_desired_product_amount), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
                                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                                     OutlinedTextField(
                                         value = if (desiredUnit == StoichUnit.MOLARITY) desiredMolarity else desiredAmount,
@@ -4126,7 +4115,7 @@ private fun StoichiometryCalculator(
                                             if (desiredUnit == StoichUnit.MOLARITY) desiredMolarity = value else desiredAmount = value
                                         },
                                         label = { Text(if (desiredUnit == StoichUnit.MOLARITY) "Molarity (M)" else "Amount") },
-                                        placeholder = { Text("e.g. 5.0", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                                        placeholder = { Text(stringResource(R.string.ui_e_g_5_0), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                                         modifier = Modifier.weight(1f),
                                         shape = RoundedCornerShape(12.dp),
                                         singleLine = true
@@ -4141,8 +4130,8 @@ private fun StoichiometryCalculator(
                                     OutlinedTextField(
                                         value = desiredVolume,
                                         onValueChange = { desiredVolume = it },
-                                        label = { Text("Volume (mL)") },
-                                        placeholder = { Text("e.g. 500", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                                        label = { Text(stringResource(R.string.ui_volume_ml)) },
+                                        placeholder = { Text(stringResource(R.string.ui_e_g_500), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                                         modifier = Modifier.fillMaxWidth(),
                                         shape = RoundedCornerShape(12.dp),
                                         singleLine = true
@@ -4164,7 +4153,7 @@ private fun StoichiometryCalculator(
 
                                 if (desiredInfo.moles != null && desiredInfo.error == null) {
                                     val extent = desiredInfo.moles / selectedProduct.second
-                                    Text("Required reactants (theoretical)", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                                    Text(stringResource(R.string.ui_required_reactants_theoretical), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
                                     res.reactants.forEach { (formula, coeff) ->
                                         val reqMoles = extent * coeff
                                         val reqMass = molarMassMap[formula]?.let { it * reqMoles }
@@ -4190,7 +4179,7 @@ private fun StoichiometryCalculator(
             }
         }
 
-        Text("EXAMPLES", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+        Text(stringResource(R.string.ui_examples), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             examples.forEach { ex ->
                 Surface(

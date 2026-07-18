@@ -122,6 +122,11 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     private val _highContrastOutlines = MutableStateFlow(prefs.getBoolean("high_contrast_outlines", false))
     val highContrastOutlines: StateFlow<Boolean> = _highContrastOutlines.asStateFlow()
 
+    private val _appLanguage = MutableStateFlow(
+        AppLanguage.fromPreferenceKey(prefs.getString("language", AppLanguage.SYSTEM.preferenceKey))
+    )
+    val appLanguage: StateFlow<AppLanguage> = _appLanguage.asStateFlow()
+
     private val _cacheSizeBytes = MutableStateFlow(0L)
     val cacheSizeBytes: StateFlow<Long> = _cacheSizeBytes.asStateFlow()
 
@@ -174,6 +179,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 _cacheRetention.value = settings.cacheRetention
                 _reduceMotion.value = settings.reduceMotion
                 _highContrastOutlines.value = settings.highContrastOutlines
+                _appLanguage.value = settings.language
             }
         }
         viewModelScope.launch {
@@ -863,6 +869,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         DebugLog.d("ChemSearch", "High contrast outlines → ${if (enabled) "on" else "off"}")
     }
 
+    fun setAppLanguage(language: AppLanguage) {
+        _appLanguage.value = language
+        prefs.edit().putString("language", language.preferenceKey).apply()
+        viewModelScope.launch { settingsStore.setLanguage(language) }
+        DebugLog.d("ChemSearch", "Language → ${language.preferenceKey}")
+    }
+
     fun setAiProvider(provider: AiProvider) {
         _uiState.update { it.copy(aiProvider = provider) }
         prefs.edit().putString("ai_provider", provider.name).apply()
@@ -886,6 +899,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         _cacheRetention.value = getSavedCacheRetention()
         _reduceMotion.value = prefs.getBoolean("reduce_motion", false)
         _highContrastOutlines.value = prefs.getBoolean("high_contrast_outlines", false)
+        _appLanguage.value = AppLanguage.fromPreferenceKey(
+            prefs.getString("language", AppLanguage.SYSTEM.preferenceKey)
+        )
         _cacheDirPath.value = prefs.getString("cache_dir", "") ?: ""
         refreshCacheSizeAsync()
         refreshAiKeyStatus()

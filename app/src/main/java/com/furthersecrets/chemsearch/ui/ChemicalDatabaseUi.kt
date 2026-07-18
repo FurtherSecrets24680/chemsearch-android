@@ -1,5 +1,7 @@
 package com.furthersecrets.chemsearch.ui
 
+import com.furthersecrets.chemsearch.R
+import androidx.compose.ui.res.stringResource
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -186,7 +188,7 @@ fun ChemicalDatabaseTool(
                 ) {
                     Icon(Icons.AutoMirrored.Filled.ArrowBack, null, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(4.dp))
-                    Text("Back to Database")
+                    Text(stringResource(R.string.ui_back_to_database))
                 }
             }
             item(key = "entry-detail-${selectedEntry!!.category.name}:${selectedEntry!!.id}") {
@@ -310,7 +312,7 @@ private fun DatabaseBrowserHeader(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         IconButton(onClick = onBack, modifier = Modifier.size(34.dp)) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", modifier = Modifier.size(18.dp))
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.ui_back), modifier = Modifier.size(18.dp))
         }
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
@@ -407,8 +409,7 @@ private fun ChemicalDatabaseSearchBar(
             .fillMaxWidth()
             .heightIn(min = if (compact) 54.dp else 62.dp),
         placeholder = {
-            Text(
-                "Search substances, reactions, groups, ions...",
+            Text(stringResource(R.string.ui_search_substances_reactions_groups_ions),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.38f)
@@ -420,7 +421,7 @@ private fun ChemicalDatabaseSearchBar(
         trailingIcon = {
             if (query.isNotBlank()) {
                 IconButton(onClick = onClear) {
-                    Icon(Icons.Default.Close, contentDescription = "Clear", tint = MaterialTheme.colorScheme.onSurface.copy(0.42f), modifier = Modifier.size(17.dp))
+                    Icon(Icons.Default.Close, contentDescription = stringResource(R.string.ui_clear), tint = MaterialTheme.colorScheme.onSurface.copy(0.42f), modifier = Modifier.size(17.dp))
                 }
             }
         },
@@ -580,7 +581,7 @@ private fun DatabaseEntryDetail(
                         ) {
                             Icon(Icons.Default.Search, null, modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(6.dp))
-                            Text("Search in ChemSearch", maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            Text(stringResource(R.string.ui_search_in_chemsearch), maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                     }
                 }
@@ -625,7 +626,7 @@ private fun SourceRow(sourceLabel: String, showChevron: Boolean) {
     ) {
         Icon(Icons.AutoMirrored.Filled.OpenInNew, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text("Source", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f), fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.ui_source), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.45f), fontWeight = FontWeight.Bold)
             Text(sourceLabel, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.72f))
         }
         if (showChevron) {
@@ -763,7 +764,7 @@ private fun DatabaseSelectionToggle(
                 if (selected) {
                     Icon(
                         Icons.Default.Check,
-                        contentDescription = "Selected",
+                        contentDescription = stringResource(R.string.ui_selected),
                         tint = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.size(if (compact) 12.dp else 13.dp)
                     )

@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.furthersecrets.chemsearch.data.AppColorScheme
+import com.furthersecrets.chemsearch.data.AppLanguage
 import com.furthersecrets.chemsearch.data.CacheRetention
 import com.furthersecrets.chemsearch.data.CacheSizeLimit
 import com.furthersecrets.chemsearch.data.DescSource
@@ -37,7 +38,8 @@ data class AppSettingsSnapshot(
     val cacheSizeLimit: CacheSizeLimit,
     val cacheRetention: CacheRetention,
     val reduceMotion: Boolean,
-    val highContrastOutlines: Boolean
+    val highContrastOutlines: Boolean,
+    val language: AppLanguage
 ) {
     companion object {
         fun fromRawValues(
@@ -56,7 +58,8 @@ data class AppSettingsSnapshot(
             cacheSizeLimitName: String?,
             cacheRetentionName: String?,
             reduceMotion: Boolean?,
-            highContrastOutlines: Boolean?
+            highContrastOutlines: Boolean?,
+            languageKey: String?
         ): AppSettingsSnapshot =
             AppSettingsSnapshot(
                 isDarkTheme = isDarkTheme ?: false,
@@ -81,7 +84,8 @@ data class AppSettingsSnapshot(
                 cacheRetention = CacheRetention.entries.firstOrNull { it.name == cacheRetentionName }
                     ?: CacheRetention.MANUAL,
                 reduceMotion = reduceMotion ?: false,
-                highContrastOutlines = highContrastOutlines ?: false
+                highContrastOutlines = highContrastOutlines ?: false,
+                language = AppLanguage.fromPreferenceKey(languageKey)
             )
     }
 }
@@ -123,7 +127,8 @@ class AppSettingsStore(private val context: Context) {
                 cacheSizeLimitName = preferences[Keys.CACHE_SIZE_LIMIT],
                 cacheRetentionName = preferences[Keys.CACHE_RETENTION],
                 reduceMotion = preferences[Keys.REDUCE_MOTION],
-                highContrastOutlines = preferences[Keys.HIGH_CONTRAST_OUTLINES]
+                highContrastOutlines = preferences[Keys.HIGH_CONTRAST_OUTLINES],
+                languageKey = preferences[Keys.LANGUAGE]
             )
         }
 
@@ -151,6 +156,7 @@ class AppSettingsStore(private val context: Context) {
                 ?: CacheRetention.MANUAL.name
             preferences[Keys.REDUCE_MOTION] = prefs.getBoolean("reduce_motion", false)
             preferences[Keys.HIGH_CONTRAST_OUTLINES] = prefs.getBoolean("high_contrast_outlines", false)
+            preferences[Keys.LANGUAGE] = prefs.getString("language", null) ?: AppLanguage.SYSTEM.preferenceKey
             preferences[Keys.MIGRATED] = true
         }
     }
@@ -219,6 +225,10 @@ class AppSettingsStore(private val context: Context) {
         dataStore.edit { it[Keys.HIGH_CONTRAST_OUTLINES] = enabled }
     }
 
+    suspend fun setLanguage(language: AppLanguage) {
+        dataStore.edit { it[Keys.LANGUAGE] = language.preferenceKey }
+    }
+
     private object Keys {
         val DARK_THEME = booleanPreferencesKey("dark_theme")
         val COLOR_SCHEME = stringPreferencesKey("color_scheme")
@@ -236,6 +246,7 @@ class AppSettingsStore(private val context: Context) {
         val CACHE_RETENTION = stringPreferencesKey("cache_retention")
         val REDUCE_MOTION = booleanPreferencesKey("reduce_motion")
         val HIGH_CONTRAST_OUTLINES = booleanPreferencesKey("high_contrast_outlines")
+        val LANGUAGE = stringPreferencesKey("language")
         val MIGRATED = booleanPreferencesKey("settings_datastore_migrated")
     }
 }

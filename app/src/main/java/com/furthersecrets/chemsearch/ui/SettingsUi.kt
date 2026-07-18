@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.ui
 
+import androidx.compose.ui.res.stringResource
 import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -409,8 +410,7 @@ private fun AiProviderSettings(
     val modelOptions = (listOf(selectedModel) + catalog.models + aiProvider.defaultModels).distinct()
 
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        Text(
-            "Provider",
+        Text(stringResource(R.string.ui_provider),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
         )
@@ -490,8 +490,7 @@ private fun AiProviderSettings(
             color = MaterialTheme.colorScheme.onSurface.copy(0.58f)
         )
 
-        Text(
-            "Model",
+        Text(stringResource(R.string.ui_model),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
         )
@@ -572,11 +571,11 @@ private fun AiProviderSettings(
                     Icon(Icons.Default.Refresh, contentDescription = null, modifier = Modifier.size(15.dp))
                 }
                 Spacer(Modifier.width(5.dp))
-                Text("Refresh models")
+                Text(stringResource(R.string.ui_refresh_models))
             }
             if (selectedHasKey) {
                 IconButton(onClick = { onClearAiKey(aiProvider) }) {
-                    Icon(Icons.Default.DeleteOutline, contentDescription = "Remove key", tint = MaterialTheme.colorScheme.error.copy(0.72f))
+                    Icon(Icons.Default.DeleteOutline, contentDescription = stringResource(R.string.ui_remove_key), tint = MaterialTheme.colorScheme.error.copy(0.72f))
                 }
             }
         }
@@ -596,6 +595,7 @@ private fun AiProviderSettings(
 fun SettingsSheet(
     isDark: Boolean,
     colorScheme: AppColorScheme,
+    appLanguage: AppLanguage = AppLanguage.SYSTEM,
     autoSuggest: Boolean,
     compactMode: Boolean,
     oledDarkTheme: Boolean,
@@ -611,6 +611,7 @@ fun SettingsSheet(
     updateStatus: UpdateStatus,
     onToggleTheme: () -> Unit,
     onSetColorScheme: (AppColorScheme) -> Unit,
+    onSetAppLanguage: (AppLanguage) -> Unit = {},
     onToggleAutoSuggest: () -> Unit,
     onToggleCompactMode: () -> Unit,
     onToggleOledDarkTheme: () -> Unit,
@@ -645,8 +646,7 @@ fun SettingsSheet(
                 .padding(start = 20.dp, end = 20.dp, bottom = 48.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text(
-                "Settings",
+            Text(stringResource(R.string.ui_settings_2),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 16.dp)
@@ -668,8 +668,7 @@ fun SettingsSheet(
                 enabled = isOledModeControlEnabled(isDark),
                 onToggle = onToggleOledDarkTheme
             )
-            Text(
-                "Color scheme",
+            Text(stringResource(R.string.ui_color_scheme),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.45f),
                 modifier = Modifier.padding(top = 6.dp)
@@ -677,6 +676,14 @@ fun SettingsSheet(
             ColorSchemePicker(
                 colorScheme = colorScheme,
                 onSetColorScheme = onSetColorScheme
+            )
+            SettingsDropdownSelector(
+                title = stringResource(R.string.ui_language),
+                subtitle = stringResource(R.string.ui_language_subtitle),
+                selected = appLanguage,
+                options = AppLanguage.entries,
+                labelFor = { language -> language.displayName },
+                onSelect = onSetAppLanguage
             )
 
             Spacer(Modifier.height(4.dp))
@@ -728,8 +735,7 @@ fun SettingsSheet(
 
             Spacer(Modifier.height(4.dp))
             SettingsSectionHeader("Default Description Source")
-            Text(
-                "Automatically shown when you search a compound",
+            Text(stringResource(R.string.ui_automatically_shown_when_you_search_a_compound),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -1093,22 +1099,20 @@ private fun AboutHero(onVersionTap: (() -> Unit)?) {
             ) {
                 Image(
                     painter = painterResource(R.drawable.chemsearch),
-                    contentDescription = "ChemSearch app icon",
+                    contentDescription = stringResource(R.string.ui_chemsearch_app_icon),
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .size(128.dp)
                         .padding(10.dp)
                 )
             }
-            Text(
-                "ChemSearch",
+            Text(stringResource(R.string.ui_chemsearch_2),
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.ExtraBold,
                 letterSpacing = 0.sp,
                 color = MaterialTheme.colorScheme.onSurface
             )
-            Text(
-                "Chemistry simplified for Android.",
+            Text(stringResource(R.string.ui_chemistry_simplified_for_android),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.66f)
             )
@@ -1143,8 +1147,7 @@ private fun AboutHero(onVersionTap: (() -> Unit)?) {
                     )
                 }
             }
-            Text(
-                "Search compounds, draw structures, view 2D/3D models, save offline data, compare compounds, and use chemistry tools.",
+            Text(stringResource(R.string.ui_search_compounds_draw_structures_view_2d_3d_models),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.58f)
             )
@@ -1153,8 +1156,7 @@ private fun AboutHero(onVersionTap: (() -> Unit)?) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Icon(Icons.Default.Code, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
-                Text(
-                    "Built by FurtherSecrets",
+                Text(stringResource(R.string.ui_built_by_furthersecrets),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.SemiBold
@@ -1203,14 +1205,12 @@ fun AboutScreen(
                     Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = MaterialTheme.colorScheme.primary)
                 }
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        "About ChemSearch",
+                    Text(stringResource(R.string.ui_about_chemsearch),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.ExtraBold,
                         letterSpacing = 0.sp
                     )
-                    Text(
-                        "App info, links, data sources, and credits.",
+                    Text(stringResource(R.string.ui_app_info_links_data_sources_and_credits),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.56f)
                     )
@@ -1240,8 +1240,7 @@ fun AboutScreen(
 @Composable
 private fun AboutLegalSection(onOpenDocument: (LegalDocument) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        Text(
-            "LEGAL AND SAFETY",
+        Text(stringResource(R.string.ui_legal_and_safety),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
@@ -1418,7 +1417,7 @@ fun AiProviderDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("AI description source", fontWeight = FontWeight.Bold) },
+        title = { Text(stringResource(R.string.ui_ai_description_source), fontWeight = FontWeight.Bold) },
         text = {
             Column(
                 modifier = Modifier
@@ -1427,8 +1426,7 @@ fun AiProviderDialog(
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text(
-                    "Choose which provider should generate this compound description.",
+                Text(stringResource(R.string.ui_choose_which_provider_should_generate_this_compound_description),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.64f)
                 )
@@ -1527,7 +1525,7 @@ fun AiProviderDialog(
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.ui_cancel)) }
         },
         containerColor = MaterialTheme.colorScheme.surface
     )
@@ -1545,7 +1543,7 @@ fun ApiKeyDialog(title: String, link: String, current: String, onSave: (String) 
         title = { Text(title, fontWeight = FontWeight.Bold) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text("Required for AI descriptions.", style = MaterialTheme.typography.bodySmall)
+                Text(stringResource(R.string.ui_required_for_ai_descriptions), style = MaterialTheme.typography.bodySmall)
                 val context = LocalContext.current
                 Text(
                     "Get or manage a key at $link",
@@ -1559,7 +1557,7 @@ fun ApiKeyDialog(title: String, link: String, current: String, onSave: (String) 
                 OutlinedTextField(
                     value = key,
                     onValueChange = { key = it },
-                    label = { Text("API Key") },
+                    label = { Text(stringResource(R.string.ui_api_key)) },
                     singleLine = true,
                     shape = RoundedCornerShape(12.dp),
                     visualTransformation = if (visible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -1569,13 +1567,13 @@ fun ApiKeyDialog(title: String, link: String, current: String, onSave: (String) 
                         }
                     }
                 )
-                Text("Stored locally on your device only.", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                Text(stringResource(R.string.ui_stored_locally_on_your_device_only), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
             }
         },
         confirmButton = {
-            Button(onClick = { if (key.isNotBlank()) onSave(key.trim()) }, shape = RoundedCornerShape(10.dp)) { Text("Save") }
+            Button(onClick = { if (key.isNotBlank()) onSave(key.trim()) }, shape = RoundedCornerShape(10.dp)) { Text(stringResource(R.string.ui_save)) }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.ui_cancel)) } },
         containerColor = MaterialTheme.colorScheme.surface
     )
 }
@@ -1601,7 +1599,7 @@ fun InfoDialog(title: String, entries: List<Pair<String, String>>, onDismiss: ()
                 }
             }
         },
-        confirmButton = { TextButton(onClick = onDismiss) { Text("Got it") } },
+        confirmButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.ui_got_it)) } },
         containerColor = MaterialTheme.colorScheme.surface
     )
 }
@@ -1804,7 +1802,7 @@ private fun FavoriteCard(
                     ) {
                         Icon(
                             Icons.Default.KeyboardArrowUp,
-                            contentDescription = "Move up",
+                            contentDescription = stringResource(R.string.ui_move_up),
                             tint = MaterialTheme.colorScheme.onSurface.copy(if (canMoveUp) 0.6f else 0.25f)
                         )
                     }
@@ -1815,7 +1813,7 @@ private fun FavoriteCard(
                     ) {
                         Icon(
                             Icons.Default.KeyboardArrowDown,
-                            contentDescription = "Move down",
+                            contentDescription = stringResource(R.string.ui_move_down),
                             tint = MaterialTheme.colorScheme.onSurface.copy(if (canMoveDown) 0.6f else 0.25f)
                         )
                     }
@@ -1828,7 +1826,7 @@ private fun FavoriteCard(
                 )
             }
             IconButton(onClick = { onDelete(favorite.cid) }) {
-                Icon(Icons.Default.Delete, contentDescription = "Remove", tint = MaterialTheme.colorScheme.error.copy(0.65f), modifier = Modifier.size(18.dp))
+                Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.ui_remove), tint = MaterialTheme.colorScheme.error.copy(0.65f), modifier = Modifier.size(18.dp))
             }
         }
     }
@@ -2288,7 +2286,7 @@ private fun LibrarySelectionToggle(
                 if (selected) {
                     Icon(
                         Icons.Default.Check,
-                        contentDescription = "Selected",
+                        contentDescription = stringResource(R.string.ui_selected),
                         tint = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.size(if (compact) 13.dp else 14.dp)
                     )
@@ -2356,7 +2354,7 @@ private fun LibraryGridCard(
                     ) {
                         Icon(
                             Icons.Default.Delete,
-                            contentDescription = "Remove",
+                            contentDescription = stringResource(R.string.ui_remove),
                             tint = MaterialTheme.colorScheme.error.copy(0.62f),
                             modifier = Modifier.size(if (compact) 16.dp else 17.dp)
                         )
@@ -2468,10 +2466,9 @@ fun LibraryInline(
     pendingLibraryImportJson?.let { rawJson ->
         AlertDialog(
             onDismissRequest = { pendingLibraryImportJson = null },
-            title = { Text("Import Library", fontWeight = FontWeight.Bold) },
+            title = { Text(stringResource(R.string.ui_import_library), fontWeight = FontWeight.Bold) },
             text = {
-                Text(
-                    "Merge the backup with your current Library, or replace current favorites and downloads with the backup file.",
+                Text(stringResource(R.string.ui_merge_the_backup_with_your_current_library_or),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.65f)
                 )
@@ -2493,11 +2490,11 @@ fun LibraryInline(
                         }
                     },
                     shape = RoundedCornerShape(12.dp)
-                ) { Text("Merge") }
+                ) { Text(stringResource(R.string.ui_merge)) }
             },
             dismissButton = {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    TextButton(onClick = { pendingLibraryImportJson = null }) { Text("Cancel") }
+                    TextButton(onClick = { pendingLibraryImportJson = null }) { Text(stringResource(R.string.ui_cancel)) }
                     TextButton(
                         onClick = {
                             pendingLibraryImportJson = null
@@ -2513,7 +2510,7 @@ fun LibraryInline(
                                 }
                             }
                         }
-                    ) { Text("Replace") }
+                    ) { Text(stringResource(R.string.ui_replace)) }
                 }
             },
             containerColor = MaterialTheme.colorScheme.surface
@@ -2592,7 +2589,7 @@ fun LibraryInline(
             trailingIcon = {
                 if (filterQuery.isNotBlank()) {
                     IconButton(onClick = { filterQuery = "" }) {
-                        Icon(Icons.Default.Close, contentDescription = "Clear filter")
+                        Icon(Icons.Default.Close, contentDescription = stringResource(R.string.ui_clear_filter))
                     }
                 }
             },
@@ -2606,8 +2603,7 @@ fun LibraryInline(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    "Sort",
+                Text(stringResource(R.string.ui_sort),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
                 )
@@ -2657,20 +2653,20 @@ fun LibraryInline(
             if (selectedSection == null) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     ChemIcon(ChemAppIcons.Library, null, tint = MaterialTheme.colorScheme.primary.copy(0.7f), modifier = Modifier.size(18.dp))
-                    Text("Library", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.ui_library), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 }
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     IconButton(
                         onClick = { exportLibraryLauncher.launch("chemsearch-library-${System.currentTimeMillis()}.json") },
                         modifier = Modifier.size(34.dp)
                     ) {
-                        Icon(Icons.Default.Description, contentDescription = "Export Library", modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
+                        Icon(Icons.Default.Description, contentDescription = stringResource(R.string.ui_export_library), modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
                     }
                     IconButton(
                         onClick = { importLibraryLauncher.launch(arrayOf("application/json", "text/plain")) },
                         modifier = Modifier.size(34.dp)
                     ) {
-                        Icon(Icons.Default.FolderOpen, contentDescription = "Import Library", modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
+                        Icon(Icons.Default.FolderOpen, contentDescription = stringResource(R.string.ui_import_library), modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
                     }
                     LibraryViewToggle(viewMode = homeViewMode, onViewModeChange = { homeViewMode = it })
                 }
@@ -2684,7 +2680,7 @@ fun LibraryInline(
                 ) {
                     Icon(Icons.AutoMirrored.Filled.ArrowBack, null, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(4.dp))
-                    Text("Back to Library")
+                    Text(stringResource(R.string.ui_back_to_library))
                 }
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     if (selectedSection == LibraryTab.FAVORITES || selectedSection == LibraryTab.DOWNLOADS) {
@@ -2719,8 +2715,7 @@ fun LibraryInline(
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Text(
-                    "Open saved compounds, offline copies, the periodic table, or the chemical database.",
+                Text(stringResource(R.string.ui_open_saved_compounds_offline_copies_the_periodic_table),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
                 )
@@ -2788,8 +2783,7 @@ fun LibraryInline(
         }
 
         if (isReordering) {
-            Text(
-                "Reorder mode: use the arrows to move favorite items.",
+            Text(stringResource(R.string.ui_reorder_mode_use_the_arrows_to_move_favorite),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
             )
@@ -3003,7 +2997,7 @@ fun LibraryInline(
                 Icon(Icons.AutoMirrored.Filled.CompareArrows, contentDescription = null, modifier = Modifier.size(18.dp))
             },
             text = {
-                Text("Compare", fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.ui_compare), fontWeight = FontWeight.Bold)
             },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -3046,7 +3040,7 @@ fun FavoritesSheet(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Favorites", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.ui_favorites), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Surface(
                         shape = RoundedCornerShape(999.dp),
@@ -3071,8 +3065,7 @@ fun FavoritesSheet(
                 }
             }
             if (isReordering) {
-                Text(
-                    "Tap the arrows to move favorites.",
+                Text(stringResource(R.string.ui_tap_the_arrows_to_move_favorites),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.55f),
                     modifier = Modifier.padding(bottom = 6.dp)
@@ -3096,8 +3089,8 @@ fun FavoritesSheet(
                             Icon(Icons.Default.StarBorder, null, tint = MaterialTheme.colorScheme.primary.copy(0.5f), modifier = Modifier.size(36.dp))
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                            Text("No favorites yet", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
-                            Text("Tap the star icon on any compound", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.38f))
+                            Text(stringResource(R.string.ui_no_favorites_yet), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                            Text(stringResource(R.string.ui_tap_the_star_icon_on_any_compound), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.38f))
                         }
                     }
                 }
@@ -3188,8 +3181,8 @@ fun FavoritesInline(
                     )
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text("No favorites yet", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface.copy(0.7f))
-                    Text("Tap the favorite icon on any compound", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.38f))
+                    Text(stringResource(R.string.ui_no_favorites_yet), style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface.copy(0.7f))
+                    Text(stringResource(R.string.ui_tap_the_favorite_icon_on_any_compound), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.38f))
                 }
             }
         }
@@ -3203,7 +3196,7 @@ fun FavoritesInline(
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Icon(Icons.Default.Star, null, tint = MaterialTheme.colorScheme.primary.copy(0.7f), modifier = Modifier.size(18.dp))
-                Text("Favorites", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.ui_favorites), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             }
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Surface(
@@ -3236,14 +3229,12 @@ fun FavoritesInline(
                 }
             }
         }
-        Text(
-            "Tap a card to open. Favorites are stored on this device only.",
+        Text(stringResource(R.string.ui_tap_a_card_to_open_favorites_are_stored),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
         )
         if (isReordering) {
-            Text(
-                "Reorder mode: use the arrows to move items.",
+            Text(stringResource(R.string.ui_reorder_mode_use_the_arrows_to_move_items),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
             )
@@ -3253,12 +3244,12 @@ fun FavoritesInline(
             OutlinedTextField(
                 value = filterQuery,
                 onValueChange = { filterQuery = it },
-                label = { Text("Filter favorites") },
+                label = { Text(stringResource(R.string.ui_filter_favorites)) },
                 leadingIcon = { Icon(Icons.Default.Search, null) },
                 trailingIcon = {
                     if (filterQuery.isNotBlank()) {
                         IconButton(onClick = { filterQuery = "" }) {
-                            Icon(Icons.Default.Close, contentDescription = "Clear filter")
+                            Icon(Icons.Default.Close, contentDescription = stringResource(R.string.ui_clear_filter))
                         }
                     }
                 },
@@ -3272,8 +3263,7 @@ fun FavoritesInline(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        "Sort",
+                    Text(stringResource(R.string.ui_sort),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
                     )
@@ -3312,19 +3302,17 @@ fun FavoritesInline(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                Text(
-                    "No matches found.",
+                Text(stringResource(R.string.ui_no_matches_found),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
                 )
-                Text(
-                    "Try a different name, formula, or CID.",
+                Text(stringResource(R.string.ui_try_a_different_name_formula_or_cid),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
                 )
                 if (filterQuery.isNotBlank()) {
-                    TextButton(onClick = { filterQuery = "" }) { Text("Clear filter") }
+                    TextButton(onClick = { filterQuery = "" }) { Text(stringResource(R.string.ui_clear_filter)) }
                 }
             }
         } else {
@@ -3391,6 +3379,7 @@ private fun SettingsGroupDivider() {
 fun SettingsInline(
     isDark: Boolean,
     colorScheme: AppColorScheme,
+    appLanguage: AppLanguage = AppLanguage.SYSTEM,
     autoSuggest: Boolean,
     compactMode: Boolean,
     oledDarkTheme: Boolean,
@@ -3409,6 +3398,7 @@ fun SettingsInline(
     updateStatus: UpdateStatus = UpdateStatus(),
     onToggleTheme: () -> Unit,
     onSetColorScheme: (AppColorScheme) -> Unit,
+    onSetAppLanguage: (AppLanguage) -> Unit = {},
     onToggleAutoSuggest: () -> Unit,
     onToggleCompactMode: () -> Unit,
     onToggleOledDarkTheme: () -> Unit,
@@ -3485,25 +3475,23 @@ fun SettingsInline(
     if (showCacheDirDialog) {
         AlertDialog(
             onDismissRequest = { showCacheDirDialog = false },
-            title = { Text("Cache location", fontWeight = FontWeight.Bold) },
+            title = { Text(stringResource(R.string.ui_cache_location), fontWeight = FontWeight.Bold) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text(
-                        "Enter a custom path or leave blank to use the default app cache directory.",
+                    Text(stringResource(R.string.ui_enter_a_custom_path_or_leave_blank_to),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
                     )
                     OutlinedTextField(
                         value = cacheDirInput,
                         onValueChange = { cacheDirInput = it },
-                        label = { Text("Directory path") },
-                        placeholder = { Text("Leave blank for default") },
+                        label = { Text(stringResource(R.string.ui_directory_path)) },
+                        placeholder = { Text(stringResource(R.string.ui_leave_blank_for_default)) },
                         singleLine = true,
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.fillMaxWidth()
                     )
-                    Text(
-                        "Default: app internal cache. Custom paths must be writable.",
+                    Text(stringResource(R.string.ui_default_app_internal_cache_custom_paths_must_be),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
                     )
@@ -3521,9 +3509,9 @@ fun SettingsInline(
                         }
                     },
                     shape = RoundedCornerShape(10.dp)
-                ) { Text("Save") }
+                ) { Text(stringResource(R.string.ui_save)) }
             },
-            dismissButton = { TextButton(onClick = { showCacheDirDialog = false }) { Text("Cancel") } },
+            dismissButton = { TextButton(onClick = { showCacheDirDialog = false }) { Text(stringResource(R.string.ui_cancel)) } },
             containerColor = MaterialTheme.colorScheme.surface
         )
     }
@@ -3541,7 +3529,7 @@ fun SettingsInline(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text("Settings", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.ui_settings), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         Text(
             if (BuildConfig.GITHUB_UPDATES_ENABLED) {
                 "Customize search, AI, storage, and app updates."
@@ -3565,7 +3553,7 @@ fun SettingsInline(
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     Icon(Icons.Default.Palette, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(20.dp))
                     Column {
-                        Text("Theme mode", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
+                        Text(stringResource(R.string.ui_theme_mode), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
                         Text(if (isDark) "Dark" else "Light", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
                     }
                 }
@@ -3635,14 +3623,22 @@ fun SettingsInline(
                 onToggle = onToggleOledDarkTheme
             )
             SettingsGroupDivider()
-            Text(
-                "Color scheme",
+            Text(stringResource(R.string.ui_color_scheme),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
             )
             ColorSchemePicker(
                 colorScheme = colorScheme,
                 onSetColorScheme = onSetColorScheme
+            )
+            SettingsGroupDivider()
+            SettingsDropdownSelector(
+                title = stringResource(R.string.ui_language),
+                subtitle = stringResource(R.string.ui_language_subtitle),
+                selected = appLanguage,
+                options = AppLanguage.entries,
+                labelFor = { language -> language.displayName },
+                onSelect = onSetAppLanguage
             )
             SettingsGroupDivider()
             SettingsToggleRow(
@@ -4079,15 +4075,14 @@ fun DebugSettingsSection(
         }
         AlertDialog(
             onDismissRequest = { showPrefsDialog = false },
-            title = { Text("SharedPreferences dump", fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace) },
+            title = { Text(stringResource(R.string.ui_sharedpreferences_dump), fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace) },
             text = {
                 Column(modifier = Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     if (prefEntries.isEmpty()) {
-                        Text("No keys stored.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+                        Text(stringResource(R.string.ui_no_keys_stored), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
                     } else {
                         if (hasSensitive) {
-                            Text(
-                                "Sensitive values are masked and are never copied from this view.",
+                            Text(stringResource(R.string.ui_sensitive_values_are_masked_and_are_never_copied),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
                             )
@@ -4111,12 +4106,12 @@ fun DebugSettingsSection(
                     TextButton(onClick = {
                         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         val dump = prefEntries.joinToString("\n") { "${it.key} = ${redactValue(it.key, it.value)}" }
-                        cm.setPrimaryClip(ClipData.newPlainText("prefs", dump))
+                        cm.setPrimaryClip(ClipData.newPlainText("Preferences", dump))
                         Toast.makeText(context, "Copied masked prefs", Toast.LENGTH_SHORT).show()
-                    }) { Text("Copy") }
+                    }) { Text(stringResource(R.string.ui_copy)) }
                 }
             },
-            dismissButton = { TextButton(onClick = { showPrefsDialog = false }) { Text("Close") } },
+            dismissButton = { TextButton(onClick = { showPrefsDialog = false }) { Text(stringResource(R.string.ui_close)) } },
             containerColor = MaterialTheme.colorScheme.surface
         )
     }
@@ -4126,7 +4121,7 @@ fun DebugSettingsSection(
             onDismissRequest = { showLogsDialog = false },
             title = {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("Live Logs", fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace, modifier = Modifier.weight(1f))
+                    Text(stringResource(R.string.ui_live_logs), fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace, modifier = Modifier.weight(1f))
                     Surface(shape = RoundedCornerShape(6.dp), color = if (verboseLogging) Color(0xFF22C55E).copy(0.15f) else MaterialTheme.colorScheme.outline.copy(0.1f)) {
                         Text(
                             if (verboseLogging) "● LIVE" else "○ PAUSED",
@@ -4162,13 +4157,13 @@ fun DebugSettingsSection(
             },
             confirmButton = {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    TextButton(onClick = { DebugLog.clear() }) { Text("Clear") }
+                    TextButton(onClick = { DebugLog.clear() }) { Text(stringResource(R.string.ui_clear)) }
                     TextButton(onClick = {
                         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        cm.setPrimaryClip(ClipData.newPlainText("logs", logLines.joinToString("\n")))
+                        cm.setPrimaryClip(ClipData.newPlainText("Logs", logLines.joinToString("\n")))
                         Toast.makeText(context, "Copied ${logLines.size} lines", Toast.LENGTH_SHORT).show()
-                    }) { Text("Copy") }
-                    TextButton(onClick = { showLogsDialog = false }) { Text("Close") }
+                    }) { Text(stringResource(R.string.ui_copy)) }
+                    TextButton(onClick = { showLogsDialog = false }) { Text(stringResource(R.string.ui_close)) }
                 }
             },
             containerColor = MaterialTheme.colorScheme.surface
@@ -4190,7 +4185,7 @@ fun DebugSettingsSection(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("Network diagnostics", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                    Text(stringResource(R.string.ui_network_diagnostics), fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                     if (isRunningNetworkDiagnostics) {
                         CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
                     }
@@ -4216,8 +4211,7 @@ fun DebugSettingsSection(
                         )
                     }
                     if (networkDiagnosticsResults.isEmpty() && !isRunningNetworkDiagnostics) {
-                        Text(
-                            "Run diagnostics to test PubChem lookup, structures, GHS data, fallback 3D loading, Wikipedia, GitHub releases, and AI endpoints.",
+                        Text(stringResource(R.string.ui_run_diagnostics_to_test_pubchem_lookup_structures_ghs),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurface.copy(0.65f)
                         )
@@ -4309,12 +4303,12 @@ fun DebugSettingsSection(
                                 }
                             }
                             val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                            cm.setPrimaryClip(ClipData.newPlainText("network_diagnostics", report))
+                            cm.setPrimaryClip(ClipData.newPlainText("Network diagnostics", report))
                             Toast.makeText(context, "Diagnostics copied", Toast.LENGTH_SHORT).show()
                         },
                         enabled = networkDiagnosticsResults.isNotEmpty()
-                    ) { Text("Copy") }
-                    TextButton(onClick = { showNetworkDialog = false }) { Text("Close") }
+                    ) { Text(stringResource(R.string.ui_copy)) }
+                    TextButton(onClick = { showNetworkDialog = false }) { Text(stringResource(R.string.ui_close)) }
                 }
             },
             containerColor = MaterialTheme.colorScheme.surface
@@ -4351,7 +4345,7 @@ fun DebugSettingsSection(
         val lowMemoryColor = if (mi.lowMemory) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface.copy(0.7f)
         AlertDialog(
             onDismissRequest = { showMemoryDialog = false },
-            title = { Text("Memory info", fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace) },
+            title = { Text(stringResource(R.string.ui_memory_info), fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     @Composable
@@ -4387,7 +4381,7 @@ fun DebugSettingsSection(
                                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                     Icon(Icons.Default.Memory, null, tint = heapColor, modifier = Modifier.size(18.dp))
                                     Column {
-                                        Text("JVM heap", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+                                        Text(stringResource(R.string.ui_jvm_heap), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
                                         Text(
                                             "Used ${heapUsedMb} MB of ${heapMaxMb} MB max",
                                             style = MaterialTheme.typography.labelSmall,
@@ -4437,7 +4431,7 @@ fun DebugSettingsSection(
                                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                     Icon(Icons.Default.Storage, null, tint = systemColor, modifier = Modifier.size(18.dp))
                                     Column {
-                                        Text("System RAM", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+                                        Text(stringResource(R.string.ui_system_ram), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
                                         Text(
                                             "Used ${usedSystemMb} MB of ${totalSystemMb} MB total",
                                             style = MaterialTheme.typography.labelSmall,
@@ -4470,7 +4464,7 @@ fun DebugSettingsSection(
                                 }
                             }
                             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                Text("Low memory", style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace))
+                                Text(stringResource(R.string.ui_low_memory), style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace))
                                 Text(lowMemoryLabel, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace), fontWeight = FontWeight.SemiBold, color = lowMemoryColor)
                             }
                         }
@@ -4485,10 +4479,10 @@ fun DebugSettingsSection(
                             append("JVM heap: used ${heapUsedMb} MB, allocated ${heapAllocatedMb} MB, max ${heapMaxMb} MB, headroom ${heapHeadroomMb} MB (${heapPercentLabel})\n")
                             append("System RAM: used ${usedSystemMb} MB, available ${availMb} MB, total ${totalSystemMb} MB (${systemPercentLabel}), low memory: $lowMemoryLabel")
                         }
-                        cm.setPrimaryClip(ClipData.newPlainText("memory", snapshot))
+                        cm.setPrimaryClip(ClipData.newPlainText("Memory", snapshot))
                         Toast.makeText(context, "Copied memory snapshot", Toast.LENGTH_SHORT).show()
-                    }) { Text("Copy") }
-                    TextButton(onClick = { showMemoryDialog = false }) { Text("Close") }
+                    }) { Text(stringResource(R.string.ui_copy)) }
+                    TextButton(onClick = { showMemoryDialog = false }) { Text(stringResource(R.string.ui_close)) }
                 }
             },
             containerColor = MaterialTheme.colorScheme.surface
@@ -4498,8 +4492,8 @@ fun DebugSettingsSection(
     if (showWipeConfirm) {
         AlertDialog(
             onDismissRequest = { showWipeConfirm = false },
-            title = { Text("Wipe all preferences?", fontWeight = FontWeight.Bold) },
-            text = { Text("This clears legacy preferences, encrypted key records, history, favorites, and debug flags. DataStore settings, Room downloads, and cache files are not deleted. You will need to unlock debug settings again.") },
+            title = { Text(stringResource(R.string.ui_wipe_all_preferences), fontWeight = FontWeight.Bold) },
+            text = { Text(stringResource(R.string.ui_this_clears_legacy_preferences_encrypted_key_records_history)) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -4512,9 +4506,9 @@ fun DebugSettingsSection(
                         Toast.makeText(context, "All preferences wiped. Restart the app.", Toast.LENGTH_LONG).show()
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                ) { Text("Wipe now") }
+                ) { Text(stringResource(R.string.ui_wipe_now)) }
             },
-            dismissButton = { TextButton(onClick = { showWipeConfirm = false }) { Text("Cancel") } },
+            dismissButton = { TextButton(onClick = { showWipeConfirm = false }) { Text(stringResource(R.string.ui_cancel)) } },
             containerColor = MaterialTheme.colorScheme.surface
         )
     }
@@ -4522,15 +4516,15 @@ fun DebugSettingsSection(
     if (showCrashConfirm) {
         AlertDialog(
             onDismissRequest = { showCrashConfirm = false },
-            title = { Text("Force crash?", fontWeight = FontWeight.Bold) },
-            text = { Text("This will immediately crash the app with an unhandled exception. Used to verify crash reporting is working.") },
+            title = { Text(stringResource(R.string.ui_force_crash), fontWeight = FontWeight.Bold) },
+            text = { Text(stringResource(R.string.ui_this_will_immediately_crash_the_app_with_an)) },
             confirmButton = {
                 Button(
                     onClick = { throw RuntimeException("ChemSearch debug force crash") },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                ) { Text("Crash now") }
+                ) { Text(stringResource(R.string.ui_crash_now)) }
             },
-            dismissButton = { TextButton(onClick = { showCrashConfirm = false }) { Text("Cancel") } },
+            dismissButton = { TextButton(onClick = { showCrashConfirm = false }) { Text(stringResource(R.string.ui_cancel)) } },
             containerColor = MaterialTheme.colorScheme.surface
         )
     }
@@ -4548,8 +4542,7 @@ fun DebugSettingsSection(
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Icon(Icons.Default.BugReport, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
-                Text(
-                    "DEBUG SETTINGS",
+                Text(stringResource(R.string.ui_debug_settings),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.ExtraBold,
                     letterSpacing = 1.5.sp,
@@ -4571,8 +4564,8 @@ fun DebugSettingsSection(
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     Icon(Icons.Default.Terminal, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(20.dp))
                     Column {
-                        Text("Verbose logging", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
-                        Text("Tag: ChemSearch", style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace), color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                        Text(stringResource(R.string.ui_verbose_logging), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
+                        Text(stringResource(R.string.ui_tag_chemsearch), style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace), color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
                     }
                 }
                 Switch(
@@ -4680,7 +4673,7 @@ fun DebugSettingsSection(
                 onClick = {
                     val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     val endpoints = buildDebugApiEndpointLines().joinToString("\n")
-                    cm.setPrimaryClip(ClipData.newPlainText("endpoints", endpoints))
+                    cm.setPrimaryClip(ClipData.newPlainText("Endpoints", endpoints))
                     Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()
                 }
             )
@@ -4715,7 +4708,7 @@ fun DebugSettingsSection(
             ) {
                 Icon(Icons.Default.VisibilityOff, null, modifier = Modifier.size(14.dp), tint = MaterialTheme.colorScheme.onSurface.copy(0.4f))
                 Spacer(Modifier.width(6.dp))
-                Text("Hide debug settings", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+                Text(stringResource(R.string.ui_hide_debug_settings), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.ui
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.fadeIn
@@ -32,6 +33,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -41,6 +43,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -59,15 +62,18 @@ import androidx.compose.ui.unit.sp
 import com.furthersecrets.chemsearch.BuildConfig
 import com.furthersecrets.chemsearch.R
 import com.furthersecrets.chemsearch.data.AppColorScheme
+import com.furthersecrets.chemsearch.data.AppLanguage
 import com.furthersecrets.chemsearch.data.DescSource
 
 @Composable
 fun WelcomeScreen(
     isDark: Boolean,
     colorScheme: AppColorScheme,
+    appLanguage: AppLanguage,
     defaultDescSource: DescSource,
     onSetDarkTheme: (Boolean) -> Unit,
     onSetColorScheme: (AppColorScheme) -> Unit,
+    onSetAppLanguage: (AppLanguage) -> Unit,
     onSetDefaultDesc: (DescSource) -> Unit,
     onConfigureAiProvider: () -> Unit,
     onContinue: () -> Unit
@@ -119,9 +125,11 @@ fun WelcomeScreen(
                     logoFrame = logoFrame,
                     isDark = isDark,
                     colorScheme = colorScheme,
+                    appLanguage = appLanguage,
                     defaultDescSource = defaultDescSource,
                     onSetDarkTheme = onSetDarkTheme,
                     onSetColorScheme = onSetColorScheme,
+                    onSetAppLanguage = onSetAppLanguage,
                     onSetDefaultDesc = onSetDefaultDesc,
                     onConfigureAiProvider = onConfigureAiProvider,
                     onOpenLegalDocument = { selectedLegalDocument = it }
@@ -148,9 +156,11 @@ private fun WelcomeStageContent(
     logoFrame: Color,
     isDark: Boolean,
     colorScheme: AppColorScheme,
+    appLanguage: AppLanguage,
     defaultDescSource: DescSource,
     onSetDarkTheme: (Boolean) -> Unit,
     onSetColorScheme: (AppColorScheme) -> Unit,
+    onSetAppLanguage: (AppLanguage) -> Unit,
     onSetDefaultDesc: (DescSource) -> Unit,
     onConfigureAiProvider: () -> Unit,
     onOpenLegalDocument: (LegalDocument) -> Unit
@@ -161,9 +171,11 @@ private fun WelcomeStageContent(
             logoFrame = logoFrame,
             isDark = isDark,
             colorScheme = colorScheme,
+            appLanguage = appLanguage,
             defaultDescSource = defaultDescSource,
             onSetDarkTheme = onSetDarkTheme,
             onSetColorScheme = onSetColorScheme,
+            onSetAppLanguage = onSetAppLanguage,
             onSetDefaultDesc = onSetDefaultDesc,
             onConfigureAiProvider = onConfigureAiProvider,
             onOpenLegalDocument = onOpenLegalDocument
@@ -194,9 +206,11 @@ private fun WelcomeStageContent(
             logoFrame = logoFrame,
             isDark = isDark,
             colorScheme = colorScheme,
+            appLanguage = appLanguage,
             defaultDescSource = defaultDescSource,
             onSetDarkTheme = onSetDarkTheme,
             onSetColorScheme = onSetColorScheme,
+            onSetAppLanguage = onSetAppLanguage,
             onSetDefaultDesc = onSetDefaultDesc,
             onConfigureAiProvider = onConfigureAiProvider,
             onOpenLegalDocument = onOpenLegalDocument
@@ -210,9 +224,11 @@ private fun WelcomeStage(
     logoFrame: Color,
     isDark: Boolean,
     colorScheme: AppColorScheme,
+    appLanguage: AppLanguage,
     defaultDescSource: DescSource,
     onSetDarkTheme: (Boolean) -> Unit,
     onSetColorScheme: (AppColorScheme) -> Unit,
+    onSetAppLanguage: (AppLanguage) -> Unit,
     onSetDefaultDesc: (DescSource) -> Unit,
     onConfigureAiProvider: () -> Unit,
     onOpenLegalDocument: (LegalDocument) -> Unit
@@ -222,8 +238,10 @@ private fun WelcomeStage(
         1 -> WelcomeAppearanceStage(
             isDark = isDark,
             colorScheme = colorScheme,
+            appLanguage = appLanguage,
             onSetDarkTheme = onSetDarkTheme,
-            onSetColorScheme = onSetColorScheme
+            onSetColorScheme = onSetColorScheme,
+            onSetAppLanguage = onSetAppLanguage
         )
         2 -> WelcomeDescriptionStage(
             defaultDescSource = defaultDescSource,
@@ -284,7 +302,7 @@ private fun WelcomeIntroStage(logoFrame: Color) {
         ) {
             Image(
                 painter = painterResource(id = R.drawable.chemsearch),
-                contentDescription = "ChemSearch",
+                contentDescription = stringResource(R.string.ui_chemsearch),
                 modifier = Modifier.padding(5.dp),
                 contentScale = ContentScale.Fit
             )
@@ -312,8 +330,10 @@ private fun WelcomeIntroStage(logoFrame: Color) {
 private fun WelcomeAppearanceStage(
     isDark: Boolean,
     colorScheme: AppColorScheme,
+    appLanguage: AppLanguage,
     onSetDarkTheme: (Boolean) -> Unit,
-    onSetColorScheme: (AppColorScheme) -> Unit
+    onSetColorScheme: (AppColorScheme) -> Unit,
+    onSetAppLanguage: (AppLanguage) -> Unit
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(14.dp), modifier = Modifier.fillMaxWidth()) {
         WelcomeTitle(
@@ -341,8 +361,7 @@ private fun WelcomeAppearanceStage(
             )
         }
 
-        Text(
-            "Color scheme",
+        Text(stringResource(R.string.ui_color_scheme),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.48f),
             fontWeight = FontWeight.Bold
@@ -408,6 +427,67 @@ private fun WelcomeAppearanceStage(
                 }
             }
         }
+
+        WelcomeLanguageSelector(
+            selected = appLanguage,
+            onSelect = onSetAppLanguage
+        )
+    }
+}
+
+@Composable
+private fun WelcomeLanguageSelector(
+    selected: AppLanguage,
+    onSelect: (AppLanguage) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        Text(
+            stringResource(R.string.ui_language),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.48f),
+            fontWeight = FontWeight.Bold
+        )
+        Box {
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = true },
+                shape = RoundedCornerShape(12.dp),
+                color = MaterialTheme.colorScheme.surface,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.28f))
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Text(selected.displayName, fontWeight = FontWeight.SemiBold)
+                        Text(
+                            stringResource(R.string.ui_language_subtitle),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.52f)
+                        )
+                    }
+                    Icon(Icons.Default.ArrowDropDown, contentDescription = null)
+                }
+            }
+            SettingsDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                AppLanguage.entries.forEach { language ->
+                    DropdownMenuItem(
+                        text = { Text(language.displayName) },
+                        onClick = {
+                            expanded = false
+                            onSelect(language)
+                        }
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -447,7 +527,7 @@ private fun WelcomeDescriptionStage(
             ) {
                 Icon(Icons.Default.SmartToy, null, modifier = Modifier.size(17.dp))
                 Spacer(Modifier.width(8.dp))
-                Text("Configure AI provider", fontWeight = FontWeight.SemiBold)
+                Text(stringResource(R.string.ui_configure_ai_provider), fontWeight = FontWeight.SemiBold)
             }
         }
     }
@@ -477,8 +557,7 @@ private fun WelcomeLegalStage(
             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.18f))
         ) {
-            Text(
-                "Always follow SDS documents, lab rules, labels, and official guidance before handling chemicals.",
+            Text(stringResource(R.string.ui_always_follow_sds_documents_lab_rules_labels_and),
                 modifier = Modifier.padding(13.dp),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.72f),
@@ -625,14 +704,14 @@ private fun WelcomeNavigation(
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextButton(onClick = onBack, enabled = stage > 0) {
-                Text("Back")
+                Text(stringResource(R.string.ui_back))
             }
             OutlinedButton(
                 onClick = onSkip,
                 shape = RoundedCornerShape(10.dp),
                 contentPadding = PaddingValues(horizontal = 18.dp, vertical = 8.dp)
             ) {
-                Text("Skip")
+                Text(stringResource(R.string.ui_skip))
             }
         }
     }

@@ -1,5 +1,7 @@
 package com.furthersecrets.chemsearch.ui
 
+import com.furthersecrets.chemsearch.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -117,8 +119,7 @@ fun LegalDocumentDialog(
                     }
                 }
                 Spacer(Modifier.height(2.dp))
-                Text(
-                    "This in-app notice is a practical summary for ChemSearch users. It is not legal advice.",
+                Text(stringResource(R.string.ui_this_in_app_notice_is_a_practical_summary),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.46f)
                 )
@@ -126,7 +127,7 @@ fun LegalDocumentDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Close")
+                Text(stringResource(R.string.ui_close))
             }
         },
         shape = RoundedCornerShape(22.dp),

@@ -1,5 +1,7 @@
 package com.furthersecrets.chemsearch.ui
 
+import com.furthersecrets.chemsearch.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -432,8 +434,7 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
 
     if (parsedMolecule.atoms.isEmpty()) {
         Box(Modifier.fillMaxSize().background(bgColor), contentAlignment = Alignment.Center) {
-            Text(
-                "Could not parse 3D data",
+            Text(stringResource(R.string.ui_could_not_parse_3d_data),
                 color = overlayTextColor.copy(0.45f),
                 style = MaterialTheme.typography.bodySmall
             )
@@ -556,9 +557,9 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
             horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
-            Text("Drag to rotate", color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
-            Text("Pinch to zoom",  color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
-            Text("Pinch-drag to pan", color = overlayTextColor.copy(0.30f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
+            Text(stringResource(R.string.ui_drag_to_rotate), color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
+            Text(stringResource(R.string.ui_pinch_to_zoom),  color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
+            Text(stringResource(R.string.ui_pinch_drag_to_pan), color = overlayTextColor.copy(0.30f), fontSize = 9.sp, fontFamily = FontFamily.Monospace)
         }
 
         // Bottom left: element legend

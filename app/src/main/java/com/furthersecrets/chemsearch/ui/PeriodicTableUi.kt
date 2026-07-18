@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.ui
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -132,7 +133,7 @@ fun PeriodicTableLibraryScreen(
                 Icon(Icons.Default.Search, contentDescription = null)
             },
             placeholder = {
-                Text("Search elements", color = MaterialTheme.colorScheme.onSurface.copy(0.34f))
+                Text(stringResource(R.string.ui_search_elements), color = MaterialTheme.colorScheme.onSurface.copy(0.34f))
             },
             singleLine = true,
             shape = RoundedCornerShape(18.dp)
@@ -282,8 +283,7 @@ private fun PeriodicTrendsPanel(
     val summary = remember(selectedMetric) { periodicTrendSummary(PeriodicTableElements, selectedMetric) }
 
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text(
-            "Compare listed element properties across the whole table. Darker tiles mean higher values for the selected property.",
+        Text(stringResource(R.string.ui_compare_listed_element_properties_across_the_whole_table),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
         )
@@ -698,7 +698,7 @@ private fun ElementDetailDialog(
                     }
                 }
                 IconButton(onClick = onDismiss, modifier = Modifier.size(36.dp)) {
-                    Icon(Icons.Default.Close, contentDescription = "Close")
+                    Icon(Icons.Default.Close, contentDescription = stringResource(R.string.ui_close))
                 }
             }
         },
@@ -725,7 +725,7 @@ private fun ElementDetailDialog(
             Button(onClick = onOpenDetails, shape = RoundedCornerShape(12.dp)) {
                 Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = null, modifier = Modifier.size(16.dp))
                 Spacer(Modifier.width(6.dp))
-                Text("Full details")
+                Text(stringResource(R.string.ui_full_details))
             }
         },
         containerColor = MaterialTheme.colorScheme.surface
@@ -765,7 +765,7 @@ private fun ElementFullDetailPage(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             IconButton(onClick = onBack, modifier = Modifier.size(42.dp)) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.ui_back))
             }
             Column(modifier = Modifier.weight(1f)) {
                 Text(element.pubChemName, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
@@ -850,7 +850,7 @@ private fun ElementHeroCard(
                             Box(contentAlignment = Alignment.Center) {
                                 Image(
                                     painter = painterResource(R.drawable.icons8_wikipedia_logo),
-                                    contentDescription = "Open Wikipedia page",
+                                    contentDescription = stringResource(R.string.ui_open_wikipedia_page),
                                     modifier = Modifier.size(22.dp),
                                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.82f))
                                 )
@@ -976,8 +976,7 @@ private fun ElementRemoteImage(
             contentAlignment = Alignment.Center
         ) {
             if (failed) {
-                Text(
-                    "Image unavailable",
+                Text(stringResource(R.string.ui_image_unavailable),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.52f),
                     fontWeight = FontWeight.SemiBold
@@ -1214,7 +1213,7 @@ private fun ElementSourceCard(element: PeriodicElement, descriptionState: Elemen
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Sources", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.ui_sources), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
                 CardInfoIcon(info = periodicDetailCardInfo("Sources"))
             }
             links.forEach { link ->
@@ -1329,7 +1328,7 @@ private fun CardInfoIcon(info: PeriodicDetailCardInfo?) {
             },
             confirmButton = {
                 TextButton(onClick = { showInfo = false }) {
-                    Text("OK")
+                    Text(stringResource(R.string.ui_ok))
                 }
             }
         )

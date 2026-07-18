@@ -1,5 +1,7 @@
 package com.furthersecrets.chemsearch.ui
 
+import com.furthersecrets.chemsearch.R
+import androidx.compose.ui.res.stringResource
 import android.app.Activity
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
@@ -49,6 +51,7 @@ import com.furthersecrets.chemsearch.ChemViewModel
 import androidx.activity.compose.BackHandler
 import com.furthersecrets.chemsearch.data.AiProvider
 import com.furthersecrets.chemsearch.data.AppColorScheme
+import com.furthersecrets.chemsearch.data.AppLanguage
 import com.furthersecrets.chemsearch.data.ChemUiState
 import com.furthersecrets.chemsearch.data.DescSource
 import kotlinx.coroutines.launch
@@ -498,6 +501,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val query by vm.query.collectAsStateWithLifecycle()
     val isDark by vm.isDarkTheme.collectAsStateWithLifecycle()
     val colorScheme by vm.colorScheme.collectAsStateWithLifecycle()
+    val appLanguage by vm.appLanguage.collectAsStateWithLifecycle()
     val autoSuggest by vm.autoSuggest.collectAsStateWithLifecycle()
     val compactMode by vm.compactMode.collectAsStateWithLifecycle()
     val oledDarkTheme by vm.oledDarkTheme.collectAsStateWithLifecycle()
@@ -527,6 +531,12 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val isDownloaded by vm.isDownloaded.collectAsStateWithLifecycle()
     val isSavingOffline by vm.isSavingOffline.collectAsStateWithLifecycle()
     val offlineDownloadProgress by vm.offlineDownloadProgress.collectAsStateWithLifecycle()
+
+    fun setAppLanguage(language: AppLanguage) {
+        if (language == appLanguage) return
+        vm.setAppLanguage(language)
+        (context as? Activity)?.recreate()
+    }
 
     var editingAiKeyProvider by remember { mutableStateOf<AiProvider?>(null) }
     var showAiProviderDialog by remember { mutableStateOf(false) }
@@ -594,9 +604,11 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             WelcomeScreen(
                 isDark = isDark,
                 colorScheme = colorScheme,
+                appLanguage = appLanguage,
                 defaultDescSource = defaultDescSource,
                 onSetDarkTheme = { dark -> if (isDark != dark) vm.toggleTheme() },
                 onSetColorScheme = { vm.setColorScheme(it) },
+                onSetAppLanguage = ::setAppLanguage,
                 onSetDefaultDesc = { vm.setDefaultDescSource(it) },
                 onConfigureAiProvider = { showAiProviderDialog = true },
                 onContinue = { vm.skipWelcome() }
@@ -676,6 +688,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         SettingsSheet(
             isDark = isDark,
             colorScheme = colorScheme,
+            appLanguage = appLanguage,
             autoSuggest = autoSuggest,
             compactMode = compactMode,
             oledDarkTheme = oledDarkTheme,
@@ -691,6 +704,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             updateStatus = updateStatus,
             onToggleTheme = { vm.toggleTheme() },
             onSetColorScheme = { vm.setColorScheme(it) },
+            onSetAppLanguage = ::setAppLanguage,
             onToggleAutoSuggest = { vm.toggleAutoSuggest() },
             onToggleCompactMode = { vm.setCompactMode(!compactMode) },
             onToggleOledDarkTheme = { vm.setOledDarkTheme(!oledDarkTheme) },
@@ -770,16 +784,16 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     if (showExitDialog) {
         AlertDialog(
             onDismissRequest = { showExitDialog = false },
-            title = { Text("Exit ChemSearch?", fontWeight = FontWeight.Bold) },
-            text = { Text("Are you sure you want to exit?") },
+            title = { Text(stringResource(R.string.ui_exit_chemsearch), fontWeight = FontWeight.Bold) },
+            text = { Text(stringResource(R.string.ui_are_you_sure_you_want_to_exit)) },
             confirmButton = {
                 Button(
                     onClick = { (context as? Activity)?.finish() },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                ) { Text("Exit") }
+                ) { Text(stringResource(R.string.ui_exit)) }
             },
             dismissButton = {
-                TextButton(onClick = { showExitDialog = false }) { Text("Cancel") }
+                TextButton(onClick = { showExitDialog = false }) { Text(stringResource(R.string.ui_cancel)) }
             },
             containerColor = MaterialTheme.colorScheme.surface
         )
@@ -946,8 +960,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                             horizontalAlignment = Alignment.CenterHorizontally,
                                             verticalArrangement = Arrangement.spacedBy(if (compactMode) 8.dp else 12.dp)
                                         ) {
-                                            Text(
-                                                "Looking up compound...",
+                                            Text(stringResource(R.string.ui_looking_up_compound),
                                                 style = MaterialTheme.typography.bodySmall,
                                                 color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
                                             )
@@ -1085,7 +1098,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                             ) {
                                 ChemIcon(
                                     icon = ChemAppIcons.Dice,
-                                    contentDescription = "Random compound",
+                                    contentDescription = stringResource(R.string.ui_random_compound),
                                     modifier = Modifier.size(24.dp),
                                     tint = MaterialTheme.colorScheme.onPrimary
                                 )
@@ -1174,6 +1187,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                             SettingsInline(
                                 isDark = isDark,
                                 colorScheme = colorScheme,
+                                appLanguage = appLanguage,
                                 autoSuggest = autoSuggest,
                                 compactMode = compactMode,
                                 oledDarkTheme = oledDarkTheme,
@@ -1192,6 +1206,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 updateStatus = updateStatus,
                                 onToggleTheme = { vm.toggleTheme() },
                                 onSetColorScheme = { vm.setColorScheme(it) },
+                                onSetAppLanguage = ::setAppLanguage,
                                 onToggleAutoSuggest = { vm.toggleAutoSuggest() },
                                 onToggleCompactMode = { vm.setCompactMode(!compactMode) },
                                 onToggleOledDarkTheme = { vm.setOledDarkTheme(!oledDarkTheme) },

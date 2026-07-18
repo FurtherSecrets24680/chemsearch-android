@@ -1,5 +1,7 @@
 package com.furthersecrets.chemsearch.ui
 
+import com.furthersecrets.chemsearch.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
@@ -101,7 +103,7 @@ fun AdvancedSearchDialog(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
-                    Text("Advanced search", fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.ui_advanced_search), fontWeight = FontWeight.Bold)
                     Text(
                         filterSummary(buildFilters()),
                         style = MaterialTheme.typography.labelSmall,
@@ -111,7 +113,7 @@ fun AdvancedSearchDialog(
                     )
                 }
                 IconButton(onClick = onDismiss) {
-                    Icon(Icons.Default.Close, contentDescription = "Close")
+                    Icon(Icons.Default.Close, contentDescription = stringResource(R.string.ui_close))
                 }
             }
         },
@@ -130,7 +132,7 @@ fun AdvancedSearchDialog(
                             selectedType = advancedSearchTypeForQuery(it)
                         },
                         modifier = Modifier.weight(1f),
-                        label = { Text("Query") },
+                        label = { Text(stringResource(R.string.ui_query)) },
                         singleLine = true,
                         shape = RoundedCornerShape(14.dp),
                         colors = advancedSearchTextFieldColors()
@@ -178,7 +180,7 @@ fun AdvancedSearchDialog(
                         value = includeText,
                         onValueChange = { includeText = it },
                         modifier = Modifier.weight(1f),
-                        label = { Text("Include") },
+                        label = { Text(stringResource(R.string.ui_include)) },
                         placeholder = { AdvancedSearchPlaceholder("C, O, Fe") },
                         singleLine = true,
                         shape = RoundedCornerShape(14.dp),
@@ -188,7 +190,7 @@ fun AdvancedSearchDialog(
                         value = excludeText,
                         onValueChange = { excludeText = it },
                         modifier = Modifier.weight(1f),
-                        label = { Text("Exclude") },
+                        label = { Text(stringResource(R.string.ui_exclude)) },
                         placeholder = { AdvancedSearchPlaceholder("Cl, Br") },
                         singleLine = true,
                         shape = RoundedCornerShape(14.dp),
@@ -247,7 +249,7 @@ fun AdvancedSearchDialog(
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                         Spacer(Modifier.width(8.dp))
-                        Text("Searching...")
+                        Text(stringResource(R.string.ui_searching))
                     } else {
                         ChemIcon(
                             ChemAppIcons.Search,
@@ -256,7 +258,7 @@ fun AdvancedSearchDialog(
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                         Spacer(Modifier.width(8.dp))
-                        Text("Search", fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.ui_search), fontWeight = FontWeight.Bold)
                     }
                 }
 

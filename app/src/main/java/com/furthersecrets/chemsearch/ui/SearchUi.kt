@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.ui
 
+import androidx.compose.ui.res.stringResource
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.ContentValues
@@ -201,14 +202,12 @@ fun AppHeader(isDark: Boolean, onToggleTheme: () -> Unit) {
                 modifier = Modifier.size(if (compact) 40.dp else 46.dp)
             )
             Column(verticalArrangement = Arrangement.spacedBy(1.dp)) {
-                Text(
-                    "ChemSearch",
+                Text(stringResource(R.string.ui_chemsearch_2),
                     style = if (compact) MaterialTheme.typography.titleMedium else MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.ExtraBold,
                     letterSpacing = 0.sp
                 )
-                Text(
-                    "CHEMISTRY SIMPLIFIED",
+                Text(stringResource(R.string.ui_chemistry_simplified),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary,
                     letterSpacing = if (compact) 1.4.sp else 1.8.sp,
@@ -257,8 +256,7 @@ fun SearchBar(
             .fillMaxWidth()
             .heightIn(min = if (compact) 58.dp else 66.dp),
         placeholder = {
-            Text(
-                "Search any compound..",
+            Text(stringResource(R.string.ui_search_any_compound),
                 color = MaterialTheme.colorScheme.onSurface.copy(0.38f),
                 maxLines = 1,
                 softWrap = false,
@@ -399,8 +397,7 @@ fun SearchCorrectionCard(
                 color = MaterialTheme.colorScheme.onSurface.copy(0.56f),
                 fontWeight = FontWeight.SemiBold
             )
-            Text(
-                "Did you mean:",
+            Text(stringResource(R.string.ui_did_you_mean),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.42f)
             )
@@ -468,8 +465,8 @@ fun HistorySection(
     if (showClearConfirm) {
         AlertDialog(
             onDismissRequest = { showClearConfirm = false },
-            title = { Text("Clear recent searches?", fontWeight = FontWeight.Bold) },
-            text = { Text("This removes your recent search list on this device.") },
+            title = { Text(stringResource(R.string.ui_clear_recent_searches), fontWeight = FontWeight.Bold) },
+            text = { Text(stringResource(R.string.ui_this_removes_your_recent_search_list_on_this)) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -477,9 +474,9 @@ fun HistorySection(
                         onClear()
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                ) { Text("Clear all") }
+                ) { Text(stringResource(R.string.ui_clear_all)) }
             },
-            dismissButton = { TextButton(onClick = { showClearConfirm = false }) { Text("Cancel") } },
+            dismissButton = { TextButton(onClick = { showClearConfirm = false }) { Text(stringResource(R.string.ui_cancel)) } },
             containerColor = MaterialTheme.colorScheme.surface
         )
     }
@@ -515,14 +512,12 @@ fun HistorySection(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 6.dp)
                 ) {
-                    Text(
-                        "Search any compound",
+                    Text(stringResource(R.string.ui_search_any_compound_2),
                         style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.7f)
                     )
-                    Text(
-                        "Type a compound name, formula, CID, or CAS.",
+                    Text(stringResource(R.string.ui_type_a_compound_name_formula_cid_or_cas),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.38f),
                         textAlign = TextAlign.Center
@@ -549,8 +544,7 @@ fun HistorySection(
                     tint = MaterialTheme.colorScheme.primary.copy(0.7f),
                     modifier = Modifier.size(if (compact) 16.dp else 18.dp)
                 )
-                Text(
-                    "Recent searches",
+                Text(stringResource(R.string.ui_recent_searches),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
@@ -565,7 +559,7 @@ fun HistorySection(
                     ) {
                         Icon(
                             Icons.Default.FilterList,
-                            contentDescription = "Sort recents",
+                            contentDescription = stringResource(R.string.ui_sort_recents),
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(if (compact) 18.dp else 20.dp)
                         )
@@ -599,8 +593,7 @@ fun HistorySection(
                     onClick = { showClearConfirm = true },
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
                 ) {
-                    Text(
-                        "Clear all",
+                    Text(stringResource(R.string.ui_clear_all_2),
                         color = MaterialTheme.colorScheme.error,
                         maxLines = 1,
                         softWrap = false,
@@ -678,7 +671,7 @@ fun HistorySection(
                                 IconButton(onClick = { onDelete(item.query) }, modifier = Modifier.size(if (compact) 28.dp else 32.dp)) {
                                     Icon(
                                         Icons.Default.DeleteOutline,
-                                        contentDescription = "Remove",
+                                        contentDescription = stringResource(R.string.ui_remove),
                                         tint = MaterialTheme.colorScheme.error.copy(0.6f),
                                         modifier = Modifier.size(if (compact) 16.dp else 18.dp)
                                     )
@@ -756,8 +749,7 @@ private fun FormulaHeaderRow(
                             tint = MaterialTheme.colorScheme.primary.copy(0.75f),
                             modifier = Modifier.size(if (compact) 11.dp else 12.dp)
                         )
-                        Text(
-                            "Find isomers",
+                        Text(stringResource(R.string.ui_find_isomers),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.primary
@@ -1082,7 +1074,7 @@ fun CompoundHeader(
                             }
                             Icon(
                                 Icons.Default.Download,
-                                contentDescription = "Downloading for offline use",
+                                contentDescription = stringResource(R.string.ui_downloading_for_offline_use),
                                 tint = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.size(if (compact) 14.dp else 16.dp)
                             )
@@ -1225,8 +1217,7 @@ fun PubChemCredits() {
             modifier = Modifier.size(if (compact) 11.dp else 12.dp)
         )
         Spacer(Modifier.width(if (compact) 4.dp else 5.dp))
-        Text(
-            "Compound data from PubChem (NIH/NCBI)",
+        Text(stringResource(R.string.ui_compound_data_from_pubchem_nih_ncbi),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurface.copy(0.28f),
             fontSize = if (compact) 9.sp else 10.sp
@@ -1427,8 +1418,7 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                         ),
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text(
-                            "2D Structure",
+                        Text(stringResource(R.string.ui_2d_structure_2),
                             modifier = Modifier.padding(vertical = if (compact) 7.dp else 8.dp),
                             color = if (twoDActive) Color.White else MaterialTheme.colorScheme.onSurface.copy(0.55f),
                             style = MaterialTheme.typography.labelMedium,
@@ -1448,8 +1438,7 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                         ),
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text(
-                            "3D Model",
+                        Text(stringResource(R.string.ui_3d_model),
                             modifier = Modifier.padding(vertical = if (compact) 7.dp else 8.dp),
                             color = if (threeDActive) Color.White else MaterialTheme.colorScheme.onSurface.copy(0.55f),
                             style = MaterialTheme.typography.labelMedium,
@@ -1464,7 +1453,7 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                 ) {
                     Icon(
                         Icons.Default.Share,
-                        contentDescription = "Share compound",
+                        contentDescription = stringResource(R.string.ui_share_compound),
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(if (compact) 18.dp else 20.dp)
                     )
@@ -1510,7 +1499,7 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                                 StructurePngImage(
                                     cid = cid,
                                     offlinePngBase64 = state.offline2dPngBase64,
-                                    contentDescription = "2D Structure",
+                                    contentDescription = stringResource(R.string.ui_2d_structure),
                                     modifier = Modifier
                                         .fillMaxSize()
                                         .padding(if (compact) 14.dp else 18.dp)
@@ -1532,7 +1521,7 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                                 Box(contentAlignment = Alignment.Center) {
                                     Icon(
                                         Icons.Default.Download,
-                                        contentDescription = "Download 2D structure",
+                                        contentDescription = stringResource(R.string.ui_download_2d_structure),
                                         tint = Color.White,
                                         modifier = Modifier.size(if (compact) 17.dp else 19.dp)
                                     )
@@ -1589,8 +1578,7 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                                     tint = MaterialTheme.colorScheme.onSurface.copy(0.3f),
                                     modifier = Modifier.size(if (compact) 28.dp else 32.dp)
                                 )
-                                Text(
-                                    "3D model not available",
+                                Text(stringResource(R.string.ui_3d_model_not_available_2),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
                                 )
@@ -1601,8 +1589,7 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                                     textAlign = TextAlign.Center,
                                     modifier = Modifier.widthIn(max = if (compact) 230.dp else 280.dp)
                                 )
-                                Text(
-                                    "Learn why →",
+                                Text(stringResource(R.string.ui_learn_why),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
                                     modifier = Modifier.clickable { showWhyDialog = true }
@@ -1665,7 +1652,7 @@ fun TwoDZoomDialog(
                 StructurePngImage(
                     cid = cid,
                     offlinePngBase64 = offlinePngBase64,
-                    contentDescription = "2D Structure (zoom)",
+                    contentDescription = stringResource(R.string.ui_2d_structure_zoom),
                     modifier = Modifier.fillMaxSize().padding(16.dp)
                 )
             }
@@ -1683,7 +1670,7 @@ fun TwoDZoomDialog(
                     IconButton(onClick = onDismiss, modifier = Modifier.size(36.dp)) {
                         Icon(
                             Icons.Default.Close,
-                            contentDescription = "Close",
+                            contentDescription = stringResource(R.string.ui_close),
                             tint = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.size(18.dp)
                         )
@@ -1700,8 +1687,7 @@ fun TwoDZoomDialog(
                     shape = RoundedCornerShape(20.dp),
                     color = MaterialTheme.colorScheme.surface.copy(0.7f)
                 ) {
-                    Text(
-                        "Pinch to zoom · Tap outside to close",
+                    Text(stringResource(R.string.ui_pinch_to_zoom_tap_outside_to_close),
                         modifier = Modifier.padding(horizontal = 14.dp, vertical = 6.dp),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.7f)
@@ -1752,7 +1738,7 @@ fun No3DModelDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Got it", fontWeight = FontWeight.SemiBold)
+                Text(stringResource(R.string.ui_got_it), fontWeight = FontWeight.SemiBold)
             }
         },
         icon = {
@@ -1763,8 +1749,7 @@ fun No3DModelDialog(onDismiss: () -> Unit) {
             )
         },
         title = {
-            Text(
-                "Why is 3D unavailable?",
+            Text(stringResource(R.string.ui_why_is_3d_unavailable),
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleMedium
             )
@@ -1773,8 +1758,7 @@ fun No3DModelDialog(onDismiss: () -> Unit) {
             Column(
                 modifier = Modifier.verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(
-                    "PubChem pre-computes 3D conformer models for ~90% of its compounds using " +
+                Text(stringResource(R.string.ui_pubchem_pre_computes_3d_conformer_models_for_90) +
                             "the OMEGA toolkit and MMFF94s force field. A compound gets no 3D model if " +
                             "it fails any of these criteria. ChemSearch also tries a generated SDF fallback " +
                             "from SMILES, InChI, or InChIKey when PubChem 3D is missing.",
@@ -1808,8 +1792,7 @@ fun No3DModelDialog(onDismiss: () -> Unit) {
 
                 HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
 
-                Text(
-                    "Source: PubChem3D project",
+                Text(stringResource(R.string.ui_source_pubchem3d_project),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
                 )
@@ -1910,8 +1893,7 @@ fun ClassificationTagsSection(tags: List<String>, isLoading: Boolean) {
                 }
             }
         } else {
-            Text(
-                "Loading PubChem categories...",
+            Text(stringResource(R.string.ui_loading_pubchem_categories),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.50f)
             )
@@ -1941,8 +1923,7 @@ fun UsesAndOccurrenceSection(entries: List<CompoundUseEntry>, isLoading: Boolean
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 CircularProgressIndicator(modifier = Modifier.size(14.dp), strokeWidth = 2.dp)
-                Text(
-                    "Loading PubChem use notes...",
+                Text(stringResource(R.string.ui_loading_pubchem_use_notes),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.50f)
                 )
@@ -1974,8 +1955,7 @@ fun UsesAndOccurrenceSection(entries: List<CompoundUseEntry>, isLoading: Boolean
                     )
                 }
             }
-            Text(
-                "Source: PubChem annotations",
+            Text(stringResource(R.string.ui_source_pubchem_annotations),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.42f)
             )
@@ -2005,8 +1985,7 @@ fun AdvancedPropertiesSection(properties: List<AdvancedPropertyRow>, isLoading: 
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 CircularProgressIndicator(modifier = Modifier.size(14.dp), strokeWidth = 2.dp)
-                Text(
-                    "Loading PubChem properties...",
+                Text(stringResource(R.string.ui_loading_pubchem_properties),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.50f)
                 )
@@ -2173,7 +2152,7 @@ fun IdentifierRow(label: String, value: String, context: Context, mono: Boolean 
                 ) {
                     Icon(Icons.Default.ContentCopy, null, modifier = Modifier.size(13.dp))
                     Spacer(Modifier.width(4.dp))
-                    Text("Copy", style = MaterialTheme.typography.labelSmall)
+                    Text(stringResource(R.string.ui_copy), style = MaterialTheme.typography.labelSmall)
                 }
             }
         }
@@ -2294,8 +2273,7 @@ fun SynonymsSection(synonyms: List<String>, isLoading: Boolean = false) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
-                Text(
-                    "Loading synonyms...",
+                Text(stringResource(R.string.ui_loading_synonyms),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
                 )
@@ -2352,8 +2330,7 @@ fun SynonymsSection(synonyms: List<String>, isLoading: Boolean = false) {
                         onClick = { visibleCount = 10 },
                         contentPadding = PaddingValues(horizontal = 0.dp, vertical = 2.dp)
                     ) {
-                        Text(
-                            "Collapse",
+                        Text(stringResource(R.string.ui_collapse),
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface.copy(0.62f)
@@ -2366,8 +2343,7 @@ fun SynonymsSection(synonyms: List<String>, isLoading: Boolean = false) {
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
                         CircularProgressIndicator(modifier = Modifier.size(14.dp), strokeWidth = 2.dp)
-                        Text(
-                            "Loading",
+                        Text(stringResource(R.string.ui_loading),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
                         )
@@ -2477,7 +2453,7 @@ fun DescriptionSection(
                     TextButton(onClick = onRegenerate, contentPadding = PaddingValues(0.dp)) {
                         Icon(Icons.Default.Refresh, null, modifier = Modifier.size(if (compact) 13.dp else 14.dp))
                         Spacer(Modifier.width(4.dp))
-                        Text("Regenerate", style = MaterialTheme.typography.labelMedium)
+                        Text(stringResource(R.string.ui_regenerate), style = MaterialTheme.typography.labelMedium)
                     }
                     Spacer(Modifier.weight(1f))
                     Surface(
@@ -2505,8 +2481,7 @@ fun DescriptionSection(
             ) {
                 Icon(Icons.Default.Settings, null, modifier = Modifier.size(if (compact) 14.dp else 16.dp))
                 Spacer(Modifier.width(6.dp))
-                Text(
-                    "Configure AI provider",
+                Text(stringResource(R.string.ui_configure_ai_provider_2),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -2609,7 +2584,7 @@ fun CardSectionHeader(label: String, onInfoClick: () -> Unit) {
         IconButton(onClick = onInfoClick, modifier = Modifier.size(if (compact) 18.dp else 20.dp)) {
             Icon(
                 Icons.Default.Info,
-                contentDescription = "Info",
+                contentDescription = stringResource(R.string.ui_info),
                 tint = MaterialTheme.colorScheme.onSurface.copy(0.3f),
                 modifier = Modifier.size(if (compact) 13.dp else 14.dp)
             )
@@ -2783,7 +2758,7 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
                 CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
             }
         } else if (ghsData == null) {
-            Text("No GHS classification available.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+            Text(stringResource(R.string.ui_no_ghs_classification_available), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
         } else {
             val safetySummary = remember(ghsData) { enrichGhsSafety(ghsData, ghsData.retrievedAt) }
             Text(
@@ -2826,7 +2801,7 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
             }
 
             if (ghsData.pictogramCodes.isNotEmpty()) {
-                Text("PICTOGRAMS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.45f), letterSpacing = 0.5.sp)
+                Text(stringResource(R.string.ui_pictograms), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.45f), letterSpacing = 0.5.sp)
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp),
                     verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp)
@@ -2879,7 +2854,7 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
             }
 
             if (ghsData.hazardStatements.isNotEmpty()) {
-                Text("HAZARD STATEMENTS", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.45f), letterSpacing = 0.5.sp)
+                Text(stringResource(R.string.ui_hazard_statements), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.45f), letterSpacing = 0.5.sp)
                 Column(verticalArrangement = Arrangement.spacedBy(if (compact) 5.dp else 7.dp)) {
                     safetySummary.hazards.take(8).forEach { hazard ->
                         Row(

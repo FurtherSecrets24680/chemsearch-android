@@ -1,5 +1,7 @@
 package com.furthersecrets.chemsearch.ui
 
+import com.furthersecrets.chemsearch.R
+import androidx.compose.ui.res.stringResource
 import android.content.ClipData
 import android.content.Context
 import android.content.Intent
@@ -680,14 +682,12 @@ private fun StructureSearchHeader(
             Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = MaterialTheme.colorScheme.primary)
         }
         Column(modifier = Modifier.weight(1f)) {
-            Text(
-                "Structure Search",
+            Text(stringResource(R.string.ui_structure_search_2),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.ExtraBold,
                 letterSpacing = 0.sp
             )
-            Text(
-                "Draw a connected structure and search PubChem.",
+            Text(stringResource(R.string.ui_draw_a_connected_structure_and_search_pubchem),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.56f)
             )
@@ -721,25 +721,21 @@ private fun StructureSearchInfoDialog(onDismiss: () -> Unit) {
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(26.dp)
                     )
-                    Text(
-                        "Structure search",
+                    Text(stringResource(R.string.ui_structure_search_3),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.ExtraBold,
                         modifier = Modifier.weight(1f)
                     )
                 }
-                Text(
-                    "Tap the canvas to place atoms. Select two atoms to connect them with the chosen bond.",
+                Text(stringResource(R.string.ui_tap_the_canvas_to_place_atoms_select_two),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
                 )
-                Text(
-                    "Drag atoms, bonds, or the whole selected molecule to reposition them. Drag empty canvas space to pan.",
+                Text(stringResource(R.string.ui_drag_atoms_bonds_or_the_whole_selected_molecule),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
                 )
-                Text(
-                    "Clean can standardize the drawing through PubChem before searching. Import and export use SMILES, InChI, or V2000 molfile text.",
+                Text(stringResource(R.string.ui_clean_can_standardize_the_drawing_through_pubchem_before),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
                 )
@@ -747,7 +743,7 @@ private fun StructureSearchInfoDialog(onDismiss: () -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    TextButton(onClick = onDismiss) { Text("Got it") }
+                    TextButton(onClick = onDismiss) { Text(stringResource(R.string.ui_got_it)) }
                 }
             }
         }
@@ -1252,9 +1248,8 @@ private fun StructureImportDialog(
                 modifier = Modifier.padding(18.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text("Import structure", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold)
-                Text(
-                    "Paste SMILES, InChI, or a V2000 molfile.",
+                Text(stringResource(R.string.ui_import_structure), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold)
+                Text(stringResource(R.string.ui_paste_smiles_inchi_or_a_v2000_molfile),
                     color = MaterialTheme.colorScheme.onSurface.copy(0.58f),
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -1263,14 +1258,14 @@ private fun StructureImportDialog(
                     onValueChange = { input = it },
                     modifier = Modifier.fillMaxWidth().heightIn(min = 140.dp),
                     minLines = 5,
-                    label = { Text("Structure text") }
+                    label = { Text(stringResource(R.string.ui_structure_text)) }
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextButton(onClick = onDismiss) { Text("Cancel") }
+                    TextButton(onClick = onDismiss) { Text(stringResource(R.string.ui_cancel)) }
                     Spacer(Modifier.width(8.dp))
                     Button(
                         onClick = { onImport(input) },
@@ -1280,7 +1275,7 @@ private fun StructureImportDialog(
                             CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
                             Spacer(Modifier.width(8.dp))
                         }
-                        Text("Import")
+                        Text(stringResource(R.string.ui_import))
                     }
                 }
             }
@@ -1310,8 +1305,7 @@ private fun StructureExportDialog(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    Text(
-                        "Export structure",
+                    Text(stringResource(R.string.ui_export_structure),
                         modifier = Modifier.weight(1f),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.ExtraBold
@@ -1319,7 +1313,7 @@ private fun StructureExportDialog(
                     IconButton(onClick = onDismiss) {
                         Icon(
                             Icons.Default.Close,
-                            contentDescription = "Close export dialog",
+                            contentDescription = stringResource(R.string.ui_close_export_dialog),
                             tint = MaterialTheme.colorScheme.onSurface.copy(0.78f)
                         )
                     }
@@ -1348,7 +1342,7 @@ private fun StructureExportDialog(
                     ) {
                         Icon(Icons.Default.ContentCopy, null, modifier = Modifier.size(16.dp))
                         Spacer(Modifier.width(6.dp))
-                        Text("Copy", maxLines = 1, softWrap = false)
+                        Text(stringResource(R.string.ui_copy), maxLines = 1, softWrap = false)
                     }
                     Spacer(Modifier.width(8.dp))
                     Button(
@@ -1358,7 +1352,7 @@ private fun StructureExportDialog(
                     ) {
                         Icon(Icons.Default.Share, null, modifier = Modifier.size(16.dp))
                         Spacer(Modifier.width(6.dp))
-                        Text("Share", maxLines = 1, softWrap = false)
+                        Text(stringResource(R.string.ui_share), maxLines = 1, softWrap = false)
                     }
                 }
             }
@@ -1394,13 +1388,11 @@ private fun PeriodicTableDialog(
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            "Select element",
+                        Text(stringResource(R.string.ui_select_element),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.ExtraBold
                         )
-                        Text(
-                            "All 118 elements",
+                        Text(stringResource(R.string.ui_all_118_elements),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurface.copy(0.54f)
                         )
@@ -2153,7 +2145,7 @@ private fun StructureSearchControls(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text("Search mode", fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.ui_search_mode), fontWeight = FontWeight.Bold)
                     Text(
                         mode.description,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.52f),
@@ -2274,7 +2266,7 @@ private fun StructureSearchConfigDialog(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Structure search", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold)
+                    Text(stringResource(R.string.ui_structure_search), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold)
                     IconButton(onClick = onDismiss) {
                         Icon(Icons.Default.Close, "Close")
                     }
@@ -2354,7 +2346,7 @@ private fun FloatingStructureSearchButton(
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
                         Icons.Default.Tune,
-                        contentDescription = "Structure search settings",
+                        contentDescription = stringResource(R.string.ui_structure_search_settings),
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(24.dp)
                     )
@@ -2418,7 +2410,7 @@ private fun StructureSearchResultsDialog(
                         )
                     }
                     IconButton(onClick = onDismiss) {
-                        Icon(Icons.Default.Close, contentDescription = "Close results")
+                        Icon(Icons.Default.Close, contentDescription = stringResource(R.string.ui_close_results))
                     }
                 }
 

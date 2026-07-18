@@ -1,5 +1,7 @@
 package com.furthersecrets.chemsearch.ui
 
+import com.furthersecrets.chemsearch.R
+import androidx.compose.ui.res.stringResource
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.lazy.LazyColumn
@@ -164,8 +166,7 @@ fun IsomerSearchScreen(
                 )
             }
             item {
-                Text(
-                    "Enter a molecular formula to find matching structural isomers from PubChem.",
+                Text(stringResource(R.string.ui_enter_a_molecular_formula_to_find_matching_structural),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.56f)
                 )
@@ -284,10 +285,9 @@ private fun IsomerShowMoreRow(
                     color = MaterialTheme.colorScheme.primary
                 )
                 Spacer(Modifier.width(8.dp))
-                Text("Loading more")
+                Text(stringResource(R.string.ui_loading_more))
             } else {
-                Text(
-                    "Show 20 more",
+                Text(stringResource(R.string.ui_show_20_more),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -317,8 +317,7 @@ private fun IsotopeFilterRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Text(
-                    "Include isotopes",
+                Text(stringResource(R.string.ui_include_isotopes),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface
@@ -352,14 +351,12 @@ private fun IsomerSearchHeader(
             Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = MaterialTheme.colorScheme.primary)
         }
         Column(modifier = Modifier.weight(1f)) {
-            Text(
-                "Isomer Search",
+            Text(stringResource(R.string.ui_isomer_search),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.ExtraBold,
                 letterSpacing = 0.sp
             )
-            Text(
-                "Search compounds by molecular formula.",
+            Text(stringResource(R.string.ui_search_compounds_by_molecular_formula),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.56f)
             )
@@ -385,14 +382,12 @@ private fun IsomerEmptyState() {
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            Text(
-                "No isomer search yet",
+            Text(stringResource(R.string.ui_no_isomer_search_yet),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
             )
-            Text(
-                "Try formulas like C2H6O, C6H6, or C6H12O6.",
+            Text(stringResource(R.string.ui_try_formulas_like_c2h6o_c6h6_or_c6h12o6),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
             )
@@ -414,8 +409,7 @@ fun IsomerSearchBar(
         onValueChange = onQueryChange,
         modifier = Modifier.fillMaxWidth(),
         placeholder = {
-            Text(
-                "Molecular formula, e.g. C₆H₁₂O₆",
+            Text(stringResource(R.string.ui_molecular_formula_e_g_c_h_o),
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f),
                 style = MaterialTheme.typography.bodyMedium
             )

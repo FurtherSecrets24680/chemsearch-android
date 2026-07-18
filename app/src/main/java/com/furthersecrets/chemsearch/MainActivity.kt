@@ -1,5 +1,7 @@
 package com.furthersecrets.chemsearch
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,9 +11,17 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.furthersecrets.chemsearch.ui.ChemSearchTheme
 import com.furthersecrets.chemsearch.ui.MainScreen
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     private val vm: ChemViewModel by viewModels()
+
+    override fun attachBaseContext(newBase: Context) {
+        val languageKey = newBase
+            .getSharedPreferences("chemsearch_prefs", Context.MODE_PRIVATE)
+            .getString("language", "system")
+        super.attachBaseContext(newBase.withAppLanguage(languageKey))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,4 +41,11 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+private fun Context.withAppLanguage(languageKey: String?): Context {
+    if (languageKey.isNullOrBlank() || languageKey == "system") return this
+    val configuration = Configuration(resources.configuration)
+    configuration.setLocale(Locale.forLanguageTag(languageKey))
+    return createConfigurationContext(configuration)
 }

@@ -1,5 +1,7 @@
 package com.furthersecrets.chemsearch.ui
 
+import com.furthersecrets.chemsearch.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -98,8 +100,7 @@ fun EmpiricalFormulaFinderTool() {
 
     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         ToolTitleRow(title = "Empirical Formula Finder", onInfo = { showInfo = true })
-        Text(
-            "Use composition data or reduce an existing formula.",
+        Text(stringResource(R.string.ui_use_composition_data_or_reduce_an_existing_formula),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(0.58f)
         )
@@ -126,8 +127,8 @@ fun EmpiricalFormulaFinderTool() {
             OutlinedTextField(
                 value = formulaInput,
                 onValueChange = { formulaInput = it },
-                label = { Text("Molecular formula") },
-                placeholder = { Text("e.g. C6H12O6", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                label = { Text(stringResource(R.string.ui_molecular_formula)) },
+                placeholder = { Text(stringResource(R.string.ui_e_g_c6h12o6), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
                 singleLine = true,
@@ -146,7 +147,7 @@ fun EmpiricalFormulaFinderTool() {
                         OutlinedTextField(
                             value = row.element,
                             onValueChange = { value -> rows[index] = row.copy(element = value.take(2)) },
-                            label = { Text("Element") },
+                            label = { Text(stringResource(R.string.ui_element)) },
                             modifier = Modifier.weight(0.8f),
                             shape = RoundedCornerShape(12.dp),
                             singleLine = true,
@@ -166,14 +167,14 @@ fun EmpiricalFormulaFinderTool() {
                             enabled = rows.size > 1,
                             modifier = Modifier.size(36.dp)
                         ) {
-                            Icon(Icons.Default.Close, contentDescription = "Remove row", modifier = Modifier.size(18.dp))
+                            Icon(Icons.Default.Close, contentDescription = stringResource(R.string.ui_remove_row), modifier = Modifier.size(18.dp))
                         }
                     }
                 }
                 TextButton(onClick = { rows.add(EmpiricalFormulaInputRow("", "")) }, contentPadding = PaddingValues(horizontal = 0.dp)) {
                     Icon(Icons.Default.Add, null, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(6.dp))
-                    Text("Add element")
+                    Text(stringResource(R.string.ui_add_element))
                 }
             }
         }
@@ -181,8 +182,8 @@ fun EmpiricalFormulaFinderTool() {
         OutlinedTextField(
             value = molecularMassInput,
             onValueChange = { molecularMassInput = it },
-            label = { Text("Molar mass for molecular formula (optional)") },
-            placeholder = { Text("e.g. 180.16", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+            label = { Text(stringResource(R.string.ui_molar_mass_for_molecular_formula_optional)) },
+            placeholder = { Text(stringResource(R.string.ui_e_g_180_16), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
             singleLine = true,
@@ -193,7 +194,7 @@ fun EmpiricalFormulaFinderTool() {
         Button(onClick = { calculate() }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp)) {
             Icon(Icons.Default.Calculate, null, modifier = Modifier.size(18.dp))
             Spacer(Modifier.width(8.dp))
-            Text("Calculate formula")
+            Text(stringResource(R.string.ui_calculate_formula))
         }
 
         result?.let { EmpiricalFormulaResultCard(it) }
@@ -237,8 +238,7 @@ fun PrecipitatePredictorTool() {
 
     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         ToolTitleRow(title = "Precipitate Predictor", onInfo = { showInfo = true })
-        Text(
-            "Enter two aqueous ionic compounds to predict products and precipitates.",
+        Text(stringResource(R.string.ui_enter_two_aqueous_ionic_compounds_to_predict_products),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(0.58f)
         )
@@ -246,8 +246,8 @@ fun PrecipitatePredictorTool() {
         OutlinedTextField(
             value = first,
             onValueChange = { first = it },
-            label = { Text("First compound") },
-            placeholder = { Text("e.g. AgNO3", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+            label = { Text(stringResource(R.string.ui_first_compound)) },
+            placeholder = { Text(stringResource(R.string.ui_e_g_agno3), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
             singleLine = true,
@@ -257,8 +257,8 @@ fun PrecipitatePredictorTool() {
         OutlinedTextField(
             value = second,
             onValueChange = { second = it },
-            label = { Text("Second compound") },
-            placeholder = { Text("e.g. NaCl", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+            label = { Text(stringResource(R.string.ui_second_compound)) },
+            placeholder = { Text(stringResource(R.string.ui_e_g_nacl), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
             singleLine = true,
@@ -292,7 +292,7 @@ fun PrecipitatePredictorTool() {
         Button(onClick = { predict() }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp)) {
             Icon(Icons.Default.Science, null, modifier = Modifier.size(18.dp))
             Spacer(Modifier.width(8.dp))
-            Text("Predict precipitate")
+            Text(stringResource(R.string.ui_predict_precipitate))
         }
 
         result?.let { PrecipitationResultCard(it) }
@@ -327,8 +327,7 @@ private fun EmpiricalFormulaResultCard(result: EmpiricalFormulaCalculationResult
             }
             if (result.rows.isNotEmpty()) {
                 HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.12f))
-                Text(
-                    "MOLE RATIO",
+                Text(stringResource(R.string.ui_mole_ratio),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 0.8.sp,
@@ -365,7 +364,7 @@ private fun PrecipitationResultCard(result: PrecipitationPredictionResult) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("Result", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface.copy(0.62f))
+                    Text(stringResource(R.string.ui_result), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface.copy(0.62f))
                     Text(result.summary, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, textAlign = TextAlign.End)
                 }
             }
@@ -375,8 +374,7 @@ private fun PrecipitationResultCard(result: PrecipitationPredictionResult) {
             if (result.completeIonicEquation.isNotBlank()) FormulaDisplayLine("Complete ionic equation", result.completeIonicEquation)
 
             HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.12f))
-            Text(
-                "PRODUCT CHECK",
+            Text(stringResource(R.string.ui_product_check),
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 0.8.sp,
@@ -406,7 +404,7 @@ private fun ToolTitleRow(title: String, onInfo: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
         Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         IconButton(onClick = onInfo, modifier = Modifier.size(24.dp)) {
-            Icon(Icons.Default.Info, contentDescription = "Info", tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
+            Icon(Icons.Default.Info, contentDescription = stringResource(R.string.ui_info), tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
         }
     }
 }
@@ -464,7 +462,7 @@ private fun FormulaExplanationCard(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.4f))
     ) {
         Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text("Formula", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+            Text(stringResource(R.string.ui_formula), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
             Text(toChemicalExpressionDisplay(latexFormula), style = MaterialTheme.typography.titleMedium, fontFamily = FontFamily.Monospace)
             Text(explanation, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.7f))
         }
