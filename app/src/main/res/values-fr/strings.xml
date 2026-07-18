@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">recherche chimique</string>
+    <string name="app_name">chemsearch</string>
     <!-- Search, navigation, and shared actions -->
     <string name="ui_advanced_search" translatable="true">Recherche avancée</string>
     <string name="ui_query" translatable="true">Requête</string>
