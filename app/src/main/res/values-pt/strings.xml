@@ -86,21 +86,21 @@
     <string name="ui_language">IDIOMA</string>
     <string name="ui_language_subtitle">Escolha o idioma usado pela ChemSearch</string>
     <string name="ui_language_system_default">Padrão do sistema</string>
-    <string name="ui_language_english">Inglês</string>
-    <string name="ui_language_danish">Dinamarquês</string>
-    <string name="ui_language_german">Alemão</string>
-    <string name="ui_language_greek">Grego</string>
-    <string name="ui_language_spanish">Espanhol</string>
-    <string name="ui_language_finnish">Finlandês</string>
-    <string name="ui_language_french">Francês</string>
+    <string name="ui_language_english">Portuguese-Brazil</string>
+    <string name="ui_language_danish">Dansk</string>
+    <string name="ui_language_german">Deutsch</string>
+    <string name="ui_language_greek">Ελληνικά</string>
+    <string name="ui_language_spanish">Español</string>
+    <string name="ui_language_finnish">Suomi</string>
+    <string name="ui_language_french">Français</string>
     <string name="ui_language_italian">Italiano</string>
-    <string name="ui_language_japanese">Japonês</string>
-    <string name="ui_language_dutch">Holandês</string>
-    <string name="ui_language_norwegian">Norueguês</string>
-    <string name="ui_language_polish">Polonês</string>
+    <string name="ui_language_japanese">日本語</string>
+    <string name="ui_language_dutch">Nederlands</string>
+    <string name="ui_language_norwegian">Norsk</string>
+    <string name="ui_language_polish">Polski</string>
     <string name="ui_language_portuguese">Português</string>
-    <string name="ui_language_russian">Russo</string>
-    <string name="ui_language_swedish">Sueco</string>
+    <string name="ui_language_russian">Русский</string>
+    <string name="ui_language_swedish">Svenska</string>
     <string name="ui_language_restart">O aplicativo irá reiniciar para aplicar o idioma.</string>
     <string name="ui_settings" translatable="true">Confirgurações</string>
     <string name="ui_theme_mode" translatable="true">Modo tema</string>
