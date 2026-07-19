@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">chemsearch</string>
+    <!-- Search, navigation, and shared actions -->
+    <string name="ui_advanced_search" translatable="true">Tarkennettu haku</string>
+    <string name="ui_query" translatable="true">Kysely</string>
+    <string name="ui_include" translatable="true">Sisällytä</string>
+    <string name="ui_exclude" translatable="true">Ohita</string>
+    <string name="ui_searching" translatable="true">Haetaan...</string>
+    <string name="ui_search" translatable="true">Etsi</string>
+    <string name="ui_close" translatable="true">Sulje</string>
+    <string name="ui_back_to_database" translatable="true">Takaisin tietokantaan</string>
+    <string name="ui_search_in_chemsearch" translatable="true">Etsi ChemSearch -sivustolta</string>
+    <string name="ui_source" translatable="true">Lähde</string>
+    <string name="ui_back" translatable="true">Takaisin</string>
+    <string name="ui_clear" translatable="true">Tyhjennä</string>
+    <string name="ui_selected" translatable="true">Valittu</string>
+    <string name="ui_molecular_formula" translatable="true">Molekyylikaava</string>
+    <string name="ui_e_g_c6h12o6" translatable="true">esim. C6H12O6</string>
+    <string name="ui_element" translatable="true">Elementti</string>
+    <string name="ui_add_element" translatable="true">Lisää elementti</string>
+    <string name="ui_molar_mass_for_molecular_formula_optional" translatable="true">Molekyylikaavan molekyylipaino (valinnainen)</string>
+    <string name="ui_e_g_180_16" translatable="true">esim. 180.16</string>
+    <string name="ui_calculate_formula" translatable="true">Laske kaava</string>
+    <string name="ui_first_compound" translatable="true">Ensimmäinen yhdiste</string>
+    <string name="ui_e_g_agno3" translatable="true">e.g. AgNO3</string>
+    <string name="ui_second_compound" translatable="true">Toinen yhdiste</string>
+    <string name="ui_e_g_nacl" translatable="true">esim. NaCl</string>
+    <string name="ui_predict_precipitate" translatable="true">Ennusta saostuma</string>
+    <string name="ui_result" translatable="true">Tulos</string>
+    <string name="ui_formula" translatable="true">Kaava</string>
+    <string name="ui_remove_row" translatable="true">Poista rivi</string>
+    <string name="ui_info" translatable="true">Tiedot</string>
+    <string name="ui_loading_more" translatable="true">Ladataan lisää</string>
+    <string name="ui_exit_chemsearch" translatable="true">Poistu ChemSearch?</string>
+    <string name="ui_are_you_sure_you_want_to_exit" translatable="true">Oletko varma, että haluat poistua?</string>
+    <string name="ui_exit" translatable="true">Poistu</string>
+    <string name="ui_cancel" translatable="true">Peruuta</string>
+    <string name="ui_random_compound" translatable="true">Satunnainen yhdiste</string>
+    <string name="ui_search_elements" translatable="true">Etsi elementtejä</string>
+    <string name="ui_full_details" translatable="true">Täydelliset tiedot</string>
+    <string name="ui_sources" translatable="true">Lähteet</string>
+    <string name="ui_ok" translatable="true">Ok</string>
+    <string name="ui_open_wikipedia_page" translatable="true">Avaa Wikipedian sivu</string>
+    <string name="ui_clear_recent_searches" translatable="true">Tyhjennetäänkö viimeaikaiset haut?</string>
+    <string name="ui_this_removes_your_recent_search_list_on_this" translatable="true">Tämä poistaa viimeaikaisen hakulistasi tällä laitteella.</string>
+    <string name="ui_clear_all" translatable="true">Tyhjennä kaikki</string>
+    <string name="ui_got_it" translatable="true">Asia ymmärretty</string>
+    <string name="ui_copy" translatable="true">Kopioi</string>
+    <string name="ui_synonym" translatable="true">Synonyymi</string>
+    <string name="ui_regenerate" translatable="true">Luo Uudelleen</string>
+    <string name="ui_no_ghs_classification_available" translatable="true">GHS-luokitusta ei ole saatavilla.</string>
+    <string name="ui_pictograms" translatable="true">KUIVATUT</string>
+    <string name="ui_hazard_statements" translatable="true">VAARALLISET LAUSUMAT</string>
+    <string name="ui_sort_recents" translatable="true">Järjestä viimeisimmät</string>
+    <string name="ui_remove" translatable="true">Poista</string>
+    <string name="ui_downloading_for_offline_use" translatable="true">Ladataan offline-käyttöä varten</string>
+    <string name="ui_share_compound" translatable="true">Jaa yhdiste</string>
+    <string name="ui_2d_structure" translatable="true">2D Rakenne</string>
+    <string name="ui_download_2d_structure" translatable="true">Lataa 2D rakenne</string>
+    <string name="ui_2d_structure_zoom" translatable="true">2D Rakenne (zoomaus)</string>
+    <!-- AI provider configuration -->
+    <string name="ui_refresh_models" translatable="true">Päivitä mallit</string>
+    <string name="ui_ai_description_source" translatable="true">AI kuvaus lähde</string>
+    <string name="ui_required_for_ai_descriptions" translatable="true">Vaadittu tekoälyn kuvauksissa.</string>
+    <string name="ui_api_key" translatable="true">Api Avain</string>
+    <string name="ui_stored_locally_on_your_device_only" translatable="true">Tallennettu paikallisesti vain laitteellesi.</string>
+    <string name="ui_save" translatable="true">Tallenna</string>
+    <!-- Library and offline data -->
+    <string name="ui_import_library" translatable="true">Tuo Kirjasto</string>
+    <string name="ui_merge" translatable="true">Yhdistä</string>
+    <string name="ui_replace" translatable="true">Korvaa</string>
+    <string name="ui_library" translatable="true">Kirjasto</string>
+    <string name="ui_back_to_library" translatable="true">Takaisin kirjastoon</string>
+    <string name="ui_compare" translatable="true">Vertaa</string>
+    <string name="ui_favorites" translatable="true">Suosikit</string>
+    <string name="ui_no_favorites_yet" translatable="true">Ei vielä suosikkeja</string>
+    <string name="ui_tap_the_star_icon_on_any_compound" translatable="true">Napauta tähtikuvaketta missä tahansa yhdisteessä</string>
+    <string name="ui_tap_the_favorite_icon_on_any_compound" translatable="true">Napauta minkä tahansa yhdisteen suosikkikuvaketta</string>
+    <string name="ui_filter_favorites" translatable="true">Suodata suosikit</string>
+    <string name="ui_clear_filter" translatable="true">Tyhjennä suodatin</string>
+    <string name="ui_cache_location" translatable="true">Kätkön sijainti</string>
+    <string name="ui_directory_path" translatable="true">Hakemiston polku</string>
+    <string name="ui_leave_blank_for_default" translatable="true">Jätä tyhjäksi oletukseksi</string>
+    <!-- Settings -->
+    <string name="ui_language">Kieli</string>
+    <string name="ui_language_subtitle">Valitse ChemSearch käyttämä kieli</string>
+    <string name="ui_language_system_default">Järjestelmän oletus</string>
+    <string name="ui_language_english">Englanti</string>
+    <string name="ui_language_restart">Sovellus käynnistyy uudelleen ja ottaa kielen käyttöön.</string>
+    <string name="ui_settings" translatable="true">Asetukset</string>
+    <string name="ui_theme_mode" translatable="true">Teeman tila</string>
+    <!-- Developer and diagnostic settings -->
+    <string name="ui_sharedpreferences_dump" translatable="true">Jaetut asetukset dump</string>
+    <string name="ui_no_keys_stored" translatable="true">Avaimia ei tallennettu.</string>
+    <string name="ui_prefs" translatable="true">prefs</string>
+    <string name="ui_live_logs" translatable="true">Elävät Lokit</string>
+    <string name="ui_logs" translatable="true">lokit</string>
+    <string name="ui_network_diagnostics" translatable="true">Verkon diagnostiikka</string>
+    <string name="ui_network_diagnostics_2" translatable="true">network_diagnostiikka</string>
+    <string name="ui_memory_info" translatable="true">Muistin tiedot</string>
+    <string name="ui_jvm_heap" translatable="true">JVM kasa</string>
+    <string name="ui_system_ram" translatable="true">Järjestelmän Muisti</string>
+    <string name="ui_low_memory" translatable="true">Alhainen muisti</string>
+    <string name="ui_memory" translatable="true">muisti</string>
+    <string name="ui_wipe_all_preferences" translatable="true">Pyyhi kaikki asetukset?</string>
+    <string name="ui_this_clears_legacy_preferences_encrypted_key_records_history" translatable="true">Tämä tyhjentää vanhat asetukset, salatut avaimet, historian, suosikit ja virheenjäljitysliput. DataStoren asetuksia, Huoneen lataamista ja välimuistitiedostoja ei poisteta. Sinun täytyy avata debug-asetukset uudelleen.</string>
+    <string name="ui_wipe_now" translatable="true">Pyyhi nyt</string>
+    <string name="ui_force_crash" translatable="true">Pakota kaatuminen?</string>
+    <string name="ui_this_will_immediately_crash_the_app_with_an" translatable="true">Tämä välittömästi kaataa sovelluksen käsittelemättömällä poikkeuksella. Käytössä on kaatumisilmoitusten tarkistaminen.</string>
+    <string name="ui_crash_now" translatable="true">Kaatuminen nyt</string>
+    <string name="ui_verbose_logging" translatable="true">Moniulotteinen kirjaaminen</string>
+    <string name="ui_tag_chemsearch" translatable="true">Tag: ChemSearch</string>
+    <string name="ui_endpoints" translatable="true">päätetapahtumat</string>
+    <string name="ui_hide_debug_settings" translatable="true">Piilota debug-asetukset</string>
+    <string name="ui_remove_key" translatable="true">Poista avain</string>
+    <!-- Structure search -->
+    <string name="ui_chemsearch_app_icon" translatable="true">ChemSearch sovelluskuvake</string>
+    <string name="ui_move_up" translatable="true">Siirrä ylös</string>
+    <string name="ui_move_down" translatable="true">Siirrä alas</string>
+    <string name="ui_export_library" translatable="true">Vie Kirjasto</string>
+    <string name="ui_chemsearch_molfile" translatable="true">ChemSearch molfile</string>
+    <!-- Structure search and export -->
+    <string name="ui_import_structure" translatable="true">Tuo rakenne</string>
+    <string name="ui_structure_text" translatable="true">Rakenteen teksti</string>
+    <string name="ui_import" translatable="true">Tuo</string>
+    <string name="ui_share" translatable="true">Jaa</string>
+    <string name="ui_search_mode" translatable="true">Hakutila</string>
+    <string name="ui_structure_search" translatable="true">Rakenteen haku</string>
+    <string name="ui_close_export_dialog" translatable="true">Sulje vienti-ikkuna</string>
+    <string name="ui_structure_search_settings" translatable="true">Rakenteen haun asetukset</string>
+    <string name="ui_close_results" translatable="true">Sulje tulokset</string>
+    <!-- Chemistry tools -->
+    <string name="ui_back_to_tools" translatable="true">Takaisin työkaluihin</string>
+    <string name="ui_custom_3d_molecule_viewer" translatable="true">Mukautettu 3D-molekyylikatselin</string>
+    <string name="ui_no_file_loaded" translatable="true">Tiedostoa ei ole ladattu</string>
+    <string name="ui_choose_file" translatable="true">Valitse Tiedosto</string>
+    <string name="ui_change" translatable="true">Muuta</string>
+    <string name="ui_molar_mass_calculator" translatable="true">Molar Mass Laskin</string>
+    <string name="ui_molecular_formula_2" translatable="true">Molekyylikaava</string>
+    <string name="ui_e_g_h2o_ca_oh_2_cuso4_5h2o" translatable="true">e.g. H2O, Ca(OH)2, CuSO4·5H2O</string>
+    <string name="ui_insert" translatable="true">Insert:</string>
+    <string name="ui_molar_mass" translatable="true">MOLAR MASS</string>
+    <string name="ui_count" translatable="true">Lukumäärä</string>
+    <string name="ui_g_mol" translatable="true">g/mol</string>
+    <string name="ui_3f" translatable="true">%.3f</string>
+    <string name="ui_1f" translatable="true">%.1f%%</string>
+    <string name="ui_oxidation_state_finder" translatable="true">Hapettumistilan Etsijä</string>
+    <string name="ui_e_g_kmno4" translatable="true">esim. KMnO4</string>
+    <string name="ui_charge" translatable="true">Veloitus</string>
+    <string name="ui_find_oxidation_states" translatable="true">Etsi Hapetusvaltioita</string>
+    <string name="ui_oxidation_states" translatable="true">MAHDOLLISUUSVALTIOT</string>
+    <string name="ui_examples" translatable="true">ESIMERKKI</string>
+    <string name="ui_smiles_visualizer" translatable="true">SMILES Visualisoija</string>
+    <string name="ui_smiles_string" translatable="true">SMILES Merkkijono</string>
+    <string name="ui_e_g_cco" translatable="true">esim. CCO</string>
+    <string name="ui_3d_model_not_available" translatable="true">3D-malli ei ole käytettävissä</string>
+    <string name="ui_reaction_balancer" translatable="true">Reaktioiden Balancer</string>
+    <string name="ui_chemical_equation" translatable="true">Kemiallinen Yhtälö</string>
+    <string name="ui_h2_o2_h2o" translatable="true">H2 + O2 - H2O</string>
+    <string name="ui_balance" translatable="true">Saldo</string>
+    <string name="ui_balanced_equation" translatable="true">TASEEN TASA-ARVO</string>
+    <string name="ui_atom_count_verification" translatable="true">LÄHETTÄVÄN NEUVOSTON TARKASTUS</string>
+    <string name="ui_reactants" translatable="true">Reaktantit</string>
+    <string name="ui_products" translatable="true">Tuotteet</string>
+    <string name="ui_compare_compounds" translatable="true">Vertaa Yhdisteitä</string>
+    <string name="ui_ph_poh_calculator" translatable="true">pH / pOH Laskin</string>
+    <string name="ui_solution_type" translatable="true">Ratkaisun tyyppi</string>
+    <string name="ui_dilution_calculator" translatable="true">Laimennuslaskin</string>
+    <string name="ui_solve_for" translatable="true">Ratkaise varten</string>
+    <string name="ui_c_m" translatable="true">C1 (M)</string>
+    <string name="ui_e_g_1_0" translatable="true">esim. 1.0</string>
+    <string name="ui_v_ml" translatable="true">V1 (ml)</string>
+    <string name="ui_e_g_25" translatable="true">esim. 25</string>
+    <string name="ui_c_m_2" translatable="true">C2 (M)</string>
+    <string name="ui_e_g_0_5" translatable="true">esim. 0,5</string>
+    <string name="ui_v_ml_2" translatable="true">V2 (ml)</string>
+    <string name="ui_e_g_50" translatable="true">esim. 50</string>
+    <string name="ui_ideal_gas_law" translatable="true">Ihanteellinen Kaasulaki</string>
+    <string name="ui_pressure_atm" translatable="true">Paine (atm)</string>
+    <string name="ui_volume_l" translatable="true">Määrä (L)</string>
+    <string name="ui_e_g_2_5" translatable="true">esim. 2.5</string>
+    <string name="ui_moles_mol" translatable="true">Moletit (mol)</string>
+    <string name="ui_temperature_k" translatable="true">Lämpötila (K)</string>
+    <string name="ui_e_g_298" translatable="true">esim. 298</string>
+    <string name="ui_r_0_082057_l_atm_mol_k" translatable="true">R = 0.082057 L·atm/mol·K</string>
+    <string name="ui_balance_calculate" translatable="true">Saldo &amp; Laske</string>
+    <string name="ui_gas_molar_volume_l_mol" translatable="true">Kaasun moolimäärä (L/mol)</string>
+    <string name="ui_enter_a_valid_molar_volume_e_g_22" translatable="true">Anna kelvollinen molaarinen äänenvoimakkuus (esim. 22.414)</string>
+    <string name="ui_reactant_amounts" translatable="true">TAKAISIN MÄÄRÄT</string>
+    <string name="ui_volume_ml" translatable="true">Määrä (ml)</string>
+    <string name="ui_e_g_250" translatable="true">esim. 250</string>
+    <string name="ui_purity_optional" translatable="true">Puhtaus % (valinnainen)</string>
+    <string name="ui_enter_an_amount_to_compute_moles" translatable="true">Syötä molekyylien laskemiseen käytettävä summa.</string>
+    <string name="ui_clear_all_amounts" translatable="true">Tyhjennä kaikki määrät</string>
+    <string name="ui_stoichiometry_summary" translatable="true">TIIVISTELMÄ STOISTEN MENETELMÄ</string>
+    <string name="ui_limiting_reagent" translatable="true">Reagenssin rajoittaminen</string>
+    <string name="ui_mole_ratios_relative_to_limiting_reagent" translatable="true">RATIOS (suhteessa reagenssin rajoittamiseen)</string>
+    <string name="ui_theoretical_yield" translatable="true">TEEOREETTINEN JUMALA</string>
+    <string name="ui_excess_reactants" translatable="true">LIIKETOIMINTAA KOSKEVAT VAATIMUKSET</string>
+    <string name="ui_target_product" translatable="true">Kohdetuote:</string>
+    <string name="ui_actual_yield_optional" translatable="true">Todellinen tuotto (valinnainen)</string>
+    <string name="ui_e_g_1_25" translatable="true">esim. 1,25</string>
+    <string name="ui_e_g_100" translatable="true">esim. 100</string>
+    <string name="ui_need_limiting_reagent_to_compute_percent_yield" translatable="true">Reagenssia on rajoitettava laskemaan prosentuaalinen tuotto.</string>
+    <string name="ui_desired_product_amount" translatable="true">Halutun tuotteen määrä</string>
+    <string name="ui_e_g_5_0" translatable="true">esim. 5.0</string>
+    <string name="ui_e_g_500" translatable="true">esim. 500</string>
+    <string name="ui_required_reactants_theoretical" translatable="true">Tarvittavat reagoivat aineet (teoreettinen)</string>
+    <!-- Isomer search and onboarding -->
+    <string name="ui_reset_tool_order" translatable="true">Reset tool order</string>
+    <string name="ui_clear_search" translatable="true">Tyhjennä haku</string>
+    <string name="ui_drag_to_reorder" translatable="true">Vedä järjestääksesi uudelleen</string>
+    <string name="ui_swap_sides" translatable="true">Swap sides</string>
+    <string name="ui_remove_compound" translatable="true">Poista yhdiste</string>
+    <string name="ui_add_compound" translatable="true">Lisää yhdiste</string>
+    <string name="ui_open_in_search" translatable="true">Avaa haussa</string>
+    <string name="ui_drag_to_rotate" translatable="true">Pyöritä vetämällä</string>
+    <string name="ui_pinch_to_zoom" translatable="true">Nipistä zoomaamaan</string>
+    <string name="ui_pinch_drag_to_pan" translatable="true">Purista vedä avataksesi</string>
+    <string name="ui_configure_ai_provider" translatable="true">Configure AI provider</string>
+    <string name="ui_skip" translatable="true">Ohita</string>
+    <string name="ui_chemsearch" translatable="true">ChemSearch</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Etsi aineita, reaktioita, ryhmiä, ioneja...</string>
+    <string name="ui_use_composition_data_or_reduce_an_existing_formula" translatable="true">Käytä koostumusta koskevia tietoja tai vähennä olemassa olevaa kaavaa.</string>
+    <string name="ui_enter_two_aqueous_ionic_compounds_to_predict_products" translatable="true">Anna kaksi vesipitoista ioniyhdisteitä ennustamaan tuotteita ja saostumia.</string>
+    <string name="ui_mole_ratio" translatable="true">MOLE RATIO</string>
+    <string name="ui_product_check" translatable="true">TUOTE TARKASTELU</string>
+    <string name="ui_enter_a_molecular_formula_to_find_matching_structural" translatable="true">Anna molekyylikaava löytääksesi vastaavat rakenneisomeerit PubChemiltä.</string>
+    <string name="ui_show_20_more" translatable="true">Näytä 20 lisää</string>
+    <string name="ui_include_isotopes" translatable="true">Sisällytä isotoopit</string>
+    <string name="ui_isomer_search" translatable="true">Isomer-haku</string>
+    <string name="ui_search_compounds_by_molecular_formula" translatable="true">Hae yhdisteitä molekyylikaavan avulla.</string>
+    <string name="ui_no_isomer_search_yet" translatable="true">Ei vielä isomeerihakua</string>
+    <string name="ui_try_formulas_like_c2h6o_c6h6_or_c6h12o6" translatable="true">Kokeile kaavat kuten C2H6O, C6H6 tai C6H12O6.</string>
+    <string name="ui_molecular_formula_e_g_c_h_o" translatable="true">Molecular formula, e.g. C6H12O6</string>
+    <string name="ui_this_in_app_notice_is_a_practical_summary" translatable="true">Tämä sovelluksen sisäinen ilmoitus on käytännöllinen yhteenveto ChemSearch käyttäjille. Se ei ole oikeudellinen neuvonta.</string>
+    <string name="ui_looking_up_compound" translatable="true">Haetaan yhdistettä...</string>
+    <string name="ui_compare_listed_element_properties_across_the_whole_table" translatable="true">Vertaa lueteltuja elementin ominaisuuksia koko taulukossa. Tummemmat laatat tarkoittavat valitun ominaisuuden korkeampia arvoja.</string>
+    <string name="ui_image_unavailable" translatable="true">Kuva ei käytettävissä</string>
+    <string name="ui_chemsearch_2" translatable="true">ChemSearch</string>
+    <string name="ui_chemistry_simplified" translatable="true">KEMIKAN YKSINKERTAISTAMINEN</string>
+    <string name="ui_search_any_compound" translatable="true">Etsi mitä tahansa yhdistetä..</string>
+    <string name="ui_did_you_mean" translatable="true">Tarkoititko sinua:</string>
+    <string name="ui_search_any_compound_2" translatable="true">Etsi mitä tahansa yhdistettä</string>
+    <string name="ui_type_a_compound_name_formula_cid_or_cas" translatable="true">Kirjoita yhdisteen nimi, kaava, CID, tai CAS.</string>
+    <string name="ui_recent_searches" translatable="true">Viimeisimmät haut</string>
+    <string name="ui_clear_all_2" translatable="true">Tyhjennä kaikki</string>
+    <string name="ui_find_isomers" translatable="true">Etsi isomeerejä</string>
+    <string name="ui_compound_data_from_pubchem_nih_ncbi" translatable="true">Yhdistetyt tiedot PubChemistä (NIH/NCBI)</string>
+    <string name="ui_2d_structure_2" translatable="true">2D Rakenne</string>
+    <string name="ui_3d_model" translatable="true">3D Malli</string>
+    <string name="ui_3d_model_not_available_2" translatable="true">3D-malli ei ole käytettävissä</string>
+    <string name="ui_learn_why" translatable="true">Opi miksi →</string>
+    <string name="ui_pinch_to_zoom_tap_outside_to_close" translatable="true">Nipistä zoomataksesi · Sulje napauttamalla ulos</string>
+    <string name="ui_why_is_3d_unavailable" translatable="true">Miksi 3D ei ole käytettävissä?</string>
+    <string name="ui_pubchem_pre_computes_3d_conformer_models_for_90" translatable="true">PubChem esittelee 3D-konformointimallit noin 90 %:lle sen yhdisteistä </string>
+    <string name="ui_source_pubchem3d_project" translatable="true">Lähde: PubChem3D-projekti</string>
+    <string name="ui_loading_pubchem_categories" translatable="true">Ladataan PubChem luokkia...</string>
+    <string name="ui_loading_pubchem_use_notes" translatable="true">Ladataan PubChem käytä merkintöjä...</string>
+    <string name="ui_source_pubchem_annotations" translatable="true">Lähde: PubChem annotations</string>
+    <string name="ui_loading_pubchem_properties" translatable="true">Ladataan PubChem ominaisuuksia...</string>
+    <string name="ui_loading_synonyms" translatable="true">Ladataan synonyymejä...</string>
+    <string name="ui_collapse" translatable="true">Kutista</string>
+    <string name="ui_loading" translatable="true">Ladataan</string>
+    <string name="ui_configure_ai_provider_2" translatable="true">Configure AI provider</string>
+    <string name="ui_provider" translatable="true">Tarjoaja</string>
+    <string name="ui_model" translatable="true">Malli</string>
+    <string name="ui_settings_2" translatable="true">Asetukset</string>
+    <string name="ui_color_scheme" translatable="true">Väriteema</string>
+    <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">Näytetään automaattisesti, kun etsit yhdistettä</string>
+    <string name="ui_chemistry_simplified_for_android" translatable="true">Helpotettu kemia Androidille.</string>
+    <string name="ui_search_compounds_draw_structures_view_2d_3d_models" translatable="true">Etsi yhdisteitä, piirrä rakenteita, katso 2D/3D-malleja, tallenna offline-tietoja, vertaa yhdisteitä ja käytä kemiallisia työkaluja.</string>
+    <string name="ui_built_by_furthersecrets" translatable="true">Built by FurtherSecrets</string>
+    <string name="ui_about_chemsearch" translatable="true">Tietoja ChemSearch</string>
+    <string name="ui_app_info_links_data_sources_and_credits" translatable="true">Sovelluksen tiedot, linkit, tietolähteet ja hyvitykset.</string>
+    <string name="ui_legal_and_safety" translatable="true">OIKEUDELLINEN JA TURVALLISUUS</string>
+    <string name="ui_choose_which_provider_should_generate_this_compound_description" translatable="true">Valitse, minkä palveluntarjoajan pitäisi tuottaa tämä yhdiste kuvaus.</string>
+    <string name="ui_merge_the_backup_with_your_current_library_or" translatable="true">Yhdistä varmuuskopio nykyiseen kirjastoosi tai korvaa nykyiset suosikit ja lataukset varmuuskopiotiedostolla.</string>
+    <string name="ui_sort" translatable="true">Järjestä</string>
+    <string name="ui_open_saved_compounds_offline_copies_the_periodic_table" translatable="true">Avaa tallennetut yhdisteet, offline-kopiot, säännöllinen taulukko tai kemiallinen tietokanta.</string>
+    <string name="ui_reorder_mode_use_the_arrows_to_move_favorite" translatable="true">Järjestä tila: käytä nuolia siirtää suosikki kohteita.</string>
+    <string name="ui_tap_the_arrows_to_move_favorites" translatable="true">Napauta nuolia siirtääksesi suosikkeja.</string>
+    <string name="ui_tap_a_card_to_open_favorites_are_stored" translatable="true">Napauta avattavaa korttia. Suosikit on tallennettu vain tälle laitteelle.</string>
+    <string name="ui_reorder_mode_use_the_arrows_to_move_items" translatable="true">Järjestä tila: käytä nuolia siirtääksesi kohteita.</string>
+    <string name="ui_no_matches_found" translatable="true">Vastaavuuksia ei löytynyt.</string>
+    <string name="ui_try_a_different_name_formula_or_cid" translatable="true">Kokeile toista nimeä, kaavaa tai CID:tä.</string>
+    <string name="ui_enter_a_custom_path_or_leave_blank_to" translatable="true">Syötä mukautettu polku tai jätä tyhjäksi käyttääksesi sovelluksen välimuistin oletuskansiota.</string>
+    <string name="ui_default_app_internal_cache_custom_paths_must_be" translatable="true">Oletus: sovelluksen sisäinen välimuisti. Mukautetut polut on kirjoitettava.</string>
+    <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Arkaluonteiset arvot peitetään eikä niitä koskaan kopioida tästä näkymästä.</string>
+    <string name="ui_run_diagnostics_to_test_pubchem_lookup_structures_ghs" translatable="true">Suorita diagnostiikka testata PubChem haku, rakenteet, GHS data, fallback 3D loading, Wikipedia, GitHub julkaisuja ja tekoälyn päätepisteet.</string>
+    <string name="ui_debug_settings" translatable="true">YKSITYISKOHTAISET ASETUKSET</string>
+    <string name="ui_structure_search_2" translatable="true">Rakenteen Haku</string>
+    <string name="ui_draw_a_connected_structure_and_search_pubchem" translatable="true">Piirrä yhdistetty rakenne ja hae PubChem.</string>
+    <string name="ui_structure_search_3" translatable="true">Rakenteen haku</string>
+    <string name="ui_tap_the_canvas_to_place_atoms_select_two" translatable="true">Napauta kanavaa asettaaksesi atomeja. Valitse kaksi atomia yhdistääksesi ne valittuun siteeseen.</string>
+    <string name="ui_drag_atoms_bonds_or_the_whole_selected_molecule" translatable="true">Vedä atomeja, siteitä tai koko valittua molekyyliä siirtääksesi ne. Vedä tyhjä kangas tilaa pantiin.</string>
+    <string name="ui_clean_can_standardize_the_drawing_through_pubchem_before" translatable="true">Puhdas voi standardisoida piirustuksen PubChemin kautta ennen hakua. Tuo ja vie SMILES, InChI tai V2000 molfile tekstiä.</string>
+    <string name="ui_paste_smiles_inchi_or_a_v2000_molfile" translatable="true">Liitä SMILES, InChI, tai V2000 molfile.</string>
+    <string name="ui_export_structure" translatable="true">Vie rakenne</string>
+    <string name="ui_select_element" translatable="true">Valitse elementti</string>
+    <string name="ui_all_118_elements" translatable="true">Kaikki 118 elementtiä</string>
+    <string name="ui_tools" translatable="true">Työkalut</string>
+    <string name="ui_reorder_mode_long_press_and_drag_tools_to" translatable="true">Järjestä tila: paina pitkään ja vedä työkaluja järjestääksesi ne.</string>
+    <string name="ui_search_tools" translatable="true">Hae työkaluja…</string>
+    <string name="ui_load_any_sdf_or_mol_file_from_your" translatable="true">Lataa mikä tahansa .sdf tai .mol tiedosto laitteesta nähdäksesi sen 3D</string>
+    <string name="ui_elemental_breakdown" translatable="true">ELEMENTAALINEN JAKAUTUMINEN</string>
+    <string name="ui_examples_2" translatable="true">ESIMERKKI</string>
+    <string name="ui_generated_estimate" translatable="true">Luotu arvio</string>
+    <string name="ui_insert_2" translatable="true">Insert:</string>
+    <string name="ui_comparison" translatable="true">VERTAILU</string>
+    <string name="ui_explanation_for_formula" translatable="true">Perustelut kaavaa varten</string>
+    <string name="ui_choose_the_value_you_know_then_enter_it" translatable="true">Valitse tuntemasi arvo ja kirjoita se alle.</string>
+    <string name="ui_enter_valid_amounts_for_all_reactants_to_determine" translatable="true">Syötä kelvolliset määrät kaikille reaktoreille rajoittavan reagenssin määrittämiseksi.</string>
+    <string name="ui_could_not_parse_3d_data" translatable="true">Ei voitu jäsentää 3D-dataa</string>
+    <string name="ui_always_follow_sds_documents_lab_rules_labels_and" translatable="true">Noudata aina SDS:n asiakirjoja, laboratorion sääntöjä, etikettejä ja virallisia ohjeita ennen kemikaalien käsittelyä.</string>
+</resources>
