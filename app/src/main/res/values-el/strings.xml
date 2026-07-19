@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">chemsearch</string>
+    <!-- Search, navigation, and shared actions -->
+    <string name="ui_advanced_search" translatable="true">Προηγμένη αναζήτηση</string>
+    <string name="ui_query" translatable="true">Ερώτημα</string>
+    <string name="ui_include" translatable="true">Συμπερίληψη</string>
+    <string name="ui_exclude" translatable="true">Εξαίρεση</string>
+    <string name="ui_searching" translatable="true">Αναζήτηση...</string>
+    <string name="ui_search" translatable="true">Αναζήτηση</string>
+    <string name="ui_close" translatable="true">Κλείσιμο</string>
+    <string name="ui_back_to_database" translatable="true">Πίσω στη Βάση Δεδομένων</string>
+    <string name="ui_search_in_chemsearch" translatable="true">Αναζήτηση στο ChemSearch</string>
+    <string name="ui_source" translatable="true">Πηγή</string>
+    <string name="ui_back" translatable="true">Πίσω</string>
+    <string name="ui_clear" translatable="true">Εκκαθάριση</string>
+    <string name="ui_selected" translatable="true">Επιλεγμένο</string>
+    <string name="ui_molecular_formula" translatable="true">Μοριακός τύπος</string>
+    <string name="ui_e_g_c6h12o6" translatable="true">π.χ. C6H12O6</string>
+    <string name="ui_element" translatable="true">Στοιχείο</string>
+    <string name="ui_add_element" translatable="true">Προσθήκη στοιχείου</string>
+    <string name="ui_molar_mass_for_molecular_formula_optional" translatable="true">Γραμμομοριακή μάζα για μοριακό τύπο (προαιρετικό)</string>
+    <string name="ui_e_g_180_16" translatable="true">π.χ. 180.16</string>
+    <string name="ui_calculate_formula" translatable="true">Υπολογισμός μαθηματικού τύπου</string>
+    <string name="ui_first_compound" translatable="true">Πρώτη ένωση</string>
+    <string name="ui_e_g_agno3" translatable="true">e.g. AgNO3</string>
+    <string name="ui_second_compound" translatable="true">Δεύτερη ένωση</string>
+    <string name="ui_e_g_nacl" translatable="true">π.χ. NaCl</string>
+    <string name="ui_predict_precipitate" translatable="true">Πρόβλεψη ιζήματος</string>
+    <string name="ui_result" translatable="true">Αποτέλεσμα</string>
+    <string name="ui_formula" translatable="true">Τύπος</string>
+    <string name="ui_remove_row" translatable="true">Αφαίρεση γραμμής</string>
+    <string name="ui_info" translatable="true">Πληροφορίες</string>
+    <string name="ui_loading_more" translatable="true">Φόρτωση περισσότερων</string>
+    <string name="ui_exit_chemsearch" translatable="true">Έξοδος ChemSearch?</string>
+    <string name="ui_are_you_sure_you_want_to_exit" translatable="true">Είστε σίγουροι ότι θέλετε να βγείτε?</string>
+    <string name="ui_exit" translatable="true">Έξοδος</string>
+    <string name="ui_cancel" translatable="true">Ακύρωση</string>
+    <string name="ui_random_compound" translatable="true">Τυχαία σύνθετη ουσία</string>
+    <string name="ui_search_elements" translatable="true">Αναζήτηση στοιχείων</string>
+    <string name="ui_full_details" translatable="true">Πλήρεις λεπτομέρειες</string>
+    <string name="ui_sources" translatable="true">Πηγές</string>
+    <string name="ui_ok" translatable="true">Εντάξει</string>
+    <string name="ui_open_wikipedia_page" translatable="true">Άνοιγμα σελίδας Wikipedia</string>
+    <string name="ui_clear_recent_searches" translatable="true">Εκκαθάριση πρόσφατων αναζητήσεων?</string>
+    <string name="ui_this_removes_your_recent_search_list_on_this" translatable="true">Αυτό αφαιρεί τη λίστα πρόσφατων αναζητήσεών σας σε αυτήν τη συσκευή.</string>
+    <string name="ui_clear_all" translatable="true">Εκκαθάριση όλων</string>
+    <string name="ui_got_it" translatable="true">Το κατάλαβα</string>
+    <string name="ui_copy" translatable="true">Αντιγραφή</string>
+    <string name="ui_synonym" translatable="true">Συνώνυμο</string>
+    <string name="ui_regenerate" translatable="true">Αναδημιουργία</string>
+    <string name="ui_no_ghs_classification_available" translatable="true">Δεν υπάρχει διαθέσιμη ταξινόμηση GHS.</string>
+    <string name="ui_pictograms" translatable="true">PICTOGRAMS</string>
+    <string name="ui_hazard_statements" translatable="true">ΔΗΛΩΣΕΙΣ ΚΙΝΔΥΝΟΥ</string>
+    <string name="ui_sort_recents" translatable="true">Ταξινόμηση προσφάτων</string>
+    <string name="ui_remove" translatable="true">Αφαίρεση</string>
+    <string name="ui_downloading_for_offline_use" translatable="true">Λήψη για χρήση χωρίς σύνδεση</string>
+    <string name="ui_share_compound" translatable="true">Κοινή χρήση σύνθετου</string>
+    <string name="ui_2d_structure" translatable="true">2D Δομή</string>
+    <string name="ui_download_2d_structure" translatable="true">Κατεβάστε τη δομή 2D</string>
+    <string name="ui_2d_structure_zoom" translatable="true">2D Δομή (μεγέθυνση)</string>
+    <!-- AI provider configuration -->
+    <string name="ui_refresh_models" translatable="true">Ανανέωση μοντέλων</string>
+    <string name="ui_ai_description_source" translatable="true">Πηγή περιγραφής τεχνητής νοημοσύνης</string>
+    <string name="ui_required_for_ai_descriptions" translatable="true">Απαιτείται για περιγραφές τεχνητής νοημοσύνης.</string>
+    <string name="ui_api_key" translatable="true">Κλειδί API</string>
+    <string name="ui_stored_locally_on_your_device_only" translatable="true">Αποθηκεύτηκε τοπικά στη συσκευή σας μόνο.</string>
+    <string name="ui_save" translatable="true">Αποθήκευση</string>
+    <!-- Library and offline data -->
+    <string name="ui_import_library" translatable="true">Εισαγωγή Βιβλιοθήκης</string>
+    <string name="ui_merge" translatable="true">Συγχώνευση</string>
+    <string name="ui_replace" translatable="true">Αντικατάσταση</string>
+    <string name="ui_library" translatable="true">Βιβλιοθήκη</string>
+    <string name="ui_back_to_library" translatable="true">Πίσω στη Βιβλιοθήκη</string>
+    <string name="ui_compare" translatable="true">Σύγκριση</string>
+    <string name="ui_favorites" translatable="true">Αγαπημένα</string>
+    <string name="ui_no_favorites_yet" translatable="true">Δεν υπάρχουν ακόμα αγαπημένα</string>
+    <string name="ui_tap_the_star_icon_on_any_compound" translatable="true">Πατήστε το εικονίδιο με αστέρι σε οποιαδήποτε ένωση</string>
+    <string name="ui_tap_the_favorite_icon_on_any_compound" translatable="true">Πατήστε το αγαπημένο εικονίδιο σε οποιαδήποτε ένωση</string>
+    <string name="ui_filter_favorites" translatable="true">Φίλτρο αγαπημένων</string>
+    <string name="ui_clear_filter" translatable="true">Καθαρισμός φίλτρου</string>
+    <string name="ui_cache_location" translatable="true">Τοποθεσία κρύπτης</string>
+    <string name="ui_directory_path" translatable="true">Διαδρομή καταλόγου</string>
+    <string name="ui_leave_blank_for_default" translatable="true">Αφήστε κενό για προεπιλογή</string>
+    <!-- Settings -->
+    <string name="ui_language">Γλώσσα</string>
+    <string name="ui_language_subtitle">Επιλέξτε τη γλώσσα που χρησιμοποιείται από την ChemSearch</string>
+    <string name="ui_language_system_default">Προεπιλογή συστήματος</string>
+    <string name="ui_language_english">Αγγλικά</string>
+    <string name="ui_language_restart">Η εφαρμογή θα κάνει επανεκκίνηση για να εφαρμόσει τη γλώσσα.</string>
+    <string name="ui_settings" translatable="true">Ρυθμίσεις</string>
+    <string name="ui_theme_mode" translatable="true">Λειτουργία θέματος</string>
+    <!-- Developer and diagnostic settings -->
+    <string name="ui_sharedpreferences_dump" translatable="true">Αποτύπωση προτιμήσεων κοινόχρηστων</string>
+    <string name="ui_no_keys_stored" translatable="true">Δεν αποθηκεύτηκαν κλειδιά.</string>
+    <string name="ui_prefs" translatable="true">prefs</string>
+    <string name="ui_live_logs" translatable="true">Ζωντανά Αρχεία Καταγραφής</string>
+    <string name="ui_logs" translatable="true">κούτσουρα</string>
+    <string name="ui_network_diagnostics" translatable="true">Διάγνωση δικτύου</string>
+    <string name="ui_network_diagnostics_2" translatable="true">διαγνωστικά_δικτύου</string>
+    <string name="ui_memory_info" translatable="true">Πληροφορίες μνήμης</string>
+    <string name="ui_jvm_heap" translatable="true">JVM σωρός</string>
+    <string name="ui_system_ram" translatable="true">RAM Συστήματος</string>
+    <string name="ui_low_memory" translatable="true">Χαμηλή μνήμη</string>
+    <string name="ui_memory" translatable="true">μνήμη</string>
+    <string name="ui_wipe_all_preferences" translatable="true">Εκκαθάριση όλων των προτιμήσεων?</string>
+    <string name="ui_this_clears_legacy_preferences_encrypted_key_records_history" translatable="true">Αυτό καθαρίζει τις παλιές προτιμήσεις, τα κρυπτογραφημένα αρχεία κλειδιών, το ιστορικό, τα αγαπημένα, και τις σημαίες αποσφαλμάτωσης. Οι ρυθμίσεις DataStore, οι λήψεις δωματίων και τα αρχεία cache δεν έχουν διαγραφεί. Θα πρέπει να ξεκλειδώσετε ξανά τις ρυθμίσεις αποσφαλμάτωσης.</string>
+    <string name="ui_wipe_now" translatable="true">Εκκαθάριση τώρα</string>
+    <string name="ui_force_crash" translatable="true">Αναγκαστική κατάρρευση?</string>
+    <string name="ui_this_will_immediately_crash_the_app_with_an" translatable="true">Αυτό θα συντρίψει αμέσως την εφαρμογή με μια μη διαχειριζόμενη εξαίρεση. Χρησιμοποιείται για την επαλήθευση της αναφοράς κατάρρευσης λειτουργεί.</string>
+    <string name="ui_crash_now" translatable="true">Κατάρρευση τώρα</string>
+    <string name="ui_verbose_logging" translatable="true">Λεπτομερής καταγραφή</string>
+    <string name="ui_tag_chemsearch" translatable="true">Tag: ChemSearch</string>
+    <string name="ui_endpoints" translatable="true">endpoints</string>
+    <string name="ui_hide_debug_settings" translatable="true">Απόκρυψη ρυθμίσεων εντοπισμού σφαλμάτων</string>
+    <string name="ui_remove_key" translatable="true">Αφαίρεση κλειδιού</string>
+    <!-- Structure search -->
+    <string name="ui_chemsearch_app_icon" translatable="true">Εικονίδιο εφαρμογής ChemSearch</string>
+    <string name="ui_move_up" translatable="true">Μετακίνηση πάνω</string>
+    <string name="ui_move_down" translatable="true">Μετακίνηση κάτω</string>
+    <string name="ui_export_library" translatable="true">Εξαγωγή Βιβλιοθήκης</string>
+    <string name="ui_chemsearch_molfile" translatable="true">ChemSearch molfile</string>
+    <!-- Structure search and export -->
+    <string name="ui_import_structure" translatable="true">Δομή εισαγωγών</string>
+    <string name="ui_structure_text" translatable="true">Κείμενο δομής</string>
+    <string name="ui_import" translatable="true">Εισαγωγή</string>
+    <string name="ui_share" translatable="true">Κοινοποίηση</string>
+    <string name="ui_search_mode" translatable="true">Λειτουργία αναζήτησης</string>
+    <string name="ui_structure_search" translatable="true">Αναζήτηση δομής</string>
+    <string name="ui_close_export_dialog" translatable="true">Κλείσιμο διαλόγου εξαγωγής</string>
+    <string name="ui_structure_search_settings" translatable="true">Ρυθμίσεις αναζήτησης δομής</string>
+    <string name="ui_close_results" translatable="true">Κλείσιμο αποτελεσμάτων</string>
+    <!-- Chemistry tools -->
+    <string name="ui_back_to_tools" translatable="true">Πίσω στα Εργαλεία</string>
+    <string name="ui_custom_3d_molecule_viewer" translatable="true">Προβολέας Προσαρμοσμένων Τρισδιάστατων Μορίων</string>
+    <string name="ui_no_file_loaded" translatable="true">Δεν φορτώθηκε αρχείο</string>
+    <string name="ui_choose_file" translatable="true">Επιλογή Αρχείου</string>
+    <string name="ui_change" translatable="true">Αλλαγή</string>
+    <string name="ui_molar_mass_calculator" translatable="true">Υπολογιστής Γραμμομοριακής Μάζας</string>
+    <string name="ui_molecular_formula_2" translatable="true">Μοριακός Τύπος</string>
+    <string name="ui_e_g_h2o_ca_oh_2_cuso4_5h2o" translatable="true">e.g. H2O, Ca(OH)2, CuSO4·5H2O</string>
+    <string name="ui_insert" translatable="true">Insert:</string>
+    <string name="ui_molar_mass" translatable="true">MOLAR MASS</string>
+    <string name="ui_count" translatable="true">Μέτρηση</string>
+    <string name="ui_g_mol" translatable="true">g/mol</string>
+    <string name="ui_3f" translatable="true">%.3f</string>
+    <string name="ui_1f" translatable="true">%.1f%%</string>
+    <string name="ui_oxidation_state_finder" translatable="true">Προσάναμμα Κατάστασης Οξειδοποίησης</string>
+    <string name="ui_e_g_kmno4" translatable="true">π.χ. KMnO4</string>
+    <string name="ui_charge" translatable="true">Φόρτιση</string>
+    <string name="ui_find_oxidation_states" translatable="true">Βρείτε Κράτη Οξειδοποίησης</string>
+    <string name="ui_oxidation_states" translatable="true">ΚΡΑΤΗ ΟΞΕΙΔΟΠΟΙΗΣΗ</string>
+    <string name="ui_examples" translatable="true">ΠΑΡΑΔΕΙΓΜΑΤΑ</string>
+    <string name="ui_smiles_visualizer" translatable="true">Οπτικοποιητής SMILES</string>
+    <string name="ui_smiles_string" translatable="true">Συμβολοσειρά SMILES</string>
+    <string name="ui_e_g_cco" translatable="true">π.χ. CCO</string>
+    <string name="ui_3d_model_not_available" translatable="true">3D μοντέλο δεν είναι διαθέσιμο</string>
+    <string name="ui_reaction_balancer" translatable="true">Υπόλοιπο Αντίδρασης</string>
+    <string name="ui_chemical_equation" translatable="true">Χημική Εξίσωση</string>
+    <string name="ui_h2_o2_h2o" translatable="true">H2 + O2 - H2O</string>
+    <string name="ui_balance" translatable="true">Υπόλοιπο</string>
+    <string name="ui_balanced_equation" translatable="true">ΥΠΟΛΟΙΠΗ ΕΞΟΔΗ</string>
+    <string name="ui_atom_count_verification" translatable="true">ΕΠΑΛΗΘΕΥΣΗ ΤΟΥ ΕΜΠΟΡΕΥΜΑΤΟΣ ΤΩΡΑΣ</string>
+    <string name="ui_reactants" translatable="true">Αντιδραστήρες</string>
+    <string name="ui_products" translatable="true">Προϊόντα</string>
+    <string name="ui_compare_compounds" translatable="true">Σύγκριση Ενώσεων</string>
+    <string name="ui_ph_poh_calculator" translatable="true">pH / Υπολογιστής pOH</string>
+    <string name="ui_solution_type" translatable="true">Τύπος λύσης</string>
+    <string name="ui_dilution_calculator" translatable="true">Υπολογιστής Αραίωσης</string>
+    <string name="ui_solve_for" translatable="true">Λύση για</string>
+    <string name="ui_c_m" translatable="true">C1 (M)</string>
+    <string name="ui_e_g_1_0" translatable="true">π.χ. 1.0</string>
+    <string name="ui_v_ml" translatable="true">V1 (mL)</string>
+    <string name="ui_e_g_25" translatable="true">π.χ. 25</string>
+    <string name="ui_c_m_2" translatable="true">C2 (M)</string>
+    <string name="ui_e_g_0_5" translatable="true">π.χ. 0,5</string>
+    <string name="ui_v_ml_2" translatable="true">V2 (mL)</string>
+    <string name="ui_e_g_50" translatable="true">π.χ. 50</string>
+    <string name="ui_ideal_gas_law" translatable="true">Ιδανικός Νόμος Αερίου</string>
+    <string name="ui_pressure_atm" translatable="true">Πίεση (atm)</string>
+    <string name="ui_volume_l" translatable="true">Όγκος (L)</string>
+    <string name="ui_e_g_2_5" translatable="true">π.χ. 2.5</string>
+    <string name="ui_moles_mol" translatable="true">Γραμμομόρια (mol)</string>
+    <string name="ui_temperature_k" translatable="true">Θερμοκρασία (K)</string>
+    <string name="ui_e_g_298" translatable="true">π.χ. 298</string>
+    <string name="ui_r_0_082057_l_atm_mol_k" translatable="true">R = 0.082057 L·atm/mol·K</string>
+    <string name="ui_balance_calculate" translatable="true">Balance &amp; Calculate</string>
+    <string name="ui_gas_molar_volume_l_mol" translatable="true">Γραμμομοριακός όγκος αερίου (L/mol)</string>
+    <string name="ui_enter_a_valid_molar_volume_e_g_22" translatable="true">Εισάγετε έναν έγκυρο γραμμομοριακό όγκο (π.χ. 22.414)</string>
+    <string name="ui_reactant_amounts" translatable="true">ΑΝΔΡΑΣΤΙΚΑ ΠΟΣΑ</string>
+    <string name="ui_volume_ml" translatable="true">Όγκος (mL)</string>
+    <string name="ui_e_g_250" translatable="true">π.χ. 250</string>
+    <string name="ui_purity_optional" translatable="true">Καθαρότητα % (προαιρετικό)</string>
+    <string name="ui_enter_an_amount_to_compute_moles" translatable="true">Εισάγετε ένα ποσό για τον υπολογισμό των γραμμομορίων.</string>
+    <string name="ui_clear_all_amounts" translatable="true">Εκκαθάριση όλων των ποσών</string>
+    <string name="ui_stoichiometry_summary" translatable="true">ΘΑΛΑΣΣΙΑ ΤΟΥ STOICHIOMETRY</string>
+    <string name="ui_limiting_reagent" translatable="true">Περιορισμός αντιδραστηρίου</string>
+    <string name="ui_mole_ratios_relative_to_limiting_reagent" translatable="true">MOLE RATIOS (σχετικά με το αντιδραστήριο περιορισμού)</string>
+    <string name="ui_theoretical_yield" translatable="true">ΘΕΩΡΗΤΙΚΟ YIELD</string>
+    <string name="ui_excess_reactants" translatable="true">ΑΝΕΠΙΘΥΜΗΤΕΣ ΕΝΕΡΓΕΙΕΣ</string>
+    <string name="ui_target_product" translatable="true">Προϊόν προορισμού:</string>
+    <string name="ui_actual_yield_optional" translatable="true">Πραγματική απόδοση (προαιρετικό)</string>
+    <string name="ui_e_g_1_25" translatable="true">π.χ. 1.25</string>
+    <string name="ui_e_g_100" translatable="true">π.χ. 100</string>
+    <string name="ui_need_limiting_reagent_to_compute_percent_yield" translatable="true">Χρειάζεστε περιορισμό αντιδραστηρίου για τον υπολογισμό της απόδοσης τοις εκατό.</string>
+    <string name="ui_desired_product_amount" translatable="true">Επιθυμητή ποσότητα προϊόντος</string>
+    <string name="ui_e_g_5_0" translatable="true">π.χ. 5.0</string>
+    <string name="ui_e_g_500" translatable="true">π.χ. 500</string>
+    <string name="ui_required_reactants_theoretical" translatable="true">Απαιτούμενα αντιδρώντα (θεωρητικά)</string>
+    <!-- Isomer search and onboarding -->
+    <string name="ui_reset_tool_order" translatable="true">Reset tool order</string>
+    <string name="ui_clear_search" translatable="true">Εκκαθάριση αναζήτησης</string>
+    <string name="ui_drag_to_reorder" translatable="true">Σύρετε για αναδιάταξη</string>
+    <string name="ui_swap_sides" translatable="true">Swap sides</string>
+    <string name="ui_remove_compound" translatable="true">Αφαίρεση σύνθετου</string>
+    <string name="ui_add_compound" translatable="true">Προσθήκη σύνθετου</string>
+    <string name="ui_open_in_search" translatable="true">Άνοιγμα στην αναζήτηση</string>
+    <string name="ui_drag_to_rotate" translatable="true">Σύρετε για περιστροφή</string>
+    <string name="ui_pinch_to_zoom" translatable="true">Τσιμπήστε για μεγέθυνση</string>
+    <string name="ui_pinch_drag_to_pan" translatable="true">Pinch-drag to pan</string>
+    <string name="ui_configure_ai_provider" translatable="true">Configure AI provider</string>
+    <string name="ui_skip" translatable="true">Παράλειψη</string>
+    <string name="ui_chemsearch" translatable="true">ChemSearch</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Αναζήτηση ουσιών, αντιδράσεων, ομάδων, ιόντων...</string>
+    <string name="ui_use_composition_data_or_reduce_an_existing_formula" translatable="true">Χρησιμοποιήστε δεδομένα σύνθεσης ή μειώστε μια υπάρχουσα φόρμουλα.</string>
+    <string name="ui_enter_two_aqueous_ionic_compounds_to_predict_products" translatable="true">Εισαγάγετε δύο υδατικές ιοντικές ενώσεις για να προβλέψετε τα προϊόντα και τα ιζήματα.</string>
+    <string name="ui_mole_ratio" translatable="true">MOLE RATIO</string>
+    <string name="ui_product_check" translatable="true">ΕΛΕΓΧΟΣ ΠΡΟΪΟΝΤΟΣ</string>
+    <string name="ui_enter_a_molecular_formula_to_find_matching_structural" translatable="true">Εισαγάγετε μια μοριακή φόρμουλα για να βρείτε ταιριάζουν δομικά ισομερή από την PubChem.</string>
+    <string name="ui_show_20_more" translatable="true">Εμφάνιση 20 περισσότερων</string>
+    <string name="ui_include_isotopes" translatable="true">Συμπερίληψη ισοτόπων</string>
+    <string name="ui_isomer_search" translatable="true">Αναζήτηση Isomer</string>
+    <string name="ui_search_compounds_by_molecular_formula" translatable="true">Αναζήτηση ενώσεων με μοριακό τύπο.</string>
+    <string name="ui_no_isomer_search_yet" translatable="true">Δεν υπάρχει αναζήτηση ισομερών ακόμα</string>
+    <string name="ui_try_formulas_like_c2h6o_c6h6_or_c6h12o6" translatable="true">Δοκιμάστε τους τύπους όπως C2H6O, C6H6, ή C6H12O6.</string>
+    <string name="ui_molecular_formula_e_g_c_h_o" translatable="true">Molecular formula, e.g. C6H12O6</string>
+    <string name="ui_this_in_app_notice_is_a_practical_summary" translatable="true">Αυτή η ειδοποίηση in-app είναι μια πρακτική περίληψη για χρήστες ChemSearch . Δεν είναι νομικές συμβουλές.</string>
+    <string name="ui_looking_up_compound" translatable="true">Αναζήτηση σύνθεσης...</string>
+    <string name="ui_compare_listed_element_properties_across_the_whole_table" translatable="true">Η σύγκριση των ιδιοτήτων στοιχείων σε όλο τον πίνακα. Τα πιο σκούρα πλακίδια σημαίνουν υψηλότερες τιμές για την επιλεγμένη ιδιότητα.</string>
+    <string name="ui_image_unavailable" translatable="true">Μη διαθέσιμη εικόνα</string>
+    <string name="ui_chemsearch_2" translatable="true">ChemSearch</string>
+    <string name="ui_chemistry_simplified" translatable="true">ΧΕΜΓΕΙΑ ΦΥΛΑΞΗΣ</string>
+    <string name="ui_search_any_compound" translatable="true">Αναζήτηση οποιασδήποτε σύνθεσης..</string>
+    <string name="ui_did_you_mean" translatable="true">Μήπως εννοείτε:</string>
+    <string name="ui_search_any_compound_2" translatable="true">Αναζήτηση οποιασδήποτε σύνθετης ουσίας</string>
+    <string name="ui_type_a_compound_name_formula_cid_or_cas" translatable="true">Πληκτρολογήστε ένα σύνθετο όνομα, τύπο, CID, ή CAS.</string>
+    <string name="ui_recent_searches" translatable="true">Πρόσφατες αναζητήσεις</string>
+    <string name="ui_clear_all_2" translatable="true">Εκκαθάριση όλων</string>
+    <string name="ui_find_isomers" translatable="true">Εύρεση ισομερών</string>
+    <string name="ui_compound_data_from_pubchem_nih_ncbi" translatable="true">Σύνθετα στοιχεία από PubChem (NIH/NCBI)</string>
+    <string name="ui_2d_structure_2" translatable="true">2D Δομή</string>
+    <string name="ui_3d_model" translatable="true">3Δ Μοντέλο</string>
+    <string name="ui_3d_model_not_available_2" translatable="true">3D μοντέλο δεν είναι διαθέσιμο</string>
+    <string name="ui_learn_why" translatable="true">Μάθετε γιατί →</string>
+    <string name="ui_pinch_to_zoom_tap_outside_to_close" translatable="true">Πιέστε για μεγέθυνση · Πατήστε έξω για να κλείσετε</string>
+    <string name="ui_why_is_3d_unavailable" translatable="true">Γιατί είναι 3D μη διαθέσιμη?</string>
+    <string name="ui_pubchem_pre_computes_3d_conformer_models_for_90" translatable="true">Προ-υπολογίζει τα μοντέλα 3D conformer για ~90% των ενώσεων του χρησιμοποιώντας </string>
+    <string name="ui_source_pubchem3d_project" translatable="true">Πηγή: Έργο PubChem3D</string>
+    <string name="ui_loading_pubchem_categories" translatable="true">Φόρτωση κατηγοριών PubChem...</string>
+    <string name="ui_loading_pubchem_use_notes" translatable="true">Φόρτωση σημειώσεων χρήσης PubChem...</string>
+    <string name="ui_source_pubchem_annotations" translatable="true">Πηγή: σχολιασμοί PubChem</string>
+    <string name="ui_loading_pubchem_properties" translatable="true">Φόρτωση ιδιοτήτων PubChem...</string>
+    <string name="ui_loading_synonyms" translatable="true">Φόρτωση συνώνυμων...</string>
+    <string name="ui_collapse" translatable="true">Σύμπτυξη</string>
+    <string name="ui_loading" translatable="true">Φόρτωση</string>
+    <string name="ui_configure_ai_provider_2" translatable="true">Configure AI provider</string>
+    <string name="ui_provider" translatable="true">Πάροχος</string>
+    <string name="ui_model" translatable="true">Μοντέλο</string>
+    <string name="ui_settings_2" translatable="true">Ρυθμίσεις</string>
+    <string name="ui_color_scheme" translatable="true">Συνδυασμός χρωμάτων</string>
+    <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">Εμφανίζεται αυτόματα κατά την αναζήτηση μιας ένωσης</string>
+    <string name="ui_chemistry_simplified_for_android" translatable="true">Η χημεία απλοποιήθηκε για το Android.</string>
+    <string name="ui_search_compounds_draw_structures_view_2d_3d_models" translatable="true">Οι ενώσεις αναζήτησης, σχεδιάστε τις δομές, δείτε τα μοντέλα 2D/3D, αποθηκεύστε δεδομένα εκτός σύνδεσης, συγκρίνετε τις ενώσεις, και χρησιμοποιήστε εργαλεία χημείας.</string>
+    <string name="ui_built_by_furthersecrets" translatable="true">Χτισμένο από FurtherSecrets</string>
+    <string name="ui_about_chemsearch" translatable="true">Σχετικά Με ChemSearch</string>
+    <string name="ui_app_info_links_data_sources_and_credits" translatable="true">Πληροφορίες εφαρμογής, σύνδεσμοι, πηγές δεδομένων και μονάδες.</string>
+    <string name="ui_legal_and_safety" translatable="true">ΝΟΜΙΚΗ ΚΑΙ ΑΣΦΑΛΕΙΑ</string>
+    <string name="ui_choose_which_provider_should_generate_this_compound_description" translatable="true">Επιλέξτε ποιος πάροχος θα πρέπει να δημιουργήσει αυτή την περιγραφή σύνθεσης.</string>
+    <string name="ui_merge_the_backup_with_your_current_library_or" translatable="true">Συγχωνεύστε το αντίγραφο ασφαλείας με την τρέχουσα βιβλιοθήκη σας ή αντικαταστήστε τα τρέχοντα αγαπημένα και λήψεις με το αρχείο αντιγράφου ασφαλείας.</string>
+    <string name="ui_sort" translatable="true">Ταξινόμηση</string>
+    <string name="ui_open_saved_compounds_offline_copies_the_periodic_table" translatable="true">Άνοιγμα αποθηκευμένων ενώσεων, αντιγράφων εκτός σύνδεσης, περιοδικού πίνακα ή χημικής βάσης δεδομένων.</string>
+    <string name="ui_reorder_mode_use_the_arrows_to_move_favorite" translatable="true">Λειτουργία αναδιάταξης: χρησιμοποιήστε τα βέλη για να μετακινήσετε τα αγαπημένα σας αντικείμενα.</string>
+    <string name="ui_tap_the_arrows_to_move_favorites" translatable="true">Πατήστε τα βέλη για να μετακινήσετε τα αγαπημένα.</string>
+    <string name="ui_tap_a_card_to_open_favorites_are_stored" translatable="true">Πατήστε μια κάρτα για να ανοίξετε. Τα αγαπημένα αποθηκεύονται μόνο σε αυτήν τη συσκευή.</string>
+    <string name="ui_reorder_mode_use_the_arrows_to_move_items" translatable="true">Λειτουργία αναδιάταξης: χρησιμοποιήστε τα βέλη για να μετακινήσετε αντικείμενα.</string>
+    <string name="ui_no_matches_found" translatable="true">Δεν βρέθηκαν ταιριάσματα.</string>
+    <string name="ui_try_a_different_name_formula_or_cid" translatable="true">Δοκιμάστε ένα διαφορετικό όνομα, τύπο ή CID.</string>
+    <string name="ui_enter_a_custom_path_or_leave_blank_to" translatable="true">Εισάγετε μια προσαρμοσμένη διαδρομή ή αφήστε κενό για να χρησιμοποιήσετε τον προεπιλεγμένο κατάλογο προσωρινής μνήμης εφαρμογής.</string>
+    <string name="ui_default_app_internal_cache_custom_paths_must_be" translatable="true">Προεπιλογή: εσωτερική προσωρινή μνήμη εφαρμογών. Οι προσαρμοσμένες διαδρομές πρέπει να είναι εγγράψιμες.</string>
+    <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Οι ευαίσθητες τιμές είναι καλυμμένες και δεν αντιγράφονται ποτέ από αυτή την άποψη.</string>
+    <string name="ui_run_diagnostics_to_test_pubchem_lookup_structures_ghs" translatable="true">Εκτελέστε τα διαγνωστικά για να δοκιμάσετε την αναζήτηση PubChem, τις δομές, τα δεδομένα GHS, την εφεδρική 3D φόρτωση, τη Βικιπαίδεια, τις εκδόσεις GitHub και τα τελικά σημεία AI.</string>
+    <string name="ui_debug_settings" translatable="true">ΑΠΟΣΤΟΛΗ ΡΥΘΜΙΣΕΙΣ</string>
+    <string name="ui_structure_search_2" translatable="true">Αναζήτηση Δομής</string>
+    <string name="ui_draw_a_connected_structure_and_search_pubchem" translatable="true">Σχεδιάστε μια συνδεδεμένη δομή και αναζήτηση PubChem.</string>
+    <string name="ui_structure_search_3" translatable="true">Αναζήτηση δομής</string>
+    <string name="ui_tap_the_canvas_to_place_atoms_select_two" translatable="true">Πατήστε τον καμβά για να τοποθετήσετε άτομα. Επιλέξτε δύο άτομα για να τα συνδέσετε με τον επιλεγμένο δεσμό.</string>
+    <string name="ui_drag_atoms_bonds_or_the_whole_selected_molecule" translatable="true">Σύρετε άτομα, δεσμούς, ή ολόκληρο το επιλεγμένο μόριο για να τα επανατοποθετήσετε. Σύρετε κενό χώρο καμβά για να πατήσετε.</string>
+    <string name="ui_clean_can_standardize_the_drawing_through_pubchem_before" translatable="true">Καθαρίστε μπορεί να τυποποιήσει το σχέδιο μέσω PubChem πριν από την αναζήτηση. Εισαγωγή και εξαγωγή χρήση SMILES, InChI, ή V2000 molfile κείμενο.</string>
+    <string name="ui_paste_smiles_inchi_or_a_v2000_molfile" translatable="true">Επικόλληση SMILES, InChI, ή V2000 molfile.</string>
+    <string name="ui_export_structure" translatable="true">Εξαγωγή δομής</string>
+    <string name="ui_select_element" translatable="true">Επιλογή στοιχείου</string>
+    <string name="ui_all_118_elements" translatable="true">Όλα τα 118 στοιχεία</string>
+    <string name="ui_tools" translatable="true">Εργαλεία</string>
+    <string name="ui_reorder_mode_long_press_and_drag_tools_to" translatable="true">Λειτουργία αναδιάταξης: παρατεταμένο πάτημα και σύρετε τα εργαλεία για να τα αναδιατάξετε.</string>
+    <string name="ui_search_tools" translatable="true">Search tools…</string>
+    <string name="ui_load_any_sdf_or_mol_file_from_your" translatable="true">Φορτώστε οποιοδήποτε αρχείο .sdf ή .mol από τη συσκευή σας για να το δείτε σε 3D</string>
+    <string name="ui_elemental_breakdown" translatable="true">ΕΠΑΓΓΕΛΜΑΤΙΚΗ ΑΝΑΚΤΗΣΗ</string>
+    <string name="ui_examples_2" translatable="true">ΠΑΡΑΔΕΙΓΜΑΤΑ</string>
+    <string name="ui_generated_estimate" translatable="true">Παραγόμενη εκτίμηση</string>
+    <string name="ui_insert_2" translatable="true">Insert:</string>
+    <string name="ui_comparison" translatable="true">ΣΥΓΚΡΙΣΗ</string>
+    <string name="ui_explanation_for_formula" translatable="true">Επεξήγηση για τον τύπο</string>
+    <string name="ui_choose_the_value_you_know_then_enter_it" translatable="true">Επιλέξτε την τιμή που ξέρετε, πληκτρολογήστε την παρακάτω.</string>
+    <string name="ui_enter_valid_amounts_for_all_reactants_to_determine" translatable="true">Εισάγετε έγκυρες ποσότητες για όλα τα αντιδραστήρια για τον καθορισμό του αντιδραστηρίου περιορισμού.</string>
+    <string name="ui_could_not_parse_3d_data" translatable="true">Αδυναμία ανάλυσης δεδομένων 3D</string>
+    <string name="ui_always_follow_sds_documents_lab_rules_labels_and" translatable="true">Ακολουθήστε πάντα τα έγγραφα SDS, τους κανόνες εργαστηρίων, τις ετικέτες και τις επίσημες οδηγίες πριν από το χειρισμό των χημικών ουσιών.</string>
+</resources>

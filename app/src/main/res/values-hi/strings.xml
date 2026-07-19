@@ -51,60 +51,60 @@
     <string name="ui_regenerate" translatable="true">Regenerate</string>
     <string name="ui_no_ghs_classification_available" translatable="true">No GHS classification available.</string>
     <string name="ui_pictograms" translatable="true">PICTOGRAMS</string>
-    <string name="ui_hazard_statements" translatable="true">HAZARD STATEMENTS</string>
+    <string name="ui_hazard_statements" translatable="true">खतरे के कथन</string>
     <string name="ui_sort_recents" translatable="true">Sort recents</string>
     <string name="ui_remove" translatable="true">Remove</string>
-    <string name="ui_downloading_for_offline_use" translatable="true">Downloading for offline use</string>
+    <string name="ui_downloading_for_offline_use" translatable="true">ऑफ़लाइन उपयोग के लिए डाउनलोड किया जा रहा है</string>
     <string name="ui_share_compound" translatable="true">Share compound</string>
-    <string name="ui_2d_structure" translatable="true">2D Structure</string>
-    <string name="ui_download_2d_structure" translatable="true">Download 2D structure</string>
-    <string name="ui_2d_structure_zoom" translatable="true">2D Structure (zoom)</string>
+    <string name="ui_2d_structure" translatable="true">2D संरचना</string>
+    <string name="ui_download_2d_structure" translatable="true">2D संरचना डाउनलोड करें</string>
+    <string name="ui_2d_structure_zoom" translatable="true">2D संरचना (ज़ूम)</string>
     <!-- AI provider configuration -->
-    <string name="ui_refresh_models" translatable="true">Refresh models</string>
-    <string name="ui_ai_description_source" translatable="true">AI description source</string>
-    <string name="ui_required_for_ai_descriptions" translatable="true">Required for AI descriptions.</string>
-    <string name="ui_api_key" translatable="true">API Key</string>
-    <string name="ui_stored_locally_on_your_device_only" translatable="true">Stored locally on your device only.</string>
+    <string name="ui_refresh_models" translatable="true">मॉडल रिफ्रेश करें</string>
+    <string name="ui_ai_description_source" translatable="true">AI विवरण स्रोत</string>
+    <string name="ui_required_for_ai_descriptions" translatable="true">AI विवरण के लिए आवश्यक।</string>
+    <string name="ui_api_key" translatable="true">API कुंजी</string>
+    <string name="ui_stored_locally_on_your_device_only" translatable="true">केवल आपके डिवाइस पर स्थानीय रूप से संग्रहीत।</string>
     <string name="ui_save" translatable="true">Save</string>
     <!-- Library and offline data -->
-    <string name="ui_import_library" translatable="true">Import Library</string>
+    <string name="ui_import_library" translatable="true">लाइब्रेरी आयात करें</string>
     <string name="ui_merge" translatable="true">Merge</string>
     <string name="ui_replace" translatable="true">Replace</string>
-    <string name="ui_library" translatable="true">Library</string>
-    <string name="ui_back_to_library" translatable="true">Back to Library</string>
+    <string name="ui_library" translatable="true">लाइब्रेरी</string>
+    <string name="ui_back_to_library" translatable="true">वापस लाइब्रेरी में</string>
     <string name="ui_compare" translatable="true">Compare</string>
-    <string name="ui_favorites" translatable="true">Favorites</string>
-    <string name="ui_no_favorites_yet" translatable="true">No favorites yet</string>
+    <string name="ui_favorites" translatable="true">पसंदीदा</string>
+    <string name="ui_no_favorites_yet" translatable="true">अभी तक कोई पसंदीदा नहीं</string>
     <string name="ui_tap_the_star_icon_on_any_compound" translatable="true">Tap the star icon on any compound</string>
     <string name="ui_tap_the_favorite_icon_on_any_compound" translatable="true">Tap the favorite icon on any compound</string>
-    <string name="ui_filter_favorites" translatable="true">Filter favorites</string>
-    <string name="ui_clear_filter" translatable="true">Clear filter</string>
-    <string name="ui_cache_location" translatable="true">Cache location</string>
-    <string name="ui_directory_path" translatable="true">Directory path</string>
-    <string name="ui_leave_blank_for_default" translatable="true">Leave blank for default</string>
+    <string name="ui_filter_favorites" translatable="true">पसंदीदा फ़िल्टर करें</string>
+    <string name="ui_clear_filter" translatable="true">फ़िल्टर हटाएं</string>
+    <string name="ui_cache_location" translatable="true">कैश स्थान</string>
+    <string name="ui_directory_path" translatable="true">डिरेक्ट्री पथ</string>
+    <string name="ui_leave_blank_for_default" translatable="true">डिफ़ॉल्ट के लिए खाली छोड़ें</string>
     <!-- Settings -->
-    <string name="ui_language">Language</string>
-    <string name="ui_language_subtitle">Choose the language used by ChemSearch</string>
-    <string name="ui_language_system_default">System default</string>
-    <string name="ui_language_english">English</string>
-    <string name="ui_language_restart">The app will restart to apply the language.</string>
-    <string name="ui_settings" translatable="true">Settings</string>
-    <string name="ui_theme_mode" translatable="true">Theme mode</string>
+    <string name="ui_language">भाषा</string>
+    <string name="ui_language_subtitle">ChemSearch द्वारा उपयोग की जाने वाली भाषा चुनें</string>
+    <string name="ui_language_system_default">सिस्टम डिफ़ॉल्ट</string>
+    <string name="ui_language_english">अंग्रेज़ी</string>
+    <string name="ui_language_restart">भाषा लागू करने के लिए ऐप रीस्टार्ट होगा।</string>
+    <string name="ui_settings" translatable="true">सेटिंग्स</string>
+    <string name="ui_theme_mode" translatable="true">थीम मोड</string>
     <!-- Developer and diagnostic settings -->
-    <string name="ui_sharedpreferences_dump" translatable="true">SharedPreferences dump</string>
-    <string name="ui_no_keys_stored" translatable="true">No keys stored.</string>
+    <string name="ui_sharedpreferences_dump" translatable="true">SharedPreferences डंप</string>
+    <string name="ui_no_keys_stored" translatable="true">कोई कुंजी संग्रहीत नहीं है।</string>
     <string name="ui_prefs" translatable="true">prefs</string>
-    <string name="ui_live_logs" translatable="true">Live Logs</string>
+    <string name="ui_live_logs" translatable="true">लाइव लॉग</string>
     <string name="ui_logs" translatable="true">logs</string>
-    <string name="ui_network_diagnostics" translatable="true">Network diagnostics</string>
+    <string name="ui_network_diagnostics" translatable="true">नेटवर्क डायग्नोस्टिक्स</string>
     <string name="ui_network_diagnostics_2" translatable="true">network_diagnostics</string>
-    <string name="ui_memory_info" translatable="true">Memory info</string>
-    <string name="ui_jvm_heap" translatable="true">JVM heap</string>
-    <string name="ui_system_ram" translatable="true">System RAM</string>
-    <string name="ui_low_memory" translatable="true">Low memory</string>
+    <string name="ui_memory_info" translatable="true">मेमोरी जानकारी</string>
+    <string name="ui_jvm_heap" translatable="true">JVM हीप</string>
+    <string name="ui_system_ram" translatable="true">सिस्टम RAM</string>
+    <string name="ui_low_memory" translatable="true">कम मेमोरी</string>
     <string name="ui_memory" translatable="true">memory</string>
-    <string name="ui_wipe_all_preferences" translatable="true">Wipe all preferences?</string>
-    <string name="ui_this_clears_legacy_preferences_encrypted_key_records_history" translatable="true">This clears legacy preferences, encrypted key records, history, favorites, and debug flags. DataStore settings, Room downloads, and cache files are not deleted. You will need to unlock debug settings again.</string>
+    <string name="ui_wipe_all_preferences" translatable="true">सभी प्राथमिकताएं मिटाएं?</string>
+    <string name="ui_this_clears_legacy_preferences_encrypted_key_records_history" translatable="true">यह लेगेसी प्राथमिकताएं, एन्क्रिप्टेड कुंजी रिकॉर्ड, इतिहास, पसंदीदा और डीबग फ्लैग को साफ़ करता है। DataStore सेटिंग्स, Room डाउनलोड और कैश फ़ाइलें डिलीट नहीं होती हैं। आपको डीबग सेटिंग्स को फिर से अनलॉक करना होगा।</string>
     <string name="ui_wipe_now" translatable="true">Wipe now</string>
     <string name="ui_force_crash" translatable="true">Force crash?</string>
     <string name="ui_this_will_immediately_crash_the_app_with_an" translatable="true">This will immediately crash the app with an unhandled exception. Used to verify crash reporting is working.</string>
