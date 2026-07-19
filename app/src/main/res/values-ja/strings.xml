@@ -86,21 +86,21 @@
     <string name="ui_language">言語</string>
     <string name="ui_language_subtitle">ChemSearch で使用される言語を選択してください</string>
     <string name="ui_language_system_default">システムのデフォルト</string>
-    <string name="ui_language_english">英語</string>
-    <string name="ui_language_danish">デンマーク語</string>
-    <string name="ui_language_german">ドイツ語</string>
-    <string name="ui_language_greek">ギリシャ語</string>
-    <string name="ui_language_spanish">スペイン語</string>
-    <string name="ui_language_finnish">フィンランド語</string>
-    <string name="ui_language_french">フランス語</string>
-    <string name="ui_language_italian">イタリア語</string>
+    <string name="ui_language_english">日本語</string>
+    <string name="ui_language_danish">Dansk</string>
+    <string name="ui_language_german">Deutsch</string>
+    <string name="ui_language_greek">Ελληνικά</string>
+    <string name="ui_language_spanish">Español</string>
+    <string name="ui_language_finnish">Suomi</string>
+    <string name="ui_language_french">Français</string>
+    <string name="ui_language_italian">Italiano</string>
     <string name="ui_language_japanese">日本語</string>
-    <string name="ui_language_dutch">オランダ語</string>
-    <string name="ui_language_norwegian">ノルウェー語</string>
-    <string name="ui_language_polish">ポーランド語</string>
-    <string name="ui_language_portuguese">ポルトガル語</string>
-    <string name="ui_language_russian">ロシア語</string>
-    <string name="ui_language_swedish">スウェーデン語</string>
+    <string name="ui_language_dutch">Nederlands</string>
+    <string name="ui_language_norwegian">Norsk</string>
+    <string name="ui_language_polish">Polski</string>
+    <string name="ui_language_portuguese">Português</string>
+    <string name="ui_language_russian">Русский</string>
+    <string name="ui_language_swedish">Svenska</string>
     <string name="ui_language_restart">アプリは言語を適用するために再起動します。</string>
     <string name="ui_settings" translatable="true">設定</string>
     <string name="ui_theme_mode" translatable="true">テーマモード</string>
