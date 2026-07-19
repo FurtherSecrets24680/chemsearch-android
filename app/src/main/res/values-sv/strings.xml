@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">kemisk sökning</string>
+    <!-- Search, navigation, and shared actions -->
+    <string name="ui_advanced_search" translatable="true">Avancerad sökning</string>
+    <string name="ui_query" translatable="true">Fråga</string>
+    <string name="ui_include" translatable="true">Inkludera</string>
+    <string name="ui_exclude" translatable="true">Exkludera</string>
+    <string name="ui_searching" translatable="true">Söker...</string>
+    <string name="ui_search" translatable="true">Sök</string>
+    <string name="ui_close" translatable="true">Stäng</string>
+    <string name="ui_back_to_database" translatable="true">Tillbaka till databas</string>
+    <string name="ui_search_in_chemsearch" translatable="true">Sök i ChemSearch</string>
+    <string name="ui_source" translatable="true">Källa</string>
+    <string name="ui_back" translatable="true">Tillbaka</string>
+    <string name="ui_clear" translatable="true">Rensa</string>
+    <string name="ui_selected" translatable="true">Vald</string>
+    <string name="ui_molecular_formula" translatable="true">Molekylär formel</string>
+    <string name="ui_e_g_c6h12o6" translatable="true">t.ex. C6H12O6</string>
+    <string name="ui_element" translatable="true">Element</string>
+    <string name="ui_add_element" translatable="true">Lägg till element</string>
+    <string name="ui_molar_mass_for_molecular_formula_optional" translatable="true">Molarmassa för molekylär formel (tillval)</string>
+    <string name="ui_e_g_180_16" translatable="true">t.ex. 180.16</string>
+    <string name="ui_calculate_formula" translatable="true">Beräkna formel</string>
+    <string name="ui_first_compound" translatable="true">Första föreningen</string>
+    <string name="ui_e_g_agno3" translatable="true">e.g. AgNO3</string>
+    <string name="ui_second_compound" translatable="true">Andra föreningen</string>
+    <string name="ui_e_g_nacl" translatable="true">t.ex. NaCl</string>
+    <string name="ui_predict_precipitate" translatable="true">Förutse utfällning</string>
+    <string name="ui_result" translatable="true">Resultat</string>
+    <string name="ui_formula" translatable="true">Formel</string>
+    <string name="ui_remove_row" translatable="true">Ta bort rad</string>
+    <string name="ui_info" translatable="true">Information</string>
+    <string name="ui_loading_more" translatable="true">Laddar mer</string>
+    <string name="ui_exit_chemsearch" translatable="true">Avsluta ChemSearch?</string>
+    <string name="ui_are_you_sure_you_want_to_exit" translatable="true">Är du säker på att du vill avsluta?</string>
+    <string name="ui_exit" translatable="true">Avsluta</string>
+    <string name="ui_cancel" translatable="true">Avbryt</string>
+    <string name="ui_random_compound" translatable="true">Slumpmässig förening</string>
+    <string name="ui_search_elements" translatable="true">Sök element</string>
+    <string name="ui_full_details" translatable="true">Fullständig information</string>
+    <string name="ui_sources" translatable="true">Källor</string>
+    <string name="ui_ok" translatable="true">Ok</string>
+    <string name="ui_open_wikipedia_page" translatable="true">Öppna Wikipedia sida</string>
+    <string name="ui_clear_recent_searches" translatable="true">Rensa de senaste sökningarna?</string>
+    <string name="ui_this_removes_your_recent_search_list_on_this" translatable="true">Detta tar bort din senaste söklista på den här enheten.</string>
+    <string name="ui_clear_all" translatable="true">Rensa alla</string>
+    <string name="ui_got_it" translatable="true">Jag fattar</string>
+    <string name="ui_copy" translatable="true">Kopiera</string>
+    <string name="ui_synonym" translatable="true">Synonym</string>
+    <string name="ui_regenerate" translatable="true">Regenerera</string>
+    <string name="ui_no_ghs_classification_available" translatable="true">Ingen GHS klassificering tillgänglig.</string>
+    <string name="ui_pictograms" translatable="true">BILDER</string>
+    <string name="ui_hazard_statements" translatable="true">HAZARD STATEMENTER</string>
+    <string name="ui_sort_recents" translatable="true">Sortera senaste</string>
+    <string name="ui_remove" translatable="true">Radera</string>
+    <string name="ui_downloading_for_offline_use" translatable="true">Hämtar för offline-användning</string>
+    <string name="ui_share_compound" translatable="true">Dela sammansättning</string>
+    <string name="ui_2d_structure" translatable="true">2D Struktur</string>
+    <string name="ui_download_2d_structure" translatable="true">Ladda ner 2D-struktur</string>
+    <string name="ui_2d_structure_zoom" translatable="true">2D Struktur (zooma)</string>
+    <!-- AI provider configuration -->
+    <string name="ui_refresh_models" translatable="true">Uppdatera modeller</string>
+    <string name="ui_ai_description_source" translatable="true">AI beskrivning källa</string>
+    <string name="ui_required_for_ai_descriptions" translatable="true">Krävs för AI-beskrivningar.</string>
+    <string name="ui_api_key" translatable="true">API nyckel</string>
+    <string name="ui_stored_locally_on_your_device_only" translatable="true">Lagras lokalt endast på din enhet.</string>
+    <string name="ui_save" translatable="true">Spara</string>
+    <!-- Library and offline data -->
+    <string name="ui_import_library" translatable="true">Importera bibliotek</string>
+    <string name="ui_merge" translatable="true">Sammanfoga</string>
+    <string name="ui_replace" translatable="true">Ersätt</string>
+    <string name="ui_library" translatable="true">Bibliotek</string>
+    <string name="ui_back_to_library" translatable="true">Tillbaka till biblioteket</string>
+    <string name="ui_compare" translatable="true">Jämför</string>
+    <string name="ui_favorites" translatable="true">Favoriter</string>
+    <string name="ui_no_favorites_yet" translatable="true">Inga favoriter än</string>
+    <string name="ui_tap_the_star_icon_on_any_compound" translatable="true">Tryck på stjärnikonen på valfri förening</string>
+    <string name="ui_tap_the_favorite_icon_on_any_compound" translatable="true">Tryck på favoritikonen på valfri förening</string>
+    <string name="ui_filter_favorites" translatable="true">Filtrera favoriter</string>
+    <string name="ui_clear_filter" translatable="true">Rensa filter</string>
+    <string name="ui_cache_location" translatable="true">Cache plats</string>
+    <string name="ui_directory_path" translatable="true">Katalogens sökväg</string>
+    <string name="ui_leave_blank_for_default" translatable="true">Lämna tomt för standard</string>
+    <!-- Settings -->
+    <string name="ui_language">Språk</string>
+    <string name="ui_language_subtitle">Välj språk som används av ChemSearch</string>
+    <string name="ui_language_system_default">Systemets standard</string>
+    <string name="ui_language_english">Engelska</string>
+    <string name="ui_language_restart">Appen startar om för att tillämpa språket.</string>
+    <string name="ui_settings" translatable="true">Inställningar</string>
+    <string name="ui_theme_mode" translatable="true">Tema läge</string>
+    <!-- Developer and diagnostic settings -->
+    <string name="ui_sharedpreferences_dump" translatable="true">DeladPreferences dumpa</string>
+    <string name="ui_no_keys_stored" translatable="true">Inga nycklar lagrade.</string>
+    <string name="ui_prefs" translatable="true">prefs</string>
+    <string name="ui_live_logs" translatable="true">Levande loggar</string>
+    <string name="ui_logs" translatable="true">loggar</string>
+    <string name="ui_network_diagnostics" translatable="true">Nätverksdiagnostik</string>
+    <string name="ui_network_diagnostics_2" translatable="true">diagnostik</string>
+    <string name="ui_memory_info" translatable="true">Minnesinformation</string>
+    <string name="ui_jvm_heap" translatable="true">JVM heap</string>
+    <string name="ui_system_ram" translatable="true">System RAM</string>
+    <string name="ui_low_memory" translatable="true">Lågt minne</string>
+    <string name="ui_memory" translatable="true">minne</string>
+    <string name="ui_wipe_all_preferences" translatable="true">Rensa alla inställningar?</string>
+    <string name="ui_this_clears_legacy_preferences_encrypted_key_records_history" translatable="true">Detta rensar äldre preferenser, krypterade nyckelposter, historik, favoriter och debugflaggor. DataStore-inställningar, Rumshämtningar och cachefiler tas inte bort. Du måste låsa upp felsökningsinställningar igen.</string>
+    <string name="ui_wipe_now" translatable="true">Rensa nu</string>
+    <string name="ui_force_crash" translatable="true">Tvinga krasch?</string>
+    <string name="ui_this_will_immediately_crash_the_app_with_an" translatable="true">Detta kommer omedelbart krascha appen med ett ohanterat undantag. Används för att verifiera att kraschrapporteringen fungerar.</string>
+    <string name="ui_crash_now" translatable="true">Krascha nu</string>
+    <string name="ui_verbose_logging" translatable="true">Verbose loggning</string>
+    <string name="ui_tag_chemsearch" translatable="true">Tag: ChemSearch</string>
+    <string name="ui_endpoints" translatable="true">slutpunkter</string>
+    <string name="ui_hide_debug_settings" translatable="true">Dölj felsökningsinställningar</string>
+    <string name="ui_remove_key" translatable="true">Ta bort nyckel</string>
+    <!-- Structure search -->
+    <string name="ui_chemsearch_app_icon" translatable="true">ChemSearch app-ikon</string>
+    <string name="ui_move_up" translatable="true">Flytta upp</string>
+    <string name="ui_move_down" translatable="true">Flytta ner</string>
+    <string name="ui_export_library" translatable="true">Exportera bibliotek</string>
+    <string name="ui_chemsearch_molfile" translatable="true">ChemSearch molfile</string>
+    <!-- Structure search and export -->
+    <string name="ui_import_structure" translatable="true">Importera struktur</string>
+    <string name="ui_structure_text" translatable="true">Struktur text</string>
+    <string name="ui_import" translatable="true">Importera</string>
+    <string name="ui_share" translatable="true">Dela</string>
+    <string name="ui_search_mode" translatable="true">Sök läge</string>
+    <string name="ui_structure_search" translatable="true">Strukturera sökning</string>
+    <string name="ui_close_export_dialog" translatable="true">Stäng exportdialogrutan</string>
+    <string name="ui_structure_search_settings" translatable="true">Strukturera sökinställningar</string>
+    <string name="ui_close_results" translatable="true">Stäng resultat</string>
+    <!-- Chemistry tools -->
+    <string name="ui_back_to_tools" translatable="true">Tillbaka till verktyg</string>
+    <string name="ui_custom_3d_molecule_viewer" translatable="true">Anpassad 3D Molecule Viewer</string>
+    <string name="ui_no_file_loaded" translatable="true">Ingen fil laddad</string>
+    <string name="ui_choose_file" translatable="true">Välj fil</string>
+    <string name="ui_change" translatable="true">Ändra</string>
+    <string name="ui_molar_mass_calculator" translatable="true">Kalkylator för Molar massa</string>
+    <string name="ui_molecular_formula_2" translatable="true">Molekylär formel</string>
+    <string name="ui_e_g_h2o_ca_oh_2_cuso4_5h2o" translatable="true">e.g. H2O, Ca(OH)2, CuSO4·5H2O</string>
+    <string name="ui_insert" translatable="true">Insert:</string>
+    <string name="ui_molar_mass" translatable="true">MOLAR MASS</string>
+    <string name="ui_count" translatable="true">Antal</string>
+    <string name="ui_g_mol" translatable="true">g/mol</string>
+    <string name="ui_3f" translatable="true">%.3f</string>
+    <string name="ui_1f" translatable="true">%.1f%%</string>
+    <string name="ui_oxidation_state_finder" translatable="true">Oxidation State Finder</string>
+    <string name="ui_e_g_kmno4" translatable="true">t.ex. KMnO4</string>
+    <string name="ui_charge" translatable="true">Laddning</string>
+    <string name="ui_find_oxidation_states" translatable="true">Hitta Oxidationstillstånd</string>
+    <string name="ui_oxidation_states" translatable="true">OXIDATIONSSTATERNA</string>
+    <string name="ui_examples" translatable="true">EXEMPLER</string>
+    <string name="ui_smiles_visualizer" translatable="true">SMILES Visualizer</string>
+    <string name="ui_smiles_string" translatable="true">SMILES Sträng</string>
+    <string name="ui_e_g_cco" translatable="true">t.ex. CCO</string>
+    <string name="ui_3d_model_not_available" translatable="true">3D-modell är inte tillgänglig</string>
+    <string name="ui_reaction_balancer" translatable="true">Balansfunktion för reaktion</string>
+    <string name="ui_chemical_equation" translatable="true">Kemisk Ekvation</string>
+    <string name="ui_h2_o2_h2o" translatable="true">H2 + O2 &lt;unk&gt; H2O</string>
+    <string name="ui_balance" translatable="true">Saldo</string>
+    <string name="ui_balanced_equation" translatable="true">BALANCED EQUATION</string>
+    <string name="ui_atom_count_verification" translatable="true">ATOM COUNT VERIFICATION</string>
+    <string name="ui_reactants" translatable="true">Reaktanter</string>
+    <string name="ui_products" translatable="true">Produkter</string>
+    <string name="ui_compare_compounds" translatable="true">Jämför föreningar</string>
+    <string name="ui_ph_poh_calculator" translatable="true">pH / pOH kalkylator</string>
+    <string name="ui_solution_type" translatable="true">Typ av lösning</string>
+    <string name="ui_dilution_calculator" translatable="true">Utspädning Kalkylator</string>
+    <string name="ui_solve_for" translatable="true">Lös för</string>
+    <string name="ui_c_m" translatable="true">C1 (M)</string>
+    <string name="ui_e_g_1_0" translatable="true">t.ex. 1.0</string>
+    <string name="ui_v_ml" translatable="true">V1 (mL)</string>
+    <string name="ui_e_g_25" translatable="true">t.ex. 25</string>
+    <string name="ui_c_m_2" translatable="true">C2 (M)</string>
+    <string name="ui_e_g_0_5" translatable="true">t.ex. 0,5</string>
+    <string name="ui_v_ml_2" translatable="true">V2 (mL)</string>
+    <string name="ui_e_g_50" translatable="true">t.ex. 50</string>
+    <string name="ui_ideal_gas_law" translatable="true">Idealisk gaslag</string>
+    <string name="ui_pressure_atm" translatable="true">Tryck (atm)</string>
+    <string name="ui_volume_l" translatable="true">Volym (L)</string>
+    <string name="ui_e_g_2_5" translatable="true">t.ex. 2.5</string>
+    <string name="ui_moles_mol" translatable="true">Mullvadar (mol)</string>
+    <string name="ui_temperature_k" translatable="true">Temperatur (K)</string>
+    <string name="ui_e_g_298" translatable="true">t.ex. 298</string>
+    <string name="ui_r_0_082057_l_atm_mol_k" translatable="true">R = 0.082057 L·atm/mol·K</string>
+    <string name="ui_balance_calculate" translatable="true">Balans &amp; Beräkna</string>
+    <string name="ui_gas_molar_volume_l_mol" translatable="true">Gas molär volym (L/mol)</string>
+    <string name="ui_enter_a_valid_molar_volume_e_g_22" translatable="true">Ange en giltig molarvolym (t.ex. 22.414)</string>
+    <string name="ui_reactant_amounts" translatable="true">ÅTERSTÄLL AMOUNTS</string>
+    <string name="ui_volume_ml" translatable="true">Volym (mL)</string>
+    <string name="ui_e_g_250" translatable="true">t.ex. 250</string>
+    <string name="ui_purity_optional" translatable="true">Renhet % (valfritt)</string>
+    <string name="ui_enter_an_amount_to_compute_moles" translatable="true">Ange ett belopp att beräkna mullvadar.</string>
+    <string name="ui_clear_all_amounts" translatable="true">Rensa alla belopp</string>
+    <string name="ui_stoichiometry_summary" translatable="true">STOICHIOMETRY SUMMARI</string>
+    <string name="ui_limiting_reagent" translatable="true">Begränsar reagens</string>
+    <string name="ui_mole_ratios_relative_to_limiting_reagent" translatable="true">MOLE RATIOS (relativt till begränsande reagens)</string>
+    <string name="ui_theoretical_yield" translatable="true">THEORETISKA GUD</string>
+    <string name="ui_excess_reactants" translatable="true">UPPTÄCK REAKTIER</string>
+    <string name="ui_target_product" translatable="true">Mål:</string>
+    <string name="ui_actual_yield_optional" translatable="true">Faktisk avkastning (valfritt)</string>
+    <string name="ui_e_g_1_25" translatable="true">t.ex. 1.25</string>
+    <string name="ui_e_g_100" translatable="true">t.ex. 100</string>
+    <string name="ui_need_limiting_reagent_to_compute_percent_yield" translatable="true">Behöver begränsa reagens för att beräkna procent avkastning.</string>
+    <string name="ui_desired_product_amount" translatable="true">Önskat produktbelopp</string>
+    <string name="ui_e_g_5_0" translatable="true">t.ex. 5.0</string>
+    <string name="ui_e_g_500" translatable="true">t.ex. 500</string>
+    <string name="ui_required_reactants_theoretical" translatable="true">Nödvändiga reaktanter (teoretiska)</string>
+    <!-- Isomer search and onboarding -->
+    <string name="ui_reset_tool_order" translatable="true">Reset tool order</string>
+    <string name="ui_clear_search" translatable="true">Rensa sökning</string>
+    <string name="ui_drag_to_reorder" translatable="true">Dra för att ordna om</string>
+    <string name="ui_swap_sides" translatable="true">Swap sides</string>
+    <string name="ui_remove_compound" translatable="true">Ta bort förening</string>
+    <string name="ui_add_compound" translatable="true">Lägg till sammansättning</string>
+    <string name="ui_open_in_search" translatable="true">Öppna i sök</string>
+    <string name="ui_drag_to_rotate" translatable="true">Dra för att rotera</string>
+    <string name="ui_pinch_to_zoom" translatable="true">Nyp att zooma</string>
+    <string name="ui_pinch_drag_to_pan" translatable="true">Dra för att panorera</string>
+    <string name="ui_configure_ai_provider" translatable="true">Configure AI provider</string>
+    <string name="ui_skip" translatable="true">Hoppa</string>
+    <string name="ui_chemsearch" translatable="true">ChemSearch</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Sök ämnen, reaktioner, grupper, joner...</string>
+    <string name="ui_use_composition_data_or_reduce_an_existing_formula" translatable="true">Använd sammansättningsdata eller minska en befintlig formel.</string>
+    <string name="ui_enter_two_aqueous_ionic_compounds_to_predict_products" translatable="true">Ange två vattenhaltiga jonföreningar för att förutsäga produkter och fällningar.</string>
+    <string name="ui_mole_ratio" translatable="true">MOLE RATIO</string>
+    <string name="ui_product_check" translatable="true">PRODUKTINFORMATION CHECK</string>
+    <string name="ui_enter_a_molecular_formula_to_find_matching_structural" translatable="true">Ange en molekylär formel för att hitta matchande strukturella isomerer från PubChem.</string>
+    <string name="ui_show_20_more" translatable="true">Visa 20 mer</string>
+    <string name="ui_include_isotopes" translatable="true">Inkludera isotoper</string>
+    <string name="ui_isomer_search" translatable="true">Isomer Sök</string>
+    <string name="ui_search_compounds_by_molecular_formula" translatable="true">Sök föreningar med molekylär formel.</string>
+    <string name="ui_no_isomer_search_yet" translatable="true">Ingen isomersökning än</string>
+    <string name="ui_try_formulas_like_c2h6o_c6h6_or_c6h12o6" translatable="true">Prova formler som C2H6O, C6H6 eller C6H12O6.</string>
+    <string name="ui_molecular_formula_e_g_c_h_o" translatable="true">Molecular formula, e.g. C6H12O6</string>
+    <string name="ui_this_in_app_notice_is_a_practical_summary" translatable="true">Detta meddelande i appen är en praktisk sammanfattning för ChemSearch-användare. Det är inte juridisk rådgivning.</string>
+    <string name="ui_looking_up_compound" translatable="true">Söker upp förening...</string>
+    <string name="ui_compare_listed_element_properties_across_the_whole_table" translatable="true">Jämför listade elementegenskaper över hela tabellen. Mörkare plattor innebär högre värden för den valda egendomen.</string>
+    <string name="ui_image_unavailable" translatable="true">Bild ej tillgänglig</string>
+    <string name="ui_chemsearch_2" translatable="true">ChemSearch</string>
+    <string name="ui_chemistry_simplified" translatable="true">CHEMISTRI SIMPLIFIERAD</string>
+    <string name="ui_search_any_compound" translatable="true">Sök i någon förening..</string>
+    <string name="ui_did_you_mean" translatable="true">Menade du:</string>
+    <string name="ui_search_any_compound_2" translatable="true">Sök i någon förening</string>
+    <string name="ui_type_a_compound_name_formula_cid_or_cas" translatable="true">Skriv ett sammansatt namn, formel, CID eller CAS.</string>
+    <string name="ui_recent_searches" translatable="true">Senaste sökningar</string>
+    <string name="ui_clear_all_2" translatable="true">Rensa alla</string>
+    <string name="ui_find_isomers" translatable="true">Hitta isomerer</string>
+    <string name="ui_compound_data_from_pubchem_nih_ncbi" translatable="true">Sammansatta data från PubChem (NIH/NCBI)</string>
+    <string name="ui_2d_structure_2" translatable="true">2D Struktur</string>
+    <string name="ui_3d_model" translatable="true">3D Modell</string>
+    <string name="ui_3d_model_not_available_2" translatable="true">3D-modell är inte tillgänglig</string>
+    <string name="ui_learn_why" translatable="true">Lär dig varför →</string>
+    <string name="ui_pinch_to_zoom_tap_outside_to_close" translatable="true">Nyp för att zooma · Tryck utanför för att stänga</string>
+    <string name="ui_why_is_3d_unavailable" translatable="true">Varför är 3D otillgängligt?</string>
+    <string name="ui_pubchem_pre_computes_3d_conformer_models_for_90" translatable="true">PubChem pre-computes 3D conformer modeller för ~90% av dess sammansättningar med hjälp av </string>
+    <string name="ui_source_pubchem3d_project" translatable="true">Källa: PubChem3D-projekt</string>
+    <string name="ui_loading_pubchem_categories" translatable="true">Laddar PubChem kategorier...</string>
+    <string name="ui_loading_pubchem_use_notes" translatable="true">Laddar PubChem användaranteckningar...</string>
+    <string name="ui_source_pubchem_annotations" translatable="true">Källa: PubChem anteckningar</string>
+    <string name="ui_loading_pubchem_properties" translatable="true">Laddar PubChem egenskaper...</string>
+    <string name="ui_loading_synonyms" translatable="true">Laddar synonymer...</string>
+    <string name="ui_collapse" translatable="true">Komprimera</string>
+    <string name="ui_loading" translatable="true">Laddar</string>
+    <string name="ui_configure_ai_provider_2" translatable="true">Configure AI provider</string>
+    <string name="ui_provider" translatable="true">Leverantör</string>
+    <string name="ui_model" translatable="true">Modell</string>
+    <string name="ui_settings_2" translatable="true">Inställningar</string>
+    <string name="ui_color_scheme" translatable="true">Färg schema</string>
+    <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">Visa automatiskt när du söker i en förening</string>
+    <string name="ui_chemistry_simplified_for_android" translatable="true">Kemi förenklad för Android.</string>
+    <string name="ui_search_compounds_draw_structures_view_2d_3d_models" translatable="true">Sök föreningar, rita strukturer, visa 2D/3D-modeller, spara offlinedata, jämföra föreningar och använda kemiverktyg.</string>
+    <string name="ui_built_by_furthersecrets" translatable="true">Byggd av Dessutom,</string>
+    <string name="ui_about_chemsearch" translatable="true">Om ChemSearch</string>
+    <string name="ui_app_info_links_data_sources_and_credits" translatable="true">App info, länkar, datakällor och krediter.</string>
+    <string name="ui_legal_and_safety" translatable="true">LEGELT OCH SÄKERHET</string>
+    <string name="ui_choose_which_provider_should_generate_this_compound_description" translatable="true">Välj vilken leverantör som ska generera denna sammansatta beskrivning.</string>
+    <string name="ui_merge_the_backup_with_your_current_library_or" translatable="true">Slå ihop säkerhetskopian med ditt nuvarande bibliotek eller byt ut aktuella favoriter och nedladdningar med säkerhetskopieringsfilen.</string>
+    <string name="ui_sort" translatable="true">Sortera</string>
+    <string name="ui_open_saved_compounds_offline_copies_the_periodic_table" translatable="true">Öppna sparade föreningar, offline-kopior, den periodiska tabellen eller den kemiska databasen.</string>
+    <string name="ui_reorder_mode_use_the_arrows_to_move_favorite" translatable="true">Ordna om läge: Använd pilarna för att flytta favoritföremål.</string>
+    <string name="ui_tap_the_arrows_to_move_favorites" translatable="true">Tryck på pilarna för att flytta favoriter.</string>
+    <string name="ui_tap_a_card_to_open_favorites_are_stored" translatable="true">Tryck på ett kort för att öppna. Favoriter lagras endast på den här enheten.</string>
+    <string name="ui_reorder_mode_use_the_arrows_to_move_items" translatable="true">Ordna om läge: Använd pilarna för att flytta objekt.</string>
+    <string name="ui_no_matches_found" translatable="true">Inga träffar hittades.</string>
+    <string name="ui_try_a_different_name_formula_or_cid" translatable="true">Prova ett annat namn, formel eller CID.</string>
+    <string name="ui_enter_a_custom_path_or_leave_blank_to" translatable="true">Ange en anpassad sökväg eller lämna tomt för att använda appens standardcache-katalog.</string>
+    <string name="ui_default_app_internal_cache_custom_paths_must_be" translatable="true">Standard: app intern cache. Anpassade sökvägar måste vara skrivbara.</string>
+    <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Känsliga värden maskeras och kopieras aldrig från denna vy.</string>
+    <string name="ui_run_diagnostics_to_test_pubchem_lookup_structures_ghs" translatable="true">Kör diagnostik för att testa PubChem lookup, strukturer, GHS-data, fallback 3D-lastning, Wikipedia, GitHub releaser och AI slutpunkter.</string>
+    <string name="ui_debug_settings" translatable="true">DEBUG INSTÄLLNINGAR</string>
+    <string name="ui_structure_search_2" translatable="true">Struktur sökning</string>
+    <string name="ui_draw_a_connected_structure_and_search_pubchem" translatable="true">Rita en ansluten struktur och sök PubChem.</string>
+    <string name="ui_structure_search_3" translatable="true">Strukturera sökning</string>
+    <string name="ui_tap_the_canvas_to_place_atoms_select_two" translatable="true">Tryck på duken för att placera atomer. Välj två atomer för att ansluta dem till den valda bindningen.</string>
+    <string name="ui_drag_atoms_bonds_or_the_whole_selected_molecule" translatable="true">Dra atomer, bindningar eller hela den valda molekylen för att omplacera dem. Dra tom duk utrymme för att panorera.</string>
+    <string name="ui_clean_can_standardize_the_drawing_through_pubchem_before" translatable="true">Ren kan standardisera ritningen genom PubChem innan du söker. Importera och exportera använda SMILES, InChI eller V2000 molfiltext.</string>
+    <string name="ui_paste_smiles_inchi_or_a_v2000_molfile" translatable="true">Klistra in SMILES, InChI eller en V2000 molfil.</string>
+    <string name="ui_export_structure" translatable="true">Exportera struktur</string>
+    <string name="ui_select_element" translatable="true">Välj element</string>
+    <string name="ui_all_118_elements" translatable="true">Alla 118 element</string>
+    <string name="ui_tools" translatable="true">Verktyg</string>
+    <string name="ui_reorder_mode_long_press_and_drag_tools_to" translatable="true">Ordna om läget: Tryck länge och dra verktyg för att ordna om dem.</string>
+    <string name="ui_search_tools" translatable="true">Sökverktyg…</string>
+    <string name="ui_load_any_sdf_or_mol_file_from_your" translatable="true">Ladda en .sdf eller .mol fil från enheten för att visa den i 3D</string>
+    <string name="ui_elemental_breakdown" translatable="true">ELEMENTALT BREAKDOWN</string>
+    <string name="ui_examples_2" translatable="true">EXEMPLER</string>
+    <string name="ui_generated_estimate" translatable="true">Genererad uppskattning</string>
+    <string name="ui_insert_2" translatable="true">Insert:</string>
+    <string name="ui_comparison" translatable="true">KOMPARISON</string>
+    <string name="ui_explanation_for_formula" translatable="true">Förklaring till Formel</string>
+    <string name="ui_choose_the_value_you_know_then_enter_it" translatable="true">Välj det värde du känner till och ange det nedan.</string>
+    <string name="ui_enter_valid_amounts_for_all_reactants_to_determine" translatable="true">Ange giltiga belopp för alla reaktanter för att bestämma den begränsande reagensen.</string>
+    <string name="ui_could_not_parse_3d_data" translatable="true">Kunde inte tolka 3D-data</string>
+    <string name="ui_always_follow_sds_documents_lab_rules_labels_and" translatable="true">Följ alltid SDS-dokument, labbregler, etiketter och officiell vägledning innan du hanterar kemikalier.</string>
+</resources>
