@@ -43,6 +43,17 @@
 
 ---
 
+### Regarding the upcoming localization support:
+
+> [!NOTE]
+> I'm currently adding support for the following languages using [Crowdin](https://crowdin.com/):
+>
+> - 🇩🇰 Danish • 🇩🇪 German • 🇬🇷 Greek • 🇪🇸 Spanish • 🇫🇮 Finnish
+> - 🇫🇷 French • 🇮🇹 Italiano • 🇯🇵 Japanese • 🇳🇱 Dutch • 🇳🇴 Norwegian
+> - 🇵🇱 Polish • 🇵🇹 Portuguese • 🇷🇺 Russian • 🇸🇪 Swedish
+>
+> Note that translations for all strings are not completed yet. Full localization for these languages will be finalized and fully rolled out later this month. Thank you for your patience! These are just experimental, and other languages will be added later.
+
 ## <img src="https://api.iconify.design/ph:info.svg?color=%233b82f6" width="22" height="22" alt=""/> About
 
 ChemSearch is a chemistry app for Android I built to make compound lookup less annoying. Search a compound, check the formula and identifiers, open the 2D or 3D structure, read safety notes, save it for offline use, or jump into calculators when you need a quick result. Also includes extra study references such as a Periodic Table and a chemical database containing a list of common substances, ions, functional groups and chemical reactions.
