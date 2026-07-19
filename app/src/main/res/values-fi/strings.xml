@@ -87,6 +87,20 @@
     <string name="ui_language_subtitle">Valitse ChemSearch käyttämä kieli</string>
     <string name="ui_language_system_default">Järjestelmän oletus</string>
     <string name="ui_language_english">Englanti</string>
+    <string name="ui_language_danish">Tanska</string>
+    <string name="ui_language_german">Saksa</string>
+    <string name="ui_language_greek">Kreikka</string>
+    <string name="ui_language_spanish">Espanja</string>
+    <string name="ui_language_finnish">Suomi</string>
+    <string name="ui_language_french">Ranska</string>
+    <string name="ui_language_italian">Italia</string>
+    <string name="ui_language_japanese">Japani</string>
+    <string name="ui_language_dutch">Hollanti</string>
+    <string name="ui_language_norwegian">Norja</string>
+    <string name="ui_language_polish">Puola</string>
+    <string name="ui_language_portuguese">Portugali</string>
+    <string name="ui_language_russian">Venäjä</string>
+    <string name="ui_language_swedish">Ruotsi</string>
     <string name="ui_language_restart">Sovellus käynnistyy uudelleen ja ottaa kielen käyttöön.</string>
     <string name="ui_settings" translatable="true">Asetukset</string>
     <string name="ui_theme_mode" translatable="true">Teeman tila</string>

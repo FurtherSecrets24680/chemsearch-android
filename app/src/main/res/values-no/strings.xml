@@ -87,6 +87,20 @@
     <string name="ui_language_subtitle">Velg språket som brukes av Kjemisk søk</string>
     <string name="ui_language_system_default">System standard</string>
     <string name="ui_language_english">Engelsk</string>
+    <string name="ui_language_danish">Dansk</string>
+    <string name="ui_language_german">Tysk</string>
+    <string name="ui_language_greek">Gresk</string>
+    <string name="ui_language_spanish">Spansk</string>
+    <string name="ui_language_finnish">Finsk</string>
+    <string name="ui_language_french">Fransk</string>
+    <string name="ui_language_italian">Italiensk</string>
+    <string name="ui_language_japanese">Japansk</string>
+    <string name="ui_language_dutch">Nederlandsk</string>
+    <string name="ui_language_norwegian">Norsk</string>
+    <string name="ui_language_polish">Polsk</string>
+    <string name="ui_language_portuguese">Portugisisk</string>
+    <string name="ui_language_russian">Russisk</string>
+    <string name="ui_language_swedish">Svensk</string>
     <string name="ui_language_restart">Appen vil starte på nytt for å bruke språket.</string>
     <string name="ui_settings" translatable="true">Innstillinger</string>
     <string name="ui_theme_mode" translatable="true">Tema modus</string>

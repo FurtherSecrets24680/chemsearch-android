@@ -87,6 +87,20 @@
     <string name="ui_language_subtitle">Scegli la lingua usata da ChemSearch</string>
     <string name="ui_language_system_default">Predefinito di sistema</string>
     <string name="ui_language_english">Inglese</string>
+    <string name="ui_language_danish">Danese</string>
+    <string name="ui_language_german">Tedesco</string>
+    <string name="ui_language_greek">Greco</string>
+    <string name="ui_language_spanish">Spagnolo</string>
+    <string name="ui_language_finnish">Finlandese</string>
+    <string name="ui_language_french">Francese</string>
+    <string name="ui_language_italian">Italiano</string>
+    <string name="ui_language_japanese">Giapponese</string>
+    <string name="ui_language_dutch">Olandese</string>
+    <string name="ui_language_norwegian">Norvegese</string>
+    <string name="ui_language_polish">Polacco</string>
+    <string name="ui_language_portuguese">Portoghese</string>
+    <string name="ui_language_russian">Russo</string>
+    <string name="ui_language_swedish">Svedese</string>
     <string name="ui_language_restart">L\'applicazione verrà riavviata per applicare la lingua.</string>
     <string name="ui_settings" translatable="true">Impostazioni</string>
     <string name="ui_theme_mode" translatable="true">Modalità tema</string>

@@ -86,7 +86,21 @@
     <string name="ui_language">Taal</string>
     <string name="ui_language_subtitle">Kies de taal voor ChemSearch</string>
     <string name="ui_language_system_default">Standaard systeeminstelling</string>
-    <string name="ui_language_english">Nederlands</string>
+    <string name="ui_language_english">Engels</string>
+    <string name="ui_language_danish">Deens</string>
+    <string name="ui_language_german">Duits</string>
+    <string name="ui_language_greek">Grieks</string>
+    <string name="ui_language_spanish">Spaans</string>
+    <string name="ui_language_finnish">Fins</string>
+    <string name="ui_language_french">Frans</string>
+    <string name="ui_language_italian">Italiaans</string>
+    <string name="ui_language_japanese">Japans</string>
+    <string name="ui_language_dutch">Nederlands</string>
+    <string name="ui_language_norwegian">Noors</string>
+    <string name="ui_language_polish">Pools</string>
+    <string name="ui_language_portuguese">Portugees</string>
+    <string name="ui_language_russian">Russisch</string>
+    <string name="ui_language_swedish">Zweeds</string>
     <string name="ui_language_restart">De app zal opnieuw opstarten om de taal toe te passen.</string>
     <string name="ui_settings" translatable="true">Instellingen</string>
     <string name="ui_theme_mode" translatable="true">Thema modus</string>

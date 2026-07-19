@@ -327,7 +327,21 @@ enum class SdfSource { PUBCHEM, GENERATED }
 enum class AppColorScheme { BLUE, VIOLET, EMERALD, ROSE, AMBER }
 enum class AppLanguage(val preferenceKey: String, val localeTag: String?, val displayName: String) {
     SYSTEM("system", null, "System default"),
-    ENGLISH("en", "en", "English");
+    ENGLISH("en", "en", "English"),
+    DANISH("da", "da", "Dansk"),
+    GERMAN("de", "de", "Deutsch"),
+    GREEK("el", "el", "Ελληνικά"),
+    SPANISH("es", "es", "Español"),
+    FINNISH("fi", "fi", "Suomi"),
+    FRENCH("fr", "fr", "Français"),
+    ITALIAN("it", "it", "Italiano"),
+    JAPANESE("ja", "ja", "日本語"),
+    DUTCH("nl", "nl", "Nederlands"),
+    NORWEGIAN("no", "no", "Norsk"),
+    POLISH("pl", "pl", "Polski"),
+    PORTUGUESE("pt", "pt", "Português"),
+    RUSSIAN("ru", "ru", "Русский"),
+    SWEDISH("sv", "sv", "Svenska");
 
     companion object {
         fun fromPreferenceKey(key: String?): AppLanguage =

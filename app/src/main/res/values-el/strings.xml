@@ -87,6 +87,20 @@
     <string name="ui_language_subtitle">Επιλέξτε τη γλώσσα που χρησιμοποιείται από την ChemSearch</string>
     <string name="ui_language_system_default">Προεπιλογή συστήματος</string>
     <string name="ui_language_english">Αγγλικά</string>
+    <string name="ui_language_danish">Δανικά</string>
+    <string name="ui_language_german">Γερμανικά</string>
+    <string name="ui_language_greek">Ελληνικά</string>
+    <string name="ui_language_spanish">Ισπανικά</string>
+    <string name="ui_language_finnish">Φινλανδικά</string>
+    <string name="ui_language_french">Γαλλικά</string>
+    <string name="ui_language_italian">Ιταλικά</string>
+    <string name="ui_language_japanese">Ιαπωνικά</string>
+    <string name="ui_language_dutch">Ολλανδικά</string>
+    <string name="ui_language_norwegian">Νορβηγικά</string>
+    <string name="ui_language_polish">Πολωνικά</string>
+    <string name="ui_language_portuguese">Πορτογαλικά</string>
+    <string name="ui_language_russian">Ρωσικά</string>
+    <string name="ui_language_swedish">Σουηδικά</string>
     <string name="ui_language_restart">Η εφαρμογή θα κάνει επανεκκίνηση για να εφαρμόσει τη γλώσσα.</string>
     <string name="ui_settings" translatable="true">Ρυθμίσεις</string>
     <string name="ui_theme_mode" translatable="true">Λειτουργία θέματος</string>
