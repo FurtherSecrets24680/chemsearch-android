@@ -133,7 +133,7 @@
     <string name="ui_group_period" translatable="true">Ομάδα / περίοδος</string>
     <string name="ui_standard_state" translatable="true">Τυπική κατάσταση</string>
     <string name="ui_year_discovered" translatable="true">Έτος που ανακαλύφθηκε</string>
-    <string name="ui_appearance" translatable="true">Εμφάνιση</string>
+    <string name="ui_appearance_label" translatable="true">Appearance</string>
     <string name="ui_discovered_by" translatable="true">Ανακαλύφθηκε από</string>
     <string name="ui_named_by" translatable="true">Ονομάζεται από</string>
     <string name="ui_orbital_block" translatable="true">Τροχιακό μπλοκ</string>
@@ -141,7 +141,7 @@
     <string name="ui_model_color" translatable="true">Χρώμα μοντέλου</string>
     <string name="ui_electron_configuration" translatable="true">Διαμόρφωση ηλεκτρονίων</string>
     <string name="ui_shell_distribution" translatable="true">Κατανομή κελύφους</string>
-    <string name="ui_oxidation_states" translatable="true">Καταστάσεις οξείδωσης</string>
+    <string name="ui_oxidation_states_label" translatable="true">Oxidation states</string>
     <string name="ui_expanded_configuration" translatable="true">Εκτεταμένη διαμόρφωση</string>
     <string name="ui_electronegativity" translatable="true">Electronegativity</string>
     <string name="ui_atomic_radius" translatable="true">Ατομική ακτίνα</string>
@@ -188,7 +188,6 @@
     <string name="ui_hazard_statements" translatable="true">ΔΗΛΩΣΕΙΣ ΚΙΝΔΥΝΟΥ</string>
     <string name="ui_sort_recents" translatable="true">Ταξινόμηση προσφάτων</string>
     <string name="ui_downloading_for_offline_use" translatable="true">Λήψη για χρήση χωρίς σύνδεση</string>
-    <string name="ui_share_compound" translatable="true">Κοινή χρήση σύνθετου</string>
     <string name="ui_2d_structure" translatable="true">2D Δομή</string>
     <string name="ui_download_2d_structure" translatable="true">Κατεβάστε τη δομή 2D</string>
     <string name="ui_2d_structure_zoom" translatable="true">2D Δομή (μεγέθυνση)</string>
