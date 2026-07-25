@@ -151,17 +151,17 @@
     <string name="ui_language_english">Inglese</string>
     <string name="ui_language_danish">Dansk</string>
     <string name="ui_language_german">Deutsch</string>
-    <string name="ui_language_greek">Ελληνικά</string>
-    <string name="ui_language_spanish">Español</string>
+    <string name="ui_language_greek">Ελληνικά</string>
+    <string name="ui_language_spanish">Español</string>
     <string name="ui_language_finnish">Suomi</string>
-    <string name="ui_language_french">Français</string>
+    <string name="ui_language_french">Franc&lt;unk&gt; ais</string>
     <string name="ui_language_italian">Italiano</string>
     <string name="ui_language_japanese">日本語</string>
     <string name="ui_language_dutch">Nederlands</string>
     <string name="ui_language_norwegian">Norsk</string>
     <string name="ui_language_polish">Polski</string>
-    <string name="ui_language_portuguese">Português</string>
-    <string name="ui_language_russian">Русский</string>
+    <string name="ui_language_portuguese">Portoghese&lt;unk&gt; s</string>
+    <string name="ui_language_russian">&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; ии&lt;unk&gt;</string>
     <string name="ui_language_swedish">Svenska</string>
     <string name="ui_language_restart">L\'applicazione verrà riavviata per applicare la lingua.</string>
     <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">Mostrato automaticamente quando si cerca un composto</string>
