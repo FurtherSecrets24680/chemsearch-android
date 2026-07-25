@@ -150,18 +150,18 @@
     <string name="ui_language_system_default">System standard</string>
     <string name="ui_language_english">Engelsk</string>
     <string name="ui_language_danish">Dansk</string>
-    <string name="ui_language_german">Deutsch</string>
-    <string name="ui_language_greek">Ελληνικά</string>
-    <string name="ui_language_spanish">Español</string>
+    <string name="ui_language_german">Tysk</string>
+    <string name="ui_language_greek">Ελληνικά</string>
+    <string name="ui_language_spanish">Español</string>
     <string name="ui_language_finnish">Suomi</string>
-    <string name="ui_language_french">Français</string>
-    <string name="ui_language_italian">Italiano</string>
+    <string name="ui_language_french">Francεais</string>
+    <string name="ui_language_italian">Italiensk</string>
     <string name="ui_language_japanese">日本語</string>
-    <string name="ui_language_dutch">Nederlands</string>
+    <string name="ui_language_dutch">Nederland</string>
     <string name="ui_language_norwegian">Norsk</string>
     <string name="ui_language_polish">Polski</string>
-    <string name="ui_language_portuguese">Português</string>
-    <string name="ui_language_russian">Русский</string>
+    <string name="ui_language_portuguese">Portugisisk</string>
+    <string name="ui_language_russian">∙∙odarodarodarodarodarodarodarodarde</string>
     <string name="ui_language_swedish">Svenska</string>
     <string name="ui_language_restart">Appen vil starte på nytt for å bruke språket.</string>
     <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">Vis automatisk når du søker etter en sammensetning</string>
