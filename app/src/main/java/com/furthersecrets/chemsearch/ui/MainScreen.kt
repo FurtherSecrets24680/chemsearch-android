@@ -77,9 +77,6 @@ internal const val IsomerSearchRoute = "isomer_search"
 internal fun isStandalonePageRoute(route: String?): Boolean =
     route == StructureSearchRoute || route == AboutRoute || route == IsomerSearchRoute
 
-internal fun compoundExtraInfoToggleLabel(expanded: Boolean): String =
-    if (expanded) "Hide extra compound information" else "Show more information about this substance"
-
 internal fun compoundExtraInfoSectionOrder(showExtraInfo: Boolean, hasExtraInfo: Boolean): List<String> = buildList {
     add("GHS Safety")
     if (hasExtraInfo) {
@@ -96,15 +93,15 @@ internal data class MainNavigationItem(
     val tab: AppTab,
     val selectedIcon: ChemIconSpec,
     val unselectedIcon: ChemIconSpec,
-    val label: String
+    val labelRes: Int
 )
 
 internal val mainNavigationItems = listOf(
-    MainNavigationItem(AppTab.SEARCH, ChemAppIcons.SearchFilled, ChemAppIcons.Search, "Search"),
-    MainNavigationItem(AppTab.LIBRARY, ChemAppIcons.LibraryFilled, ChemAppIcons.Library, "Library"),
-    MainNavigationItem(AppTab.RECENT, ChemAppIcons.HistoryFilled, ChemAppIcons.History, "Recent"),
-    MainNavigationItem(AppTab.TOOLS, ChemAppIcons.WrenchFilled, ChemAppIcons.Wrench, "Tools"),
-    MainNavigationItem(AppTab.SETTINGS, ChemAppIcons.SettingsFilled, ChemAppIcons.Settings, "Settings")
+    MainNavigationItem(AppTab.SEARCH, ChemAppIcons.SearchFilled, ChemAppIcons.Search, R.string.ui_search),
+    MainNavigationItem(AppTab.LIBRARY, ChemAppIcons.LibraryFilled, ChemAppIcons.Library, R.string.ui_library),
+    MainNavigationItem(AppTab.RECENT, ChemAppIcons.HistoryFilled, ChemAppIcons.History, R.string.ui_recent),
+    MainNavigationItem(AppTab.TOOLS, ChemAppIcons.WrenchFilled, ChemAppIcons.Wrench, R.string.ui_tools),
+    MainNavigationItem(AppTab.SETTINGS, ChemAppIcons.SettingsFilled, ChemAppIcons.Settings, R.string.ui_settings)
 )
 
 private fun routeIndex(route: String?): Int =
@@ -112,13 +109,6 @@ private fun routeIndex(route: String?): Int =
 
 internal fun shouldShowRandomCompoundButton(state: ChemUiState, query: String): Boolean =
     !state.hasResult && !state.isLoading && query.isBlank()
-
-internal const val homeStarterSuggestionsLabel = "Try searching"
-
-internal const val homeStructureSearchActionTitle = "Structure Search"
-internal const val homeStructureSearchActionDescription = "Draw a molecule and search PubChem"
-internal const val homeIsomerSearchActionTitle = "Isomer Search"
-internal const val homeIsomerSearchActionDescription = "Find compounds with the same formula"
 
 internal const val homeQuickActionTitleMaxLines = 2
 internal const val homeQuickActionDescriptionMaxLines = 2
@@ -364,7 +354,7 @@ private fun HomeStarterSuggestions(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            homeStarterSuggestionsLabel,
+            stringResource(R.string.ui_try_searching),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
@@ -406,8 +396,8 @@ private fun HomeSearchQuickActions(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         HomeSearchQuickActionButton(
-            title = homeStructureSearchActionTitle,
-            description = homeStructureSearchActionDescription,
+            title = stringResource(R.string.ui_structure_search_2),
+            description = stringResource(R.string.ui_draw_molecule_and_search),
             onClick = onStructureSearch,
             modifier = Modifier.weight(1f)
         ) {
@@ -417,8 +407,8 @@ private fun HomeSearchQuickActions(
             )
         }
         HomeSearchQuickActionButton(
-            title = homeIsomerSearchActionTitle,
-            description = homeIsomerSearchActionDescription,
+            title = stringResource(R.string.ui_isomer_search),
+            description = stringResource(R.string.ui_find_compounds_same_formula),
             onClick = onIsomerSearch,
             modifier = Modifier.weight(1f)
         ) {
@@ -546,10 +536,11 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     var showAdvancedSearch by remember { mutableStateOf(false) }
 
     fun showUndoSnackbar(message: String, onUndo: () -> Unit) {
+        val undoLabel = context.getString(R.string.ui_undo)
         snackbarScope.launch {
             val result = snackbar.showSnackbar(
                 message = message,
-                actionLabel = "Undo",
+                actionLabel = undoLabel,
                 withDismissAction = true
             )
             if (result == SnackbarResult.ActionPerformed) onUndo()
@@ -560,7 +551,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         val removed = recentSearches.firstOrNull { it.query.equals(query, ignoreCase = true) }
         vm.removeHistoryItem(query)
         removed?.let { item ->
-            showUndoSnackbar("Removed ${item.query}") {
+            showUndoSnackbar(context.getString(R.string.ui_removed_s, item.query)) {
                 vm.restoreRecentSearch(item)
             }
         }
@@ -570,7 +561,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         val snapshot = recentSearches
         vm.clearHistory()
         if (snapshot.isNotEmpty()) {
-            showUndoSnackbar("Cleared ${snapshot.size} recent search${if (snapshot.size == 1) "" else "es"}") {
+            showUndoSnackbar(context.getString(R.string.ui_cleared_recent_searches, snapshot.size)) {
                 vm.restoreRecentSearches(snapshot)
             }
         }
@@ -580,7 +571,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         val removed = favorites.firstOrNull { it.cid == cid }
         vm.deleteFavorite(cid)
         removed?.let { favorite ->
-            showUndoSnackbar("Removed ${favorite.name}") {
+            showUndoSnackbar(context.getString(R.string.ui_removed_s, favorite.name)) {
                 vm.restoreFavorite(favorite)
             }
         }
@@ -590,7 +581,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
         val removed = downloads.firstOrNull { it.cid == cid }
         vm.deleteDownload(cid)
         removed?.let { download ->
-            showUndoSnackbar("Deleted ${download.name}") {
+            showUndoSnackbar(context.getString(R.string.ui_deleted_s, download.name)) {
                 vm.restoreDownload(download)
             }
         }
@@ -618,7 +609,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
 
     editingAiKeyProvider?.let { provider ->
         ApiKeyDialog(
-            title = "${provider.displayName} API Key",
+            title = context.getString(R.string.ui_api_key_for_provider, provider.displayName),
             link = provider.helpHost,
             current = vm.getAiKey(provider) ?: "",
             onSave = { key ->
@@ -828,8 +819,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     selected = isSelected,
                                     selectedIcon = item.selectedIcon,
                                     unselectedIcon = item.unselectedIcon,
-                                    selectedDescription = item.label,
-                                    unselectedDescription = item.label,
+                                    selectedDescription = stringResource(item.labelRes),
+                                    unselectedDescription = stringResource(item.labelRes),
                                     tint = if (isSelected) MaterialTheme.colorScheme.primary
                                     else MaterialTheme.colorScheme.onSurface.copy(0.5f),
                                     modifier = Modifier.size(22.dp)
@@ -837,7 +828,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                             },
                             label = {
                                 Text(
-                                    item.label,
+                                    stringResource(item.labelRes),
                                     style = MaterialTheme.typography.labelSmall,
                                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                                 )
@@ -1035,7 +1026,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                             contentPadding = PaddingValues(horizontal = 0.dp, vertical = 2.dp)
                                         ) {
                                             Text(
-                                                compoundExtraInfoToggleLabel(showExtraCompoundInfo),
+                                                if (showExtraCompoundInfo) stringResource(R.string.ui_hide_extra_compound_info) else stringResource(R.string.ui_show_more_compound_info),
                                                 style = MaterialTheme.typography.labelMedium,
                                                 fontWeight = FontWeight.SemiBold,
                                                 color = MaterialTheme.colorScheme.primary
