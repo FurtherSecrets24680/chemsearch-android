@@ -25,11 +25,30 @@
     <string name="ui_searching" translatable="true">検索中...</string>
     <string name="ui_search" translatable="true">検索</string>
     <!-- ChemicalDatabaseUi.kt -->
+    <string name="ui_all_s" translatable="true">すべての %1$s</string>
+    <string name="ui_show_every_entry" translatable="true">このセクションのすべてのエントリを表示</string>
+    <string name="ui_s_copied" translatable="true">%1$s をコピーしました</string>
     <string name="ui_back_to_database" translatable="true">データベースに戻る</string>
     <string name="ui_search_in_chemsearch" translatable="true">ChemSearchで検索</string>
     <string name="ui_search_substances_reactions_groups_ions" translatable="true">物質を検索, 反応, グループ, イオン...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">分子式</string>
+    <string name="ui_empirical_formula_finder" translatable="true">経験的な数式ファインダー</string>
+    <string name="ui_percent_mode" translatable="true">パーセントモード</string>
+    <string name="ui_percent_mode_desc" translatable="true">100 gサンプル内のグラムとしてパーセンテージを扱い、それぞれの要素をモルに変換します。</string>
+    <string name="ui_mass_mode" translatable="true">一括モード</string>
+    <string name="ui_mass_mode_desc" translatable="true">各要素の入力マスを直接使用します。</string>
+    <string name="ui_formula_mode" translatable="true">数式モード</string>
+    <string name="ui_formula_mode_desc" translatable="true">分子式を最も単純な全体数の比に減らします。</string>
+    <string name="ui_molecular_formula_desc" translatable="true">molar 質量が入力された場合、アプリは、それが経験的な数式質量のクリーン倍数であるかどうかをチェックします。</string>
+    <string name="ui_precipitate_predictor" translatable="true">降水予測器</string>
+    <string name="ui_best_inputs" translatable="true">ベスト入力</string>
+    <string name="ui_pp_best_inputs_desc" translatable="true">AgNO3、NaCl、BaCl2、Na2SO4、Ca(OH)2、Na2CO3などの一般的な水性イオン化合物を使用してください。</string>
+    <string name="ui_limits" translatable="true">制限</string>
+    <string name="ui_pp_limits_desc" translatable="true">この最初のバージョンは、すべての複雑なイオンや調整化合物ではなく、共通の学校と研究室の溶解度のルールに焦点を当てています。</string>
+    <string name="ui_net_ionic_equation" translatable="true">純イオン式</string>
+    <string name="ui_pp_net_ionic_desc" translatable="true">1つの沈殿物が予測された場合、スペクテイターイオンは除去されます。</string>
+    <string name="ui_pp_what_it_does_desc" translatable="true">二重交換製品を予測し、共通の溶解度規則をチェックします。</string>
     <string name="ui_e_g_c6h12o6" translatable="true">例: C6H12O6</string>
     <string name="ui_add_element" translatable="true">要素を追加</string>
     <string name="ui_molar_mass_for_molecular_formula_optional" translatable="true">分子式モル質量（オプション）</string>
@@ -48,6 +67,14 @@
     <string name="ui_product_check" translatable="true">製品チェック</string>
     <!-- IsomerFinder.kt -->
     <string name="ui_enter_a_molecular_formula_to_find_matching_structural" translatable="true">PubChemから一致する構造アイソマーを見つける分子式を入力します。</string>
+    <string name="ui_what_it_does" translatable="true">何をするか</string>
+    <string name="ui_isomer_what_it_does_desc" translatable="true">同じ分子式を持つ化合物をPubChem で検索します。</string>
+    <string name="ui_how_to_use_it" translatable="true">使い方</string>
+    <string name="ui_isomer_how_to_desc" translatable="true">C6H6、C2H6O、C6H12O6などの数式を入力し、検索をタップします。</string>
+    <string name="ui_results" translatable="true">結果</string>
+    <string name="ui_isomer_results_desc" translatable="true">検索結果をタップすると、メインページにあるコンパウンドが開きます。</string>
+    <string name="ui_limitations" translatable="true">制限事項</string>
+    <string name="ui_isomer_limitations_desc" translatable="true">PubChem が指定した化合物のみここに表示できます。</string>
     <string name="ui_show_20_more" translatable="true">さらに20を表示</string>
     <string name="ui_include_isotopes" translatable="true">同位体を含む</string>
     <string name="ui_isomer_search" translatable="true">アイソマー検索</string>
@@ -57,6 +84,9 @@
     <string name="ui_molecular_formula_e_g_c_h_o" translatable="true">Molecular formula, e.g. C6H12O6</string>
     <string name="ui_loading_more" translatable="true">さらに読み込み中</string>
     <!-- LegalContent.kt -->
+    <string name="ui_privacy_policy" translatable="true">プライバシーポリシー</string>
+    <string name="ui_terms_of_service" translatable="true">利用規約</string>
+    <string name="ui_safety_disclaimer" translatable="true">安全上の免責事項</string>
     <string name="ui_this_in_app_notice_is_a_practical_summary" translatable="true">このアプリ内通知はChemSearchユーザーのための実用的な概要です. これは法的アドバイスではありません.</string>
     <!-- MainScreen.kt -->
     <string name="ui_exit_chemsearch" translatable="true">ChemSearchを終了しますか？</string>
@@ -76,6 +106,53 @@
     <string name="ui_deleted_s" translatable="true">%1$sを削除しました</string>
     <string name="ui_api_key_for_provider" translatable="true">%1$s APIキー</string>
     <!-- PeriodicTableUi.kt -->
+    <string name="ui_table" translatable="true">表</string>
+    <string name="ui_trends" translatable="true">トレンド</string>
+    <string name="ui_element_images" translatable="true">要素の画像</string>
+    <string name="ui_spectral_lines" translatable="true">スペクトル線</string>
+    <string name="ui_electron_shells" translatable="true">Electron シェル</string>
+    <string name="ui_more_details" translatable="true">詳細</string>
+    <string name="ui_element_image" translatable="true">要素の画像</string>
+    <string name="ui_spectral_lines_small" translatable="true">スペクトル線</string>
+    <string name="ui_element_properties" translatable="true">要素のプロパティ</string>
+    <string name="ui_extra_element_data" translatable="true">追加要素データ</string>
+    <string name="ui_image_file" translatable="true">画像ファイル</string>
+    <string name="ui_pt_pubchem" translatable="true">PubChem 周期表</string>
+    <string name="ui_pt_bowserinator" translatable="true">Bowserinator/Periodic-Table-JSON</string>
+    <string name="ui_pt_wikipedia" translatable="true">Wikipedia</string>
+    <string name="ui_physical_properties" translatable="true">物理プロパティ</string>
+    <string name="ui_electronic_configuration" translatable="true">電子構成</string>
+    <string name="ui_identity" translatable="true">Identity</string>
+    <string name="ui_atomic_data" translatable="true">アトミックデータ</string>
+    <string name="ui_electrons" translatable="true">Electrons</string>
+    <string name="ui_element_overview" translatable="true">要素の概要</string>
+    <string name="ui_name" translatable="true">名前</string>
+    <string name="ui_symbol" translatable="true">記号</string>
+    <string name="ui_atomic_number" translatable="true">アトミック番号</string>
+    <string name="ui_category" translatable="true">カテゴリ</string>
+    <string name="ui_group_period" translatable="true">グループ / 期間</string>
+    <string name="ui_standard_state" translatable="true">標準状態</string>
+    <string name="ui_year_discovered" translatable="true">発見年</string>
+    <string name="ui_appearance" translatable="true">外観</string>
+    <string name="ui_discovered_by" translatable="true">発見者</string>
+    <string name="ui_named_by" translatable="true">名前：</string>
+    <string name="ui_orbital_block" translatable="true">軌道ブロック</string>
+    <string name="ui_atomic_mass" translatable="true">原子質量（原子質量）</string>
+    <string name="ui_model_color" translatable="true">モデルの色</string>
+    <string name="ui_electron_configuration" translatable="true">Electron の構成</string>
+    <string name="ui_shell_distribution" translatable="true">シェルの配布</string>
+    <string name="ui_oxidation_states" translatable="true">酸化状態</string>
+    <string name="ui_expanded_configuration" translatable="true">拡張構成</string>
+    <string name="ui_electronegativity" translatable="true">Electronegativity</string>
+    <string name="ui_atomic_radius" translatable="true">原子半径</string>
+    <string name="ui_ionization_energy" translatable="true">イオン化エネルギー</string>
+    <string name="ui_electron_affinity" translatable="true">Electron の親和性</string>
+    <string name="ui_melting_point" translatable="true">融点（融点）</string>
+    <string name="ui_boiling_point" translatable="true">沸点の位置</string>
+    <string name="ui_density" translatable="true">解像度:</string>
+    <string name="ui_molar_heat" translatable="true">モルヒート</string>
+    <string name="ui_element_type" translatable="true">要素の種類</string>
+    <string name="ui_ionization_energies" translatable="true">イオン化エネルギー</string>
     <string name="ui_search_elements" translatable="true">検索要素</string>
     <string name="ui_full_details" translatable="true">詳細情報</string>
     <string name="ui_sources" translatable="true">ソース</string>
@@ -83,6 +160,24 @@
     <string name="ui_compare_listed_element_properties_across_the_whole_table" translatable="true">表全体にわたってリストされている要素のプロパティを比較します。ダークタイルは、選択したプロパティの値が高いことを意味します。</string>
     <string name="ui_image_unavailable" translatable="true">画像が利用できません</string>
     <!-- SearchUi.kt -->
+    <string name="ui_formula_copied" translatable="true">数式をコピーしました</string>
+    <string name="ui_saving_offline_copy" translatable="true">オフラインコピーを保存しています...</string>
+    <string name="ui_saved_s_to_downloads" translatable="true">ダウンロードに保存された %1$s</string>
+    <string name="ui_download_failed_s" translatable="true">ダウンロードに失敗しました: %1$s</string>
+    <string name="ui_storage_permission_denied" translatable="true">ストレージへのアクセスが拒否されました。ファイルを保存できません。</string>
+    <string name="ui_synonym_copied" translatable="true">同義語をコピーしました</string>
+    <string name="ui_saved_s_to_pictures" translatable="true">%1$s を写真に保存しました</string>
+    <string name="ui_about_identifiers" translatable="true">識別子について</string>
+    <string name="ui_classification" translatable="true">分類</string>
+    <string name="ui_uses_and_occurrence" translatable="true">&amp; オカレンスを使用</string>
+    <string name="ui_advanced_properties" translatable="true">高度なプロパティ</string>
+    <string name="ui_elemental_analysis" translatable="true">元素解析</string>
+    <string name="ui_ghs_safety" translatable="true">GHS安全</string>
+    <string name="ui_ghs_safety_information" translatable="true">GHS安全情報</string>
+    <string name="ui_identifiers" translatable="true">識別子</string>
+    <string name="ui_cached" translatable="true">キャッシュ済み</string>
+    <string name="ui_offline" translatable="true">オフライン</string>
+    <string name="ui_share_compound" translatable="true">コンパウンドを共有</string>
     <string name="ui_clear_recent_searches" translatable="true">最近の検索をクリアしますか？</string>
     <string name="ui_this_removes_your_recent_search_list_on_this" translatable="true">このデバイスの最近の検索リストを削除します。</string>
     <string name="ui_clear_all" translatable="true">すべてクリア</string>
@@ -194,6 +289,30 @@
     <string name="ui_reorder_mode_use_the_arrows_to_move_items" translatable="true">並べ替えモード: 矢印を使用してアイテムを移動します。</string>
     <string name="ui_no_matches_found" translatable="true">一致するものはありません。</string>
     <string name="ui_try_a_different_name_formula_or_cid" translatable="true">別の名前、数式、またはCIDを試してください。</string>
+    <!-- SettingsUi.kt: Toasts and user notifications -->
+    <string name="ui_notifications_permission_denied" translatable="true">通知へのアクセスが拒否されました</string>
+    <string name="ui_no_download_link_found" translatable="true">ダウンロードリンクが見つかりません</string>
+    <string name="ui_taps_to_unlock_debug" translatable="true">%1$d さらにタップしてデバッグ設定のロックを解除する</string>
+    <string name="ui_one_more_tap_to_unlock" translatable="true">デバッグ設定のロックを解除するにはさらに1タップしてください</string>
+    <string name="ui_debug_settings_unlocked" translatable="true">デバッグ設定のロックを解除しました</string>
+    <string name="ui_library_exported" translatable="true">ライブラリをエクスポートしました</string>
+    <string name="ui_export_failed_s" translatable="true">エクスポート失敗: %1$s</string>
+    <string name="ui_import_failed_s" translatable="true">インポート失敗: %1$s</string>
+    <string name="ui_select_two_different_compounds" translatable="true">比較する2つの異なる化合物を選択してください</string>
+    <string name="ui_settings_exported_with_keys" translatable="true">設定をAPIキーでエクスポートしました。</string>
+    <string name="ui_imported_d_settings" translatable="true">%1$d の設定をインポートしました</string>
+    <string name="ui_cache_location_updated" translatable="true">キャッシュの場所を更新しました</string>
+    <string name="ui_cache_not_writable" translatable="true">そのキャッシュの場所は書き込み可能ではありません</string>
+    <string name="ui_copied_masked_prefs" translatable="true">コピーされたマスクの&lt;unk&gt;</string>
+    <string name="ui_copied_d_lines" translatable="true">%1$d 行をコピーしました</string>
+    <string name="ui_diagnostics_copied" translatable="true">診断がコピーされました</string>
+    <string name="ui_copied_memory_snapshot" translatable="true">メモリスナップショットをコピーしました</string>
+    <string name="ui_all_preferences_wiped" translatable="true">すべての設定を消去しました。アプリを再起動します。</string>
+    <string name="ui_grant_notification_permission" translatable="true">最初に通知権限を付与する</string>
+    <string name="ui_test_notification_sent" translatable="true">テスト通知を送信しました</string>
+    <string name="ui_welcome_screen_restored" translatable="true">ウェルカム画面が復元されました</string>
+    <string name="ui_copied_to_clipboard" translatable="true">クリップボードにコピーしました</string>
+    <string name="ui_debug_settings_hidden" translatable="true">デバッグ設定を非表示</string>
     <!-- SettingsUi.kt: Developer and diagnostic settings -->
     <string name="ui_debug_settings" translatable="true">デバッグ設定</string>
     <string name="ui_sharedpreferences_dump" translatable="true">SharedPreferencesダンプ</string>
@@ -222,6 +341,33 @@
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">機密値はマスクされ、このビューからコピーされることはありません。</string>
     <string name="ui_run_diagnostics_to_test_pubchem_lookup_structures_ghs" translatable="true">診断を実行してPubChem ルックアップ、構造物、GHSデータ、フォールバック3Dロード、Wikipedia、GitHubリリース、およびAIエンドポイントをテストします。</string>
     <!-- StructureSearchUi.kt -->
+    <string name="ui_redo" translatable="true">Redo</string>
+    <string name="ui_select" translatable="true">選択</string>
+    <string name="ui_clean_structure" translatable="true">クリーンな構造</string>
+    <string name="ui_clean" translatable="true">クリーンアップ</string>
+    <string name="ui_export" translatable="true">エクスポート</string>
+    <string name="ui_clear_drawing" translatable="true">図面をクリア</string>
+    <string name="ui_delete" translatable="true">削除</string>
+    <string name="ui_move" translatable="true">移動</string>
+    <string name="ui_duplicate_fragment" translatable="true">フラグメントを複製</string>
+    <string name="ui_delete_molecule" translatable="true">分子を削除</string>
+    <string name="ui_delete_bond" translatable="true">ボンドを削除</string>
+    <string name="ui_delete_selected" translatable="true">選択したものを削除</string>
+    <string name="ui_molecule_selected" translatable="true">選択された分子です</string>
+    <string name="ui_select_molecule" translatable="true">分子を選択</string>
+    <string name="ui_restores_previous_drawing" translatable="true">前の図面ステップを復元します。</string>
+    <string name="ui_restores_drawing_step_undid" translatable="true">描画ステップを元に戻します。</string>
+    <string name="ui_selects_atoms_or_bonds" translatable="true">描画、移動、または変更せずに原子や結合を選択します。</string>
+    <string name="ui_asks_pubchem_standardize_drawing" translatable="true">図面を標準化するようPubChemに依頼します。</string>
+    <string name="ui_imports_smiles_inchi_molfile" translatable="true">SMILES, InChI, または V2000 molfile をインポートします。</string>
+    <string name="ui_copies_or_shares_as_molfile" translatable="true">この図面をmolfileとしてコピーまたは共有します。</string>
+    <string name="ui_removes_whole_drawing_and_results" translatable="true">図面全体と現在の構造結果を削除します。</string>
+    <string name="ui_removes_selected_molecule" translatable="true">選択した分子を図面から削除します。</string>
+    <string name="ui_removes_selected_atom_or_bond" translatable="true">選択した原子または結合を図面から削除します。</string>
+    <string name="ui_selects_whole_molecule" translatable="true">分子全体を選択してドラッグや削除することができます。</string>
+    <string name="ui_copies_connected_fragment" translatable="true">選択した原子を含む接続されたフラグメントをコピーします。</string>
+    <string name="ui_structure_copied" translatable="true">ストラクチャーをコピーしました</string>
+    <string name="ui_share_structure" translatable="true">ストラクチャーを共有</string>
     <string name="ui_import_structure" translatable="true">構造物をインポート</string>
     <string name="ui_structure_text" translatable="true">ストラクチャーテキスト</string>
     <string name="ui_import" translatable="true">インポート</string>
@@ -343,6 +489,25 @@
     <string name="ui_pinch_drag_to_pan" translatable="true">ピンチドラッグでパン</string>
     <string name="ui_could_not_parse_3d_data" translatable="true">3Dデータを解析できませんでした</string>
     <!-- WelcomeScreen.kt -->
+    <string name="ui_set_your_look" translatable="true">外見を設定</string>
+    <string name="ui_appearance" translatable="true">APPEARANCE</string>
+    <string name="ui_choose_theme_accent_body" translatable="true">検索、ツール、設定で使用するテーマとアクセントカラーを選択してください。</string>
+    <string name="ui_light" translatable="true">ライト</string>
+    <string name="ui_dark" translatable="true">ダーク</string>
+    <string name="ui_bright_surfaces" translatable="true">明るい面</string>
+    <string name="ui_low_light_ui" translatable="true">低光UI</string>
+    <string name="ui_pick_descriptions" translatable="true">説明を選択</string>
+    <string name="ui_compound_summaries" translatable="true">コンパウンドの概要</string>
+    <string name="ui_choose_default_desc_body" translatable="true">複合検索の後にデフォルトでどのソースを開くかを選択します。</string>
+    <string name="ui_scientific_summaries" translatable="true">PubChem レコードからの科学的要約。</string>
+    <string name="ui_general_readable_summaries" translatable="true">ページが存在する時の一般的な可読サマリー。</string>
+    <string name="ui_generated_explanations_ai" translatable="true">選択したAIプロバイダーから生成された説明。</string>
+    <string name="ui_before_you_start" translatable="true">開始する前に</string>
+    <string name="ui_privacy_and_safety" translatable="true">プライバシーと安全</string>
+    <string name="ui_pubchem" translatable="true">PubChem</string>
+    <string name="ui_wikipedia" translatable="true">Wikipedia</string>
+    <string name="ui_ai" translatable="true">AI</string>
+    <string name="ui_welcome_privacy_body" translatable="true">ChemSearchは公的化学源とオプションのAIプロバイダーを使用しています。化学情報は研究とクイックチェックのためのものです。</string>
     <string name="ui_chemsearch" translatable="true">ChemSearch</string>
     <string name="ui_configure_ai_provider" translatable="true">Configure AI provider</string>
     <string name="ui_skip" translatable="true">スキップ</string>
