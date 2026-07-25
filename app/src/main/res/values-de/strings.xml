@@ -133,7 +133,7 @@
     <string name="ui_group_period" translatable="true">Gruppe / Zeitraum</string>
     <string name="ui_standard_state" translatable="true">Standard Status</string>
     <string name="ui_year_discovered" translatable="true">Jahr entdeckt</string>
-    <string name="ui_appearance" translatable="true">Erscheinung</string>
+    <string name="ui_appearance_label" translatable="true">Appearance</string>
     <string name="ui_discovered_by" translatable="true">Entdeckt von</string>
     <string name="ui_named_by" translatable="true">Benannt von</string>
     <string name="ui_orbital_block" translatable="true">Orbitalblock</string>
@@ -141,7 +141,7 @@
     <string name="ui_model_color" translatable="true">Modellfarbe</string>
     <string name="ui_electron_configuration" translatable="true">Electron-Konfiguration</string>
     <string name="ui_shell_distribution" translatable="true">Shellverteilung</string>
-    <string name="ui_oxidation_states" translatable="true">Oxidationszustände</string>
+    <string name="ui_oxidation_states_label" translatable="true">Oxidation states</string>
     <string name="ui_expanded_configuration" translatable="true">Erweiterte Konfiguration</string>
     <string name="ui_electronegativity" translatable="true">Elektronische Etablierung</string>
     <string name="ui_atomic_radius" translatable="true">Atomradius</string>
@@ -188,7 +188,6 @@
     <string name="ui_hazard_statements" translatable="true">HAZARD STATEMENTS</string>
     <string name="ui_sort_recents" translatable="true">Verlauf sortieren</string>
     <string name="ui_downloading_for_offline_use" translatable="true">Herunterladen für Offline-Nutzung</string>
-    <string name="ui_share_compound" translatable="true">Compound teilen</string>
     <string name="ui_2d_structure" translatable="true">2D-Struktur</string>
     <string name="ui_download_2d_structure" translatable="true">2D-Struktur herunterladen</string>
     <string name="ui_2d_structure_zoom" translatable="true">2D-Struktur (Zoom)</string>
