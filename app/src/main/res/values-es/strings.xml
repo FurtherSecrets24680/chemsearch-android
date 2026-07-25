@@ -64,17 +64,17 @@
     <string name="ui_exit" translatable="true">Salir</string>
     <string name="ui_random_compound" translatable="true">Compuesto aleatorio</string>
     <string name="ui_looking_up_compound" translatable="true">Buscando componente...</string>
-    <string name="ui_try_searching" translatable="true">Try searching</string>
-    <string name="ui_hide_extra_compound_info" translatable="true">Hide extra compound information</string>
-    <string name="ui_show_more_compound_info" translatable="true">Show more information about this substance</string>
-    <string name="ui_recent" translatable="true">Recent</string>
-    <string name="ui_draw_molecule_and_search" translatable="true">Draw a molecule and search PubChem</string>
-    <string name="ui_find_compounds_same_formula" translatable="true">Find compounds with the same formula</string>
-    <string name="ui_undo" translatable="true">Undo</string>
-    <string name="ui_removed_s" translatable="true">Removed %1$s</string>
-    <string name="ui_cleared_recent_searches" translatable="true">Cleared %1$d recent searches</string>
-    <string name="ui_deleted_s" translatable="true">Deleted %1$s</string>
-    <string name="ui_api_key_for_provider" translatable="true">%1$s API Key</string>
+    <string name="ui_try_searching" translatable="true">Intenta buscar</string>
+    <string name="ui_hide_extra_compound_info" translatable="true">Ocultar información adicional de compuestos</string>
+    <string name="ui_show_more_compound_info" translatable="true">Mostrar más información sobre esta sustancia</string>
+    <string name="ui_recent" translatable="true">Recientes</string>
+    <string name="ui_draw_molecule_and_search" translatable="true">Dibujar una molécula y buscar PubChem</string>
+    <string name="ui_find_compounds_same_formula" translatable="true">Encuentra compuestos con la misma fórmula</string>
+    <string name="ui_undo" translatable="true">Deshacer</string>
+    <string name="ui_removed_s" translatable="true">Eliminado %1$s</string>
+    <string name="ui_cleared_recent_searches" translatable="true">Limpiado %1$d búsquedas recientes</string>
+    <string name="ui_deleted_s" translatable="true">Eliminado %1$s</string>
+    <string name="ui_api_key_for_provider" translatable="true">Clave API %1$s</string>
     <!-- PeriodicTableUi.kt -->
     <string name="ui_search_elements" translatable="true">Buscar elementos</string>
     <string name="ui_full_details" translatable="true">Datos completos</string>
