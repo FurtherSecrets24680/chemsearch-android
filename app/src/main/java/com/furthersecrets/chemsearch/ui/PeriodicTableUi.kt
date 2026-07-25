@@ -717,7 +717,7 @@ private fun ElementDetailDialog(
                         ElementFactItem(R.string.ui_group_period, "Group ${element.group}, period ${element.period}"),
                         ElementFactItem(R.string.ui_standard_state, element.standardState),
                         ElementFactItem(R.string.ui_electron_configuration, toElectronConfigurationDisplay(element.electronConfiguration)),
-                        ElementFactItem(R.string.ui_oxidation_states, element.commonOxidationStates)
+                        ElementFactItem(R.string.ui_oxidation_states_label, element.commonOxidationStates)
                     )
                 )
             }
@@ -1111,7 +1111,7 @@ private fun ElementAllFactsCard(element: PeriodicElement, color: Color) {
                 add(ElementFactItem(R.string.ui_standard_state, element.standardState))
                 add(ElementFactItem(R.string.ui_year_discovered, element.yearDiscovered))
                 extra?.let {
-                    add(ElementFactItem(R.string.ui_appearance, it.appearance.ifMissing("Not listed")))
+                    add(ElementFactItem(R.string.ui_appearance_label, it.appearance.ifMissing("Not listed")))
                     add(ElementFactItem(R.string.ui_discovered_by, it.discoveredBy.ifMissing("Not listed")))
                     add(ElementFactItem(R.string.ui_named_by, it.namedBy.ifMissing("Not listed")))
                     add(ElementFactItem(R.string.ui_orbital_block, it.block.ifMissing("Not listed")))
@@ -1133,7 +1133,7 @@ private fun ElementAllFactsCard(element: PeriodicElement, color: Color) {
             facts = buildList {
                 add(ElementFactItem(R.string.ui_electron_configuration, electronConfiguration))
                 add(ElementFactItem(R.string.ui_shell_distribution, electronShellCounts(element).joinToString(" · ")))
-                add(ElementFactItem(R.string.ui_oxidation_states, element.commonOxidationStates))
+                add(ElementFactItem(R.string.ui_oxidation_states_label, element.commonOxidationStates))
                 extra?.let {
                     val expandedConfiguration = toElectronConfigurationDisplay(it.electronConfigurationSemantic.removePrefix("*"))
                     if (!expandedConfiguration.isMissingValue() && expandedConfiguration != electronConfiguration) {
