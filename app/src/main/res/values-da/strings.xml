@@ -25,11 +25,30 @@
     <string name="ui_searching" translatable="true">Søger...</string>
     <string name="ui_search" translatable="true">Søg</string>
     <!-- ChemicalDatabaseUi.kt -->
+    <string name="ui_all_s" translatable="true">Alle %1$s</string>
+    <string name="ui_show_every_entry" translatable="true">Vis alle punkter i denne sektion</string>
+    <string name="ui_s_copied" translatable="true">%1$s kopieret</string>
     <string name="ui_back_to_database" translatable="true">Tilbage til Database</string>
     <string name="ui_search_in_chemsearch" translatable="true">Søg i ChemSearch</string>
     <string name="ui_search_substances_reactions_groups_ions" translatable="true">Søg stoffer, reaktioner, grupper, ioner...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Molekylære formel</string>
+    <string name="ui_empirical_formula_finder" translatable="true">Empirisk Formel Finder</string>
+    <string name="ui_percent_mode" translatable="true">Procent tilstand</string>
+    <string name="ui_percent_mode_desc" translatable="true">Behandler procenter som gram i en 100 g prøve, derefter konverterer hvert element til muldvarper.</string>
+    <string name="ui_mass_mode" translatable="true">Masse tilstand</string>
+    <string name="ui_mass_mode_desc" translatable="true">Bruger den indtastede masse af hvert element direkte.</string>
+    <string name="ui_formula_mode" translatable="true">Formel tilstand</string>
+    <string name="ui_formula_mode_desc" translatable="true">Reducerer en molekylær formel til dens enkleste heltal-forhold.</string>
+    <string name="ui_molecular_formula_desc" translatable="true">Hvis der indtastes molmasse, kontrollerer appen, om det er et rent multiplum af den empiriske formel masse.</string>
+    <string name="ui_precipitate_predictor" translatable="true">Prædiktor Til Udfældning</string>
+    <string name="ui_best_inputs" translatable="true">Bedste input</string>
+    <string name="ui_pp_best_inputs_desc" translatable="true">Brug almindelige vandige ionforbindelser såsom AgNO3, NaCl, BaCl2, Na2SO4, Ca(OH)2 eller Na2CO3.</string>
+    <string name="ui_limits" translatable="true">Grænser</string>
+    <string name="ui_pp_limits_desc" translatable="true">Denne første version fokuserer på fælles skole og laboratoriet opløselighed regler, ikke alle komplekse ion eller koordination forbindelse.</string>
+    <string name="ui_net_ionic_equation" translatable="true">Ionisk nettoligning</string>
+    <string name="ui_pp_net_ionic_desc" translatable="true">Tilskuer ioner fjernes, når præcis én nedbør forudsiges.</string>
+    <string name="ui_pp_what_it_does_desc" translatable="true">Forudsiger dobbeltsubstitutionsprodukter og kontrollerer fælles opløselighedsregler.</string>
     <string name="ui_e_g_c6h12o6" translatable="true">f.eks. C6H12O6</string>
     <string name="ui_add_element" translatable="true">Tilføj element</string>
     <string name="ui_molar_mass_for_molecular_formula_optional" translatable="true">Molmasse for molekylær formel (valgfrit)</string>
@@ -48,6 +67,14 @@
     <string name="ui_product_check" translatable="true">VARE KONTROL</string>
     <!-- IsomerFinder.kt -->
     <string name="ui_enter_a_molecular_formula_to_find_matching_structural" translatable="true">Indtast en molekylær formel for at finde matchende strukturelle isomerer fra PubChem.</string>
+    <string name="ui_what_it_does" translatable="true">Hvad det gør</string>
+    <string name="ui_isomer_what_it_does_desc" translatable="true">Søger PubChem for forbindelser med samme molekylære formel.</string>
+    <string name="ui_how_to_use_it" translatable="true">Sådan skal du bruge det</string>
+    <string name="ui_isomer_how_to_desc" translatable="true">Indtast en formel som C6H6, C2H6O eller C6H12O6, og tryk derefter på søgning.</string>
+    <string name="ui_results" translatable="true">Resultater</string>
+    <string name="ui_isomer_results_desc" translatable="true">Tryk på et resultat for at åbne denne forbindelse på hovedsøgesiden.</string>
+    <string name="ui_limitations" translatable="true">Begrænsninger</string>
+    <string name="ui_isomer_limitations_desc" translatable="true">Kun forbindelser indekseret af PubChem kan vises her.</string>
     <string name="ui_show_20_more" translatable="true">Vis 20 mere</string>
     <string name="ui_include_isotopes" translatable="true">Inkludér isotoper</string>
     <string name="ui_isomer_search" translatable="true">Isomer Søgning</string>
@@ -57,6 +84,9 @@
     <string name="ui_molecular_formula_e_g_c_h_o" translatable="true">Molecular formula, e.g. C6H12O6</string>
     <string name="ui_loading_more" translatable="true">Indlæser mere</string>
     <!-- LegalContent.kt -->
+    <string name="ui_privacy_policy" translatable="true">Privat Politik</string>
+    <string name="ui_terms_of_service" translatable="true">Betingelser for brug</string>
+    <string name="ui_safety_disclaimer" translatable="true">Sikkerhedsfraskrivelse</string>
     <string name="ui_this_in_app_notice_is_a_practical_summary" translatable="true">Denne in-app meddelelse er et praktisk resumé for ChemSearch brugere. Det er ikke juridisk rådgivning.</string>
     <!-- MainScreen.kt -->
     <string name="ui_exit_chemsearch" translatable="true">Afslut ChemSearch?</string>
@@ -76,6 +106,53 @@
     <string name="ui_deleted_s" translatable="true">Slettede %1$s</string>
     <string name="ui_api_key_for_provider" translatable="true">%1$s API-nøgle</string>
     <!-- PeriodicTableUi.kt -->
+    <string name="ui_table" translatable="true">Tabel</string>
+    <string name="ui_trends" translatable="true">Tendenser</string>
+    <string name="ui_element_images" translatable="true">Element Billeder</string>
+    <string name="ui_spectral_lines" translatable="true">Spektralinier</string>
+    <string name="ui_electron_shells" translatable="true">Elektronskaller</string>
+    <string name="ui_more_details" translatable="true">Flere Detaljer</string>
+    <string name="ui_element_image" translatable="true">Element billede</string>
+    <string name="ui_spectral_lines_small" translatable="true">Spektrale linjer</string>
+    <string name="ui_element_properties" translatable="true">Element egenskaber</string>
+    <string name="ui_extra_element_data" translatable="true">Ekstra elementdata</string>
+    <string name="ui_image_file" translatable="true">Billede fil</string>
+    <string name="ui_pt_pubchem" translatable="true">PubChem Periodisk Tabel</string>
+    <string name="ui_pt_bowserinator" translatable="true">Bowserinator/Periodisk-Tabel-JSON</string>
+    <string name="ui_pt_wikipedia" translatable="true">Wikipedia</string>
+    <string name="ui_physical_properties" translatable="true">Fysiske Egenskaber</string>
+    <string name="ui_electronic_configuration" translatable="true">Elektronisk konfiguration</string>
+    <string name="ui_identity" translatable="true">Identitet</string>
+    <string name="ui_atomic_data" translatable="true">Atomic Data</string>
+    <string name="ui_electrons" translatable="true">Electrons</string>
+    <string name="ui_element_overview" translatable="true">Element Oversigt</string>
+    <string name="ui_name" translatable="true">Navn</string>
+    <string name="ui_symbol" translatable="true">Symbol</string>
+    <string name="ui_atomic_number" translatable="true">Atomic number</string>
+    <string name="ui_category" translatable="true">Kategori</string>
+    <string name="ui_group_period" translatable="true">Gruppe / periode</string>
+    <string name="ui_standard_state" translatable="true">Standard tilstand</string>
+    <string name="ui_year_discovered" translatable="true">År opdaget</string>
+    <string name="ui_appearance" translatable="true">Udseende</string>
+    <string name="ui_discovered_by" translatable="true">Opdaget af</string>
+    <string name="ui_named_by" translatable="true">Navngivet af</string>
+    <string name="ui_orbital_block" translatable="true">Orbital blok</string>
+    <string name="ui_atomic_mass" translatable="true">Atommasse</string>
+    <string name="ui_model_color" translatable="true">Model farve</string>
+    <string name="ui_electron_configuration" translatable="true">Elektronkonfiguration</string>
+    <string name="ui_shell_distribution" translatable="true">Shell distribution</string>
+    <string name="ui_oxidation_states" translatable="true">Oxidation stater</string>
+    <string name="ui_expanded_configuration" translatable="true">Udvidet konfiguration</string>
+    <string name="ui_electronegativity" translatable="true">Elektronegativitet</string>
+    <string name="ui_atomic_radius" translatable="true">Atomradius</string>
+    <string name="ui_ionization_energy" translatable="true">Ionisering energi</string>
+    <string name="ui_electron_affinity" translatable="true">Elektronaffinitet</string>
+    <string name="ui_melting_point" translatable="true">Smeltepunkt</string>
+    <string name="ui_boiling_point" translatable="true">Kogepunkt</string>
+    <string name="ui_density" translatable="true">Tæthed</string>
+    <string name="ui_molar_heat" translatable="true">Molar varme</string>
+    <string name="ui_element_type" translatable="true">Element type</string>
+    <string name="ui_ionization_energies" translatable="true">Ioniseringsenergier</string>
     <string name="ui_search_elements" translatable="true">Søg i elementer</string>
     <string name="ui_full_details" translatable="true">Fuldstændig information</string>
     <string name="ui_sources" translatable="true">Kilder</string>
@@ -83,6 +160,24 @@
     <string name="ui_compare_listed_element_properties_across_the_whole_table" translatable="true">Sammenlign angivne elementegenskaber på tværs af hele bordet. Mørkere fliser betyder højere værdier for den valgte egenskab.</string>
     <string name="ui_image_unavailable" translatable="true">Billede utilgængeligt</string>
     <!-- SearchUi.kt -->
+    <string name="ui_formula_copied" translatable="true">Formel kopieret</string>
+    <string name="ui_saving_offline_copy" translatable="true">Gemmer offline kopiér...</string>
+    <string name="ui_saved_s_to_downloads" translatable="true">Gemt %1$s i Downloads</string>
+    <string name="ui_download_failed_s" translatable="true">Download mislykkedes: %1$s</string>
+    <string name="ui_storage_permission_denied" translatable="true">Lagringstilladelse nægtet. Kan ikke gemme fil</string>
+    <string name="ui_synonym_copied" translatable="true">Synonym kopieret</string>
+    <string name="ui_saved_s_to_pictures" translatable="true">Gemt %1$s til billeder</string>
+    <string name="ui_about_identifiers" translatable="true">Om Identifikatorer</string>
+    <string name="ui_classification" translatable="true">Tarifering</string>
+    <string name="ui_uses_and_occurrence" translatable="true">Bruger &amp; Forekomst</string>
+    <string name="ui_advanced_properties" translatable="true">Avancerede Egenskaber</string>
+    <string name="ui_elemental_analysis" translatable="true">Elemental Analyse</string>
+    <string name="ui_ghs_safety" translatable="true">GHS Sikkerhed</string>
+    <string name="ui_ghs_safety_information" translatable="true">GHS Sikkerhedsoplysninger</string>
+    <string name="ui_identifiers" translatable="true">Identifikatorer</string>
+    <string name="ui_cached" translatable="true">Cachet</string>
+    <string name="ui_offline" translatable="true">Offline</string>
+    <string name="ui_share_compound" translatable="true">Del forbindelse</string>
     <string name="ui_clear_recent_searches" translatable="true">Ryd seneste søgninger?</string>
     <string name="ui_this_removes_your_recent_search_list_on_this" translatable="true">Dette fjerner din seneste søgeliste på denne enhed.</string>
     <string name="ui_clear_all" translatable="true">Ryd alle</string>
@@ -194,6 +289,30 @@
     <string name="ui_reorder_mode_use_the_arrows_to_move_items" translatable="true">Genbestil tilstand: brug pilene til at flytte elementer.</string>
     <string name="ui_no_matches_found" translatable="true">Ingen matches fundet.</string>
     <string name="ui_try_a_different_name_formula_or_cid" translatable="true">Prøv et andet navn, formel eller CID.</string>
+    <!-- SettingsUi.kt: Toasts and user notifications -->
+    <string name="ui_notifications_permission_denied" translatable="true">Notifikationer tilladelse nægtet</string>
+    <string name="ui_no_download_link_found" translatable="true">Intet download-link fundet</string>
+    <string name="ui_taps_to_unlock_debug" translatable="true">%1$d flere tryk for at låse op for fejlfindingsindstillinger</string>
+    <string name="ui_one_more_tap_to_unlock" translatable="true">1 tryk mere for at låse op for fejlfindingsindstillinger</string>
+    <string name="ui_debug_settings_unlocked" translatable="true">Fejlretningsindstillinger låst op</string>
+    <string name="ui_library_exported" translatable="true">Bibliotek eksporteret</string>
+    <string name="ui_export_failed_s" translatable="true">Eksport fejlede: %1$s</string>
+    <string name="ui_import_failed_s" translatable="true">Import mislykkedes: %1$s</string>
+    <string name="ui_select_two_different_compounds" translatable="true">Vælg to forskellige forbindelser at sammenligne</string>
+    <string name="ui_settings_exported_with_keys" translatable="true">Indstillinger eksporteret med API-nøgler.</string>
+    <string name="ui_imported_d_settings" translatable="true">Importerede %1$d indstillinger</string>
+    <string name="ui_cache_location_updated" translatable="true">Cache placering opdateret</string>
+    <string name="ui_cache_not_writable" translatable="true">At cache placering ikke er skrivbar</string>
+    <string name="ui_copied_masked_prefs" translatable="true">Kopieret maskerede prefs</string>
+    <string name="ui_copied_d_lines" translatable="true">Kopierede %1$d linjer</string>
+    <string name="ui_diagnostics_copied" translatable="true">Diagnostik kopieret</string>
+    <string name="ui_copied_memory_snapshot" translatable="true">Kopieret hukommelsesøjebliksbillede</string>
+    <string name="ui_all_preferences_wiped" translatable="true">Alle præferencer slettet. Genstart appen.</string>
+    <string name="ui_grant_notification_permission" translatable="true">Tildel notifikationstilladelse først</string>
+    <string name="ui_test_notification_sent" translatable="true">Test notifikation sendt</string>
+    <string name="ui_welcome_screen_restored" translatable="true">Velkomstskærm gendannet</string>
+    <string name="ui_copied_to_clipboard" translatable="true">Kopieret til udklipsholder</string>
+    <string name="ui_debug_settings_hidden" translatable="true">Fejlsøg indstillinger skjult</string>
     <!-- SettingsUi.kt: Developer and diagnostic settings -->
     <string name="ui_debug_settings" translatable="true">DEBUG INDSTILLINGER</string>
     <string name="ui_sharedpreferences_dump" translatable="true">Delte præferencer dump</string>
@@ -222,6 +341,33 @@
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Følsomme værdier maskeres og kopieres aldrig fra denne synsvinkel.</string>
     <string name="ui_run_diagnostics_to_test_pubchem_lookup_structures_ghs" translatable="true">Kør diagnostik til at teste PubChem opslag, strukturer, GHS data, fallback 3D indlæsning, Wikipedia, GitHub udgivelser, og AI endepunkter.</string>
     <!-- StructureSearchUi.kt -->
+    <string name="ui_redo" translatable="true">Gendan</string>
+    <string name="ui_select" translatable="true">Vælg</string>
+    <string name="ui_clean_structure" translatable="true">Ren struktur</string>
+    <string name="ui_clean" translatable="true">Rens</string>
+    <string name="ui_export" translatable="true">Eksporter</string>
+    <string name="ui_clear_drawing" translatable="true">Ryd tegning</string>
+    <string name="ui_delete" translatable="true">Slet</string>
+    <string name="ui_move" translatable="true">Flyt</string>
+    <string name="ui_duplicate_fragment" translatable="true">Dupliker fragment</string>
+    <string name="ui_delete_molecule" translatable="true">Slet molekyle</string>
+    <string name="ui_delete_bond" translatable="true">Slet bond</string>
+    <string name="ui_delete_selected" translatable="true">Slet valgte</string>
+    <string name="ui_molecule_selected" translatable="true">Molekyle valgt</string>
+    <string name="ui_select_molecule" translatable="true">Vælg molekyle</string>
+    <string name="ui_restores_previous_drawing" translatable="true">Gendanner det forrige tegningstrin.</string>
+    <string name="ui_restores_drawing_step_undid" translatable="true">Gendanner tegningstrinnet du lige har fortrudt.</string>
+    <string name="ui_selects_atoms_or_bonds" translatable="true">Vælger atomer eller obligationer uden at tegne, flytte, eller ændre dem.</string>
+    <string name="ui_asks_pubchem_standardize_drawing" translatable="true">Spørger PubChem til at standardisere tegningen.</string>
+    <string name="ui_imports_smiles_inchi_molfile" translatable="true">Importerer SMILES, InChI eller en V2000 molfile.</string>
+    <string name="ui_copies_or_shares_as_molfile" translatable="true">Kopierer eller deler denne tegning som en molfile.</string>
+    <string name="ui_removes_whole_drawing_and_results" translatable="true">Fjerner hele tegningen og aktuelle strukturresultater.</string>
+    <string name="ui_removes_selected_molecule" translatable="true">Fjerner det markerede molekyle fra tegningen.</string>
+    <string name="ui_removes_selected_atom_or_bond" translatable="true">Fjerner det valgte atom eller bånd fra tegningen.</string>
+    <string name="ui_selects_whole_molecule" translatable="true">Vælger hele molekylet, så du kan trække det eller slette det.</string>
+    <string name="ui_copies_connected_fragment" translatable="true">Kopierer det forbundne fragment som indeholder det valgte atom.</string>
+    <string name="ui_structure_copied" translatable="true">Struktur kopieret</string>
+    <string name="ui_share_structure" translatable="true">Del struktur</string>
     <string name="ui_import_structure" translatable="true">Importer struktur</string>
     <string name="ui_structure_text" translatable="true">Struktur tekst</string>
     <string name="ui_import" translatable="true">Importér</string>
@@ -343,6 +489,25 @@
     <string name="ui_pinch_drag_to_pan" translatable="true">Knib træk til panorering</string>
     <string name="ui_could_not_parse_3d_data" translatable="true">Kunne ikke parse 3D data</string>
     <!-- WelcomeScreen.kt -->
+    <string name="ui_set_your_look" translatable="true">Indstil dit udseende</string>
+    <string name="ui_appearance" translatable="true">ANVENDELSESOMRÅDE</string>
+    <string name="ui_choose_theme_accent_body" translatable="true">Vælg temaet og accent farve ChemSearch skal bruge på tværs af søgning, værktøjer og indstillinger.</string>
+    <string name="ui_light" translatable="true">Lys</string>
+    <string name="ui_dark" translatable="true">Mørk</string>
+    <string name="ui_bright_surfaces" translatable="true">Lyse overflader</string>
+    <string name="ui_low_light_ui" translatable="true">Lav-lys Brugerflade</string>
+    <string name="ui_pick_descriptions" translatable="true">Vælg beskrivelser</string>
+    <string name="ui_compound_summaries" translatable="true">SAMMENFATTENDE RESUMÉ</string>
+    <string name="ui_choose_default_desc_body" translatable="true">Vælg hvilken kilde der som standard skal åbnes efter en sammensatte søgning.</string>
+    <string name="ui_scientific_summaries" translatable="true">Videnskabelige resuméer fra PubChem optegnelser.</string>
+    <string name="ui_general_readable_summaries" translatable="true">Generelle læsbare oversigter når en side eksisterer.</string>
+    <string name="ui_generated_explanations_ai" translatable="true">Genererede forklaringer fra din valgte AI-udbyder.</string>
+    <string name="ui_before_you_start" translatable="true">Før du starter</string>
+    <string name="ui_privacy_and_safety" translatable="true">PRIVACY OG SIKKERHED</string>
+    <string name="ui_pubchem" translatable="true">PubChem</string>
+    <string name="ui_wikipedia" translatable="true">Wikipedia</string>
+    <string name="ui_ai" translatable="true">AI</string>
+    <string name="ui_welcome_privacy_body" translatable="true">ChemSearch bruger offentlige kemi kilder og valgfri AI udbydere. Kemiske oplysninger er til undersøgelse og hurtig kontrol.</string>
     <string name="ui_chemsearch" translatable="true">ChemSearch</string>
     <string name="ui_configure_ai_provider" translatable="true">Configure AI provider</string>
     <string name="ui_skip" translatable="true">Overspring</string>
