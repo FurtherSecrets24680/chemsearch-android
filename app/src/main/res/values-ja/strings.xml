@@ -150,18 +150,18 @@
     <string name="ui_language_system_default">システムのデフォルト</string>
     <string name="ui_language_english">日本語</string>
     <string name="ui_language_danish">Dansk</string>
-    <string name="ui_language_german">Deutsch</string>
-    <string name="ui_language_greek">Ελληνικά</string>
-    <string name="ui_language_spanish">Español</string>
+    <string name="ui_language_german">ドイツ</string>
+    <string name="ui_language_greek">Ελληνικά</string>
+    <string name="ui_language_spanish">Español</string>
     <string name="ui_language_finnish">Suomi</string>
-    <string name="ui_language_french">Français</string>
+    <string name="ui_language_french">FrancWebais</string>
     <string name="ui_language_italian">Italiano</string>
     <string name="ui_language_japanese">日本語</string>
     <string name="ui_language_dutch">Nederlands</string>
     <string name="ui_language_norwegian">Norsk</string>
     <string name="ui_language_polish">Polski</string>
-    <string name="ui_language_portuguese">Português</string>
-    <string name="ui_language_russian">Русский</string>
+    <string name="ui_language_portuguese">ポルトガル語&lt;unk&gt;</string>
+    <string name="ui_language_russian">&lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt; &lt;unk&gt;</string>
     <string name="ui_language_swedish">Svenska</string>
     <string name="ui_language_restart">アプリは言語を適用するために再起動します。</string>
     <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">コンパウンドを検索すると自動的に表示されます</string>
