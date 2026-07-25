@@ -133,7 +133,7 @@
     <string name="ui_group_period" translatable="true">グループ / 期間</string>
     <string name="ui_standard_state" translatable="true">標準状態</string>
     <string name="ui_year_discovered" translatable="true">発見年</string>
-    <string name="ui_appearance" translatable="true">外観</string>
+    <string name="ui_appearance_label" translatable="true">Appearance</string>
     <string name="ui_discovered_by" translatable="true">発見者</string>
     <string name="ui_named_by" translatable="true">名前：</string>
     <string name="ui_orbital_block" translatable="true">軌道ブロック</string>
@@ -141,7 +141,7 @@
     <string name="ui_model_color" translatable="true">モデルの色</string>
     <string name="ui_electron_configuration" translatable="true">Electron の構成</string>
     <string name="ui_shell_distribution" translatable="true">シェルの配布</string>
-    <string name="ui_oxidation_states" translatable="true">酸化状態</string>
+    <string name="ui_oxidation_states_label" translatable="true">Oxidation states</string>
     <string name="ui_expanded_configuration" translatable="true">拡張構成</string>
     <string name="ui_electronegativity" translatable="true">Electronegativity</string>
     <string name="ui_atomic_radius" translatable="true">原子半径</string>
@@ -188,7 +188,6 @@
     <string name="ui_hazard_statements" translatable="true">ハザードのステータス</string>
     <string name="ui_sort_recents" translatable="true">アプリ履歴のソート</string>
     <string name="ui_downloading_for_offline_use" translatable="true">オフライン用にダウンロード中</string>
-    <string name="ui_share_compound" translatable="true">コンパウンドを共有</string>
     <string name="ui_2d_structure" translatable="true">2D 構造</string>
     <string name="ui_download_2d_structure" translatable="true">2D構造体をダウンロード</string>
     <string name="ui_2d_structure_zoom" translatable="true">2D 構造 (ズーム)</string>

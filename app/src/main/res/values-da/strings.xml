@@ -133,7 +133,7 @@
     <string name="ui_group_period" translatable="true">Gruppe / periode</string>
     <string name="ui_standard_state" translatable="true">Standard tilstand</string>
     <string name="ui_year_discovered" translatable="true">År opdaget</string>
-    <string name="ui_appearance" translatable="true">Udseende</string>
+    <string name="ui_appearance_label" translatable="true">Appearance</string>
     <string name="ui_discovered_by" translatable="true">Opdaget af</string>
     <string name="ui_named_by" translatable="true">Navngivet af</string>
     <string name="ui_orbital_block" translatable="true">Orbital blok</string>
@@ -141,7 +141,7 @@
     <string name="ui_model_color" translatable="true">Model farve</string>
     <string name="ui_electron_configuration" translatable="true">Elektronkonfiguration</string>
     <string name="ui_shell_distribution" translatable="true">Shell distribution</string>
-    <string name="ui_oxidation_states" translatable="true">Oxidation stater</string>
+    <string name="ui_oxidation_states_label" translatable="true">Oxidation states</string>
     <string name="ui_expanded_configuration" translatable="true">Udvidet konfiguration</string>
     <string name="ui_electronegativity" translatable="true">Elektronegativitet</string>
     <string name="ui_atomic_radius" translatable="true">Atomradius</string>
@@ -188,7 +188,6 @@
     <string name="ui_hazard_statements" translatable="true">FARVE VEDTÆGTER</string>
     <string name="ui_sort_recents" translatable="true">Sortér seneste</string>
     <string name="ui_downloading_for_offline_use" translatable="true">Downloader til offline brug</string>
-    <string name="ui_share_compound" translatable="true">Del forbindelse</string>
     <string name="ui_2d_structure" translatable="true">2D Struktur</string>
     <string name="ui_download_2d_structure" translatable="true">Download 2D struktur</string>
     <string name="ui_2d_structure_zoom" translatable="true">2D Struktur (zoom)</string>
