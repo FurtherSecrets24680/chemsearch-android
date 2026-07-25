@@ -64,17 +64,17 @@
     <string name="ui_exit" translatable="true">Avsluta</string>
     <string name="ui_random_compound" translatable="true">Slumpmässig förening</string>
     <string name="ui_looking_up_compound" translatable="true">Söker upp förening...</string>
-    <string name="ui_try_searching" translatable="true">Try searching</string>
-    <string name="ui_hide_extra_compound_info" translatable="true">Hide extra compound information</string>
-    <string name="ui_show_more_compound_info" translatable="true">Show more information about this substance</string>
-    <string name="ui_recent" translatable="true">Recent</string>
-    <string name="ui_draw_molecule_and_search" translatable="true">Draw a molecule and search PubChem</string>
-    <string name="ui_find_compounds_same_formula" translatable="true">Find compounds with the same formula</string>
-    <string name="ui_undo" translatable="true">Undo</string>
-    <string name="ui_removed_s" translatable="true">Removed %1$s</string>
-    <string name="ui_cleared_recent_searches" translatable="true">Cleared %1$d recent searches</string>
-    <string name="ui_deleted_s" translatable="true">Deleted %1$s</string>
-    <string name="ui_api_key_for_provider" translatable="true">%1$s API Key</string>
+    <string name="ui_try_searching" translatable="true">Försök söka</string>
+    <string name="ui_hide_extra_compound_info" translatable="true">Dölj extra sammansatt information</string>
+    <string name="ui_show_more_compound_info" translatable="true">Visa mer information om detta ämne</string>
+    <string name="ui_recent" translatable="true">Senaste</string>
+    <string name="ui_draw_molecule_and_search" translatable="true">Rita en molekyl och sök PubChem</string>
+    <string name="ui_find_compounds_same_formula" translatable="true">Bestäm föreningar med samma formel</string>
+    <string name="ui_undo" translatable="true">Ångra</string>
+    <string name="ui_removed_s" translatable="true">Borttagen %1$s</string>
+    <string name="ui_cleared_recent_searches" translatable="true">Rensade %1$d senaste sökningar</string>
+    <string name="ui_deleted_s" translatable="true">Borttagna %1$s</string>
+    <string name="ui_api_key_for_provider" translatable="true">%1$s API-nyckel</string>
     <!-- PeriodicTableUi.kt -->
     <string name="ui_search_elements" translatable="true">Sök element</string>
     <string name="ui_full_details" translatable="true">Fullständig information</string>
