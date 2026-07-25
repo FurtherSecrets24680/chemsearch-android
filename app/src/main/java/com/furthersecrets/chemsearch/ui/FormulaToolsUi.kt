@@ -87,19 +87,19 @@ fun EmpiricalFormulaFinderTool() {
 
     if (showInfo) {
         InfoDialog(
-            title = "Empirical Formula Finder",
+            title = stringResource(R.string.ui_empirical_formula_finder),
             entries = listOf(
-                "Percent mode" to "Treats percentages as grams in a 100 g sample, then converts each element to moles.",
-                "Mass mode" to "Uses the entered mass of each element directly.",
-                "Formula mode" to "Reduces a molecular formula to its simplest whole-number ratio.",
-                "Molecular formula" to "If molar mass is entered, the app checks whether it is a clean multiple of the empirical formula mass."
+                stringResource(R.string.ui_percent_mode) to stringResource(R.string.ui_percent_mode_desc),
+                stringResource(R.string.ui_mass_mode) to stringResource(R.string.ui_mass_mode_desc),
+                stringResource(R.string.ui_formula_mode) to stringResource(R.string.ui_formula_mode_desc),
+                stringResource(R.string.ui_molecular_formula) to stringResource(R.string.ui_molecular_formula_desc)
             ),
             onDismiss = { showInfo = false }
         )
     }
 
     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        ToolTitleRow(title = "Empirical Formula Finder", onInfo = { showInfo = true })
+        ToolTitleRow(title = stringResource(R.string.ui_empirical_formula_finder), onInfo = { showInfo = true })
         Text(stringResource(R.string.ui_use_composition_data_or_reduce_an_existing_formula),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(0.58f)
@@ -225,19 +225,19 @@ fun PrecipitatePredictorTool() {
 
     if (showInfo) {
         InfoDialog(
-            title = "Precipitate Predictor",
+            title = stringResource(R.string.ui_precipitate_predictor),
             entries = listOf(
-                "What it does" to "Predicts double-replacement products and checks common solubility rules.",
-                "Best inputs" to "Use common aqueous ionic compounds such as AgNO3, NaCl, BaCl2, Na2SO4, Ca(OH)2, or Na2CO3.",
-                "Limits" to "This first version focuses on common school and lab solubility rules, not every complex ion or coordination compound.",
-                "Net ionic equation" to "Spectator ions are removed when exactly one precipitate is predicted."
+                stringResource(R.string.ui_what_it_does) to stringResource(R.string.ui_pp_what_it_does_desc),
+                stringResource(R.string.ui_best_inputs) to stringResource(R.string.ui_pp_best_inputs_desc),
+                stringResource(R.string.ui_limits) to stringResource(R.string.ui_pp_limits_desc),
+                stringResource(R.string.ui_net_ionic_equation) to stringResource(R.string.ui_pp_net_ionic_desc)
             ),
             onDismiss = { showInfo = false }
         )
     }
 
     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        ToolTitleRow(title = "Precipitate Predictor", onInfo = { showInfo = true })
+        ToolTitleRow(title = stringResource(R.string.ui_precipitate_predictor), onInfo = { showInfo = true })
         Text(stringResource(R.string.ui_enter_two_aqueous_ionic_compounds_to_predict_products),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(0.58f)

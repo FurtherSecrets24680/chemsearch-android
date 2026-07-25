@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.ui
 
+import androidx.annotation.StringRes
 import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
@@ -226,13 +227,13 @@ private fun PeriodicModeToggle(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         PeriodicModeButton(
-            label = "Table",
+            label = stringResource(R.string.ui_table),
             icon = ChemAppIcons.Atom,
             selected = !showTrends,
             onClick = { onShowTrendsChange(false) }
         )
         PeriodicModeButton(
-            label = "Trends",
+            label = stringResource(R.string.ui_trends),
             icon = ChemAppIcons.Trend,
             selected = showTrends,
             onClick = { onShowTrendsChange(true) }
@@ -711,12 +712,12 @@ private fun ElementDetailDialog(
             ) {
                 ElementFactList(
                     facts = listOf(
-                        ElementFactItem("Element type", element.groupBlock),
-                        ElementFactItem("Atomic mass", withUnit(element.atomicWeightLabel, "u")),
-                        ElementFactItem("Group / period", "Group ${element.group}, period ${element.period}"),
-                        ElementFactItem("Standard state", element.standardState),
-                        ElementFactItem("Electron configuration", toElectronConfigurationDisplay(element.electronConfiguration)),
-                        ElementFactItem("Oxidation states", element.commonOxidationStates)
+                        ElementFactItem(R.string.ui_element_type, element.groupBlock),
+                        ElementFactItem(R.string.ui_atomic_mass, withUnit(element.atomicWeightLabel, "u")),
+                        ElementFactItem(R.string.ui_group_period, "Group ${element.group}, period ${element.period}"),
+                        ElementFactItem(R.string.ui_standard_state, element.standardState),
+                        ElementFactItem(R.string.ui_electron_configuration, toElectronConfigurationDisplay(element.electronConfiguration)),
+                        ElementFactItem(R.string.ui_oxidation_states, element.commonOxidationStates)
                     )
                 )
             }
@@ -914,7 +915,7 @@ private fun ElementMediaCard(element: PeriodicElement, color: Color) {
     val imageUrl = extra.imageUrl.takeIf { it.isNotBlank() }?.let(::directWikipediaFileImageUrl)
     if (imageUrl == null) return
 
-    DetailCard(title = "Element Images", accent = color) {
+    DetailCard(title = stringResource(R.string.ui_element_images), accent = color) {
         ElementRemoteImage(
             url = imageUrl,
             contentDescription = extra.imageTitle.ifBlank { "${element.pubChemName} element image" },
@@ -943,7 +944,7 @@ private fun ElementMediaCard(element: PeriodicElement, color: Color) {
 private fun ElementSpectralLinesCard(element: PeriodicElement, color: Color) {
     val spectralImage = element.spectralImagePageUrl()?.let(::directWikipediaFileImageUrl) ?: return
 
-    DetailCard(title = "Spectral Lines", accent = color) {
+    DetailCard(title = stringResource(R.string.ui_spectral_lines), accent = color) {
         ElementRemoteImage(
             url = spectralImage,
             contentDescription = "${element.pubChemName} spectral lines",
@@ -1004,7 +1005,7 @@ private fun ElectronShellCard(element: PeriodicElement, color: Color) {
         electronShellCounts(element)
     }
     var showFullConfiguration by remember(element.atomicNumber) { mutableStateOf(false) }
-    DetailCard(title = "Electron Shells", accent = color) {
+    DetailCard(title = stringResource(R.string.ui_electron_shells), accent = color) {
         ElectronShellDiagram(shells = shells, color = color)
         Row(
             modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
@@ -1028,7 +1029,7 @@ private fun ElectronShellCard(element: PeriodicElement, color: Color) {
         }
         ElementFactList(
             facts = listOf(
-                ElementFactItem(periodicElectronConfigurationLabel, electronConfigurationText(element, showFull = showFullConfiguration))
+                ElementFactItem(R.string.ui_electronic_configuration, electronConfigurationText(element, showFull = showFullConfiguration))
             )
         )
         Text(
@@ -1090,7 +1091,7 @@ private fun ElementPhysicalPropertiesCard(element: PeriodicElement, color: Color
     val facts = remember(element) { elementPhysicalPropertyFacts(element) }
     if (facts.isEmpty()) return
 
-    DetailCard(title = periodicPhysicalPropertiesCardTitle, accent = color) {
+    DetailCard(title = stringResource(R.string.ui_physical_properties), accent = color) {
         ElementFactList(facts = facts)
     }
 }
@@ -1098,47 +1099,47 @@ private fun ElementPhysicalPropertiesCard(element: PeriodicElement, color: Color
 @Composable
 private fun ElementAllFactsCard(element: PeriodicElement, color: Color) {
     val extra = element.extraProperties
-    DetailCard(title = "More Details", accent = color) {
-        DetailSubhead(periodicMoreDetailsSectionTitles[0])
+    DetailCard(title = stringResource(R.string.ui_more_details), accent = color) {
+        DetailSubhead(stringResource(R.string.ui_identity))
         ElementFactList(
             facts = buildList {
-                add(ElementFactItem("Name", element.pubChemName))
-                add(ElementFactItem("Symbol", element.symbol))
-                add(ElementFactItem("Atomic number", element.atomicNumber.toString()))
-                add(ElementFactItem("Category", element.category.label))
-                add(ElementFactItem("Group / period", "Group ${element.group}, period ${element.period}"))
-                add(ElementFactItem("Standard state", element.standardState))
-                add(ElementFactItem("Year discovered", element.yearDiscovered))
+                add(ElementFactItem(R.string.ui_name, element.pubChemName))
+                add(ElementFactItem(R.string.ui_symbol, element.symbol))
+                add(ElementFactItem(R.string.ui_atomic_number, element.atomicNumber.toString()))
+                add(ElementFactItem(R.string.ui_category, element.category.label))
+                add(ElementFactItem(R.string.ui_group_period, "Group ${element.group}, period ${element.period}"))
+                add(ElementFactItem(R.string.ui_standard_state, element.standardState))
+                add(ElementFactItem(R.string.ui_year_discovered, element.yearDiscovered))
                 extra?.let {
-                    add(ElementFactItem("Appearance", it.appearance.ifMissing("Not listed")))
-                    add(ElementFactItem("Discovered by", it.discoveredBy.ifMissing("Not listed")))
-                    add(ElementFactItem("Named by", it.namedBy.ifMissing("Not listed")))
-                    add(ElementFactItem("Orbital block", it.block.ifMissing("Not listed")))
+                    add(ElementFactItem(R.string.ui_appearance, it.appearance.ifMissing("Not listed")))
+                    add(ElementFactItem(R.string.ui_discovered_by, it.discoveredBy.ifMissing("Not listed")))
+                    add(ElementFactItem(R.string.ui_named_by, it.namedBy.ifMissing("Not listed")))
+                    add(ElementFactItem(R.string.ui_orbital_block, it.block.ifMissing("Not listed")))
                 }
             }
         )
 
-        DetailSubhead(periodicMoreDetailsSectionTitles[1])
+        DetailSubhead(stringResource(R.string.ui_atomic_data))
         ElementFactList(
             facts = listOf(
-                ElementFactItem("Atomic mass", withUnit(element.atomicWeightLabel, "u")),
-                ElementFactItem("Model color", element.cpkHexColor.takeIf { !it.isMissingValue() }?.let { "#$it" } ?: element.cpkHexColor)
+                ElementFactItem(R.string.ui_atomic_mass, withUnit(element.atomicWeightLabel, "u")),
+                ElementFactItem(R.string.ui_model_color, element.cpkHexColor.takeIf { !it.isMissingValue() }?.let { "#$it" } ?: element.cpkHexColor)
             )
         )
 
-        DetailSubhead(periodicMoreDetailsSectionTitles[2])
+        DetailSubhead(stringResource(R.string.ui_electrons))
         val electronConfiguration = toElectronConfigurationDisplay(element.electronConfiguration)
         ElementFactList(
             facts = buildList {
-                add(ElementFactItem("Electron configuration", electronConfiguration))
-                add(ElementFactItem("Shell distribution", electronShellCounts(element).joinToString(" · ")))
-                add(ElementFactItem("Oxidation states", element.commonOxidationStates))
+                add(ElementFactItem(R.string.ui_electron_configuration, electronConfiguration))
+                add(ElementFactItem(R.string.ui_shell_distribution, electronShellCounts(element).joinToString(" · ")))
+                add(ElementFactItem(R.string.ui_oxidation_states, element.commonOxidationStates))
                 extra?.let {
                     val expandedConfiguration = toElectronConfigurationDisplay(it.electronConfigurationSemantic.removePrefix("*"))
                     if (!expandedConfiguration.isMissingValue() && expandedConfiguration != electronConfiguration) {
-                        add(ElementFactItem("Expanded configuration", expandedConfiguration))
+                        add(ElementFactItem(R.string.ui_expanded_configuration, expandedConfiguration))
                     }
-                    add(ElementFactItem("Ionization energies", formatJsonArrayList(it.ionizationEnergiesKjMol, "kJ/mol")))
+                    add(ElementFactItem(R.string.ui_ionization_energies, formatJsonArrayList(it.ionizationEnergiesKjMol, "kJ/mol")))
                 }
             }
         )
@@ -1157,16 +1158,16 @@ private fun ElementSourceCard(element: PeriodicElement, descriptionState: Elemen
     val links = buildList {
         add(
             ElementSourceLink(
-                title = "PubChem Periodic Table",
-                detail = "Element properties",
+                title = stringResource(R.string.ui_pt_pubchem),
+                detail = stringResource(R.string.ui_element_properties),
                 url = "https://pubchem.ncbi.nlm.nih.gov/periodic-table/"
             )
         )
         if (extra != null) {
             add(
                 ElementSourceLink(
-                    title = "Bowserinator/Periodic-Table-JSON",
-                    detail = "Extra element data",
+                    title = stringResource(R.string.ui_pt_bowserinator),
+                    detail = stringResource(R.string.ui_extra_element_data),
                     url = "https://github.com/Bowserinator/Periodic-Table-JSON/"
                 )
             )
@@ -1174,7 +1175,7 @@ private fun ElementSourceCard(element: PeriodicElement, descriptionState: Elemen
         wikipediaUrl?.takeIf { it.isNotBlank() }?.let { url ->
             add(
                 ElementSourceLink(
-                    title = "Wikipedia",
+                    title = stringResource(R.string.ui_pt_wikipedia),
                     detail = "${element.pubChemName} summary",
                     url = url
                 )
@@ -1183,8 +1184,8 @@ private fun ElementSourceCard(element: PeriodicElement, descriptionState: Elemen
         extra?.imageUrl?.takeIf { it.isNotBlank() }?.let { url ->
             add(
                 ElementSourceLink(
-                    title = "Element image",
-                    detail = "Image file",
+                    title = stringResource(R.string.ui_element_image),
+                    detail = stringResource(R.string.ui_image_file),
                     url = url
                 )
             )
@@ -1192,8 +1193,8 @@ private fun ElementSourceCard(element: PeriodicElement, descriptionState: Elemen
         element.spectralImagePageUrl()?.let { url ->
             add(
                 ElementSourceLink(
-                    title = "Spectral lines",
-                    detail = "Image file",
+                    title = stringResource(R.string.ui_spectral_lines_small),
+                    detail = stringResource(R.string.ui_image_file),
                     url = url
                 )
             )
@@ -1361,7 +1362,7 @@ private fun withUnit(value: String, unit: String): String =
     if (value.isMissingValue()) value else "$value $unit"
 
 internal data class ElementFactItem(
-    val label: String,
+    @StringRes val labelRes: Int,
     val value: String
 )
 
@@ -1370,15 +1371,13 @@ internal data class PeriodicDetailCardInfo(
     val description: String
 )
 
-internal const val periodicPhysicalPropertiesCardTitle = "Physical Properties"
+
 
 internal const val periodicInfoButtonSizeDp = 28
 internal const val periodicInfoIconSizeDp = 17
-internal const val periodicElectronConfigurationLabel = "Electronic configuration"
+
 internal const val periodicFullConfigurationToggleTextSizeSp = 12
 internal const val periodicFullConfigurationToggleContentAlpha = 0.62f
-
-internal val periodicMoreDetailsSectionTitles = listOf("Identity", "Atomic Data", "Electrons")
 
 private val periodicDetailCardInfos = listOf(
     PeriodicDetailCardInfo(
@@ -1394,7 +1393,7 @@ private val periodicDetailCardInfos = listOf(
         "A shell view of how electrons are arranged around the atom. The outer shell is especially useful because valence electrons explain many bonding and reactivity patterns."
     ),
     PeriodicDetailCardInfo(
-        periodicPhysicalPropertiesCardTitle,
+        "Physical Properties",
         "Measured properties that describe how the element behaves physically: how strongly it attracts electrons, how large its atoms are, when it melts or boils, and how dense it is."
     ),
     PeriodicDetailCardInfo(
@@ -1415,15 +1414,15 @@ internal fun periodicDetailCardInfo(title: String): PeriodicDetailCardInfo? =
     periodicDetailCardInfos[title]
 
 internal fun elementPhysicalPropertyFacts(element: PeriodicElement): List<ElementFactItem> = buildList {
-    add(ElementFactItem("Electronegativity", element.electronegativity))
-    add(ElementFactItem("Atomic radius", withUnit(element.atomicRadius, "pm")))
-    add(ElementFactItem("Ionization energy", withUnit(element.ionizationEnergy, "eV")))
-    add(ElementFactItem("Electron affinity", withUnit(element.electronAffinity, "eV")))
-    add(ElementFactItem("Melting point", withUnit(element.meltingPoint, "K")))
-    add(ElementFactItem("Boiling point", withUnit(element.boilingPoint, "K")))
-    add(ElementFactItem("Density", withUnit(element.density, "g/cm3")))
+    add(ElementFactItem(R.string.ui_electronegativity, element.electronegativity))
+    add(ElementFactItem(R.string.ui_atomic_radius, withUnit(element.atomicRadius, "pm")))
+    add(ElementFactItem(R.string.ui_ionization_energy, withUnit(element.ionizationEnergy, "eV")))
+    add(ElementFactItem(R.string.ui_electron_affinity, withUnit(element.electronAffinity, "eV")))
+    add(ElementFactItem(R.string.ui_melting_point, withUnit(element.meltingPoint, "K")))
+    add(ElementFactItem(R.string.ui_boiling_point, withUnit(element.boilingPoint, "K")))
+    add(ElementFactItem(R.string.ui_density, withUnit(element.density, "g/cm3")))
     element.extraProperties?.let { extra ->
-        add(ElementFactItem("Molar heat", withUnit(extra.molarHeat, "J/(mol·K)")))
+        add(ElementFactItem(R.string.ui_molar_heat, withUnit(extra.molarHeat, "J/(mol·K)")))
     }
 }.filterNot { it.value.isMissingValue() }
 
@@ -1631,7 +1630,7 @@ private fun directWikipediaFileImageUrl(url: String): String {
 }
 
 @Composable
-private fun ElementFactRow(label: String, value: String) {
+private fun ElementFactRow(@StringRes labelRes: Int, value: String) {
     if (value.isMissingValue()) return
     Row(
         modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
@@ -1639,7 +1638,7 @@ private fun ElementFactRow(label: String, value: String) {
         verticalAlignment = Alignment.Top
     ) {
         Text(
-            label,
+            stringResource(labelRes),
             modifier = Modifier.weight(0.9f),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.primary,
@@ -1662,7 +1661,7 @@ private fun ElementFactList(facts: List<ElementFactItem>) {
 
     Column(modifier = Modifier.fillMaxWidth()) {
         visibleFacts.forEachIndexed { index, fact ->
-            ElementFactRow(fact.label, fact.value)
+            ElementFactRow(fact.labelRes, fact.value)
             if (index < visibleFacts.lastIndex) {
                 PeriodicDetailDivider()
             }

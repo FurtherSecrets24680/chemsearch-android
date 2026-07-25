@@ -860,7 +860,7 @@ fun CompoundHeader(
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f)),
             onClick = {
                 onCopy()
-                Toast.makeText(context, "$label copied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.ui_s_copied, label), Toast.LENGTH_SHORT).show()
             }
         ) {
             Row(
@@ -998,7 +998,7 @@ fun CompoundHeader(
                         compact = compact,
                         onCopyFormula = {
                             cm.setPrimaryClip(ClipData.newPlainText("Formula", displayFormula))
-                            Toast.makeText(context, "Formula copied", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.ui_formula_copied), Toast.LENGTH_SHORT).show()
                         },
                         onFormulaClick = onFormulaClick
                     )
@@ -1010,10 +1010,10 @@ fun CompoundHeader(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         if (state.isCached) {
-                            StatePill("Cached")
+                            StatePill(stringResource(R.string.ui_cached))
                         }
                         if (state.isOfflineDownload) {
-                            StatePill("Offline")
+                            StatePill(stringResource(R.string.ui_offline))
                         }
                     }
                 }
@@ -1045,7 +1045,7 @@ fun CompoundHeader(
                     onClick = {
                         if (!isSavingOffline) {
                             onDownloadOffline()
-                            Toast.makeText(context, "Saving offline copy...", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.ui_saving_offline_copy), Toast.LENGTH_SHORT).show()
                         }
                     },
                     enabled = !isSavingOffline,
@@ -1191,7 +1191,7 @@ fun ClickableIdentifier(label: String, value: String, cm: ClipboardManager) {
         softWrap = false,
         modifier = Modifier.clickable {
             cm.setPrimaryClip(ClipData.newPlainText(label, value))
-            Toast.makeText(context, "$label copied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.ui_s_copied, label), Toast.LENGTH_SHORT).show()
         }
     )
 }
@@ -1271,11 +1271,11 @@ private suspend fun saveSdfFile(context: Context, compoundName: String, sdfData:
             }
         }
         withContext(Dispatchers.Main) {
-            Toast.makeText(context, "Saved $fileName to Downloads", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.ui_saved_s_to_downloads, fileName), Toast.LENGTH_SHORT).show()
         }
     } catch (e: Exception) {
         withContext(Dispatchers.Main) {
-            Toast.makeText(context, "Download failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.ui_download_failed_s, e.message ?: ""), Toast.LENGTH_SHORT).show()
         }
     }
 }
@@ -1328,7 +1328,7 @@ fun StructureViewer(state: ChemUiState, vm: ChemViewModel) {
                 saveSdfFile(context, state.name, state.sdfData ?: return@launch)
             }
         } else {
-            Toast.makeText(context, "Storage permission denied. Cannot save file", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, context.getString(R.string.ui_storage_permission_denied), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -1811,7 +1811,7 @@ fun IdentifiersSection(state: ChemUiState, context: Context) {
 
     if (showInfo) {
         InfoDialog(
-            title = "About Identifiers",
+            title = stringResource(R.string.ui_about_identifiers),
             entries = listOf(
                 "IUPAC Name" to "The systematic name assigned by the International Union of Pure and Applied Chemistry. Uniquely describes the structure using a standard naming convention.",
                 "CID" to "PubChem Compound ID (CID) is a unique number assigned by the PubChem database to identify this exact compound.",
@@ -1830,7 +1830,7 @@ fun IdentifiersSection(state: ChemUiState, context: Context) {
     }
 
     SearchCard(modifier = Modifier.fillMaxWidth(), spacing = 10.dp) {
-        CardSectionHeader("Identifiers") { showInfo = true }
+        CardSectionHeader(stringResource(R.string.ui_identifiers)) { showInfo = true }
         val condensedFormula = remember(state.connectivitySmiles, state.smiles) {
             buildBestCondensedFormula(state.connectivitySmiles, state.smiles)
         }
@@ -1860,13 +1860,13 @@ fun ClassificationTagsSection(tags: List<String>, isLoading: Boolean) {
     val compact = LocalCompactMode.current
     if (showInfo) {
         InfoDialog(
-            title = "Classification",
+            title = stringResource(R.string.ui_classification),
             entries = classificationInfoEntries(),
             onDismiss = { showInfo = false }
         )
     }
     SearchCard(modifier = Modifier.fillMaxWidth(), spacing = if (compact) 8.dp else 10.dp) {
-        CardSectionHeader("Classification") { showInfo = true }
+        CardSectionHeader(stringResource(R.string.ui_classification)) { showInfo = true }
         if (tags.isNotEmpty()) {
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp),
@@ -1909,13 +1909,13 @@ fun UsesAndOccurrenceSection(entries: List<CompoundUseEntry>, isLoading: Boolean
     val compact = LocalCompactMode.current
     if (showInfo) {
         InfoDialog(
-            title = "Uses & Occurrence",
+            title = stringResource(R.string.ui_uses_and_occurrence),
             entries = usesOccurrenceInfoEntries(),
             onDismiss = { showInfo = false }
         )
     }
     SearchCard(modifier = Modifier.fillMaxWidth(), spacing = if (compact) 8.dp else 10.dp) {
-        CardSectionHeader("Uses & Occurrence") { showInfo = true }
+        CardSectionHeader(stringResource(R.string.ui_uses_and_occurrence)) { showInfo = true }
         if (entries.isEmpty()) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -1971,13 +1971,13 @@ fun AdvancedPropertiesSection(properties: List<AdvancedPropertyRow>, isLoading: 
     val compact = LocalCompactMode.current
     if (showInfo) {
         InfoDialog(
-            title = "Advanced Properties",
+            title = stringResource(R.string.ui_advanced_properties),
             entries = advancedPropertiesInfoEntries(),
             onDismiss = { showInfo = false }
         )
     }
     SearchCard(modifier = Modifier.fillMaxWidth(), spacing = if (compact) 8.dp else 10.dp) {
-        CardSectionHeader("Advanced Properties") { showInfo = true }
+        CardSectionHeader(stringResource(R.string.ui_advanced_properties)) { showInfo = true }
         if (properties.isEmpty()) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -2172,7 +2172,7 @@ fun ElementalSection(data: List<ElementData>) {
         var showInfo by remember { mutableStateOf(false) }
         if (showInfo) {
             InfoDialog(
-                title = "Elemental Analysis",
+                title = stringResource(R.string.ui_elemental_analysis),
                 entries = listOf(
                     "What is this?" to "Shows the percentage of each element by mass in the compound. Calculated from atomic weights and the molecular formula.",
                     "Example" to "Water (H₂O) is ~11% hydrogen and ~89% oxygen by mass, since oxygen atoms are much heavier than hydrogen atoms.",
@@ -2181,7 +2181,7 @@ fun ElementalSection(data: List<ElementData>) {
                 onDismiss = { showInfo = false }
             )
         }
-        CardSectionHeader("Elemental Analysis") { showInfo = true }
+        CardSectionHeader(stringResource(R.string.ui_elemental_analysis)) { showInfo = true }
         data.forEach { el ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -2291,7 +2291,7 @@ fun SynonymsSection(synonyms: List<String>, isLoading: Boolean = false) {
                         border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f)),
                         modifier = Modifier.clickable {
                             cm.setPrimaryClip(ClipData.newPlainText("Synonym", syn))
-                            Toast.makeText(context, "Synonym copied", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.ui_synonym_copied), Toast.LENGTH_SHORT).show()
                         }
                     ) {
                         Text(
@@ -2740,7 +2740,7 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
         var showInfo by remember { mutableStateOf(false) }
         if (showInfo) {
             InfoDialog(
-                title = "GHS Safety",
+                title = stringResource(R.string.ui_ghs_safety),
                 entries = listOf(
                     "What is GHS?" to "The Globally Harmonized System of Classification and Labelling of Chemicals (GHS) is a UN standard for communicating chemical hazards worldwide.",
                     "Signal Word" to "'Danger' indicates a more severe hazard. 'Warning' indicates a less severe hazard.",
@@ -2751,7 +2751,7 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
                 onDismiss = { showInfo = false }
             )
         }
-        CardSectionHeader("GHS Safety Information") { showInfo = true }
+        CardSectionHeader(stringResource(R.string.ui_ghs_safety_information)) { showInfo = true }
 
         if (isLoading) {
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -2928,11 +2928,11 @@ private suspend fun save2dPng(context: Context, compoundName: String, cid: Long)
             }
         }
         withContext(Dispatchers.Main) {
-            Toast.makeText(context, "Saved $fileName to Pictures", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.ui_saved_s_to_pictures, fileName), Toast.LENGTH_SHORT).show()
         }
     } catch (e: Exception) {
         withContext(Dispatchers.Main) {
-            Toast.makeText(context, "Download failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.ui_download_failed_s, e.message ?: ""), Toast.LENGTH_SHORT).show()
         }
     }
 }

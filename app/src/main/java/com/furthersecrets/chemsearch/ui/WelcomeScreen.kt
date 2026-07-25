@@ -337,25 +337,25 @@ private fun WelcomeAppearanceStage(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(14.dp), modifier = Modifier.fillMaxWidth()) {
         WelcomeTitle(
-            title = "Set your look",
-            subtitle = "APPEARANCE",
-            body = "Choose the theme and accent color ChemSearch should use across search, tools, and settings."
+            title = stringResource(R.string.ui_set_your_look),
+            subtitle = stringResource(R.string.ui_appearance),
+            body = stringResource(R.string.ui_choose_theme_accent_body)
         )
 
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
             WelcomeChoiceCard(
                 selected = !isDark,
                 icon = Icons.Default.LightMode,
-                title = "Light",
-                description = "Bright surfaces",
+                title = stringResource(R.string.ui_light),
+                description = stringResource(R.string.ui_bright_surfaces),
                 modifier = Modifier.weight(1f),
                 onClick = { onSetDarkTheme(false) }
             )
             WelcomeChoiceCard(
                 selected = isDark,
                 icon = Icons.Default.DarkMode,
-                title = "Dark",
-                description = "Low-light UI",
+                title = stringResource(R.string.ui_dark),
+                description = stringResource(R.string.ui_low_light_ui),
                 modifier = Modifier.weight(1f),
                 onClick = { onSetDarkTheme(true) }
             )
@@ -499,15 +499,15 @@ private fun WelcomeDescriptionStage(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(14.dp), modifier = Modifier.fillMaxWidth()) {
         WelcomeTitle(
-            title = "Pick descriptions",
-            subtitle = "COMPOUND SUMMARIES",
-            body = "Choose which source should open by default after a compound search."
+            title = stringResource(R.string.ui_pick_descriptions),
+            subtitle = stringResource(R.string.ui_compound_summaries),
+            body = stringResource(R.string.ui_choose_default_desc_body)
         )
 
         listOf(
-            DescSource.PUBCHEM to Triple(Icons.Default.Description, "PubChem", "Scientific summaries from PubChem records."),
-            DescSource.WIKI to Triple(Icons.Default.Search, "Wikipedia", "General readable summaries when a page exists."),
-            DescSource.AI to Triple(Icons.Default.SmartToy, "AI", "Generated explanations from your selected AI provider.")
+            DescSource.PUBCHEM to Triple(Icons.Default.Description, stringResource(R.string.ui_pubchem), stringResource(R.string.ui_scientific_summaries)),
+            DescSource.WIKI to Triple(Icons.Default.Search, stringResource(R.string.ui_pt_wikipedia), stringResource(R.string.ui_general_readable_summaries)),
+            DescSource.AI to Triple(Icons.Default.SmartToy, stringResource(R.string.ui_ai), stringResource(R.string.ui_generated_explanations_ai))
         ).forEach { (source, item) ->
             WelcomeChoiceCard(
                 selected = defaultDescSource == source,
@@ -539,9 +539,9 @@ private fun WelcomeLegalStage(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(14.dp), modifier = Modifier.fillMaxWidth()) {
         WelcomeTitle(
-            title = "Before you start",
-            subtitle = "PRIVACY AND SAFETY",
-            body = "ChemSearch uses public chemistry sources and optional AI providers. Chemical information is for study and quick checks."
+            title = stringResource(R.string.ui_before_you_start),
+            subtitle = stringResource(R.string.ui_privacy_and_safety),
+            body = stringResource(R.string.ui_welcome_privacy_body)
         )
 
         legalDocuments.forEach { document ->

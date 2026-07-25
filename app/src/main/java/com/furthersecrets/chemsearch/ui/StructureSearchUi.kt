@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.ui
 
+import androidx.annotation.StringRes
 import com.furthersecrets.chemsearch.R
 import androidx.compose.ui.res.stringResource
 import android.content.ClipData
@@ -318,14 +319,14 @@ fun StructureSearchScreen(
             onCopy = { molfile ->
                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
                 clipboard.setPrimaryClip(ClipData.newPlainText("ChemSearch molfile", molfile))
-                Toast.makeText(context, "Structure copied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.ui_structure_copied), Toast.LENGTH_SHORT).show()
             },
             onShare = { molfile ->
                 val shareIntent = Intent(Intent.ACTION_SEND).apply {
                     type = "text/plain"
                     putExtra(Intent.EXTRA_TEXT, molfile)
                 }
-                context.startActivity(Intent.createChooser(shareIntent, "Share structure"))
+                context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.ui_share_structure)))
             }
         )
     }
@@ -938,58 +939,58 @@ private fun StructureEditingActions(
     var helpAction by remember { mutableStateOf<StructureActionItem?>(null) }
     val actions = listOf(
         StructureActionItem(
-            label = "Undo",
-            shortLabel = "Undo",
-            description = "Restores the previous drawing step.",
+            labelRes = R.string.ui_undo,
+            shortLabelRes = R.string.ui_undo,
+            descriptionRes = R.string.ui_restores_previous_drawing,
             icon = Icons.Default.RestartAlt,
             enabled = canUndo,
             onClick = onUndo
         ),
         StructureActionItem(
-            label = "Redo",
-            shortLabel = "Redo",
-            description = "Restores the drawing step you just undid.",
+            labelRes = R.string.ui_redo,
+            shortLabelRes = R.string.ui_redo,
+            descriptionRes = R.string.ui_restores_drawing_step_undid,
             icon = Icons.Default.Refresh,
             enabled = canRedo,
             onClick = onRedo
         ),
         StructureActionItem(
-            label = "Select",
-            shortLabel = "Select",
-            description = "Selects atoms or bonds without drawing, moving, or changing them.",
+            labelRes = R.string.ui_select,
+            shortLabelRes = R.string.ui_select,
+            descriptionRes = R.string.ui_selects_atoms_or_bonds,
             icon = Icons.Default.Cursor,
             enabled = true,
             selected = selectionMode,
             onClick = onSelectMode
         ),
         StructureActionItem(
-            label = "Clean structure",
-            shortLabel = "Clean",
-            description = "Asks PubChem to standardize the drawing.",
+            labelRes = R.string.ui_clean_structure,
+            shortLabelRes = R.string.ui_clean,
+            descriptionRes = R.string.ui_asks_pubchem_standardize_drawing,
             icon = Icons.Default.AutoFixHigh,
             enabled = sketch.atoms.isNotEmpty() && !isStandardizing,
             onClick = onClean
         ),
         StructureActionItem(
-            label = "Import",
-            shortLabel = "Import",
-            description = "Imports SMILES, InChI, or a V2000 molfile.",
+            labelRes = R.string.ui_import,
+            shortLabelRes = R.string.ui_import,
+            descriptionRes = R.string.ui_imports_smiles_inchi_molfile,
             icon = Icons.AutoMirrored.Filled.InsertDriveFile,
             enabled = true,
             onClick = onImport
         ),
         StructureActionItem(
-            label = "Export",
-            shortLabel = "Export",
-            description = "Copies or shares this drawing as a molfile.",
+            labelRes = R.string.ui_export,
+            shortLabelRes = R.string.ui_export,
+            descriptionRes = R.string.ui_copies_or_shares_as_molfile,
             icon = Icons.Default.Share,
             enabled = sketch.atoms.isNotEmpty(),
             onClick = onExport
         ),
         StructureActionItem(
-            label = "Clear drawing",
-            shortLabel = "Clear",
-            description = "Removes the whole drawing and current structure results.",
+            labelRes = R.string.ui_clear_drawing,
+            shortLabelRes = R.string.ui_clear,
+            descriptionRes = R.string.ui_removes_whole_drawing_and_results,
             icon = Icons.Default.Clear,
             enabled = sketch.atoms.isNotEmpty(),
             onClick = onClear
@@ -1029,9 +1030,9 @@ private fun StructureEditingActions(
 }
 
 private data class StructureActionItem(
-    val label: String,
-    val shortLabel: String = label,
-    val description: String,
+    @StringRes val labelRes: Int,
+    @StringRes val shortLabelRes: Int,
+    @StringRes val descriptionRes: Int,
     val icon: ImageVector,
     val enabled: Boolean,
     val selected: Boolean = false,
@@ -1051,34 +1052,31 @@ private fun StructureSelectionActions(
     var helpAction by remember { mutableStateOf<StructureActionItem?>(null) }
     val actions = listOf(
         StructureActionItem(
-            label = when {
-                selectedMolecule -> "Delete molecule"
-                selectedBondId != null -> "Delete bond"
-                else -> "Delete selected"
+            labelRes = when {
+                selectedMolecule -> R.string.ui_delete_molecule
+                selectedBondId != null -> R.string.ui_delete_bond
+                else -> R.string.ui_delete_selected
             },
-            shortLabel = "Delete",
-            description = if (selectedMolecule) {
-                "Removes the selected molecule from the drawing."
-            } else {
-                "Removes the selected atom or bond from the drawing."
-            },
+            shortLabelRes = R.string.ui_delete,
+            descriptionRes = if (selectedMolecule) R.string.ui_removes_selected_molecule
+                else R.string.ui_removes_selected_atom_or_bond,
             icon = Icons.Default.Delete,
             enabled = true,
             onClick = onDeleteSelected
         ),
         StructureActionItem(
-            label = if (selectedMolecule) "Molecule selected" else "Select molecule",
-            shortLabel = "Move",
-            description = "Selects the whole molecule so you can drag it or delete it.",
+            labelRes = if (selectedMolecule) R.string.ui_molecule_selected else R.string.ui_select_molecule,
+            shortLabelRes = R.string.ui_move,
+            descriptionRes = R.string.ui_selects_whole_molecule,
             icon = Icons.Default.ViewInAr,
             enabled = selectedAtomId != null || selectedBondId != null || selectedMolecule,
             selected = selectedMolecule,
             onClick = onSelectMolecule
         ),
         StructureActionItem(
-            label = "Duplicate fragment",
-            shortLabel = "Copy",
-            description = "Copies the connected fragment that contains the selected atom.",
+            labelRes = R.string.ui_duplicate_fragment,
+            shortLabelRes = R.string.ui_copy,
+            descriptionRes = R.string.ui_copies_connected_fragment,
             icon = Icons.Default.ContentCopy,
             enabled = selectedAtomId != null,
             onClick = onDuplicate
@@ -1134,7 +1132,7 @@ private fun StructureActionButton(
         Surface(
             modifier = Modifier
                 .size(size)
-                .pointerInput(action.enabled, action.label) {
+                .pointerInput(action.enabled, action.labelRes) {
                     detectTapGestures(
                         onTap = { if (action.enabled) action.onClick() },
                         onLongPress = { onLongPress() }
@@ -1154,7 +1152,7 @@ private fun StructureActionButton(
             Box(contentAlignment = Alignment.Center) {
                 Icon(
                     action.icon,
-                    contentDescription = action.label,
+                    contentDescription = stringResource(action.labelRes),
                     tint = when {
                         action.selected -> MaterialTheme.colorScheme.onPrimary
                         action.enabled -> activeColor
@@ -1165,7 +1163,7 @@ private fun StructureActionButton(
             }
         }
         Text(
-            text = action.shortLabel,
+            text = stringResource(action.shortLabelRes),
             color = MaterialTheme.colorScheme.onSurface.copy(if (action.enabled) 0.68f else 0.34f),
             style = MaterialTheme.typography.labelSmall,
             fontSize = 8.sp,
@@ -1194,13 +1192,13 @@ private fun StructureActionHelpDialog(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    action.label,
+                    stringResource(action.labelRes),
                     color = MaterialTheme.colorScheme.inverseOnSurface,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Text(
-                    action.description,
+                    stringResource(action.descriptionRes),
                     color = MaterialTheme.colorScheme.inverseOnSurface.copy(0.78f),
                     style = MaterialTheme.typography.bodySmall
                 )

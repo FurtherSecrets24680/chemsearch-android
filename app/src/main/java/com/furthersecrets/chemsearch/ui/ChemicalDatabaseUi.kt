@@ -279,8 +279,8 @@ private fun ChemicalDatabaseTypeCards(
     Column(verticalArrangement = Arrangement.spacedBy(if (LocalCompactMode.current) 8.dp else 10.dp)) {
         DatabaseSelectorCard(
             icon = category.icon(),
-            title = "All ${category.label}",
-            subtitle = "Show every entry in this section",
+            title = stringResource(R.string.ui_all_s, category.label),
+            subtitle = stringResource(R.string.ui_show_every_entry),
             meta = "${entries.size}",
             onClick = onSelectAll
         )
@@ -738,7 +738,7 @@ private fun copyToClipboard(
     value: String
 ) {
     clipboard.setPrimaryClip(ClipData.newPlainText(label, value))
-    Toast.makeText(context, "$label copied", Toast.LENGTH_SHORT).show()
+    Toast.makeText(context, context.getString(R.string.ui_s_copied, label), Toast.LENGTH_SHORT).show()
 }
 
 @Composable

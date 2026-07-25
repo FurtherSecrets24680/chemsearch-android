@@ -142,12 +142,12 @@ fun IsomerSearchScreen(
 
     if (showInfo) {
         InfoDialog(
-            title = "Isomer Search",
+            title = stringResource(R.string.ui_isomer_search),
             entries = listOf(
-                "What it does" to "Searches PubChem for compounds with the same molecular formula.",
-                "How to use it" to "Enter a formula such as C6H6, C2H6O, or C6H12O6, then tap search.",
-                "Results" to "Tap any result to open that compound on the main Search page.",
-                "Limitations" to "Only compounds indexed by PubChem can appear here."
+                stringResource(R.string.ui_what_it_does) to stringResource(R.string.ui_isomer_what_it_does_desc),
+                stringResource(R.string.ui_how_to_use_it) to stringResource(R.string.ui_isomer_how_to_desc),
+                stringResource(R.string.ui_results) to stringResource(R.string.ui_isomer_results_desc),
+                stringResource(R.string.ui_limitations) to stringResource(R.string.ui_isomer_limitations_desc)
             ),
             onDismiss = { showInfo = false }
         )

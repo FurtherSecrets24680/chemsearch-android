@@ -958,7 +958,7 @@ private fun UpdatesSection(
             onToggleUpdateNotifications(true)
         } else {
             onToggleUpdateNotifications(false)
-            Toast.makeText(context, "Notifications permission denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.ui_notifications_permission_denied), Toast.LENGTH_SHORT).show()
         }
     }
     val requestUpdateNotifications = {
@@ -1017,7 +1017,7 @@ private fun UpdatesSection(
             progress = updateStatus.updateDownloadProgress?.takeIf { updateStatus.isDownloadingUpdate }
         ) {
             if (updateStatus.downloadUrl.isNullOrBlank() && updateStatus.downloadedUpdateApkPath == null) {
-                Toast.makeText(context, "No download link found", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.ui_no_download_link_found), Toast.LENGTH_SHORT).show()
             } else {
                 onDownloadUpdate()
             }
@@ -1223,12 +1223,12 @@ fun AboutScreen(
                 onVersionTap = {
                     buildTapCount++
                     when (buildTapCount) {
-                        3 -> Toast.makeText(context, "2 more taps to unlock debug settings", Toast.LENGTH_SHORT).show()
-                        4 -> Toast.makeText(context, "1 more tap to unlock debug settings", Toast.LENGTH_SHORT).show()
-                        5 -> {
-                            prefs.edit().putBoolean("dev_mode", true).apply()
-                            Toast.makeText(context, "Debug settings unlocked", Toast.LENGTH_SHORT).show()
-                        }
+                    3 -> Toast.makeText(context, context.getString(R.string.ui_taps_to_unlock_debug, 2), Toast.LENGTH_SHORT).show()
+                    4 -> Toast.makeText(context, context.getString(R.string.ui_one_more_tap_to_unlock), Toast.LENGTH_SHORT).show()
+                    5 -> {
+                        prefs.edit().putBoolean("dev_mode", true).apply()
+                        Toast.makeText(context, context.getString(R.string.ui_debug_settings_unlocked), Toast.LENGTH_SHORT).show()
+                    }
                     }
                 },
                 onOpenLegalDocument = { selectedLegalDocument = it }
@@ -2443,9 +2443,9 @@ fun LibraryInline(
                 writer.write(json)
             } ?: error("Unable to open file for export")
         }.onSuccess {
-            Toast.makeText(context, "Library exported", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.ui_library_exported), Toast.LENGTH_SHORT).show()
         }.onFailure { e ->
-            Toast.makeText(context, "Export failed: ${e.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, context.getString(R.string.ui_export_failed_s, e.message ?: ""), Toast.LENGTH_LONG).show()
         }
     }
     val importLibraryLauncher = rememberLauncherForActivityResult(
@@ -2459,7 +2459,7 @@ fun LibraryInline(
         }.onSuccess {
             pendingLibraryImportJson = it
         }.onFailure { e ->
-            Toast.makeText(context, "Import failed: ${e.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, context.getString(R.string.ui_import_failed_s, e.message ?: ""), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -2485,7 +2485,7 @@ fun LibraryInline(
                                     Toast.LENGTH_LONG
                                 ).show()
                             }.onFailure { e ->
-                                Toast.makeText(context, "Import failed: ${e.message}", Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, context.getString(R.string.ui_import_failed_s, e.message ?: ""), Toast.LENGTH_LONG).show()
                             }
                         }
                     },
@@ -2506,7 +2506,7 @@ fun LibraryInline(
                                         Toast.LENGTH_LONG
                                     ).show()
                                 }.onFailure { e ->
-                                    Toast.makeText(context, "Import failed: ${e.message}", Toast.LENGTH_LONG).show()
+                                    Toast.makeText(context, context.getString(R.string.ui_import_failed_s, e.message ?: ""), Toast.LENGTH_LONG).show()
                                 }
                             }
                         }
@@ -2990,7 +2990,7 @@ fun LibraryInline(
                     selectedLibraryItems.clear()
                     onCompareSelected(queries)
                 } else {
-                    Toast.makeText(context, "Select two different compounds to compare", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.ui_select_two_different_compounds), Toast.LENGTH_SHORT).show()
                 }
             },
             icon = {
@@ -3446,9 +3446,9 @@ fun SettingsInline(
                 writer.write(json)
             } ?: error("Unable to open file for export")
         }.onSuccess {
-            Toast.makeText(context, "Settings exported with API keys.", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, context.getString(R.string.ui_settings_exported_with_keys), Toast.LENGTH_LONG).show()
         }.onFailure { e ->
-            Toast.makeText(context, "Export failed: ${e.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, context.getString(R.string.ui_export_failed_s, e.message ?: ""), Toast.LENGTH_LONG).show()
         }
     }
     val importSettingsLauncher = rememberLauncherForActivityResult(
@@ -3462,9 +3462,9 @@ fun SettingsInline(
             restoreSettingsFromBackup(prefs, raw)
         }.onSuccess { restoredCount ->
             onSettingsImported()
-            Toast.makeText(context, "Imported $restoredCount settings", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.ui_imported_d_settings, restoredCount), Toast.LENGTH_SHORT).show()
         }.onFailure { e ->
-            Toast.makeText(context, "Import failed: ${e.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, context.getString(R.string.ui_import_failed_s, e.message ?: ""), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -3502,10 +3502,10 @@ fun SettingsInline(
                     onClick = {
                         val saved = onSetCacheDir(cacheDirInput.trim())
                         if (saved) {
-                            Toast.makeText(context, "Cache location updated", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.ui_cache_location_updated), Toast.LENGTH_SHORT).show()
                             showCacheDirDialog = false
                         } else {
-                            Toast.makeText(context, "That cache location is not writable", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, context.getString(R.string.ui_cache_not_writable), Toast.LENGTH_LONG).show()
                         }
                     },
                     shape = RoundedCornerShape(10.dp)
@@ -4107,7 +4107,7 @@ fun DebugSettingsSection(
                         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         val dump = prefEntries.joinToString("\n") { "${it.key} = ${redactValue(it.key, it.value)}" }
                         cm.setPrimaryClip(ClipData.newPlainText("Preferences", dump))
-                        Toast.makeText(context, "Copied masked prefs", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.ui_copied_masked_prefs), Toast.LENGTH_SHORT).show()
                     }) { Text(stringResource(R.string.ui_copy)) }
                 }
             },
@@ -4161,7 +4161,7 @@ fun DebugSettingsSection(
                     TextButton(onClick = {
                         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         cm.setPrimaryClip(ClipData.newPlainText("Logs", logLines.joinToString("\n")))
-                        Toast.makeText(context, "Copied ${logLines.size} lines", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.ui_copied_d_lines, logLines.size), Toast.LENGTH_SHORT).show()
                     }) { Text(stringResource(R.string.ui_copy)) }
                     TextButton(onClick = { showLogsDialog = false }) { Text(stringResource(R.string.ui_close)) }
                 }
@@ -4304,7 +4304,7 @@ fun DebugSettingsSection(
                             }
                             val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                             cm.setPrimaryClip(ClipData.newPlainText("Network diagnostics", report))
-                            Toast.makeText(context, "Diagnostics copied", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.ui_diagnostics_copied), Toast.LENGTH_SHORT).show()
                         },
                         enabled = networkDiagnosticsResults.isNotEmpty()
                     ) { Text(stringResource(R.string.ui_copy)) }
@@ -4480,7 +4480,7 @@ fun DebugSettingsSection(
                             append("System RAM: used ${usedSystemMb} MB, available ${availMb} MB, total ${totalSystemMb} MB (${systemPercentLabel}), low memory: $lowMemoryLabel")
                         }
                         cm.setPrimaryClip(ClipData.newPlainText("Memory", snapshot))
-                        Toast.makeText(context, "Copied memory snapshot", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.ui_copied_memory_snapshot), Toast.LENGTH_SHORT).show()
                     }) { Text(stringResource(R.string.ui_copy)) }
                     TextButton(onClick = { showMemoryDialog = false }) { Text(stringResource(R.string.ui_close)) }
                 }
@@ -4503,7 +4503,7 @@ fun DebugSettingsSection(
                         verboseLogging = false
                         DebugLog.e("ChemSearch", "SharedPreferences wiped by developer")
                         onDisableDevMode(false)
-                        Toast.makeText(context, "All preferences wiped. Restart the app.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, context.getString(R.string.ui_all_preferences_wiped), Toast.LENGTH_LONG).show()
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) { Text(stringResource(R.string.ui_wipe_now)) }
@@ -4622,10 +4622,10 @@ fun DebugSettingsSection(
                         val hasPermission = Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
                             ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
                         if (!hasPermission) {
-                            Toast.makeText(context, "Grant notification permission first", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.ui_grant_notification_permission), Toast.LENGTH_SHORT).show()
                         } else {
                             onTestUpdateNotification()
-                            Toast.makeText(context, "Test notification sent", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.ui_test_notification_sent), Toast.LENGTH_SHORT).show()
                         }
                     }
                 )
@@ -4639,7 +4639,7 @@ fun DebugSettingsSection(
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = {
                     onShowWelcome()
-                    Toast.makeText(context, "Welcome screen restored", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.ui_welcome_screen_restored), Toast.LENGTH_SHORT).show()
                 }
             )
 
@@ -4674,7 +4674,7 @@ fun DebugSettingsSection(
                     val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     val endpoints = buildDebugApiEndpointLines().joinToString("\n")
                     cm.setPrimaryClip(ClipData.newPlainText("Endpoints", endpoints))
-                    Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.ui_copied_to_clipboard), Toast.LENGTH_SHORT).show()
                 }
             )
 
@@ -4702,7 +4702,7 @@ fun DebugSettingsSection(
             TextButton(
                 onClick = {
                     onDisableDevMode(true)
-                    Toast.makeText(context, "Debug settings hidden", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.ui_debug_settings_hidden), Toast.LENGTH_SHORT).show()
                 },
                 contentPadding = PaddingValues(0.dp)
             ) {
