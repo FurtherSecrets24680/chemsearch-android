@@ -64,6 +64,17 @@
     <string name="ui_exit" translatable="true">Sair</string>
     <string name="ui_random_compound" translatable="true">Composto aleatório</string>
     <string name="ui_looking_up_compound" translatable="true">Procurando um composto...</string>
+    <string name="ui_try_searching" translatable="true">Tente pesquisar</string>
+    <string name="ui_hide_extra_compound_info" translatable="true">Ocultar informações compostas extras</string>
+    <string name="ui_show_more_compound_info" translatable="true">Mostrar mais informações sobre esta substância</string>
+    <string name="ui_recent" translatable="true">Recente</string>
+    <string name="ui_draw_molecule_and_search" translatable="true">Desenhar uma molécula e pesquisar PubChem</string>
+    <string name="ui_find_compounds_same_formula" translatable="true">Encontre componentes com a mesma fórmula</string>
+    <string name="ui_undo" translatable="true">Desfazer</string>
+    <string name="ui_removed_s" translatable="true">%1$s removido</string>
+    <string name="ui_cleared_recent_searches" translatable="true">Eliminadas buscas recentes do %1$d</string>
+    <string name="ui_deleted_s" translatable="true">%1$s Excluído</string>
+    <string name="ui_api_key_for_provider" translatable="true">Chave API %1$s</string>
     <!-- PeriodicTableUi.kt -->
     <string name="ui_search_elements" translatable="true">Elementos de pesquisa</string>
     <string name="ui_full_details" translatable="true">Detalhes completos</string>

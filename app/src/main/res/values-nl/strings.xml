@@ -64,6 +64,17 @@
     <string name="ui_exit" translatable="true">Afsluiten</string>
     <string name="ui_random_compound" translatable="true">Willekeurige samenstelling</string>
     <string name="ui_looking_up_compound" translatable="true">Samenvoegen opzoeken...</string>
+    <string name="ui_try_searching" translatable="true">Probeer te zoeken</string>
+    <string name="ui_hide_extra_compound_info" translatable="true">Extra menginformatie verbergen</string>
+    <string name="ui_show_more_compound_info" translatable="true">Toon meer informatie over deze stof</string>
+    <string name="ui_recent" translatable="true">Recentelijk</string>
+    <string name="ui_draw_molecule_and_search" translatable="true">Teken een molecule en zoek PubChem</string>
+    <string name="ui_find_compounds_same_formula" translatable="true">Vind verbindingen met dezelfde formule</string>
+    <string name="ui_undo" translatable="true">Herstel</string>
+    <string name="ui_removed_s" translatable="true">Verwijderd %1$s</string>
+    <string name="ui_cleared_recent_searches" translatable="true">Recente zoekopdrachten in %1$d gewist</string>
+    <string name="ui_deleted_s" translatable="true">Verwijderd %1$s</string>
+    <string name="ui_api_key_for_provider" translatable="true">%1$s API-sleutel</string>
     <!-- PeriodicTableUi.kt -->
     <string name="ui_search_elements" translatable="true">Zoek elementen</string>
     <string name="ui_full_details" translatable="true">Volledige details</string>
