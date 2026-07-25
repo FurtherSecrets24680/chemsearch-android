@@ -64,6 +64,17 @@
     <string name="ui_exit" translatable="true">Avslutt</string>
     <string name="ui_random_compound" translatable="true">Tilfeldig forbindelse</string>
     <string name="ui_looking_up_compound" translatable="true">Slår opp sammensatt...</string>
+    <string name="ui_try_searching" translatable="true">Prøv å søke</string>
+    <string name="ui_hide_extra_compound_info" translatable="true">Skjul ekstra sammensatt informasjon</string>
+    <string name="ui_show_more_compound_info" translatable="true">Vis mer informasjon om dette stoffet</string>
+    <string name="ui_recent" translatable="true">Siste</string>
+    <string name="ui_draw_molecule_and_search" translatable="true">Tegn et molekyl og søk PubChem</string>
+    <string name="ui_find_compounds_same_formula" translatable="true">Finn forbindelser med samme formel</string>
+    <string name="ui_undo" translatable="true">Angre</string>
+    <string name="ui_removed_s" translatable="true">Fjernet %1$s</string>
+    <string name="ui_cleared_recent_searches" translatable="true">Tømte %1$d nylige søk</string>
+    <string name="ui_deleted_s" translatable="true">Slettet %1$s</string>
+    <string name="ui_api_key_for_provider" translatable="true">%1$s API-nøkkel</string>
     <!-- PeriodicTableUi.kt -->
     <string name="ui_search_elements" translatable="true">Søk etter elementer</string>
     <string name="ui_full_details" translatable="true">Full detaljer</string>
