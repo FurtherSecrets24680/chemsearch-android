@@ -64,17 +64,17 @@
     <string name="ui_exit" translatable="true">終了</string>
     <string name="ui_random_compound" translatable="true">Random compound</string>
     <string name="ui_looking_up_compound" translatable="true">化合物を探しています...</string>
-    <string name="ui_try_searching" translatable="true">Try searching</string>
-    <string name="ui_hide_extra_compound_info" translatable="true">Hide extra compound information</string>
-    <string name="ui_show_more_compound_info" translatable="true">Show more information about this substance</string>
-    <string name="ui_recent" translatable="true">Recent</string>
-    <string name="ui_draw_molecule_and_search" translatable="true">Draw a molecule and search PubChem</string>
-    <string name="ui_find_compounds_same_formula" translatable="true">Find compounds with the same formula</string>
-    <string name="ui_undo" translatable="true">Undo</string>
-    <string name="ui_removed_s" translatable="true">Removed %1$s</string>
-    <string name="ui_cleared_recent_searches" translatable="true">Cleared %1$d recent searches</string>
-    <string name="ui_deleted_s" translatable="true">Deleted %1$s</string>
-    <string name="ui_api_key_for_provider" translatable="true">%1$s API Key</string>
+    <string name="ui_try_searching" translatable="true">検索してみてください</string>
+    <string name="ui_hide_extra_compound_info" translatable="true">追加の複合情報を隠す</string>
+    <string name="ui_show_more_compound_info" translatable="true">この物質についての詳細情報を表示する</string>
+    <string name="ui_recent" translatable="true">最近のもの</string>
+    <string name="ui_draw_molecule_and_search" translatable="true">分子を描いてPubChem を検索</string>
+    <string name="ui_find_compounds_same_formula" translatable="true">同じ数式を持つ化合物を検索</string>
+    <string name="ui_undo" translatable="true">元に戻す</string>
+    <string name="ui_removed_s" translatable="true">%1$s を削除しました</string>
+    <string name="ui_cleared_recent_searches" translatable="true">%1$d の最近の検索をクリアしました</string>
+    <string name="ui_deleted_s" translatable="true">%1$sを削除しました</string>
+    <string name="ui_api_key_for_provider" translatable="true">%1$s APIキー</string>
     <!-- PeriodicTableUi.kt -->
     <string name="ui_search_elements" translatable="true">検索要素</string>
     <string name="ui_full_details" translatable="true">詳細情報</string>
