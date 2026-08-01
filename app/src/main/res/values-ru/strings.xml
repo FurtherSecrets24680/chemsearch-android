@@ -9,11 +9,104 @@
     <string name="ui_info" translatable="true">Инфо</string>
     <string name="ui_copy" translatable="true">Копировать</string>
     <string name="ui_got_it" translatable="true">Понятно</string>
+    <string name="ui_clipboard_formula" translatable="true">Формула</string>
+    <string name="ui_clipboard_synonym" translatable="true">Синоним</string>
+    <string name="ui_clipboard_molfile" translatable="true">Файл Химического поиска</string>
+    <string name="ui_clipboard_preferences" translatable="true">Настройки</string>
+    <string name="ui_clipboard_logs" translatable="true">Логи</string>
+    <string name="ui_clipboard_network_diagnostics" translatable="true">Диагностика сети</string>
+    <string name="ui_clipboard_memory" translatable="true">Память</string>
+    <string name="ui_clipboard_endpoints" translatable="true">Конечные точки</string>
+    <string name="ui_complete_ionic_equation" translatable="true">Полное ионическое уравнение</string>
+    <string name="ui_molecular_equation" translatable="true">Молекулярное уравнение</string>
+    <string name="ui_no_ppt" translatable="true">Нет ppt</string>
+    <string name="ui_reset_view" translatable="true">Сбросить вид</string>
+    <string name="ui_motion_reduced" translatable="true">● Движение сокращено</string>
+    <string name="ui_auto_spin" translatable="true">Авто-вращение</string>
+    <string name="ui_paused" translatable="true">● Пауза</string>
+    <string name="ui_disabled_in_settings" translatable="true">Отключено в настройках</string>
+    <string name="ui_tap_to_toggle" translatable="true">Нажмите для переключения</string>
+    <string name="ui_viewer_stats" translatable="true">%1$d атомы •  %2$d облигации</string>
+    <string name="ui_spectral_lines_of_s" translatable="true">Спектр строк %1$s</string>
+    <string name="ui_enter_v1" translatable="true">Введите V1</string>
+    <string name="ui_enter_v2" translatable="true">Введите V2</string>
+    <string name="ui_enter_c1" translatable="true">Введите C1</string>
+    <string name="ui_enter_c2" translatable="true">Введите C2</string>
+    <string name="ui_enter_moles" translatable="true">Войти в молекулы</string>
+    <string name="ui_enter_temperature" translatable="true">Введите температуру</string>
+    <string name="ui_enter_volume" translatable="true">Введите громкость</string>
+    <string name="ui_enter_pressure" translatable="true">Введите давление</string>
+    <string name="ui_enter_molarity" translatable="true">Ввести молярность</string>
+    <string name="ui_enter_valid_amount" translatable="true">Введите правильную сумму</string>
+    <string name="ui_molar_mass_unavailable" translatable="true">Молярная масса недоступна</string>
+    <string name="ui_invalid_molar_volume" translatable="true">Недопустимый объем</string>
+    <string name="ui_invalid_purity" translatable="true">Неверная чистота %%</string>
+    <string name="ui_purity_must_be_100" translatable="true">Чистота должна быть \u003C= 100%%</string>
+    <string name="ui_balancer_use_arrow_between" translatable="true">Использовать \u0027&lt;unk&gt;\u0027 между реагентами и продуктами.</string>
+    <string name="ui_balancer_no_reactants_found" translatable="true">Реагенты не найдены.</string>
+    <string name="ui_balancer_no_products_found" translatable="true">Продукты не найдены.</string>
+    <string name="ui_balancer_cannot_parse_formula_s" translatable="true">Не удается разобрать формулу: %1$s</string>
+    <string name="ui_balancer_no_elements_found" translatable="true">Элементы не найдены.</string>
+    <string name="ui_balancer_could_not_balance" translatable="true">Не удалось уравновесить это уравнение. Проверьте, что все элементы появляются с обеих сторон.</string>
+    <string name="ui_formula_enter_formula" translatable="true">Введите формулу</string>
+    <string name="ui_formula_invalid_leading_multiplier" translatable="true">Неверный ведущий мультипликатор</string>
+    <string name="ui_formula_multiplier_followed_by_formula" translatable="true">За множителем должна следовать формула</string>
+    <string name="ui_formula_could_not_parse_near_s" translatable="true">Не удалось разобрать формулу около \u0027%1$s\u0027</string>
+    <string name="ui_formula_could_not_parse" translatable="true">Не удалось разобрать формулу</string>
+    <string name="ui_formula_unmatched_closing_group" translatable="true">Закрытие группы без совпадения</string>
+    <string name="ui_formula_unclosed_group" translatable="true">Незакрытая группа</string>
+    <string name="ui_formula_group_multiplier_positive" translatable="true">Мультипликатор группы должен быть больше нуля</string>
+    <string name="ui_formula_element_count_positive" translatable="true">Количество элементов должно быть больше нуля</string>
+    <string name="ui_formula_invalid_character_s" translatable="true">Недопустимый символ формулы \u0027%1$s\u0027</string>
+    <string name="ui_error_enter_at_least_one_element_amount" translatable="true">Введите хотя бы одно количество элементов</string>
+    <string name="ui_error_unknown_elements_s" translatable="true">Неизвестный элемент): %1$s</string>
+    <string name="ui_error_percent_composition_positive" translatable="true">Процент состава должен быть больше нуля</string>
+    <string name="ui_error_amounts_positive" translatable="true">Количество должно быть больше нуля</string>
+    <string name="ui_error_invalid_formula_syntax" translatable="true">Неверный синтаксис формулы</string>
+    <string name="ui_error_could_not_parse_formula" translatable="true">Не удалось разобрать формулу</string>
+    <string name="ui_error_cannot_solve_unknowns_s" translatable="true">Невозможно разрешить! Несколько неизвестных элементов: %1$s. Для переходных металлических комплексов, используйте поле заряда для введения дополнительных ограничений.</string>
+    <string name="ui_error_could_not_identify_ions_s" translatable="true">Не удалось определить общие ионы в воде в %1$s.</string>
+    <string name="ui_no_precipitate_predicted" translatable="true">Без предсказания</string>
+    <string name="ui_precipitate_predicted_s" translatable="true">Опережающий прогноз: %1$s</string>
+    <string name="ui_note_free_element" translatable="true">Свободный элемент. Состояние окисления равно 0</string>
+    <string name="ui_note_peroxide" translatable="true">Пероксидное соединение: O имеет состояние окисления = -1</string>
+    <string name="ui_note_non_integer_os" translatable="true">Состояние окисления не целочисленного числа для %1$s (%2$s). Оно может означать смешанную валентность или специальную соединение.</string>
+    <string name="ui_note_oxygen_fluoride_s" translatable="true">Oxygen fluoride: F всегда -1, поэтому O = %1$s</string>
+    <string name="ui_note_superoxide" translatable="true">Супероксид: О2 единица, у каждого O состояние окисления = -1/2</string>
+    <string name="ui_note_ozonide" translatable="true">Озонид: O3 - единица, у каждого O состояние окисления = -1/3</string>
+    <string name="ui_note_metal_hydride_suffix_s" translatable="true">Металлическая гидрид: Н имеет состояние окисления = -1%1$s</string>
+    <string name="ui_note_sum_mismatch" translatable="true">Сумма известного состояния окисления (%1$d) не соответствует общей зарядке (%2$d). Возможная смешанная валента, группа пероксидов или ошибка формулы.</string>
+    <string name="ui_molecular_mass_at_least_empirical" translatable="true">Молекулярная масса должна быть по крайней мере массой эмпирической формулы</string>
+    <string name="ui_molecular_mass_not_clean_multiple" translatable="true">Молекулярная масса не является чистой кратной массы эмпирической формулы</string>
+    <string name="ui_sdf_generated_estimate_s" translatable="true">Генерируется оценка из %1$s с помощью резолвера NCI/CADD.</string>
+    <string name="ui_pubchem_3d_trying_generated_fallback" translatable="true">PubChem 3D недоступен. Попытка сгенерировать резерв...</string>
+    <string name="ui_pubchem_3d_unavailable_no_fallback_identifier" translatable="true">PubChem 3D недоступен, и не обнаружен идентификатор резервного копирования SMILES/InChI.</string>
+    <string name="ui_pubchem_3d_and_generated_unavailable" translatable="true">PubChem 3D и формулы-соответствующие генерируемому запасу недоступны для этого соединения.</string>
+    <string name="ui_mode_exact" translatable="true">Точно</string>
+    <string name="ui_mode_exact_desc" translatable="true">Найти ту же структуру</string>
+    <string name="ui_mode_similar" translatable="true">Похожие</string>
+    <string name="ui_mode_similar_desc" translatable="true">Найти 2D совпадения</string>
+    <string name="ui_mode_contains" translatable="true">Содержит</string>
+    <string name="ui_mode_contains_desc" translatable="true">Найти соединения, содержащие этот рисунок</string>
+    <string name="ui_mode_part_of" translatable="true">Часть</string>
+    <string name="ui_mode_part_of_desc" translatable="true">Найти структуры внутри этого рисунка</string>
     <string name="ui_selected" translatable="true">Выбрано</string>
     <string name="ui_source" translatable="true">Источник</string>
     <string name="ui_remove" translatable="true">Удалить</string>
     <string name="ui_element" translatable="true">Элемент</string>
     <string name="ui_formula" translatable="true">Формула</string>
+    <string name="ui_percent" translatable="true">Процент</string>
+    <string name="ui_error_enter_two_aqueous_ionic_compounds" translatable="true">Введите два водных ионических соединения</string>
+    <string name="ui_welcome_tagline" translatable="true">ПРОМЫШЛЕНО ИЗМЕНЕНО</string>
+    <string name="ui_welcome_tagline_body" translatable="true">Поисковые составы, исследовать структуры, сохранять полезные результаты и использовать практические инструменты химии в одном собственном Android приложении.</string>
+    <string name="ui_welcome_feature_search_title" translatable="true">Составной поиск</string>
+    <string name="ui_welcome_feature_search_body" translatable="true">Ищите данные PubChem по имени, формуле, идентификатору в стиле CAS, или CID.</string>
+    <string name="ui_welcome_feature_structures_title" translatable="true">2D и 3D структуры</string>
+    <string name="ui_welcome_feature_structures_body" translatable="true">Просматривайте структурные изображения, поворачивайте 3D-модели и сохраняйте файлы структуры.</string>
+    <string name="ui_welcome_feature_tools_title" translatable="true">Химические инструменты</string>
+    <string name="ui_welcome_feature_tools_body" translatable="true">Реакции баланса, вычисляют молярную массу, решают стоициометрию и многое другое.</string>
+    <string name="ui_welcome_feature_local_title" translatable="true">Локальный рабочий процесс</string>
+    <string name="ui_welcome_feature_local_body" translatable="true">Сохранять избранное, последние поиски, кэшированные результаты и данные об оффлайн химии.</string>
     <string name="ui_compare" translatable="true">Сравнить</string>
     <string name="ui_save" translatable="true">Сохранить</string>
     <string name="ui_ok" translatable="true">ОК</string>
@@ -26,6 +119,26 @@
     <string name="ui_search" translatable="true">Искать</string>
     <!-- ChemicalDatabaseUi.kt -->
     <string name="ui_all_s" translatable="true">Все %1$s</string>
+    <string name="ui_entries_count" translatable="true">%1$d записей</string>
+    <string name="ui_error_no_release_tag" translatable="true">Тег релиза не найден.</string>
+    <string name="ui_error_update_check_failed" translatable="true">Ошибка проверки обновления.</string>
+    <string name="ui_error_no_apk_download_link" translatable="true">Ссылка на загрузку APK не найдена.</string>
+    <string name="ui_error_update_download_failed" translatable="true">Не удалось обновить загрузку.</string>
+    <string name="ui_error_download_failed_http" translatable="true">Ошибка загрузки: HTTP %1$d</string>
+    <string name="ui_error_apk_empty" translatable="true">Скачанный APK пуст.</string>
+    <string name="ui_error_apk_missing" translatable="true">Загруженный APK отсутствует.</string>
+    <string name="ui_error_allow_installs" translatable="true">Разрешить установку из ChemSearch, затем нажмите Install.</string>
+    <string name="ui_error_could_not_open_installer" translatable="true">Не удалось открыть установщик.</string>
+    <string name="ui_error_offline_download_failed" translatable="true">Загрузка не удалась: %1$s</string>
+    <string name="ui_unknown_error" translatable="true">неизвестная ошибка</string>
+    <string name="ui_notification_channel_updates" translatable="true">Обновления</string>
+    <string name="ui_notification_channel_updates_desc" translatable="true">Уведомления при наличии новой версии</string>
+    <string name="ui_notification_update_title" translatable="true">Доступно обновление ChemSearch</string>
+    <string name="ui_notification_update_text" translatable="true">Доступна версия %1$s</string>
+    <string name="ui_category_substances" translatable="true">Вещества</string>
+    <string name="ui_category_reactions" translatable="true">Реакции</string>
+    <string name="ui_category_functional_groups" translatable="true">Функциональные группы</string>
+    <string name="ui_category_ions" translatable="true">Ионы</string>
     <string name="ui_show_every_entry" translatable="true">Показать каждую запись в этом разделе</string>
     <string name="ui_s_copied" translatable="true">%1$s скопирован</string>
     <string name="ui_back_to_database" translatable="true">Вернуться к базе данных</string>
@@ -33,10 +146,14 @@
     <string name="ui_search_substances_reactions_groups_ions" translatable="true">Искать вещества, реакции, группы...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Молекулярная формула</string>
+    <string name="ui_empirical" translatable="true">Эмпирический</string>
+    <string name="ui_empirical_mass" translatable="true">Эмпирическая масса</string>
     <string name="ui_empirical_formula_finder" translatable="true">Эмпирическая Формула Поиск</string>
     <string name="ui_percent_mode" translatable="true">Режим процентов</string>
     <string name="ui_percent_mode_desc" translatable="true">Обрабатывает проценты в виде граммов в выборке 100 г, затем превращает каждый элемент в молы.</string>
     <string name="ui_mass_mode" translatable="true">Массовый режим</string>
+    <string name="ui_mass" translatable="true">Масса</string>
+    <string name="ui_percent_sign" translatable="true">%</string>
     <string name="ui_mass_mode_desc" translatable="true">Использует введенную массу каждого элемента.</string>
     <string name="ui_formula_mode" translatable="true">Формула</string>
     <string name="ui_formula_mode_desc" translatable="true">Уменьшает молекулярную формулу до самого простого соотношения целого.</string>
@@ -131,9 +248,20 @@
     <string name="ui_atomic_number" translatable="true">Атомный номер</string>
     <string name="ui_category" translatable="true">Категория</string>
     <string name="ui_group_period" translatable="true">Группа / период</string>
+    <string name="ui_category_alkali_metal" translatable="true">Алкальский металл</string>
+    <string name="ui_category_alkaline_earth_metal" translatable="true">Щелочный земной металл</string>
+    <string name="ui_category_transition_metal" translatable="true">Переходный металл</string>
+    <string name="ui_category_post_transition_metal" translatable="true">Металлический постпереходный</string>
+    <string name="ui_category_metalloid" translatable="true">Металлический</string>
+    <string name="ui_category_reactive_nonmetal" translatable="true">Реактивный неметалл</string>
+    <string name="ui_category_halogen" translatable="true">Галоген</string>
+    <string name="ui_category_noble_gas" translatable="true">Благородный газ</string>
+    <string name="ui_category_lanthanide" translatable="true">Lanthanide</string>
+    <string name="ui_category_actinide" translatable="true">Actinide</string>
+    <string name="ui_category_unknown" translatable="true">Неизвестен</string>
     <string name="ui_standard_state" translatable="true">Стандартное состояние</string>
     <string name="ui_year_discovered" translatable="true">Обнаружен год</string>
-    <string name="ui_appearance_label" translatable="true">Appearance</string>
+    <string name="ui_appearance_label" translatable="true">Внешний вид</string>
     <string name="ui_discovered_by" translatable="true">Найдено</string>
     <string name="ui_named_by" translatable="true">Названо</string>
     <string name="ui_orbital_block" translatable="true">Орбитальный блок</string>
@@ -141,7 +269,7 @@
     <string name="ui_model_color" translatable="true">Цвет модели</string>
     <string name="ui_electron_configuration" translatable="true">Конфигурация Electron</string>
     <string name="ui_shell_distribution" translatable="true">Распределение оболочки</string>
-    <string name="ui_oxidation_states_label" translatable="true">Oxidation states</string>
+    <string name="ui_oxidation_states_label" translatable="true">Состояния окисления</string>
     <string name="ui_expanded_configuration" translatable="true">Расширенная конфигурация</string>
     <string name="ui_electronegativity" translatable="true">Электроника</string>
     <string name="ui_atomic_radius" translatable="true">Атомный радиус</string>
@@ -287,6 +415,9 @@
     <string name="ui_tap_a_card_to_open_favorites_are_stored" translatable="true">Нажмите на карту, чтобы открыть. Избранное хранится только на этом устройстве.</string>
     <string name="ui_reorder_mode_use_the_arrows_to_move_items" translatable="true">Режим сортировки: используйте стрелки для перемещения предметов.</string>
     <string name="ui_no_matches_found" translatable="true">Совпадений не найдено.</string>
+    <string name="ui_no_match_for" translatable="true">Нет совпадений для \"%1$s\"</string>
+    <string name="ui_newest_first" translatable="true">Сначала новые</string>
+    <string name="ui_oldest_first" translatable="true">Сначала старые</string>
     <string name="ui_try_a_different_name_formula_or_cid" translatable="true">Попробуйте другое имя, формулу или CID.</string>
     <!-- SettingsUi.kt: Toasts and user notifications -->
     <string name="ui_notifications_permission_denied" translatable="true">Доступ к уведомлениям запрещен</string>
@@ -336,6 +467,18 @@
     <string name="ui_tag_chemsearch" translatable="true">Tag: ChemSearch</string>
     <string name="ui_endpoints" translatable="true">конечные точки</string>
     <string name="ui_hide_debug_settings" translatable="true">Скрыть настройки отладки</string>
+    <string name="ui_debug_settings_title" translatable="true">Настройки отладки</string>
+    <string name="ui_debug_verbose_logging_body" translatable="true">Включает журналы отладки (помеченные \'ChemSearch\') в Logcat и буфере приложений. Ошибки всегда фиксируются. Отключите, чтобы уменьшить шум.</string>
+    <string name="ui_debug_live_log_viewer_body" translatable="true">Показывает буфер журнала в приложении в реальном времени (до 200 строк). Подробные журналы (D/) появляются только при включённом подробном журнале. Ошибки (E/) всегда записываются. Вы можете скопировать или очистить буфер.</string>
+    <string name="ui_debug_inspect_prefs_body" translatable="true">Дампы унаследованные SharedPreferences и зашифрованные записи ключей с маскированными чувствительными значениями. Настройки DataStore и загрузки комнат хранятся отдельно.</string>
+    <string name="ui_debug_memory_info_body" translatable="true">Показывает текущее использование кучи JVM и Android ActivityManager. Полезно для выявления утечек памяти или необычно высоких ассигнований.</string>
+    <string name="ui_debug_network_diagnostics_body" translatable="true">Запускает проверки конечной точки на PubChem, autocomplete, GHS данные, 2D/3D структуры, NCI/CADD fallback resolver, Wikipedia, GitHub релизы и все сконфигурированные AI провайдеры. Показывает HTTP-статус, задержку и предпросмотр ответа для каждой службы.</string>
+    <string name="ui_debug_show_welcome_body" translatable="true">Очищает флаг пропуска экрана приветствия и снова открывает окно приветствия на первом запуске.</string>
+    <string name="ui_debug_api_endpoints_body" translatable="true">Копирует базовые URL-адреса для PubChem, NCI/CADD, Wikipedia, GitHub и поддерживаемые поставщики AI в буфер обмена для ручного тестирования.</string>
+    <string name="ui_debug_wipe_prefs_body" translatable="true">Вызовы prefs.edit().clear(). Удаляет значения старых настроек, зашифрованные записи ключей, историю, избранные и флаги отладки. Настройки хранилища данных, загрузки комнат и приложения файлы кэша не удаляются этим действием; рекомендуется перезагрузить.</string>
+    <string name="ui_debug_force_crash" translatable="true">Принудительный сбой</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Намеренно выбрасывает необработанное Исключение RuntimeException. Используется для проверки корректности работы с отчетами о сбоях. Перед выстрелом есть шаг подтверждения.</string>
+    <string name="ui_debug_hide_body" translatable="true">Устанавливает dev_mode=false и скрывает этот раздел. Коснитесь цифры 5 раз на экране \"О программе\", чтобы снова разблокировать его.</string>
     <string name="ui_remove_key" translatable="true">Удалить ключ</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Чувствительные значения маскируются и никогда не копируются из этого вида.</string>
     <string name="ui_run_diagnostics_to_test_pubchem_lookup_structures_ghs" translatable="true">Запустите диагностику для тестирования поиска PubChem, структур, данных GHS, трехмерной загрузки резервных копий, Wikipedia, выпусков GitHub и конечных точек AI.</string>
@@ -406,6 +549,7 @@
     <string name="ui_e_g_kmno4" translatable="true">напр. KMnO4</string>
     <string name="ui_charge" translatable="true">Зарядка</string>
     <string name="ui_find_oxidation_states" translatable="true">Найти состояние окисления</string>
+    <string name="ui_oxidation_states" translatable="true">УСТРОЙСТВА Оксидаторов</string>
     <string name="ui_examples" translatable="true">ИССЛЕДОВАНИЯ</string>
     <string name="ui_smiles_visualizer" translatable="true">Визуализатор SMILES</string>
     <string name="ui_smiles_string" translatable="true">Строка SMILES</string>
@@ -419,6 +563,34 @@
     <string name="ui_atom_count_verification" translatable="true">ВЕРФИКАЦИЯ УСЛОВИЙ</string>
     <string name="ui_reactants" translatable="true">Реагенты</string>
     <string name="ui_products" translatable="true">Товары</string>
+    <string name="ui_d_s_results" translatable="true">Результаты %1$d</string>
+    <string name="ui_d_percent_similar" translatable="true">Схожие %1$d%%</string>
+    <string name="ui_d_percent_similarity" translatable="true">Сходство %1$d%%</string>
+    <string name="ui_default_sdf_file_name" translatable="true">file.sdf</string>
+    <string name="ui_step_s_of_d" translatable="true">Шаг %1$d из %2$d</string>
+    <string name="ui_phpoh_assumption" translatable="true">Предполагается, что 25 C и pKw = 14.00</string>
+    <string name="ui_classification_acidic" translatable="true">Кислоты</string>
+    <string name="ui_classification_basic" translatable="true">Базовый</string>
+    <string name="ui_classification_neutral" translatable="true">Нейтральный</string>
+    <string name="ui_error_enter_a_valid_number" translatable="true">Введите правильное число.</string>
+    <string name="ui_error_ph_must_be_a_valid_number" translatable="true">pH должно быть правильным числом.</string>
+    <string name="ui_error_poh_must_be_a_valid_number" translatable="true">pOH должен быть допустимым числом.</string>
+    <string name="ui_error_concentration_must_be_greater_than_zero" translatable="true">Концентрация должна быть больше 0.</string>
+    <string name="ui_solubility_rule_group_1_ammonium" translatable="true">Солевые соли группы 1 и аммония растворимы.</string>
+    <string name="ui_solubility_rule_nitrates" translatable="true">Нитраты, ацетаты, хлораты и перхлораты растворяются.</string>
+    <string name="ui_solubility_rule_halides_insoluble" translatable="true">Хлориды, бромиды и йодиды не растворяются с Ag+, Pb2+, Hg2^2+.</string>
+    <string name="ui_solubility_rule_most_halides" translatable="true">Большинство хлоридов, бромидов и йодидов растворимы.</string>
+    <string name="ui_solubility_rule_sulfates_insoluble" translatable="true">Серфаты неразрешимы или только немного растворяются с Ba2+, Pb2+, Sr2+, Ca2+, Ag+, и Hg2^2+.</string>
+    <string name="ui_solubility_rule_most_sulfates" translatable="true">Большинство сульфатов растворимы.</string>
+    <string name="ui_solubility_rule_hydroxides_partly_soluble" translatable="true">Гидроксиды Ba2+, Sr2+, Ca2+ являются лишь частичными.</string>
+    <string name="ui_solubility_rule_most_hydroxides" translatable="true">Большинство гидроксидов являются нерастворимыми, за исключением солей группы 1 и аммония.</string>
+    <string name="ui_solubility_rule_carbonates" translatable="true">Карбонаты, фосфаты, сульфиды, сульфиты, хроматы, оксалаты и окиси обычно нерастворяются, за исключением ионов группы 1 или аммония.</string>
+    <string name="ui_solubility_rule_no_match" translatable="true">Нет общего правила растворимости этого продукта.</string>
+    <string name="ui_warning_add_at_least_one_bond" translatable="true">Добавьте хотя бы одну облигацию, чтобы PubChem мог сравнить структуру.</string>
+    <string name="ui_warning_connect_fragments" translatable="true">Подключите все фрагменты перед поиском.</string>
+    <string name="ui_warning_very_large_drawings" translatable="true">Очень большие рисунки могут быть медленными или могут быть отклонены PubChem.</string>
+    <string name="ui_warning_aromatic_bonds_exported" translatable="true">Ароматические облигации экспортируются как 4 типа ароматических облигаций V2000.</string>
+    <string name="ui_error_draw_at_least_two_connected_atoms" translatable="true">Нарисуйте по крайней мере два подключенных атома перед поиском.</string>
     <string name="ui_compare_compounds" translatable="true">Сравнить соединения</string>
     <string name="ui_ph_poh_calculator" translatable="true">калькулятор pH / pOH</string>
     <string name="ui_solution_type" translatable="true">Тип решения</string>
@@ -450,7 +622,7 @@
     <string name="ui_enter_an_amount_to_compute_moles" translatable="true">Введите сумму вычисления молей.</string>
     <string name="ui_clear_all_amounts" translatable="true">Очистить все суммы</string>
     <string name="ui_stoichiometry_summary" translatable="true">РЕЗЮМЕ УСТАНОВЛЕНИЯ</string>
-    <string name="ui_limiting_reagent" translatable="true">Ограничение реагента</string>
+    <string name="ui_limiting_reagent_label" translatable="true">Ограничение реагента</string>
     <string name="ui_mole_ratios_relative_to_limiting_reagent" translatable="true">MOLE RATIOS (относительно ограничения реагента)</string>
     <string name="ui_theoretical_yield" translatable="true">ТЕХНОРЕТИЧЕСКИЙ ГОРОД</string>
     <string name="ui_excess_reactants" translatable="true">ДОСТУП К ДОСТУПУ</string>
@@ -488,6 +660,7 @@
     <string name="ui_could_not_parse_3d_data" translatable="true">Не удалось разобрать 3D-данные</string>
     <!-- WelcomeScreen.kt -->
     <string name="ui_set_your_look" translatable="true">Установить внешний вид</string>
+    <string name="ui_appearance" translatable="true">ПРИВЕДЕНИЕ</string>
     <string name="ui_choose_theme_accent_body" translatable="true">Выберите тему и цвет цвета ChemSearch должен использоваться в поиске, инструментах и настройках.</string>
     <string name="ui_light" translatable="true">Светлая</string>
     <string name="ui_dark" translatable="true">Тёмная</string>
@@ -508,5 +681,880 @@
     <string name="ui_chemsearch" translatable="true">Химический поиск</string>
     <string name="ui_configure_ai_provider" translatable="true">Configure AI provider</string>
     <string name="ui_skip" translatable="true">Пропустить</string>
+    <string name="ui_next" translatable="true">Следующий</string>
+    <string name="ui_welcome_start_using_chemsearch" translatable="true">Начать использовать ChemSearch</string>
     <string name="ui_always_follow_sds_documents_lab_rules_labels_and" translatable="true">Всегда следовать документам SDS, правилам лаборатории, этикеткам и официальным указаниям по обработке химических веществ.</string>
+    <!-- ToolCatalog titles (some already existed as ui_molar_mass_calculator etc.) -->
+    <string name="ui_limiting_reagent" translatable="true">Ограничение реагента</string>
+    <string name="ui_percent_yield" translatable="true">Процент выручки</string>
+    <string name="ui_reaction_scaling" translatable="true">Масштабирование реакции</string>
+    <!-- ToolCatalog subtitles -->
+    <string name="ui_molar_mass_calculator_subtitle" translatable="true">Введите молекулярную формулу и получить молярную массу</string>
+    <string name="ui_empirical_formula_finder_subtitle" translatable="true">Найти эмпирические и молекулярные формулы из композиционных данных</string>
+    <string name="ui_reaction_balancer_subtitle" translatable="true">Баланс любого химического уравнения автоматически</string>
+    <string name="ui_precipitate_predictor_subtitle" translatable="true">Предсказать осадки и чистые ионические уравнения от двух солей</string>
+    <string name="ui_ph_poh_calculator_subtitle" translatable="true">Конвертировать pH, pOH, [H+] и [OH-]</string>
+    <string name="ui_oxidation_state_finder_subtitle" translatable="true">Найти состояния окисления каждого элемента в соединении</string>
+    <string name="ui_limiting_reagent_subtitle" translatable="true">Найти ограничивающий реагент, соотношение и теоретический выход</string>
+    <string name="ui_percent_yield_subtitle" translatable="true">Сравнить фактическую прибыль по теоретическому урожу</string>
+    <string name="ui_dilution_calculator_subtitle" translatable="true">Решить C1V1 = C2V2 для решений</string>
+    <string name="ui_ideal_gas_law_subtitle" translatable="true">Решить PV = nRT для газов</string>
+    <string name="ui_compare_compounds_subtitle" translatable="true">Сравнение формул, массы, идентификаторов, безопасности и структур</string>
+    <string name="ui_smiles_visualizer_subtitle" translatable="true">Вставьте строку SMILES для просмотра ее 2D и 3D-структуры</string>
+    <string name="ui_custom_3d_viewer_subtitle" translatable="true">Загрузите любой файл .sdf или .mol и просмотрите его в 3D</string>
+    <string name="ui_reaction_scaling_subtitle" translatable="true">Масштабировать реагенты для количества целевого продукта</string>
+    <!-- ToolCategory labels -->
+    <string name="ui_tool_category_all" translatable="true">Все</string>
+    <string name="ui_tool_category_visualize" translatable="true">Визуализация</string>
+    <string name="ui_tool_category_calculators" translatable="true">Калькуляторы</string>
+    <string name="ui_tool_category_reactions" translatable="true">Реакции</string>
+    <string name="ui_tool_category_stoichiometry" translatable="true">Стоихиометрия</string>
+    <!-- SettingsUi section titles -->
+    <string name="ui_section_ai_providers" translatable="true">AI PROVIDERS</string>
+    <string name="ui_section_app_links" translatable="true">ПРИЛОЖЕНИЯ</string>
+    <string name="ui_section_built_with" translatable="true">КУПИТЬ С</string>
+    <string name="ui_section_chemistry_data" translatable="true">ДАННЫЕ ИЗМЕНЕНИЯ</string>
+    <string name="ui_check_for_updates" translatable="true">Проверить обновления</string>
+    <string name="ui_chemical_database" translatable="true">Химическая база данных</string>
+    <string name="ui_compound_cache" translatable="true">Составной кэш</string>
+    <string name="ui_data_and_storage" translatable="true">Данные &amp; хранение</string>
+    <string name="ui_default_description_source" translatable="true">Источник описания по умолчанию</string>
+    <string name="ui_developer" translatable="true">Разработчик</string>
+    <string name="ui_display_and_search" translatable="true">Показать &amp; Поиск</string>
+    <string name="ui_downloads" translatable="true">Загрузки</string>
+    <string name="ui_export_settings" translatable="true">Настройки экспорта</string>
+    <string name="ui_faq" translatable="true">ЧАВО</string>
+    <string name="ui_faq_what_for_q" translatable="true">Что такое Химический поиск?</string>
+    <string name="ui_faq_what_for_a" translatable="true">ChemSearch - это быстрый химический поиск, изучение и ссылки. Он приносит сложный поиск, структуры, резюме безопасности, оффлайновый режим, ссылки и калькуляторы в одно приложение Android.</string>
+    <string name="ui_faq_replacement_q" translatable="true">Является ли ChemSearch заменой PubChem?</string>
+    <string name="ui_faq_replacement_a" translatable="true">ChemSearch использует PubChem в качестве основного источника данных и представляет полезные части в удобном для человека виде. Откройте PubChem напрямую, когда вам нужна полная запись или исходный код.</string>
+    <string name="ui_faq_data_source_q" translatable="true">Откуда поступают сложные данные?</string>
+    <string name="ui_faq_data_source_a" translatable="true">Большинство составных свойств, идентификаторов, структур, синонимов, классификаций и СГС приходят из PubChem. Некоторые описания могут быть получены от Википедии или выбранного поставщика ИИ в зависимости от настроек.</string>
+    <string name="ui_faq_pt_data_q" translatable="true">Откуда поступают периодические данные таблицы?</string>
+    <string name="ui_faq_pt_data_a" translatable="true">Периодические сведения о таблице собираются из общедоступных справочных данных, включая PubChem, Wikipedia, Bowserinator/Periodic-Table-JSON. Некоторые поля скрыты, когда значение не указано.</string>
+    <string name="ui_faq_trust_q" translatable="true">Могу ли я доверять этим данным?</string>
+    <string name="ui_faq_trust_a" translatable="true">Использование Химического поиска для изучения и быстрой проверки. Химические базы данных могут не совпадать, потому что имена, таторы, соли, гидраты, стереохимия и правила стандартизации сложны. Что касается принятия лабораторных, медицинских, юридических или нормативных решений, то проверяйте с помощью официальных источников.</string>
+    <string name="ui_faq_safety_official_q" translatable="true">Является ли должностное лицо информацией по вопросам безопасности?</string>
+    <string name="ui_faq_safety_official_a" translatable="true">№ СГС карты представляют собой краткое справочное резюме из данных PubChem. Они не заменяют таблицу данных о безопасности поставщика, инструкцию преподавателя или местные правила безопасности.</string>
+    <string name="ui_faq_safety_missing_q" translatable="true">Почему данные безопасности могут отсутствовать или отличаться от SDS?</string>
+    <string name="ui_faq_safety_missing_a" translatable="true">Данные по безопасности зависят от источника, чистоты, смеси, концентрации, физической формы, региона и даты обновления. ИКБ для поставщиков написана по конкретному продукту;</string>
+    <string name="ui_faq_lab_advice_q" translatable="true">Предоставляет ли ChemSearch консультации по лабораторным процедурам или синтезаторам?</string>
+    <string name="ui_faq_lab_advice_a" translatable="true">Нет. Химический поиск предназначен для поиска и изучения. Он не проверяет экспериментальные процедуры, предельные значения экспозиций, дозировки, совместимость с хранением и безопасную обработку.</string>
+    <string name="ui_faq_search_what_q" translatable="true">Что я могу найти?</string>
+    <string name="ui_faq_search_what_a" translatable="true">Вы можете искать по обычному имени, имени IUPAC, номеру CAS, PubChem CID, формуле или нарисованной структуре. Некоторые режимы лучше работают для точных идентификаторов, чем короткие имена.</string>
+    <string name="ui_faq_search_fail_q" translatable="true">Почему мой поиск не удался?</string>
+    <string name="ui_faq_search_fail_a" translatable="true">Попробуйте коррекцию орфографии, CID, CAS номер или более специфичное имя. Очень широкие имена, неофициальные имена, нестабильные структуры и соединения, отсутствующие в PubChem, могут не возвращать полезного матча.</string>
+    <string name="ui_faq_did_you_mean_q" translatable="true">Почему вы иногда не имели в виду предложения?</string>
+    <string name="ui_faq_did_you_mean_a" translatable="true">Химический поиск только показывает близкие совпадения орфографии. Он скрывает свободные PubChem автозаполнение результатов, когда они выглядят несвязанными, поэтому он может ничего не показывать вместо плохих предложений.</string>
+    <string name="ui_faq_normal_vs_isomer_q" translatable="true">В чем разница между обычным поиском и поиском изомеров?</string>
+    <string name="ui_faq_normal_vs_isomer_a" translatable="true">Обычный поиск пытается найти одну из лучших комбинаций, поиск Изомера рассматривает ввод, как молекулярную формулу и перечисляет соединения по той же формуле.</string>
+    <string name="ui_faq_formula_style_q" translatable="true">Почему иногда формулы отличаются от учебников?</string>
+    <string name="ui_faq_formula_style_a" translatable="true">Химический Поиск может показывать формулы в разных стилях. Обычный заказ пытается показать известную химическую форму, такую как NaCl или H2SO4.</string>
+    <string name="ui_faq_ions_q" translatable="true">Почему ионы иногда нуждаются в оплате, показываемой отдельно?</string>
+    <string name="ui_faq_ions_a" translatable="true">Формула и заряд текста - это различные части данных. Химический поиск пытается сохранить расходы надписями, но некоторые исходные записи могут хранить ионы в необычных форматах.</string>
+    <string name="ui_faq_2d_hydrogen_q" translatable="true">Почему структура 2D не показывает каждый водород?</string>
+    <string name="ui_faq_2d_hydrogen_a" translatable="true">Многие химические диаграммы опущают водород на углероде, если они не имеют значения для ясности. Это нормально для скелетов и PubChem-style 2D.</string>
+    <string name="ui_faq_3d_missing_q" translatable="true">Почему отсутствует 3D модель?</string>
+    <string name="ui_faq_3d_missing_a" translatable="true">У некоторых соединений нет компрессора PubChem 3D, солей, металлов, координационных соединений, ионических записей, очень гибких молекул и очень больших молекул - обычные случаи.</string>
+    <string name="ui_faq_3d_exact_q" translatable="true">Есть ли точные 3D-модели реальные формы?</string>
+    <string name="ui_faq_3d_exact_a" translatable="true">№ PubChem 3D совместимы с вычислительными моделями, не гарантированными экспериментальными структурами. Они полезны для визуализации, но могут не отражать точную форму в кристальном, растворительном, белковом кармане или модели класса.</string>
+    <string name="ui_faq_3d_bond_order_q" translatable="true">Почему ордера на облигации выглядят по-разному в 3D?</string>
+    <string name="ui_faq_3d_bond_order_a" translatable="true">Файлы трехмерных координат фокусируются на атомно-позициях и соединении. Порядок соединения, ароматичность, расположение зарядов и форма таутомера могут быть интерпретированы разными инструментами.</string>
+    <string name="ui_faq_structure_search_q" translatable="true">Что делает поиск по структурам?</string>
+    <string name="ui_faq_structure_search_a" translatable="true">Структура Поиска посылает нарисованный молекулу как структурный запрос и ищет подходящие соединения PubChem. Неверная валидация, неполные чертежи или очень сложные эскизы могут привести к ошибке.</string>
+    <string name="ui_faq_structure_diff_q" translatable="true">Почему функция поиска построек отличается от ожидаемого?</string>
+    <string name="ui_faq_structure_diff_a" translatable="true">Небольшие различия в рисунках могут изменить поиск, особенно с помощью оплаты, ароматических колец, таутометров, стереохимии, солей и неявных водорослей. Использовать точные идентификаторы при необходимости одной конкретной записи.</string>
+    <string name="ui_faq_ai_wrong_q" translatable="true">Может ли ИИ описания быть неправильными?</string>
+    <string name="ui_faq_ai_wrong_a" translatable="true">Да. Текст AI может звучать уверенно при отсутствии деталей или смешанных фактов. Использование ИИ в качестве помощника по обычному языку, а не в качестве конечного источника безопасности, экзаменов, лабораторных работ или цитат.</string>
+    <string name="ui_faq_ai_data_q" translatable="true">Какие данные передаются поставщикам AI?</string>
+    <string name="ui_faq_ai_data_a" translatable="true">Only when you request the AI description, ChemSearch sends complex context to the provider you selected. Этот провайдер обрабатывает запрос в соответствии с его условиями и политикой конфиденциальности.</string>
+    <string name="ui_faq_ai_key_q" translatable="true">Нужен ли мне API ключ для ИИ описаний?</string>
+    <string name="ui_faq_ai_key_a" translatable="true">Да. Google Gemini, Groq Cloud, OpenAI, OpenRouter и Mistral AI каждый нуждаются в своем собственном API ключе. Добавьте ключи в Настройках &gt; AI Provider &amp; Ключей.</string>
+    <string name="ui_faq_key_storage_q" translatable="true">Где хранятся ключи API?</string>
+    <string name="ui_faq_key_storage_a" translatable="true">Ключи API хранятся локально с шифрованием, основанным на Android Keystore. ChemSearch не синхронизирует их с аккаунтом ChemSearch.</string>
+    <string name="ui_faq_collect_q" translatable="true">Получает ли Химический Поиск?</string>
+    <string name="ui_faq_collect_a" translatable="true">В ChemSearch отсутствует система аккаунта. Ищите историю, избранное, загрузки и кэш хранятся на вашем устройстве. Живой поиск по-прежнему контактирует с внешними сервисами, такими как PubChem, Wikipedia, GitHub обновляется, или выбранный вами поставщик AI, когда это необходимо.</string>
+    <string name="ui_faq_collect_no_updates_a" translatable="true">В ChemSearch отсутствует система аккаунта. Ищите историю, избранное, загрузки и кэш хранятся на вашем устройстве. Живой поиск все еще контактирует с внешними услугами, такими как PubChem, Wikipedia, или выбранным вами AI провайдером, когда это необходимо.</string>
+    <string name="ui_faq_offline_q" translatable="true">Что работает в автономном режиме?</string>
+    <string name="ui_faq_offline_a" translatable="true">Встроенные ссылки на библиотеку, калькуляторы, избранные и загруженные соединения могут работать в автономном режиме. Живой сложный поиск, свежие описания, поиск структуры, проверка обновлений и ИИ описания нуждаются в интернете.</string>
+    <string name="ui_faq_offline_no_updates_a" translatable="true">Встроенные ссылки на библиотеку, калькуляторы, избранные и загруженные соединения могут работать в автономном режиме.</string>
+    <string name="ui_faq_cache_vs_downloads_q" translatable="true">В чем разница между кэшем и загрузками?</string>
+    <string name="ui_faq_cache_vs_downloads_a" translatable="true">Кэш делает повторный поиск быстрее и может быть очищен автоматически. Загрузки - это преднамеренные автономные сохранения с идентификаторами, описаниями, структурами, синонимами, информацией о безопасности и исходными данными, если таковые имеются.</string>
+    <string name="ui_faq_downloads_stored_q" translatable="true">Где хранятся загруженные соединения?</string>
+    <string name="ui_faq_downloads_stored_a" translatable="true">Загруженные соединения хранятся в базе данных приложения на вашем устройстве. Удаление приложения может удалить их, если вы не экспортируете или не создадите резервную копию.</string>
+    <string name="ui_faq_save_q" translatable="true">Как сохранить соединение?</string>
+    <string name="ui_faq_save_a" translatable="true">Используйте звёздочку для избранного или кнопку загрузки для полного автономного сохранения. Избранное - это быстрые закладки; Загрузки предназначены для автономного чтения.</string>
+    <string name="ui_faq_compare_q" translatable="true">Могу ли я сравнивать сохраненные соединения?</string>
+    <string name="ui_faq_compare_a" translatable="true">Да. Выберите два или более соединений в Избранном, Загрузках или поддерживаемых Хим-БД, затем используйте плавающую кнопку сравнения.</string>
+    <string name="ui_faq_database_q" translatable="true">Что такое база данных по химическим веществам?</string>
+    <string name="ui_faq_database_a" translatable="true">Он представляет собой сгруппированную ссылку на общие вещества, функциональные группы и реакции, полезный оффлайн, но не такой широкий, как PubChem.</string>
+    <string name="ui_faq_compare_reactions_q" translatable="true">Почему я могу сравнить вещества и ионы, но не реакции или функциональные группы?</string>
+    <string name="ui_faq_compare_reactions_a" translatable="true">Сравнение соединений ожидают составные записи с формулами и идентификаторами. Reactions and functional groups are reference entries, not full compound records.</string>
+    <string name="ui_faq_tags_q" translatable="true">Почему некоторые теги классификации выглядят несвязанными?</string>
+    <string name="ui_faq_tags_a" translatable="true">Теги классификации и аннотации исходят из записей источника. Тег может описывать контекст данных, категорию литературы, проверку темы или срок индексации; это не всегда означает, что состав в основном используется для этой темы.</string>
+    <string name="ui_faq_long_names_q" translatable="true">Почему некоторые имена слишком длинные или укорочены?</string>
+    <string name="ui_faq_long_names_a" translatable="true">Некоторые имена IUPAC и названия биомолекул слишком длинны для компактных экранов. Нажмите на название или разверните элемент, чтобы увидеть весь текст.</string>
+    <string name="ui_faq_molar_mass_q" translatable="true">Как рассчитывается молярная масса?</string>
+    <string name="ui_faq_molar_mass_a" translatable="true">В калькуляторе исчисляются стандартные атомарные весы из распаренной формулы, поддерживаются вложенные группы, гидраты и общая нотация формулы.</string>
+    <string name="ui_faq_oxidation_q" translatable="true">Почему окисление состояний неправильно для необычных формул?</string>
+    <string name="ui_faq_oxidation_a" translatable="true">Правила состояния окисления требуют предположений о облигациях, сборах и известных исключениях. Инструмент обрабатывает общую химию, но для ручной проверки могут потребоваться координационные соединения и неоднозначные формулы.</string>
+    <string name="ui_faq_balancing_q" translatable="true">Почему реакция может быть неудачна?</string>
+    <string name="ui_faq_balancing_a" translatable="true">Балансировщик использует формулу парсинга и точную арифметику. Она может быть неудачной, если формулы недействительны, отсутствуют сборы или реакция нуждается в контексте химии за пределами сохранения атома.</string>
+    <string name="ui_faq_homework_q" translatable="true">Могу ли я использовать инструменты для домашней работы?</string>
+    <string name="ui_faq_homework_a" translatable="true">Да, в качестве чекера и обучения. Покажите свою работу, потому что приложение даёт ответы и краткие отчеты, а не требуемые учителем шаги рассуждений.</string>
+    <string name="ui_faq_updates_q" translatable="true">Как работают обновления приложений?</string>
+    <string name="ui_faq_updates_a" translatable="true">ChemSearch может проверить релизы GitHub, скачать APK внутри приложения и затем передать его инсталлятору Android. Вы также можете обновиться вручную с GitHub.</string>
+    <string name="ui_faq_updates_optional_q" translatable="true">Уведомления об обновлениях необязательны?</string>
+    <string name="ui_faq_updates_optional_a" translatable="true">Да. Уведомления об обновлении можно включить или выключить в Настройках и проверять вручную всякий раз, когда захотите.</string>
+    <string name="ui_faq_clear_q" translatable="true">Как очистить историю или кэш?</string>
+    <string name="ui_faq_clear_a" translatable="true">Откройте Настройки &gt; Данные. Вы можете очистить недавние поиски, управлять размером кэша, выбрать автоматическую очистку и удалить сохраненные временные данные.</string>
+    <string name="ui_faq_debug_q" translatable="true">Как разблокировать параметры отладки?</string>
+    <string name="ui_faq_debug_a" translatable="true">Нажмите номер сборки на экране О программе пять раз. Параметры отладки - это диагностика, проверка конечной точки, журналы и тесты разработчиков.</string>
+    <string name="ui_frequently_asked_questions" translatable="true">Часто задаваемые вопросы</string>
+    <string name="ui_settings_favorites" translatable="true">Избранное</string>
+    <string name="ui_formula_display" translatable="true">Формула дисплея</string>
+    <string name="ui_import_settings" translatable="true">Импорт настроек</string>
+    <string name="ui_live_log_viewer" translatable="true">Просмотр журнала</string>
+    <string name="ui_ai_provider_and_keys" translatable="true">AI Provider &amp; Keys</string>
+    <string name="ui_dark_mode" translatable="true">Темный режим</string>
+    <string name="ui_search_history" translatable="true">История поиска</string>
+    <string name="ui_autosuggestions" translatable="true">Автоподсказки</string>
+    <string name="ui_compact_mode" translatable="true">Компактный режим</string>
+    <string name="ui_reduce_motion" translatable="true">Уменьшить движение</string>
+    <string name="ui_high_contrast_outlines" translatable="true">Контрастные контуры</string>
+    <string name="ui_default_structure_view" translatable="true">Вид структуры по умолчанию</string>
+    <string name="ui_offline_download_quality" translatable="true">Качество загрузки оффлайн</string>
+    <string name="ui_cache_size_limit" translatable="true">Лимит размера кэша</string>
+    <string name="ui_auto_clear_cache" translatable="true">Автоочистка кэша</string>
+    <string name="ui_api_endpoints" translatable="true">API endpoints</string>
+    <string name="ui_test_update_notification" translatable="true">Проверить уведомление об обновлении</string>
+    <string name="ui_show_welcome_screen" translatable="true">Показать приветственный экран</string>
+    <string name="ui_inspect_sharedpreferences" translatable="true">Инспектировать Общие настройки</string>
+    <string name="ui_wipe_all_sharedpreferences" translatable="true">Очистить все Общие настройки</string>
+    <string name="ui_update_notifications" translatable="true">Уведомления об обновлениях</string>
+    <string name="ui_update_available" translatable="true">Доступно обновление</string>
+    <string name="ui_periodic_table" translatable="true">Периодическая таблица</string>
+    <string name="ui_periodic_detail_element_overview_desc" translatable="true">Панель быстрой идентификации для этого элемента. Он отображает символ, семейство элементов, положение таблиц, обычное состояние, атомарную массу, год открытия и краткое резюме.</string>
+    <string name="ui_periodic_detail_element_images_desc" translatable="true">Изображение элемента отсылки, когда оно доступно. Это помогает подключить таблицу к элементу или образцу его может выглядеть в реальной жизни.</string>
+    <string name="ui_periodic_detail_electron_shells_desc" translatable="true">Выглядит в оболочку, как располагаются электроны вокруг атома. Внешняя оболочка особенно полезна, так как электроны клапанов объясняют множество моделей склеивания и реактивности.</string>
+    <string name="ui_periodic_detail_physical_properties_desc" translatable="true">Измеряемые свойства, описывающие как элемент ведет себя физически: насколько сильно он привлекает электроны, как большие его атомы, когда он плавит или кипи, и как это плотно.</string>
+    <string name="ui_periodic_detail_more_details_desc" translatable="true">Дополнительные справочные данные для элемента, сгруппированного по идентичности, атомарным данным и электронным данным.</string>
+    <string name="ui_periodic_detail_spectral_lines_desc" translatable="true">Видимый шаблон выброса для элемента. Эти светлые линии действуют как отпечаток пальца, помогая идентифицировать элемент из света, который он излучает.</string>
+    <string name="ui_periodic_detail_sources_desc" translatable="true">Откройте исходные данные и источники изображений, используемые для этой страницы. Используйте эти ссылки, когда вы хотите проверить значение или прочитать больше из источника.</string>
+    <string name="ui_state" translatable="true">Область</string>
+    <string name="ui_found" translatable="true">Найдено</string>
+    <string name="ui_unknown" translatable="true">Неизвестен</string>
+    <string name="ui_loading_wikipedia_description" translatable="true">Загрузка описания Википедии...</string>
+    <string name="ui_no_wikipedia_summary_available" translatable="true">Нет сводки об Википедии для этого элемента.</string>
+    <string name="ui_wikipedia_description_could_not_be_loaded" translatable="true">Описание Википедии не может быть загружено.</string>
+    <string name="ui_element_image_desc" translatable="true">Изображение элемента %1$s</string>
+    <string name="ui_shell_n" translatable="true">н=%1$d</string>
+    <string name="ui_show_short_configuration" translatable="true">Показать краткую конфигурацию</string>
+    <string name="ui_show_full_configuration" translatable="true">Показать полную конфигурацию</string>
+    <string name="ui_group_period_s" translatable="true">Группа %1$d, период %2$d</string>
+    <string name="ui_group_period_state_s" translatable="true">Группа %1$d · Период %2$d · %3$s</string>
+    <string name="ui_period_s" translatable="true">Период %1$d</string>
+    <string name="ui_lanthanides" translatable="true">Lanthanides</string>
+    <string name="ui_actinides" translatable="true">Actinides</string>
+    <string name="ui_about_s" translatable="true">О %1$s</string>
+    <string name="ui_x_summary" translatable="true">%1$s summary</string>
+    <plurals name="ui_element_count">
+        <item quantity="one">%1$d элемент</item>
+        <item quantity="few">%1$d элементов</item>
+        <item quantity="many">%1$d элементов</item>
+        <item quantity="other">%1$d элементов</item>
+    </plurals>
+    <string name="ui_no_downloads_yet" translatable="true">Пока загрузок нет</string>
+    <string name="ui_label_recent" translatable="true">Недавние</string>
+    <string name="ui_most_atoms" translatable="true">Большинство атомов</string>
+    <string name="ui_least_atoms" translatable="true">Наименее атомы</string>
+    <string name="ui_no_matches_found_title" translatable="true">Совпадений не найдено</string>
+    <!-- SettingsUi subtitles -->
+    <string name="ui_subtitle_all_118_offline" translatable="true">Все 118 элементов оффлайн</string>
+    <string name="ui_subtitle_about_links" translatable="true">Информация о приложении, ссылки, источники данных и кредиты</string>
+    <string name="ui_subtitle_pubchem_etc" translatable="true">PubChem · NCI/CADD · Wikipedia · GitHub · AI</string>
+    <string name="ui_subtitle_choose_description" translatable="true">Выберите, какой тип описания должен быть первым</string>
+    <string name="ui_subtitle_choose_structure_tab" translatable="true">Выберите первую вкладку структуры, открывающуюся после поиска</string>
+    <string name="ui_subtitle_conventional_hill" translatable="true">Обычное использование общего порядка элементов; Хилл поддерживает PubChem/Hill ордер</string>
+    <string name="ui_subtitle_clear_recent_searches" translatable="true">Очистить все недавние запросы</string>
+    <string name="ui_subtitle_clear_history_cache" translatable="true">Очистить историю/кэш и импортировать или экспортировать локальные настройки.</string>
+    <string name="ui_subtitle_clears_legacy_prefs" translatable="true">Очищает только устаревшие префекты и зашифрованные записи ключей</string>
+    <string name="ui_subtitle_diagnostics_tools" translatable="true">Диагностика и продвинутые инструменты отладки.</string>
+    <string name="ui_subtitle_control_theme" translatable="true">Управление темой, автоподсказками и поведением описания по умолчанию.</string>
+    <string name="ui_subtitle_full_offline_copies" translatable="true">Полные оффлайн копии</string>
+    <string name="ui_subtitle_make_cards_easier" translatable="true">Сделайте карты и элементы управления более простыми для разделения</string>
+    <string name="ui_subtitle_limit_temp_cache" translatable="true">Ограничить временное хранилище кэша</string>
+    <string name="ui_subtitle_pick_provider" translatable="true">Выберите провайдера и управляйте зашифрованными ключами локального API.</string>
+    <string name="ui_subtitle_pick_offline_quality" translatable="true">Выберите, сколько дополнительных данных ChemSearch сохраняет для оффлайн просмотра</string>
+    <string name="ui_subtitle_save_settings" translatable="true">Сохраняйте настройки, модели AI провайдеров и ключи API в JSON</string>
+    <string name="ui_subtitle_restore_settings" translatable="true">Восстановить настройки из резервной копии JSON</string>
+    <string name="ui_subtitle_saved_quick_links" translatable="true">Сохраненные быстрые ссылки</string>
+    <string name="ui_subtitle_replay_intro" translatable="true">Повторить ввод первого запуска</string>
+    <string name="ui_subtitle_remove_old_cache" translatable="true">Удалить старые временные файлы кэша в этом расписании</string>
+    <string name="ui_subtitle_send_sample_notification" translatable="true">Отправить образец обновления сейчас</string>
+    <string name="ui_subtitle_show_dropdown" translatable="true">Показать раскрывающийся список при вводе текста</string>
+    <string name="ui_subtitle_show_more_content" translatable="true">Показать больше содержимого на экране</string>
+    <string name="ui_subtitle_use_calmer_transitions" translatable="true">Использовать более спокойные переходы и изменения размеров</string>
+    <string name="ui_subtitle_notify_new_version" translatable="true">Уведомлять при наличии новой версии</string>
+    <string name="ui_subtitle_try_different" translatable="true">Попробуйте другое имя, формулу или CID.</string>
+    <string name="ui_subtitle_quick_answers" translatable="true">Быстрые ответы о ChemSearch</string>
+    <string name="ui_subtitle_substances_etc" translatable="true">Вещества, группы, реакции</string>
+    <string name="ui_subtitle_tap_download_icon" translatable="true">Нажмите на значок загрузки под звёздочкой на любом участке</string>
+    <string name="ui_subtitle_tap_star_icon" translatable="true">Нажмите на значок звезды на любом соединении</string>
+    <string name="ui_subtitle_throws_exception" translatable="true">Бросает необработанное исключение для тестирования</string>
+    <string name="ui_subtitle_jvm_system_ram" translatable="true">JVM куча + системная ОЗУ</string>
+    <!-- SettingsUi.kt: labels, actions, dialogs -->
+    <string name="ui_amoled_mode" translatable="true">Режим AMOLED</string>
+    <string name="ui_amoled_mode_dark_subtitle" translatable="true">Правда черный фон для каждой цветовой схемы</string>
+    <string name="ui_amoled_mode_light_subtitle" translatable="true">Включите темный режим для использования режима AMOLED</string>
+    <string name="ui_currently_dark" translatable="true">Сейчас темный</string>
+    <string name="ui_currently_light" translatable="true">Светлый</string>
+    <string name="ui_structure_view_2d" translatable="true">2Д</string>
+    <string name="ui_structure_view_3d" translatable="true">3D</string>
+    <string name="ui_structure_view_last_used" translatable="true">Последнее использованное</string>
+    <string name="ui_offline_quality_basic" translatable="true">Базовый</string>
+    <string name="ui_offline_quality_structures" translatable="true">Структуры</string>
+    <string name="ui_offline_quality_complete" translatable="true">Complete</string>
+    <string name="ui_formula_style_conventional" translatable="true">Обычный</string>
+    <string name="ui_formula_style_hill" translatable="true">Хилл</string>
+    <string name="ui_desc_source_pubchem" translatable="true">PubChem</string>
+    <string name="ui_desc_source_wikipedia" translatable="true">Википедия</string>
+    <string name="ui_desc_source_ai" translatable="true">AI</string>
+    <string name="ui_cache_limit_10_mb" translatable="true">10 МБ</string>
+    <string name="ui_cache_limit_50_mb" translatable="true">50 МБ</string>
+    <string name="ui_cache_limit_100_mb" translatable="true">100 МБ</string>
+    <string name="ui_cache_limit_unlimited" translatable="true">Неограниченный</string>
+    <string name="ui_cache_retention_daily" translatable="true">Ежедневно</string>
+    <string name="ui_cache_retention_weekly" translatable="true">Еженедельно</string>
+    <string name="ui_cache_retention_monthly" translatable="true">Ежемесячно</string>
+    <string name="ui_cache_retention_manual" translatable="true">Ручной</string>
+    <string name="ui_color_blue" translatable="true">Синий</string>
+    <string name="ui_color_violet" translatable="true">Фиолетовая</string>
+    <string name="ui_color_emerald" translatable="true">Изумруд</string>
+    <string name="ui_color_rose" translatable="true">Роза</string>
+    <string name="ui_color_amber" translatable="true">Янтарный</string>
+    <string name="ui_section_data" translatable="true">Данные</string>
+    <string name="ui_section_updates" translatable="true">Обновления</string>
+    <string name="ui_reference" translatable="true">Артикул</string>
+    <string name="ui_open" translatable="true">Открыть</string>
+    <string name="ui_install" translatable="true">Установить</string>
+    <string name="ui_download" translatable="true">Скачать</string>
+    <string name="ui_check" translatable="true">Проверить</string>
+    <string name="ui_checking" translatable="true">Проверка...</string>
+    <string name="ui_never_checked" translatable="true">Не проверять</string>
+    <string name="ui_last_checked_s" translatable="true">Последняя проверка %1$s</string>
+    <string name="ui_downloading_update_d" translatable="true">Загрузка обновления (%1$d%%)</string>
+    <string name="ui_download_complete_tap_install" translatable="true">Загрузка завершена. Нажмите «Установить», если запрос закрыт.</string>
+    <string name="ui_latest_s" translatable="true">Последняя: %1$s</string>
+    <string name="ui_up_to_date_latest_s" translatable="true">У вас последняя версия (последняя %1$s)</string>
+    <string name="ui_update_check_failed_s" translatable="true">Ошибка проверки обновления: %1$s</string>
+    <string name="ui_package_s" translatable="true">Пакет: %1$s</string>
+    <string name="ui_version_s_d" translatable="true">v%1$s (%2$d)</string>
+    <string name="ui_debug" translatable="true">Debug</string>
+    <string name="ui_release" translatable="true">Релиз</string>
+    <string name="ui_empty" translatable="true">Пусто</string>
+    <string name="ui_default_location" translatable="true">Местоположение по умолчанию</string>
+    <string name="ui_app_internal_cache_default" translatable="true">Внутренний кэш (по умолчанию)</string>
+    <string name="ui_key_saved" translatable="true">Ключ сохранен</string>
+    <string name="ui_needs_key" translatable="true">Нужен ключ</string>
+    <string name="ui_needs_api_key" translatable="true">Требуется ключ API</string>
+    <string name="ui_add_key" translatable="true">Добавить ключ</string>
+    <string name="ui_use_ai" translatable="true">Использовать ИИ</string>
+    <string name="ui_get_or_manage_a_key_at_s" translatable="true">Получить или управлять ключом на %1$s</string>
+    <string name="ui_imported_d_favorites_and_d_downloads" translatable="true">Импортировано %1$d избранных и %2$d загрузок</string>
+    <string name="ui_replaced_library_with_d_favorites_and_d_downloads" translatable="true">Заменена библиотека с %1$d избранным и %2$d загрузок</string>
+    <string name="ui_saved_d" translatable="true">%1$d сохранено</string>
+    <string name="ui_a_z" translatable="true">А-Я</string>
+    <string name="ui_filter_downloads" translatable="true">Фильтр загрузок</string>
+    <string name="ui_updates_and_help" translatable="true">Обновления &amp; Помощь</string>
+    <string name="ui_help" translatable="true">Справка</string>
+    <string name="ui_settings_description_updates" translatable="true">Настройка поиска, ИО, Обновлений хранилища и приложений.</string>
+    <string name="ui_settings_description_support" translatable="true">Настройте поиск, AI, хранилище и поддержку опций.</string>
+    <string name="ui_control_update_checks_and_open_support_resources" translatable="true">Контролируйте проверку обновлений и откройте вспомогательные ресурсы.</string>
+    <string name="ui_faq_and_support_resources" translatable="true">FAQ и вспомогательные ресурсы.</string>
+    <string name="ui_subtitle_saved_quick_links_device" translatable="true">Сохраненные быстрые ссылки на этом устройстве.</string>
+    <string name="ui_subtitle_offline_copies_saved_data" translatable="true">Оффлайн сложные копии с сохраненными структурами и данными.</string>
+    <string name="ui_subtitle_browse_database" translatable="true">Обзор веществ, реакций, функциональных групп и ионов.</string>
+    <string name="ui_subtitle_browse_periodic_table" translatable="true">Просматривайте все элементы, группы, массы, и обычные окислительные состояния.</string>
+    <string name="ui_not_run_yet" translatable="true">Ещё не запущен</string>
+    <string name="ui_last_run_s" translatable="true">Последний запуск: %1$s</string>
+    <string name="ui_success_d_failed_d_skipped_d" translatable="true">Success %1$d · Failed %2$d · Skipped %3$d</string>
+    <string name="ui_run" translatable="true">Запустить</string>
+    <string name="ui_re_run" translatable="true">Перезапустить</string>
+    <string name="ui_running" translatable="true">Выполняется...</string>
+    <string name="ui_no_logs_yet_perform_an_action" translatable="true">Пока нет журналов. Выполните действие в приложении.</string>
+    <string name="ui_verbose_logging_off_only_errors_captured" translatable="true">Подробное журналирование отключено. Только ошибки захвачены.\nВключите его, чтобы увидеть журналы отладки.</string>
+    <string name="ui_ping_pubchem_fallback_3d_wikipedia_github_and_ai" translatable="true">Ping PubChem, резервные 3D, Wikipedia, GitHub, и AI провайдеры</string>
+    <string name="ui_last_run_d_ok_d_failed_d_skipped" translatable="true">Последний запуск: %1$d ok • %2$d не удалось • %3$d пропущено</string>
+    <string name="ui_d_legacy_keys_stored_secrets_masked" translatable="true">%1$d устаревших ключей сохранено · секреты замаскированы</string>
+    <string name="ui_view" translatable="true">Вид</string>
+    <string name="ui_send" translatable="true">Отправить</string>
+    <string name="ui_wipe" translatable="true">Очистка</string>
+    <string name="ui_crash" translatable="true">Сбой</string>
+    <string name="ui_used_d_mb_of_d_mb_max" translatable="true">Использовано %1$d МБ макс. %2$d МБ</string>
+    <string name="ui_used_d_mb_of_d_mb_total" translatable="true">Использовано %1$d МБ из всего %2$d МБ</string>
+    <string name="ui_mem_used" translatable="true">Использовано</string>
+    <string name="ui_mem_allocated" translatable="true">Выделено</string>
+    <string name="ui_mem_max" translatable="true">Макс</string>
+    <string name="ui_mem_headroom" translatable="true">Глоб</string>
+    <string name="ui_mem_available" translatable="true">Доступно</string>
+    <string name="ui_mem_total" translatable="true">Итого</string>
+    <plurals name="ui_lines_captured">
+        <item quantity="one">%1$d строка захвачена</item>
+        <item quantity="few">%1$d строк захвачено</item>
+        <item quantity="many">%1$d строк захвачено</item>
+        <item quantity="other">%1$d строк захвачено</item>
+    </plurals>
+    <plurals name="ui_matches_count">
+        <item quantity="one">%1$d матч</item>
+        <item quantity="few">%1$d совпадений</item>
+        <item quantity="many">%1$d совпадений</item>
+        <item quantity="other">%1$d совпадений</item>
+    </plurals>
+    <!-- StructureSearchUi.kt: drawing tools, editor, and results dialog -->
+    <string name="ui_structure_search_blocked_two_atoms" translatable="true">Нарисуйте по крайней мере два подключенных атома перед поиском.</string>
+    <string name="ui_structure_search_blocked_connect" translatable="true">Подключите атомы перед поиском.</string>
+    <string name="ui_structure_search_info" translatable="true">Информация о поиске структуры</string>
+    <string name="ui_atoms" translatable="true">Атомы</string>
+    <string name="ui_bond_type" translatable="true">Тип облигаций</string>
+    <string name="ui_templates" translatable="true">Шаблоны</string>
+    <string name="ui_selected_s" translatable="true">Выбрано: %1$s</string>
+    <string name="ui_tap_to_place_atoms" translatable="true">Нажмите, чтобы поставить атомы</string>
+    <string name="ui_search_structure" translatable="true">Структура поиска</string>
+    <string name="ui_structure_search_failed" translatable="true">Поиск структуры не удался</string>
+    <string name="ui_matching_results" translatable="true">Результаты совпадения</string>
+    <string name="ui_searching_pubchem" translatable="true">Поиск PubChem...</string>
+    <string name="ui_try_a_simpler_drawing_or_clean_the_structure" translatable="true">Попробуйте более простой рисунок или очистите структуру.</string>
+    <string name="ui_bond_single" translatable="true">Одиночная связь</string>
+    <string name="ui_bond_double" translatable="true">Двойная облигация</string>
+    <string name="ui_bond_triple" translatable="true">Тройная связь</string>
+    <string name="ui_bond_aromatic" translatable="true">Ароматическая связь</string>
+    <plurals name="ui_matches_found">
+        <item quantity="one">%1$d совпадение найдено</item>
+        <item quantity="few">Найдено %1$d совпадений</item>
+        <item quantity="many">Найдено %1$d совпадений</item>
+        <item quantity="other">Найдено %1$d совпадений</item>
+    </plurals>
+    <!-- ChemicalDatabaseUi.kt: browser headers, search results, empty states -->
+    <string name="ui_search_s" translatable="true">Искать %1$s</string>
+    <string name="ui_search_results" translatable="true">Результаты поиска</string>
+    <string name="ui_no_entries_in_this_category" translatable="true">Нет записей в этой категории</string>
+    <string name="ui_no_database_entries_match_s" translatable="true">Нет записей базы данных, соответствующих \"%1$s\"</string>
+    <plurals name="ui_matching_entries">
+        <item quantity="one">%1$d совпадающая запись</item>
+        <item quantity="few">%1$d совпадающих записей</item>
+        <item quantity="many">%1$d совпадающих записей</item>
+        <item quantity="other">%1$d совпадающих записей</item>
+    </plurals>
+    <!-- PeriodicTrends -->
+    <string name="ui_trend_electronegativity_short" translatable="true">RU</string>
+    <string name="ui_trend_atomic_radius_short" translatable="true">Radius</string>
+    <string name="ui_trend_ionization_energy_short" translatable="true">IE</string>
+    <string name="ui_trend_density_short" translatable="true">Плотность</string>
+    <string name="ui_trend_melting_point_short" translatable="true">Пламя</string>
+    <string name="ui_trend_boiling_point_short" translatable="true">Вар</string>
+    <string name="ui_trend_electronegativity_desc" translatable="true">Насколько сильно атом привлекает связывание электронов.</string>
+    <string name="ui_trend_atomic_radius_desc" translatable="true">Приблизительно атомарный размер в пиктометрах.</string>
+    <string name="ui_trend_ionization_energy_desc" translatable="true">Энергия, необходимая для удаления первого электрона с нейтрального атома.</string>
+    <string name="ui_trend_density_desc" translatable="true">Масса по объему единицы вблизи стандартных условий при включении.</string>
+    <string name="ui_trend_melting_point_desc" translatable="true">Температура, при которой элемент меняется от твердого к жидкости.</string>
+    <string name="ui_trend_boiling_point_desc" translatable="true">Температура, при которой элемент меняется от жидкости к газу.</string>
+    <string name="ui_trend_variable" translatable="true">Вариации</string>
+    <string name="ui_trend_electronegativity" translatable="true">Электроника</string>
+    <string name="ui_trend_atomic_radius" translatable="true">Атомный радиус</string>
+    <string name="ui_trend_ionization_energy" translatable="true">Энергия ионизации</string>
+    <string name="ui_trend_density" translatable="true">Плотность</string>
+    <string name="ui_trend_melting_point" translatable="true">Точка плавления</string>
+    <string name="ui_trend_boiling_point" translatable="true">Точка кипения</string>
+    <string name="ui_lowest" translatable="true">Наименьший</string>
+    <string name="ui_highest" translatable="true">Наивысший</string>
+    <string name="ui_not_listed" translatable="true">Нет в списке</string>
+    <string name="ui_no_listed_values" translatable="true">Нет перечисленных значений</string>
+    <string name="ui_trend_summary_footer" translatable="true">%1$d перечисленные значения · Диапазон %2$s</string>
+    <string name="ui_na" translatable="true">н/д</string>
+    <!-- StructureSearch modes -->
+    <string name="ui_structure_search_exact" translatable="true">Точно</string>
+    <string name="ui_structure_search_similar" translatable="true">Похожие</string>
+    <string name="ui_structure_search_contains" translatable="true">Содержит</string>
+    <string name="ui_structure_search_part_of" translatable="true">Часть</string>
+    <string name="ui_structure_search_exact_desc" translatable="true">Найти ту же структуру</string>
+    <string name="ui_structure_search_similar_desc" translatable="true">Найти 2D совпадения</string>
+    <string name="ui_structure_search_contains_desc" translatable="true">Найти соединения, содержащие этот рисунок</string>
+    <string name="ui_structure_search_part_of_desc" translatable="true">Найти структуры внутри этого рисунка</string>
+    <!-- StructureSearch rings -->
+    <string name="ui_ring_cyclopropane" translatable="true">Циклопропан</string>
+    <string name="ui_ring_cyclobutane" translatable="true">Cyclobutane</string>
+    <string name="ui_ring_cyclopentane" translatable="true">Циклопентан</string>
+    <string name="ui_ring_cyclohexane" translatable="true">Циклогексан</string>
+    <string name="ui_ring_cycloheptane" translatable="true">Циклогептан</string>
+    <string name="ui_ring_cyclooctane" translatable="true">Cyclooctane</string>
+    <string name="ui_ring_benzene" translatable="true">Бензен</string>
+    <string name="ui_ring_pyridine" translatable="true">Pyridine</string>
+    <string name="ui_ring_furan" translatable="true">Furan</string>
+    <string name="ui_ring_thiophene" translatable="true">Тхиопхен</string>
+    <string name="ui_ring_pyrrole" translatable="true">Pyrrole</string>
+    <string name="ui_ring_imidazole" translatable="true">Imidazole</string>
+    <string name="ui_ring_oxazole" translatable="true">Океазоло</string>
+    <string name="ui_ring_thiazole" translatable="true">Триазоль</string>
+    <!-- StructureSearch chains -->
+    <string name="ui_chain_ethyl" translatable="true">Этиловая цепь</string>
+    <string name="ui_chain_propyl" translatable="true">Пропилцевая цепь</string>
+    <string name="ui_chain_butyl" translatable="true">Мягкая цепь</string>
+    <string name="ui_chain_hexyl" translatable="true">Гексилцепь</string>
+    <string name="ui_chain_carbonyl" translatable="true">Карбонил</string>
+    <string name="ui_chain_nitrile" translatable="true">Nitrile</string>
+    <string name="ui_chain_hydroxyl" translatable="true">Гидроксил</string>
+    <string name="ui_chain_amino" translatable="true">Amino</string>
+    <!-- StructureSearch warnings -->
+    <string name="ui_structure_warning_no_bonds" translatable="true">Добавьте хотя бы одну облигацию, чтобы PubChem мог сравнить структуру.</string>
+    <string name="ui_structure_warning_disconnected" translatable="true">Подключите все фрагменты перед поиском.</string>
+    <string name="ui_structure_warning_large" translatable="true">Очень большие рисунки могут быть медленными или могут быть отклонены PubChem.</string>
+    <string name="ui_structure_warning_aromatic" translatable="true">Ароматические облигации экспортируются как 4 типа ароматических облигаций V2000.</string>
+    <!-- FormulaParser validation messages -->
+    <string name="ui_formula_parser_empty" translatable="true">Введите формулу</string>
+    <string name="ui_formula_parser_invalid_char" translatable="true">Не удалось разобрать формулу около \'%1$s\'</string>
+    <string name="ui_formula_parser_unparseable" translatable="true">Не удалось разобрать формулу</string>
+    <string name="ui_formula_parser_zero_count" translatable="true">Количество элементов должно быть больше нуля</string>
+    <string name="ui_formula_parser_invalid_multiplier" translatable="true">Неверный ведущий мультипликатор</string>
+    <string name="ui_formula_parser_multiplier_empty" translatable="true">За множителем должна следовать формула</string>
+    <string name="ui_formula_parser_invalid_character" translatable="true">Недопустимый символ формулы \'%1$s\'</string>
+    <string name="ui_formula_parser_unclosed_group" translatable="true">Незакрытая группа</string>
+    <string name="ui_formula_parser_unmatched_group" translatable="true">Закрытие группы без совпадения</string>
+    <!-- StructureStatus labels -->
+    <string name="ui_structure_status_pubchem_3d" translatable="true">Сопровождающий PubChem 3D</string>
+    <string name="ui_structure_status_generated_fallback" translatable="true">Сгенерированный резервный</string>
+    <string name="ui_structure_status_unavailable" translatable="true">Структура недоступна</string>
+    <string name="ui_structure_status_pubchem_3d_detail" translatable="true">3D-конформер PubChem. Это молекулярный консерв, не хрусталь или ионная решетка.</string>
+    <string name="ui_structure_status_generated_fallback_detail" translatable="true">Сгенерированные оценки из SMILES, InChI или InChIKey. Подтвердите перед использованием для точной геометрии.</string>
+    <string name="ui_structure_status_unavailable_detail" translatable="true">У металлов твердых частиц, солей и структуры ионической решетки не существует ни одного молекулярного 3D-совместителя в стиле PubChem.</string>
+    <!-- SourceMetadata / Credits -->
+    <string name="ui_source_iupac_gold_book" translatable="true">Золотая книга IUPAC</string>
+    <string name="ui_source_iupac_red_book" translatable="true">Красная книга IUPAC</string>
+    <string name="ui_source_pubchem_pug_rest" translatable="true">ОТКЛЮЧЕНИЕ PubChem</string>
+    <string name="ui_source_pubchem_pug_view" translatable="true">Просмотр PubChem PUG</string>
+    <string name="ui_source_nci_cadd_resolver" translatable="true">NCI/CADD резолвер</string>
+    <string name="ui_source_unece_ghs" translatable="true">UNECE GHS</string>
+    <string name="ui_source_android_offline_first" translatable="true">Сначала Android оффлайн</string>
+    <string name="ui_source_pubchem_ghs" translatable="true">PubChem GHS Классификация</string>
+    <string name="ui_credit_github_repository" translatable="true">GitHub repository</string>
+    <string name="ui_credit_latest_release" translatable="true">Последний релиз</string>
+    <string name="ui_credit_wiki" translatable="true">Вики</string>
+    <string name="ui_credit_issue_tracker" translatable="true">Трекер задач</string>
+    <string name="ui_credit_product_hunt" translatable="true">Товарная Охота</string>
+    <string name="ui_credit_license" translatable="true">Лицензия</string>
+    <string name="ui_credit_pubchem_periodic_table" translatable="true">Стол PubChem</string>
+    <string name="ui_credit_wikipedia_wikimedia" translatable="true">Общины Википедии и Викимедиа</string>
+    <string name="ui_credit_google_gemini" translatable="true">Google Gemini</string>
+    <string name="ui_credit_google_gemini_desc" translatable="true">Быстрое общее описание химии от Google.</string>
+    <string name="ui_credit_groq_cloud" translatable="true">Groq облако</string>
+    <string name="ui_credit_groq_cloud_desc" translatable="true">Очень быстрый OpenAI-совместимый чат завершен.</string>
+    <string name="ui_credit_openai" translatable="true">OpenAI</string>
+    <string name="ui_credit_openai_desc" translatable="true">Описания сбалансированного AI с использованием дополнений чата OpenAI.</string>
+    <string name="ui_credit_openrouter" translatable="true">Открытый маршрутизатор</string>
+    <string name="ui_credit_openrouter_desc" translatable="true">Запросы маршрутов на доступную модель через OpenRouter.</string>
+    <string name="ui_credit_mistral_ai" translatable="true">Mistral AI</string>
+    <string name="ui_credit_mistral_ai_desc" translatable="true">Легкие резюме из чата Mistral API.</string>
+    <string name="ui_credit_jetpack_compose" translatable="true">Jetpack Compose</string>
+    <string name="ui_credit_material_3" translatable="true">Материал 3</string>
+    <string name="ui_credit_androidx_navigation" translatable="true">AndroidX Navigation Compose</string>
+    <string name="ui_credit_androidx_room" translatable="true">Комната AndroidX</string>
+    <string name="ui_credit_androidx_datastore" translatable="true">AndroidX DataStore</string>
+    <string name="ui_credit_androidx_workmanager" translatable="true">Менеджер рабочих процессов AndroidX</string>
+    <string name="ui_credit_retrofit" translatable="true">Ретрофит</string>
+    <string name="ui_credit_okhttp" translatable="true">OkHttp</string>
+    <string name="ui_credit_coil" translatable="true">Катушка</string>
+    <string name="ui_credit_gson" translatable="true">Гсон</string>
+    <string name="ui_credit_coroutines" translatable="true">Kotlin Coroutines</string>
+    <string name="ui_credit_phosphor_icons" translatable="true">Значки фосфора</string>
+    <string name="ui_credit_icons8" translatable="true">Icons8</string>
+    <string name="ui_credit_github_repository_detail" translatable="true">Источники, релизы, выпуски и примечания к проекту</string>
+    <string name="ui_credit_latest_release_detail" translatable="true">Скачать новейший APK</string>
+    <string name="ui_credit_wiki_detail" translatable="true">Руководство по настройке и заметки</string>
+    <string name="ui_credit_issue_tracker_detail" translatable="true">Отчеты об ошибках и запросы функций</string>
+    <string name="ui_credit_product_hunt_detail" translatable="true">Страница проекта Химический Поиск</string>
+    <string name="ui_credit_license_detail" translatable="true">Лицензия открытого исходного кода</string>
+    <string name="ui_credit_pubchem_pug_rest_detail" translatable="true">Составной поиск, идентификаторы, свойства, изображения, синонимы, изомеры и структуры SDF</string>
+    <string name="ui_credit_pubchem_pug_view_detail" translatable="true">Разделы безопасности, данные о СГС, описания и записи о источниках</string>
+    <string name="ui_credit_pubchem_periodic_table_detail" translatable="true">Свойства элементов для периодической таблицы</string>
+    <string name="ui_credit_wikipedia_wikimedia_detail" translatable="true">Описание сводки, элементы изображений и спектральные изображения</string>
+    <string name="ui_credit_bowserinator_detail" translatable="true">Дополнительные данные, электронные оболочки, резюме и ссылки на изображения</string>
+    <string name="ui_credit_nci_cadd_detail" translatable="true">Резервная генерация SDF при недоступности PubChem 3D</string>
+    <string name="ui_credit_iupac_gold_book_detail" translatable="true">Термины химии и их определения</string>
+    <string name="ui_credit_iupac_red_book_detail" translatable="true">Неорганические правила именования</string>
+    <string name="ui_credit_unece_ghs_detail" translatable="true">Пиктограммы СГС и знаки опасности</string>
+    <string name="ui_credit_ai_descriptions_detail" translatable="true">Дополнительные описания ИИ</string>
+    <string name="ui_credit_jetpack_compose_detail" translatable="true">Родной Android UI</string>
+    <string name="ui_credit_material_3_detail" translatable="true">Пользовательские компоненты и темы</string>
+    <string name="ui_credit_androidx_navigation_detail" translatable="true">Навигация на экране</string>
+    <string name="ui_credit_androidx_room_detail" translatable="true">Оффлайн библиотечное хранилище</string>
+    <string name="ui_credit_androidx_datastore_detail" translatable="true">Хранилище настроек приложения</string>
+    <string name="ui_credit_androidx_workmanager_detail" translatable="true">Проверка фонового обновления</string>
+    <string name="ui_credit_retrofit_detail" translatable="true">HTTP API клиент</string>
+    <string name="ui_credit_okhttp_detail" translatable="true">Транспорт сети</string>
+    <string name="ui_credit_coil_detail" translatable="true">Структура эскизов и удаленных изображений</string>
+    <string name="ui_credit_gson_detail" translatable="true">Преобразование JSON</string>
+    <string name="ui_credit_coroutines_detail" translatable="true">Асинхронная работа</string>
+    <string name="ui_credit_phosphor_icons_detail" translatable="true">Значок приложения установлен</string>
+    <string name="ui_credit_icons8_detail" translatable="true">Значок логотипа Википедии</string>
+    <!-- Search / ChemicalDatabase / IsomerFinder extras -->
+    <string name="ui_view_in_pubchem" translatable="true">Посмотреть в PubChem</string>
+    <string name="ui_toggle_theme" translatable="true">Переключить тему</string>
+    <string name="ui_structural_isomers" translatable="true">Структурные изомеры</string>
+    <string name="ui_isotope" translatable="true">Isotope</string>
+    <string name="ui_cid_label" translatable="true">CID %1$s</string>
+    <string name="ui_compare_count" translatable="true">Сравнить %1$d</string>
+    <string name="ui_isotope_showing_substituted" translatable="true">Показываются изотопы-подстановленные составы.</string>
+    <string name="ui_isotope_results_hidden" translatable="true">%1$d изотоп результат%2$s скрыт.</string>
+    <string name="ui_isomer_search_info" translatable="true">Информация о поиске Isomer</string>
+    <string name="ui_clear_formula" translatable="true">Очистить формулу</string>
+    <string name="ui_results_count_for_formula" translatable="true">%1$d результат%2$s для %3$s</string>
+    <string name="ui_2d_structure_of" translatable="true">2D структура %1$s</string>
+    <string name="ui_searching_pubchem_for_isomers" translatable="true">Поиск PubChem для изомеров…</string>
+    <string name="ui_results_count" translatable="true">%1$d результат%2$s</string>
+    <string name="ui_min_weight" translatable="true">Мин. вес</string>
+    <string name="ui_max_weight" translatable="true">Макс вес</string>
+    <string name="ui_has_3d" translatable="true">Имеет 3D</string>
+    <string name="ui_has_ghs" translatable="true">Имеет GHS</string>
+    <string name="ui_structure_of" translatable="true">Структура %1$s</string>
+    <string name="ui_mw" translatable="true">MW %1$s</string>
+    <string name="ui_charge_value" translatable="true">заряд %1$s</string>
+    <!-- SdfFallback -->
+    <string name="ui_sdf_fallback_message" translatable="true">Генерируется оценка из %1$s с помощью резолвера NCI/CADD.</string>
+    <!-- SearchUi info dialogs -->
+    <string name="ui_info_iupac_name" translatable="true">Название IUPAC</string>
+    <string name="ui_info_iupac_name_body" translatable="true">Систематическое название, присвоенное Международному союзу по химии и применяемой химии, уникально описывает структуру с использованием стандартной конвенции о наименовании.</string>
+    <string name="ui_info_cid" translatable="true">CID</string>
+    <string name="ui_info_cid_body" translatable="true">PubChem Compound ID (CID) - это уникальный номер, присвоенный базой данных PubChem для идентификации этой точной комбинации.</string>
+    <string name="ui_info_cas_number" translatable="true">Номер CAS</string>
+    <string name="ui_info_cas_number_body" translatable="true">Регистрационный номер Службы подготовки докладов по химическим веществам.</string>
+    <string name="ui_info_condensed_formula" translatable="true">Уплотнённая формула</string>
+    <string name="ui_info_condensed_formula_body" translatable="true">Компактная формула структуры, полученная в результате подключения SMILES, когда приложение может уверенно прочитать структуру.</string>
+    <string name="ui_info_smiles" translatable="true">SMILES</string>
+    <string name="ui_info_smiles_body" translatable="true">Упрощенная молекулярная система ввода линий ввода.Текстовое обозначение, описывающее молекулярную структуру с использованием атомов и облигаций в одной строке.</string>
+    <string name="ui_info_inchi" translatable="true">ИнЧИ</string>
+    <string name="ui_info_inchi_body" translatable="true">Международный химический идентификатор: стандартный текстовый идентификатор химических веществ, предназначенный для использования в качестве уникальных и нематериальных.</string>
+    <string name="ui_info_inchikey" translatable="true">Ключ InChIKey</string>
+    <string name="ui_info_inchikey_body" translatable="true">Удобная версия для поиска и индекса, чем полная строка InChI.</string>
+    <string name="ui_info_empirical_formula" translatable="true">Эмпирическая формула</string>
+    <string name="ui_info_empirical_formula_body" translatable="true">Простейшее соотношение целого числа атомов в соединении.</string>
+    <string name="ui_info_atom_number" translatable="true">Атом номер</string>
+    <string name="ui_info_atom_number_body" translatable="true">Общее количество атомов, представленных в структурной записи.</string>
+    <string name="ui_info_bond_number" translatable="true">Номер облигации</string>
+    <string name="ui_info_bond_number_body" translatable="true">Общее количество облигаций, представленных в структуре отчета.</string>
+    <string name="ui_info_formal_charge" translatable="true">Формальная зарядка</string>
+    <string name="ui_info_formal_charge_body" translatable="true">Электрический заряд назначается атому в молекулу, если все облигации одинаково разделены.</string>
+    <string name="ui_info_what_this_shows" translatable="true">Что это показывает</string>
+    <string name="ui_info_advanced_properties_what_body" translatable="true">Дополнительные PubChem вычислили свойства для людей, которые хотят более глубокого внешнего вида, чем формула, массы, идентификаторов и безопасности.</string>
+    <string name="ui_info_why_hidden_by_default" translatable="true">Почему по умолчанию это скрыто</string>
+    <string name="ui_info_advanced_properties_why_hidden_body" translatable="true">Эти значения полезны, но при обычном поиске они могут чувствовать себя техническими.</string>
+    <string name="ui_info_xlogp" translatable="true">XLogP</string>
+    <string name="ui_info_xlogp_body" translatable="true">Рассчитанное значение разделения масла и воды. Чем выше значение вещества, тем больше гидрофобия; чем ниже или отрицательный; тем более низкие или отрицательные значения, как правило, означают водопроницаемость.</string>
+    <string name="ui_info_tpsa" translatable="true">TPSA</string>
+    <string name="ui_info_tpsa_body" translatable="true">Топологическая полярная поверхность, которая помогает сравнить, сколько полярной поверхности имеет молекула, что часто имеет значение для растворимости и биологического движения.</string>
+    <string name="ui_info_complexity" translatable="true">Сложность</string>
+    <string name="ui_info_complexity_body" translatable="true">PubChem балл, основанный на таких структурных особенностях, как кольца, веветвие, атомы, узы и стереохимия. Это полезно для сравнения, а не для оценки сложности.</string>
+    <string name="ui_info_mass_values" translatable="true">Массовые значения</string>
+    <string name="ui_info_mass_values_body" translatable="true">Точная масса и моноизотопная масса используют изотопные массы, наиболее полезны для массовой спектрометрии и точной аналитической работы.</string>
+    <string name="ui_info_3d_values" translatable="true">3D-значения</string>
+    <string name="ui_info_3d_values_body" translatable="true">3D поля появляются только тогда, когда PubChem имеет данные совпадающие. Отсутствующие 3D значения не означают, что состав недействителен.</string>
+    <string name="ui_info_what_tags_mean" translatable="true">Что означают эти теги</string>
+    <string name="ui_info_what_tags_mean_body" translatable="true">Это короткие категории этикеток PubChem аннотаций, таких как химические классы, классы препаратов и темы в стиле MeSH.</string>
+    <string name="ui_info_why_tags_look_strange" translatable="true">Почему некоторые теги выглядят странными</string>
+    <string name="ui_info_why_tags_look_strange_body" translatable="true">PubChem может прикреплять такие термины как кормление груди, лактация, молоко или человека, когда вещество появляется в медицинских, вредных или лекарственных источников. Они являются исходными категориями, не всегда простыми языковыми описаниями существа.</string>
+    <string name="ui_info_how_to_read_tags" translatable="true">Как их прочитать</string>
+    <string name="ui_info_how_to_read_tags_body" translatable="true">Используйте эти фишки в качестве быстрых подсказок, а не финишных ярлыков. Тег говорит о том, что вещество появляется в категории данных где-то в PubChem.</string>
+    <string name="ui_info_why_classification_empty" translatable="true">Почему это может быть пустым</string>
+    <string name="ui_info_why_classification_empty_body" translatable="true">Некоторые простые или редкие вещества не имеют полезной публичной классификации, поэтому ChemSearch скрывает карточку, когда ничего не полезно показывать.</string>
+    <string name="ui_info_uses_what_body" translatable="true">Короткая заметка PubChem о сообщаемом использовании, ролях, появлении или исходном коде, когда PubChem имеет возможность читать данные.</string>
+    <string name="ui_info_why_bullets_vary" translatable="true">Почему пули могут меняться</string>
+    <string name="ui_info_why_bullets_vary_body" translatable="true">Эти примечания получены из различных источников PubChem, так что одно вещество может иметь подробные примечания по использованию, в то время как другое имеет лишь одну категорию или вообще ничего.</string>
+    <string name="ui_info_safety_note" translatable="true">Примечание о безопасности</string>
+    <string name="ui_info_uses_safety_note_body" translatable="true">Эти пули представляют собой краткие справочные примечания, а не инструкции по использованию, дозированию, производству, хранению или обращению с химическими веществами.</string>
+    <string name="ui_info_why_uses_empty" translatable="true">Почему это может быть пустым</string>
+    <string name="ui_info_why_uses_empty_body" translatable="true">Многие вещества не используют аннотации в PubChem. В этом случае ChemSearch просто скрывает карту.</string>
+    <string name="ui_info_elemental_analysis_what" translatable="true">Что это?</string>
+    <string name="ui_info_elemental_analysis_what_body" translatable="true">Показывает процент каждого элемента по массе в составе. Вычисляется из атомной массы и молекулярной формулы.</string>
+    <string name="ui_info_elemental_analysis_example" translatable="true">Пример</string>
+    <string name="ui_info_elemental_analysis_example_body" translatable="true">Вода (H2O) составляет около 11% водорода и около 89% кислорода по массе, так как кислородные атомы значительно тяжелее атомов водорода.</string>
+    <string name="ui_info_elemental_analysis_why" translatable="true">Почему важно</string>
+    <string name="ui_info_elemental_analysis_why_body" translatable="true">Полезно в аналитической химии для проверки сложной идентичности, а также в пищевой науке для понимания состава питательных веществ.</string>
+    <string name="ui_info_what_is_ghs" translatable="true">Что такое GHS?</string>
+    <string name="ui_info_what_is_ghs_body" translatable="true">Согласованная на глобальном уровне система классификации и маркировки химических веществ (СГС) является стандартом ООН для распространения химических веществ во всем мире.</string>
+    <string name="ui_info_signal_word" translatable="true">Сигнальное слово</string>
+    <string name="ui_info_signal_word_body" translatable="true">\'Опасность\' означает более серьезную опасность. \'Предупреждение\' означает менее серьезную опасность.</string>
+    <string name="ui_info_pictograms" translatable="true">Пиктограммы</string>
+    <string name="ui_info_pictograms_body" translatable="true">Стандартные символы (GHS01–GHS09), которые визуально сообщают тип опасности, такой как воспламеняемость, токсичность, коррозия или экологический вред.</string>
+    <string name="ui_info_hazard_statements" translatable="true">Заявления об опасностях</string>
+    <string name="ui_info_hazard_statements_body" translatable="true">Стандартные H-коды, описывающие характер и степень опасности. Например H225 означает \"высоковоспламеняющиеся жидкости и пары\".</string>
+    <string name="ui_info_ghs_data_source" translatable="true">Источник данных</string>
+    <string name="ui_info_ghs_data_source_body" translatable="true">В пиктограмме используются официальные условные обозначения СГС ЕЭК ООН.</string>
+    <string name="ui_ghs_label_explosive" translatable="true">Взрывчатка</string>
+    <string name="ui_ghs_label_flammable" translatable="true">Воспламенная</string>
+    <string name="ui_ghs_label_oxidizing" translatable="true">Окисление</string>
+    <string name="ui_ghs_label_compressed_gas" translatable="true">Сжатый газ</string>
+    <string name="ui_ghs_label_corrosive" translatable="true">Коррозивный</string>
+    <string name="ui_ghs_label_toxic" translatable="true">Toxic</string>
+    <string name="ui_ghs_label_harmful" translatable="true">Вредные</string>
+    <string name="ui_ghs_label_health_hazard" translatable="true">Опасность здоровья</string>
+    <string name="ui_ghs_label_environmental" translatable="true">Экологическая среда</string>
+    <string name="ui_ghs_disclaimer" translatable="true">Только справочная информация. Официальная ИКБ не заменяет локальные правила и инструкции.</string>
+    <string name="ui_hazard_unstable_explosive" translatable="true">Нестабильный взрыв</string>
+    <string name="ui_hazard_highly_flammable" translatable="true">Высоковоспламеняющаяся жидкость и пар</string>
+    <string name="ui_hazard_flammable_liquid" translatable="true">Воспаление жидкости и пара</string>
+    <string name="ui_hazard_toxic_if_swallowed" translatable="true">Toxic if swallowed</string>
+    <string name="ui_hazard_harmful_if_swallowed" translatable="true">Вредный при проглоченном</string>
+    <string name="ui_hazard_toxic_skin" translatable="true">Токсичность в контакте с кожей</string>
+    <string name="ui_hazard_severe_burns" translatable="true">Вызывает тяжелые ожоги на коже и повреждения глаз</string>
+    <string name="ui_hazard_skin_irritation" translatable="true">Причина раздражения кожи</string>
+    <string name="ui_hazard_eye_irritation" translatable="true">Вызывает серьезное раздражение глаз</string>
+    <string name="ui_hazard_toxic_if_inhaled" translatable="true">Токсичный при вдыхании</string>
+    <string name="ui_hazard_respiratory_irritation" translatable="true">Может вызвать дыхательное раздражение</string>
+    <string name="ui_hazard_may_cause_cancer" translatable="true">Может вызвать рак</string>
+    <string name="ui_hazard_very_toxic_aquatic" translatable="true">Очень токсичный для водной жизни</string>
+    <string name="ui_show_less" translatable="true">Меньше</string>
+    <string name="ui_show_more_count" translatable="true">Показать еще %1$d</string>
+    <string name="ui_expand" translatable="true">развернуть</string>
+    <string name="ui_download_sdf" translatable="true">Скачать SDF</string>
+    <string name="ui_source_label" translatable="true">Источник: %1$s</string>
+    <string name="ui_share_compound_name" translatable="true">Соединение</string>
+    <string name="ui_share_formula" translatable="true">Формула: %1$s</string>
+    <string name="ui_share_cid" translatable="true">PubChem CID: %1$d</string>
+    <string name="ui_share_cas" translatable="true">CAS: %1$s</string>
+    <string name="ui_share_molecular_weight" translatable="true">Молекулярный вес: %1$s г/моль</string>
+    <string name="ui_share_iupac" translatable="true">IUPAC: %1$s</string>
+    <string name="ui_share_pubchem_url" translatable="true">PubChem: %1$s</string>
+    <string name="ui_condensed_formula_label" translatable="true">Уплотнённая формула</string>
+    <string name="ui_iupac_name_label" translatable="true">Название IUPAC</string>
+    <string name="ui_smiles_connectivity_label" translatable="true">SMILES (Подключение)</string>
+    <string name="ui_smiles_full_label" translatable="true">SMILES (Полный)</string>
+    <string name="ui_inchikey_label" translatable="true">Ключ InChIKey</string>
+    <string name="ui_inchi_label" translatable="true">ИнЧИ</string>
+    <string name="ui_empirical_formula_label" translatable="true">Эмпирическая формула</string>
+    <string name="ui_atom_number_label" translatable="true">Атом номер</string>
+    <string name="ui_bond_number_label" translatable="true">Номер облигации</string>
+    <string name="ui_formal_charge_label" translatable="true">Формальная зарядка</string>
+    <string name="ui_3d_unavailable_body" translatable="true">инструментарий OMEGA и MMFF94s поле силы. Компонент не получает трехмерной модели, если он не срабатывает ни с одним из этих критериев. ChemSearch также пытается генерировать SDF резервную копию SMILES, InChI или InChIKey при отсутствии PubChem 3D.</string>
+    <string name="ui_3d_reason_too_large" translatable="true">Слишком большой : более 50 атомов вне водорода</string>
+    <string name="ui_3d_reason_too_flexible" translatable="true">Слишком гибкие : Более 15 оборотных облигаций</string>
+    <string name="ui_3d_reason_unsupported_elements" translatable="true">Неподдерживаемые элементы : Только H, C, N, O, F, Si, P, S, Cl, Br и I поддерживаются силовыми полями. Металлы не поддерживаются.</string>
+    <string name="ui_3d_reason_salt_or_mixture" translatable="true">Соль или смесь: Соединение имеет более одного ковального элемента (напр. NaCl). PubChem может иметь 3D модель для родительской свободной базы вместо</string>
+    <string name="ui_3d_reason_crystal_or_metallic" translatable="true">Кристаллическая или металлическая решение: SMILES/InChI описывает формулу/соединение, не полную зарешетку полного полного состояния</string>
+    <string name="ui_3d_reason_too_many_undefined_stereo" translatable="true">Слишком много неопределенных стерео-центров: 6 или более неопределенных стереоцентров атома или удержания</string>
+    <string name="ui_3d_reason_conformer_failure" translatable="true">Сбой генерации последовательности : Алгоритм не смог превратиться на стабильную геометрию</string>
+    <string name="ui_pin" translatable="true">Закрепить</string>
+    <string name="ui_unpin" translatable="true">Unpin</string>
+    <string name="ui_show_full_name" translatable="true">Показывать полное имя</string>
+    <string name="ui_remove_favorite" translatable="true">Удалить избранное</string>
+    <string name="ui_add_favorite" translatable="true">Добавить в избранное</string>
+    <string name="ui_update_offline_download" translatable="true">Обновить закачку оффлайн</string>
+    <string name="ui_download_for_offline_use" translatable="true">Скачать для использования в автономном режиме</string>
+    <string name="ui_mw_g_mol" translatable="true">MW (g/mol)</string>
+    <string name="ui_loading_3d_model" translatable="true">Загрузка 3D модели...</string>
+    <string name="ui_synonyms" translatable="true">Синонимы</string>
+    <string name="ui_description" translatable="true">Описание</string>
+    <string name="ui_pubchem_desc_not_available" translatable="true">Описание PubChem недоступно.</string>
+    <string name="ui_wiki_desc_not_available" translatable="true">Описание Википедии недоступно для этого состава.</string>
+    <string name="ui_ai_desc_not_available" translatable="true">Описание ИИ недоступно. Проверьте ваш ключ API в Настройках.</string>
+    <string name="ui_read_more" translatable="true">Читать далее</string>
+    <string name="ui_read_less" translatable="true">Читать меньше</string>
+    <string name="ui_based_on" translatable="true">На основе: %1$s</string>
+    <string name="ui_via" translatable="true">через %1$s</string>
+    <!-- ToolsScreen extra labels -->
+    <string name="ui_compound_label" translatable="true">Соединение %1$d</string>
+    <string name="ui_molarity_label" translatable="true">Молярность (М)</string>
+    <string name="ui_amount_label" translatable="true">Сумма</string>
+    <!-- Legal section content -->
+    <string name="ui_legal_data_on_device_title" translatable="true">Данные на вашем устройстве</string>
+    <string name="ui_legal_data_on_device" translatable="true">Избранное, недавние поиски, загрузки, данные кэша, настройки, API ключи и файлы библиотек хранятся на вашем устройстве, если вы не решите поделиться ими или экспортировать их.</string>
+    <string name="ui_legal_external_services_title" translatable="true">Внешние сервисы</string>
+    <string name="ui_legal_external_services" translatable="true">ChemSearch может связаться с PubChem, Wikipedia, NCI/CADD, GitHub, и факультативными AI провайдерами для получения сложных данных, описаний, структур, обновлений и ответов моделей.</string>
+    <string name="ui_legal_ai_descriptions_title" translatable="true">Описание ИИ</string>
+    <string name="ui_legal_ai_descriptions" translatable="true">Если вы используете провайдер AI, составные имена, идентификаторы, формулы, доступные исходные данные и ваш контекст подсказок могут быть отправлены этому провайдеру. Ключи API провайдера сохраняются локально на вашем устройстве.</string>
+    <string name="ui_legal_no_account_system_title" translatable="true">Нет системы аккаунта</string>
+    <string name="ui_legal_no_account_system" translatable="true">В ChemSearch отсутствует учетная запись ChemSearch, профиль или встроенная система учета аналитики.</string>
+    <string name="ui_legal_your_control_title" translatable="true">Ваш контроль</string>
+    <string name="ui_legal_your_control" translatable="true">Вы можете очистить кэш, удалить загрузки, удалить сохраненные элементы, изменить провайдера, удалить API ключи и экспортировать или импортировать данные из настроек приложения.</string>
+    <string name="ui_legal_privacy_summary" translatable="true">Как ChemSearch обрабатывает поиски, AI провайдеры, сохраненные данные и обновления.</string>
+    <string name="ui_legal_terms_summary" translatable="true">Основные правила использования Химического поиска и его сторонних источников данных.</string>
+    <string name="ui_legal_safety_summary" translatable="true">ChemSearch - официальный указатель по безопасности и обучению.</string>
+    <string name="ui_legal_use" translatable="true">Использовано</string>
+    <string name="ui_legal_use_body" translatable="true">ChemSearch - это приложение для поиска и изучения химических веществ. Используйте его ответственно и следуйте правилам вашей школы, рабочего места, лаборатории и местного законодательства.</string>
+    <string name="ui_legal_third_party_sources" translatable="true">Сторонние источники</string>
+    <string name="ui_legal_third_party_sources_body" translatable="true">Составные данные, информация о безопасности, описания, структуры, обновления и ответы ИИ могут быть получены от внешних служб. Эти службы могут иметь собственные условия и ограничения.</string>
+    <string name="ui_legal_no_guarantee" translatable="true">Нет гарантий</string>
+    <string name="ui_legal_no_guarantee_body" translatable="true">ChemSearch предоставляется как есть. Результаты могут быть неполными, недоступными, устаревшими, сформированными или неправильными.</string>
+    <string name="ui_legal_user_content" translatable="true">Содержание пользователя</string>
+    <string name="ui_legal_user_content_body" translatable="true">Вы ответственны за любой поиск, структуру рисунков, ключи API, импортированные файлы, экспортированные файлы или за запросы, которые вы используете с приложением.</string>
+    <string name="ui_legal_changes" translatable="true">Изменения</string>
+    <string name="ui_legal_changes_body" translatable="true">Функции, источники, поведение обновления и поддержка провайдера могут переключаться между версиями приложения.</string>
+    <string name="ui_legal_quick_checks_only" translatable="true">Только быстрая проверка</string>
+    <string name="ui_legal_quick_checks_only_body" translatable="true">Информация по химической безопасности в ChemSearch предназначена для ознакомления с документами SDS, лабораторными правилами или профессиональной инструкцией.</string>
+    <string name="ui_legal_safety_data_limits" translatable="true">Ограничения безопасности</string>
+    <string name="ui_legal_safety_data_limits_body" translatable="true">СГС и данные об опасности могут отсутствовать, быть зависимыми от источника или неполными.</string>
+    <string name="ui_legal_ai_limits" translatable="true">Ограничения ИИ</string>
+    <string name="ui_legal_ai_limits_body" translatable="true">ИИ описания могут звучать уверенно при неполном или некорректном. Не используйте текст ИИ в качестве единственного источника для принятия решений в области безопасности, медицины или лабораторных решений.</string>
+    <string name="ui_legal_emergency_use" translatable="true">Экстренное использование</string>
+    <string name="ui_legal_emergency_use_body" translatable="true">Не полагайтесь на химический поиск во время чрезвычайных ситуаций, следуйте процедурам вашей лаборатории, учреждения или места работы.</string>
+    <string name="ui_legal_generated_structures" translatable="true">Генерируемые структуры</string>
+    <string name="ui_legal_generated_structures_body" translatable="true">Резервные или генерируемые трехмерные структуры являются оценками, и их следует рассматривать как визуальные средства, а не проверяемые экспериментальные структуры.</string>
+    <!-- ToolsScreen strings -->
+    <string name="ui_done" translatable="true">Готово</string>
+    <string name="ui_reorder" translatable="true">Изменить порядок</string>
+    <string name="ui_no_tools_match_s" translatable="true">Нет инструментов, соответствующих \"%1$s\"</string>
+    <string name="ui_list_view" translatable="true">Вид списка</string>
+    <string name="ui_grid_view" translatable="true">Вид сетки</string>
+    <string name="ui_visualize" translatable="true">Визуализация</string>
+    <string name="ui_looking_up" translatable="true">Идёт поиск...</string>
+    <string name="ui_comparing" translatable="true">Сравнение...</string>
+    <string name="ui_tap_to_collapse" translatable="true">Нажмите, чтобы свернуть</string>
+    <string name="ui_tap_to_expand" translatable="true">Нажмите, чтобы развернуть</string>
+    <string name="ui_known_s" translatable="true">Known %1$s</string>
+    <string name="ui_e_g_1e_7" translatable="true">напр. 1e-7</string>
+    <string name="ui_e_g_7" translatable="true">например, 7</string>
+    <string name="ui_neutral_water" translatable="true">Нейтральная вода</string>
+    <string name="ui_acidic_ph" translatable="true">Кислота рН</string>
+    <string name="ui_basic_poh" translatable="true">Базовая pOH</string>
+    <string name="ui_h_plus_example" translatable="true">Пример [H+]</string>
+    <string name="ui_ph_poh_explanation" translatable="true">При добавлении pH и pOH к 14 ниже pH кислоты, выше pH в основном, а pH около 7 нейтрально.</string>
+    <string name="ui_dilution_explanation" translatable="true">Концентрация запасов и объем связаны с конечной концентрацией и объемом.</string>
+    <string name="ui_ideal_gas_explanation" translatable="true">Напряжение, объем, количество и температура привязаны к идеальному газовому законодательству. Решите одну переменную, когда остальные три известны и единицы последовательны.</string>
+    <string name="ui_stoichiometry_calculator" translatable="true">Стоихиометрический калькулятор</string>
+    <string name="ui_molar_mass_na" translatable="true">Молярная масса Н/А</string>
+    <string name="ui_purity_applied" translatable="true">(чистота применяется)</string>
+    <string name="ui_moles_available" translatable="true">Доступные молитвы: %1$s mol</string>
+    <string name="ui_reaction_extent" translatable="true">Объем реакции: моль %1$s</string>
+    <string name="ui_percent_yield_value" translatable="true">Процент: %1$s%%</string>
+    <string name="ui_yield_scaling_section" translatable="true">ГОЛОСОВАЯ &amp; РАСКАЛА</string>
+    <string name="ui_percent_yield_section" translatable="true">ПОСЛЕДНИЕ ГОДА</string>
+    <string name="ui_scaling_section" translatable="true">СКАЛИНГ</string>
+    <string name="ui_core" translatable="true">Основа</string>
+    <string name="ui_molar_mass_label" translatable="true">Молярная масса</string>
+    <string name="ui_compare_iupac_name" translatable="true">Название IUPAC</string>
+    <string name="ui_cas" translatable="true">CAS</string>
+    <string name="ui_connectivity_smiles" translatable="true">SMILES подключения</string>
+    <string name="ui_structure" translatable="true">Структура</string>
+    <string name="ui_covalent_units" translatable="true">Ковалентные единицы</string>
+    <string name="ui_atom_count" translatable="true">Количество Атом</string>
+    <string name="ui_bond_count" translatable="true">Количество облигаций</string>
+    <string name="ui_description_safety" translatable="true">Описание &amp; Безопасность</string>
+    <string name="ui_safety" translatable="true">Безопасность</string>
+    <string name="ui_description_with_source" translatable="true">Описание (%1$s)</string>
+    <string name="ui_gas_solve_pressure" translatable="true">Давление</string>
+    <string name="ui_gas_solve_volume" translatable="true">Объем</string>
+    <string name="ui_gas_solve_moles" translatable="true">Moles</string>
+    <string name="ui_gas_solve_temperature" translatable="true">Температура</string>
+    <string name="ui_dilution_c1" translatable="true">C1 (запас)</string>
+    <string name="ui_dilution_v1" translatable="true">V1 (запас)</string>
+    <string name="ui_dilution_c2" translatable="true">C2 (окончательный)</string>
+    <string name="ui_dilution_v2" translatable="true">V2 (финал)</string>
+    <string name="ui_compound_placeholder" translatable="true">состав %1$d</string>
+    <string name="ui_could_not_read_file" translatable="true">Не удалось прочитать файл.</string>
+    <string name="ui_error_reading_file_s" translatable="true">Ошибка чтения файла: %1$s</string>
+    <string name="ui_compound_not_found_on_pubchem" translatable="true">Соединение не найдено на PubChem. Проверьте строку SMILES.</string>
+    <string name="ui_no_compound_found_for_smiles" translatable="true">Для этой строки не найдено ни одного комплекса.</string>
+    <string name="ui_pubchem_3d_unavailable_fallback" translatable="true">PubChem 3D недоступен. Попытка сгенерировать резерв...</string>
+    <string name="ui_formula_matched_3d_fallback_unavailable" translatable="true">Формула-соответствующий 3D резерв недоступен для этого SMILES.</string>
+    <string name="ui_error_s" translatable="true">Ошибка: %1$s</string>
+    <string name="ui_enter_at_least_two_compounds" translatable="true">Введите не менее двух соединений.</string>
+    <string name="ui_could_not_load_s" translatable="true">Не удалось загрузить: %1$s</string>
+    <string name="ui_skipped_s" translatable="true">Пропущено: %1$s</string>
+    <string name="ui_enter_a_valid_value" translatable="true">Введите правильное значение.</string>
+    <string name="ui_pubchem_cid_s" translatable="true">PubChem CID: %1$s</string>
+    <!-- ToolsScreen InfoDialog shared terms -->
+    <string name="ui_info_equation" translatable="true">Уравнение</string>
+    <string name="ui_info_units" translatable="true">Единицы измерения</string>
+    <!-- ToolsScreen InfoDialog: Custom 3D Molecule Viewer -->
+    <string name="ui_sdf_info_what_is_sdf_term" translatable="true">Что такое SDF файл?</string>
+    <string name="ui_sdf_info_what_is_sdf_body" translatable="true">Структурный файл данных (.sdf) является стандартным химическим файловым форматом, который хранит 3D-атомарные координаты и облигационные данные для одной или нескольких молекул.</string>
+    <string name="ui_sdf_info_what_is_mol_term" translatable="true">Что такое MOL файл?</string>
+    <string name="ui_sdf_info_what_is_mol_body" translatable="true">Оба формата широко экспортируются химическим программным обеспечением, таким как ChemDraw, Avogadro и PubChem.</string>
+    <string name="ui_sdf_info_how_to_get_term" translatable="true">Как получить SDF файл</string>
+    <string name="ui_sdf_info_how_to_get_body" translatable="true">Вы можете скачать SDF файлы с PubChem путем поиска сложных и выбора \'3D SDF\' из опций загрузки, или экспортировать их из любого молекулярного редактора.</string>
+    <string name="ui_sdf_info_controls_term" translatable="true">Управление</string>
+    <string name="ui_sdf_info_controls_body" translatable="true">Перетащите для поворота молекулы. Для увеличения и уменьшения изображения. Модель автоматически запускается в режиме ожидания, поэтому нажмите для паузы. Нажмите кнопку «сбросить», чтобы вернуться к виду по умолчанию.</string>
+    <string name="ui_sdf_info_cpk_term" translatable="true">ЦПК окрашивание</string>
+    <string name="ui_sdf_info_cpk_body" translatable="true">Атомы окрашены по цвету с использованием Jmol CPK: углерод темно-серый, кислород красный, азот: синий, водород белый, и так далее по всем 118 элементам.</string>
+    <!-- ToolsScreen InfoDialog: Molar Mass Calculator -->
+    <string name="ui_molar_info_what_is_term" translatable="true">Что такое молярная масса?</string>
+    <string name="ui_molar_info_what_is_body" translatable="true">Молярная масса является массой одного млекопитающего (6,022 × 1023 частиц) вещества, выраженного в граммах на млекопитающее (г/моль). Она равняется сумме атомарных весов всех атомов в формуле.</string>
+    <string name="ui_molar_info_how_to_enter_term" translatable="true">Как ввести формулу</string>
+    <string name="ui_molar_info_how_to_enter_body" translatable="true">Наберите молекулярную формулу, используя стандартные символы элементов с числами для атомов. Свечи поддерживаются для групп, например Ca(OH)2 или Al2(SO4)3.</string>
+    <string name="ui_molar_info_case_sensitivity_term" translatable="true">чувствительность к регистру</string>
+    <string name="ui_molar_info_case_sensitivity_body" translatable="true">Символы элемента чувствительны к регистру! \'Co\' - кобальт, \'CO\' - моноксид углерода. Всегда заглавные буквы каждого символа элемента.</string>
+    <string name="ui_molar_info_atomic_weights_term" translatable="true">Атомные весы</string>
+    <string name="ui_molar_info_atomic_weights_body" translatable="true">Используемые здесь атомного веса являются стандартными значениями из IUPAC, в зависимости от естественного изобилия каждого элемента.</string>
+    <string name="ui_molar_info_elemental_breakdown_term" translatable="true">Элементальное распределение</string>
+    <string name="ui_molar_info_elemental_breakdown_body" translatable="true">В таблице разбивки показаны вклад каждого элемента в общую молярную массу как в виде абсолютного значения (г/моль), так и в процентном отношении по массе.</string>
+    <!-- ToolsScreen InfoDialog: Oxidation State Finder -->
+    <string name="ui_os_info_what_is_term" translatable="true">Что такое состояние окисления?</string>
+    <string name="ui_os_info_what_is_body" translatable="true">Номер присваивается атому, представляющему его степень окисления. Положительный = потеря электронов, отрицательный = электроны. Используется для отслеживания передачи электронов в реакциях redox.</string>
+    <string name="ui_os_info_rules_term" translatable="true">Правила применены</string>
+    <string name="ui_os_info_rules_body" translatable="true">F всегда -1. Группа 1 = +1, Группа 2 = +2, Аль, Ga, In, Sc, Y, La, Lu = +3. Zn, Cd = +2. Ag = +1. По умолчанию O -2 (кроме пероксидов/супероксидов). H по умолчанию +1 (за исключением металлических гидридов). Halogens (Cl, Br, I) по умолчанию в простых галогенных галогенных галогенах, но решаются при наличии кислорода или более электронного галогена.</string>
+    <string name="ui_os_info_halogen_priority_term" translatable="true">Приоритет Halogen</string>
+    <string name="ui_os_info_halogen_priority_body" translatable="true">Порядок электричества: F &gt; Cl &gt; Br &gt; I. В оксогалогенных соединениях и межгалогенных соединений менее электролокационный галоген может принимать положительную ОС. Пример: HOCl &lt;unk&gt; Cl=+1. ICl3 &lt;unk&gt; I=+3, Cl=-1. ClF3 &lt;unk&gt; Cl=+3, F=-1.</string>
+    <string name="ui_os_info_special_cases_term" translatable="true">Обсуждаются особые случаи</string>
+    <string name="ui_os_info_special_cases_body" translatable="true">Пероксиды (О=-1): H2O2, Na2O2, BaO2, Superoxides (O=-1&lt;unk&gt; 2): KO2, NaO2. Ozonides (O=-1&lt;unk&gt; 3): KO3. Металлические гидриды (H=-1): NaH, LiAlH4, NaBH4, CaH2.</string>
+    <string name="ui_os_info_overall_charge_term" translatable="true">Общая сумма заряда</string>
+    <string name="ui_os_info_overall_charge_body" translatable="true">Для нейтральных соединений введите 0. Для политомических ионов введите зарядку. Примеры: SO42- → зарядка-2. NH4+ → зарядка+1. MnO4 → заряд -1.</string>
+    <string name="ui_os_info_organic_term" translatable="true">Органические соединения</string>
+    <string name="ui_os_info_organic_body" translatable="true">Для одноуглеродных соединений (CH4, CO2, CCl4) результат является точным. Для многоуглеродных соединений приложение рассчитывает среднее состояние окисления во всех углеводах, Это является химически значимым для сопоставлений, но не отражает отдельных углеродных сред. Этанол (C2H5OH) имеет углероды в -3 и -1, но в среднем приложение возвращает -2.</string>
+    <string name="ui_os_info_example_term" translatable="true">Пример</string>
+    <string name="ui_os_info_example_body" translatable="true">KMnO4 (заряд 0): K=+1 (фиксированный), O=-2 (фиксированный), Mn = 0 - (+1) - 4 (−2) = +7.</string>
+    <string name="ui_os_info_limitations_body" translatable="true">Соединения с 2 или более переходными металлами или неизвестными элементами не могут быть решены без дополнительной информации. Сочетание смешанной валентности типа Fe3O4 (Fe2+ и Fe3+ сосуществует) возвращает среднее значение дроби с предупреждением. Для них введите заряд ионов отдельно, если известно, если он известен.</string>
+    <!-- ToolsScreen InfoDialog: SMILES Visualizer -->
+    <string name="ui_smiles_info_what_is_term" translatable="true">Что такое SMILES?</string>
+    <string name="ui_smiles_info_what_is_body" translatable="true">Упрощенная система ввода молекулярной строки.</string>
+    <string name="ui_smiles_info_how_to_use_term" translatable="true">Как использовать</string>
+    <string name="ui_smiles_info_how_to_use_body" translatable="true">Вставьте любую корректную строку SMILES и нажмите Visualize. Приложение ищет состав на PubChem и показывает свою 2D структуру и 3D модель.</string>
+    <string name="ui_smiles_info_where_to_get_term" translatable="true">Где получить SMILES</string>
+    <string name="ui_smiles_info_where_to_get_body" translatable="true">PubChem, ChemDraw, SciFinder, и большинство баз данных по химии предоставляют SMILES строки для соединений.</string>
+    <string name="ui_smiles_info_aromatic_term" translatable="true">Ароматическая нотация</string>
+    <string name="ui_smiles_info_aromatic_body" translatable="true">Прописные буквы (c, n, o) обозначают ароматические атомы. Например, бензол - \'c1ccccc1\', пирид - \'c1ccncc1\'.</string>
+    <string name="ui_smiles_info_chirality_term" translatable="true">Хирализм</string>
+    <string name="ui_smiles_info_chirality_body" translatable="true">\@ и @ в SMILES обозначают стереоцентры. Визуализатор обрабатывает как стандартные, так и изомерные SMILES.</string>
+    <string name="ui_smiles_info_limitations_body" translatable="true">Только SMILES строки, признанные PubChem, могут быть визуализированы.</string>
+    <!-- ToolsScreen InfoDialog: Reaction Balancer -->
+    <string name="ui_balancer_info_how_to_enter_term" translatable="true">Как ввести уравнения</string>
+    <string name="ui_balancer_info_how_to_enter_body" translatable="true">Введите реагенты слева и продукты справа, разделенные символом \'&lt;unk&gt; \'. Разделяйте их с помощью \'+\'. Пример: H2 + O2 &lt;unk&gt; H2O</string>
+    <string name="ui_balancer_info_coefficients_term" translatable="true">Коэффициенты</string>
+    <string name="ui_balancer_info_coefficients_body" translatable="true">Не вводите коэффициенты. Приложение определяет их. H2 + O2 &lt;unk&gt; H2O, не 2H2 + O2 &lt;unk&gt; 2H2O.</string>
+    <string name="ui_balancer_info_how_it_works_term" translatable="true">Как это работает</string>
+    <string name="ui_balancer_info_how_it_works_body" translatable="true">Балансировщик собирает матрицу элементов и решает систему с использованием Гауссового исключения с точной рациональной арифметикой для нахождения целочисленных коэффициентов.</string>
+    <string name="ui_balancer_info_supported_formulas_term" translatable="true">Поддерживаемые формулы</string>
+    <string name="ui_balancer_info_supported_formulas_body" translatable="true">Поддерживаются стандартные молекулярные формулы с круглыми скобками, например Ca(OH)2, Al2(SO4)3.</string>
+    <string name="ui_balancer_info_limitations_body" translatable="true">Уравнения, которые не могут быть сбалансированы целым числом стоихиометрии (например, некоторые redox реакции, требующие полуреакции), могут решить некорректно.</string>
+    <string name="ui_balancer_info_verification_term" translatable="true">Проверка</string>
+    <string name="ui_balancer_info_verification_body" translatable="true">Таблица подсчета элементов ниже результата показывает, что атомы сохранены. Вы можете проверить баланс вручную.</string>
+    <!-- ToolsScreen InfoDialog: pH / pOH Calculator -->
+    <string name="ui_phpoh_info_what_it_solves_term" translatable="true">Что он решает</string>
+    <string name="ui_phpoh_info_what_it_solves_body" translatable="true">Введите pH, pOH, [H+] или [OH-] для вычисления трех других значений.</string>
+    <string name="ui_phpoh_info_concentration_units_term" translatable="true">Концентрационные единицы</string>
+    <string name="ui_phpoh_info_concentration_units_body" translatable="true">[H+] и [OH-] - моль/L.</string>
+    <string name="ui_phpoh_info_assumption_term" translatable="true">Допущение</string>
+    <string name="ui_phpoh_info_assumption_body" translatable="true">Использует pH + pOH = 14 при воде при 25 С.</string>
+    <!-- ToolsScreen InfoDialog: Dilution Calculator -->
+    <string name="ui_dilution_info_equation_body" translatable="true">Использует C1V1 = C2V2 для решения разрежения.</string>
+    <string name="ui_dilution_info_units_body" translatable="true">Сохранять совместимые единицы концентрации (M) и единицы объема (mL или L).</string>
+    <string name="ui_dilution_info_tip_term" translatable="true">Tip</string>
+    <string name="ui_dilution_info_tip_body" translatable="true">Выберите переменную, которую вы хотите решить, а затем заполните остальные три.</string>
+    <!-- ToolsScreen InfoDialog: Ideal Gas Law -->
+    <string name="ui_gas_info_equation_body" translatable="true">Использует PV = nRT для решения любой переменной.</string>
+    <string name="ui_gas_info_units_body" translatable="true">P в atm, V в литрах, N в молях, T в Кельвине.</string>
+    <string name="ui_gas_info_gas_constant_term" translatable="true">Константа газа</string>
+    <string name="ui_gas_info_gas_constant_body" translatable="true">R = 0.082057 L·atm/mol·K.</string>
+    <!-- ToolsScreen InfoDialog: Stoichiometry tools -->
+    <string name="ui_stoich_info_what_this_does_term" translatable="true">Что это делает</string>
+    <string name="ui_stoich_info_what_this_does_body" translatable="true">Баланс реакции, находит ограничивающий реагент, вычисляет теоретические урожаи, избыточные реагенты и масштабирование реакций.</string>
+    <string name="ui_stoich_info_limiting_reagent_term" translatable="true">Ограничение реагента</string>
+    <string name="ui_stoich_info_limiting_reagent_body" translatable="true">Ограничение реагента имеет наименьшее (молекулы / коэффициент) соотношение.</string>
+    <string name="ui_stoich_info_units_supported_term" translatable="true">Поддерживаемые единицы</string>
+    <string name="ui_stoich_info_units_supported_body" translatable="true">Масса (g, кг), количество (мл, ммоль), объем газа (L, мЛ), решения (М и мЛ) и частицы (х10^23).</string>
+    <string name="ui_stoich_info_gas_volumes_term" translatable="true">Тома газа</string>
+    <string name="ui_stoich_info_gas_volumes_body" translatable="true">Молевые молекулы рассчитываются по молярному объему можно отредактировать (22.414 л/моль при СТП).</string>
+    <string name="ui_stoich_info_purity_term" translatable="true">Чистота</string>
+    <string name="ui_stoich_info_purity_body" translatable="true">Необязательная чистота %% применяет исправление к эффективным молям для каждого реактора.</string>
+    <string name="ui_stoich_info_percent_yield_term" translatable="true">Процент усвоения</string>
+    <string name="ui_stoich_info_percent_yield_body" translatable="true">Сравнить фактическую урожайность по выбранному продукту.</string>
+    <string name="ui_stoich_info_scaling_term" translatable="true">Масштабирование</string>
+    <string name="ui_stoich_info_scaling_body" translatable="true">Введите желаемую сумму продукта, чтобы увидеть требуемые реагенты.</string>
 </resources>

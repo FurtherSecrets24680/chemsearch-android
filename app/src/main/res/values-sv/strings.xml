@@ -9,11 +9,104 @@
     <string name="ui_info" translatable="true">Information</string>
     <string name="ui_copy" translatable="true">Kopiera</string>
     <string name="ui_got_it" translatable="true">Jag fattar</string>
+    <string name="ui_clipboard_formula" translatable="true">Formel</string>
+    <string name="ui_clipboard_synonym" translatable="true">Synonym</string>
+    <string name="ui_clipboard_molfile" translatable="true">ChemSearch molfile</string>
+    <string name="ui_clipboard_preferences" translatable="true">Inställningar</string>
+    <string name="ui_clipboard_logs" translatable="true">Loggar</string>
+    <string name="ui_clipboard_network_diagnostics" translatable="true">Nätverksdiagnostik</string>
+    <string name="ui_clipboard_memory" translatable="true">Minne</string>
+    <string name="ui_clipboard_endpoints" translatable="true">Slutpunkter</string>
+    <string name="ui_complete_ionic_equation" translatable="true">Komplett jonisk ekvation</string>
+    <string name="ui_molecular_equation" translatable="true">Molekylär ekvation</string>
+    <string name="ui_no_ppt" translatable="true">Ingen ppt</string>
+    <string name="ui_reset_view" translatable="true">Återställ vy</string>
+    <string name="ui_motion_reduced" translatable="true">● Rörelse reducerad</string>
+    <string name="ui_auto_spin" translatable="true">&lt;unk&gt; Auto-snurra</string>
+    <string name="ui_paused" translatable="true">● Pausad</string>
+    <string name="ui_disabled_in_settings" translatable="true">Inaktiverad i inställningar</string>
+    <string name="ui_tap_to_toggle" translatable="true">Tryck för att växla</string>
+    <string name="ui_viewer_stats" translatable="true">%1$d atomer •  %2$d obligationer</string>
+    <string name="ui_spectral_lines_of_s" translatable="true">Spektrala rader av %1$s</string>
+    <string name="ui_enter_v1" translatable="true">Ange V1</string>
+    <string name="ui_enter_v2" translatable="true">Ange V2</string>
+    <string name="ui_enter_c1" translatable="true">Ange C1</string>
+    <string name="ui_enter_c2" translatable="true">Ange C2</string>
+    <string name="ui_enter_moles" translatable="true">Ange mullvadar</string>
+    <string name="ui_enter_temperature" translatable="true">Ange temperatur</string>
+    <string name="ui_enter_volume" translatable="true">Ange volym</string>
+    <string name="ui_enter_pressure" translatable="true">Ange tryck</string>
+    <string name="ui_enter_molarity" translatable="true">Ange molaritet</string>
+    <string name="ui_enter_valid_amount" translatable="true">Ange ett giltigt belopp</string>
+    <string name="ui_molar_mass_unavailable" translatable="true">Molar massa otillgänglig</string>
+    <string name="ui_invalid_molar_volume" translatable="true">Ogiltig molarvolym</string>
+    <string name="ui_invalid_purity" translatable="true">Ogiltig renhet %%</string>
+    <string name="ui_purity_must_be_100" translatable="true">Renhet måste vara \u003C= 100%%</string>
+    <string name="ui_balancer_use_arrow_between" translatable="true">Använd \u0027&lt;unk&gt;\u0027 mellan reaktanter och produkter.</string>
+    <string name="ui_balancer_no_reactants_found" translatable="true">Inga reaktanter hittades.</string>
+    <string name="ui_balancer_no_products_found" translatable="true">Inga produkter hittades.</string>
+    <string name="ui_balancer_cannot_parse_formula_s" translatable="true">Kan inte tolka formel: %1$s</string>
+    <string name="ui_balancer_no_elements_found" translatable="true">Inga element hittades.</string>
+    <string name="ui_balancer_could_not_balance" translatable="true">Kunde inte balansera denna ekvation. Kontrollera att alla element visas på båda sidor.</string>
+    <string name="ui_formula_enter_formula" translatable="true">Ange en formel</string>
+    <string name="ui_formula_invalid_leading_multiplier" translatable="true">Ogiltig ledande multiplikator</string>
+    <string name="ui_formula_multiplier_followed_by_formula" translatable="true">Multiplikator måste följas av en formel</string>
+    <string name="ui_formula_could_not_parse_near_s" translatable="true">Kunde inte parsa formeln nära \u0027%1$s\u0027</string>
+    <string name="ui_formula_could_not_parse" translatable="true">Kunde inte tolka formel</string>
+    <string name="ui_formula_unmatched_closing_group" translatable="true">Oöverträffad avslutningsgrupp</string>
+    <string name="ui_formula_unclosed_group" translatable="true">Ostängd grupp</string>
+    <string name="ui_formula_group_multiplier_positive" translatable="true">Gruppmultiplikatorn måste vara större än noll</string>
+    <string name="ui_formula_element_count_positive" translatable="true">Element antal måste vara större än noll</string>
+    <string name="ui_formula_invalid_character_s" translatable="true">Ogiltig formel tecken \u0027%1$s\u0027</string>
+    <string name="ui_error_enter_at_least_one_element_amount" translatable="true">Ange minst ett elementbelopp</string>
+    <string name="ui_error_unknown_elements_s" translatable="true">Okända element(er): %1$s</string>
+    <string name="ui_error_percent_composition_positive" translatable="true">Procent sammansättning måste vara större än noll</string>
+    <string name="ui_error_amounts_positive" translatable="true">Belopp måste vara större än noll</string>
+    <string name="ui_error_invalid_formula_syntax" translatable="true">Ogiltig formel syntax</string>
+    <string name="ui_error_could_not_parse_formula" translatable="true">Kunde inte tolka formel</string>
+    <string name="ui_error_cannot_solve_unknowns_s" translatable="true">Kan inte lösa! flera okända element: %1$s. För övergångsmetallkomplex, använd laddningsfältet för att tillhandahålla ytterligare begränsningar.</string>
+    <string name="ui_error_could_not_identify_ions_s" translatable="true">Kunde inte identifiera vanliga vattenhaltiga joner i %1$s.</string>
+    <string name="ui_no_precipitate_predicted" translatable="true">Ingen fällning förutspådd</string>
+    <string name="ui_precipitate_predicted_s" translatable="true">Predikat för utsikt: %1$s</string>
+    <string name="ui_note_free_element" translatable="true">Fritt element. Oxidationstillståndet är 0</string>
+    <string name="ui_note_peroxide" translatable="true">Peroxidförening: O har oxidationstillstånd = -1</string>
+    <string name="ui_note_non_integer_os" translatable="true">Icke-heltal oxidation tillstånd för %1$s (%2$s). Det kan tyda blandad valens eller en speciell förening.</string>
+    <string name="ui_note_oxygen_fluoride_s" translatable="true">Syrefluor: F är alltid -1, så O = %1$s</string>
+    <string name="ui_note_superoxide" translatable="true">Superoxide: O2- enhet, varje O har oxidationstillstånd = -1/2</string>
+    <string name="ui_note_ozonide" translatable="true">Ozonid: O3- enhet, har varje O oxidationstillstånd = -1/3</string>
+    <string name="ui_note_metal_hydride_suffix_s" translatable="true">Metallhydride: H har oxidationstillstånd = -1%1$s</string>
+    <string name="ui_note_sum_mismatch" translatable="true">Summa av känd oxidation tillstånd (%1$d) matchar inte övergripande laddning (%2$d). Möjlig blandad-valens, peroxo grupp, eller formel fel.</string>
+    <string name="ui_molecular_mass_at_least_empirical" translatable="true">Molekylär massa måste åtminstone vara den empiriska formeln massa</string>
+    <string name="ui_molecular_mass_not_clean_multiple" translatable="true">Molekylär massa är inte en ren multipel av den empiriska formeln massa</string>
+    <string name="ui_sdf_generated_estimate_s" translatable="true">Genererad uppskattning från %1$s med hjälp av NCI/CADD-resolver.</string>
+    <string name="ui_pubchem_3d_trying_generated_fallback" translatable="true">PubChem 3D är inte tillgänglig. Försöker genererad reservdel...</string>
+    <string name="ui_pubchem_3d_unavailable_no_fallback_identifier" translatable="true">PubChem 3D otillgänglig och inga SMILES/InChI reserv-identifierare hittades.</string>
+    <string name="ui_pubchem_3d_and_generated_unavailable" translatable="true">PubChem 3D och formelmatchade genererade fallback är inte tillgängliga för denna förening.</string>
+    <string name="ui_mode_exact" translatable="true">Exakt</string>
+    <string name="ui_mode_exact_desc" translatable="true">Hitta samma struktur</string>
+    <string name="ui_mode_similar" translatable="true">Liknande</string>
+    <string name="ui_mode_similar_desc" translatable="true">Hitta nära 2D-matchningar</string>
+    <string name="ui_mode_contains" translatable="true">Innehåller</string>
+    <string name="ui_mode_contains_desc" translatable="true">Hitta föreningar som innehåller denna ritning</string>
+    <string name="ui_mode_part_of" translatable="true">Ingår i</string>
+    <string name="ui_mode_part_of_desc" translatable="true">Hitta strukturer inuti denna ritning</string>
     <string name="ui_selected" translatable="true">Vald</string>
     <string name="ui_source" translatable="true">Källa</string>
     <string name="ui_remove" translatable="true">Radera</string>
     <string name="ui_element" translatable="true">Element</string>
     <string name="ui_formula" translatable="true">Formel</string>
+    <string name="ui_percent" translatable="true">Procent</string>
+    <string name="ui_error_enter_two_aqueous_ionic_compounds" translatable="true">Ange två vattenhaltiga jonföreningar</string>
+    <string name="ui_welcome_tagline" translatable="true">CHEMISTRI SIMPLIFIERAD</string>
+    <string name="ui_welcome_tagline_body" translatable="true">Sök föreningar, inspektera strukturer, spara användbara resultat och använda praktiska kemiverktyg i en Android app.</string>
+    <string name="ui_welcome_feature_search_title" translatable="true">Sammansatt sökning</string>
+    <string name="ui_welcome_feature_search_body" translatable="true">Leta upp PubChem data med namn, formel, CAS-stil identifierare eller CID.</string>
+    <string name="ui_welcome_feature_structures_title" translatable="true">2D och 3D-strukturer</string>
+    <string name="ui_welcome_feature_structures_body" translatable="true">Visa strukturbilder, rotera 3D-modeller och spara strukturfiler.</string>
+    <string name="ui_welcome_feature_tools_title" translatable="true">Kemiska verktyg</string>
+    <string name="ui_welcome_feature_tools_body" translatable="true">Balansreaktioner, beräkna molär massa, lösa stökiometri och mer.</string>
+    <string name="ui_welcome_feature_local_title" translatable="true">Lokalt arbetsflöde</string>
+    <string name="ui_welcome_feature_local_body" translatable="true">Behåll favoriter, senaste sökningar, cachade resultat och data offline kemi.</string>
     <string name="ui_compare" translatable="true">Jämför</string>
     <string name="ui_save" translatable="true">Spara</string>
     <string name="ui_ok" translatable="true">Ok</string>
@@ -26,6 +119,26 @@
     <string name="ui_search" translatable="true">Sök</string>
     <!-- ChemicalDatabaseUi.kt -->
     <string name="ui_all_s" translatable="true">Alla %1$s</string>
+    <string name="ui_entries_count" translatable="true">%1$d poster</string>
+    <string name="ui_error_no_release_tag" translatable="true">Ingen tagg för utgåva hittades.</string>
+    <string name="ui_error_update_check_failed" translatable="true">Uppdateringskontrollen misslyckades.</string>
+    <string name="ui_error_no_apk_download_link" translatable="true">Ingen APK-nedladdningslänk hittades.</string>
+    <string name="ui_error_update_download_failed" translatable="true">Hämtning av uppdatering misslyckades.</string>
+    <string name="ui_error_download_failed_http" translatable="true">Hämtning misslyckades: HTTP %1$d</string>
+    <string name="ui_error_apk_empty" translatable="true">Nedladdad APK var tomt.</string>
+    <string name="ui_error_apk_missing" translatable="true">Nedladdad APK saknas.</string>
+    <string name="ui_error_allow_installs" translatable="true">Tillåt installationer från ChemSearch och tryck sedan på Installera.</string>
+    <string name="ui_error_could_not_open_installer" translatable="true">Kunde inte öppna installationsprogrammet.</string>
+    <string name="ui_error_offline_download_failed" translatable="true">Offline nedladdning misslyckades: %1$s</string>
+    <string name="ui_unknown_error" translatable="true">okänt fel</string>
+    <string name="ui_notification_channel_updates" translatable="true">Uppdateringar</string>
+    <string name="ui_notification_channel_updates_desc" translatable="true">Notiser när en ny version är tillgänglig</string>
+    <string name="ui_notification_update_title" translatable="true">ChemSearch uppdatering tillgänglig</string>
+    <string name="ui_notification_update_text" translatable="true">Version %1$s är tillgänglig</string>
+    <string name="ui_category_substances" translatable="true">Ämnen</string>
+    <string name="ui_category_reactions" translatable="true">Reaktioner</string>
+    <string name="ui_category_functional_groups" translatable="true">Funktionella grupper</string>
+    <string name="ui_category_ions" translatable="true">Joner</string>
     <string name="ui_show_every_entry" translatable="true">Visa varje post i denna sektion</string>
     <string name="ui_s_copied" translatable="true">%1$s kopierad</string>
     <string name="ui_back_to_database" translatable="true">Tillbaka till databas</string>
@@ -33,10 +146,14 @@
     <string name="ui_search_substances_reactions_groups_ions" translatable="true">Sök ämnen, reaktioner, grupper, joner...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Molekylär formel</string>
+    <string name="ui_empirical" translatable="true">Empirisk</string>
+    <string name="ui_empirical_mass" translatable="true">Empirisk massa</string>
     <string name="ui_empirical_formula_finder" translatable="true">Empirisk formelsökare</string>
     <string name="ui_percent_mode" translatable="true">Procent läge</string>
     <string name="ui_percent_mode_desc" translatable="true">Behandlar procentsatser som gram i ett 100 g prov, sedan konverterar varje element till mullvadar.</string>
     <string name="ui_mass_mode" translatable="true">Massläge</string>
+    <string name="ui_mass" translatable="true">Massa</string>
+    <string name="ui_percent_sign" translatable="true">%</string>
     <string name="ui_mass_mode_desc" translatable="true">Använder den angivna massan av varje element direkt.</string>
     <string name="ui_formula_mode" translatable="true">Formel läge</string>
     <string name="ui_formula_mode_desc" translatable="true">Minskar en molekylär formel till dess enklaste heltalsförhållande.</string>
@@ -131,9 +248,20 @@
     <string name="ui_atomic_number" translatable="true">Atomiskt nummer</string>
     <string name="ui_category" translatable="true">Kategori</string>
     <string name="ui_group_period" translatable="true">Grupp / period</string>
+    <string name="ui_category_alkali_metal" translatable="true">Alkali metall</string>
+    <string name="ui_category_alkaline_earth_metal" translatable="true">Alkalisk jord metall</string>
+    <string name="ui_category_transition_metal" translatable="true">Övergång metall</string>
+    <string name="ui_category_post_transition_metal" translatable="true">Efter-övergång metall</string>
+    <string name="ui_category_metalloid" translatable="true">Metalloid</string>
+    <string name="ui_category_reactive_nonmetal" translatable="true">Reaktiv icke-metall</string>
+    <string name="ui_category_halogen" translatable="true">Halogen</string>
+    <string name="ui_category_noble_gas" translatable="true">Ädla gas</string>
+    <string name="ui_category_lanthanide" translatable="true">Lanthanide</string>
+    <string name="ui_category_actinide" translatable="true">Actinide</string>
+    <string name="ui_category_unknown" translatable="true">Okänd</string>
     <string name="ui_standard_state" translatable="true">Standard status</string>
     <string name="ui_year_discovered" translatable="true">År upptäckt</string>
-    <string name="ui_appearance_label" translatable="true">Appearance</string>
+    <string name="ui_appearance_label" translatable="true">Utseende</string>
     <string name="ui_discovered_by" translatable="true">Upptäckt av</string>
     <string name="ui_named_by" translatable="true">Namngiven av</string>
     <string name="ui_orbital_block" translatable="true">Block i omloppsbana</string>
@@ -141,7 +269,7 @@
     <string name="ui_model_color" translatable="true">Modell färg</string>
     <string name="ui_electron_configuration" translatable="true">Elektronisk konfiguration</string>
     <string name="ui_shell_distribution" translatable="true">Shell fördelning</string>
-    <string name="ui_oxidation_states_label" translatable="true">Oxidation states</string>
+    <string name="ui_oxidation_states_label" translatable="true">Oxidation stater</string>
     <string name="ui_expanded_configuration" translatable="true">Utökad konfiguration</string>
     <string name="ui_electronegativity" translatable="true">Elektronik</string>
     <string name="ui_atomic_radius" translatable="true">Atomradie</string>
@@ -287,6 +415,9 @@
     <string name="ui_tap_a_card_to_open_favorites_are_stored" translatable="true">Tryck på ett kort för att öppna. Favoriter lagras endast på den här enheten.</string>
     <string name="ui_reorder_mode_use_the_arrows_to_move_items" translatable="true">Ordna om läge: Använd pilarna för att flytta objekt.</string>
     <string name="ui_no_matches_found" translatable="true">Inga träffar hittades.</string>
+    <string name="ui_no_match_for" translatable="true">Ingen match för \"%1$s\"</string>
+    <string name="ui_newest_first" translatable="true">Nyaste först</string>
+    <string name="ui_oldest_first" translatable="true">Äldsta först</string>
     <string name="ui_try_a_different_name_formula_or_cid" translatable="true">Prova ett annat namn, formel eller CID.</string>
     <!-- SettingsUi.kt: Toasts and user notifications -->
     <string name="ui_notifications_permission_denied" translatable="true">Behörighet för aviseringar nekas</string>
@@ -336,6 +467,18 @@
     <string name="ui_tag_chemsearch" translatable="true">Tag: ChemSearch</string>
     <string name="ui_endpoints" translatable="true">slutpunkter</string>
     <string name="ui_hide_debug_settings" translatable="true">Dölj felsökningsinställningar</string>
+    <string name="ui_debug_settings_title" translatable="true">Felsöka inställningar</string>
+    <string name="ui_debug_verbose_logging_body" translatable="true">Aktiverar debug/info loggar (taggade \'ChemSearch\') i Logcat och in-app bufferten. Fel fångas alltid upp. Inaktivera för att minska buller.</string>
+    <string name="ui_debug_live_log_viewer_body" translatable="true">Visar loggbufferten i realtid (upp till 200 rader). Verbose loggar (D/) visas endast när verbose loggningen är på. Fel (E/) fångas alltid upp. Du kan kopiera eller rensa bufferten.</string>
+    <string name="ui_debug_inspect_prefs_body" translatable="true">Dumpar äldre SharedPreferences och krypterade nyckelposter med känsliga värden maskerade. DataStore-inställningar och Rumsnedladdningar lagras separat.</string>
+    <string name="ui_debug_memory_info_body" translatable="true">Visar aktuell heapanvändning från JVM runtime och Android ActivityManager. Användbart för att upptäcka minnesläckor eller ovanligt höga allokeringar.</string>
+    <string name="ui_debug_network_diagnostics_body" translatable="true">Kör slutpunktskontroller mot PubChem sökning, autocomplete, GHS-data, 2D/3D-strukturer, NCI/CADD reservåterlösare, Wikipedia, GitHub releaser, och varje konfigurerad AI-leverantör. Visar HTTP-status, latens och svarsförhandsvisningar för varje tjänst.</string>
+    <string name="ui_debug_show_welcome_body" translatable="true">Rensar välkomstskärmen hoppa flaggan och öppnar den första kör välkomstskärmen igen.</string>
+    <string name="ui_debug_api_endpoints_body" translatable="true">Kopierar bas-URL:er för PubChem, NCI/CADD, Wikipedia, GitHub släpper och stöds AI-leverantörer till ditt urklipp för manuell testning.</string>
+    <string name="ui_debug_wipe_prefs_body" translatable="true">Samtal prefs.edit().clear(). Tar bort äldre preferensvärden, krypterade nyckelposter, historik, favoriter och debug flaggor. DataStore inställningar, Rumshämtningar och app cache-filer tas inte bort av denna åtgärd; omstart rekommenderas.</string>
+    <string name="ui_debug_force_crash" translatable="true">Tvinga krasch</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Avsiktligt kastar en ohanterlig RuntimeException. Används för att verifiera att kraschrapportering / Logcat fungerar korrekt. Det finns ett bekräftelsemsteg innan den brinner.</string>
+    <string name="ui_debug_hide_body" translatable="true">Sätter dev_mode=false och döljer detta avsnitt. Tryck på byggnummer 5 gånger på Om-skärmen för att låsa upp det igen.</string>
     <string name="ui_remove_key" translatable="true">Ta bort nyckel</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Känsliga värden maskeras och kopieras aldrig från denna vy.</string>
     <string name="ui_run_diagnostics_to_test_pubchem_lookup_structures_ghs" translatable="true">Kör diagnostik för att testa PubChem lookup, strukturer, GHS-data, fallback 3D-lastning, Wikipedia, GitHub releaser och AI slutpunkter.</string>
@@ -406,6 +549,7 @@
     <string name="ui_e_g_kmno4" translatable="true">t.ex. KMnO4</string>
     <string name="ui_charge" translatable="true">Laddning</string>
     <string name="ui_find_oxidation_states" translatable="true">Hitta Oxidationstillstånd</string>
+    <string name="ui_oxidation_states" translatable="true">OXIDATIONSSTATERNA</string>
     <string name="ui_examples" translatable="true">EXEMPLER</string>
     <string name="ui_smiles_visualizer" translatable="true">SMILES Visualizer</string>
     <string name="ui_smiles_string" translatable="true">SMILES Sträng</string>
@@ -419,6 +563,34 @@
     <string name="ui_atom_count_verification" translatable="true">ATOM COUNT VERIFICATION</string>
     <string name="ui_reactants" translatable="true">Reaktanter</string>
     <string name="ui_products" translatable="true">Produkter</string>
+    <string name="ui_d_s_results" translatable="true">%1$d resultat</string>
+    <string name="ui_d_percent_similar" translatable="true">%1$d%% liknande</string>
+    <string name="ui_d_percent_similarity" translatable="true">%1$d%% likhet</string>
+    <string name="ui_default_sdf_file_name" translatable="true">fil.sdf</string>
+    <string name="ui_step_s_of_d" translatable="true">Steg %1$d av %2$d</string>
+    <string name="ui_phpoh_assumption" translatable="true">Antar 25 C och pKw = 14,00</string>
+    <string name="ui_classification_acidic" translatable="true">Acidisk</string>
+    <string name="ui_classification_basic" translatable="true">Grundläggande</string>
+    <string name="ui_classification_neutral" translatable="true">Neutrala</string>
+    <string name="ui_error_enter_a_valid_number" translatable="true">Ange ett giltigt nummer.</string>
+    <string name="ui_error_ph_must_be_a_valid_number" translatable="true">pH måste vara ett giltigt nummer.</string>
+    <string name="ui_error_poh_must_be_a_valid_number" translatable="true">pOH måste vara ett giltigt nummer.</string>
+    <string name="ui_error_concentration_must_be_greater_than_zero" translatable="true">Koncentrationen måste vara större än 0.</string>
+    <string name="ui_solubility_rule_group_1_ammonium" translatable="true">Grupp 1 och ammoniumsalter är lösliga.</string>
+    <string name="ui_solubility_rule_nitrates" translatable="true">Nitrater, acetater, klorater och perklorater är lösliga.</string>
+    <string name="ui_solubility_rule_halides_insoluble" translatable="true">Klorider, bromider och jodider är olösliga med Ag+, Pb2+, och Hg2^2+.</string>
+    <string name="ui_solubility_rule_most_halides" translatable="true">De flesta klorider, bromider och jodider är lösliga.</string>
+    <string name="ui_solubility_rule_sulfates_insoluble" translatable="true">Sulfater är olösliga eller endast något lösliga med Ba2+, Pb2+, Sr2+, Ca2+, Ag+ och Hg2^2+.</string>
+    <string name="ui_solubility_rule_most_sulfates" translatable="true">De flesta sulfater är lösliga.</string>
+    <string name="ui_solubility_rule_hydroxides_partly_soluble" translatable="true">Hydroxider av Ba2+, Sr2+, och Ca2+ är endast delvis lösliga.</string>
+    <string name="ui_solubility_rule_most_hydroxides" translatable="true">De flesta hydroxider är olösliga förutom grupp 1 och ammoniumsalter.</string>
+    <string name="ui_solubility_rule_carbonates" translatable="true">Karbonater, fosfater, sulfider, sulfiter, kromater, oxalater och oxider är oftast olösliga utom med grupp 1 eller ammoniumjoner.</string>
+    <string name="ui_solubility_rule_no_match" translatable="true">Ingen gemensam löslighet regel matchade denna produkt.</string>
+    <string name="ui_warning_add_at_least_one_bond" translatable="true">Lägg till minst en bindning så PubChem kan jämföra en struktur.</string>
+    <string name="ui_warning_connect_fragments" translatable="true">Anslut alla fragment innan du söker.</string>
+    <string name="ui_warning_very_large_drawings" translatable="true">Mycket stora ritningar kan vara långsamma eller kan avvisas av PubChem.</string>
+    <string name="ui_warning_aromatic_bonds_exported" translatable="true">Aromatiska obligationer exporteras som V2000 aromatiska obligationer typ 4.</string>
+    <string name="ui_error_draw_at_least_two_connected_atoms" translatable="true">Rita minst två anslutna atomer innan du söker.</string>
     <string name="ui_compare_compounds" translatable="true">Jämför föreningar</string>
     <string name="ui_ph_poh_calculator" translatable="true">pH / pOH kalkylator</string>
     <string name="ui_solution_type" translatable="true">Typ av lösning</string>
@@ -450,7 +622,7 @@
     <string name="ui_enter_an_amount_to_compute_moles" translatable="true">Ange ett belopp att beräkna mullvadar.</string>
     <string name="ui_clear_all_amounts" translatable="true">Rensa alla belopp</string>
     <string name="ui_stoichiometry_summary" translatable="true">STOICHIOMETRY SUMMARI</string>
-    <string name="ui_limiting_reagent" translatable="true">Begränsar reagens</string>
+    <string name="ui_limiting_reagent_label" translatable="true">Begränsar reagens</string>
     <string name="ui_mole_ratios_relative_to_limiting_reagent" translatable="true">MOLE RATIOS (relativt till begränsande reagens)</string>
     <string name="ui_theoretical_yield" translatable="true">THEORETISKA GUD</string>
     <string name="ui_excess_reactants" translatable="true">UPPTÄCK REAKTIER</string>
@@ -488,6 +660,7 @@
     <string name="ui_could_not_parse_3d_data" translatable="true">Kunde inte tolka 3D-data</string>
     <!-- WelcomeScreen.kt -->
     <string name="ui_set_your_look" translatable="true">Ställ in ditt utseende</string>
+    <string name="ui_appearance" translatable="true">APPEARANS</string>
     <string name="ui_choose_theme_accent_body" translatable="true">Välj tema och accent färg ChemSearch bör använda över sökning, verktyg och inställningar.</string>
     <string name="ui_light" translatable="true">Ljus</string>
     <string name="ui_dark" translatable="true">Mörk</string>
@@ -508,5 +681,870 @@
     <string name="ui_chemsearch" translatable="true">ChemSearch</string>
     <string name="ui_configure_ai_provider" translatable="true">Configure AI provider</string>
     <string name="ui_skip" translatable="true">Hoppa</string>
+    <string name="ui_next" translatable="true">Nästa</string>
+    <string name="ui_welcome_start_using_chemsearch" translatable="true">Börja använda ChemSearch</string>
     <string name="ui_always_follow_sds_documents_lab_rules_labels_and" translatable="true">Följ alltid SDS-dokument, labbregler, etiketter och officiell vägledning innan du hanterar kemikalier.</string>
+    <!-- ToolCatalog titles (some already existed as ui_molar_mass_calculator etc.) -->
+    <string name="ui_limiting_reagent" translatable="true">Begränsar reagens</string>
+    <string name="ui_percent_yield" translatable="true">Procent skörd</string>
+    <string name="ui_reaction_scaling" translatable="true">Reaktion skalning</string>
+    <!-- ToolCatalog subtitles -->
+    <string name="ui_molar_mass_calculator_subtitle" translatable="true">Ange en molekylär formel och få den molära massan</string>
+    <string name="ui_empirical_formula_finder_subtitle" translatable="true">Bestäm empiriska och molekylära formler från sammansättningsdata</string>
+    <string name="ui_reaction_balancer_subtitle" translatable="true">Balansera varje kemisk ekvation automatiskt</string>
+    <string name="ui_precipitate_predictor_subtitle" translatable="true">Förutse fällningar och joniska nettoekvationer från två salter</string>
+    <string name="ui_ph_poh_calculator_subtitle" translatable="true">Konvertera pH, pOH, [H+], och [OH-]</string>
+    <string name="ui_oxidation_state_finder_subtitle" translatable="true">Bestäm oxidation tillstånd för varje element i en förening</string>
+    <string name="ui_limiting_reagent_subtitle" translatable="true">Bestäm begränsande reagens, förhållanden, och teoretisk avkastning</string>
+    <string name="ui_percent_yield_subtitle" translatable="true">Jämför faktisk avkastning mot teoretisk avkastning</string>
+    <string name="ui_dilution_calculator_subtitle" translatable="true">Lös C1V1 = C2V2 för lösningar</string>
+    <string name="ui_ideal_gas_law_subtitle" translatable="true">Lös PV = nRT för gaser</string>
+    <string name="ui_compare_compounds_subtitle" translatable="true">Jämför formler, massa, identifierare, säkerhet och strukturer</string>
+    <string name="ui_smiles_visualizer_subtitle" translatable="true">Klistra in en SMILES-sträng för att visa dess 2D- och 3D-struktur</string>
+    <string name="ui_custom_3d_viewer_subtitle" translatable="true">Ladda en .sdf eller .mol fil och visa den i 3D</string>
+    <string name="ui_reaction_scaling_subtitle" translatable="true">Skala reaktanter för en målprodukt belopp</string>
+    <!-- ToolCategory labels -->
+    <string name="ui_tool_category_all" translatable="true">Alla</string>
+    <string name="ui_tool_category_visualize" translatable="true">Visualisera</string>
+    <string name="ui_tool_category_calculators" translatable="true">Kalkylatorer</string>
+    <string name="ui_tool_category_reactions" translatable="true">Reaktioner</string>
+    <string name="ui_tool_category_stoichiometry" translatable="true">Stoichiometri</string>
+    <!-- SettingsUi section titles -->
+    <string name="ui_section_ai_providers" translatable="true">AI PROVIDERS</string>
+    <string name="ui_section_app_links" translatable="true">APP LÄNKAR</string>
+    <string name="ui_section_built_with" translatable="true">BYGG MED</string>
+    <string name="ui_section_chemistry_data" translatable="true">CHEMISTRI DATA</string>
+    <string name="ui_check_for_updates" translatable="true">Sök efter uppdateringar</string>
+    <string name="ui_chemical_database" translatable="true">Kemisk databas</string>
+    <string name="ui_compound_cache" translatable="true">Sammansatt cache</string>
+    <string name="ui_data_and_storage" translatable="true">Data &amp; Lagring</string>
+    <string name="ui_default_description_source" translatable="true">Standard beskrivningskälla</string>
+    <string name="ui_developer" translatable="true">Utvecklare</string>
+    <string name="ui_display_and_search" translatable="true">Visa &amp; Sök</string>
+    <string name="ui_downloads" translatable="true">Nedladdningar</string>
+    <string name="ui_export_settings" translatable="true">Exportera inställningar</string>
+    <string name="ui_faq" translatable="true">Vanliga frågor</string>
+    <string name="ui_faq_what_for_q" translatable="true">Vad är ChemSearch för?</string>
+    <string name="ui_faq_what_for_a" translatable="true">ChemSearch är för snabb kemi sökning, studie och referens. Det ger sammansatta sökning, strukturer, säkerhetssammanfattningar, offline sparande, referenser och miniräknare i en Android-app.</string>
+    <string name="ui_faq_replacement_q" translatable="true">Är ChemSearch en ersättare för PubChem?</string>
+    <string name="ui_faq_replacement_a" translatable="true">Nej. ChemSearch använder PubChem som en huvuddatakälla och presenterar användbara delar på ett telefonvänligt sätt. Öppna PubChem direkt när du behöver hela skivan eller den ursprungliga källspåren.</string>
+    <string name="ui_faq_data_source_q" translatable="true">Var kommer sammansatta data från?</string>
+    <string name="ui_faq_data_source_a" translatable="true">De flesta sammansatta egenskaper, identifierare, strukturer, synonymer, klassificeringar och GHS-sammanfattningar kommer från PubChem. Vissa beskrivningar kan komma från Wikipedia eller din valda AI-leverantör, beroende på inställningar.</string>
+    <string name="ui_faq_pt_data_q" translatable="true">Varifrån kommer periodiska tabelluppgifter?</string>
+    <string name="ui_faq_pt_data_a" translatable="true">Periodiska tabelldetaljer paketeras från offentliga referensdata, inklusive PubChem, Wikipedia, och Bowserinator/Periodic-Table-JSON. Vissa fält döljs när ett värde inte är listat.</string>
+    <string name="ui_faq_trust_q" translatable="true">Kan jag lita på uppgifterna?</string>
+    <string name="ui_faq_trust_a" translatable="true">Använd ChemSearch för studier och snabba kontroller. Kemiska databaser kan inte hålla med eftersom namn, tautomater, salter, hydrater, stereokemi och standardiseringsregler är komplicerade. För lab, medicinska, juridiska, eller regulatoriska beslut, kontrollera med officiella källor.</string>
+    <string name="ui_faq_safety_official_q" translatable="true">Är säkerhetstjänstemannen?</string>
+    <string name="ui_faq_safety_official_a" translatable="true">Nej. GHS-kort är snabba referenssammanfattningar från PubChem-data. De ersätter inte en leverantör Säkerhetsdatablad, labbpolitik, lärarinstruktioner eller lokala säkerhetsregler.</string>
+    <string name="ui_faq_safety_missing_q" translatable="true">Varför saknas eller skiljer sig säkerhetsdata från en SDS?</string>
+    <string name="ui_faq_safety_missing_a" translatable="true">Säkerhetsdata beror på källa, renhet, blandning, koncentration, fysisk form, region och uppdateringsdatum. En leverantör SDS är skriven för en viss produkt; ChemSearch visar vanligtvis referensdata på substansnivå.</string>
+    <string name="ui_faq_lab_advice_q" translatable="true">Ger ChemSearch laboratorieprocedur eller syntesrådgivning?</string>
+    <string name="ui_faq_lab_advice_a" translatable="true">Nej. ChemSearch är för sökning och inlärning. Det verifierar inte experimentella procedurer, exponeringsgränser, doser, lagringskompatibilitet eller säkra hanteringssteg.</string>
+    <string name="ui_faq_search_what_q" translatable="true">Vad kan jag söka efter?</string>
+    <string name="ui_faq_search_what_a" translatable="true">Du kan söka på gemensamt namn, IUPAC namn, CAS nummer, PubChem CID, formel eller ritad struktur. Vissa lägen fungerar bättre för exakta identifierare än korta namn.</string>
+    <string name="ui_faq_search_fail_q" translatable="true">Varför misslyckades min sökning?</string>
+    <string name="ui_faq_search_fail_a" translatable="true">Prova en stavningskorrigering, CID, CAS-nummer eller ett mer specifikt namn. Mycket breda namn, inofficiella namn, instabila strukturer och föreningar frånvarande från PubChem kan inte returnera en användbar match.</string>
+    <string name="ui_faq_did_you_mean_q" translatable="true">Varför menade du förslag ibland saknas?</string>
+    <string name="ui_faq_did_you_mean_a" translatable="true">ChemSearch visar endast stängda stavningsträffar. Det döljer lösa PubChem autocomplete resultat när de ser orelaterade ut, så det kan inte visa något i stället för ett dåligt förslag.</string>
+    <string name="ui_faq_normal_vs_isomer_q" translatable="true">Vad är skillnaden mellan normal sökning och isomersökning?</string>
+    <string name="ui_faq_normal_vs_isomer_a" translatable="true">Normal sökning försöker hitta en bästa förening. Isomer Search behandlar ingången som en molekylär formel och listar föreningar med samma formel.</string>
+    <string name="ui_faq_formula_style_q" translatable="true">Varför ser formler ibland annorlunda ut än läroböcker?</string>
+    <string name="ui_faq_formula_style_a" translatable="true">ChemSearch kan visa formler i olika stilar. Hill order sorterar kol, väte, sedan resten alfabetiskt. Konventionell ordning försöker visa den bekanta kemiformen, såsom NaCl eller H2SO4.</string>
+    <string name="ui_faq_ions_q" translatable="true">Varför behöver joner ibland avgifter som visas separat?</string>
+    <string name="ui_faq_ions_a" translatable="true">Formel text och ladda text är olika bitar av data. ChemSearch försöker hålla laddningar synliga med superskript, men vissa källregister kan lagra joner i ovanliga format.</string>
+    <string name="ui_faq_2d_hydrogen_q" translatable="true">Varför visar inte en 2D-struktur varje väte?</string>
+    <string name="ui_faq_2d_hydrogen_a" translatable="true">Många kemiska diagram utelämnar hydrogener på kol om de inte materia för klarhet. Det är normalt för skelett- och PubChem-stil 2D-strukturer.</string>
+    <string name="ui_faq_3d_missing_q" translatable="true">Varför saknas en 3D-modell?</string>
+    <string name="ui_faq_3d_missing_a" translatable="true">Vissa föreningar har inte en PubChem 3D-konformator. Salter, metaller, samordningsföreningar, joniska register, mycket flexibla molekyler och mycket stora molekyler är vanliga fall.</string>
+    <string name="ui_faq_3d_exact_q" translatable="true">Är 3D-modeller exakta verkliga former?</string>
+    <string name="ui_faq_3d_exact_a" translatable="true">Nej. PubChem 3D-konformatorer är beräknade modeller, inte garanterade experimentella strukturer. De är användbara för visualisering, men de kan inte representera den exakta formen i en kristall, lösningsmedel, proteinficka eller klassrumsmodell.</string>
+    <string name="ui_faq_3d_bond_order_q" translatable="true">Varför ser obligationsorder annorlunda ut i 3D?</string>
+    <string name="ui_faq_3d_bond_order_a" translatable="true">3D-koordinatfiler fokuserar på atompositioner och konnektivitet. Bond-ordning, aromaticity, laddningsplacering och tautomerform kan tolkas olika med olika verktyg.</string>
+    <string name="ui_faq_structure_search_q" translatable="true">Vad gör Structure Search?</string>
+    <string name="ui_faq_structure_search_a" translatable="true">Structure Search skickar den ritade molekylen som en strukturfråga och letar efter matchande PubChem föreningar. Ogiltig valens, ofullständiga ritningar eller mycket komplexa skisser kan misslyckas.</string>
+    <string name="ui_faq_structure_diff_q" translatable="true">Varför returnerar Structure Search en annan förening än förväntat?</string>
+    <string name="ui_faq_structure_diff_a" translatable="true">Små ritningsskillnader kan ändra sökningen, särskilt med laddningar, aromatiska ringar, tautomers, stereokemi, salter och implicita väten. Använd exakta identifierare när du behöver en specifik post.</string>
+    <string name="ui_faq_ai_wrong_q" translatable="true">Kan AI beskrivningar vara fel?</string>
+    <string name="ui_faq_ai_wrong_a" translatable="true">Ja. AI text kan låta självsäker medan saknade detaljer eller blanda fakta. Använd AI beskrivningar som en tydlig språk hjälpare, inte som den slutliga källan för säkerhet, tentor, labbarbete eller citeringar.</string>
+    <string name="ui_faq_ai_data_q" translatable="true">Vilka data skickas till AI-leverantörer?</string>
+    <string name="ui_faq_ai_data_a" translatable="true">Endast när du begär en AI-beskrivning, skickar ChemSearch sammansatta sammanhang till den leverantör du valt. Den leverantören hanterar begäran enligt sina egna villkor och sekretesspolicy.</string>
+    <string name="ui_faq_ai_key_q" translatable="true">Behöver jag en API-nyckel för AI-beskrivningar?</string>
+    <string name="ui_faq_ai_key_a" translatable="true">Ja. Google Gemini, Groq Cloud, OpenAI, OpenRouter, och Mistral AI behöver var och en sin egen API-nyckel. Lägg till nycklar i Inställningar &gt; AI Provider &amp; Nycklar.</string>
+    <string name="ui_faq_key_storage_q" translatable="true">Var lagras API-nycklar?</string>
+    <string name="ui_faq_key_storage_a" translatable="true">API-nycklar lagras lokalt med Android Keystore-backad kryptering. ChemSearch synkroniserar dem inte med ett ChemSearch-konto.</string>
+    <string name="ui_faq_collect_q" translatable="true">Hämtar ChemSearch mina sökningar?</string>
+    <string name="ui_faq_collect_a" translatable="true">ChemSearch har inget kontosystem. Sökhistorik, favoriter, hämtningar och cache lagras på din enhet. Live sökningar kontaktar fortfarande externa tjänster som PubChem, Wikipedia, GitHub uppdateringar eller din valda AI-leverantör när det behövs.</string>
+    <string name="ui_faq_collect_no_updates_a" translatable="true">ChemSearch har inget kontosystem. Sökhistorik, favoriter, hämtningar och cache lagras på din enhet. Live sökningar kontaktar fortfarande externa tjänster som PubChem, Wikipedia, eller din valda AI-leverantör när det behövs.</string>
+    <string name="ui_faq_offline_q" translatable="true">Vad fungerar offline?</string>
+    <string name="ui_faq_offline_a" translatable="true">Den inbyggda Bibliotek referenser, kalkylatorer, favoriter och nedladdade föreningar kan arbeta offline. Live compound lookup, färska beskrivningar, struktursökning, uppdateringskontroller och AI beskrivningar behöver tillgång till Internet.</string>
+    <string name="ui_faq_offline_no_updates_a" translatable="true">Den inbyggda Bibliotek referenser, kalkylatorer, favoriter och nedladdade föreningar kan arbeta offline. Live compound lookup, färska beskrivningar, struktursökning och AI beskrivningar behöver tillgång till Internet.</string>
+    <string name="ui_faq_cache_vs_downloads_q" translatable="true">Vad är skillnaden mellan cache och Downloads?</string>
+    <string name="ui_faq_cache_vs_downloads_a" translatable="true">Cache gör återkommande sökningar snabbare och kan rensas automatiskt. Nedladdningar är avsiktliga offline sammansatta filer med identifierare, beskrivningar, strukturer, synonymer, säkerhetsinformation och källdata när det är tillgängligt.</string>
+    <string name="ui_faq_downloads_stored_q" translatable="true">Var lagras nedladdade ämnen?</string>
+    <string name="ui_faq_downloads_stored_a" translatable="true">Nedladdade föreningar lagras i appens lokala rumsdatabas på din enhet. Avinstallera appen kan ta bort dem om du inte exporterar eller säkerhetskopierar dem först.</string>
+    <string name="ui_faq_save_q" translatable="true">Hur sparar jag en förening?</string>
+    <string name="ui_faq_save_a" translatable="true">Använd stjärnan för Favoriter eller nedladdningsknappen för en fullständig offline-sparning. Favoriter är snabba bokmärken; Nedladdningar är avsedda för offline-läsning.</string>
+    <string name="ui_faq_compare_q" translatable="true">Kan jag jämföra sparade föreningar?</string>
+    <string name="ui_faq_compare_a" translatable="true">Ja. Välj två eller flera föreningar i Favoriter, Nedladdningar eller stöds kemisk databas poster och använd sedan den flytande knappen Jämför .</string>
+    <string name="ui_faq_database_q" translatable="true">Vad är den kemiska databasen?</string>
+    <string name="ui_faq_database_a" translatable="true">Det är en samlad referens för vanliga ämnen, joner, funktionella grupper och reaktioner. Det är användbart offline, men det är inte lika brett som PubChem.</string>
+    <string name="ui_faq_compare_reactions_q" translatable="true">Varför kan jag jämföra ämnen och joner men inte reaktioner eller funktionella grupper?</string>
+    <string name="ui_faq_compare_reactions_a" translatable="true">Jämför föreningar förväntar föreningsliknande poster med formler och identifierare. Reaktioner och funktionella grupper är referensposter, inte fulla sammansatta poster.</string>
+    <string name="ui_faq_tags_q" translatable="true">Varför ser vissa klassificeringstaggar orelaterade ut?</string>
+    <string name="ui_faq_tags_a" translatable="true">Klassificering och anteckningstaggar kommer från källposter. En tagg kan beskriva en datakontext, litteraturkategori, analystråd eller indexeringstermer; det betyder inte alltid att föreningen används främst för det ämnet.</string>
+    <string name="ui_faq_long_names_q" translatable="true">Varför är vissa namn mycket långa eller trunkerade?</string>
+    <string name="ui_faq_long_names_a" translatable="true">Vissa IUPAC-namn och biomolekylnamn är för långa för kompakta skärmar. Tryck på namnet eller utöka kontrollen när den är tillgänglig för att se fulltexten.</string>
+    <string name="ui_faq_molar_mass_q" translatable="true">Hur beräknas mögelmassan?</string>
+    <string name="ui_faq_molar_mass_a" translatable="true">Kalkylatorn summerar standard atomvikter från den tolkade formeln. Parenteser, nästlade grupper, hydrater och vanlig formel notation stöds.</string>
+    <string name="ui_faq_oxidation_q" translatable="true">Varför kan oxidationstillstånd vara fel för ovanliga formler?</string>
+    <string name="ui_faq_oxidation_a" translatable="true">Oxidation tillstånd regler behöver antaganden om obligationer, avgifter och kända undantag. Verktyget hanterar vanlig kemi, men koordinationsföreningar och tvetydiga formler kan behöva manuell kontroll.</string>
+    <string name="ui_faq_balancing_q" translatable="true">Varför kan reaktionsbalansen misslyckas?</string>
+    <string name="ui_faq_balancing_a" translatable="true">Balancern använder formel parsning och exakt aritmetik. Det kan misslyckas när formler är ogiltiga, laddningar saknas, eller reaktionen behöver kemi sammanhang bortom atom bevarande.</string>
+    <string name="ui_faq_homework_q" translatable="true">Kan jag använda verktygen för läxor?</string>
+    <string name="ui_faq_homework_a" translatable="true">Ja, som en checker och lärhjälp. Visa fortfarande ditt arbete, eftersom appen ger svar och sammanfattningar, inte din lärares nödvändiga resonemang steg.</string>
+    <string name="ui_faq_updates_q" translatable="true">Hur fungerar appuppdateringar?</string>
+    <string name="ui_faq_updates_a" translatable="true">ChemSearch kan kontrollera GitHub releaser, ladda ner APK inuti appen, och sedan lämna den till Android installer. Du kan också uppdatera manuellt från GitHub.</string>
+    <string name="ui_faq_updates_optional_q" translatable="true">Är uppdateringsaviseringar valfritt?</string>
+    <string name="ui_faq_updates_optional_a" translatable="true">Ja. Du kan aktivera eller stänga av uppdateringen i Inställningar och ändå kontrollera manuellt när du vill.</string>
+    <string name="ui_faq_clear_q" translatable="true">Hur rensar jag historia eller cache?</string>
+    <string name="ui_faq_clear_a" translatable="true">Öppna Inställningar &gt; Data. Du kan rensa de senaste sökningarna, hantera cachestorlek, välja automatisk rensning av tidpunkter och ta bort sparade temporära data.</string>
+    <string name="ui_faq_debug_q" translatable="true">Hur låser jag upp debug inställningar?</string>
+    <string name="ui_faq_debug_a" translatable="true">Tryck på byggnummer på Om-skärmen fem gånger. Felsökningsinställningar är för diagnostik, slutpunktskontroller, loggar och utvecklingstestning.</string>
+    <string name="ui_frequently_asked_questions" translatable="true">Vanliga frågor</string>
+    <string name="ui_settings_favorites" translatable="true">Favoriter</string>
+    <string name="ui_formula_display" translatable="true">Formel visning</string>
+    <string name="ui_import_settings" translatable="true">Importera inställningar</string>
+    <string name="ui_live_log_viewer" translatable="true">Live loggvisare</string>
+    <string name="ui_ai_provider_and_keys" translatable="true">AI Provider &amp; Keys</string>
+    <string name="ui_dark_mode" translatable="true">Mörkt läge</string>
+    <string name="ui_search_history" translatable="true">Sök historik</string>
+    <string name="ui_autosuggestions" translatable="true">Autoförslag</string>
+    <string name="ui_compact_mode" translatable="true">Kompakt läge</string>
+    <string name="ui_reduce_motion" translatable="true">Minska rörelse</string>
+    <string name="ui_high_contrast_outlines" translatable="true">Konturer med hög kontrast</string>
+    <string name="ui_default_structure_view" translatable="true">Standard strukturvy</string>
+    <string name="ui_offline_download_quality" translatable="true">Nedladdningskvalitet offline</string>
+    <string name="ui_cache_size_limit" translatable="true">Gräns för cachens storlek</string>
+    <string name="ui_auto_clear_cache" translatable="true">Automatisk rensning av cache</string>
+    <string name="ui_api_endpoints" translatable="true">API endpoints</string>
+    <string name="ui_test_update_notification" translatable="true">Testa uppdateringsavisering</string>
+    <string name="ui_show_welcome_screen" translatable="true">Visa välkomstskärm</string>
+    <string name="ui_inspect_sharedpreferences" translatable="true">Inspektera SharedPreferences</string>
+    <string name="ui_wipe_all_sharedpreferences" translatable="true">Rensa alla SharedPreferences</string>
+    <string name="ui_update_notifications" translatable="true">Uppdatera aviseringar</string>
+    <string name="ui_update_available" translatable="true">Uppdatering tillgänglig</string>
+    <string name="ui_periodic_table" translatable="true">Periodisk tabell</string>
+    <string name="ui_periodic_detail_element_overview_desc" translatable="true">Den snabba identitetspanelen för detta element. Den visar symbolen, elementfamiljen, tabellposition, vanligt tillstånd, atommassa, fyndighetsåret, och en kort kortfattad sammanfattning.</string>
+    <string name="ui_periodic_detail_element_images_desc" translatable="true">En referensbild av elementet när man är tillgänglig. Det hjälper till att ansluta tabellposten med hur elementet eller ett prov av det kan se ut i verkliga livet.</string>
+    <string name="ui_periodic_detail_electron_shells_desc" translatable="true">En skalbild av hur elektroner arrangeras runt atomen. Det yttre skalet är särskilt användbart eftersom valens elektroner förklarar många bindnings- och reaktivitetsmönster.</string>
+    <string name="ui_periodic_detail_physical_properties_desc" translatable="true">Mäta egenskaper som beskriver hur elementet beter sig fysiskt: hur starkt det attraherar elektroner, hur stora dess atomer är, när den smälter eller kokar och hur tät den är.</string>
+    <string name="ui_periodic_detail_more_details_desc" translatable="true">Extra referensfakta för elementet, grupperat efter identitet, atomdata och elektrondata. Detta håller detaljerade värden separerade från den snabba översikten.</string>
+    <string name="ui_periodic_detail_spectral_lines_desc" translatable="true">Det synliga utsläppsmönstret för elementet. Dessa ljusa linjer fungerar som ett fingeravtryck och hjälper till att identifiera ett element från ljuset det avger.</string>
+    <string name="ui_periodic_detail_sources_desc" translatable="true">Öppna de ursprungliga data och bildkällor som används för denna sida. Använd dessa länkar när du vill verifiera ett värde eller läsa mer från källan.</string>
+    <string name="ui_state" translatable="true">Län</string>
+    <string name="ui_found" translatable="true">Hittad</string>
+    <string name="ui_unknown" translatable="true">Okänd</string>
+    <string name="ui_loading_wikipedia_description" translatable="true">Laddar Wikipedia beskrivning...</string>
+    <string name="ui_no_wikipedia_summary_available" translatable="true">Ingen Wikipedia sammanfattning är tillgänglig för detta element.</string>
+    <string name="ui_wikipedia_description_could_not_be_loaded" translatable="true">Wikipedia beskrivning kunde inte laddas.</string>
+    <string name="ui_element_image_desc" translatable="true">%1$s elementbild</string>
+    <string name="ui_shell_n" translatable="true">n=%1$d</string>
+    <string name="ui_show_short_configuration" translatable="true">Visa kort konfiguration</string>
+    <string name="ui_show_full_configuration" translatable="true">Visa full konfiguration</string>
+    <string name="ui_group_period_s" translatable="true">Grupp %1$d, period %2$d</string>
+    <string name="ui_group_period_state_s" translatable="true">Grupp %1$d · Period %2$d · %3$s</string>
+    <string name="ui_period_s" translatable="true">Period %1$d</string>
+    <string name="ui_lanthanides" translatable="true">Lanthanides</string>
+    <string name="ui_actinides" translatable="true">Actinides</string>
+    <string name="ui_about_s" translatable="true">Om %1$s</string>
+    <string name="ui_x_summary" translatable="true">%1$s summary</string>
+    <plurals name="ui_element_count">
+        <item quantity="one">%1$d element</item>
+        <item quantity="other">%1$d element</item>
+    </plurals>
+    <string name="ui_no_downloads_yet" translatable="true">Inga nedladdningar ännu</string>
+    <string name="ui_label_recent" translatable="true">Senaste</string>
+    <string name="ui_most_atoms" translatable="true">Flest atomer</string>
+    <string name="ui_least_atoms" translatable="true">Minst atomer</string>
+    <string name="ui_no_matches_found_title" translatable="true">Inga träffar hittades</string>
+    <!-- SettingsUi subtitles -->
+    <string name="ui_subtitle_all_118_offline" translatable="true">Alla 118 element offline</string>
+    <string name="ui_subtitle_about_links" translatable="true">App info, länkar, datakällor och krediter</string>
+    <string name="ui_subtitle_pubchem_etc" translatable="true">PubChem · NCI/CADD · Wikipedia · GitHub · AI</string>
+    <string name="ui_subtitle_choose_description" translatable="true">Välj vilken beskrivningstyp som visas först</string>
+    <string name="ui_subtitle_choose_structure_tab" translatable="true">Välj vilken strukturflik som öppnas först efter sökning</string>
+    <string name="ui_subtitle_conventional_hill" translatable="true">Konventionell använder vanlig elementordning; Hill håller PubChem/Hill ordning</string>
+    <string name="ui_subtitle_clear_recent_searches" translatable="true">Rensa alla senaste sökningar</string>
+    <string name="ui_subtitle_clear_history_cache" translatable="true">Rensa historik/cache och importera eller exportera lokala inställningar.</string>
+    <string name="ui_subtitle_clears_legacy_prefs" translatable="true">Rensar gamla prefs och krypterade nyckelposter endast</string>
+    <string name="ui_subtitle_diagnostics_tools" translatable="true">Diagnostik och avancerade felsökningsverktyg.</string>
+    <string name="ui_subtitle_control_theme" translatable="true">Kontroll tema, autoförslag och standard beskrivning beteende.</string>
+    <string name="ui_subtitle_full_offline_copies" translatable="true">Fullständiga kopior offline</string>
+    <string name="ui_subtitle_make_cards_easier" translatable="true">Gör kort och kontroller lättare att separera</string>
+    <string name="ui_subtitle_limit_temp_cache" translatable="true">Begränsa temporär sammansatt cache-lagring</string>
+    <string name="ui_subtitle_pick_provider" translatable="true">Välj en leverantör och hantera krypterade lokala API-nycklar.</string>
+    <string name="ui_subtitle_pick_offline_quality" translatable="true">Välj hur mycket extra data ChemSearch sparar för visning offline</string>
+    <string name="ui_subtitle_save_settings" translatable="true">Spara inställningar, AI-leverantörsmodeller och API-nycklar till JSON</string>
+    <string name="ui_subtitle_restore_settings" translatable="true">Återställ inställningar från en JSON-säkerhetskopia</string>
+    <string name="ui_subtitle_saved_quick_links" translatable="true">Sparade snabblänkar</string>
+    <string name="ui_subtitle_replay_intro" translatable="true">Spela om den första lanseringen</string>
+    <string name="ui_subtitle_remove_old_cache" translatable="true">Ta bort gamla temporära cachefiler på detta schema</string>
+    <string name="ui_subtitle_send_sample_notification" translatable="true">Skicka ett exempeluppdateringsmeddelande nu</string>
+    <string name="ui_subtitle_show_dropdown" translatable="true">Visa rullgardinsmeny medan du skriver</string>
+    <string name="ui_subtitle_show_more_content" translatable="true">Visa mer innehåll per skärm</string>
+    <string name="ui_subtitle_use_calmer_transitions" translatable="true">Använd lugnare övergångar och ändra storlek</string>
+    <string name="ui_subtitle_notify_new_version" translatable="true">Meddela när en ny version är tillgänglig</string>
+    <string name="ui_subtitle_try_different" translatable="true">Prova ett annat namn, formel eller CID.</string>
+    <string name="ui_subtitle_quick_answers" translatable="true">Snabba svar om ChemSearch</string>
+    <string name="ui_subtitle_substances_etc" translatable="true">Substanser, joner, grupper, reaktioner</string>
+    <string name="ui_subtitle_tap_download_icon" translatable="true">Tryck på nedladdningsikonen under stjärnan på valfri förening</string>
+    <string name="ui_subtitle_tap_star_icon" translatable="true">Tryck på stjärnikonen på valfri förening</string>
+    <string name="ui_subtitle_throws_exception" translatable="true">Kastar ohanterat undantag för testning</string>
+    <string name="ui_subtitle_jvm_system_ram" translatable="true">JVM heap + system RAM</string>
+    <!-- SettingsUi.kt: labels, actions, dialogs -->
+    <string name="ui_amoled_mode" translatable="true">AMOLED-läge</string>
+    <string name="ui_amoled_mode_dark_subtitle" translatable="true">Sann-svart bakgrund för varje färgschema</string>
+    <string name="ui_amoled_mode_light_subtitle" translatable="true">Slå på mörkt läge för att använda AMOLED-läge</string>
+    <string name="ui_currently_dark" translatable="true">Mörk just nu</string>
+    <string name="ui_currently_light" translatable="true">Ljus just nu</string>
+    <string name="ui_structure_view_2d" translatable="true">2D</string>
+    <string name="ui_structure_view_3d" translatable="true">3D</string>
+    <string name="ui_structure_view_last_used" translatable="true">Senast använd</string>
+    <string name="ui_offline_quality_basic" translatable="true">Grundläggande</string>
+    <string name="ui_offline_quality_structures" translatable="true">Strukturer</string>
+    <string name="ui_offline_quality_complete" translatable="true">Complete</string>
+    <string name="ui_formula_style_conventional" translatable="true">Konventionell</string>
+    <string name="ui_formula_style_hill" translatable="true">Kulle</string>
+    <string name="ui_desc_source_pubchem" translatable="true">PubChem</string>
+    <string name="ui_desc_source_wikipedia" translatable="true">Wikipedia</string>
+    <string name="ui_desc_source_ai" translatable="true">AI</string>
+    <string name="ui_cache_limit_10_mb" translatable="true">10 MB</string>
+    <string name="ui_cache_limit_50_mb" translatable="true">50 MB</string>
+    <string name="ui_cache_limit_100_mb" translatable="true">100 MB</string>
+    <string name="ui_cache_limit_unlimited" translatable="true">Obegränsad</string>
+    <string name="ui_cache_retention_daily" translatable="true">Dagligen</string>
+    <string name="ui_cache_retention_weekly" translatable="true">Veckovis</string>
+    <string name="ui_cache_retention_monthly" translatable="true">Månadsvis</string>
+    <string name="ui_cache_retention_manual" translatable="true">Manuell</string>
+    <string name="ui_color_blue" translatable="true">Blå</string>
+    <string name="ui_color_violet" translatable="true">Violett</string>
+    <string name="ui_color_emerald" translatable="true">Smaragd</string>
+    <string name="ui_color_rose" translatable="true">Ros</string>
+    <string name="ui_color_amber" translatable="true">Bärnsten</string>
+    <string name="ui_section_data" translatable="true">Data</string>
+    <string name="ui_section_updates" translatable="true">Uppdateringar</string>
+    <string name="ui_reference" translatable="true">Referens</string>
+    <string name="ui_open" translatable="true">Öppna</string>
+    <string name="ui_install" translatable="true">Installera</string>
+    <string name="ui_download" translatable="true">Hämta</string>
+    <string name="ui_check" translatable="true">Kontrollera</string>
+    <string name="ui_checking" translatable="true">Kontrollerar...</string>
+    <string name="ui_never_checked" translatable="true">Aldrig kontrollerad</string>
+    <string name="ui_last_checked_s" translatable="true">Senast kontrollerad %1$s</string>
+    <string name="ui_downloading_update_d" translatable="true">Hämtar uppdatering (%1$d%%)</string>
+    <string name="ui_download_complete_tap_install" translatable="true">Nedladdning slutförd. Tryck på Installera om prompten stängd.</string>
+    <string name="ui_latest_s" translatable="true">Senaste: %1$s</string>
+    <string name="ui_up_to_date_latest_s" translatable="true">Du är uppdaterad (senaste %1$s)</string>
+    <string name="ui_update_check_failed_s" translatable="true">Uppdateringskontrollen misslyckades: %1$s</string>
+    <string name="ui_package_s" translatable="true">Paket: %1$s</string>
+    <string name="ui_version_s_d" translatable="true">v%1$s (%2$d)</string>
+    <string name="ui_debug" translatable="true">Debug</string>
+    <string name="ui_release" translatable="true">Släpp</string>
+    <string name="ui_empty" translatable="true">Tom</string>
+    <string name="ui_default_location" translatable="true">Förvald plats</string>
+    <string name="ui_app_internal_cache_default" translatable="true">Appens interna cache (standard)</string>
+    <string name="ui_key_saved" translatable="true">Nyckel sparad</string>
+    <string name="ui_needs_key" translatable="true">Behöver nyckel</string>
+    <string name="ui_needs_api_key" translatable="true">Behöver API-nyckel</string>
+    <string name="ui_add_key" translatable="true">Lägg till nyckel</string>
+    <string name="ui_use_ai" translatable="true">Använd AI</string>
+    <string name="ui_get_or_manage_a_key_at_s" translatable="true">Hämta eller hantera en nyckel hos %1$s</string>
+    <string name="ui_imported_d_favorites_and_d_downloads" translatable="true">Importerade %1$d favoriter och %2$d nedladdningar</string>
+    <string name="ui_replaced_library_with_d_favorites_and_d_downloads" translatable="true">Ersatt bibliotek med %1$d favoriter och %2$d nedladdningar</string>
+    <string name="ui_saved_d" translatable="true">%1$d sparad</string>
+    <string name="ui_a_z" translatable="true">A-Ö</string>
+    <string name="ui_filter_downloads" translatable="true">Filtrera nedladdningar</string>
+    <string name="ui_updates_and_help" translatable="true">Uppdateringar &amp; Hjälp</string>
+    <string name="ui_help" translatable="true">Hjälp</string>
+    <string name="ui_settings_description_updates" translatable="true">Anpassa sökning, AI, lagring och appuppdateringar.</string>
+    <string name="ui_settings_description_support" translatable="true">Anpassa sökning, AI, lagring och support alternativ.</string>
+    <string name="ui_control_update_checks_and_open_support_resources" translatable="true">Kontrollera uppdateringskontroller och öppna supportresurser.</string>
+    <string name="ui_faq_and_support_resources" translatable="true">FAQ och supportresurser.</string>
+    <string name="ui_subtitle_saved_quick_links_device" translatable="true">Sparade snabblänkar på den här enheten.</string>
+    <string name="ui_subtitle_offline_copies_saved_data" translatable="true">Offline sammansatta kopior med sparade strukturer och data.</string>
+    <string name="ui_subtitle_browse_database" translatable="true">Bläddra bland ämnen, reaktioner, funktionella grupper och joner.</string>
+    <string name="ui_subtitle_browse_periodic_table" translatable="true">Bläddra bland alla element, grupper, massor och vanliga oxidationstillstånd.</string>
+    <string name="ui_not_run_yet" translatable="true">Inte köra ännu</string>
+    <string name="ui_last_run_s" translatable="true">Senaste körning: %1$s</string>
+    <string name="ui_success_d_failed_d_skipped_d" translatable="true">Framgång %1$d · Misslyckades %2$d · Hoppas %3$d</string>
+    <string name="ui_run" translatable="true">Kör</string>
+    <string name="ui_re_run" translatable="true">Omkörning</string>
+    <string name="ui_running" translatable="true">Kör...</string>
+    <string name="ui_no_logs_yet_perform_an_action" translatable="true">Inga loggar än. Utför en åtgärd i appen.</string>
+    <string name="ui_verbose_logging_off_only_errors_captured" translatable="true">Verbose loggning är avstängd. Endast fel är fångade.\nAktivera det för att se debug loggar.</string>
+    <string name="ui_ping_pubchem_fallback_3d_wikipedia_github_and_ai" translatable="true">Ping PubChem, fallback 3D, Wikipedia, GitHub, och AI-leverantörer</string>
+    <string name="ui_last_run_d_ok_d_failed_d_skipped" translatable="true">Senaste körning: %1$d ok • %2$d misslyckades • %3$d hoppade över</string>
+    <string name="ui_d_legacy_keys_stored_secrets_masked" translatable="true">%1$d äldre nycklar lagrade · hemligheter maskerade</string>
+    <string name="ui_view" translatable="true">Visa</string>
+    <string name="ui_send" translatable="true">Skicka</string>
+    <string name="ui_wipe" translatable="true">Rensa</string>
+    <string name="ui_crash" translatable="true">Krascha</string>
+    <string name="ui_used_d_mb_of_d_mb_max" translatable="true">Använda %1$d MB %2$d MB max</string>
+    <string name="ui_used_d_mb_of_d_mb_total" translatable="true">Använda %1$d MB %2$d MB totalt</string>
+    <string name="ui_mem_used" translatable="true">Använt</string>
+    <string name="ui_mem_allocated" translatable="true">Tilldelad</string>
+    <string name="ui_mem_max" translatable="true">Max</string>
+    <string name="ui_mem_headroom" translatable="true">Huvudrum</string>
+    <string name="ui_mem_available" translatable="true">Tillgänglig</string>
+    <string name="ui_mem_total" translatable="true">Totalt</string>
+    <plurals name="ui_lines_captured">
+        <item quantity="one">%1$d rad fångad</item>
+        <item quantity="other">%1$d rader fångas</item>
+    </plurals>
+    <plurals name="ui_matches_count">
+        <item quantity="one">%1$d match</item>
+        <item quantity="other">%1$d träffar</item>
+    </plurals>
+    <!-- StructureSearchUi.kt: drawing tools, editor, and results dialog -->
+    <string name="ui_structure_search_blocked_two_atoms" translatable="true">Rita minst två anslutna atomer innan du söker.</string>
+    <string name="ui_structure_search_blocked_connect" translatable="true">Anslut atomerna innan du söker.</string>
+    <string name="ui_structure_search_info" translatable="true">Strukturera sökinformation</string>
+    <string name="ui_atoms" translatable="true">Atomer</string>
+    <string name="ui_bond_type" translatable="true">Typ av Bond</string>
+    <string name="ui_templates" translatable="true">Mallar</string>
+    <string name="ui_selected_s" translatable="true">Valda: %1$s</string>
+    <string name="ui_tap_to_place_atoms" translatable="true">Tryck för att placera atomer</string>
+    <string name="ui_search_structure" translatable="true">Sök struktur</string>
+    <string name="ui_structure_search_failed" translatable="true">Struktursökning misslyckades</string>
+    <string name="ui_matching_results" translatable="true">Matchande resultat</string>
+    <string name="ui_searching_pubchem" translatable="true">Söker PubChem...</string>
+    <string name="ui_try_a_simpler_drawing_or_clean_the_structure" translatable="true">Prova en enklare ritning eller rengöra strukturen.</string>
+    <string name="ui_bond_single" translatable="true">Enstaka bindningar</string>
+    <string name="ui_bond_double" translatable="true">Dubbel bindning</string>
+    <string name="ui_bond_triple" translatable="true">Trippel bindning</string>
+    <string name="ui_bond_aromatic" translatable="true">Aromatisk bindning</string>
+    <plurals name="ui_matches_found">
+        <item quantity="one">%1$d match hittades</item>
+        <item quantity="other">%1$d träffar hittades</item>
+    </plurals>
+    <!-- ChemicalDatabaseUi.kt: browser headers, search results, empty states -->
+    <string name="ui_search_s" translatable="true">Sök %1$s</string>
+    <string name="ui_search_results" translatable="true">Sök resultat</string>
+    <string name="ui_no_entries_in_this_category" translatable="true">Inga poster i denna kategori</string>
+    <string name="ui_no_database_entries_match_s" translatable="true">Inga databasposter matchar \"%1$s\"</string>
+    <plurals name="ui_matching_entries">
+        <item quantity="one">%1$d matchande post</item>
+        <item quantity="other">%1$d matchande poster</item>
+    </plurals>
+    <!-- PeriodicTrends -->
+    <string name="ui_trend_electronegativity_short" translatable="true">SV</string>
+    <string name="ui_trend_atomic_radius_short" translatable="true">Radius</string>
+    <string name="ui_trend_ionization_energy_short" translatable="true">IE</string>
+    <string name="ui_trend_density_short" translatable="true">Densitet</string>
+    <string name="ui_trend_melting_point_short" translatable="true">Smält</string>
+    <string name="ui_trend_boiling_point_short" translatable="true">Koka</string>
+    <string name="ui_trend_electronegativity_desc" translatable="true">Hur starkt en atom lockar bindningselektroner.</string>
+    <string name="ui_trend_atomic_radius_desc" translatable="true">Ungefärlig atomstorlek i picometer.</string>
+    <string name="ui_trend_ionization_energy_desc" translatable="true">Energi som behövs för att ta bort den första elektronen från en neutral atom.</string>
+    <string name="ui_trend_density_desc" translatable="true">Massa per enhet volym nära standard förhållanden när den är listad.</string>
+    <string name="ui_trend_melting_point_desc" translatable="true">Temperaturen där elementet förändras från fast till vätska.</string>
+    <string name="ui_trend_boiling_point_desc" translatable="true">Temperaturen där elementet förändras från vätska till gas.</string>
+    <string name="ui_trend_variable" translatable="true">Varierar</string>
+    <string name="ui_trend_electronegativity" translatable="true">Elektronik</string>
+    <string name="ui_trend_atomic_radius" translatable="true">Atomradie</string>
+    <string name="ui_trend_ionization_energy" translatable="true">Joniseringsenergi</string>
+    <string name="ui_trend_density" translatable="true">Densitet</string>
+    <string name="ui_trend_melting_point" translatable="true">Smältpunkt</string>
+    <string name="ui_trend_boiling_point" translatable="true">Koka punkt</string>
+    <string name="ui_lowest" translatable="true">Lägsta</string>
+    <string name="ui_highest" translatable="true">Högsta</string>
+    <string name="ui_not_listed" translatable="true">Inte listad</string>
+    <string name="ui_no_listed_values" translatable="true">Inga listade värden</string>
+    <string name="ui_trend_summary_footer" translatable="true">%1$d angivna värden · Räckvidd %2$s</string>
+    <string name="ui_na" translatable="true">n/a</string>
+    <!-- StructureSearch modes -->
+    <string name="ui_structure_search_exact" translatable="true">Exakt</string>
+    <string name="ui_structure_search_similar" translatable="true">Liknande</string>
+    <string name="ui_structure_search_contains" translatable="true">Innehåller</string>
+    <string name="ui_structure_search_part_of" translatable="true">Ingår i</string>
+    <string name="ui_structure_search_exact_desc" translatable="true">Hitta samma struktur</string>
+    <string name="ui_structure_search_similar_desc" translatable="true">Hitta nära 2D-matchningar</string>
+    <string name="ui_structure_search_contains_desc" translatable="true">Hitta föreningar som innehåller denna ritning</string>
+    <string name="ui_structure_search_part_of_desc" translatable="true">Hitta strukturer inuti denna ritning</string>
+    <!-- StructureSearch rings -->
+    <string name="ui_ring_cyclopropane" translatable="true">Cyklopropane</string>
+    <string name="ui_ring_cyclobutane" translatable="true">Cyclobutane</string>
+    <string name="ui_ring_cyclopentane" translatable="true">Cyklopentan</string>
+    <string name="ui_ring_cyclohexane" translatable="true">Cyklohexan</string>
+    <string name="ui_ring_cycloheptane" translatable="true">Cykloheptan</string>
+    <string name="ui_ring_cyclooctane" translatable="true">Cyclooctane</string>
+    <string name="ui_ring_benzene" translatable="true">Bensen</string>
+    <string name="ui_ring_pyridine" translatable="true">Pyridine</string>
+    <string name="ui_ring_furan" translatable="true">Furan</string>
+    <string name="ui_ring_thiophene" translatable="true">Thiophene</string>
+    <string name="ui_ring_pyrrole" translatable="true">Pyrrole</string>
+    <string name="ui_ring_imidazole" translatable="true">Imidazole</string>
+    <string name="ui_ring_oxazole" translatable="true">Oxazol</string>
+    <string name="ui_ring_thiazole" translatable="true">Thiazole</string>
+    <!-- StructureSearch chains -->
+    <string name="ui_chain_ethyl" translatable="true">Etylkedja</string>
+    <string name="ui_chain_propyl" translatable="true">Propyl kedja</string>
+    <string name="ui_chain_butyl" translatable="true">Butyl kedja</string>
+    <string name="ui_chain_hexyl" translatable="true">Hexyl kedja</string>
+    <string name="ui_chain_carbonyl" translatable="true">Karbonyl</string>
+    <string name="ui_chain_nitrile" translatable="true">Nitrile</string>
+    <string name="ui_chain_hydroxyl" translatable="true">Hydroxyl</string>
+    <string name="ui_chain_amino" translatable="true">Amino</string>
+    <!-- StructureSearch warnings -->
+    <string name="ui_structure_warning_no_bonds" translatable="true">Lägg till minst en bindning så PubChem kan jämföra en struktur.</string>
+    <string name="ui_structure_warning_disconnected" translatable="true">Anslut alla fragment innan du söker.</string>
+    <string name="ui_structure_warning_large" translatable="true">Mycket stora ritningar kan vara långsamma eller kan avvisas av PubChem.</string>
+    <string name="ui_structure_warning_aromatic" translatable="true">Aromatiska obligationer exporteras som V2000 aromatiska obligationer typ 4.</string>
+    <!-- FormulaParser validation messages -->
+    <string name="ui_formula_parser_empty" translatable="true">Ange en formel</string>
+    <string name="ui_formula_parser_invalid_char" translatable="true">Kunde inte parsa formel nära \'%1$s\'</string>
+    <string name="ui_formula_parser_unparseable" translatable="true">Kunde inte tolka formel</string>
+    <string name="ui_formula_parser_zero_count" translatable="true">Element antal måste vara större än noll</string>
+    <string name="ui_formula_parser_invalid_multiplier" translatable="true">Ogiltig ledande multiplikator</string>
+    <string name="ui_formula_parser_multiplier_empty" translatable="true">Multiplikator måste följas av en formel</string>
+    <string name="ui_formula_parser_invalid_character" translatable="true">Ogiltig formelkaraktär \'%1$s\'</string>
+    <string name="ui_formula_parser_unclosed_group" translatable="true">Ostängd grupp</string>
+    <string name="ui_formula_parser_unmatched_group" translatable="true">Oöverträffad avslutningsgrupp</string>
+    <!-- StructureStatus labels -->
+    <string name="ui_structure_status_pubchem_3d" translatable="true">PubChem 3D-konformator</string>
+    <string name="ui_structure_status_generated_fallback" translatable="true">Genererad reserv</string>
+    <string name="ui_structure_status_unavailable" translatable="true">Struktur otillgänglig</string>
+    <string name="ui_structure_status_pubchem_3d_detail" translatable="true">3D-konformator från PubChem. Det är en molekylär konformatör, inte en kristall- eller jongallermodell.</string>
+    <string name="ui_structure_status_generated_fallback_detail" translatable="true">Genererad uppskattning från SMILES, InChI eller InChIKey. Bekräfta innan du använder för exakt geometri.</string>
+    <string name="ui_structure_status_unavailable_detail" translatable="true">Ingen användbar 3D-modell finns. Metalliska fasta ämnen, salter och joniska gitterstrukturer har inte en enda PubChem-stil molekylär 3D-konformator.</string>
+    <!-- SourceMetadata / Credits -->
+    <string name="ui_source_iupac_gold_book" translatable="true">IUPAC Guldbok</string>
+    <string name="ui_source_iupac_red_book" translatable="true">IUPAC Röd bok</string>
+    <string name="ui_source_pubchem_pug_rest" translatable="true">PubChem PUG REST</string>
+    <string name="ui_source_pubchem_pug_view" translatable="true">PubChem PUG-vy</string>
+    <string name="ui_source_nci_cadd_resolver" translatable="true">NCI/CADD-lösning</string>
+    <string name="ui_source_unece_ghs" translatable="true">UNECE GHS</string>
+    <string name="ui_source_android_offline_first" translatable="true">Android Offline först</string>
+    <string name="ui_source_pubchem_ghs" translatable="true">PubChem GHS Klassificering</string>
+    <string name="ui_credit_github_repository" translatable="true">GitHub repository</string>
+    <string name="ui_credit_latest_release" translatable="true">Senaste versionen</string>
+    <string name="ui_credit_wiki" translatable="true">Wiki</string>
+    <string name="ui_credit_issue_tracker" translatable="true">Ärendespårare</string>
+    <string name="ui_credit_product_hunt" translatable="true">Produkt Jakt</string>
+    <string name="ui_credit_license" translatable="true">Licens</string>
+    <string name="ui_credit_pubchem_periodic_table" translatable="true">PubChem periodisk tabell</string>
+    <string name="ui_credit_wikipedia_wikimedia" translatable="true">Wikipedia och Wikimedia Commons</string>
+    <string name="ui_credit_google_gemini" translatable="true">Google Gemini</string>
+    <string name="ui_credit_google_gemini_desc" translatable="true">Snabba generella kemisammanfattningar från Google.</string>
+    <string name="ui_credit_groq_cloud" translatable="true">Groq Moln</string>
+    <string name="ui_credit_groq_cloud_desc" translatable="true">Mycket snabba OpenAI-kompatibla chat-slutföranden.</string>
+    <string name="ui_credit_openai" translatable="true">OpenAI</string>
+    <string name="ui_credit_openai_desc" translatable="true">Balanserade AI-beskrivningar med OpenAI chatt-kompletteringar.</string>
+    <string name="ui_credit_openrouter" translatable="true">OpenRouter</string>
+    <string name="ui_credit_openrouter_desc" translatable="true">Rutter förfrågningar till en tillgänglig modell via OpenRouter.</string>
+    <string name="ui_credit_mistral_ai" translatable="true">Mistral AI</string>
+    <string name="ui_credit_mistral_ai_desc" translatable="true">Lätta sammanfattningar från Mistrals chatt API.</string>
+    <string name="ui_credit_jetpack_compose" translatable="true">Jetpack Compose</string>
+    <string name="ui_credit_material_3" translatable="true">Material 3</string>
+    <string name="ui_credit_androidx_navigation" translatable="true">AndroidX Navigation Compose</string>
+    <string name="ui_credit_androidx_room" translatable="true">AndroidX-rum</string>
+    <string name="ui_credit_androidx_datastore" translatable="true">AndroidX DataStore</string>
+    <string name="ui_credit_androidx_workmanager" translatable="true">AndroidX WorkManager</string>
+    <string name="ui_credit_retrofit" translatable="true">Retrofit</string>
+    <string name="ui_credit_okhttp" translatable="true">OkHttp</string>
+    <string name="ui_credit_coil" translatable="true">Spole</string>
+    <string name="ui_credit_gson" translatable="true">Gson</string>
+    <string name="ui_credit_coroutines" translatable="true">Kotlin Coroutines</string>
+    <string name="ui_credit_phosphor_icons" translatable="true">Fosfor ikoner</string>
+    <string name="ui_credit_icons8" translatable="true">Icons8</string>
+    <string name="ui_credit_github_repository_detail" translatable="true">Källa, utgåvor, problem och projektanteckningar</string>
+    <string name="ui_credit_latest_release_detail" translatable="true">Ladda ner den nyaste APK</string>
+    <string name="ui_credit_wiki_detail" translatable="true">Funktionshandbok och installationsanteckningar</string>
+    <string name="ui_credit_issue_tracker_detail" translatable="true">Felrapporter och funktionsförfrågningar</string>
+    <string name="ui_credit_product_hunt_detail" translatable="true">ChemSearch projektsida</string>
+    <string name="ui_credit_license_detail" translatable="true">Öppen källkodslicens</string>
+    <string name="ui_credit_pubchem_pug_rest_detail" translatable="true">Sammansatt sökning, identifierare, egenskaper, bilder, synonymer, isomerer och SDF-strukturer</string>
+    <string name="ui_credit_pubchem_pug_view_detail" translatable="true">Säkerhetssektioner, GHS-data, beskrivningar och källregister</string>
+    <string name="ui_credit_pubchem_periodic_table_detail" translatable="true">Elementegenskaper för den periodiska tabellen</string>
+    <string name="ui_credit_wikipedia_wikimedia_detail" translatable="true">Beskrivning sammanfattningar, elementbilder och spektrala bilder</string>
+    <string name="ui_credit_bowserinator_detail" translatable="true">Extra elementdata, elektronskal, sammanfattningar och bildlänkar</string>
+    <string name="ui_credit_nci_cadd_detail" translatable="true">Fallback SDF-generering när PubChem 3D inte är tillgänglig</string>
+    <string name="ui_credit_iupac_gold_book_detail" translatable="true">Kemiska termer och definitioner</string>
+    <string name="ui_credit_iupac_red_book_detail" translatable="true">Oorganiska namngivningsregler</string>
+    <string name="ui_credit_unece_ghs_detail" translatable="true">GHS piktogram och risketiketter</string>
+    <string name="ui_credit_ai_descriptions_detail" translatable="true">Valfria AI-beskrivningar</string>
+    <string name="ui_credit_jetpack_compose_detail" translatable="true">Användargränssnitt för Android</string>
+    <string name="ui_credit_material_3_detail" translatable="true">UI komponenter och teman</string>
+    <string name="ui_credit_androidx_navigation_detail" translatable="true">Skärm navigering</string>
+    <string name="ui_credit_androidx_room_detail" translatable="true">Offline sammansatt bibliotekslagring</string>
+    <string name="ui_credit_androidx_datastore_detail" translatable="true">App inställningslagring</string>
+    <string name="ui_credit_androidx_workmanager_detail" translatable="true">Kontroller för uppdateringar i bakgrunden</string>
+    <string name="ui_credit_retrofit_detail" translatable="true">HTTP API-klient</string>
+    <string name="ui_credit_okhttp_detail" translatable="true">Nätverkstransport</string>
+    <string name="ui_credit_coil_detail" translatable="true">Strukturminiatyrer och fjärrbilder</string>
+    <string name="ui_credit_gson_detail" translatable="true">JSON konvertering</string>
+    <string name="ui_credit_coroutines_detail" translatable="true">Asynka arbete</string>
+    <string name="ui_credit_phosphor_icons_detail" translatable="true">App-ikon inställd</string>
+    <string name="ui_credit_icons8_detail" translatable="true">Wikipedia logotyp ikon</string>
+    <!-- Search / ChemicalDatabase / IsomerFinder extras -->
+    <string name="ui_view_in_pubchem" translatable="true">Visa i PubChem</string>
+    <string name="ui_toggle_theme" translatable="true">Växla tema</string>
+    <string name="ui_structural_isomers" translatable="true">Strukturella Isomers</string>
+    <string name="ui_isotope" translatable="true">Isotope</string>
+    <string name="ui_cid_label" translatable="true">CID %1$s</string>
+    <string name="ui_compare_count" translatable="true">Jämför %1$d</string>
+    <string name="ui_isotope_showing_substituted" translatable="true">Visar isotop-ersatta föreningar också.</string>
+    <string name="ui_isotope_results_hidden" translatable="true">%1$d isotop resultat%2$s dold.</string>
+    <string name="ui_isomer_search_info" translatable="true">Isomer sökinformation</string>
+    <string name="ui_clear_formula" translatable="true">Rensa formel</string>
+    <string name="ui_results_count_for_formula" translatable="true">%1$d resultat%2$s för %3$s</string>
+    <string name="ui_2d_structure_of" translatable="true">2D struktur %1$s</string>
+    <string name="ui_searching_pubchem_for_isomers" translatable="true">Söker PubChem efter isomerer…</string>
+    <string name="ui_results_count" translatable="true">%1$d resultat%2$s</string>
+    <string name="ui_min_weight" translatable="true">Minsta vikt</string>
+    <string name="ui_max_weight" translatable="true">Max vikt</string>
+    <string name="ui_has_3d" translatable="true">Har 3D</string>
+    <string name="ui_has_ghs" translatable="true">Har GHS</string>
+    <string name="ui_structure_of" translatable="true">Struktur av %1$s</string>
+    <string name="ui_mw" translatable="true">MW %1$s</string>
+    <string name="ui_charge_value" translatable="true">ladda %1$s</string>
+    <!-- SdfFallback -->
+    <string name="ui_sdf_fallback_message" translatable="true">Genererad uppskattning från %1$s med hjälp av NCI/CADD-resolver.</string>
+    <!-- SearchUi info dialogs -->
+    <string name="ui_info_iupac_name" translatable="true">IUPAC Namn</string>
+    <string name="ui_info_iupac_name_body" translatable="true">Det systematiska namn som tilldelats av International Union of Pure and Applied Chemistry. Unikt beskriver strukturen med hjälp av en standard namngivningskonvention.</string>
+    <string name="ui_info_cid" translatable="true">CID</string>
+    <string name="ui_info_cid_body" translatable="true">PubChem Compound ID (CID) är ett unikt nummer som tilldelas av PubChem databasen för att identifiera denna exakta sammansättning.</string>
+    <string name="ui_info_cas_number" translatable="true">CAS Nummer</string>
+    <string name="ui_info_cas_number_body" translatable="true">Chemical Abstracts Service registreringsnummer. En globalt erkänd unik identifierare som tilldelats varje kemisk substans.</string>
+    <string name="ui_info_condensed_formula" translatable="true">Kondenserad formel</string>
+    <string name="ui_info_condensed_formula_body" translatable="true">En kompakt struktur formel genereras från SMILES anslutning när appen kan läsa strukturen säkert.</string>
+    <string name="ui_info_smiles" translatable="true">SMILES</string>
+    <string name="ui_info_smiles_body" translatable="true">Förenklat molekylärt inmatningssystem för inmatning. En text som beskriver den molekylära strukturen med hjälp av atomer och bindningar i en enda linje.</string>
+    <string name="ui_info_inchi" translatable="true">InchI</string>
+    <string name="ui_info_inchi_body" translatable="true">International Chemical Identifier. En standard text-identifierare för kemiska ämnen som är utformade för att vara unika och icke-proprietära.</string>
+    <string name="ui_info_inchikey" translatable="true">InChIKey</string>
+    <string name="ui_info_inchikey_body" translatable="true">En fast längd, hashad version av hela InChI. Lättare att söka och indexera än hela InChI-strängen.</string>
+    <string name="ui_info_empirical_formula" translatable="true">Empirisk formel</string>
+    <string name="ui_info_empirical_formula_body" translatable="true">Det enklaste heltalsförhållandet av atomer i en förening. Skillnader från molekylär formel för föreningar som bensen (C6H6 → CH).</string>
+    <string name="ui_info_atom_number" translatable="true">Atomnummer</string>
+    <string name="ui_info_atom_number_body" translatable="true">Totalt antal atomer representerade i strukturposten.</string>
+    <string name="ui_info_bond_number" translatable="true">Bond nummer</string>
+    <string name="ui_info_bond_number_body" translatable="true">Totalt antal obligationer representerade i strukturbokföringen.</string>
+    <string name="ui_info_formal_charge" translatable="true">Formell avgift</string>
+    <string name="ui_info_formal_charge_body" translatable="true">Den elektriska laddningen tilldelas till en atom i en molekyl, förutsatt att alla obligationer är lika delade. Icke-noll betyder sammansättningen är en jon.</string>
+    <string name="ui_info_what_this_shows" translatable="true">Vad detta visar</string>
+    <string name="ui_info_advanced_properties_what_body" translatable="true">Extra PubChem beräknade egenskaper för personer som vill ha en djupare look än formel, massa, identifierare och säkerhet.</string>
+    <string name="ui_info_why_hidden_by_default" translatable="true">Varför detta är dolt som standard</string>
+    <string name="ui_info_advanced_properties_why_hidden_body" translatable="true">Dessa värden är användbara, men de kan kännas tekniska under normal uppslagning. Huvudresultatsidan håller dem bakom länken mer-information.</string>
+    <string name="ui_info_xlogp" translatable="true">XLogP</string>
+    <string name="ui_info_xlogp_body" translatable="true">Beräknad olja/vatten partition värde. Högre värden betyder oftast att ämnet är mer hydrofobiskt; lägre eller negativa värden innebär vanligtvis att det är mer vattenvänligt.</string>
+    <string name="ui_info_tpsa" translatable="true">TPSA</string>
+    <string name="ui_info_tpsa_body" translatable="true">Topologisk polär yta. Detta hjälper till att jämföra hur mycket polär yta en molekyl har, vilket ofta spelar roll för löslighet och biologisk rörelse.</string>
+    <string name="ui_info_complexity" translatable="true">Komplexitet</string>
+    <string name="ui_info_complexity_body" translatable="true">En PubChem poäng baserad på strukturella funktioner som ringar, förgrening, atomer, obligationer och stereokemi. Den är användbar för jämförelse, inte som en svårighetsgrad.</string>
+    <string name="ui_info_mass_values" translatable="true">Massvärden</string>
+    <string name="ui_info_mass_values_body" translatable="true">Exakt samlas och monoisotopic samlas bruk isotopmassor. De är mest användbara för samlas spectrometry och exakt analytiskt arbete.</string>
+    <string name="ui_info_3d_values" translatable="true">3D värden</string>
+    <string name="ui_info_3d_values_body" translatable="true">3D-fält visas endast när PubChem har konformatordata. 3D-värden som saknas betyder inte att sammansättningen är ogiltig.</string>
+    <string name="ui_info_what_tags_mean" translatable="true">Vad dessa taggar betyder</string>
+    <string name="ui_info_what_tags_mean_body" translatable="true">Dessa är korta kategorietiketter hämtade från PubChem kommentarer, såsom kemiska klasser, läkemedelsklasser, och MeSH-liknande ämneskategorier.</string>
+    <string name="ui_info_why_tags_look_strange" translatable="true">Varför vissa taggar ser konstiga ut</string>
+    <string name="ui_info_why_tags_look_strange_body" translatable="true">PubChem kan bifoga käll-indexering termer som Amning, Amning, Mjölk, eller människa när ett ämne visas i medicinsk, exponering, eller drog referenskällor. De är källkategorier, inte alltid tydliga beskrivningar av innehållet.</string>
+    <string name="ui_info_how_to_read_tags" translatable="true">Hur man läser dem</string>
+    <string name="ui_info_how_to_read_tags_body" translatable="true">Använd dessa marker som snabba ledtrådar, inte slutgiltiga etiketter. En tagg berättar att ämnet visas i den datakategorin någonstans i PubChem.</string>
+    <string name="ui_info_why_classification_empty" translatable="true">Varför det kan vara tomt</string>
+    <string name="ui_info_why_classification_empty_body" translatable="true">Vissa enkla eller ovanliga ämnen har inte användbara offentliga klassificeringsanteckningar, så ChemSearch döljer kortet när det inte finns något användbart att visa.</string>
+    <string name="ui_info_uses_what_body" translatable="true">Korta kommentarer i PubChem om rapporterade användningar, roller, förekomst eller källanteckningar när PubChem har läsbara data.</string>
+    <string name="ui_info_why_bullets_vary" translatable="true">Varför kulor kan variera</string>
+    <string name="ui_info_why_bullets_vary_body" translatable="true">Dessa anteckningar kommer från olika PubChem källor, Så ett ämne kan ha detaljerade använda anteckningar medan en annan har bara en kort kategori eller ingen alls.</string>
+    <string name="ui_info_safety_note" translatable="true">Säkerhetsanteckning</string>
+    <string name="ui_info_uses_safety_note_body" translatable="true">Dessa kulor är snabba referensanteckningar, inte instruktioner för att använda, dosera, tillverka, lagra eller hantera kemikalier.</string>
+    <string name="ui_info_why_uses_empty" translatable="true">Varför det kan vara tomt</string>
+    <string name="ui_info_why_uses_empty_body" translatable="true">Många ämnen har inte anteckningar i PubChem. I så fall döljer ChemSearch bara kortet.</string>
+    <string name="ui_info_elemental_analysis_what" translatable="true">Vad är detta?</string>
+    <string name="ui_info_elemental_analysis_what_body" translatable="true">Visar procentandelen av varje element genom massa i föreningen. Beräknad från atomvikt och den molekylära formeln.</string>
+    <string name="ui_info_elemental_analysis_example" translatable="true">Exempel</string>
+    <string name="ui_info_elemental_analysis_example_body" translatable="true">Vatten (H2O) är ~11% väte och ~89% syre efter massa, eftersom syreatomer är mycket tyngre än väteatomer.</string>
+    <string name="ui_info_elemental_analysis_why" translatable="true">Varför det spelar roll</string>
+    <string name="ui_info_elemental_analysis_why_body" translatable="true">Användbar i analytisk kemi för att verifiera sammansatt identitet och i näringsvetenskap för att förstå sammansättning av näringsämnen.</string>
+    <string name="ui_info_what_is_ghs" translatable="true">Vad är GHS?</string>
+    <string name="ui_info_what_is_ghs_body" translatable="true">Det globalt harmoniserade systemet för klassificering och märkning av kemikalier (GHS) är en FN-standard för kommunikation av kemiska risker över hela världen.</string>
+    <string name="ui_info_signal_word" translatable="true">Signal Ord</string>
+    <string name="ui_info_signal_word_body" translatable="true">\'Fara\' indikerar en allvarligare fara. \'Varning\' indikerar en mindre allvarlig fara.</string>
+    <string name="ui_info_pictograms" translatable="true">Pictogram</string>
+    <string name="ui_info_pictograms_body" translatable="true">Standardiserade symboler (GHS01–GHS09) som visuellt kommunicerar vilken typ av fara, såsom brandfarlighet, toxicitet, korrosion eller miljöskada.</string>
+    <string name="ui_info_hazard_statements" translatable="true">Hazard satser</string>
+    <string name="ui_info_hazard_statements_body" translatable="true">Standardiserade H-koder som beskriver naturen och graden av fara. H225 betyder till exempel \"Mycket brandfarlig vätska och ånga\".</string>
+    <string name="ui_info_ghs_data_source" translatable="true">Datakälla</string>
+    <string name="ui_info_ghs_data_source_body" translatable="true">GHS data hämtas från PubChems aggregerade klassificeringsregister. Pictogram konstverk använder de officiella UNECE GHS-symbolerna.</string>
+    <string name="ui_ghs_label_explosive" translatable="true">Explosiv</string>
+    <string name="ui_ghs_label_flammable" translatable="true">Brandfarlig</string>
+    <string name="ui_ghs_label_oxidizing" translatable="true">Oxiderande</string>
+    <string name="ui_ghs_label_compressed_gas" translatable="true">Komprimerad Gas</string>
+    <string name="ui_ghs_label_corrosive" translatable="true">Korrosiv</string>
+    <string name="ui_ghs_label_toxic" translatable="true">Toxic</string>
+    <string name="ui_ghs_label_harmful" translatable="true">Skadlig</string>
+    <string name="ui_ghs_label_health_hazard" translatable="true">Hälso Fara</string>
+    <string name="ui_ghs_label_environmental" translatable="true">Miljö</string>
+    <string name="ui_ghs_disclaimer" translatable="true">Endast referens. Detta ersätter inte en officiell SDS, lokala labbregler eller handledarvägledning.</string>
+    <string name="ui_hazard_unstable_explosive" translatable="true">Instabil explosiv</string>
+    <string name="ui_hazard_highly_flammable" translatable="true">Mycket brandfarlig vätska och ånga</string>
+    <string name="ui_hazard_flammable_liquid" translatable="true">Brandfarlig vätska och ånga</string>
+    <string name="ui_hazard_toxic_if_swallowed" translatable="true">Toxic if swallowed</string>
+    <string name="ui_hazard_harmful_if_swallowed" translatable="true">Skadlig vid förtäring</string>
+    <string name="ui_hazard_toxic_skin" translatable="true">Giftig i kontakt med huden</string>
+    <string name="ui_hazard_severe_burns" translatable="true">Orsakar svår hud brännskador och ögonskador</string>
+    <string name="ui_hazard_skin_irritation" translatable="true">Orsakar hudirritation</string>
+    <string name="ui_hazard_eye_irritation" translatable="true">Orsakar allvarlig ögonirritation</string>
+    <string name="ui_hazard_toxic_if_inhaled" translatable="true">Giftigt vid inandning</string>
+    <string name="ui_hazard_respiratory_irritation" translatable="true">Kan orsaka irritation i andningen</string>
+    <string name="ui_hazard_may_cause_cancer" translatable="true">Kan orsaka cancer</string>
+    <string name="ui_hazard_very_toxic_aquatic" translatable="true">Mycket giftigt för vattenlevande liv</string>
+    <string name="ui_show_less" translatable="true">Visa mindre</string>
+    <string name="ui_show_more_count" translatable="true">Visa %1$d mer</string>
+    <string name="ui_expand" translatable="true">expandera</string>
+    <string name="ui_download_sdf" translatable="true">Ladda ner SDF</string>
+    <string name="ui_source_label" translatable="true">Källa: %1$s</string>
+    <string name="ui_share_compound_name" translatable="true">Sammansättning</string>
+    <string name="ui_share_formula" translatable="true">Formel: %1$s</string>
+    <string name="ui_share_cid" translatable="true">PubChem CID: %1$d</string>
+    <string name="ui_share_cas" translatable="true">CAS: %1$s</string>
+    <string name="ui_share_molecular_weight" translatable="true">Molekylvikt: %1$s g/mol</string>
+    <string name="ui_share_iupac" translatable="true">IUPAC: %1$s</string>
+    <string name="ui_share_pubchem_url" translatable="true">PubChem: %1$s</string>
+    <string name="ui_condensed_formula_label" translatable="true">Kondenserad formel</string>
+    <string name="ui_iupac_name_label" translatable="true">IUPAC Namn</string>
+    <string name="ui_smiles_connectivity_label" translatable="true">SMILES (Anslutningskapacitet)</string>
+    <string name="ui_smiles_full_label" translatable="true">SMILES (Full)</string>
+    <string name="ui_inchikey_label" translatable="true">InChIKey</string>
+    <string name="ui_inchi_label" translatable="true">InchI</string>
+    <string name="ui_empirical_formula_label" translatable="true">Empirisk formel</string>
+    <string name="ui_atom_number_label" translatable="true">Atomnummer</string>
+    <string name="ui_bond_number_label" translatable="true">Bond nummer</string>
+    <string name="ui_formal_charge_label" translatable="true">Formell avgift</string>
+    <string name="ui_3d_unavailable_body" translatable="true">OMEGA verktygslåda och MMFF94s kraftfält. En sammansättning får ingen 3D-modell om den misslyckas med något av dessa kriterier. ChemSearch testar också en genererad SDF-reserv från SMILES, InChI eller InChIKey när PubChem 3D saknas.</string>
+    <string name="ui_3d_reason_too_large" translatable="true">För stora : Mer än 50 icke-väteatomer</string>
+    <string name="ui_3d_reason_too_flexible" translatable="true">För flexibel: Mer än 15 roterbara obligationer</string>
+    <string name="ui_3d_reason_unsupported_elements" translatable="true">Ej stödda element: Endast H, C, N, O, F, Si, P, S, Cl, Br och jag stöds av kraftfältet. Metaller stöds inte.</string>
+    <string name="ui_3d_reason_salt_or_mixture" translatable="true">Salt eller blandning: Föreningen har mer än en kovalent enhet (t.ex. NaCl). PubChem kan ha en 3D-modell för den överordnade fria basen istället</string>
+    <string name="ui_3d_reason_crystal_or_metallic" translatable="true">Kristall eller metallisk gitter : SMILES/InChI beskriver formel / konnektivitet, inte en full utökad solid-state gitter</string>
+    <string name="ui_3d_reason_too_many_undefined_stereo" translatable="true">För många odefinierade stereocentra : 6 eller fler odefinierade atom- eller obligationstereocentra</string>
+    <string name="ui_3d_reason_conformer_failure" translatable="true">Conformer generationsfel : Algoritmen kunde inte konvergera på en stabil geometri</string>
+    <string name="ui_pin" translatable="true">Fäst</string>
+    <string name="ui_unpin" translatable="true">Unpin</string>
+    <string name="ui_show_full_name" translatable="true">Visa fullständigt namn</string>
+    <string name="ui_remove_favorite" translatable="true">Ta bort favorit</string>
+    <string name="ui_add_favorite" translatable="true">Lägg till favorit</string>
+    <string name="ui_update_offline_download" translatable="true">Uppdatera nedladdningen offline</string>
+    <string name="ui_download_for_offline_use" translatable="true">Ladda ner för offline-användning</string>
+    <string name="ui_mw_g_mol" translatable="true">MW (g/mol)</string>
+    <string name="ui_loading_3d_model" translatable="true">Laddar 3D-modell...</string>
+    <string name="ui_synonyms" translatable="true">Synonymer</string>
+    <string name="ui_description" translatable="true">Beskrivning</string>
+    <string name="ui_pubchem_desc_not_available" translatable="true">PubChem beskrivning är inte tillgänglig.</string>
+    <string name="ui_wiki_desc_not_available" translatable="true">Wikipedia beskrivning är inte tillgänglig för denna förening.</string>
+    <string name="ui_ai_desc_not_available" translatable="true">AI beskrivning är inte tillgänglig. Kontrollera din API-nyckel i Inställningar.</string>
+    <string name="ui_read_more" translatable="true">Läs mer</string>
+    <string name="ui_read_less" translatable="true">Läs mindre</string>
+    <string name="ui_based_on" translatable="true">Baserat på: %1$s</string>
+    <string name="ui_via" translatable="true">via %1$s</string>
+    <!-- ToolsScreen extra labels -->
+    <string name="ui_compound_label" translatable="true">Sammansatt %1$d</string>
+    <string name="ui_molarity_label" translatable="true">Molaritet (M)</string>
+    <string name="ui_amount_label" translatable="true">Belopp</string>
+    <!-- Legal section content -->
+    <string name="ui_legal_data_on_device_title" translatable="true">Data på din enhet</string>
+    <string name="ui_legal_data_on_device" translatable="true">Favoriter, senaste sökningar, nedladdningar, cachedata, inställningar, API-nycklar och biblioteksfiler lagras på din enhet om du inte väljer att dela eller exportera dem.</string>
+    <string name="ui_legal_external_services_title" translatable="true">Externa tjänster</string>
+    <string name="ui_legal_external_services" translatable="true">ChemSearch kan kontakta PubChem, Wikipedia, NCI/CADD, GitHub, och valfria AI-leverantörer för att hämta sammansatta data, beskrivningar, strukturer, uppdateringar och modellsvar.</string>
+    <string name="ui_legal_ai_descriptions_title" translatable="true">AI beskrivningar</string>
+    <string name="ui_legal_ai_descriptions" translatable="true">Om du använder en AI-leverantör, sammansatta namn, identifierare, formler, tillgänglig källdata och din snabba kontext kan skickas till den leverantören. Provider API-nycklar sparas lokalt på din enhet.</string>
+    <string name="ui_legal_no_account_system_title" translatable="true">Inget kontosystem</string>
+    <string name="ui_legal_no_account_system" translatable="true">ChemSearch innehåller inte ett konto på ChemSearch, profil eller ett inbyggt system för analytiska analyser.</string>
+    <string name="ui_legal_your_control_title" translatable="true">Din kontroll</string>
+    <string name="ui_legal_your_control" translatable="true">Du kan rensa cache, ta bort nedladdningar, ta bort sparade objekt, ändra leverantörer, ta bort API-nycklar och exportera eller importera biblioteksdata från appinställningarna.</string>
+    <string name="ui_legal_privacy_summary" translatable="true">Hur ChemSearch hanterar sökningar, AI-leverantörer, sparade data och uppdateringar.</string>
+    <string name="ui_legal_terms_summary" translatable="true">Grundläggande regler för användning av ChemSearch och dess datakällor från tredje part.</string>
+    <string name="ui_legal_safety_summary" translatable="true">ChemSearch är för studier och snabba kontroller, inte officiell säkerhetsvägledning.</string>
+    <string name="ui_legal_use" translatable="true">Använd</string>
+    <string name="ui_legal_use_body" translatable="true">ChemSearch är en kemisökning och studie app. Använd den ansvarsfullt och följ reglerna för din skola, arbetsplats, labb och lokal rätt.</string>
+    <string name="ui_legal_third_party_sources" translatable="true">Tredjepartskällor</string>
+    <string name="ui_legal_third_party_sources_body" translatable="true">Sammansatta data, säkerhetsinformation, beskrivningar, strukturer, uppdateringar och AI svar kan komma från externa tjänster. Dessa tjänster kan ha sina egna villkor och gränser.</string>
+    <string name="ui_legal_no_guarantee" translatable="true">Ingen garanti</string>
+    <string name="ui_legal_no_guarantee_body" translatable="true">ChemSearch tillhandahålls som -is. Resultaten kan vara ofullständiga, otillgängliga, föråldrade, genererade eller fel.</string>
+    <string name="ui_legal_user_content" translatable="true">Användarens innehåll</string>
+    <string name="ui_legal_user_content_body" translatable="true">Du ansvarar för alla sökningar, strukturritningar, API-nycklar, importerade filer, exporterade filer eller uppmaningar som du använder med appen.</string>
+    <string name="ui_legal_changes" translatable="true">Ändringar</string>
+    <string name="ui_legal_changes_body" translatable="true">Funktioner, källor, uppdateringsbeteende och leverantörsstöd kan ändras mellan appversioner.</string>
+    <string name="ui_legal_quick_checks_only" translatable="true">Endast snabbkontroller</string>
+    <string name="ui_legal_quick_checks_only_body" translatable="true">Kemisk och säkerhetsinformation i ChemSearch är till för lärande och snabba kontroller. Inte en ersättning för SDS dokument, labbregler eller professionell vägledning.</string>
+    <string name="ui_legal_safety_data_limits" translatable="true">Säkerhetsdatagräns</string>
+    <string name="ui_legal_safety_data_limits_body" translatable="true">GHS och riskuppgifter kan saknas, vara källberoende eller ofullständiga. Verifiera från officiella dokument innan hantering av kemikalier.</string>
+    <string name="ui_legal_ai_limits" translatable="true">AI-gränser</string>
+    <string name="ui_legal_ai_limits_body" translatable="true">AI beskrivningar kan låta självsäker när du är ofullständig eller felaktig. Använd inte AI-text som din enda källa för säkerhet, medicinska, eller lab beslut.</string>
+    <string name="ui_legal_emergency_use" translatable="true">Nödanvändning</string>
+    <string name="ui_legal_emergency_use_body" translatable="true">Förlita dig inte på ChemSearch under nödsituationer. Följ ditt lab, din institution eller arbetsplatsförfaranden.</string>
+    <string name="ui_legal_generated_structures" translatable="true">Genererade strukturer</string>
+    <string name="ui_legal_generated_structures_body" translatable="true">Fallback eller genererade 3D-strukturer är uppskattningar och bör behandlas som visuella hjälpmedel, inte verifierade experimentella strukturer.</string>
+    <!-- ToolsScreen strings -->
+    <string name="ui_done" translatable="true">Klar</string>
+    <string name="ui_reorder" translatable="true">Omordna</string>
+    <string name="ui_no_tools_match_s" translatable="true">Inga verktyg matchar \"%1$s\"</string>
+    <string name="ui_list_view" translatable="true">Listvy</string>
+    <string name="ui_grid_view" translatable="true">Rutnätsvy</string>
+    <string name="ui_visualize" translatable="true">Visualisera</string>
+    <string name="ui_looking_up" translatable="true">Tittar upp...</string>
+    <string name="ui_comparing" translatable="true">Jämför...</string>
+    <string name="ui_tap_to_collapse" translatable="true">Tryck för att komprimera</string>
+    <string name="ui_tap_to_expand" translatable="true">Tryck för att expandera</string>
+    <string name="ui_known_s" translatable="true">Känd %1$s</string>
+    <string name="ui_e_g_1e_7" translatable="true">t.ex. 1e-7</string>
+    <string name="ui_e_g_7" translatable="true">t.ex. 7</string>
+    <string name="ui_neutral_water" translatable="true">Neutralt vatten</string>
+    <string name="ui_acidic_ph" translatable="true">Acidic pH</string>
+    <string name="ui_basic_poh" translatable="true">Grundläggande pOH</string>
+    <string name="ui_h_plus_example" translatable="true">[H+] exempel</string>
+    <string name="ui_ph_poh_explanation" translatable="true">Vid 25 C, pH och pOH lägga till 14. Lägre pH är sur, högre pH är grundläggande, och pH nära 7 är neutralt.</string>
+    <string name="ui_dilution_explanation" translatable="true">Lagerkoncentration och volym är relaterade till slutlig koncentration och volym. Med tanke på tre värden, den fjärde bestäms direkt från denna ekvation.</string>
+    <string name="ui_ideal_gas_explanation" translatable="true">Tryck, volym, mängd och temperatur är kopplade till den ideala gaslagen. Lös varje variabel när de andra tre är kända och enheter är konsekventa.</string>
+    <string name="ui_stoichiometry_calculator" translatable="true">Kalkylator för stoikometri</string>
+    <string name="ui_molar_mass_na" translatable="true">Molar massa N/A</string>
+    <string name="ui_purity_applied" translatable="true">(renhet tillämpad)</string>
+    <string name="ui_moles_available" translatable="true">tillgängliga mullvadar: %1$s mol</string>
+    <string name="ui_reaction_extent" translatable="true">Reaktionsgrad: %1$s mol</string>
+    <string name="ui_percent_yield_value" translatable="true">Procent avkastning: %1$s%%</string>
+    <string name="ui_yield_scaling_section" translatable="true">GUL &amp; SKALAR</string>
+    <string name="ui_percent_yield_section" translatable="true">PERCENT GUL</string>
+    <string name="ui_scaling_section" translatable="true">SKALAR</string>
+    <string name="ui_core" translatable="true">Kärna</string>
+    <string name="ui_molar_mass_label" translatable="true">Molar massa</string>
+    <string name="ui_compare_iupac_name" translatable="true">IUPAC namn</string>
+    <string name="ui_cas" translatable="true">CAS</string>
+    <string name="ui_connectivity_smiles" translatable="true">Anslutning SMILES</string>
+    <string name="ui_structure" translatable="true">Struktur</string>
+    <string name="ui_covalent_units" translatable="true">Kovalenta enheter</string>
+    <string name="ui_atom_count" translatable="true">Antal atomer</string>
+    <string name="ui_bond_count" translatable="true">Antal Bond</string>
+    <string name="ui_description_safety" translatable="true">Beskrivning &amp; Säkerhet</string>
+    <string name="ui_safety" translatable="true">Säkerhet</string>
+    <string name="ui_description_with_source" translatable="true">Beskrivning (%1$s)</string>
+    <string name="ui_gas_solve_pressure" translatable="true">Tryck</string>
+    <string name="ui_gas_solve_volume" translatable="true">Volym</string>
+    <string name="ui_gas_solve_moles" translatable="true">Moles</string>
+    <string name="ui_gas_solve_temperature" translatable="true">Temperatur</string>
+    <string name="ui_dilution_c1" translatable="true">C1 (lager)</string>
+    <string name="ui_dilution_v1" translatable="true">V1 (lager)</string>
+    <string name="ui_dilution_c2" translatable="true">C2 (slutlig)</string>
+    <string name="ui_dilution_v2" translatable="true">V2 (final)</string>
+    <string name="ui_compound_placeholder" translatable="true">sammansatt %1$d</string>
+    <string name="ui_could_not_read_file" translatable="true">Kunde inte läsa filen.</string>
+    <string name="ui_error_reading_file_s" translatable="true">Fel vid läsning av fil: %1$s</string>
+    <string name="ui_compound_not_found_on_pubchem" translatable="true">Föreningen hittades inte på PubChem. Kontrollera din SMILES-sträng.</string>
+    <string name="ui_no_compound_found_for_smiles" translatable="true">Ingen förening hittades för denna SMILES-sträng.</string>
+    <string name="ui_pubchem_3d_unavailable_fallback" translatable="true">PubChem 3D är inte tillgänglig. Försöker genererad reservdel...</string>
+    <string name="ui_formula_matched_3d_fallback_unavailable" translatable="true">Formula-matchad 3D reserv otillgänglig för denna SMILES.</string>
+    <string name="ui_error_s" translatable="true">Fel: %1$s</string>
+    <string name="ui_enter_at_least_two_compounds" translatable="true">Ange minst två föreningar.</string>
+    <string name="ui_could_not_load_s" translatable="true">Kunde inte ladda: %1$s</string>
+    <string name="ui_skipped_s" translatable="true">Hoppad: %1$s</string>
+    <string name="ui_enter_a_valid_value" translatable="true">Ange ett giltigt värde.</string>
+    <string name="ui_pubchem_cid_s" translatable="true">PubChem CID: %1$s</string>
+    <!-- ToolsScreen InfoDialog shared terms -->
+    <string name="ui_info_equation" translatable="true">Ekvation</string>
+    <string name="ui_info_units" translatable="true">Enheter</string>
+    <!-- ToolsScreen InfoDialog: Custom 3D Molecule Viewer -->
+    <string name="ui_sdf_info_what_is_sdf_term" translatable="true">Vad är en SDF-fil?</string>
+    <string name="ui_sdf_info_what_is_sdf_body" translatable="true">Structure Data File (.sdf) är en standard kemisk filformat som lagrar 3D atomära koordinater och bindningsinformation för en eller flera molekyler.</string>
+    <string name="ui_sdf_info_what_is_mol_term" translatable="true">Vad är en MOL-fil?</string>
+    <string name="ui_sdf_info_what_is_mol_body" translatable="true">En .mol-fil är singel-molekylvarianten av SDF. Båda formaten exporteras brett av kemiprogram som ChemDraw, Avogadro och PubChem.</string>
+    <string name="ui_sdf_info_how_to_get_term" translatable="true">Hur får man en SDF-fil</string>
+    <string name="ui_sdf_info_how_to_get_body" translatable="true">Du kan ladda ner SDF-filer från PubChem genom att söka i en förening och välja \"3D SDF\" från nedladdningsalternativen, eller exportera dem från någon molekylär redigerare.</string>
+    <string name="ui_sdf_info_controls_term" translatable="true">Kontroller</string>
+    <string name="ui_sdf_info_controls_body" translatable="true">Dra för att rotera molekylen. Nyp för att zooma in och ut. Modellen snurrar automatiskt när den är tom, så tryck för att pausa. Tryck på återställningsknappen för att återgå till standardvyn.</string>
+    <string name="ui_sdf_info_cpk_term" translatable="true">HLK färg</string>
+    <string name="ui_sdf_info_cpk_body" translatable="true">Atomer färgas med hjälp av Jmol CPK konvention: kol är mörkgrå, syre är rött, kväve är blå, väte är vitt, och så vidare över alla 118 element.</string>
+    <!-- ToolsScreen InfoDialog: Molar Mass Calculator -->
+    <string name="ui_molar_info_what_is_term" translatable="true">Vad är molar massa?</string>
+    <string name="ui_molar_info_what_is_body" translatable="true">Molarmassa är massan av en mullvad (6.022 × 1023 partiklar) av en substans, uttryckt i gram per mullvad (g/mol). Det är lika med summan av atomvikter av alla atomer i formeln.</string>
+    <string name="ui_molar_info_how_to_enter_term" translatable="true">Hur man skriver in en formel</string>
+    <string name="ui_molar_info_how_to_enter_body" translatable="true">Skriv den molekylära formeln med hjälp av standardelementsymboler med siffror för atom räknas. Parenteser stöds för grupper, t.ex. Ca(OH)2 eller Al2(SO4)3.</string>
+    <string name="ui_molar_info_case_sensitivity_term" translatable="true">Ärendets känslighet</string>
+    <string name="ui_molar_info_case_sensitivity_body" translatable="true">Element symboler är skiftlägeskänsliga! \"Co\" är kobolt, \"CO\" är kolmonoxid. Alltid kapitalisera bara den första bokstaven i varje element symbol.</string>
+    <string name="ui_molar_info_atomic_weights_term" translatable="true">Atomvikt</string>
+    <string name="ui_molar_info_atomic_weights_body" translatable="true">Atomvikter som används här är standardvärdena från IUPAC, baserade på det naturliga isotopiska överflödet av varje element.</string>
+    <string name="ui_molar_info_elemental_breakdown_term" translatable="true">Elementell nedbrytning</string>
+    <string name="ui_molar_info_elemental_breakdown_body" translatable="true">Nedbrytningstabellen visar varje elements bidrag till den totala molära massan, både som ett absolut värde (g/mol) och som en procentsats av massa.</string>
+    <!-- ToolsScreen InfoDialog: Oxidation State Finder -->
+    <string name="ui_os_info_what_is_term" translatable="true">Vad är ett oxidationstillstånd?</string>
+    <string name="ui_os_info_what_is_body" translatable="true">Ett nummer som tilldelas till en atom som representerar dess grad av oxidation. Positiv = förlorade elektroner , negativ = vunna elektroner . Används för att spåra elektronöverföring i redoxreaktioner.</string>
+    <string name="ui_os_info_rules_term" translatable="true">Regler tillämpade</string>
+    <string name="ui_os_info_rules_body" translatable="true">F är alltid -1. Grupp 1 = +1, Grupp 2 = +2. Al, Ga, In, Sc, Y, La, Lu = +3. Zn, Cd = +2. Ag = +1. O-standard är -2 (förutom peroxide/superoxider). H standard är +1 (utom metall hydrides). Halogens (Cl, Br, I) standard till -1 i enkla halogenider, men löses när bundna med syre eller en mer elektronisk halogen.</string>
+    <string name="ui_os_info_halogen_priority_term" translatable="true">Halogen prioritet</string>
+    <string name="ui_os_info_halogen_priority_body" translatable="true">Elektronisk ordning: F &gt; Cl &gt; Br &gt; I. I oxo-halogenföreningar och interhalogenföreningar kan den mindre elektroniska halogenen ta ett positivt OS. Exempel: HOCl &lt;unk&gt; Cl=+1. ICl3 &lt;unk&gt; I=+3, Cl=-1. ClF3 &lt;unk&gt; Cl=+3, F=-1.</string>
+    <string name="ui_os_info_special_cases_term" translatable="true">Särskilda ärenden som hanteras</string>
+    <string name="ui_os_info_special_cases_body" translatable="true">Peroxider (O=-1): H2O2, Na2O2, BaO2. Superoxider (O=-1&lt;unk&gt; 2): KO2, NaO2. Ozonider (O=-1&lt;unk&gt; 3): KO3. Metallhydrider (H=-1): NaH, LiAlH4, NaBH4, CaH2.</string>
+    <string name="ui_os_info_overall_charge_term" translatable="true">Total avgift</string>
+    <string name="ui_os_info_overall_charge_body" translatable="true">För neutrala föreningar anger 0. För polyatomära joner in i jonladdningen. Exempel: SO42− → laddning -2. NH4+ → laddning +1. MnO4− → laddning -1.</string>
+    <string name="ui_os_info_organic_term" translatable="true">Organiska föreningar</string>
+    <string name="ui_os_info_organic_body" translatable="true">För enkelkolföreningar (CH4, CO2, CCl4) är resultatet exakt. För multikolföreningar beräknar appen ett genomsnittligt oxidationstillstånd över alla kol, vilket är kemiskt meningsfullt för jämförelser men inte speglar enskilda kolmiljöer. Etanol (C2H5OH) har kolhydrater på -3 och -1, men appen returnerar -2 som genomsnitt.</string>
+    <string name="ui_os_info_example_term" translatable="true">Exempel</string>
+    <string name="ui_os_info_example_body" translatable="true">KMnO4 (laddning 0): K=+1 (fast), O=-2 (fast, ×4). Mn = 0 − (+1) − 4(−2) = +7.</string>
+    <string name="ui_os_info_limitations_body" translatable="true">Föreningar med 2 eller fler övergångsmetaller eller okända element kan inte lösas utan ytterligare information. Blandad valens föreningar som Fe3O4 (Fe2+ och Fe3+ samexist) returnerar ett fraktionellt genomsnitt med en varning. För dessa, ange jonladdningen separat om känd.</string>
+    <!-- ToolsScreen InfoDialog: SMILES Visualizer -->
+    <string name="ui_smiles_info_what_is_term" translatable="true">Vad är SMILES?</string>
+    <string name="ui_smiles_info_what_is_body" translatable="true">Förenklad molekylär ingångslinje system. En notering som kodar molekylär struktur som en textsträng med atomsymboler och bindningskaraktärer.</string>
+    <string name="ui_smiles_info_how_to_use_term" translatable="true">Hur man använder</string>
+    <string name="ui_smiles_info_how_to_use_body" translatable="true">Klistra in alla giltiga SMILES-strängar och tryck på Visualisera. Appen ser upp föreningen på PubChem och visar dess 2D-struktur och 3D-modell.</string>
+    <string name="ui_smiles_info_where_to_get_term" translatable="true">Om att få SMILES</string>
+    <string name="ui_smiles_info_where_to_get_body" translatable="true">PubChem, ChemDraw, SciFinder och de flesta kemidatabaser tillhandahåller SMILES strängar för föreningar. Du kan också hitta dem i publicerade artiklar.</string>
+    <string name="ui_smiles_info_aromatic_term" translatable="true">Aromatisk notering</string>
+    <string name="ui_smiles_info_aromatic_body" translatable="true">Små bokstäver (c, n, o) betecknar aromatiska atomer. Till exempel är bensen \'c1ccccc1\' och pyridin \'c1ccncc1\'.</string>
+    <string name="ui_smiles_info_chirality_term" translatable="true">Chiralitet</string>
+    <string name="ui_smiles_info_chirality_body" translatable="true">\@ och @@ i SMILES betecknar stereocenters. Visualiseraren hanterar både standard och isomeriska SMILES.</string>
+    <string name="ui_smiles_info_limitations_body" translatable="true">Endast SMILES-strängar som känns igen av PubChem kan visualiseras. Nya eller hypotetiska molekyler som inte finns i PubChem kommer inte att returnera något resultat.</string>
+    <!-- ToolsScreen InfoDialog: Reaction Balancer -->
+    <string name="ui_balancer_info_how_to_enter_term" translatable="true">Hur man skriver in ekvationer</string>
+    <string name="ui_balancer_info_how_to_enter_body" translatable="true">Skriv reaktanter till vänster och produkter till höger, åtskilda av \'&lt;unk&gt; \'. Separata föreningar med \'+\'. Exempel: H2 + O2 &lt;unk&gt; H2O</string>
+    <string name="ui_balancer_info_coefficients_term" translatable="true">Koefficienter</string>
+    <string name="ui_balancer_info_coefficients_body" translatable="true">Ange inte koefficienter. Appen bestämmer dem. H2 + O2 &lt;unk&gt; H2O, inte 2H2 + O2 &lt;unk&gt; 2H2O.</string>
+    <string name="ui_balancer_info_how_it_works_term" translatable="true">Så här fungerar det</string>
+    <string name="ui_balancer_info_how_it_works_body" translatable="true">Balancern bygger en matris av element räknas och löser systemet med Gaussian eliminering med exakt rationell aritmetik för att hitta heltalskoefficienter.</string>
+    <string name="ui_balancer_info_supported_formulas_term" translatable="true">Formler som stöds</string>
+    <string name="ui_balancer_info_supported_formulas_body" translatable="true">Standard molekylära formler med parenteser stöds, t.ex. Ca(OH)2, Al2(SO4)3.</string>
+    <string name="ui_balancer_info_limitations_body" translatable="true">Ekvationer som inte kan balanseras av heltal stoichiometri (t.ex. vissa redoxreaktioner som kräver halvreaktionsmetod) kan inte lösa korrekt.</string>
+    <string name="ui_balancer_info_verification_term" translatable="true">Verifiering</string>
+    <string name="ui_balancer_info_verification_body" translatable="true">Elementräkningstabellen nedan visar att atomer är sparade. Du kan verifiera balanseringen manuellt.</string>
+    <!-- ToolsScreen InfoDialog: pH / pOH Calculator -->
+    <string name="ui_phpoh_info_what_it_solves_term" translatable="true">Vad det löser</string>
+    <string name="ui_phpoh_info_what_it_solves_body" translatable="true">Ange pH, pOH, [H+], eller [OH-] för att beräkna de andra tre värdena.</string>
+    <string name="ui_phpoh_info_concentration_units_term" translatable="true">Koncentrationsenheter</string>
+    <string name="ui_phpoh_info_concentration_units_body" translatable="true">[H+] och [OH-] är mol/L.</string>
+    <string name="ui_phpoh_info_assumption_term" translatable="true">Antaganden</string>
+    <string name="ui_phpoh_info_assumption_body" translatable="true">Använder pH + pOH = 14 för vatten vid 25 C.</string>
+    <!-- ToolsScreen InfoDialog: Dilution Calculator -->
+    <string name="ui_dilution_info_equation_body" translatable="true">Använder C1V1 = C2V2 för att lösa utspädningar.</string>
+    <string name="ui_dilution_info_units_body" translatable="true">Håll koncentrationsenheter konsekventa (M) och volymenheter konsekventa (mL eller L).</string>
+    <string name="ui_dilution_info_tip_term" translatable="true">Tip</string>
+    <string name="ui_dilution_info_tip_body" translatable="true">Välj den variabel du vill lösa, fyll sedan de andra tre.</string>
+    <!-- ToolsScreen InfoDialog: Ideal Gas Law -->
+    <string name="ui_gas_info_equation_body" translatable="true">Använder PV = nRT för att lösa för valfri variabel.</string>
+    <string name="ui_gas_info_units_body" translatable="true">P i atm, V i liter, n i mullvadar, T i Kelvin.</string>
+    <string name="ui_gas_info_gas_constant_term" translatable="true">Gas konstant</string>
+    <string name="ui_gas_info_gas_constant_body" translatable="true">R = 0.082057 L·atm/mol·K.</string>
+    <!-- ToolsScreen InfoDialog: Stoichiometry tools -->
+    <string name="ui_stoich_info_what_this_does_term" translatable="true">Vad detta gör</string>
+    <string name="ui_stoich_info_what_this_does_body" translatable="true">Balanserar en reaktion, finner den begränsande reagensen, beräknar teoretisk avkastning, överskott reagenser och reaktionsskalning.</string>
+    <string name="ui_stoich_info_limiting_reagent_term" translatable="true">Begränsar reagens</string>
+    <string name="ui_stoich_info_limiting_reagent_body" translatable="true">Det begränsande reagenset har det minsta (mullvads/koefficient) förhållandet. Det bestämmer reaktionsutsträckningen.</string>
+    <string name="ui_stoich_info_units_supported_term" translatable="true">Enheter som stöds</string>
+    <string name="ui_stoich_info_units_supported_body" translatable="true">Massa (g, kg), mängd (mol, mmol), gasvolym (L, mL), lösningar (M och mL) och partiklar (x10 ^ 23).</string>
+    <string name="ui_stoich_info_gas_volumes_term" translatable="true">Gasens volymer</string>
+    <string name="ui_stoich_info_gas_volumes_body" translatable="true">Gasmoles beräknas utifrån en molär volym som du kan redigera (22.414 L/mol vid STP).</string>
+    <string name="ui_stoich_info_purity_term" translatable="true">Renhet</string>
+    <string name="ui_stoich_info_purity_body" translatable="true">Valfri renhet %% tillämpar en korrigering på effektiva mullvadar för varje reaktant.</string>
+    <string name="ui_stoich_info_percent_yield_term" translatable="true">Procent avkastning</string>
+    <string name="ui_stoich_info_percent_yield_body" translatable="true">Jämför faktisk avkastning med teoretisk avkastning för den valda produkten.</string>
+    <string name="ui_stoich_info_scaling_term" translatable="true">Skalning</string>
+    <string name="ui_stoich_info_scaling_body" translatable="true">Ange ett önskat produktbelopp för att se de erforderliga reaktantbeloppen.</string>
 </resources>
