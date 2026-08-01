@@ -1,5 +1,7 @@
 package com.furthersecrets.chemsearch.data
 
+import androidx.annotation.StringRes
+import com.furthersecrets.chemsearch.R
 import okhttp3.Request
 import java.io.IOException
 import java.net.URLEncoder
@@ -13,7 +15,8 @@ data class SdfIdentifierCandidate(
 data class SdfLoadResult(
     val sdf: String,
     val source: SdfSource,
-    val message: String? = null
+    @StringRes val messageRes: Int? = null,
+    val messageArgs: List<Any> = emptyList()
 )
 
 private val sdfWhitespaceRegex = Regex("\\s+")
@@ -54,7 +57,8 @@ suspend fun fetchGeneratedSdfFromIdentifiers(
             return SdfLoadResult(
                 sdf = sdf,
                 source = SdfSource.GENERATED,
-                message = "Generated estimate from ${candidate.label} using the NCI/CADD resolver."
+                messageRes = R.string.ui_sdf_generated_estimate_s,
+                messageArgs = listOf(candidate.label)
             )
         }
     }

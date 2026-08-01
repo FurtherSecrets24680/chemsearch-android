@@ -1,6 +1,7 @@
 package com.furthersecrets.chemsearch.ui
 
 import com.furthersecrets.chemsearch.R
+import androidx.annotation.StringRes
 import androidx.compose.ui.res.stringResource
 import android.content.Context
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -67,6 +68,7 @@ import com.furthersecrets.chemsearch.data.GeminiRequest
 import com.furthersecrets.chemsearch.data.GhsData
 import com.furthersecrets.chemsearch.data.GroqMessage
 import com.furthersecrets.chemsearch.data.GroqRequest
+import com.furthersecrets.chemsearch.data.PhPohInputException
 import com.furthersecrets.chemsearch.data.PhPohInputType
 import com.furthersecrets.chemsearch.data.SdfSource
 import com.furthersecrets.chemsearch.data.balanceChemicalReaction
@@ -132,13 +134,13 @@ fun ToolsScreen(
     val toolsById = defaultTools.associateBy { it.id }
     val orderedTools = toolOrder.mapNotNull { id -> toolsById[id] }.ifEmpty { defaultTools }
 
-    val filteredTools = remember(toolSearch, orderedTools, selectedCategory) {
+    val filteredTools = remember(toolSearch, orderedTools, selectedCategory, context) {
         val categoryFiltered = if (selectedCategory == ToolCategory.ALL) orderedTools
         else orderedTools.filter { it.category == selectedCategory }
         if (toolSearch.isBlank()) categoryFiltered
         else categoryFiltered.filter {
-            it.title.contains(toolSearch, ignoreCase = true) ||
-                    it.subtitle.contains(toolSearch, ignoreCase = true)
+            context.getString(it.titleRes).contains(toolSearch, ignoreCase = true) ||
+                    context.getString(it.subtitleRes).contains(toolSearch, ignoreCase = true)
         }
     }
     val visibleTools = if (isReordering) orderedTools else filteredTools
@@ -211,7 +213,7 @@ fun ToolsScreen(
                         },
                         contentPadding = PaddingValues(horizontal = 8.dp)
                     ) {
-                        Text(if (isReordering) "Done" else "Reorder")
+                        Text(if (isReordering) stringResource(R.string.ui_done) else stringResource(R.string.ui_reorder))
                     }
                 }
             }
@@ -269,7 +271,7 @@ fun ToolsScreen(
                     ) {
                         TOOL_CATEGORIES.forEach { category ->
                             CategoryPill(
-                                label = category.label,
+                                label = stringResource(category.labelRes),
                                 selected = selectedCategory == category,
                                 onClick = { selectedCategory = category }
                             )
@@ -284,7 +286,7 @@ fun ToolsScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        "No tools match \"$toolSearch\"",
+                        stringResource(R.string.ui_no_tools_match_s, toolSearch),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
                     )
@@ -312,8 +314,8 @@ fun ToolsScreen(
                                     ) {
                                         ToolGridCard(
                                             icon = tool.icon,
-                                            title = tool.title,
-                                            subtitle = tool.subtitle,
+                                            title = stringResource(tool.titleRes),
+                                            subtitle = stringResource(tool.subtitleRes),
                                             onClick = { selectedTool = tool.id },
                                             enableSelect = !isReordering,
                                             showDragHandle = isReordering,
@@ -339,9 +341,9 @@ fun ToolsScreen(
                             ) {
                                 ToolCard(
                                     icon = tool.icon,
-                                    title = tool.title,
-                                    subtitle = tool.subtitle,
-                                    categoryLabel = tool.category.label,
+                                    title = stringResource(tool.titleRes),
+                                    subtitle = stringResource(tool.subtitleRes),
+                                    categoryLabel = stringResource(tool.category.labelRes),
                                     onClick = { selectedTool = tool.id },
                                     enableSelect = !isReordering,
                                     showDragHandle = isReordering
@@ -369,15 +371,15 @@ fun ToolsScreen(
                 5 -> ReactionBalancer()
                 7 -> StoichiometryCalculator(
                     mode = StoichiometryMode.LIMITING,
-                    title = "Limiting Reagent"
+                    titleRes = R.string.ui_limiting_reagent
                 )
                 8 -> StoichiometryCalculator(
                     mode = StoichiometryMode.YIELD,
-                    title = "Percent Yield"
+                    titleRes = R.string.ui_percent_yield
                 )
                 9 -> StoichiometryCalculator(
                     mode = StoichiometryMode.SCALING,
-                    title = "Reaction Scaling"
+                    titleRes = R.string.ui_reaction_scaling
                 )
                 11 -> DilutionCalculatorTool()
                 12 -> IdealGasLawTool()
@@ -540,7 +542,7 @@ private fun ToolViewToggle(
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
                             icon,
-                            contentDescription = if (mode == ToolViewMode.LIST) "List view" else "Grid view",
+                            contentDescription = if (mode == ToolViewMode.LIST) stringResource(R.string.ui_list_view) else stringResource(R.string.ui_grid_view),
                             tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.55f),
                             modifier = Modifier.size(if (compact) 16.dp else 18.dp)
                         )
@@ -800,10 +802,10 @@ fun SdfViewerTool(isDark: Boolean) {
                 fileName = uri.lastPathSegment?.substringAfterLast('/') ?: "file.sdf"
                 error = null
             } else {
-                error = "Could not read file."
+                error = context.getString(R.string.ui_could_not_read_file)
             }
         } catch (e: Exception) {
-            error = "Error reading file: ${e.message}"
+            error = context.getString(R.string.ui_error_reading_file_s, e.message)
         }
     }
 
@@ -814,13 +816,13 @@ fun SdfViewerTool(isDark: Boolean) {
         var showInfo by remember { mutableStateOf(false) }
         if (showInfo) {
             InfoDialog(
-                title = "Custom 3D Molecule Viewer",
+                titleRes = R.string.ui_custom_3d_molecule_viewer,
                 entries = listOf(
-                    "What is an SDF file?" to "Structure Data File (.sdf) is a standard chemical file format that stores 3D atomic coordinates and bond information for one or more molecules.",
-                    "What is a MOL file?" to "A .mol file is the single-molecule variant of SDF. Both formats are widely exported by chemistry software like ChemDraw, Avogadro, and PubChem.",
-                    "How to get an SDF file" to "You can download SDF files from PubChem by searching a compound and choosing '3D SDF' from the download options, or export them from any molecular editor.",
-                    "Controls" to "Drag to rotate the molecule. Pinch to zoom in and out. The model auto-spins when idle, so tap to pause. Tap the reset button to return to the default view.",
-                    "CPK coloring" to "Atoms are colored using the Jmol CPK convention: carbon is dark grey, oxygen is red, nitrogen is blue, hydrogen is white, and so on across all 118 elements."
+                    R.string.ui_sdf_info_what_is_sdf_term to R.string.ui_sdf_info_what_is_sdf_body,
+                    R.string.ui_sdf_info_what_is_mol_term to R.string.ui_sdf_info_what_is_mol_body,
+                    R.string.ui_sdf_info_how_to_get_term to R.string.ui_sdf_info_how_to_get_body,
+                    R.string.ui_sdf_info_controls_term to R.string.ui_sdf_info_controls_body,
+                    R.string.ui_sdf_info_cpk_term to R.string.ui_sdf_info_cpk_body
                 ),
                 onDismiss = { showInfo = false }
             )
@@ -884,7 +886,7 @@ fun SdfViewerTool(isDark: Boolean) {
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     Icon(Icons.AutoMirrored.Filled.InsertDriveFile, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
-                    Text(fileName ?: "file.sdf", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f))
+                    Text(fileName ?: stringResource(R.string.ui_default_sdf_file_name), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f))
                     TextButton(onClick = { filePicker.launch("*/*") }, contentPadding = PaddingValues(horizontal = 8.dp)) {
                         Text(stringResource(R.string.ui_change), style = MaterialTheme.typography.labelMedium)
                     }
@@ -917,7 +919,8 @@ fun SdfViewerTool(isDark: Boolean) {
 private data class CalcResult(
     val molarMass: Double,
     val breakdown: List<Triple<String, Int, Double>>,
-    val error: String? = null
+    @StringRes val errorRes: Int? = null,
+    val errorArgs: List<Any> = emptyList()
 )
 
 private fun parseFormulaForCalc(formula: String): Map<String, Int> =
@@ -928,7 +931,8 @@ private fun calculateMolarMass(formula: String): CalcResult {
     return CalcResult(
         molarMass = result.molarMass,
         breakdown = result.breakdown.map { Triple(it.element, it.count, it.contribution) },
-        error = result.error
+        errorRes = result.errorRes,
+        errorArgs = result.errorArgs
     )
 }
 
@@ -950,13 +954,13 @@ fun MolarMassCalculator() {
         var showInfo by remember { mutableStateOf(false) }
         if (showInfo) {
             InfoDialog(
-                title = "Molar Mass Calculator",
+                titleRes = R.string.ui_molar_mass_calculator,
                 entries = listOf(
-                    "What is molar mass?" to "Molar mass is the mass of one mole (6.022 × 10²³ particles) of a substance, expressed in grams per mole (g/mol). It equals the sum of atomic weights of all atoms in the formula.",
-                    "How to enter a formula" to "Type the molecular formula using standard element symbols with numbers for atom counts. Parentheses are supported for groups, e.g. Ca(OH)2 or Al2(SO4)3.",
-                    "Case sensitivity" to "Element symbols are case-sensitive! 'Co' is cobalt, 'CO' is carbon monoxide. Always capitalize only the first letter of each element symbol.",
-                    "Atomic weights" to "Atomic weights used here are the standard values from IUPAC, based on the natural isotopic abundance of each element.",
-                    "Elemental breakdown" to "The breakdown table shows each element's contribution to the total molar mass, both as an absolute value (g/mol) and as a percentage by mass.",
+                    R.string.ui_molar_info_what_is_term to R.string.ui_molar_info_what_is_body,
+                    R.string.ui_molar_info_how_to_enter_term to R.string.ui_molar_info_how_to_enter_body,
+                    R.string.ui_molar_info_case_sensitivity_term to R.string.ui_molar_info_case_sensitivity_body,
+                    R.string.ui_molar_info_atomic_weights_term to R.string.ui_molar_info_atomic_weights_body,
+                    R.string.ui_molar_info_elemental_breakdown_term to R.string.ui_molar_info_elemental_breakdown_body
                 ),
                 onDismiss = { showInfo = false }
             )
@@ -1020,7 +1024,7 @@ fun MolarMassCalculator() {
         }
 
         result?.let { calc ->
-            if (calc.error != null) {
+            if (calc.errorRes != null) {
                 Card(
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(
@@ -1030,7 +1034,7 @@ fun MolarMassCalculator() {
                     )
                 ) {
                     Text(
-                        calc.error,
+                        stringResource(calc.errorRes, *calc.errorArgs.toTypedArray()),
                         modifier = Modifier.padding(12.dp),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.error
@@ -1140,16 +1144,20 @@ fun MolarMassCalculator() {
 // TOOL 3 : OXIDATION STATE FINDER
 private data class OsResult(
     val states: List<Pair<String, String>> = emptyList(),
-    val note: String? = null,
-    val error: String? = null
+    @StringRes val noteRes: Int? = null,
+    val noteArgs: List<Any> = emptyList(),
+    @StringRes val errorRes: Int? = null,
+    val errorArgs: List<Any> = emptyList()
 )
 
 private fun findOxidationStates(formula: String, chargeIn: Int): OsResult {
     val result = calculateOxidationStates(formula, chargeIn)
     return OsResult(
         states = result.states,
-        note = result.note,
-        error = result.error
+        noteRes = result.noteRes,
+        noteArgs = result.noteArgs,
+        errorRes = result.errorRes,
+        errorArgs = result.errorArgs
     )
 }
 
@@ -1165,16 +1173,16 @@ fun OxidationStateFinder() {
     var showInfo by remember { mutableStateOf(false) }
     if (showInfo) {
         InfoDialog(
-            title = "Oxidation State Finder",
+            titleRes = R.string.ui_oxidation_state_finder,
             entries = listOf(
-                "What is an oxidation state?" to "A number assigned to an atom representing its degree of oxidation. Positive = electrons lost, negative = electrons gained. Used to track electron transfer in redox reactions.",
-                "Rules applied" to "F is always -1. Group 1 = +1, Group 2 = +2. Al, Ga, In, Sc, Y, La, Lu = +3. Zn, Cd = +2. Ag = +1. O defaults to -2 (except peroxides/superoxides). H defaults to +1 (except metal hydrides). Halogens (Cl, Br, I) default to -1 in simple halides, but are solved when bonded with oxygen or a more electronegative halogen.",
-                "Halogen priority" to "Electronegativity order: F > Cl > Br > I. In oxo-halogen compounds and interhalogen compounds, the less electronegative halogen can take a positive OS. Example: HOCl ⟶ Cl=+1. ICl3 ⟶ I=+3, Cl=-1. ClF3 ⟶ Cl=+3, F=-1.",
-                "Special cases handled" to "Peroxides (O=-1): H2O2, Na2O2, BaO2. Superoxides (O=-½): KO2, NaO2. Ozonides (O=-⅓): KO3. Metal hydrides (H=-1): NaH, LiAlH4, NaBH4, CaH2.",
-                "Overall charge" to "For neutral compounds enter 0. For polyatomic ions enter the ion charge. Examples: SO4²⁻ → charge -2. NH4⁺ → charge +1. MnO4⁻ → charge -1.",
-                "Organic compounds" to "For single-carbon compounds (CH4, CO2, CCl4) the result is exact. For multi-carbon compounds, the app calculates an average oxidation state across all carbons, which is chemically meaningful for comparisons but does not reflect individual carbon environments. Ethanol (C2H5OH) has carbons at -3 and -1, but the app returns -2 as the average.",
-                "Limitations" to "Compounds with 2 or more transition metals or unknown elements cannot be solved without additional information. Mixed-valence compounds like Fe3O4 (Fe²⁺ and Fe³⁺ coexist) return a fractional average with a warning. For these, enter the ion charge separately if known.",
-                "Example" to "KMnO4 (charge 0): K=+1 (fixed), O=-2 (fixed, ×4). Mn = 0 − (+1) − 4(−2) = +7."
+                R.string.ui_os_info_what_is_term to R.string.ui_os_info_what_is_body,
+                R.string.ui_os_info_rules_term to R.string.ui_os_info_rules_body,
+                R.string.ui_os_info_halogen_priority_term to R.string.ui_os_info_halogen_priority_body,
+                R.string.ui_os_info_special_cases_term to R.string.ui_os_info_special_cases_body,
+                R.string.ui_os_info_overall_charge_term to R.string.ui_os_info_overall_charge_body,
+                R.string.ui_os_info_organic_term to R.string.ui_os_info_organic_body,
+                R.string.ui_limitations to R.string.ui_os_info_limitations_body,
+                R.string.ui_os_info_example_term to R.string.ui_os_info_example_body
             ),
             onDismiss = { showInfo = false }
         )
@@ -1236,9 +1244,9 @@ fun OxidationStateFinder() {
         }
 
         result?.let { res ->
-            if (res.error != null) {
+            if (res.errorRes != null) {
                 Card(shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer.copy(0.4f))) {
-                    Text(res.error, modifier = Modifier.padding(14.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(res.errorRes, *res.errorArgs.toTypedArray()), modifier = Modifier.padding(14.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                 }
             } else {
                 Card(
@@ -1287,11 +1295,11 @@ fun OxidationStateFinder() {
                             }
                         }
 
-                        if (res.note != null) {
+                        if (res.noteRes != null) {
                             HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
                             Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.Top) {
                                 Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.primary.copy(0.6f), modifier = Modifier.size(14.dp))
-                                Text(res.note, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f), lineHeight = 17.sp)
+                                Text(stringResource(res.noteRes, *res.noteArgs.toTypedArray()), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f), lineHeight = 17.sp)
                             }
                         }
                     }
@@ -1326,6 +1334,7 @@ fun SmilesVisualizer(isDark: Boolean) {
     var sdfSource by remember { mutableStateOf<SdfSource?>(null) }
     var sdfMessage by remember { mutableStateOf<String?>(null) }
     var activeTab by remember { mutableStateOf(0) } // 0=2D, 1=3D
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
 
@@ -1340,14 +1349,14 @@ fun SmilesVisualizer(isDark: Boolean) {
     var showInfo by remember { mutableStateOf(false) }
     if (showInfo) {
         InfoDialog(
-            title = "SMILES Visualizer",
+            titleRes = R.string.ui_smiles_visualizer,
             entries = listOf(
-                "What is SMILES?" to "Simplified Molecular Input Line Entry System. A notation that encodes molecular structure as a text string using atom symbols and bond characters.",
-                "How to use" to "Paste any valid SMILES string and tap Visualize. The app looks up the compound on PubChem and shows its 2D structure and 3D model.",
-                "Where to get SMILES" to "PubChem, ChemDraw, SciFinder, and most chemistry databases provide SMILES strings for compounds. You can also find them in published papers.",
-                "Aromatic notation" to "Lowercase letters (c, n, o) denote aromatic atoms. For example, benzene is 'c1ccccc1' and pyridine is 'c1ccncc1'.",
-                "Chirality" to "@  and @@ in SMILES denote stereocenters. The visualizer handles both standard and isomeric SMILES.",
-                "Limitations" to "Only SMILES strings recognized by PubChem can be visualized. Novel or hypothetical molecules not in PubChem will return no result."
+                R.string.ui_smiles_info_what_is_term to R.string.ui_smiles_info_what_is_body,
+                R.string.ui_smiles_info_how_to_use_term to R.string.ui_smiles_info_how_to_use_body,
+                R.string.ui_smiles_info_where_to_get_term to R.string.ui_smiles_info_where_to_get_body,
+                R.string.ui_smiles_info_aromatic_term to R.string.ui_smiles_info_aromatic_body,
+                R.string.ui_smiles_info_chirality_term to R.string.ui_smiles_info_chirality_body,
+                R.string.ui_limitations to R.string.ui_smiles_info_limitations_body
             ),
             onDismiss = { showInfo = false }
         )
@@ -1376,7 +1385,7 @@ fun SmilesVisualizer(isDark: Boolean) {
                 }
                 val bodyStr = response.body.string()
                 if (!response.isSuccessful || bodyStr.isBlank()) {
-                    error = "Compound not found on PubChem. Check your SMILES string."
+                    error = context.getString(R.string.ui_compound_not_found_on_pubchem)
                     return@launch
                 }
                 val json = com.google.gson.Gson().fromJson(bodyStr, com.google.gson.JsonObject::class.java)
@@ -1385,7 +1394,7 @@ fun SmilesVisualizer(isDark: Boolean) {
                     ?.getAsJsonArray("CID")
                     ?.firstOrNull()
                 if (cidElement == null) {
-                    error = "No compound found for this SMILES string."
+                    error = context.getString(R.string.ui_no_compound_found_for_smiles)
                     return@launch
                 }
                 val cid = cidElement.asJsonPrimitive.asLong
@@ -1405,7 +1414,7 @@ fun SmilesVisualizer(isDark: Boolean) {
                     sdfData = sdf
                     sdfSource = SdfSource.PUBCHEM
                 } else {
-                    sdfMessage = "PubChem 3D unavailable. Trying generated fallback..."
+                    sdfMessage = context.getString(R.string.ui_pubchem_3d_unavailable_fallback)
                     val fallback = withContext(Dispatchers.IO) {
                         fetchGeneratedSdfFromIdentifiers(
                             buildSdfIdentifierCandidates(
@@ -1419,10 +1428,10 @@ fun SmilesVisualizer(isDark: Boolean) {
                     }
                     sdfData = fallback?.sdf
                     sdfSource = fallback?.source
-                    sdfMessage = fallback?.message ?: "Formula-matched 3D fallback unavailable for this SMILES."
+                    sdfMessage = fallback?.let { context.getString(it.messageRes!!, *it.messageArgs.toTypedArray()) } ?: context.getString(R.string.ui_formula_matched_3d_fallback_unavailable)
                 }
             } catch (e: Exception) {
-                error = "Error: ${e.message}"
+                error = context.getString(R.string.ui_error_s, e.message)
             } finally {
                 isLoading = false
             }
@@ -1486,7 +1495,7 @@ fun SmilesVisualizer(isDark: Boolean) {
                 CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = Color.White)
                 Spacer(Modifier.width(8.dp))
             }
-            Text(if (isLoading) "Looking up..." else "Visualize")
+            Text(if (isLoading) stringResource(R.string.ui_looking_up) else stringResource(R.string.ui_visualize))
         }
 
         if (error != null) {
@@ -1512,8 +1521,8 @@ fun SmilesVisualizer(isDark: Boolean) {
                         Icon(Icons.Default.Science, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(22.dp))
                     }
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(compoundName?.replaceFirstChar { it.uppercase() } ?: "CID $cidResult", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
-                        Text("PubChem CID: $cidResult", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f), fontFamily = FontFamily.Monospace)
+                        Text(compoundName?.replaceFirstChar { it.uppercase() } ?: stringResource(R.string.ui_cid_label, cidResult ?: -1L), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+                        Text(stringResource(R.string.ui_pubchem_cid_s, cidResult ?: -1L), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f), fontFamily = FontFamily.Monospace)
                     }
                 }
             }
@@ -1533,7 +1542,7 @@ fun SmilesVisualizer(isDark: Boolean) {
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Row(modifier = Modifier.padding(4.dp)) {
-                                listOf("2D Structure", "3D Model").forEachIndexed { idx, label ->
+                                listOf(stringResource(R.string.ui_2d_structure), stringResource(R.string.ui_3d_model)).forEachIndexed { idx, label ->
                                     Surface(
                                         onClick = { activeTab = idx },
                                         shape = RoundedCornerShape(50),
@@ -1623,12 +1632,13 @@ fun SmilesVisualizer(isDark: Boolean) {
 private data class BalancerResult(
     val reactants: List<Pair<String, Int>> = emptyList(),
     val products:  List<Pair<String, Int>> = emptyList(),
-    val error: String? = null
+    @StringRes val errorRes: Int? = null,
+    val errorArgs: List<Any> = emptyList()
 )
 
 private fun balanceReaction(equation: String): BalancerResult {
     val result: BalancedReactionResult = balanceChemicalReaction(equation)
-    if (result.error != null) return BalancerResult(error = result.error.message)
+    if (result.error != null) return BalancerResult(errorRes = result.error.messageRes, errorArgs = result.error.messageArgs)
     return BalancerResult(
         reactants = result.reactants.map { it.formula to it.coefficient },
         products = result.products.map { it.formula to it.coefficient }
@@ -1696,14 +1706,14 @@ fun ReactionBalancer() {
     var showInfo by remember { mutableStateOf(false) }
     if (showInfo) {
         InfoDialog(
-            title = "Reaction Balancer",
+            titleRes = R.string.ui_reaction_balancer,
             entries = listOf(
-                "How to enter equations" to "Type reactants on the left and products on the right, separated by '⟶'. Separate compounds with '+'. Example: H2 + O2 ⟶ H2O",
-                "Coefficients" to "Do not enter coefficients. The app determines them. H2 + O2 ⟶ H2O, not 2H2 + O2 ⟶ 2H2O.",
-                "How it works" to "The balancer builds a matrix of element counts and solves the system using Gaussian elimination with exact rational arithmetic to find integer coefficients.",
-                "Supported formulas" to "Standard molecular formulas with parentheses are supported, e.g. Ca(OH)2, Al2(SO4)3.",
-                "Limitations" to "Equations that cannot be balanced by integer stoichiometry (e.g. some redox reactions requiring half-reaction method) may not solve correctly.",
-                "Verification" to "The element count table below the result shows that atoms are conserved. You can verify the balancing manually."
+                R.string.ui_balancer_info_how_to_enter_term to R.string.ui_balancer_info_how_to_enter_body,
+                R.string.ui_balancer_info_coefficients_term to R.string.ui_balancer_info_coefficients_body,
+                R.string.ui_balancer_info_how_it_works_term to R.string.ui_balancer_info_how_it_works_body,
+                R.string.ui_balancer_info_supported_formulas_term to R.string.ui_balancer_info_supported_formulas_body,
+                R.string.ui_limitations to R.string.ui_balancer_info_limitations_body,
+                R.string.ui_balancer_info_verification_term to R.string.ui_balancer_info_verification_body
             ),
             onDismiss = { showInfo = false }
         )
@@ -1816,9 +1826,9 @@ fun ReactionBalancer() {
         }
 
         result?.let { res ->
-            if (res.error != null) {
+            if (res.errorRes != null) {
                 Card(shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer.copy(0.4f))) {
-                    Text(res.error, modifier = Modifier.padding(14.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(res.errorRes, *res.errorArgs.toTypedArray()), modifier = Modifier.padding(14.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                 }
             } else {
                 Card(
@@ -2227,6 +2237,7 @@ fun CompareCompoundsTool(
     var results by remember { mutableStateOf<List<CompareCompound>>(emptyList()) }
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
     val compact = LocalCompactMode.current
@@ -2238,7 +2249,7 @@ fun CompareCompoundsTool(
             .filter { it.isNotBlank() }
             .distinctBy { it.lowercase() }
         if (queries.size < 2) {
-            error = "Enter at least two compounds."
+            error = context.getString(R.string.ui_enter_at_least_two_compounds)
             return
         }
         isLoading = true
@@ -2263,8 +2274,8 @@ fun CompareCompoundsTool(
             }
             results = loaded
             error = when {
-                loaded.size < 2 && failures.isNotEmpty() -> "Could not load: ${failures.joinToString(", ")}"
-                failures.isNotEmpty() -> "Skipped: ${failures.joinToString(", ")}"
+                loaded.size < 2 && failures.isNotEmpty() -> context.getString(R.string.ui_could_not_load_s, failures.joinToString(", "))
+                failures.isNotEmpty() -> context.getString(R.string.ui_skipped_s, failures.joinToString(", "))
                 else -> null
             }
             isLoading = false
@@ -2318,8 +2329,8 @@ fun CompareCompoundsTool(
                     onValueChange = { value ->
                         compoundFields = compoundFields.toMutableList().also { it[index] = value }
                     },
-                    label = { Text("Compound ${index + 1}") },
-                    placeholder = { Text("compound ${index + 1}") },
+                    label = { Text(stringResource(R.string.ui_compound_label, index + 1)) },
+                    placeholder = { Text(stringResource(R.string.ui_compound_placeholder, index + 1)) },
                     singleLine = true,
                     leadingIcon = { Icon(Icons.Default.Science, null) },
                     trailingIcon = {
@@ -2391,7 +2402,7 @@ fun CompareCompoundsTool(
                 Icon(Icons.AutoMirrored.Filled.CompareArrows, null, modifier = Modifier.size(18.dp))
             }
             Spacer(Modifier.width(8.dp))
-            Text(if (isLoading) "Comparing..." else "Compare")
+            Text(if (isLoading) stringResource(R.string.ui_comparing) else stringResource(R.string.ui_compare))
         }
 
         error?.let {
@@ -2440,7 +2451,7 @@ private fun CompareCompoundCard(
             ) {
                 AsyncImage(
                     model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${compound.cid}/PNG?record_type=2d&image_size=small",
-                    contentDescription = "Structure of ${compound.name}",
+                    contentDescription = stringResource(R.string.ui_structure_of, compound.name),
                     contentScale = ContentScale.Fit,
                     modifier = Modifier.size(if (compact) 64.dp else 78.dp).padding(4.dp)
                 )
@@ -2487,43 +2498,43 @@ private fun CompareRows(results: List<CompareCompound>) {
             letterSpacing = 0.8.sp,
             color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
         )
-        CompareSectionLabel("Core")
-        CompareInfoRow("Formula", results) { toSubscriptFormula(it.formula.ifBlank { "—" }) }
-        CompareInfoRow("Molar mass", results) {
+        CompareSectionLabel(R.string.ui_core)
+        CompareInfoRow(R.string.ui_formula, results) { toSubscriptFormula(it.formula.ifBlank { "—" }) }
+        CompareInfoRow(R.string.ui_molar_mass_label, results) {
             it.molecularWeight.takeIf { value -> value.isNotBlank() }?.let { value -> "$value g/mol" } ?: "—"
         }
-        CompareInfoRow("IUPAC name", results, monospace = true) { it.iupacName.ifBlank { "—" } }
+        CompareInfoRow(R.string.ui_compare_iupac_name, results, monospace = true) { it.iupacName.ifBlank { "—" } }
 
-        CompareSectionLabel("Identifiers")
-        CompareInfoRow("CID", results, monospace = true) { it.cid.toString() }
-        CompareInfoRow("CAS", results, monospace = true) { it.casNumber ?: "—" }
-        CompareInfoRow("SMILES", results, monospace = true) { it.smiles.ifBlank { "—" } }
-        CompareInfoRow("Connectivity SMILES", results, monospace = true) { it.connectivitySmiles.ifBlank { "—" } }
-        CompareInfoRow("InChIKey", results, monospace = true) { it.inchiKey.ifBlank { "—" } }
-        CompareInfoRow("InChI", results, monospace = true) { it.inchi.ifBlank { "—" } }
+        CompareSectionLabel(R.string.ui_identifiers)
+        CompareInfoRow(R.string.ui_info_cid, results, monospace = true) { it.cid.toString() }
+        CompareInfoRow(R.string.ui_cas, results, monospace = true) { it.casNumber ?: "—" }
+        CompareInfoRow(R.string.ui_info_smiles, results, monospace = true) { it.smiles.ifBlank { "—" } }
+        CompareInfoRow(R.string.ui_connectivity_smiles, results, monospace = true) { it.connectivitySmiles.ifBlank { "—" } }
+        CompareInfoRow(R.string.ui_inchikey_label, results, monospace = true) { it.inchiKey.ifBlank { "—" } }
+        CompareInfoRow(R.string.ui_inchi_label, results, monospace = true) { it.inchi.ifBlank { "—" } }
 
-        CompareSectionLabel("Structure")
-        CompareInfoRow("Charge", results) { it.charge?.toString() ?: "—" }
-        CompareInfoRow("Covalent units", results) { it.covalentUnitCount?.toString() ?: "—" }
-        CompareInfoRow("Atom count", results) { it.atomCount?.toString() ?: "—" }
-        CompareInfoRow("Bond count", results) { it.bondCount?.toString() ?: "—" }
+        CompareSectionLabel(R.string.ui_structure)
+        CompareInfoRow(R.string.ui_charge, results) { it.charge?.toString() ?: "—" }
+        CompareInfoRow(R.string.ui_covalent_units, results) { it.covalentUnitCount?.toString() ?: "—" }
+        CompareInfoRow(R.string.ui_atom_count, results) { it.atomCount?.toString() ?: "—" }
+        CompareInfoRow(R.string.ui_bond_count, results) { it.bondCount?.toString() ?: "—" }
 
-        CompareSectionLabel("Description & Safety")
-        CompareInfoRow("Safety", results) {
+        CompareSectionLabel(R.string.ui_description_safety)
+        CompareInfoRow(R.string.ui_safety, results) {
             it.ghsData?.signalWord ?: it.ghsData?.hazardStatements?.firstOrNull() ?: "—"
         }
-        val sourceLabel = results.firstOrNull()?.descriptionSource?.compareLabel().orEmpty()
+        val sourceLabelRes = results.firstOrNull()?.descriptionSource?.compareLabelRes()
         CompareDescriptionRow(
-            label = "Description${if (sourceLabel.isBlank()) "" else " ($sourceLabel)"}",
+            label = if (sourceLabelRes != null) stringResource(R.string.ui_description_with_source, stringResource(sourceLabelRes)) else stringResource(R.string.ui_description),
             compounds = results
         )
     }
 }
 
 @Composable
-private fun CompareSectionLabel(label: String) {
+private fun CompareSectionLabel(labelRes: Int) {
     Text(
-        label.uppercase(),
+        stringResource(labelRes).uppercase(),
         style = MaterialTheme.typography.labelSmall,
         fontWeight = FontWeight.Bold,
         letterSpacing = 0.7.sp,
@@ -2534,14 +2545,14 @@ private fun CompareSectionLabel(label: String) {
 
 @Composable
 private fun CompareInfoRow(
-    label: String,
+    labelRes: Int,
     compounds: List<CompareCompound>,
     monospace: Boolean = false,
     valueFor: (CompareCompound) -> String
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Text(
-            label,
+            stringResource(labelRes),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface.copy(0.62f)
@@ -2625,7 +2636,7 @@ private fun ExpandableCompareValueCard(
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(
-                        if (expanded) "Tap to collapse" else "Tap to expand",
+                        if (expanded) stringResource(R.string.ui_tap_to_collapse) else stringResource(R.string.ui_tap_to_expand),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.primary
@@ -2642,19 +2653,19 @@ private fun ExpandableCompareValueCard(
     }
 }
 
-private fun DescSource.compareLabel(): String = when (this) {
-    DescSource.PUBCHEM -> "PubChem"
-    DescSource.WIKI -> "Wikipedia"
-    DescSource.AI -> "AI"
+private fun DescSource.compareLabelRes(): Int = when (this) {
+    DescSource.PUBCHEM -> R.string.ui_pubchem
+    DescSource.WIKI -> R.string.ui_wikipedia
+    DescSource.AI -> R.string.ui_ai
 }
 
-private data class SolveResult(val value: Double?, val error: String? = null)
+private data class SolveResult(val value: Double?, @StringRes val error: Int? = null)
 
-private enum class DilutionSolve(val label: String, val unit: String) {
-    C1("C₁ (stock)", "M"),
-    V1("V₁ (stock)", "mL"),
-    C2("C₂ (final)", "M"),
-    V2("V₂ (final)", "mL")
+private enum class DilutionSolve(val labelRes: Int, val unit: String) {
+    C1(R.string.ui_dilution_c1, "M"),
+    V1(R.string.ui_dilution_v1, "mL"),
+    C2(R.string.ui_dilution_c2, "M"),
+    V2(R.string.ui_dilution_v2, "mL")
 }
 
 private fun solveDilution(
@@ -2670,27 +2681,27 @@ private fun solveDilution(
     val v2Val = parsePositiveNumber(v2)
     return when (solveFor) {
         DilutionSolve.C1 -> {
-            if (v1Val == null) SolveResult(null, "Enter V₁")
-            else if (c2Val == null) SolveResult(null, "Enter C₂")
-            else if (v2Val == null) SolveResult(null, "Enter V₂")
+            if (v1Val == null) SolveResult(null, R.string.ui_enter_v1)
+            else if (c2Val == null) SolveResult(null, R.string.ui_enter_c2)
+            else if (v2Val == null) SolveResult(null, R.string.ui_enter_v2)
             else SolveResult((c2Val * v2Val) / v1Val)
         }
         DilutionSolve.V1 -> {
-            if (c1Val == null) SolveResult(null, "Enter C₁")
-            else if (c2Val == null) SolveResult(null, "Enter C₂")
-            else if (v2Val == null) SolveResult(null, "Enter V₂")
+            if (c1Val == null) SolveResult(null, R.string.ui_enter_c1)
+            else if (c2Val == null) SolveResult(null, R.string.ui_enter_c2)
+            else if (v2Val == null) SolveResult(null, R.string.ui_enter_v2)
             else SolveResult((c2Val * v2Val) / c1Val)
         }
         DilutionSolve.C2 -> {
-            if (c1Val == null) SolveResult(null, "Enter C₁")
-            else if (v1Val == null) SolveResult(null, "Enter V₁")
-            else if (v2Val == null) SolveResult(null, "Enter V₂")
+            if (c1Val == null) SolveResult(null, R.string.ui_enter_c1)
+            else if (v1Val == null) SolveResult(null, R.string.ui_enter_v1)
+            else if (v2Val == null) SolveResult(null, R.string.ui_enter_v2)
             else SolveResult((c1Val * v1Val) / v2Val)
         }
         DilutionSolve.V2 -> {
-            if (c1Val == null) SolveResult(null, "Enter C₁")
-            else if (v1Val == null) SolveResult(null, "Enter V₁")
-            else if (c2Val == null) SolveResult(null, "Enter C₂")
+            if (c1Val == null) SolveResult(null, R.string.ui_enter_c1)
+            else if (v1Val == null) SolveResult(null, R.string.ui_enter_v1)
+            else if (c2Val == null) SolveResult(null, R.string.ui_enter_c2)
             else SolveResult((c1Val * v1Val) / c2Val)
         }
     }
@@ -2698,11 +2709,11 @@ private fun solveDilution(
 
 private const val GAS_R = 0.082057
 
-private enum class GasSolve(val label: String, val unit: String) {
-    PRESSURE("Pressure", "atm"),
-    VOLUME("Volume", "L"),
-    MOLES("Moles", "mol"),
-    TEMPERATURE("Temperature", "K")
+private enum class GasSolve(val labelRes: Int, val unit: String) {
+    PRESSURE(R.string.ui_gas_solve_pressure, "atm"),
+    VOLUME(R.string.ui_gas_solve_volume, "L"),
+    MOLES(R.string.ui_gas_solve_moles, "mol"),
+    TEMPERATURE(R.string.ui_gas_solve_temperature, "K")
 }
 
 private fun solveGasLaw(
@@ -2718,27 +2729,27 @@ private fun solveGasLaw(
     val tVal = parsePositiveNumber(temperature)
     return when (solveFor) {
         GasSolve.PRESSURE -> {
-            if (nVal == null) SolveResult(null, "Enter moles")
-            else if (tVal == null) SolveResult(null, "Enter temperature")
-            else if (vVal == null) SolveResult(null, "Enter volume")
+            if (nVal == null) SolveResult(null, R.string.ui_enter_moles)
+            else if (tVal == null) SolveResult(null, R.string.ui_enter_temperature)
+            else if (vVal == null) SolveResult(null, R.string.ui_enter_volume)
             else SolveResult((nVal * GAS_R * tVal) / vVal)
         }
         GasSolve.VOLUME -> {
-            if (nVal == null) SolveResult(null, "Enter moles")
-            else if (tVal == null) SolveResult(null, "Enter temperature")
-            else if (pVal == null) SolveResult(null, "Enter pressure")
+            if (nVal == null) SolveResult(null, R.string.ui_enter_moles)
+            else if (tVal == null) SolveResult(null, R.string.ui_enter_temperature)
+            else if (pVal == null) SolveResult(null, R.string.ui_enter_pressure)
             else SolveResult((nVal * GAS_R * tVal) / pVal)
         }
         GasSolve.MOLES -> {
-            if (pVal == null) SolveResult(null, "Enter pressure")
-            else if (vVal == null) SolveResult(null, "Enter volume")
-            else if (tVal == null) SolveResult(null, "Enter temperature")
+            if (pVal == null) SolveResult(null, R.string.ui_enter_pressure)
+            else if (vVal == null) SolveResult(null, R.string.ui_enter_volume)
+            else if (tVal == null) SolveResult(null, R.string.ui_enter_temperature)
             else SolveResult((pVal * vVal) / (GAS_R * tVal))
         }
         GasSolve.TEMPERATURE -> {
-            if (pVal == null) SolveResult(null, "Enter pressure")
-            else if (vVal == null) SolveResult(null, "Enter volume")
-            else if (nVal == null) SolveResult(null, "Enter moles")
+            if (pVal == null) SolveResult(null, R.string.ui_enter_pressure)
+            else if (vVal == null) SolveResult(null, R.string.ui_enter_volume)
+            else if (nVal == null) SolveResult(null, R.string.ui_enter_moles)
             else SolveResult((pVal * vVal) / (GAS_R * nVal))
         }
     }
@@ -2855,11 +2866,11 @@ fun PhPohCalculatorTool() {
 
     if (showInfo) {
         InfoDialog(
-            title = "pH / pOH Calculator",
+            titleRes = R.string.ui_ph_poh_calculator,
             entries = listOf(
-                "What it solves" to "Enter pH, pOH, [H+], or [OH-] to calculate the other three values.",
-                "Concentration units" to "[H+] and [OH-] are mol/L.",
-                "Assumption" to "Uses pH + pOH = 14 for water at 25 C."
+                R.string.ui_phpoh_info_what_it_solves_term to R.string.ui_phpoh_info_what_it_solves_body,
+                R.string.ui_phpoh_info_concentration_units_term to R.string.ui_phpoh_info_concentration_units_body,
+                R.string.ui_phpoh_info_assumption_term to R.string.ui_phpoh_info_assumption_body
             ),
             onDismiss = { showInfo = false }
         )
@@ -2910,10 +2921,10 @@ fun PhPohCalculatorTool() {
         OutlinedTextField(
             value = input,
             onValueChange = { input = it },
-            label = { Text("Known ${inputType.symbol}") },
+            label = { Text(stringResource(R.string.ui_known_s, inputType.symbol)) },
             placeholder = {
                 Text(
-                    if (inputType == PhPohInputType.HYDROGEN || inputType == PhPohInputType.HYDROXIDE) "e.g. 1e-7" else "e.g. 7",
+                    if (inputType == PhPohInputType.HYDROGEN || inputType == PhPohInputType.HYDROXIDE) stringResource(R.string.ui_e_g_1e_7) else stringResource(R.string.ui_e_g_7),
                     color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
                 )
             },
@@ -2937,10 +2948,10 @@ fun PhPohCalculatorTool() {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             listOf(
-                Triple("Neutral water", PhPohInputType.PH, "7"),
-                Triple("Acidic pH", PhPohInputType.PH, "3"),
-                Triple("Basic pOH", PhPohInputType.POH, "3"),
-                Triple("[H+] example", PhPohInputType.HYDROGEN, "1e-4")
+                Triple(stringResource(R.string.ui_neutral_water), PhPohInputType.PH, "7"),
+                Triple(stringResource(R.string.ui_acidic_ph), PhPohInputType.PH, "3"),
+                Triple(stringResource(R.string.ui_basic_poh), PhPohInputType.POH, "3"),
+                Triple(stringResource(R.string.ui_h_plus_example), PhPohInputType.HYDROGEN, "1e-4")
             ).forEach { (label, type, value) ->
                 AssistChip(
                     onClick = {
@@ -2957,8 +2968,9 @@ fun PhPohCalculatorTool() {
         }
 
         if (result.isFailure && hasInput) {
+            val errorRes = (result.exceptionOrNull() as? PhPohInputException)?.messageRes ?: R.string.ui_enter_a_valid_value
             Text(
-                result.exceptionOrNull()?.message ?: "Enter a valid value.",
+                stringResource(errorRes),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.error
             )
@@ -2970,7 +2982,7 @@ fun PhPohCalculatorTool() {
 
         FormulaExplanationCard(
             latexFormula = "pH = -log[H^+], pOH = -log[OH^-], pH + pOH = 14",
-            explanation = "At 25 C, pH and pOH add to 14. Lower pH is acidic, higher pH is basic, and pH near 7 is neutral."
+            explanation = stringResource(R.string.ui_ph_poh_explanation)
         )
     }
 }
@@ -2980,16 +2992,16 @@ private fun PhPohResultCards(result: com.furthersecrets.chemsearch.data.PhPohRes
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Surface(
             shape = RoundedCornerShape(12.dp),
-            color = when (result.classification) {
-                "Acidic" -> Color(0xFFEF4444).copy(0.12f)
-                "Basic" -> MaterialTheme.colorScheme.primary.copy(0.12f)
+            color = when (result.classificationRes) {
+                R.string.ui_classification_acidic -> Color(0xFFEF4444).copy(0.12f)
+                R.string.ui_classification_basic -> MaterialTheme.colorScheme.primary.copy(0.12f)
                 else -> Color(0xFF22C55E).copy(0.12f)
             },
             border = BorderStroke(
                 1.dp,
-                when (result.classification) {
-                    "Acidic" -> Color(0xFFEF4444).copy(0.32f)
-                    "Basic" -> MaterialTheme.colorScheme.primary.copy(0.32f)
+                when (result.classificationRes) {
+                    R.string.ui_classification_acidic -> Color(0xFFEF4444).copy(0.32f)
+                    R.string.ui_classification_basic -> MaterialTheme.colorScheme.primary.copy(0.32f)
                     else -> Color(0xFF22C55E).copy(0.32f)
                 }
             )
@@ -3000,7 +3012,7 @@ private fun PhPohResultCards(result: com.furthersecrets.chemsearch.data.PhPohRes
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(stringResource(R.string.ui_solution_type), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface.copy(0.62f))
-                Text(result.classification, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                Text(stringResource(result.classificationRes), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
             }
         }
 
@@ -3013,7 +3025,7 @@ private fun PhPohResultCards(result: com.furthersecrets.chemsearch.data.PhPohRes
             PhPohMetricCard("[OH-] mol/L", formatPhPohNumber(result.hydroxideConcentration), Modifier.weight(1f))
         }
         Text(
-            result.assumption,
+            stringResource(result.assumptionRes),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurface.copy(0.48f)
         )
@@ -3074,11 +3086,11 @@ fun DilutionCalculatorTool() {
         var showInfo by remember { mutableStateOf(false) }
         if (showInfo) {
             InfoDialog(
-                title = "Dilution Calculator",
+                titleRes = R.string.ui_dilution_calculator,
                 entries = listOf(
-                    "Equation" to "Uses C₁V₁ = C₂V₂ to solve dilutions.",
-                    "Units" to "Keep concentration units consistent (M) and volume units consistent (mL or L).",
-                    "Tip" to "Pick the variable you want to solve, then fill the other three."
+                    R.string.ui_info_equation to R.string.ui_dilution_info_equation_body,
+                    R.string.ui_info_units to R.string.ui_dilution_info_units_body,
+                    R.string.ui_dilution_info_tip_term to R.string.ui_dilution_info_tip_body
                 ),
                 onDismiss = { showInfo = false }
             )
@@ -3113,14 +3125,14 @@ fun DilutionCalculatorTool() {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
-                        Text(solveFor.label, style = MaterialTheme.typography.labelMedium)
+                        Text(stringResource(solveFor.labelRes), style = MaterialTheme.typography.labelMedium)
                         Icon(Icons.Default.KeyboardArrowDown, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onSurface.copy(0.6f))
                     }
                 }
                 SettingsDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                     DilutionSolve.values().forEach { option ->
                         DropdownMenuItem(
-                            text = { Text(option.label) },
+                            text = { Text(stringResource(option.labelRes)) },
                             onClick = {
                                 solveFor = option
                                 expanded = false
@@ -3179,7 +3191,7 @@ fun DilutionCalculatorTool() {
         }
 
         if (result.error != null && hasAnyInput) {
-            Text(result.error, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+            Text(stringResource(result.error!!), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
         } else if (result.value != null) {
             Surface(
                 shape = RoundedCornerShape(12.dp),
@@ -3187,7 +3199,7 @@ fun DilutionCalculatorTool() {
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.3f))
             ) {
                 Text(
-                    "${solveFor.label} = ${formatNumber(result.value, 4)} ${solveFor.unit}",
+                    "${stringResource(solveFor.labelRes)} = ${formatNumber(result.value, 4)} ${solveFor.unit}",
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     fontFamily = FontFamily.Monospace,
@@ -3198,8 +3210,7 @@ fun DilutionCalculatorTool() {
 
         FormulaExplanationCard(
             latexFormula = "C_1V_1 = C_2V_2",
-            explanation = "Stock concentration and volume are related to final concentration and volume. " +
-                "Given any three values, the fourth is determined directly from this equation."
+            explanation = stringResource(R.string.ui_dilution_explanation)
         )
     }
 }
@@ -3227,11 +3238,11 @@ fun IdealGasLawTool() {
         var showInfo by remember { mutableStateOf(false) }
         if (showInfo) {
             InfoDialog(
-                title = "Ideal Gas Law",
+                titleRes = R.string.ui_ideal_gas_law,
                 entries = listOf(
-                    "Equation" to "Uses PV = nRT to solve for any variable.",
-                    "Units" to "P in atm, V in liters, n in moles, T in Kelvin.",
-                    "Gas constant" to "R = 0.082057 L·atm/mol·K."
+                    R.string.ui_info_equation to R.string.ui_gas_info_equation_body,
+                    R.string.ui_info_units to R.string.ui_gas_info_units_body,
+                    R.string.ui_gas_info_gas_constant_term to R.string.ui_gas_info_gas_constant_body
                 ),
                 onDismiss = { showInfo = false }
             )
@@ -3266,14 +3277,14 @@ fun IdealGasLawTool() {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
-                        Text(solveFor.label, style = MaterialTheme.typography.labelMedium)
+                        Text(stringResource(solveFor.labelRes), style = MaterialTheme.typography.labelMedium)
                         Icon(Icons.Default.KeyboardArrowDown, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onSurface.copy(0.6f))
                     }
                 }
                 SettingsDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                     GasSolve.values().forEach { option ->
                         DropdownMenuItem(
-                            text = { Text(option.label) },
+                            text = { Text(stringResource(option.labelRes)) },
                             onClick = {
                                 solveFor = option
                                 expanded = false
@@ -3334,7 +3345,7 @@ fun IdealGasLawTool() {
         Text(stringResource(R.string.ui_r_0_082057_l_atm_mol_k), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
 
         if (result.error != null && hasAnyInput) {
-            Text(result.error, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+            Text(stringResource(result.error!!), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
         } else if (result.value != null) {
             Surface(
                 shape = RoundedCornerShape(12.dp),
@@ -3342,7 +3353,7 @@ fun IdealGasLawTool() {
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.3f))
             ) {
                 Text(
-                    "${solveFor.label} = ${formatNumber(result.value, 4)} ${solveFor.unit}",
+                    "${stringResource(solveFor.labelRes)} = ${formatNumber(result.value, 4)} ${solveFor.unit}",
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     fontFamily = FontFamily.Monospace,
@@ -3353,8 +3364,7 @@ fun IdealGasLawTool() {
 
         FormulaExplanationCard(
             latexFormula = "PV = nRT",
-            explanation = "Pressure, volume, amount, and temperature are linked by the ideal gas law. " +
-                "Solve any one variable when the other three are known and units are consistent."
+            explanation = stringResource(R.string.ui_ideal_gas_explanation)
         )
     }
 }
@@ -3392,7 +3402,7 @@ private data class StoichReactantInput(
 
 private data class StoichMoleInfo(
     val moles: Double?,
-    val error: String? = null,
+    @StringRes val error: Int? = null,
     val purityApplied: Boolean = false
 )
 
@@ -3420,39 +3430,39 @@ private fun computeMolesForInput(
     val purityRaw = input.purity.trim()
     val purity = if (purityRaw.isBlank()) null else parsePositiveNumber(purityRaw)
     if (purityRaw.isNotBlank() && purity == null) {
-        return StoichMoleInfo(null, "Invalid purity %")
+        return StoichMoleInfo(null, R.string.ui_invalid_purity)
     }
     if (purity != null && purity > 100.0) {
-        return StoichMoleInfo(null, "Purity must be <= 100%")
+        return StoichMoleInfo(null, R.string.ui_purity_must_be_100)
     }
 
     val molesBase = when (input.unit) {
         StoichUnit.MOLARITY -> {
             if (input.molarity.isBlank() && input.volume.isBlank()) return StoichMoleInfo(null)
-            val molarity = parsePositiveNumber(input.molarity) ?: return StoichMoleInfo(null, "Enter molarity")
-            val volume = parsePositiveNumber(input.volume) ?: return StoichMoleInfo(null, "Enter volume")
+            val molarity = parsePositiveNumber(input.molarity) ?: return StoichMoleInfo(null, R.string.ui_enter_molarity)
+            val volume = parsePositiveNumber(input.volume) ?: return StoichMoleInfo(null, R.string.ui_enter_volume)
             molarity * (volume / 1000.0)
         }
         else -> {
             if (input.amount.isBlank()) return StoichMoleInfo(null)
-            val amount = parsePositiveNumber(input.amount) ?: return StoichMoleInfo(null, "Enter a valid amount")
+            val amount = parsePositiveNumber(input.amount) ?: return StoichMoleInfo(null, R.string.ui_enter_valid_amount)
             when (input.unit) {
                 StoichUnit.GRAMS -> {
-                    if (molarMass == null) return StoichMoleInfo(null, "Molar mass unavailable")
+                    if (molarMass == null) return StoichMoleInfo(null, R.string.ui_molar_mass_unavailable)
                     amount / molarMass
                 }
                 StoichUnit.KILOGRAMS -> {
-                    if (molarMass == null) return StoichMoleInfo(null, "Molar mass unavailable")
+                    if (molarMass == null) return StoichMoleInfo(null, R.string.ui_molar_mass_unavailable)
                     (amount * 1000.0) / molarMass
                 }
                 StoichUnit.MOLES -> amount
                 StoichUnit.MILLIMOLES -> amount / 1000.0
                 StoichUnit.LITERS_GAS -> {
-                    if (molarVolume <= 0.0) return StoichMoleInfo(null, "Invalid molar volume")
+                    if (molarVolume <= 0.0) return StoichMoleInfo(null, R.string.ui_invalid_molar_volume)
                     amount / molarVolume
                 }
                 StoichUnit.MILLILITERS_GAS -> {
-                    if (molarVolume <= 0.0) return StoichMoleInfo(null, "Invalid molar volume")
+                    if (molarVolume <= 0.0) return StoichMoleInfo(null, R.string.ui_invalid_molar_volume)
                     (amount / 1000.0) / molarVolume
                 }
                 StoichUnit.PARTICLES -> (amount * 1e23) / AVOGADRO
@@ -3505,7 +3515,7 @@ private fun StoichUnitDropdown(
 @Composable
 private fun StoichiometryCalculator(
     mode: StoichiometryMode = StoichiometryMode.LIMITING,
-    title: String = "Stoichiometry Calculator"
+    titleRes: Int = R.string.ui_stoichiometry_calculator
 ) {
     var equation by remember { mutableStateOf(TextFieldValue("")) }
     var result by remember { mutableStateOf<BalancerResult?>(null) }
@@ -3537,22 +3547,22 @@ private fun StoichiometryCalculator(
     var showInfo by remember { mutableStateOf(false) }
     if (showInfo) {
         InfoDialog(
-            title = title,
+            titleRes = titleRes,
             entries = listOf(
-                "What this does" to "Balances a reaction, finds the limiting reagent, computes theoretical yields, excess reagents, and reaction scaling.",
-                "Limiting reagent" to "The limiting reagent has the smallest (moles / coefficient) ratio. It determines the reaction extent.",
-                "Units supported" to "Mass (g, kg), amount (mol, mmol), gas volume (L, mL), solutions (M and mL), and particles (x10^23).",
-                "Gas volumes" to "Gas moles are calculated from a molar volume you can edit (22.414 L/mol at STP).",
-                "Purity" to "Optional purity % applies a correction to effective moles for each reactant.",
-                "Percent yield" to "Compare actual yield to theoretical yield for the selected product.",
-                "Scaling" to "Enter a desired product amount to see the required reactant amounts."
+                R.string.ui_stoich_info_what_this_does_term to R.string.ui_stoich_info_what_this_does_body,
+                R.string.ui_stoich_info_limiting_reagent_term to R.string.ui_stoich_info_limiting_reagent_body,
+                R.string.ui_stoich_info_units_supported_term to R.string.ui_stoich_info_units_supported_body,
+                R.string.ui_stoich_info_gas_volumes_term to R.string.ui_stoich_info_gas_volumes_body,
+                R.string.ui_stoich_info_purity_term to R.string.ui_stoich_info_purity_body,
+                R.string.ui_stoich_info_percent_yield_term to R.string.ui_stoich_info_percent_yield_body,
+                R.string.ui_stoich_info_scaling_term to R.string.ui_stoich_info_scaling_body
             ),
             onDismiss = { showInfo = false }
         )
     }
 
     LaunchedEffect(result) {
-        if (result == null || result?.error != null) {
+        if (result == null || result?.errorRes != null) {
             reactantInputs.clear()
         } else {
             val existing = reactantInputs.associateBy { it.formula }
@@ -3573,7 +3583,7 @@ private fun StoichiometryCalculator(
         val formulas = (result?.reactants ?: emptyList()) + (result?.products ?: emptyList())
         formulas.forEach { (formula, _) ->
             val res = calculateMolarMass(formula)
-            map[formula] = if (res.error == null) res.molarMass else null
+            map[formula] = if (res.errorRes == null) res.molarMass else null
         }
         map
     }
@@ -3587,7 +3597,7 @@ private fun StoichiometryCalculator(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(stringResource(titleRes), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             IconButton(onClick = { showInfo = true }, modifier = Modifier.size(24.dp)) {
                 Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f), modifier = Modifier.size(16.dp))
             }
@@ -3697,9 +3707,9 @@ private fun StoichiometryCalculator(
         )
 
         result?.let { res ->
-            if (res.error != null) {
+            if (res.errorRes != null) {
                 Card(shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer.copy(0.4f))) {
-                    Text(res.error, modifier = Modifier.padding(14.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(res.errorRes, *res.errorArgs.toTypedArray()), modifier = Modifier.padding(14.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                 }
             } else {
                 Card(
@@ -3802,7 +3812,7 @@ private fun StoichiometryCalculator(
                                         }
                                     }
                                     Text(
-                                        molarMass?.let { "${formatNumber(it, 4)} g/mol" } ?: "Molar mass N/A",
+                                        molarMass?.let { "${formatNumber(it, 4)} g/mol" } ?: stringResource(R.string.ui_molar_mass_na),
                                         style = MaterialTheme.typography.labelSmall,
                                         color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
                                     )
@@ -3815,7 +3825,7 @@ private fun StoichiometryCalculator(
                                             val updated = if (input.unit == StoichUnit.MOLARITY) input.copy(molarity = value) else input.copy(amount = value)
                                             reactantInputs[index] = updated
                                         },
-                                        label = { Text(if (input.unit == StoichUnit.MOLARITY) "Molarity (M)" else "Amount") },
+                                        label = { Text(if (input.unit == StoichUnit.MOLARITY) stringResource(R.string.ui_molarity_label) else stringResource(R.string.ui_amount_label)) },
                                         placeholder = { Text(stringResource(R.string.ui_e_g_2_5), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                                         modifier = Modifier.weight(1f),
                                         shape = RoundedCornerShape(12.dp),
@@ -3853,12 +3863,12 @@ private fun StoichiometryCalculator(
 
                                 when {
                                     info?.error != null -> {
-                                        Text(info.error, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                                        Text(stringResource(info.error!!), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                                     }
                                     info?.moles != null -> {
-                                        val note = if (info.purityApplied) " (purity applied)" else ""
+                                        val note = if (info.purityApplied) " " + stringResource(R.string.ui_purity_applied) else ""
                                         Text(
-                                            "Moles available: ${formatNumber(info.moles)} mol$note",
+                                            stringResource(R.string.ui_moles_available, formatNumber(info.moles)) + note,
                                             style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.onSurface.copy(0.7f)
                                         )
@@ -3921,7 +3931,7 @@ private fun StoichiometryCalculator(
 
                                 Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                                     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                                        Text(stringResource(R.string.ui_limiting_reagent), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+                                        Text(stringResource(R.string.ui_limiting_reagent_label), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
                                         Text(toSubscriptFormula(limitingFormula), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, fontFamily = FontFamily.Monospace)
                                     }
                                     Column(horizontalAlignment = Alignment.End) {
@@ -3932,7 +3942,7 @@ private fun StoichiometryCalculator(
                                     }
                                 }
 
-                                Text("Reaction extent: ${formatNumber(extent)} mol", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.65f))
+                                Text(stringResource(R.string.ui_reaction_extent, formatNumber(extent)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.65f))
 
                                 HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
                                 Text(stringResource(R.string.ui_mole_ratios_relative_to_limiting_reagent), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
@@ -3990,17 +4000,17 @@ private fun StoichiometryCalculator(
 
                 val products = res.products
                 if (products.isNotEmpty() && (showYield || showScaling)) {
-                    val sectionTitle = when {
-                        showYield && showScaling -> "YIELD & SCALING"
-                        showYield -> "PERCENT YIELD"
-                        else -> "SCALING"
+                    val sectionTitleRes = when {
+                        showYield && showScaling -> R.string.ui_yield_scaling_section
+                        showYield -> R.string.ui_percent_yield_section
+                        else -> R.string.ui_scaling_section
                     }
                     Card(
                         shape = RoundedCornerShape(16.dp),
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                     ) {
                         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                            Text(sectionTitle, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+                            Text(stringResource(sectionTitleRes), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
 
                             var productMenuExpanded by remember { mutableStateOf(false) }
                             val selectedProduct = products.getOrNull(selectedProductIndex) ?: products.first()
@@ -4042,7 +4052,7 @@ private fun StoichiometryCalculator(
                                         onValueChange = { value ->
                                             if (actualUnit == StoichUnit.MOLARITY) actualMolarity = value else actualAmount = value
                                         },
-                                        label = { Text(if (actualUnit == StoichUnit.MOLARITY) "Molarity (M)" else "Amount") },
+                                        label = { Text(if (actualUnit == StoichUnit.MOLARITY) stringResource(R.string.ui_molarity_label) else stringResource(R.string.ui_amount_label)) },
                                         placeholder = { Text(stringResource(R.string.ui_e_g_1_25), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                                         modifier = Modifier.weight(1f),
                                         shape = RoundedCornerShape(12.dp),
@@ -4091,12 +4101,12 @@ private fun StoichiometryCalculator(
                                 if (theoreticalMoles != null && actualInfo.moles != null && actualInfo.error == null) {
                                     val percentYield = (actualInfo.moles / theoreticalMoles) * 100.0
                                     Text(
-                                        "Percent yield: ${formatNumber(percentYield, 2)}%",
+                                        stringResource(R.string.ui_percent_yield_value, formatNumber(percentYield, 2)),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = if (percentYield >= 100.0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.75f)
                                     )
                                 } else if (actualInfo.error != null) {
-                                    Text(actualInfo.error, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                                    Text(stringResource(actualInfo.error!!), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                                 } else if (actualProvided && limitingData == null) {
                                     Text(stringResource(R.string.ui_need_limiting_reagent_to_compute_percent_yield), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
                                 }
@@ -4114,7 +4124,7 @@ private fun StoichiometryCalculator(
                                         onValueChange = { value ->
                                             if (desiredUnit == StoichUnit.MOLARITY) desiredMolarity = value else desiredAmount = value
                                         },
-                                        label = { Text(if (desiredUnit == StoichUnit.MOLARITY) "Molarity (M)" else "Amount") },
+                                        label = { Text(if (desiredUnit == StoichUnit.MOLARITY) stringResource(R.string.ui_molarity_label) else stringResource(R.string.ui_amount_label)) },
                                         placeholder = { Text(stringResource(R.string.ui_e_g_5_0), color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
                                         modifier = Modifier.weight(1f),
                                         shape = RoundedCornerShape(12.dp),
@@ -4170,7 +4180,7 @@ private fun StoichiometryCalculator(
                                         }
                                     }
                                 } else if (desiredInfo.error != null) {
-                                    Text(desiredInfo.error, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                                    Text(stringResource(desiredInfo.error!!), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                                 }
                             }
                         }

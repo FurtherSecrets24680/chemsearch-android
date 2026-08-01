@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.ui
 
+import com.furthersecrets.chemsearch.R
 import com.furthersecrets.chemsearch.data.BondOrder
 import com.furthersecrets.chemsearch.data.RingTemplate
 import com.furthersecrets.chemsearch.data.StructureSearchResultItem
@@ -29,7 +30,7 @@ class StructureSearchUiBehaviorTest {
             .addBond(1, 2, BondOrder.SINGLE)
 
         assertEquals(null, structureSearchBlockedMessage(empty))
-        assertEquals("Draw at least two connected atoms before searching.", structureSearchBlockedMessage(singleAtom))
+        assertEquals(R.string.ui_structure_search_blocked_two_atoms, structureSearchBlockedMessage(singleAtom))
         assertEquals(null, structureSearchBlockedMessage(bonded))
     }
 

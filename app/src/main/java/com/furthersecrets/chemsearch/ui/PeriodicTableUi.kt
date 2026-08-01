@@ -2,6 +2,7 @@ package com.furthersecrets.chemsearch.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -153,7 +154,7 @@ fun PeriodicTableLibraryScreen(
             }
         } else {
             Text(
-                "${matchingElements.size} element${if (matchingElements.size == 1) "" else "s"}",
+                pluralStringResource(R.plurals.ui_element_count, matchingElements.size),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
             )
@@ -330,7 +331,7 @@ private fun PeriodicTrendMetricChip(
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Text(
-                metric.shortLabel,
+                stringResource(metric.shortLabelRes),
                 style = MaterialTheme.typography.labelMedium,
                 color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.68f),
                 fontWeight = FontWeight.Bold,
@@ -365,20 +366,21 @@ private fun PeriodicTrendSummaryCard(
                     modifier = Modifier.size(20.dp)
                 )
                 Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                    Text(summary.metric.label, fontWeight = FontWeight.Bold)
+                    Text(stringResource(summary.metric.labelRes), fontWeight = FontWeight.Bold)
                     Text(
-                        summary.metric.description,
+                        stringResource(summary.metric.descriptionRes),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
                     )
                 }
             }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
-                PeriodicTrendFact("Lowest", summary.lowest, Modifier.weight(1f))
-                PeriodicTrendFact("Highest", summary.highest, Modifier.weight(1f))
+                PeriodicTrendFact(stringResource(R.string.ui_lowest), summary.lowest ?: stringResource(R.string.ui_not_listed), Modifier.weight(1f))
+                PeriodicTrendFact(stringResource(R.string.ui_highest), summary.highest ?: stringResource(R.string.ui_not_listed), Modifier.weight(1f))
             }
             Text(
-                "${summary.totalElements} listed values · Range ${summary.rangeLabel}",
+                if (summary.totalElements == 0) stringResource(R.string.ui_no_listed_values)
+                else stringResource(R.string.ui_trend_summary_footer, summary.totalElements, summary.rangeLabel.orEmpty()),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.46f)
             )
@@ -505,7 +507,7 @@ private fun PeriodicTrendTile(
                     maxLines = 1
                 )
                 Text(
-                    metric.shortLabel,
+                    stringResource(metric.shortLabelRes),
                     style = MaterialTheme.typography.labelSmall.copy(fontSize = 7.sp),
                     color = baseColor.copy(alpha = if (point == null) 0.38f else 0.76f),
                     maxLines = 1
@@ -519,7 +521,7 @@ private fun PeriodicTrendTile(
                 maxLines = 1
             )
             Text(
-                point?.let { "${it.valueLabel}${metric.unitLabel()}" } ?: "n/a",
+                point?.let { "${it.valueLabel}${metric.unitLabel()}" } ?: stringResource(R.string.ui_na),
                 style = MaterialTheme.typography.labelSmall.copy(fontSize = 7.sp),
                 color = MaterialTheme.colorScheme.onSurface.copy(if (point == null) 0.34f else 0.58f),
                 maxLines = 1,
@@ -532,9 +534,9 @@ private fun PeriodicTrendTile(
 @Composable
 private fun PeriodicRowLabel(row: Int, modifier: Modifier = Modifier) {
     val label = when (row) {
-        in 1..7 -> "Period $row"
-        8 -> "Lanthanides"
-        9 -> "Actinides"
+        in 1..7 -> stringResource(R.string.ui_period_s, row)
+        8 -> stringResource(R.string.ui_lanthanides)
+        9 -> stringResource(R.string.ui_actinides)
         else -> ""
     }
     Box(modifier = modifier, contentAlignment = Alignment.CenterEnd) {
@@ -833,13 +835,13 @@ private fun ElementHeroCard(
                         fontWeight = FontWeight.SemiBold
                     )
                     Text(
-                        "Group ${element.group} · Period ${element.period} · ${element.standardState}",
+                        stringResource(R.string.ui_group_period_state_s, element.group, element.period, element.standardState),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.56f)
                     )
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    CardInfoIcon(info = periodicDetailCardInfo("Element Overview"))
+                    CardInfoIcon(info = periodicDetailCardInfo(R.string.ui_element_overview))
                     if (descriptionState is ElementDescriptionState.Ready) {
                         Surface(
                             onClick = { uriHandler.openUri(descriptionState.url) },
@@ -862,16 +864,16 @@ private fun ElementHeroCard(
             }
 
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
-                ElementStatChip("Mass", withUnit(element.atomicWeightLabel, "u"), modifier = Modifier.weight(1f))
-                ElementStatChip("State", element.standardState, modifier = Modifier.weight(1f))
-                ElementStatChip("Found", element.yearDiscovered, modifier = Modifier.weight(1f))
+                ElementStatChip(stringResource(R.string.ui_mass), withUnit(element.atomicWeightLabel, "u"), modifier = Modifier.weight(1f))
+                ElementStatChip(stringResource(R.string.ui_state), element.standardState, modifier = Modifier.weight(1f))
+                ElementStatChip(stringResource(R.string.ui_found), element.yearDiscovered, modifier = Modifier.weight(1f))
             }
 
             Text(
                 when (descriptionState) {
-                    ElementDescriptionState.Loading -> "Loading Wikipedia description..."
-                    ElementDescriptionState.Missing -> "No Wikipedia summary is available for this element."
-                    is ElementDescriptionState.Error -> "Wikipedia description could not be loaded."
+                    ElementDescriptionState.Loading -> stringResource(R.string.ui_loading_wikipedia_description)
+                    ElementDescriptionState.Missing -> stringResource(R.string.ui_no_wikipedia_summary_available)
+                    is ElementDescriptionState.Error -> stringResource(R.string.ui_wikipedia_description_could_not_be_loaded)
                     is ElementDescriptionState.Ready -> descriptionState.extract
                 },
                 style = MaterialTheme.typography.bodyMedium,
@@ -898,7 +900,7 @@ private fun ElementStatChip(label: String, value: String, modifier: Modifier = M
                 maxLines = 1
             )
             Text(
-                value.ifMissing("Unknown"),
+                value.ifMissing(stringResource(R.string.ui_unknown)),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.74f),
                 fontWeight = FontWeight.SemiBold,
@@ -915,10 +917,10 @@ private fun ElementMediaCard(element: PeriodicElement, color: Color) {
     val imageUrl = extra.imageUrl.takeIf { it.isNotBlank() }?.let(::directWikipediaFileImageUrl)
     if (imageUrl == null) return
 
-    DetailCard(title = stringResource(R.string.ui_element_images), accent = color) {
+    DetailCard(titleRes = R.string.ui_element_images, accent = color) {
         ElementRemoteImage(
             url = imageUrl,
-            contentDescription = extra.imageTitle.ifBlank { "${element.pubChemName} element image" },
+            contentDescription = extra.imageTitle.ifBlank { stringResource(R.string.ui_element_image_desc, element.pubChemName) },
             heightDp = 190,
             contentScale = ContentScale.Fit
         )
@@ -944,10 +946,10 @@ private fun ElementMediaCard(element: PeriodicElement, color: Color) {
 private fun ElementSpectralLinesCard(element: PeriodicElement, color: Color) {
     val spectralImage = element.spectralImagePageUrl()?.let(::directWikipediaFileImageUrl) ?: return
 
-    DetailCard(title = stringResource(R.string.ui_spectral_lines), accent = color) {
+    DetailCard(titleRes = R.string.ui_spectral_lines, accent = color) {
         ElementRemoteImage(
             url = spectralImage,
-            contentDescription = "${element.pubChemName} spectral lines",
+            contentDescription = stringResource(R.string.ui_spectral_lines_of_s, element.pubChemName),
             heightDp = 118,
             contentScale = ContentScale.Fit
         )
@@ -1005,7 +1007,7 @@ private fun ElectronShellCard(element: PeriodicElement, color: Color) {
         electronShellCounts(element)
     }
     var showFullConfiguration by remember(element.atomicNumber) { mutableStateOf(false) }
-    DetailCard(title = stringResource(R.string.ui_electron_shells), accent = color) {
+    DetailCard(titleRes = R.string.ui_electron_shells, accent = color) {
         ElectronShellDiagram(shells = shells, color = color)
         Row(
             modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
@@ -1018,7 +1020,7 @@ private fun ElectronShellCard(element: PeriodicElement, color: Color) {
                     border = BorderStroke(1.dp, color.copy(alpha = 0.26f))
                 ) {
                     Text(
-                        "${shellLabels.getOrElse(index) { "n=${index + 1}" }} $count",
+                        "${shellLabels.getOrElse(index) { stringResource(R.string.ui_shell_n, index + 1) }} $count",
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.76f),
@@ -1033,7 +1035,7 @@ private fun ElectronShellCard(element: PeriodicElement, color: Color) {
             )
         )
         Text(
-            text = if (showFullConfiguration) "Show short configuration" else "Show full configuration",
+            text = if (showFullConfiguration) stringResource(R.string.ui_show_short_configuration) else stringResource(R.string.ui_show_full_configuration),
             modifier = Modifier
                 .padding(top = 2.dp)
                 .clickable { showFullConfiguration = !showFullConfiguration },
@@ -1091,7 +1093,7 @@ private fun ElementPhysicalPropertiesCard(element: PeriodicElement, color: Color
     val facts = remember(element) { elementPhysicalPropertyFacts(element) }
     if (facts.isEmpty()) return
 
-    DetailCard(title = stringResource(R.string.ui_physical_properties), accent = color) {
+    DetailCard(titleRes = R.string.ui_physical_properties, accent = color) {
         ElementFactList(facts = facts)
     }
 }
@@ -1099,22 +1101,22 @@ private fun ElementPhysicalPropertiesCard(element: PeriodicElement, color: Color
 @Composable
 private fun ElementAllFactsCard(element: PeriodicElement, color: Color) {
     val extra = element.extraProperties
-    DetailCard(title = stringResource(R.string.ui_more_details), accent = color) {
+    DetailCard(titleRes = R.string.ui_more_details, accent = color) {
         DetailSubhead(stringResource(R.string.ui_identity))
         ElementFactList(
             facts = buildList {
                 add(ElementFactItem(R.string.ui_name, element.pubChemName))
                 add(ElementFactItem(R.string.ui_symbol, element.symbol))
                 add(ElementFactItem(R.string.ui_atomic_number, element.atomicNumber.toString()))
-                add(ElementFactItem(R.string.ui_category, element.category.label))
-                add(ElementFactItem(R.string.ui_group_period, "Group ${element.group}, period ${element.period}"))
+                add(ElementFactItem(R.string.ui_category, stringResource(element.category.labelRes)))
+                add(ElementFactItem(R.string.ui_group_period, stringResource(R.string.ui_group_period_s, element.group, element.period)))
                 add(ElementFactItem(R.string.ui_standard_state, element.standardState))
                 add(ElementFactItem(R.string.ui_year_discovered, element.yearDiscovered))
                 extra?.let {
-                    add(ElementFactItem(R.string.ui_appearance_label, it.appearance.ifMissing("Not listed")))
-                    add(ElementFactItem(R.string.ui_discovered_by, it.discoveredBy.ifMissing("Not listed")))
-                    add(ElementFactItem(R.string.ui_named_by, it.namedBy.ifMissing("Not listed")))
-                    add(ElementFactItem(R.string.ui_orbital_block, it.block.ifMissing("Not listed")))
+                    add(ElementFactItem(R.string.ui_appearance_label, it.appearance.ifMissing(stringResource(R.string.ui_not_listed))))
+                    add(ElementFactItem(R.string.ui_discovered_by, it.discoveredBy.ifMissing(stringResource(R.string.ui_not_listed))))
+                    add(ElementFactItem(R.string.ui_named_by, it.namedBy.ifMissing(stringResource(R.string.ui_not_listed))))
+                    add(ElementFactItem(R.string.ui_orbital_block, it.block.ifMissing(stringResource(R.string.ui_not_listed))))
                 }
             }
         )
@@ -1176,7 +1178,7 @@ private fun ElementSourceCard(element: PeriodicElement, descriptionState: Elemen
             add(
                 ElementSourceLink(
                     title = stringResource(R.string.ui_pt_wikipedia),
-                    detail = "${element.pubChemName} summary",
+                    detail = stringResource(R.string.ui_x_summary, element.pubChemName),
                     url = url
                 )
             )
@@ -1215,7 +1217,7 @@ private fun ElementSourceCard(element: PeriodicElement, descriptionState: Elemen
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(stringResource(R.string.ui_sources), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
-                CardInfoIcon(info = periodicDetailCardInfo("Sources"))
+                CardInfoIcon(info = periodicDetailCardInfo(R.string.ui_sources))
             }
             links.forEach { link ->
                 ElementSourceLinkRow(
@@ -1278,7 +1280,7 @@ private fun ElementSourceLinkRow(
 
 @Composable
 private fun DetailCard(
-    title: String,
+    titleRes: Int,
     accent: Color,
     content: @Composable ColumnScope.() -> Unit
 ) {
@@ -1297,12 +1299,12 @@ private fun DetailCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    title,
+                    stringResource(titleRes),
                     modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Black
                 )
-                CardInfoIcon(info = periodicDetailCardInfo(title))
+                CardInfoIcon(info = periodicDetailCardInfo(titleRes))
             }
             content()
         }
@@ -1317,14 +1319,14 @@ private fun CardInfoIcon(info: PeriodicDetailCardInfo?) {
     if (showInfo) {
         AlertDialog(
             onDismissRequest = { showInfo = false },
-            title = { Text(info.title) },
+            title = { Text(stringResource(info.titleRes)) },
             containerColor = MaterialTheme.colorScheme.surface,
             titleContentColor = MaterialTheme.colorScheme.onSurface,
             textContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.74f),
             tonalElevation = 0.dp,
             text = {
                 Text(
-                    info.description
+                    stringResource(info.descriptionRes)
                 )
             },
             confirmButton = {
@@ -1341,7 +1343,7 @@ private fun CardInfoIcon(info: PeriodicDetailCardInfo?) {
     ) {
         Icon(
             imageVector = Icons.Default.Info,
-            contentDescription = "About ${info.title}",
+            contentDescription = stringResource(R.string.ui_about_s, stringResource(info.titleRes)),
             modifier = Modifier.size(periodicInfoIconSizeDp.dp),
             tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.58f)
         )
@@ -1367,10 +1369,9 @@ internal data class ElementFactItem(
 )
 
 internal data class PeriodicDetailCardInfo(
-    val title: String,
-    val description: String
+    @StringRes val titleRes: Int,
+    @StringRes val descriptionRes: Int
 )
-
 
 
 internal const val periodicInfoButtonSizeDp = 28
@@ -1381,37 +1382,37 @@ internal const val periodicFullConfigurationToggleContentAlpha = 0.62f
 
 private val periodicDetailCardInfos = listOf(
     PeriodicDetailCardInfo(
-        "Element Overview",
-        "The quick identity panel for this element. It shows the symbol, element family, table position, usual state, atomic mass, discovery year, and a short plain-language summary."
+        R.string.ui_element_overview,
+        R.string.ui_periodic_detail_element_overview_desc
     ),
     PeriodicDetailCardInfo(
-        "Element Images",
-        "A reference image of the element when one is available. It helps connect the table entry with what the element or a sample of it can look like in real life."
+        R.string.ui_element_images,
+        R.string.ui_periodic_detail_element_images_desc
     ),
     PeriodicDetailCardInfo(
-        "Electron Shells",
-        "A shell view of how electrons are arranged around the atom. The outer shell is especially useful because valence electrons explain many bonding and reactivity patterns."
+        R.string.ui_electron_shells,
+        R.string.ui_periodic_detail_electron_shells_desc
     ),
     PeriodicDetailCardInfo(
-        "Physical Properties",
-        "Measured properties that describe how the element behaves physically: how strongly it attracts electrons, how large its atoms are, when it melts or boils, and how dense it is."
+        R.string.ui_physical_properties,
+        R.string.ui_periodic_detail_physical_properties_desc
     ),
     PeriodicDetailCardInfo(
-        "More Details",
-        "Extra reference facts for the element, grouped by identity, atomic data, and electron data. This keeps detailed values separate from the quick overview."
+        R.string.ui_more_details,
+        R.string.ui_periodic_detail_more_details_desc
     ),
     PeriodicDetailCardInfo(
-        "Spectral Lines",
-        "The visible emission pattern for the element. These bright lines act like a fingerprint, helping identify an element from the light it emits."
+        R.string.ui_spectral_lines,
+        R.string.ui_periodic_detail_spectral_lines_desc
     ),
     PeriodicDetailCardInfo(
-        "Sources",
-        "Open the original data and image sources used for this page. Use these links when you want to verify a value or read more from the source."
+        R.string.ui_sources,
+        R.string.ui_periodic_detail_sources_desc
     )
-).associateBy { it.title }
+).associateBy { it.titleRes }
 
-internal fun periodicDetailCardInfo(title: String): PeriodicDetailCardInfo? =
-    periodicDetailCardInfos[title]
+internal fun periodicDetailCardInfo(titleRes: Int): PeriodicDetailCardInfo? =
+    periodicDetailCardInfos[titleRes]
 
 internal fun elementPhysicalPropertyFacts(element: PeriodicElement): List<ElementFactItem> = buildList {
     add(ElementFactItem(R.string.ui_electronegativity, element.electronegativity))
@@ -1693,7 +1694,7 @@ private fun PeriodicLegend() {
                 border = BorderStroke(1.dp, color.copy(alpha = 0.35f))
             ) {
                 Text(
-                    category.label,
+                    stringResource(category.labelRes),
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
                     style = MaterialTheme.typography.labelSmall,
                     color = color,

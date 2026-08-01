@@ -188,7 +188,6 @@
     <string name="ui_hazard_statements" translatable="true">ハザードのステータス</string>
     <string name="ui_sort_recents" translatable="true">アプリ履歴のソート</string>
     <string name="ui_downloading_for_offline_use" translatable="true">オフライン用にダウンロード中</string>
-    <string name="ui_share_compound" translatable="true">コンパウンドを共有</string>
     <string name="ui_2d_structure" translatable="true">2D 構造</string>
     <string name="ui_download_2d_structure" translatable="true">2D構造体をダウンロード</string>
     <string name="ui_2d_structure_zoom" translatable="true">2D 構造 (ズーム)</string>
@@ -407,7 +406,6 @@
     <string name="ui_e_g_kmno4" translatable="true">例: KMnO4</string>
     <string name="ui_charge" translatable="true">チャージ</string>
     <string name="ui_find_oxidation_states" translatable="true">酸化状態を検索</string>
-    <string name="ui_oxidation_states" translatable="true">生理状態</string>
     <string name="ui_examples" translatable="true">Examples</string>
     <string name="ui_smiles_visualizer" translatable="true">SMILES ビジュアライザー</string>
     <string name="ui_smiles_string" translatable="true">SMILES 文字列</string>
@@ -490,7 +488,6 @@
     <string name="ui_could_not_parse_3d_data" translatable="true">3Dデータを解析できませんでした</string>
     <!-- WelcomeScreen.kt -->
     <string name="ui_set_your_look" translatable="true">外見を設定</string>
-    <string name="ui_appearance" translatable="true">APPEARANCE</string>
     <string name="ui_choose_theme_accent_body" translatable="true">検索、ツール、設定で使用するテーマとアクセントカラーを選択してください。</string>
     <string name="ui_light" translatable="true">ライト</string>
     <string name="ui_dark" translatable="true">ダーク</string>

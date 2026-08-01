@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.ui
 
+import androidx.annotation.StringRes
 import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
@@ -278,7 +279,7 @@ private fun WelcomeProgress(stage: Int, stageCount: Int) {
             }
         }
         Text(
-            text = "Step ${stage + 1} of $stageCount",
+            text = stringResource(R.string.ui_step_s_of_d, stage + 1, stageCount),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.45f),
             fontWeight = FontWeight.SemiBold
@@ -310,18 +311,34 @@ private fun WelcomeIntroStage(logoFrame: Color) {
 
         WelcomeIntroTitle(
             versionName = BuildConfig.VERSION_NAME,
-            tagline = "CHEMISTRY SIMPLIFIED",
-            body = "Search compounds, inspect structures, save useful results, and use practical chemistry tools in one native Android app."
+            tagline = stringResource(R.string.ui_welcome_tagline),
+            body = stringResource(R.string.ui_welcome_tagline_body)
         )
 
         Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            WelcomeFeatureRow(ChemAppIcons.Search, "Compound search", "Look up PubChem data by name, formula, CAS-style identifier, or CID.")
-            WelcomeFeatureRow(ChemAppIcons.Axis3d, "2D and 3D structures", "View structure images, rotate 3D models, and save structure files.")
-            WelcomeFeatureRow(ChemAppIcons.TestTubes, "Chemistry tools", "Balance reactions, calculate molar mass, solve stoichiometry, and more.")
-            WelcomeFeatureRow(ChemAppIcons.Library, "Local workflow", "Keep favorites, recent searches, cached results, and offline chemistry data.")
+            WelcomeFeatureRow(
+                ChemAppIcons.Search,
+                stringResource(R.string.ui_welcome_feature_search_title),
+                stringResource(R.string.ui_welcome_feature_search_body)
+            )
+            WelcomeFeatureRow(
+                ChemAppIcons.Axis3d,
+                stringResource(R.string.ui_welcome_feature_structures_title),
+                stringResource(R.string.ui_welcome_feature_structures_body)
+            )
+            WelcomeFeatureRow(
+                ChemAppIcons.TestTubes,
+                stringResource(R.string.ui_welcome_feature_tools_title),
+                stringResource(R.string.ui_welcome_feature_tools_body)
+            )
+            WelcomeFeatureRow(
+                ChemAppIcons.Library,
+                stringResource(R.string.ui_welcome_feature_local_title),
+                stringResource(R.string.ui_welcome_feature_local_body)
+            )
         }
     }
 }
@@ -413,7 +430,7 @@ private fun WelcomeAppearanceStage(
                         }
                     }
                     Text(
-                        scheme.label(),
+                        stringResource(scheme.label()),
                         style = MaterialTheme.typography.labelSmall,
                         fontSize = 10.sp,
                         lineHeight = 11.sp,
@@ -466,7 +483,7 @@ private fun WelcomeLanguageSelector(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text(selected.displayName, fontWeight = FontWeight.SemiBold)
+                        Text(stringResource(selected.displayNameRes), fontWeight = FontWeight.SemiBold)
                         Text(
                             stringResource(R.string.ui_language_subtitle),
                             style = MaterialTheme.typography.bodySmall,
@@ -479,7 +496,7 @@ private fun WelcomeLanguageSelector(
             SettingsDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 AppLanguage.entries.forEach { language ->
                     DropdownMenuItem(
-                        text = { Text(language.displayName) },
+                        text = { Text(stringResource(language.displayNameRes)) },
                         onClick = {
                             expanded = false
                             onSelect(language)
@@ -586,9 +603,9 @@ private fun WelcomeLegalCard(
             WelcomeIconBox(legalDocumentIcon(document.type).asChemIcon())
             Spacer(Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                Text(document.title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                Text(stringResource(document.titleRes), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
                 Text(
-                    document.summary,
+                    stringResource(document.summaryRes),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.64f)
                 )
@@ -696,7 +713,7 @@ private fun WelcomeNavigation(
             shape = RoundedCornerShape(12.dp),
             contentPadding = PaddingValues(vertical = 14.dp)
         ) {
-            Text(if (stage == stageCount - 1) "Start using ChemSearch" else "Next", fontWeight = FontWeight.Bold)
+            Text(if (stage == stageCount - 1) stringResource(R.string.ui_welcome_start_using_chemsearch) else stringResource(R.string.ui_next), fontWeight = FontWeight.Bold)
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -817,12 +834,13 @@ private fun WelcomeIconBox(icon: ChemIconSpec, selected: Boolean = false) {
     }
 }
 
-private fun AppColorScheme.label(): String = when (this) {
-    AppColorScheme.BLUE -> "Blue"
-    AppColorScheme.VIOLET -> "Violet"
-    AppColorScheme.EMERALD -> "Emerald"
-    AppColorScheme.ROSE -> "Rose"
-    AppColorScheme.AMBER -> "Amber"
+@StringRes
+private fun AppColorScheme.label(): Int = when (this) {
+    AppColorScheme.BLUE -> R.string.ui_color_blue
+    AppColorScheme.VIOLET -> R.string.ui_color_violet
+    AppColorScheme.EMERALD -> R.string.ui_color_emerald
+    AppColorScheme.ROSE -> R.string.ui_color_rose
+    AppColorScheme.AMBER -> R.string.ui_color_amber
 }
 
 private fun AppColorScheme.previewColor(): Color = when (this) {

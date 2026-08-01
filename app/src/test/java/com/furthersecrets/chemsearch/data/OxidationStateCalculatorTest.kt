@@ -22,7 +22,7 @@ class OxidationStateCalculatorTest {
         loadFixtures().forEach { fixture ->
             val result = calculateOxidationStates(fixture.formula, fixture.charge)
 
-            assertNull("${fixture.formula}: ${fixture.notes}", result.error)
+            assertNull("${fixture.formula}: ${fixture.notes}", result.errorRes)
             assertEquals(fixture.expected, result.states.toMap())
         }
     }
@@ -31,7 +31,7 @@ class OxidationStateCalculatorTest {
     fun solvesChlorineAsPositiveInHypochlorousAcid() {
         val result = calculateOxidationStates("HOCl", 0)
 
-        assertNull(result.error)
+        assertNull(result.errorRes)
         assertEquals("+1", result.states.toMap()["H"])
         assertEquals("-2", result.states.toMap()["O"])
         assertEquals("+1", result.states.toMap()["Cl"])
@@ -41,7 +41,7 @@ class OxidationStateCalculatorTest {
     fun keepsChlorineNegativeInSimpleChlorides() {
         val result = calculateOxidationStates("NaCl", 0)
 
-        assertNull(result.error)
+        assertNull(result.errorRes)
         assertEquals("+1", result.states.toMap()["Na"])
         assertEquals("-1", result.states.toMap()["Cl"])
     }

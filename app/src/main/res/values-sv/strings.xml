@@ -188,7 +188,6 @@
     <string name="ui_hazard_statements" translatable="true">HAZARD STATEMENTER</string>
     <string name="ui_sort_recents" translatable="true">Sortera senaste</string>
     <string name="ui_downloading_for_offline_use" translatable="true">Hämtar för offline-användning</string>
-    <string name="ui_share_compound" translatable="true">Dela sammansättning</string>
     <string name="ui_2d_structure" translatable="true">2D Struktur</string>
     <string name="ui_download_2d_structure" translatable="true">Ladda ner 2D-struktur</string>
     <string name="ui_2d_structure_zoom" translatable="true">2D Struktur (zooma)</string>
@@ -407,7 +406,6 @@
     <string name="ui_e_g_kmno4" translatable="true">t.ex. KMnO4</string>
     <string name="ui_charge" translatable="true">Laddning</string>
     <string name="ui_find_oxidation_states" translatable="true">Hitta Oxidationstillstånd</string>
-    <string name="ui_oxidation_states" translatable="true">OXIDATIONSSTATERNA</string>
     <string name="ui_examples" translatable="true">EXEMPLER</string>
     <string name="ui_smiles_visualizer" translatable="true">SMILES Visualizer</string>
     <string name="ui_smiles_string" translatable="true">SMILES Sträng</string>
@@ -490,7 +488,6 @@
     <string name="ui_could_not_parse_3d_data" translatable="true">Kunde inte tolka 3D-data</string>
     <!-- WelcomeScreen.kt -->
     <string name="ui_set_your_look" translatable="true">Ställ in ditt utseende</string>
-    <string name="ui_appearance" translatable="true">APPEARANS</string>
     <string name="ui_choose_theme_accent_body" translatable="true">Välj tema och accent färg ChemSearch bör använda över sökning, verktyg och inställningar.</string>
     <string name="ui_light" translatable="true">Ljus</string>
     <string name="ui_dark" translatable="true">Mörk</string>

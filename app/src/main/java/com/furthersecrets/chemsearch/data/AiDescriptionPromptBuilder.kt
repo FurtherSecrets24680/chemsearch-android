@@ -28,7 +28,7 @@ fun buildAiDescriptionPrompt(
         }
         state.atomNumber?.let { add("Atom count: $it") }
         state.bondNumber?.let { add("Bond count: $it") }
-        state.sdfSource?.let { add("3D structure source: ${describeStructureStatus(state.sdfData != null, it, state.sdfMessage).label}") }
+        state.sdfSource?.let { add("3D structure source: ${describeStructureStatus(state.sdfData != null, it, state.sdfMessage).promptLabel}") }
     }
 
     val basis = buildAiDescriptionBasis(state)

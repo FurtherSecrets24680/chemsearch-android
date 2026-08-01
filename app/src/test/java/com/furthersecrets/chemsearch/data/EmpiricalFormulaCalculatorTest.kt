@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.data
 
+import com.furthersecrets.chemsearch.R
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -18,7 +19,7 @@ class EmpiricalFormulaCalculatorTest {
             molecularMass = 180.16
         )
 
-        assertNull(result.error)
+        assertNull(result.errorRes)
         assertEquals("CH2O", result.empiricalFormula)
         assertEquals(30.03, result.empiricalMass, 0.03)
         assertEquals(6, result.molecularMultiplier)
@@ -37,7 +38,7 @@ class EmpiricalFormulaCalculatorTest {
             mode = FormulaCompositionMode.MASS
         )
 
-        assertNull(result.error)
+        assertNull(result.errorRes)
         assertEquals("CH2O", result.empiricalFormula)
         assertEquals(null, result.molecularFormula)
         assertTrue(result.rows.all { it.moles > 0.0 })
@@ -47,7 +48,7 @@ class EmpiricalFormulaCalculatorTest {
     fun reducesExistingFormulaToEmpiricalFormula() {
         val result = calculateEmpiricalFormulaFromMolecularFormula("C6H12O6", molecularMass = 180.16)
 
-        assertNull(result.error)
+        assertNull(result.errorRes)
         assertEquals("CH2O", result.empiricalFormula)
         assertEquals("C6H12O6", result.molecularFormula)
         assertEquals(6, result.molecularMultiplier)
@@ -60,6 +61,6 @@ class EmpiricalFormulaCalculatorTest {
             mode = FormulaCompositionMode.MASS
         )
 
-        assertEquals("Unknown element(s): Xx", result.error)
+        assertEquals(R.string.ui_error_unknown_elements_s, result.errorRes)
     }
 }

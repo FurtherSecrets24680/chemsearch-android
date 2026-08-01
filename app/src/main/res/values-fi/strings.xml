@@ -188,7 +188,6 @@
     <string name="ui_hazard_statements" translatable="true">VAARALLISET LAUSUMAT</string>
     <string name="ui_sort_recents" translatable="true">Järjestä viimeisimmät</string>
     <string name="ui_downloading_for_offline_use" translatable="true">Ladataan offline-käyttöä varten</string>
-    <string name="ui_share_compound" translatable="true">Jaa yhdiste</string>
     <string name="ui_2d_structure" translatable="true">2D Rakenne</string>
     <string name="ui_download_2d_structure" translatable="true">Lataa 2D rakenne</string>
     <string name="ui_2d_structure_zoom" translatable="true">2D Rakenne (zoomaus)</string>
@@ -407,7 +406,6 @@
     <string name="ui_e_g_kmno4" translatable="true">esim. KMnO4</string>
     <string name="ui_charge" translatable="true">Veloitus</string>
     <string name="ui_find_oxidation_states" translatable="true">Etsi Hapetusvaltioita</string>
-    <string name="ui_oxidation_states" translatable="true">MAHDOLLISUUSVALTIOT</string>
     <string name="ui_examples" translatable="true">ESIMERKKI</string>
     <string name="ui_smiles_visualizer" translatable="true">SMILES Visualisoija</string>
     <string name="ui_smiles_string" translatable="true">SMILES Merkkijono</string>
@@ -490,7 +488,6 @@
     <string name="ui_could_not_parse_3d_data" translatable="true">Ei voitu jäsentää 3D-dataa</string>
     <!-- WelcomeScreen.kt -->
     <string name="ui_set_your_look" translatable="true">Aseta ulkoasu</string>
-    <string name="ui_appearance" translatable="true">MUUTOKSET</string>
     <string name="ui_choose_theme_accent_body" translatable="true">Valitse teema ja aksentti väri ChemSearch pitäisi käyttää koko haku, työkaluja ja asetuksia.</string>
     <string name="ui_light" translatable="true">Vaalea</string>
     <string name="ui_dark" translatable="true">Tumma</string>

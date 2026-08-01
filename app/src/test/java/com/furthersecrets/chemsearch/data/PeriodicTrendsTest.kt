@@ -26,10 +26,10 @@ class PeriodicTrendsTest {
         )
 
         assertTrue(summary.totalElements > 80)
-        assertTrue(summary.lowest.isNotBlank())
-        assertTrue(summary.highest.isNotBlank())
-        assertTrue(summary.lowest.matches(Regex("[A-Z][a-z]? \\(.+ pm\\)")))
-        assertTrue(summary.highest.matches(Regex("[A-Z][a-z]? \\(.+ pm\\)")))
-        assertTrue(summary.rangeLabel.contains("pm"))
+        assertTrue(summary.lowest!!.isNotBlank())
+        assertTrue(summary.highest!!.isNotBlank())
+        assertTrue(summary.lowest!!.matches(Regex("[A-Z][a-z]? \\(.+ pm\\)")))
+        assertTrue(summary.highest!!.matches(Regex("[A-Z][a-z]? \\(.+ pm\\)")))
+        assertTrue(summary.rangeLabel!!.contains("pm"))
     }
 }

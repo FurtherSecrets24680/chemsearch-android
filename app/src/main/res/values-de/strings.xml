@@ -188,7 +188,6 @@
     <string name="ui_hazard_statements" translatable="true">HAZARD STATEMENTS</string>
     <string name="ui_sort_recents" translatable="true">Verlauf sortieren</string>
     <string name="ui_downloading_for_offline_use" translatable="true">Herunterladen für Offline-Nutzung</string>
-    <string name="ui_share_compound" translatable="true">Compound teilen</string>
     <string name="ui_2d_structure" translatable="true">2D-Struktur</string>
     <string name="ui_download_2d_structure" translatable="true">2D-Struktur herunterladen</string>
     <string name="ui_2d_structure_zoom" translatable="true">2D-Struktur (Zoom)</string>
@@ -407,7 +406,6 @@
     <string name="ui_e_g_kmno4" translatable="true">z.B. KMnO4</string>
     <string name="ui_charge" translatable="true">Abladen</string>
     <string name="ui_find_oxidation_states" translatable="true">Oxidationszustände finden</string>
-    <string name="ui_oxidation_states" translatable="true">OXIDATION STATES</string>
     <string name="ui_examples" translatable="true">EXAMPLES</string>
     <string name="ui_smiles_visualizer" translatable="true">SMILES Visualizer</string>
     <string name="ui_smiles_string" translatable="true">SMILES String</string>
@@ -490,7 +488,6 @@
     <string name="ui_could_not_parse_3d_data" translatable="true">3D-Daten konnten nicht analysiert werden</string>
     <!-- WelcomeScreen.kt -->
     <string name="ui_set_your_look" translatable="true">Setze dein Aussehen</string>
-    <string name="ui_appearance" translatable="true">APPEARANZ</string>
     <string name="ui_choose_theme_accent_body" translatable="true">Wählen Sie das Thema und die Akzentfarbe ChemSearch sollte über alle Such-, Werkzeuge und Einstellungen hinweg verwendet werden.</string>
     <string name="ui_light" translatable="true">Hell</string>
     <string name="ui_dark" translatable="true">Dunkel</string>

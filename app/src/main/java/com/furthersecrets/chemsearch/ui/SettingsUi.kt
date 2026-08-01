@@ -1,6 +1,8 @@
 package com.furthersecrets.chemsearch.ui
 
+import androidx.annotation.StringRes
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -69,52 +71,60 @@ private val SENSITIVE_PREF_TOKENS = listOf("key", "token", "secret")
 
 internal fun isOledModeControlEnabled(isDark: Boolean): Boolean = isDark
 
-internal fun amoledModeTitle(): String = "AMOLED Mode"
+@StringRes
+internal fun amoledModeTitle(): Int = R.string.ui_amoled_mode
 
-internal fun amoledModeSubtitle(isDark: Boolean): String =
-    if (isDark) "True-black background for every color scheme" else "Turn on dark mode to use AMOLED Mode"
+@StringRes
+internal fun amoledModeSubtitle(isDark: Boolean): Int =
+    if (isDark) R.string.ui_amoled_mode_dark_subtitle else R.string.ui_amoled_mode_light_subtitle
 
-internal fun defaultStructureViewLabel(view: DefaultStructureView): String =
+@StringRes
+internal fun defaultStructureViewLabel(view: DefaultStructureView): Int =
     when (view) {
-        DefaultStructureView.TWO_D -> "2D"
-        DefaultStructureView.THREE_D -> "3D"
-        DefaultStructureView.LAST_USED -> "Last used"
+        DefaultStructureView.TWO_D -> R.string.ui_structure_view_2d
+        DefaultStructureView.THREE_D -> R.string.ui_structure_view_3d
+        DefaultStructureView.LAST_USED -> R.string.ui_structure_view_last_used
     }
 
-internal fun offlineDownloadQualityLabel(quality: OfflineDownloadQuality): String =
+@StringRes
+internal fun offlineDownloadQualityLabel(quality: OfflineDownloadQuality): Int =
     when (quality) {
-        OfflineDownloadQuality.BASIC -> "Basic"
-        OfflineDownloadQuality.STRUCTURES -> "Structures"
-        OfflineDownloadQuality.COMPLETE -> "Complete"
+        OfflineDownloadQuality.BASIC -> R.string.ui_offline_quality_basic
+        OfflineDownloadQuality.STRUCTURES -> R.string.ui_offline_quality_structures
+        OfflineDownloadQuality.COMPLETE -> R.string.ui_offline_quality_complete
     }
 
-internal fun formulaDisplayStyleLabel(style: FormulaDisplayStyle): String =
+@StringRes
+internal fun formulaDisplayStyleLabel(style: FormulaDisplayStyle): Int =
     when (style) {
-        FormulaDisplayStyle.CONVENTIONAL -> "Conventional"
-        FormulaDisplayStyle.HILL -> "Hill"
+        FormulaDisplayStyle.CONVENTIONAL -> R.string.ui_formula_style_conventional
+        FormulaDisplayStyle.HILL -> R.string.ui_formula_style_hill
     }
 
-internal fun descSourceLabel(source: DescSource): String =
+@StringRes
+internal fun descSourceLabel(source: DescSource): Int =
     when (source) {
-        DescSource.PUBCHEM -> "PubChem"
-        DescSource.WIKI -> "Wikipedia"
-        DescSource.AI -> "AI"
+        DescSource.PUBCHEM -> R.string.ui_desc_source_pubchem
+        DescSource.WIKI -> R.string.ui_desc_source_wikipedia
+        DescSource.AI -> R.string.ui_desc_source_ai
     }
 
-internal fun cacheSizeLimitLabel(limit: CacheSizeLimit): String =
+@StringRes
+internal fun cacheSizeLimitLabel(limit: CacheSizeLimit): Int =
     when (limit) {
-        CacheSizeLimit.MB_10 -> "10 MB"
-        CacheSizeLimit.MB_50 -> "50 MB"
-        CacheSizeLimit.MB_100 -> "100 MB"
-        CacheSizeLimit.UNLIMITED -> "Unlimited"
+        CacheSizeLimit.MB_10 -> R.string.ui_cache_limit_10_mb
+        CacheSizeLimit.MB_50 -> R.string.ui_cache_limit_50_mb
+        CacheSizeLimit.MB_100 -> R.string.ui_cache_limit_100_mb
+        CacheSizeLimit.UNLIMITED -> R.string.ui_cache_limit_unlimited
     }
 
-internal fun cacheRetentionLabel(retention: CacheRetention): String =
+@StringRes
+internal fun cacheRetentionLabel(retention: CacheRetention): Int =
     when (retention) {
-        CacheRetention.AUTO_CLEAR_1_DAY -> "Daily"
-        CacheRetention.AUTO_CLEAR_7_DAYS -> "Weekly"
-        CacheRetention.AUTO_CLEAR_30_DAYS -> "Monthly"
-        CacheRetention.MANUAL -> "Manual"
+        CacheRetention.AUTO_CLEAR_1_DAY -> R.string.ui_cache_retention_daily
+        CacheRetention.AUTO_CLEAR_7_DAYS -> R.string.ui_cache_retention_weekly
+        CacheRetention.AUTO_CLEAR_30_DAYS -> R.string.ui_cache_retention_monthly
+        CacheRetention.MANUAL -> R.string.ui_cache_retention_manual
     }
 
 @Composable
@@ -287,29 +297,32 @@ private fun <T> SettingsSliderSelector(
 private fun updateDownloadPercent(progress: Float?): Int =
     ((progress ?: 0f).coerceIn(0f, 1f) * 100f).toInt().coerceIn(0, 100)
 
-internal fun updateDownloadActionLabel(status: UpdateStatus): String =
+@StringRes
+internal fun updateDownloadActionLabel(status: UpdateStatus): Int =
     when {
-        status.isDownloadingUpdate -> ""
-        status.downloadedUpdateApkPath != null -> "Install"
-        else -> "Download"
+        status.isDownloadingUpdate -> 0
+        status.downloadedUpdateApkPath != null -> R.string.ui_install
+        else -> R.string.ui_download
     }
 
-internal fun updateDownloadSubtitle(status: UpdateStatus): String {
+@StringRes
+internal fun updateDownloadSubtitle(status: UpdateStatus): Int {
     if (status.isDownloadingUpdate) {
-        return "Downloading update (${updateDownloadPercent(status.updateDownloadProgress)}%)"
+        return R.string.ui_downloading_update_d
     }
     if (status.downloadedUpdateApkPath != null) {
-        return "Download complete. Tap Install if the prompt closed."
+        return R.string.ui_download_complete_tap_install
     }
-    return status.latestVersion?.let { "Latest: $it" } ?: "Update available"
+    return status.latestVersion?.let { R.string.ui_latest_s } ?: R.string.ui_update_available
 }
 
-private fun AppColorScheme.label(): String = when (this) {
-    AppColorScheme.BLUE -> "Blue"
-    AppColorScheme.VIOLET -> "Violet"
-    AppColorScheme.EMERALD -> "Emerald"
-    AppColorScheme.ROSE -> "Rose"
-    AppColorScheme.AMBER -> "Amber"
+@StringRes
+private fun AppColorScheme.label(): Int = when (this) {
+    AppColorScheme.BLUE -> R.string.ui_color_blue
+    AppColorScheme.VIOLET -> R.string.ui_color_violet
+    AppColorScheme.EMERALD -> R.string.ui_color_emerald
+    AppColorScheme.ROSE -> R.string.ui_color_rose
+    AppColorScheme.AMBER -> R.string.ui_color_amber
 }
 
 private fun AppColorScheme.previewColor(): Color = when (this) {
@@ -372,7 +385,7 @@ private fun ColorSchemePicker(
                     }
                 }
                 Text(
-                    scheme.label(),
+                    stringResource(scheme.label()),
                     style = MaterialTheme.typography.labelSmall,
                     fontSize = 10.sp,
                     lineHeight = 11.sp,
@@ -434,9 +447,9 @@ private fun AiProviderSettings(
                         modifier = Modifier.size(18.dp)
                     )
                     Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text(aiProvider.displayName, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+                        Text(stringResource(aiProvider.displayNameRes), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
                         Text(
-                            if (selectedHasKey) "Key saved" else "Needs API key",
+                            if (selectedHasKey) stringResource(R.string.ui_key_saved) else stringResource(R.string.ui_needs_api_key),
                             style = MaterialTheme.typography.labelSmall,
                             color = if (selectedHasKey) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error.copy(0.78f),
                             fontWeight = FontWeight.SemiBold
@@ -454,9 +467,9 @@ private fun AiProviderSettings(
                     DropdownMenuItem(
                         text = {
                             Column(verticalArrangement = Arrangement.spacedBy(1.dp)) {
-                                Text(provider.displayName, fontWeight = FontWeight.SemiBold)
+                                Text(stringResource(provider.displayNameRes), fontWeight = FontWeight.SemiBold)
                                 Text(
-                                    if (hasKey) "Key saved" else "Needs key",
+                                    if (hasKey) stringResource(R.string.ui_key_saved) else stringResource(R.string.ui_needs_key),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = if (hasKey) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error.copy(0.75f)
                                 )
@@ -485,7 +498,7 @@ private fun AiProviderSettings(
         }
 
         Text(
-            aiProvider.description,
+            stringResource(aiProvider.descriptionRes),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(0.58f)
         )
@@ -557,7 +570,7 @@ private fun AiProviderSettings(
             ) {
                 Icon(Icons.Default.Key, contentDescription = null, modifier = Modifier.size(15.dp))
                 Spacer(Modifier.width(5.dp))
-                Text(if (selectedHasKey) "Replace" else "Add key")
+                Text(if (selectedHasKey) stringResource(R.string.ui_replace) else stringResource(R.string.ui_add_key))
             }
             OutlinedButton(
                 onClick = { onRefreshAiModels(aiProvider) },
@@ -632,6 +645,7 @@ fun SettingsSheet(
     onOpenAbout: () -> Unit = {},
     onDismiss: () -> Unit
 ) {
+    val context = LocalContext.current
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -652,18 +666,18 @@ fun SettingsSheet(
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
-            SettingsSectionHeader("Appearance")
+            SettingsSectionHeader(stringResource(R.string.ui_appearance_label))
             SettingsToggleRow(
                 icon = if (isDark) Icons.Default.LightMode else Icons.Default.DarkMode,
-                title = "Dark Mode",
-                subtitle = if (isDark) "Currently dark" else "Currently light",
+                title = stringResource(R.string.ui_dark_mode),
+                subtitle = if (isDark) stringResource(R.string.ui_currently_dark) else stringResource(R.string.ui_currently_light),
                 checked = isDark,
                 onToggle = onToggleTheme
             )
             SettingsToggleRow(
                 icon = Icons.Default.Brightness2,
-                title = amoledModeTitle(),
-                subtitle = amoledModeSubtitle(isDark),
+                title = stringResource(amoledModeTitle()),
+                subtitle = stringResource(amoledModeSubtitle(isDark)),
                 checked = oledDarkTheme,
                 enabled = isOledModeControlEnabled(isDark),
                 onToggle = onToggleOledDarkTheme
@@ -682,75 +696,75 @@ fun SettingsSheet(
                 subtitle = stringResource(R.string.ui_language_subtitle),
                 selected = appLanguage,
                 options = AppLanguage.entries,
-                labelFor = { language -> language.displayName },
+                labelFor = { language -> context.getString(language.displayNameRes) },
                 onSelect = onSetAppLanguage
             )
 
             Spacer(Modifier.height(4.dp))
-            SettingsSectionHeader("Search")
+            SettingsSectionHeader(stringResource(R.string.ui_search))
             SettingsToggleRow(
                 icon = Icons.Default.Search,
-                title = "Autosuggestions",
-                subtitle = "Show dropdown while typing",
+                title = stringResource(R.string.ui_autosuggestions),
+                subtitle = stringResource(R.string.ui_subtitle_show_dropdown),
                 checked = autoSuggest,
                 onToggle = onToggleAutoSuggest
             )
             SettingsToggleRow(
                 icon = Icons.Default.GridView,
-                title = "Compact mode",
-                subtitle = "Show more content per screen",
+                title = stringResource(R.string.ui_compact_mode),
+                subtitle = stringResource(R.string.ui_subtitle_show_more_content),
                 checked = compactMode,
                 onToggle = onToggleCompactMode
             )
             SettingsToggleRow(
                 icon = Icons.Default.VisibilityOff,
-                title = "Reduce motion",
-                subtitle = "Use calmer transitions and resizing",
+                title = stringResource(R.string.ui_reduce_motion),
+                subtitle = stringResource(R.string.ui_subtitle_use_calmer_transitions),
                 checked = reduceMotion,
                 onToggle = onToggleReduceMotion
             )
             SettingsToggleRow(
                 icon = Icons.Default.Visibility,
-                title = "High contrast outlines",
-                subtitle = "Make cards and controls easier to separate",
+                title = stringResource(R.string.ui_high_contrast_outlines),
+                subtitle = stringResource(R.string.ui_subtitle_make_cards_easier),
                 checked = highContrastOutlines,
                 onToggle = onToggleHighContrastOutlines
             )
             SettingsDropdownSelector(
-                title = "Default structure view",
-                subtitle = "Choose which structure tab opens first after search",
+                title = stringResource(R.string.ui_default_structure_view),
+                subtitle = stringResource(R.string.ui_subtitle_choose_structure_tab),
                 selected = defaultStructureView,
                 options = DefaultStructureView.entries,
-                labelFor = ::defaultStructureViewLabel,
+                labelFor = { context.getString(defaultStructureViewLabel(it)) },
                 onSelect = onSetDefaultStructureView
             )
             SettingsDropdownSelector(
-                title = "Formula display",
-                subtitle = "Conventional uses common element order; Hill keeps PubChem/Hill order",
+                title = stringResource(R.string.ui_formula_display),
+                subtitle = stringResource(R.string.ui_subtitle_conventional_hill),
                 selected = formulaDisplayStyle,
                 options = FormulaDisplayStyle.entries,
-                labelFor = ::formulaDisplayStyleLabel,
+                labelFor = { context.getString(formulaDisplayStyleLabel(it)) },
                 onSelect = onSetFormulaDisplayStyle
             )
 
             Spacer(Modifier.height(4.dp))
-            SettingsSectionHeader("Default Description Source")
+            SettingsSectionHeader(stringResource(R.string.ui_default_description_source))
             Text(stringResource(R.string.ui_automatically_shown_when_you_search_a_compound),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             SettingsDropdownSelector(
-                title = "Source",
-                subtitle = "Choose which description type appears first",
+                title = stringResource(R.string.ui_source),
+                subtitle = stringResource(R.string.ui_subtitle_choose_description),
                 selected = defaultDescSource,
                 options = DescSource.entries,
-                labelFor = ::descSourceLabel,
+                labelFor = { context.getString(descSourceLabel(it)) },
                 onSelect = onSetDefaultDesc
             )
 
             Spacer(Modifier.height(4.dp))
-            SettingsSectionHeader("AI Provider & Keys")
+            SettingsSectionHeader(stringResource(R.string.ui_ai_provider_and_keys))
             AiProviderSettings(
                 aiProvider = aiProvider,
                 aiKeyStatus = aiKeyStatus,
@@ -763,12 +777,12 @@ fun SettingsSheet(
             )
 
             Spacer(Modifier.height(4.dp))
-            SettingsSectionHeader("Data")
+            SettingsSectionHeader(stringResource(R.string.ui_section_data))
             SettingsActionRow(
                 icon = Icons.Default.History,
-                title = "Search History",
-                subtitle = "Clear all recent searches",
-                actionLabel = "Clear",
+                title = stringResource(R.string.ui_search_history),
+                subtitle = stringResource(R.string.ui_subtitle_clear_recent_searches),
+                actionLabel = stringResource(R.string.ui_clear),
                 actionColor = MaterialTheme.colorScheme.error,
                 onClick = onClearHistory
             )
@@ -784,16 +798,16 @@ fun SettingsSheet(
             }
 
             Spacer(Modifier.height(4.dp))
-            SettingsSectionHeader("FAQ")
+            SettingsSectionHeader(stringResource(R.string.ui_faq))
             var showFaqDialogSheet by remember { mutableStateOf(false) }
             if (showFaqDialogSheet) {
-                InfoDialog(title = "FAQ", entries = faqEntriesForCurrentBuild(), onDismiss = { showFaqDialogSheet = false })
+                InfoDialog(titleRes = R.string.ui_faq, entries = faqEntriesForCurrentBuild(), onDismiss = { showFaqDialogSheet = false })
             }
             SettingsActionRow(
                 icon = Icons.AutoMirrored.Filled.HelpOutline,
-                title = "Frequently asked questions",
-                subtitle = "Quick answers about ChemSearch",
-                actionLabel = "Open",
+                title = stringResource(R.string.ui_frequently_asked_questions),
+                subtitle = stringResource(R.string.ui_subtitle_quick_answers),
+                actionLabel = stringResource(R.string.ui_open),
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = { showFaqDialogSheet = true }
             )
@@ -801,9 +815,9 @@ fun SettingsSheet(
             Spacer(Modifier.height(4.dp))
             SettingsActionRow(
                 icon = Icons.Default.Info,
-                title = "About ChemSearch",
-                subtitle = "App info, links, data sources, and credits",
-                actionLabel = "Open",
+                title = stringResource(R.string.ui_about_chemsearch),
+                subtitle = stringResource(R.string.ui_subtitle_about_links),
+                actionLabel = stringResource(R.string.ui_open),
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = onOpenAbout
             )
@@ -979,18 +993,18 @@ private fun UpdatesSection(
             System.currentTimeMillis(),
             DateUtils.MINUTE_IN_MILLIS
         )
-        "Last checked $relative"
-    } ?: "Never checked"
-    val checkLabel = if (updateStatus.isChecking) "Checking..." else "Check"
+        context.getString(R.string.ui_last_checked_s, relative)
+    } ?: context.getString(R.string.ui_never_checked)
+    val checkLabel = if (updateStatus.isChecking) context.getString(R.string.ui_checking) else context.getString(R.string.ui_check)
 
     if (showHeader) {
         Spacer(Modifier.height(4.dp))
-        SettingsSectionHeader("Updates")
+        SettingsSectionHeader(stringResource(R.string.ui_section_updates))
     }
     SettingsToggleRow(
         icon = Icons.Default.Notifications,
-        title = "Update notifications",
-        subtitle = "Notify when a new version is available",
+        title = stringResource(R.string.ui_update_notifications),
+        subtitle = stringResource(R.string.ui_subtitle_notify_new_version),
         checked = updateNotificationsEnabled,
         onToggle = {
             val next = !updateNotificationsEnabled
@@ -999,7 +1013,7 @@ private fun UpdatesSection(
     )
     SettingsActionRow(
         icon = Icons.Default.SystemUpdate,
-        title = "Check for updates",
+        title = stringResource(R.string.ui_check_for_updates),
         subtitle = lastCheckedLabel,
         actionLabel = checkLabel,
         actionColor = MaterialTheme.colorScheme.primary
@@ -1007,11 +1021,24 @@ private fun UpdatesSection(
         if (!updateStatus.isChecking) onCheckForUpdates()
     }
     if (updateStatus.updateAvailable) {
+        val updateSubtitleRes = updateDownloadSubtitle(updateStatus)
+        val updateSubtitle = when {
+            updateStatus.isDownloadingUpdate -> context.getString(
+                updateSubtitleRes,
+                updateDownloadPercent(updateStatus.updateDownloadProgress)
+            )
+            updateStatus.latestVersion != null -> context.getString(updateSubtitleRes, updateStatus.latestVersion)
+            else -> context.getString(updateSubtitleRes)
+        }
         SettingsActionRow(
             icon = Icons.Default.Download,
-            title = "Update available",
-            subtitle = updateDownloadSubtitle(updateStatus),
-            actionLabel = updateDownloadActionLabel(updateStatus),
+            title = stringResource(R.string.ui_update_available),
+            subtitle = updateSubtitle,
+            actionLabel = if (updateStatus.isDownloadingUpdate) {
+                ""
+            } else {
+                context.getString(updateDownloadActionLabel(updateStatus))
+            },
             actionColor = MaterialTheme.colorScheme.primary,
             enabled = !updateStatus.isDownloadingUpdate,
             progress = updateStatus.updateDownloadProgress?.takeIf { updateStatus.isDownloadingUpdate }
@@ -1024,7 +1051,7 @@ private fun UpdatesSection(
         }
     } else if (updateStatus.latestVersion != null && !updateStatus.isChecking) {
         Text(
-            "You're up to date (latest ${updateStatus.latestVersion})",
+            stringResource(R.string.ui_up_to_date_latest_s, updateStatus.latestVersion),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
             modifier = Modifier.padding(start = 32.dp, top = 2.dp)
@@ -1032,7 +1059,7 @@ private fun UpdatesSection(
     }
     updateStatus.error?.let { error ->
         Text(
-            "Update check failed: $error",
+            stringResource(R.string.ui_update_check_failed_s, error),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.error,
             modifier = Modifier.padding(start = 32.dp, top = 2.dp)
@@ -1049,22 +1076,22 @@ private fun AboutCard(
         AboutHero(onVersionTap = onVersionTap)
         AboutLegalSection(onOpenDocument = onOpenLegalDocument)
         AboutSection(
-            title = "APP LINKS",
+            title = stringResource(R.string.ui_section_app_links),
             entries = aboutAppLinks,
             iconFor = ::aboutAppLinkIcon
         )
         AboutSection(
-            title = "CHEMISTRY DATA",
+            title = stringResource(R.string.ui_section_chemistry_data),
             entries = aboutDataCredits,
             iconFor = ::aboutDataCreditIcon
         )
         AboutSection(
-            title = "AI PROVIDERS",
+            title = stringResource(R.string.ui_section_ai_providers),
             entries = aboutAiProviderCredits,
             iconFor = { Icons.Default.SmartToy }
         )
         AboutSection(
-            title = "BUILT WITH",
+            title = stringResource(R.string.ui_section_built_with),
             entries = aboutTechnologyCredits,
             iconFor = ::aboutTechnologyCreditIcon
         )
@@ -1126,7 +1153,7 @@ private fun AboutHero(onVersionTap: (() -> Unit)?) {
                     modifier = versionModifier
                 ) {
                     Text(
-                        text = "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+                        text = stringResource(R.string.ui_version_s_d, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
                         style = MaterialTheme.typography.labelSmall,
                         fontFamily = FontFamily.Monospace,
@@ -1139,7 +1166,7 @@ private fun AboutHero(onVersionTap: (() -> Unit)?) {
                     color = MaterialTheme.colorScheme.secondary.copy(0.12f)
                 ) {
                     Text(
-                        text = if (BuildConfig.DEBUG) "Debug" else "Release",
+                        text = if (BuildConfig.DEBUG) stringResource(R.string.ui_debug) else stringResource(R.string.ui_release),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.secondary,
@@ -1163,7 +1190,7 @@ private fun AboutHero(onVersionTap: (() -> Unit)?) {
                 )
             }
             Text(
-                "Package: ${BuildConfig.APPLICATION_ID}",
+                stringResource(R.string.ui_package_s, BuildConfig.APPLICATION_ID),
                 style = MaterialTheme.typography.labelSmall,
                 fontFamily = FontFamily.Monospace,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
@@ -1202,7 +1229,7 @@ fun AboutScreen(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 IconButton(onClick = onBack, modifier = Modifier.size(42.dp)) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = MaterialTheme.colorScheme.primary)
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.ui_back), tint = MaterialTheme.colorScheme.primary)
                 }
                 Column(modifier = Modifier.weight(1f)) {
                     Text(stringResource(R.string.ui_about_chemsearch),
@@ -1274,7 +1301,7 @@ private fun AboutLegalRow(document: LegalDocument, onClick: () -> Unit) {
         }
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                document.title,
+                stringResource(document.titleRes),
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.primary,
@@ -1282,7 +1309,7 @@ private fun AboutLegalRow(document: LegalDocument, onClick: () -> Unit) {
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                document.summary,
+                stringResource(document.summaryRes),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.55f),
                 maxLines = 2,
@@ -1341,7 +1368,7 @@ private fun AboutSourceRow(entry: AboutCreditEntry, icon: ImageVector) {
         }
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                entry.title,
+                stringResource(entry.titleRes),
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.primary,
@@ -1349,7 +1376,7 @@ private fun AboutSourceRow(entry: AboutCreditEntry, icon: ImageVector) {
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                entry.detail,
+                stringResource(entry.detailRes),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.55f),
                 maxLines = 2,
@@ -1366,38 +1393,38 @@ private fun AboutSourceRow(entry: AboutCreditEntry, icon: ImageVector) {
 }
 
 private fun aboutAppLinkIcon(entry: AboutCreditEntry): ImageVector =
-    when (entry.title) {
-        "GitHub repository" -> Icons.Default.Code
-        "Latest release" -> Icons.Default.SystemUpdate
-        "Wiki" -> Icons.AutoMirrored.Filled.MenuBook
-        "Issue tracker" -> Icons.Default.BugReport
-        "Product Hunt" -> Icons.Default.Public
-        "License" -> Icons.Default.Description
+    when (entry.titleRes) {
+        R.string.ui_credit_github_repository -> Icons.Default.Code
+        R.string.ui_credit_latest_release -> Icons.Default.SystemUpdate
+        R.string.ui_credit_wiki -> Icons.AutoMirrored.Filled.MenuBook
+        R.string.ui_credit_issue_tracker -> Icons.Default.BugReport
+        R.string.ui_credit_product_hunt -> Icons.Default.Public
+        R.string.ui_credit_license -> Icons.Default.Description
         else -> Icons.AutoMirrored.Filled.OpenInNew
     }
 
 private fun aboutDataCreditIcon(entry: AboutCreditEntry): ImageVector =
-    when {
-        entry.title.contains("PubChem") -> Icons.Default.Storage
-        entry.title.contains("Wikipedia") -> Icons.Default.Public
-        entry.title.contains("Bowserinator") -> Icons.AutoMirrored.Filled.MenuBook
-        entry.title.contains("NCI") -> Icons.Default.Science
-        entry.title.contains("IUPAC") -> Icons.AutoMirrored.Filled.MenuBook
-        entry.title.contains("GHS") -> Icons.Default.HealthAndSafety
+    when (entry.titleRes) {
+        R.string.ui_source_pubchem_pug_rest, R.string.ui_source_pubchem_pug_view, R.string.ui_credit_pubchem_periodic_table -> Icons.Default.Storage
+        R.string.ui_credit_wikipedia_wikimedia -> Icons.Default.Public
+        R.string.ui_pt_bowserinator -> Icons.AutoMirrored.Filled.MenuBook
+        R.string.ui_source_nci_cadd_resolver -> Icons.Default.Science
+        R.string.ui_source_iupac_gold_book, R.string.ui_source_iupac_red_book -> Icons.AutoMirrored.Filled.MenuBook
+        R.string.ui_source_unece_ghs -> Icons.Default.HealthAndSafety
         else -> Icons.Default.Info
     }
 
 private fun aboutTechnologyCreditIcon(entry: AboutCreditEntry): ImageVector =
-    when {
-        entry.title.contains("Compose") || entry.title.contains("Material") -> Icons.Default.Palette
-        entry.title.contains("Navigation") -> Icons.AutoMirrored.Filled.ArrowForward
-        entry.title.contains("Room") || entry.title.contains("DataStore") -> Icons.Default.Storage
-        entry.title.contains("WorkManager") -> Icons.Default.Cached
-        entry.title.contains("Retrofit") || entry.title.contains("OkHttp") -> Icons.Default.Hub
-        entry.title.contains("Coil") -> Icons.Default.Visibility
-        entry.title.contains("Gson") -> Icons.Default.Code
-        entry.title.contains("Coroutines") -> Icons.Default.Bolt
-        entry.title.contains("Phosphor") -> Icons.Default.Star
+    when (entry.titleRes) {
+        R.string.ui_credit_jetpack_compose, R.string.ui_credit_material_3 -> Icons.Default.Palette
+        R.string.ui_credit_androidx_navigation -> Icons.AutoMirrored.Filled.ArrowForward
+        R.string.ui_credit_androidx_room, R.string.ui_credit_androidx_datastore -> Icons.Default.Storage
+        R.string.ui_credit_androidx_workmanager -> Icons.Default.Cached
+        R.string.ui_credit_retrofit, R.string.ui_credit_okhttp -> Icons.Default.Hub
+        R.string.ui_credit_coil -> Icons.Default.Visibility
+        R.string.ui_credit_gson -> Icons.Default.Code
+        R.string.ui_credit_coroutines -> Icons.Default.Bolt
+        R.string.ui_credit_phosphor_icons -> Icons.Default.Star
         else -> Icons.Default.Code
     }
 
@@ -1478,16 +1505,16 @@ fun AiProviderDialog(
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
-                                    Text(provider.displayName, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
-                                    Text(
-                                        if (hasKey) "Key saved" else "Needs key",
-                                        style = MaterialTheme.typography.labelSmall,
-                                        color = if (hasKey) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error.copy(0.82f),
-                                        fontWeight = FontWeight.Bold
-                                    )
+                                    Text(stringResource(provider.displayNameRes), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.bodyMedium)
+                    Text(
+                        if (hasKey) stringResource(R.string.ui_key_saved) else stringResource(R.string.ui_needs_key),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (hasKey) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error.copy(0.82f),
+                        fontWeight = FontWeight.Bold
+                    )
                                 }
                                 Text(
-                                    provider.description,
+                                    stringResource(provider.descriptionRes),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurface.copy(0.58f)
                                 )
@@ -1521,7 +1548,7 @@ fun AiProviderDialog(
                     modifier = Modifier.size(16.dp)
                 )
                 Spacer(Modifier.width(6.dp))
-                Text(if (activeHasKey) "Use AI" else "Add key")
+                Text(if (activeHasKey) stringResource(R.string.ui_use_ai) else stringResource(R.string.ui_add_key))
             }
         },
         dismissButton = {
@@ -1546,7 +1573,7 @@ fun ApiKeyDialog(title: String, link: String, current: String, onSave: (String) 
                 Text(stringResource(R.string.ui_required_for_ai_descriptions), style = MaterialTheme.typography.bodySmall)
                 val context = LocalContext.current
                 Text(
-                    "Get or manage a key at $link",
+                    stringResource(R.string.ui_get_or_manage_a_key_at_s, link),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.clickable {
@@ -1582,19 +1609,19 @@ fun ApiKeyDialog(title: String, link: String, current: String, onSave: (String) 
 // Info dialog
 
 @Composable
-fun InfoDialog(title: String, entries: List<Pair<String, String>>, onDismiss: () -> Unit) {
+fun InfoDialog(titleRes: Int, entries: List<Pair<Int, Int>>, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(title, fontWeight = FontWeight.Bold) },
+        title = { Text(stringResource(titleRes), fontWeight = FontWeight.Bold) },
         text = {
             Column(
                 modifier = Modifier.verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                entries.forEach { (term, explanation) ->
+                entries.forEach { (termRes, explanationRes) ->
                     Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                        Text(term, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-                        Text(explanation, style = MaterialTheme.typography.bodySmall, lineHeight = 18.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.8f))
+                        Text(stringResource(termRes), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                        Text(stringResource(explanationRes), style = MaterialTheme.typography.bodySmall, lineHeight = 18.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.8f))
                     }
                 }
             }
@@ -1605,58 +1632,71 @@ fun InfoDialog(title: String, entries: List<Pair<String, String>>, onDismiss: ()
 }
 
 private val FAQ_ENTRIES = listOf(
-    "What is ChemSearch for?" to "ChemSearch is for quick chemistry lookup, study, and reference. It brings compound search, structures, safety summaries, offline saving, references, and calculators into one Android app.",
-    "Is ChemSearch a replacement for PubChem?" to "No. ChemSearch uses PubChem as a main data source and presents useful parts in a phone-friendly way. Open PubChem directly when you need the full record or original source trail.",
-    "Where does compound data come from?" to "Most compound properties, identifiers, structures, synonyms, classifications, and GHS summaries come from PubChem. Some descriptions can come from Wikipedia or your selected AI provider, depending on settings.",
-    "Where does periodic table data come from?" to "Periodic table details are bundled from public reference data, including PubChem, Wikipedia, and Bowserinator/Periodic-Table-JSON. Some fields are hidden when a value is not listed.",
-    "Can I trust the data?" to "Use ChemSearch for study and quick checks. Chemical databases can disagree because names, tautomers, salts, hydrates, stereochemistry, and standardization rules are complicated. For lab, medical, legal, or regulatory decisions, verify with official sources.",
-    "Is the safety information official?" to "No. GHS cards are quick reference summaries from PubChem data. They do not replace a supplier Safety Data Sheet, lab policy, teacher instructions, or local safety rules.",
-    "Why can safety data be missing or different from an SDS?" to "Safety data depends on source, purity, mixture, concentration, physical form, region, and update date. A supplier SDS is written for a specific product; ChemSearch usually shows substance-level reference data.",
-    "Does ChemSearch give lab procedure or synthesis advice?" to "No. ChemSearch is for lookup and learning. It does not verify experimental procedures, exposure limits, dosages, storage compatibility, or safe handling steps.",
-    "What can I search for?" to "You can search by common name, IUPAC name, CAS number, PubChem CID, formula, or drawn structure. Some modes work better for exact identifiers than short names.",
-    "Why did my search fail?" to "Try a spelling correction, CID, CAS number, or a more specific name. Very broad names, unofficial names, unstable structures, and compounds absent from PubChem may not return a useful match.",
-    "Why are Did you mean suggestions sometimes missing?" to "ChemSearch only shows close spelling matches. It hides loose PubChem autocomplete results when they look unrelated, so it may show nothing instead of a bad suggestion.",
-    "What is the difference between normal search and isomer search?" to "Normal search tries to find one best compound. Isomer Search treats the input as a molecular formula and lists compounds with the same formula.",
-    "Why do formulas sometimes look different from textbooks?" to "ChemSearch can show formulas in different styles. Hill order sorts carbon, hydrogen, then the rest alphabetically. Conventional order tries to show the familiar chemistry form, such as NaCl or H2SO4.",
-    "Why do ions sometimes need charges shown separately?" to "Formula text and charge text are different pieces of data. ChemSearch tries to keep charges visible with superscripts, but some source records may store ions in unusual formats.",
-    "Why does a 2D structure not show every hydrogen?" to "Many chemical diagrams omit hydrogens on carbon unless they matter for clarity. That is normal for skeletal and PubChem-style 2D structures.",
-    "Why is a 3D model missing?" to "Some compounds do not have a PubChem 3D conformer. Salts, metals, coordination compounds, ionic records, very flexible molecules, and very large molecules are common cases.",
-    "Are 3D models exact real shapes?" to "No. PubChem 3D conformers are computed models, not guaranteed experimental structures. They are useful for visualization, but they may not represent the exact shape in a crystal, solvent, protein pocket, or classroom model.",
-    "Why do bond orders look different in 3D?" to "3D coordinate files focus on atom positions and connectivity. Bond order, aromaticity, charge placement, and tautomer form can be interpreted differently by different tools.",
-    "What does Structure Search do?" to "Structure Search sends the drawn molecule as a structure query and looks for matching PubChem compounds. Invalid valence, incomplete drawings, or very complex sketches may fail.",
-    "Why does Structure Search return a different compound than expected?" to "Small drawing differences can change the search, especially with charges, aromatic rings, tautomers, stereochemistry, salts, and implicit hydrogens. Use exact identifiers when you need one specific record.",
-    "Can AI descriptions be wrong?" to "Yes. AI text can sound confident while missing details or mixing facts. Use AI descriptions as a plain-language helper, not as the final source for safety, exams, lab work, or citations.",
-    "What data is sent to AI providers?" to "Only when you request an AI description, ChemSearch sends compound context to the provider you selected. That provider handles the request under its own terms and privacy policy.",
-    "Do I need an API key for AI descriptions?" to "Yes. Google Gemini, Groq Cloud, OpenAI, OpenRouter, and Mistral AI each need their own API key. Add keys in Settings > AI Provider & Keys.",
-    "Where are API keys stored?" to "API keys are stored locally with Android Keystore-backed encryption. ChemSearch does not sync them to a ChemSearch account.",
-    "Does ChemSearch collect my searches?" to "ChemSearch has no account system. Search history, favorites, downloads, and cache are stored on your device. Live searches still contact external services such as PubChem, Wikipedia, GitHub updates, or your chosen AI provider when needed.",
-    "What works offline?" to "The built-in Library references, calculators, favorites, and downloaded compounds can work offline. Live compound lookup, fresh descriptions, structure search, update checks, and AI descriptions need internet access.",
-    "What is the difference between cache and Downloads?" to "Cache makes repeat searches faster and may be cleared automatically. Downloads are intentional offline compound saves with identifiers, descriptions, structures, synonyms, safety info, and source data when available.",
-    "Where are downloaded compounds stored?" to "Downloaded compounds are stored in the app's local Room database on your device. Uninstalling the app can remove them unless you export or back them up first.",
-    "How do I save a compound?" to "Use the star for Favorites or the download button for a full offline save. Favorites are quick bookmarks; Downloads are meant for offline reading.",
-    "Can I compare saved compounds?" to "Yes. Select two or more compounds in Favorites, Downloads, or supported Chemical Database entries, then use the floating Compare button.",
-    "What is the Chemical Database?" to "It is a bundled reference for common substances, ions, functional groups, and reactions. It is useful offline, but it is not as broad as PubChem.",
-    "Why can I compare substances and ions but not reactions or functional groups?" to "Compare Compounds expects compound-like records with formulas and identifiers. Reactions and functional groups are reference entries, not full compound records.",
-    "Why do some classification tags look unrelated?" to "Classification and annotation tags come from source records. A tag can describe a data context, literature category, assay topic, or indexing term; it does not always mean the compound is mainly used for that topic.",
-    "Why are some names very long or truncated?" to "Some IUPAC names and biomolecule names are too long for compact screens. Tap the name or expand control when available to see the full text.",
-    "How is molar mass calculated?" to "The calculator sums standard atomic weights from the parsed formula. Parentheses, nested groups, hydrates, and common formula notation are supported.",
-    "Why can oxidation states be wrong for unusual formulas?" to "Oxidation state rules need assumptions about bonds, charges, and known exceptions. The tool handles common chemistry, but coordination compounds and ambiguous formulas may need manual checking.",
-    "Why can reaction balancing fail?" to "The balancer uses formula parsing and exact arithmetic. It may fail when formulas are invalid, charges are missing, or the reaction needs chemistry context beyond atom conservation.",
-    "Can I use the tools for homework?" to "Yes, as a checker and learning aid. Still show your work, because the app gives answers and summaries, not your teacher's required reasoning steps.",
-    "How do app updates work?" to "ChemSearch can check GitHub releases, download the APK inside the app, and then hand it to Android's installer. You can also update manually from GitHub.",
-    "Are update notifications optional?" to "Yes. You can turn update notifications on or off in Settings and still check manually whenever you want.",
-    "How do I clear history or cache?" to "Open Settings > Data. You can clear recent searches, manage cache size, choose auto-clear timing, and remove saved temporary data.",
-    "How do I unlock debug settings?" to "Tap the build number on the About screen five times. Debug settings are for diagnostics, endpoint checks, logs, and development testing."
+    R.string.ui_faq_what_for_q to R.string.ui_faq_what_for_a,
+    R.string.ui_faq_replacement_q to R.string.ui_faq_replacement_a,
+    R.string.ui_faq_data_source_q to R.string.ui_faq_data_source_a,
+    R.string.ui_faq_pt_data_q to R.string.ui_faq_pt_data_a,
+    R.string.ui_faq_trust_q to R.string.ui_faq_trust_a,
+    R.string.ui_faq_safety_official_q to R.string.ui_faq_safety_official_a,
+    R.string.ui_faq_safety_missing_q to R.string.ui_faq_safety_missing_a,
+    R.string.ui_faq_lab_advice_q to R.string.ui_faq_lab_advice_a,
+    R.string.ui_faq_search_what_q to R.string.ui_faq_search_what_a,
+    R.string.ui_faq_search_fail_q to R.string.ui_faq_search_fail_a,
+    R.string.ui_faq_did_you_mean_q to R.string.ui_faq_did_you_mean_a,
+    R.string.ui_faq_normal_vs_isomer_q to R.string.ui_faq_normal_vs_isomer_a,
+    R.string.ui_faq_formula_style_q to R.string.ui_faq_formula_style_a,
+    R.string.ui_faq_ions_q to R.string.ui_faq_ions_a,
+    R.string.ui_faq_2d_hydrogen_q to R.string.ui_faq_2d_hydrogen_a,
+    R.string.ui_faq_3d_missing_q to R.string.ui_faq_3d_missing_a,
+    R.string.ui_faq_3d_exact_q to R.string.ui_faq_3d_exact_a,
+    R.string.ui_faq_3d_bond_order_q to R.string.ui_faq_3d_bond_order_a,
+    R.string.ui_faq_structure_search_q to R.string.ui_faq_structure_search_a,
+    R.string.ui_faq_structure_diff_q to R.string.ui_faq_structure_diff_a,
+    R.string.ui_faq_ai_wrong_q to R.string.ui_faq_ai_wrong_a,
+    R.string.ui_faq_ai_data_q to R.string.ui_faq_ai_data_a,
+    R.string.ui_faq_ai_key_q to R.string.ui_faq_ai_key_a,
+    R.string.ui_faq_key_storage_q to R.string.ui_faq_key_storage_a,
+    R.string.ui_faq_collect_q to R.string.ui_faq_collect_a,
+    R.string.ui_faq_offline_q to R.string.ui_faq_offline_a,
+    R.string.ui_faq_cache_vs_downloads_q to R.string.ui_faq_cache_vs_downloads_a,
+    R.string.ui_faq_downloads_stored_q to R.string.ui_faq_downloads_stored_a,
+    R.string.ui_faq_save_q to R.string.ui_faq_save_a,
+    R.string.ui_faq_compare_q to R.string.ui_faq_compare_a,
+    R.string.ui_faq_database_q to R.string.ui_faq_database_a,
+    R.string.ui_faq_compare_reactions_q to R.string.ui_faq_compare_reactions_a,
+    R.string.ui_faq_tags_q to R.string.ui_faq_tags_a,
+    R.string.ui_faq_long_names_q to R.string.ui_faq_long_names_a,
+    R.string.ui_faq_molar_mass_q to R.string.ui_faq_molar_mass_a,
+    R.string.ui_faq_oxidation_q to R.string.ui_faq_oxidation_a,
+    R.string.ui_faq_balancing_q to R.string.ui_faq_balancing_a,
+    R.string.ui_faq_homework_q to R.string.ui_faq_homework_a,
+    R.string.ui_faq_updates_q to R.string.ui_faq_updates_a,
+    R.string.ui_faq_updates_optional_q to R.string.ui_faq_updates_optional_a,
+    R.string.ui_faq_clear_q to R.string.ui_faq_clear_a,
+    R.string.ui_faq_debug_q to R.string.ui_faq_debug_a
 )
 
-private fun faqEntriesForCurrentBuild(): List<Pair<String, String>> {
+private val DEBUG_ENTRIES = listOf(
+    R.string.ui_verbose_logging to R.string.ui_debug_verbose_logging_body,
+    R.string.ui_live_log_viewer to R.string.ui_debug_live_log_viewer_body,
+    R.string.ui_inspect_sharedpreferences to R.string.ui_debug_inspect_prefs_body,
+    R.string.ui_memory_info to R.string.ui_debug_memory_info_body,
+    R.string.ui_network_diagnostics to R.string.ui_debug_network_diagnostics_body,
+    R.string.ui_show_welcome_screen to R.string.ui_debug_show_welcome_body,
+    R.string.ui_api_endpoints to R.string.ui_debug_api_endpoints_body,
+    R.string.ui_wipe_all_sharedpreferences to R.string.ui_debug_wipe_prefs_body,
+    R.string.ui_debug_force_crash to R.string.ui_debug_force_crash_body,
+    R.string.ui_hide_debug_settings to R.string.ui_debug_hide_body
+)
+
+private fun faqEntriesForCurrentBuild(): List<Pair<Int, Int>> {
     if (BuildConfig.GITHUB_UPDATES_ENABLED) return FAQ_ENTRIES
     return FAQ_ENTRIES.mapNotNull { (question, answer) ->
         when (question) {
-            "How do app updates work?",
-            "Are update notifications optional?" -> null
-            "Does ChemSearch collect my searches?" -> question to answer.replace(", GitHub updates", "")
-            "What works offline?" -> question to answer.replace(", update checks", "")
+            R.string.ui_faq_updates_q,
+            R.string.ui_faq_updates_optional_q -> null
+            R.string.ui_faq_collect_q -> question to R.string.ui_faq_collect_no_updates_a
+            R.string.ui_faq_offline_q -> question to R.string.ui_faq_offline_no_updates_a
             else -> question to answer
         }
     }
@@ -1760,7 +1800,7 @@ private fun FavoriteCard(
                 ) {
                     AsyncImage(
                         model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${favorite.cid}/PNG?record_type=2d&image_size=small",
-                        contentDescription = "Structure of ${favorite.name}",
+                        contentDescription = stringResource(R.string.ui_structure_of, favorite.name),
                         modifier = Modifier.fillMaxSize().padding(4.dp),
                         contentScale = ContentScale.Fit
                     )
@@ -1783,7 +1823,7 @@ private fun FavoriteCard(
                     }
                 }
                 Text(
-                    "CID ${favorite.cid}",
+                    stringResource(R.string.ui_cid_label, favorite.cid.toString()),
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = FontFamily.Monospace,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
@@ -2208,7 +2248,7 @@ private fun LibraryViewToggle(
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
                             icon,
-                            contentDescription = if (mode == LibraryViewMode.LIST) "List view" else "Grid view",
+                            contentDescription = if (mode == LibraryViewMode.LIST) stringResource(R.string.ui_list_view) else stringResource(R.string.ui_grid_view),
                             tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.55f),
                             modifier = Modifier.size(18.dp)
                         )
@@ -2336,7 +2376,7 @@ private fun LibraryGridCard(
                 ) {
                     AsyncImage(
                         model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${favorite.cid}/PNG?record_type=2d&image_size=small",
-                        contentDescription = "Structure of ${favorite.name}",
+                        contentDescription = stringResource(R.string.ui_structure_of, favorite.name),
                         modifier = Modifier.fillMaxSize().padding(4.dp),
                         contentScale = ContentScale.Fit
                     )
@@ -2391,7 +2431,7 @@ private fun LibraryGridCard(
             }
 
             Text(
-                "CID ${favorite.cid}",
+                stringResource(R.string.ui_cid_label, favorite.cid.toString()),
                 style = MaterialTheme.typography.labelSmall,
                 fontFamily = FontFamily.Monospace,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.42f),
@@ -2481,7 +2521,7 @@ fun LibraryInline(
                             result.onSuccess { imported ->
                                 Toast.makeText(
                                     context,
-                                    "Imported ${imported.favoriteCount} favorites and ${imported.downloadCount} downloads",
+                                    context.getString(R.string.ui_imported_d_favorites_and_d_downloads, imported.favoriteCount, imported.downloadCount),
                                     Toast.LENGTH_LONG
                                 ).show()
                             }.onFailure { e ->
@@ -2502,7 +2542,7 @@ fun LibraryInline(
                                 result.onSuccess { imported ->
                                     Toast.makeText(
                                         context,
-                                        "Replaced Library with ${imported.favoriteCount} favorites and ${imported.downloadCount} downloads",
+                                        context.getString(R.string.ui_replaced_library_with_d_favorites_and_d_downloads, imported.favoriteCount, imported.downloadCount),
                                         Toast.LENGTH_LONG
                                     ).show()
                                 }.onFailure { e ->
@@ -2542,38 +2582,38 @@ fun LibraryInline(
         selectedLibraryItems.removeAll { it.key !in validKeys }
     }
 
-    val savedLibraryOptions = remember(favorites.size, downloads.size) {
+    val savedLibraryOptions = remember(context, favorites.size, downloads.size) {
         listOf(
             LibraryOption(
                 tab = LibraryTab.FAVORITES,
                 icon = LibraryTab.FAVORITES.icon(),
-                title = "Favorites",
-                subtitle = "Saved quick links",
+                title = context.getString(R.string.ui_favorites),
+                subtitle = context.getString(R.string.ui_subtitle_saved_quick_links),
                 countLabel = favorites.size.toString()
             ),
             LibraryOption(
                 tab = LibraryTab.DOWNLOADS,
                 icon = LibraryTab.DOWNLOADS.icon(),
-                title = "Downloads",
-                subtitle = "Full offline copies",
+                title = context.getString(R.string.ui_downloads),
+                subtitle = context.getString(R.string.ui_subtitle_full_offline_copies),
                 countLabel = downloads.size.toString()
             )
         )
     }
-    val referenceLibraryOptions = remember(databaseSummary) {
+    val referenceLibraryOptions = remember(context, databaseSummary) {
         listOf(
             LibraryOption(
                 tab = LibraryTab.PERIODIC_TABLE,
                 icon = LibraryTab.PERIODIC_TABLE.icon(),
-                title = "Periodic Table",
-                subtitle = "All 118 elements offline",
+                title = context.getString(R.string.ui_periodic_table),
+                subtitle = context.getString(R.string.ui_subtitle_all_118_offline),
                 countLabel = PeriodicTableElements.size.toString()
             ),
             LibraryOption(
                 tab = LibraryTab.DATABASE,
                 icon = LibraryTab.DATABASE.icon(),
-                title = "Chemical Database",
-                subtitle = "Substances, ions, groups, reactions",
+                title = context.getString(R.string.ui_chemical_database),
+                subtitle = context.getString(R.string.ui_subtitle_substances_etc),
                 countLabel = databaseSummary.totalEntries().toString()
             )
         )
@@ -2609,7 +2649,7 @@ fun LibraryInline(
                 )
                 if (filterQuery.isNotBlank()) {
                     Text(
-                        "$matchCount match${if (matchCount == 1) "" else "es"}",
+                        pluralStringResource(R.plurals.ui_matches_count, matchCount, matchCount),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
                     )
@@ -2620,16 +2660,16 @@ fun LibraryInline(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                SortPill(label = "Recent", selected = sortMode == FavoritesSort.RECENT) {
+                SortPill(label = stringResource(R.string.ui_label_recent), selected = sortMode == FavoritesSort.RECENT) {
                     sortMode = FavoritesSort.RECENT
                 }
-                SortPill(label = "A-Z", selected = sortMode == FavoritesSort.NAME) {
+                SortPill(label = stringResource(R.string.ui_a_z), selected = sortMode == FavoritesSort.NAME) {
                     sortMode = FavoritesSort.NAME
                 }
-                SortPill(label = "Most atoms", selected = sortMode == FavoritesSort.ATOMS_DESC) {
+                SortPill(label = stringResource(R.string.ui_most_atoms), selected = sortMode == FavoritesSort.ATOMS_DESC) {
                     sortMode = FavoritesSort.ATOMS_DESC
                 }
-                SortPill(label = "Least atoms", selected = sortMode == FavoritesSort.ATOMS_ASC) {
+                SortPill(label = stringResource(R.string.ui_least_atoms), selected = sortMode == FavoritesSort.ATOMS_ASC) {
                     sortMode = FavoritesSort.ATOMS_ASC
                 }
             }
@@ -2700,7 +2740,7 @@ fun LibraryInline(
                         },
                         contentPadding = PaddingValues(horizontal = 8.dp)
                     ) {
-                        Text(if (isReordering) "Done" else "Reorder")
+                        Text(if (isReordering) stringResource(R.string.ui_done) else stringResource(R.string.ui_reorder))
                     }
                     }
                 }
@@ -2730,7 +2770,7 @@ fun LibraryInline(
                                 onClick = { selectedSection = option.tab }
                             )
                         }
-                        LibraryHomeSectionTitle("Reference", modifier = Modifier.padding(top = 8.dp))
+                        LibraryHomeSectionTitle(stringResource(R.string.ui_reference), modifier = Modifier.padding(top = 8.dp))
                         referenceLibraryOptions.forEach { option ->
                             LibraryOptionListCard(
                                 icon = option.icon,
@@ -2746,7 +2786,7 @@ fun LibraryInline(
                         options = savedLibraryOptions,
                         onSelect = { selectedSection = it }
                     )
-                    LibraryHomeSectionTitle("Reference", modifier = Modifier.padding(top = 8.dp))
+                    LibraryHomeSectionTitle(stringResource(R.string.ui_reference), modifier = Modifier.padding(top = 8.dp))
                     LibraryOptionGridRows(
                         options = referenceLibraryOptions,
                         onSelect = { selectedSection = it }
@@ -2758,16 +2798,16 @@ fun LibraryInline(
 
         val section = selectedSection ?: return@Column
         val sectionTitle = when (section) {
-            LibraryTab.FAVORITES -> "Favorites"
-            LibraryTab.DOWNLOADS -> "Downloads"
-            LibraryTab.DATABASE -> "Chemical Database"
-            LibraryTab.PERIODIC_TABLE -> "Periodic Table"
+            LibraryTab.FAVORITES -> stringResource(R.string.ui_favorites)
+            LibraryTab.DOWNLOADS -> stringResource(R.string.ui_downloads)
+            LibraryTab.DATABASE -> stringResource(R.string.ui_chemical_database)
+            LibraryTab.PERIODIC_TABLE -> stringResource(R.string.ui_periodic_table)
         }
         val sectionSubtitle = when (section) {
-            LibraryTab.FAVORITES -> "Saved quick links on this device."
-            LibraryTab.DOWNLOADS -> "Offline compound copies with saved structures and data."
-            LibraryTab.DATABASE -> "Browse substances, reactions, functional groups, and ions."
-            LibraryTab.PERIODIC_TABLE -> "Browse all elements, groups, masses, and common oxidation states."
+            LibraryTab.FAVORITES -> stringResource(R.string.ui_subtitle_saved_quick_links_device)
+            LibraryTab.DOWNLOADS -> stringResource(R.string.ui_subtitle_offline_copies_saved_data)
+            LibraryTab.DATABASE -> stringResource(R.string.ui_subtitle_browse_database)
+            LibraryTab.PERIODIC_TABLE -> stringResource(R.string.ui_subtitle_browse_periodic_table)
         }
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             ChemIcon(
@@ -2843,16 +2883,16 @@ fun LibraryInline(
                 if (favorites.isEmpty()) {
                     LibraryEmptyState(
                         icon = Icons.Default.Star,
-                        title = "No favorites yet",
-                        subtitle = "Tap the star icon on any compound"
+                        title = stringResource(R.string.ui_no_favorites_yet),
+                        subtitle = stringResource(R.string.ui_tap_the_star_icon_on_any_compound)
                     )
                 } else {
-                    if (!isReordering) SortAndFilterControls("Filter favorites", filteredFavorites.size)
+                    if (!isReordering) SortAndFilterControls(stringResource(R.string.ui_filter_favorites), filteredFavorites.size)
                     if (displayFavorites.isEmpty()) {
                         LibraryEmptyState(
                             icon = Icons.Default.Search,
-                            title = "No matches found",
-                            subtitle = "Try a different name, formula, or CID."
+                            title = stringResource(R.string.ui_no_matches_found_title),
+                            subtitle = stringResource(R.string.ui_try_a_different_name_formula_or_cid)
                         )
                     } else if (itemViewMode == LibraryViewMode.LIST || isReordering) {
                         displayFavorites.forEachIndexed { index, fav ->
@@ -2931,16 +2971,16 @@ fun LibraryInline(
                 if (downloads.isEmpty()) {
                     LibraryEmptyState(
                         icon = Icons.Default.Download,
-                        title = "No downloads yet",
-                        subtitle = "Tap the download icon under the star on any compound"
+                        title = stringResource(R.string.ui_no_downloads_yet),
+                        subtitle = stringResource(R.string.ui_subtitle_tap_download_icon)
                     )
                 } else {
-                    SortAndFilterControls("Filter downloads", filteredDownloads.size)
+                    SortAndFilterControls(stringResource(R.string.ui_filter_downloads), filteredDownloads.size)
                     if (filteredDownloads.isEmpty()) {
                         LibraryEmptyState(
                             icon = Icons.Default.Search,
-                            title = "No matches found",
-                            subtitle = "Try a different name, formula, or CID."
+                            title = stringResource(R.string.ui_no_matches_found_title),
+                            subtitle = stringResource(R.string.ui_try_a_different_name_formula_or_cid)
                         )
                     } else if (itemViewMode == LibraryViewMode.LIST) {
                         filteredDownloads.forEach { item ->
@@ -3047,7 +3087,7 @@ fun FavoritesSheet(
                         color = MaterialTheme.colorScheme.primary.copy(0.12f)
                     ) {
                         Text(
-                            "${favorites.size} saved",
+                            stringResource(R.string.ui_saved_d, favorites.size),
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.primary,
@@ -3059,7 +3099,7 @@ fun FavoritesSheet(
                             onClick = { isReordering = !isReordering },
                             contentPadding = PaddingValues(horizontal = 8.dp)
                         ) {
-                            Text(if (isReordering) "Done" else "Reorder")
+                            Text(if (isReordering) stringResource(R.string.ui_done) else stringResource(R.string.ui_reorder))
                         }
                     }
                 }
@@ -3204,7 +3244,7 @@ fun FavoritesInline(
                     color = MaterialTheme.colorScheme.primary.copy(0.12f)
                 ) {
                     Text(
-                        "${favorites.size} saved",
+                        stringResource(R.string.ui_saved_d, favorites.size),
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.primary,
@@ -3224,7 +3264,7 @@ fun FavoritesInline(
                         },
                         contentPadding = PaddingValues(horizontal = 8.dp)
                     ) {
-                        Text(if (isReordering) "Done" else "Reorder")
+                        Text(if (isReordering) stringResource(R.string.ui_done) else stringResource(R.string.ui_reorder))
                     }
                 }
             }
@@ -3269,7 +3309,7 @@ fun FavoritesInline(
                     )
                     if (filterQuery.isNotBlank()) {
                         Text(
-                            "${filteredFavorites.size} match${if (filteredFavorites.size == 1) "" else "es"}",
+                            pluralStringResource(R.plurals.ui_matches_count, filteredFavorites.size, filteredFavorites.size),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurface.copy(0.4f)
                         )
@@ -3280,16 +3320,16 @@ fun FavoritesInline(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    SortPill(label = "Recent", selected = sortMode == FavoritesSort.RECENT) {
+                    SortPill(label = stringResource(R.string.ui_label_recent), selected = sortMode == FavoritesSort.RECENT) {
                         sortMode = FavoritesSort.RECENT
                     }
-                    SortPill(label = "A-Z", selected = sortMode == FavoritesSort.NAME) {
+                    SortPill(label = stringResource(R.string.ui_a_z), selected = sortMode == FavoritesSort.NAME) {
                         sortMode = FavoritesSort.NAME
                     }
-                    SortPill(label = "Most atoms", selected = sortMode == FavoritesSort.ATOMS_DESC) {
+                    SortPill(label = stringResource(R.string.ui_most_atoms), selected = sortMode == FavoritesSort.ATOMS_DESC) {
                         sortMode = FavoritesSort.ATOMS_DESC
                     }
-                    SortPill(label = "Least atoms", selected = sortMode == FavoritesSort.ATOMS_ASC) {
+                    SortPill(label = stringResource(R.string.ui_least_atoms), selected = sortMode == FavoritesSort.ATOMS_ASC) {
                         sortMode = FavoritesSort.ATOMS_ASC
                     }
                 }
@@ -3469,7 +3509,7 @@ fun SettingsInline(
     }
 
     if (showFaqDialog) {
-        InfoDialog(title = "FAQ", entries = faqEntriesForCurrentBuild(), onDismiss = { showFaqDialog = false })
+        InfoDialog(titleRes = R.string.ui_faq, entries = faqEntriesForCurrentBuild(), onDismiss = { showFaqDialog = false })
     }
 
     if (showCacheDirDialog) {
@@ -3518,7 +3558,7 @@ fun SettingsInline(
 
     val cacheSizeLabel = remember(cacheSizeBytes) {
         when {
-            cacheSizeBytes == 0L -> "Empty"
+            cacheSizeBytes == 0L -> context.getString(R.string.ui_empty)
             cacheSizeBytes < 1024 -> "${cacheSizeBytes} B"
             cacheSizeBytes < 1024 * 1024 -> "${"%.1f".format(cacheSizeBytes / 1024.0)} KB"
             else -> "${"%.2f".format(cacheSizeBytes / (1024.0 * 1024.0))} MB"
@@ -3532,9 +3572,9 @@ fun SettingsInline(
         Text(stringResource(R.string.ui_settings), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         Text(
             if (BuildConfig.GITHUB_UPDATES_ENABLED) {
-                "Customize search, AI, storage, and app updates."
+                stringResource(R.string.ui_settings_description_updates)
             } else {
-                "Customize search, AI, storage, and support options."
+                stringResource(R.string.ui_settings_description_support)
             },
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
@@ -3542,8 +3582,8 @@ fun SettingsInline(
 
         SettingsGroupCard(
             icon = Icons.Default.Tune,
-            title = "Display & Search",
-            subtitle = "Control theme, autosuggestions, and default description behavior."
+            title = stringResource(R.string.ui_display_and_search),
+            subtitle = stringResource(R.string.ui_subtitle_control_theme)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
@@ -3554,7 +3594,7 @@ fun SettingsInline(
                     Icon(Icons.Default.Palette, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(20.dp))
                     Column {
                         Text(stringResource(R.string.ui_theme_mode), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
-                        Text(if (isDark) "Dark" else "Light", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+                        Text(if (isDark) stringResource(R.string.ui_dark) else stringResource(R.string.ui_light), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
                     }
                 }
                 Box {
@@ -3576,7 +3616,7 @@ fun SettingsInline(
                                 modifier = Modifier.size(16.dp)
                             )
                             Text(
-                                if (isDark) "Dark" else "Light",
+                                if (isDark) stringResource(R.string.ui_dark) else stringResource(R.string.ui_light),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.SemiBold,
                                 color = MaterialTheme.colorScheme.primary
@@ -3588,7 +3628,7 @@ fun SettingsInline(
                         expanded = themeDropdownExpanded,
                         onDismissRequest = { themeDropdownExpanded = false }
                     ) {
-                        listOf(false to "Light", true to "Dark").forEach { (dark, label) ->
+                        listOf(false to R.string.ui_light, true to R.string.ui_dark).forEach { (dark, labelRes) ->
                             DropdownMenuItem(
                                 text = {
                                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -3598,7 +3638,7 @@ fun SettingsInline(
                                             tint = if (isDark == dark) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.6f),
                                             modifier = Modifier.size(16.dp)
                                         )
-                                        Text(label, color = if (isDark == dark) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface)
+                                        Text(stringResource(labelRes), color = if (isDark == dark) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface)
                                     }
                                 },
                                 onClick = {
@@ -3616,8 +3656,8 @@ fun SettingsInline(
             SettingsGroupDivider()
             SettingsToggleRow(
                 icon = Icons.Default.Brightness2,
-                title = amoledModeTitle(),
-                subtitle = amoledModeSubtitle(isDark),
+                title = stringResource(amoledModeTitle()),
+                subtitle = stringResource(amoledModeSubtitle(isDark)),
                 checked = oledDarkTheme,
                 enabled = isOledModeControlEnabled(isDark),
                 onToggle = onToggleOledDarkTheme
@@ -3637,74 +3677,74 @@ fun SettingsInline(
                 subtitle = stringResource(R.string.ui_language_subtitle),
                 selected = appLanguage,
                 options = AppLanguage.entries,
-                labelFor = { language -> language.displayName },
+                labelFor = { language -> context.getString(language.displayNameRes) },
                 onSelect = onSetAppLanguage
             )
             SettingsGroupDivider()
             SettingsToggleRow(
                 icon = Icons.Default.Search,
-                title = "Autosuggestions",
-                subtitle = "Show dropdown while typing",
+                title = stringResource(R.string.ui_autosuggestions),
+                subtitle = stringResource(R.string.ui_subtitle_show_dropdown),
                 checked = autoSuggest,
                 onToggle = onToggleAutoSuggest
             )
             SettingsGroupDivider()
             SettingsToggleRow(
                 icon = Icons.Default.GridView,
-                title = "Compact mode",
-                subtitle = "Show more content per screen",
+                title = stringResource(R.string.ui_compact_mode),
+                subtitle = stringResource(R.string.ui_subtitle_show_more_content),
                 checked = compactMode,
                 onToggle = onToggleCompactMode
             )
             SettingsGroupDivider()
             SettingsToggleRow(
                 icon = Icons.Default.VisibilityOff,
-                title = "Reduce motion",
-                subtitle = "Use calmer transitions and resizing",
+                title = stringResource(R.string.ui_reduce_motion),
+                subtitle = stringResource(R.string.ui_subtitle_use_calmer_transitions),
                 checked = reduceMotion,
                 onToggle = onToggleReduceMotion
             )
             SettingsGroupDivider()
             SettingsToggleRow(
                 icon = Icons.Default.Visibility,
-                title = "High contrast outlines",
-                subtitle = "Make cards and controls easier to separate",
+                title = stringResource(R.string.ui_high_contrast_outlines),
+                subtitle = stringResource(R.string.ui_subtitle_make_cards_easier),
                 checked = highContrastOutlines,
                 onToggle = onToggleHighContrastOutlines
             )
             SettingsGroupDivider()
             SettingsDropdownSelector(
-                title = "Default structure view",
-                subtitle = "Choose which structure tab opens first after search",
+                title = stringResource(R.string.ui_default_structure_view),
+                subtitle = stringResource(R.string.ui_subtitle_choose_structure_tab),
                 selected = defaultStructureView,
                 options = DefaultStructureView.entries,
-                labelFor = ::defaultStructureViewLabel,
+                labelFor = { context.getString(defaultStructureViewLabel(it)) },
                 onSelect = onSetDefaultStructureView
             )
             SettingsGroupDivider()
             SettingsDropdownSelector(
-                title = "Formula display",
-                subtitle = "Conventional uses common element order; Hill keeps PubChem/Hill order",
+                title = stringResource(R.string.ui_formula_display),
+                subtitle = stringResource(R.string.ui_subtitle_conventional_hill),
                 selected = formulaDisplayStyle,
                 options = FormulaDisplayStyle.entries,
-                labelFor = ::formulaDisplayStyleLabel,
+                labelFor = { context.getString(formulaDisplayStyleLabel(it)) },
                 onSelect = onSetFormulaDisplayStyle
             )
             SettingsGroupDivider()
             SettingsDropdownSelector(
-                title = "Default description source",
-                subtitle = "Choose which description type appears first",
+                title = stringResource(R.string.ui_default_description_source),
+                subtitle = stringResource(R.string.ui_subtitle_choose_description),
                 selected = defaultDescSource,
                 options = DescSource.entries,
-                labelFor = ::descSourceLabel,
+                labelFor = { context.getString(descSourceLabel(it)) },
                 onSelect = onSetDefaultDesc
             )
         }
 
         SettingsGroupCard(
             icon = Icons.Default.Key,
-            title = "AI Provider & Keys",
-            subtitle = "Pick a provider and manage encrypted local API keys."
+            title = stringResource(R.string.ui_ai_provider_and_keys),
+            subtitle = stringResource(R.string.ui_subtitle_pick_provider)
         ) {
             AiProviderSettings(
                 aiProvider = aiProvider,
@@ -3720,30 +3760,30 @@ fun SettingsInline(
 
         SettingsGroupCard(
             icon = Icons.Default.Storage,
-            title = "Data & Storage",
-            subtitle = "Clear history/cache and import or export local settings."
+            title = stringResource(R.string.ui_data_and_storage),
+            subtitle = stringResource(R.string.ui_subtitle_clear_history_cache)
         ) {
             SettingsActionRow(
                 icon = Icons.Default.History,
-                title = "Search History",
-                subtitle = "Clear all recent searches",
-                actionLabel = "Clear",
+                title = stringResource(R.string.ui_search_history),
+                subtitle = stringResource(R.string.ui_subtitle_clear_recent_searches),
+                actionLabel = stringResource(R.string.ui_clear),
                 actionColor = MaterialTheme.colorScheme.error,
                 onClick = onClearHistory
             )
             SettingsActionRow(
                 icon = Icons.Default.Cached,
-                title = "Compound cache",
-                subtitle = "$cacheSizeLabel · ${if (cacheDir.isBlank()) "Default location" else cacheDir.takeLast(42)}",
-                actionLabel = "Clear",
+                title = stringResource(R.string.ui_compound_cache),
+                subtitle = "$cacheSizeLabel · ${if (cacheDir.isBlank()) stringResource(R.string.ui_default_location) else cacheDir.takeLast(42)}",
+                actionLabel = stringResource(R.string.ui_clear),
                 actionColor = MaterialTheme.colorScheme.error,
                 onClick = onClearCache
             )
             SettingsActionRow(
                 icon = Icons.Default.FolderOpen,
-                title = "Cache location",
-                subtitle = if (cacheDir.isBlank()) "App internal cache (default)" else cacheDir,
-                actionLabel = "Change",
+                title = stringResource(R.string.ui_cache_location),
+                subtitle = if (cacheDir.isBlank()) stringResource(R.string.ui_app_internal_cache_default) else cacheDir,
+                actionLabel = stringResource(R.string.ui_change),
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = {
                     cacheDirInput = cacheDir
@@ -3752,37 +3792,37 @@ fun SettingsInline(
             )
             SettingsGroupDivider()
             SettingsDropdownSelector(
-                title = "Offline download quality",
-                subtitle = "Pick how much extra data ChemSearch saves for offline viewing",
+                title = stringResource(R.string.ui_offline_download_quality),
+                subtitle = stringResource(R.string.ui_subtitle_pick_offline_quality),
                 selected = offlineDownloadQuality,
                 options = OfflineDownloadQuality.entries,
-                labelFor = ::offlineDownloadQualityLabel,
+                labelFor = { context.getString(offlineDownloadQualityLabel(it)) },
                 onSelect = onSetOfflineDownloadQuality
             )
             SettingsGroupDivider()
             SettingsSliderSelector(
-                title = "Cache size limit",
-                subtitle = "Limit temporary compound cache storage",
+                title = stringResource(R.string.ui_cache_size_limit),
+                subtitle = stringResource(R.string.ui_subtitle_limit_temp_cache),
                 selected = cacheSizeLimit,
                 options = CacheSizeLimit.entries,
-                labelFor = ::cacheSizeLimitLabel,
+                labelFor = { context.getString(cacheSizeLimitLabel(it)) },
                 onSelect = onSetCacheSizeLimit
             )
             SettingsGroupDivider()
             SettingsDropdownSelector(
-                title = "Auto-clear cache",
-                subtitle = "Remove old temporary cache files on this schedule",
+                title = stringResource(R.string.ui_auto_clear_cache),
+                subtitle = stringResource(R.string.ui_subtitle_remove_old_cache),
                 selected = cacheRetention,
                 options = CacheRetention.entries,
-                labelFor = ::cacheRetentionLabel,
+                labelFor = { context.getString(cacheRetentionLabel(it)) },
                 onSelect = onSetCacheRetention
             )
             SettingsGroupDivider()
             SettingsActionRow(
                 icon = Icons.Default.Description,
-                title = "Export settings",
-                subtitle = "Save settings, AI provider models, and API keys to JSON",
-                actionLabel = "Export",
+                title = stringResource(R.string.ui_export_settings),
+                subtitle = stringResource(R.string.ui_subtitle_save_settings),
+                actionLabel = stringResource(R.string.ui_export),
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = {
                     exportSettingsLauncher.launch("chemsearch-settings-${System.currentTimeMillis()}.json")
@@ -3790,9 +3830,9 @@ fun SettingsInline(
             )
             SettingsActionRow(
                 icon = Icons.Default.FolderOpen,
-                title = "Import settings",
-                subtitle = "Restore settings from a JSON backup",
-                actionLabel = "Import",
+                title = stringResource(R.string.ui_import_settings),
+                subtitle = stringResource(R.string.ui_subtitle_restore_settings),
+                actionLabel = stringResource(R.string.ui_import),
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = {
                     importSettingsLauncher.launch(arrayOf("application/json", "text/plain"))
@@ -3802,11 +3842,11 @@ fun SettingsInline(
 
         SettingsGroupCard(
             icon = Icons.Default.SystemUpdate,
-            title = if (BuildConfig.GITHUB_UPDATES_ENABLED) "Updates & Help" else "Help",
+            title = if (BuildConfig.GITHUB_UPDATES_ENABLED) stringResource(R.string.ui_updates_and_help) else stringResource(R.string.ui_help),
             subtitle = if (BuildConfig.GITHUB_UPDATES_ENABLED) {
-                "Control update checks and open support resources."
+                stringResource(R.string.ui_control_update_checks_and_open_support_resources)
             } else {
-                "FAQ and support resources."
+                stringResource(R.string.ui_faq_and_support_resources)
             }
         ) {
             if (BuildConfig.GITHUB_UPDATES_ENABLED) {
@@ -3822,9 +3862,9 @@ fun SettingsInline(
             }
             SettingsActionRow(
                 icon = Icons.AutoMirrored.Filled.HelpOutline,
-                title = "Frequently asked questions",
-                subtitle = "Quick answers about ChemSearch",
-                actionLabel = "Open",
+                title = stringResource(R.string.ui_frequently_asked_questions),
+                subtitle = stringResource(R.string.ui_subtitle_quick_answers),
+                actionLabel = stringResource(R.string.ui_open),
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = { showFaqDialog = true }
             )
@@ -3833,8 +3873,8 @@ fun SettingsInline(
         if (isDevMode) {
             SettingsGroupCard(
                 icon = Icons.Default.BugReport,
-                title = "Developer",
-                subtitle = "Diagnostics and advanced debugging tools."
+                title = stringResource(R.string.ui_developer),
+                subtitle = stringResource(R.string.ui_subtitle_diagnostics_tools)
             ) {
                 DebugSettingsSection(
                     prefs = prefs,
@@ -3852,9 +3892,9 @@ fun SettingsInline(
 
         SettingsActionRow(
             icon = Icons.Default.Info,
-            title = "About ChemSearch",
-            subtitle = "App info, links, data sources, and credits",
-            actionLabel = "Open",
+            title = stringResource(R.string.ui_about_chemsearch),
+            subtitle = stringResource(R.string.ui_subtitle_about_links),
+            actionLabel = stringResource(R.string.ui_open),
             actionColor = MaterialTheme.colorScheme.primary,
             onClick = onOpenAbout
         )
@@ -3934,7 +3974,7 @@ private suspend fun runNetworkDiagnosticsChecks(
             skippedNetworkProbe(
                 service = spec.service,
                 endpoint = spec.endpoint,
-                reason = "Skipped: ${spec.aiProvider?.displayName ?: "Provider"} API key is not set."
+                reason = "Skipped: ${spec.aiProvider?.shortName ?: "Provider"} API key is not set."
             )
         } else {
             val builder = Request.Builder().url(spec.requestUrl(apiKey))
@@ -4051,19 +4091,8 @@ fun DebugSettingsSection(
 
     if (showInfoDialog) {
         InfoDialog(
-            title = "Debug Settings",
-            entries = listOf(
-                "Verbose logging" to "Enables debug/info logs (tagged 'ChemSearch') in Logcat and the in-app buffer. Errors are always captured. Disable to reduce noise.",
-                "Live log viewer" to "Shows the in-app log buffer in real time (up to 200 lines). Verbose logs (D/) only appear when verbose logging is on. Errors (E/) are always captured. You can copy or clear the buffer.",
-                "Inspect SharedPreferences" to "Dumps legacy SharedPreferences and encrypted key records with sensitive values masked. DataStore settings and Room downloads are stored separately.",
-                "Memory info" to "Shows current heap usage from the JVM runtime and the Android ActivityManager. Useful for spotting memory leaks or unusually high allocations.",
-                "Network diagnostics" to "Runs endpoint checks against PubChem search, autocomplete, GHS data, 2D/3D structures, the NCI/CADD fallback resolver, Wikipedia, GitHub releases, and every configured AI provider. Shows HTTP status, latency, and response previews for each service.",
-                "Show welcome screen" to "Clears the welcome-screen skip flag and opens the first-run welcome screen again.",
-                "API endpoints" to "Copies base URLs for PubChem, NCI/CADD, Wikipedia, GitHub releases, and supported AI providers to your clipboard for manual testing.",
-                "Wipe all SharedPreferences" to "Calls prefs.edit().clear(). Removes legacy preference values, encrypted key records, history, favorites, and debug flags. DataStore settings, Room downloads, and app cache files are not deleted by this action; restart recommended.",
-                "Force crash" to "Deliberately throws an unhandled RuntimeException. Used to verify that crash reporting / Logcat is working correctly. There is a confirmation step before it fires.",
-                "Hide debug settings" to "Sets dev_mode=false and hides this section. Tap the build number 5 times on the About screen to unlock it again."
-            ),
+            titleRes = R.string.ui_debug_settings_title,
+            entries = DEBUG_ENTRIES,
             onDismiss = { showInfoDialog = false }
         )
     }
@@ -4106,7 +4135,7 @@ fun DebugSettingsSection(
                     TextButton(onClick = {
                         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         val dump = prefEntries.joinToString("\n") { "${it.key} = ${redactValue(it.key, it.value)}" }
-                        cm.setPrimaryClip(ClipData.newPlainText("Preferences", dump))
+                        cm.setPrimaryClip(ClipData.newPlainText(context.getString(R.string.ui_clipboard_preferences), dump))
                         Toast.makeText(context, context.getString(R.string.ui_copied_masked_prefs), Toast.LENGTH_SHORT).show()
                     }) { Text(stringResource(R.string.ui_copy)) }
                 }
@@ -4137,8 +4166,8 @@ fun DebugSettingsSection(
                 Column(modifier = Modifier.heightIn(max = 320.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(1.dp)) {
                     if (logLines.isEmpty()) {
                         Text(
-                            if (verboseLogging) "No logs yet. Perform an action in the app."
-                            else "Verbose logging is off. Only errors are captured.\nEnable it to see debug logs.",
+                            if (verboseLogging) stringResource(R.string.ui_no_logs_yet_perform_an_action)
+                            else stringResource(R.string.ui_verbose_logging_off_only_errors_captured),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
                         )
@@ -4160,7 +4189,7 @@ fun DebugSettingsSection(
                     TextButton(onClick = { DebugLog.clear() }) { Text(stringResource(R.string.ui_clear)) }
                     TextButton(onClick = {
                         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        cm.setPrimaryClip(ClipData.newPlainText("Logs", logLines.joinToString("\n")))
+                        cm.setPrimaryClip(ClipData.newPlainText(context.getString(R.string.ui_clipboard_logs), logLines.joinToString("\n")))
                         Toast.makeText(context, context.getString(R.string.ui_copied_d_lines, logLines.size), Toast.LENGTH_SHORT).show()
                     }) { Text(stringResource(R.string.ui_copy)) }
                     TextButton(onClick = { showLogsDialog = false }) { Text(stringResource(R.string.ui_close)) }
@@ -4176,7 +4205,7 @@ fun DebugSettingsSection(
         val skippedCount = networkDiagnosticsResults.count { it.state == NetworkProbeState.SKIPPED }
         val runLabel = networkDiagnosticsRunAt?.let {
             DateUtils.getRelativeTimeSpanString(it, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS)
-        } ?: "Not run yet"
+        } ?: context.getString(R.string.ui_not_run_yet)
 
         AlertDialog(
             onDismissRequest = { showNetworkDialog = false },
@@ -4199,13 +4228,13 @@ fun DebugSettingsSection(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        "Last run: $runLabel",
+                        stringResource(R.string.ui_last_run_s, runLabel),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
                     )
                     if (networkDiagnosticsResults.isNotEmpty()) {
                         Text(
-                            "Success $successCount · Failed $failedCount · Skipped $skippedCount",
+                            stringResource(R.string.ui_success_d_failed_d_skipped_d, successCount, failedCount, skippedCount),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
                         )
@@ -4286,7 +4315,7 @@ fun DebugSettingsSection(
                     TextButton(
                         onClick = { runNetworkDiagnostics() },
                         enabled = !isRunningNetworkDiagnostics
-                    ) { Text(if (networkDiagnosticsResults.isEmpty()) "Run" else "Re-run") }
+                    ) { Text(if (networkDiagnosticsResults.isEmpty()) stringResource(R.string.ui_run) else stringResource(R.string.ui_re_run)) }
                     TextButton(
                         onClick = {
                             val report = buildString {
@@ -4303,7 +4332,7 @@ fun DebugSettingsSection(
                                 }
                             }
                             val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                            cm.setPrimaryClip(ClipData.newPlainText("Network diagnostics", report))
+                            cm.setPrimaryClip(ClipData.newPlainText(context.getString(R.string.ui_clipboard_network_diagnostics), report))
                             Toast.makeText(context, context.getString(R.string.ui_diagnostics_copied), Toast.LENGTH_SHORT).show()
                         },
                         enabled = networkDiagnosticsResults.isNotEmpty()
@@ -4383,7 +4412,7 @@ fun DebugSettingsSection(
                                     Column {
                                         Text(stringResource(R.string.ui_jvm_heap), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
                                         Text(
-                                            "Used ${heapUsedMb} MB of ${heapMaxMb} MB max",
+                                            stringResource(R.string.ui_used_d_mb_of_d_mb_max, heapUsedMb, heapMaxMb),
                                             style = MaterialTheme.typography.labelSmall,
                                             color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
                                         )
@@ -4404,10 +4433,10 @@ fun DebugSettingsSection(
                             }
                             UsageBar(heapPercent, heapColor)
                             listOf(
-                                "Used" to "${heapUsedMb} MB",
-                                "Allocated" to "${heapAllocatedMb} MB",
-                                "Max" to "${heapMaxMb} MB",
-                                "Headroom" to "${heapHeadroomMb} MB"
+                                stringResource(R.string.ui_mem_used) to "${heapUsedMb} MB",
+                                stringResource(R.string.ui_mem_allocated) to "${heapAllocatedMb} MB",
+                                stringResource(R.string.ui_mem_max) to "${heapMaxMb} MB",
+                                stringResource(R.string.ui_mem_headroom) to "${heapHeadroomMb} MB"
                             ).forEach { (k, v) ->
                                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                                     Text(k, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace))
@@ -4433,7 +4462,7 @@ fun DebugSettingsSection(
                                     Column {
                                         Text(stringResource(R.string.ui_system_ram), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
                                         Text(
-                                            "Used ${usedSystemMb} MB of ${totalSystemMb} MB total",
+                                            stringResource(R.string.ui_used_d_mb_of_d_mb_total, usedSystemMb, totalSystemMb),
                                             style = MaterialTheme.typography.labelSmall,
                                             color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
                                         )
@@ -4454,9 +4483,9 @@ fun DebugSettingsSection(
                             }
                             UsageBar(systemPercent, systemColor)
                             listOf(
-                                "Used" to "${usedSystemMb} MB",
-                                "Available" to "${availMb} MB",
-                                "Total" to "${totalSystemMb} MB"
+                                stringResource(R.string.ui_mem_used) to "${usedSystemMb} MB",
+                                stringResource(R.string.ui_mem_available) to "${availMb} MB",
+                                stringResource(R.string.ui_mem_total) to "${totalSystemMb} MB"
                             ).forEach { (k, v) ->
                                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                                     Text(k, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace))
@@ -4479,7 +4508,7 @@ fun DebugSettingsSection(
                             append("JVM heap: used ${heapUsedMb} MB, allocated ${heapAllocatedMb} MB, max ${heapMaxMb} MB, headroom ${heapHeadroomMb} MB (${heapPercentLabel})\n")
                             append("System RAM: used ${usedSystemMb} MB, available ${availMb} MB, total ${totalSystemMb} MB (${systemPercentLabel}), low memory: $lowMemoryLabel")
                         }
-                        cm.setPrimaryClip(ClipData.newPlainText("Memory", snapshot))
+                        cm.setPrimaryClip(ClipData.newPlainText(context.getString(R.string.ui_clipboard_memory), snapshot))
                         Toast.makeText(context, context.getString(R.string.ui_copied_memory_snapshot), Toast.LENGTH_SHORT).show()
                     }) { Text(stringResource(R.string.ui_copy)) }
                     TextButton(onClick = { showMemoryDialog = false }) { Text(stringResource(R.string.ui_close)) }
@@ -4582,26 +4611,26 @@ fun DebugSettingsSection(
             // Live logs
             SettingsActionRow(
                 icon = Icons.AutoMirrored.Filled.Feed,
-                title = "Live log viewer",
-                subtitle = "${logLines.size} line${if (logLines.size != 1) "s" else ""} captured",
-                actionLabel = "Open",
+                title = stringResource(R.string.ui_live_log_viewer),
+                subtitle = pluralStringResource(R.plurals.ui_lines_captured, logLines.size, logLines.size),
+                actionLabel = stringResource(R.string.ui_open),
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = { showLogsDialog = true }
             )
 
             val networkSummary = if (networkDiagnosticsResults.isEmpty()) {
-                "Ping PubChem, fallback 3D, Wikipedia, GitHub, and AI providers"
+                context.getString(R.string.ui_ping_pubchem_fallback_3d_wikipedia_github_and_ai)
             } else {
                 val ok = networkDiagnosticsResults.count { it.state == NetworkProbeState.SUCCESS }
                 val fail = networkDiagnosticsResults.count { it.state == NetworkProbeState.FAILED }
                 val skipped = networkDiagnosticsResults.count { it.state == NetworkProbeState.SKIPPED }
-                "Last run: $ok ok • $fail failed • $skipped skipped"
+                context.getString(R.string.ui_last_run_d_ok_d_failed_d_skipped, ok, fail, skipped)
             }
             SettingsActionRow(
                 icon = Icons.Default.Public,
-                title = "Network diagnostics",
+                title = stringResource(R.string.ui_network_diagnostics),
                 subtitle = networkSummary,
-                actionLabel = if (isRunningNetworkDiagnostics) "Running..." else "Run",
+                actionLabel = if (isRunningNetworkDiagnostics) stringResource(R.string.ui_running) else stringResource(R.string.ui_run),
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = {
                     showNetworkDialog = true
@@ -4614,9 +4643,9 @@ fun DebugSettingsSection(
             if (BuildConfig.GITHUB_UPDATES_ENABLED) {
                 SettingsActionRow(
                     icon = Icons.Default.NotificationsActive,
-                    title = "Test update notification",
-                    subtitle = "Send a sample update notification now",
-                    actionLabel = "Send",
+                    title = stringResource(R.string.ui_test_update_notification),
+                    subtitle = stringResource(R.string.ui_subtitle_send_sample_notification),
+                    actionLabel = stringResource(R.string.ui_send),
                     actionColor = MaterialTheme.colorScheme.primary,
                     onClick = {
                         val hasPermission = Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
@@ -4633,9 +4662,9 @@ fun DebugSettingsSection(
 
             SettingsActionRow(
                 icon = Icons.Default.WavingHand,
-                title = "Show welcome screen",
-                subtitle = "Replay the first-launch intro",
-                actionLabel = "Open",
+                title = stringResource(R.string.ui_show_welcome_screen),
+                subtitle = stringResource(R.string.ui_subtitle_replay_intro),
+                actionLabel = stringResource(R.string.ui_open),
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = {
                     onShowWelcome()
@@ -4646,9 +4675,9 @@ fun DebugSettingsSection(
             // SharedPreferences dump
             SettingsActionRow(
                 icon = Icons.Default.Storage,
-                title = "Inspect SharedPreferences",
-                subtitle = "${prefs.all.size} legacy keys stored · secrets masked",
-                actionLabel = "View",
+                title = stringResource(R.string.ui_inspect_sharedpreferences),
+                subtitle = context.getString(R.string.ui_d_legacy_keys_stored_secrets_masked, prefs.all.size),
+                actionLabel = stringResource(R.string.ui_view),
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = { showPrefsDialog = true }
             )
@@ -4656,9 +4685,9 @@ fun DebugSettingsSection(
             // Memory info
             SettingsActionRow(
                 icon = Icons.Default.Memory,
-                title = "Memory info",
-                subtitle = "JVM heap + system RAM",
-                actionLabel = "View",
+                title = stringResource(R.string.ui_memory_info),
+                subtitle = stringResource(R.string.ui_subtitle_jvm_system_ram),
+                actionLabel = stringResource(R.string.ui_view),
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = { showMemoryDialog = true }
             )
@@ -4666,14 +4695,14 @@ fun DebugSettingsSection(
             // API endpoints copy
             SettingsActionRow(
                 icon = Icons.Default.Hub,
-                title = "API endpoints",
-                subtitle = "PubChem · NCI/CADD · Wikipedia · GitHub · AI",
-                actionLabel = "Copy",
+                title = stringResource(R.string.ui_api_endpoints),
+                subtitle = stringResource(R.string.ui_subtitle_pubchem_etc),
+                actionLabel = stringResource(R.string.ui_copy),
                 actionColor = MaterialTheme.colorScheme.primary,
                 onClick = {
                     val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     val endpoints = buildDebugApiEndpointLines().joinToString("\n")
-                    cm.setPrimaryClip(ClipData.newPlainText("Endpoints", endpoints))
+                    cm.setPrimaryClip(ClipData.newPlainText(context.getString(R.string.ui_clipboard_endpoints), endpoints))
                     Toast.makeText(context, context.getString(R.string.ui_copied_to_clipboard), Toast.LENGTH_SHORT).show()
                 }
             )
@@ -4681,9 +4710,9 @@ fun DebugSettingsSection(
             // Wipe prefs
             SettingsActionRow(
                 icon = Icons.Default.DeleteSweep,
-                title = "Wipe all SharedPreferences",
-                subtitle = "Clears legacy prefs and encrypted key records only",
-                actionLabel = "Wipe",
+                title = stringResource(R.string.ui_wipe_all_sharedpreferences),
+                subtitle = stringResource(R.string.ui_subtitle_clears_legacy_prefs),
+                actionLabel = stringResource(R.string.ui_wipe),
                 actionColor = MaterialTheme.colorScheme.error,
                 onClick = { showWipeConfirm = true }
             )
@@ -4691,9 +4720,9 @@ fun DebugSettingsSection(
             // Force crash
             SettingsActionRow(
                 icon = Icons.Default.Warning,
-                title = "Force crash",
-                subtitle = "Throws unhandled exception for testing",
-                actionLabel = "Crash",
+                title = stringResource(R.string.ui_debug_force_crash),
+                subtitle = stringResource(R.string.ui_subtitle_throws_exception),
+                actionLabel = stringResource(R.string.ui_crash),
                 actionColor = MaterialTheme.colorScheme.error,
                 onClick = { showCrashConfirm = true }
             )

@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.ui
 
+import com.furthersecrets.chemsearch.R
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -10,10 +11,10 @@ class AboutCreditsCatalogTest {
 
         assertTrue(aboutAppLinks.all { it.url.startsWith("https://") })
         assertTrue(credits.all { it.url.startsWith("https://") })
-        assertTrue(aboutDataCredits.any { it.title == "PubChem PUG REST" && it.url.contains("pug-rest") })
-        assertTrue(aboutDataCredits.any { it.title == "PubChem PUG View" && it.url.contains("pug-view") })
-        assertTrue(aboutDataCredits.any { it.title == "NCI/CADD Resolver" && it.url.contains("cactus.nci.nih.gov") })
-        assertTrue(aboutTechnologyCredits.any { it.title == "Phosphor Icons" && it.url.contains("phosphor") })
+        assertTrue(aboutDataCredits.any { it.titleRes == R.string.ui_source_pubchem_pug_rest && it.url.contains("pug-rest") })
+        assertTrue(aboutDataCredits.any { it.titleRes == R.string.ui_source_pubchem_pug_view && it.url.contains("pug-view") })
+        assertTrue(aboutDataCredits.any { it.titleRes == R.string.ui_source_nci_cadd_resolver && it.url.contains("cactus.nci.nih.gov") })
+        assertTrue(aboutTechnologyCredits.any { it.titleRes == R.string.ui_credit_phosphor_icons && it.url.contains("phosphor") })
     }
 
     @Test

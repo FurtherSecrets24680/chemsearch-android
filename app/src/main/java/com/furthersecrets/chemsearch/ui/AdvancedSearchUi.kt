@@ -203,7 +203,7 @@ fun AdvancedSearchDialog(
                         value = minWeight,
                         onValueChange = { minWeight = it.filter { ch -> ch.isDigit() || ch == '.' } },
                         modifier = Modifier.weight(1f),
-                        label = { AdvancedSearchFieldLabel("Min weight") },
+                        label = { AdvancedSearchFieldLabel(stringResource(R.string.ui_min_weight)) },
                         singleLine = true,
                         shape = RoundedCornerShape(14.dp),
                         colors = advancedSearchTextFieldColors()
@@ -212,7 +212,7 @@ fun AdvancedSearchDialog(
                         value = maxWeight,
                         onValueChange = { maxWeight = it.filter { ch -> ch.isDigit() || ch == '.' } },
                         modifier = Modifier.weight(1f),
-                        label = { AdvancedSearchFieldLabel("Max weight") },
+                        label = { AdvancedSearchFieldLabel(stringResource(R.string.ui_max_weight)) },
                         singleLine = true,
                         shape = RoundedCornerShape(14.dp),
                         colors = advancedSearchTextFieldColors()
@@ -221,7 +221,7 @@ fun AdvancedSearchDialog(
                         value = chargeText,
                         onValueChange = { chargeText = it.filter { ch -> ch.isDigit() || ch == '-' || ch == '+' }.take(3) },
                         modifier = Modifier.width(104.dp),
-                        label = { AdvancedSearchFieldLabel("Charge") },
+                        label = { AdvancedSearchFieldLabel(stringResource(R.string.ui_charge)) },
                         singleLine = true,
                         shape = RoundedCornerShape(14.dp),
                         colors = advancedSearchTextFieldColors()
@@ -232,8 +232,8 @@ fun AdvancedSearchDialog(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    AdvancedToggleChip("Has 3D", requireThreeD) { requireThreeD = !requireThreeD }
-                    AdvancedToggleChip("Has GHS", requireGhs) { requireGhs = !requireGhs }
+                    AdvancedToggleChip(stringResource(R.string.ui_has_3d), requireThreeD) { requireThreeD = !requireThreeD }
+                    AdvancedToggleChip(stringResource(R.string.ui_has_ghs), requireGhs) { requireGhs = !requireGhs }
                 }
 
                 Button(
@@ -273,7 +273,7 @@ fun AdvancedSearchDialog(
 
                 if (state.results.isNotEmpty()) {
                     Text(
-                        "${state.results.size} result${if (state.results.size == 1) "" else "s"}",
+                        stringResource(R.string.ui_results_count, state.results.size, if (state.results.size == 1) "" else "s"),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
                     )
@@ -360,7 +360,7 @@ private fun AdvancedSearchResultCard(
             ) {
                 AsyncImage(
                     model = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${item.cid}/PNG?record_type=2d&image_size=small",
-                    contentDescription = "Structure of ${item.title}",
+                    contentDescription = stringResource(R.string.ui_structure_of, item.title),
                     modifier = Modifier.padding(4.dp)
                 )
             }
@@ -377,9 +377,9 @@ private fun AdvancedSearchResultCard(
                 }
                 Text(
                     listOfNotNull(
-                        "CID ${item.cid}",
-                        item.molecularWeight.takeIf { it.isNotBlank() }?.let { "MW $it" },
-                        item.charge?.takeIf { it != 0 }?.let { "charge ${if (it > 0) "+$it" else it}" },
+                        stringResource(R.string.ui_cid_label, item.cid.toString()),
+                        item.molecularWeight.takeIf { it.isNotBlank() }?.let { stringResource(R.string.ui_mw, it) },
+                        item.charge?.takeIf { it != 0 }?.let { stringResource(R.string.ui_charge_value, if (it > 0) "+$it" else it.toString()) },
                         item.hasThreeD?.takeIf { it }?.let { "3D" },
                         item.hasGhs?.takeIf { it }?.let { "GHS" }
                     ).joinToString(" | "),

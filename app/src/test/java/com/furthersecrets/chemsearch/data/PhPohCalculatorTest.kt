@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.data
 
+import com.furthersecrets.chemsearch.R
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.junit.Assert.assertEquals
@@ -25,7 +26,7 @@ class PhPohCalculatorTest {
 
             assertEquals("${fixture.input}: ${fixture.notes}", fixture.expectedPh, result.ph, 0.000001)
             assertEquals("${fixture.input}: ${fixture.notes}", fixture.expectedPoh, result.poh, 0.000001)
-            assertEquals("Assumes 25 C and pKw = 14.00", result.assumption)
+            assertEquals("Assumes 25 C and pKw = 14.00", result.assumptionRes, R.string.ui_phpoh_assumption)
         }
     }
 
@@ -36,7 +37,7 @@ class PhPohCalculatorTest {
         assertEquals(3.0, result.ph, 0.000001)
         assertEquals(11.0, result.poh, 0.000001)
         assertEquals(1e-3, result.hydrogenConcentration, 0.0000001)
-        assertEquals("Acidic", result.classification)
+        assertEquals(R.string.ui_classification_acidic, result.classificationRes)
     }
 
     @Test
@@ -46,14 +47,14 @@ class PhPohCalculatorTest {
         assertEquals(5.0, result.poh, 0.000001)
         assertEquals(9.0, result.ph, 0.000001)
         assertEquals(1e-5, result.hydroxideConcentration, 0.0000001)
-        assertEquals("Basic", result.classification)
+        assertEquals(R.string.ui_classification_basic, result.classificationRes)
     }
 
     @Test
     fun classifiesNeutralAtSeven() {
         val result = calculatePhPoh("7", PhPohInputType.PH)
 
-        assertEquals("Neutral", result.classification)
+        assertEquals(R.string.ui_classification_neutral, result.classificationRes)
     }
 
     @Test

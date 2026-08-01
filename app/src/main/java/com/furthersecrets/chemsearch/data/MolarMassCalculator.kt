@@ -1,5 +1,8 @@
 package com.furthersecrets.chemsearch.data
 
+import androidx.annotation.StringRes
+import com.furthersecrets.chemsearch.R
+
 data class MolarMassBreakdown(
     val element: String,
     val count: Int,
@@ -9,7 +12,8 @@ data class MolarMassBreakdown(
 data class MolarMassResult(
     val molarMass: Double,
     val breakdown: List<MolarMassBreakdown>,
-    val error: String? = null
+    @StringRes val errorRes: Int? = null,
+    val errorArgs: List<Any> = emptyList()
 )
 
 data class ElementalPercentage(
@@ -45,17 +49,17 @@ val STANDARD_ATOMIC_WEIGHTS: Map<String, Double> = mapOf(
 )
 
 fun calculateMolarMass(formula: String): MolarMassResult {
-    if (formula.isBlank()) return MolarMassResult(0.0, emptyList(), "Enter a formula")
+    if (formula.isBlank()) return MolarMassResult(0.0, emptyList(), R.string.ui_formula_enter_formula)
 
     val elements = try {
         parseFormulaElementCounts(formula)
     } catch (error: FormulaParseException) {
-        return MolarMassResult(0.0, emptyList(), error.parseError.message)
+        return MolarMassResult(0.0, emptyList(), error.parseError.messageRes, error.parseError.messageArgs)
     }
 
     val unknown = elements.keys.filter { it !in STANDARD_ATOMIC_WEIGHTS }
     if (unknown.isNotEmpty()) {
-        return MolarMassResult(0.0, emptyList(), "Unknown element(s): ${unknown.joinToString(", ")}")
+        return MolarMassResult(0.0, emptyList(), R.string.ui_error_unknown_elements_s, listOf(unknown.joinToString(", ")))
     }
 
     var total = 0.0
@@ -84,7 +88,7 @@ fun calculateEmpiricalFormula(formula: String): String {
 
 fun calculateElementalPercentages(formula: String): List<ElementalPercentage> {
     val mass = calculateMolarMass(formula)
-    if (mass.error != null || mass.molarMass == 0.0) return emptyList()
+    if (mass.errorRes != null || mass.molarMass == 0.0) return emptyList()
     return mass.breakdown.map { item ->
         ElementalPercentage(item.element, item.contribution / mass.molarMass * 100.0)
     }.sortedByDescending { it.percentage }

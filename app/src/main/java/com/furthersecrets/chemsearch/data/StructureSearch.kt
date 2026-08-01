@@ -1,5 +1,7 @@
 package com.furthersecrets.chemsearch.data
 
+import androidx.annotation.StringRes
+import com.furthersecrets.chemsearch.R
 import java.util.Locale
 import kotlin.math.PI
 import kotlin.math.abs
@@ -101,29 +103,29 @@ enum class ChainTemplate(
 }
 
 enum class StructureSearchMode(
-    val label: String,
+    @StringRes val labelRes: Int,
     val pubChemOperation: String,
-    val description: String
+    @StringRes val descriptionRes: Int
 ) {
     EXACT(
-        label = "Exact",
+        labelRes = R.string.ui_mode_exact,
         pubChemOperation = "fastidentity",
-        description = "Find the same structure"
+        descriptionRes = R.string.ui_mode_exact_desc
     ),
     SIMILAR(
-        label = "Similar",
+        labelRes = R.string.ui_mode_similar,
         pubChemOperation = "fastsimilarity_2d",
-        description = "Find close 2D matches"
+        descriptionRes = R.string.ui_mode_similar_desc
     ),
     CONTAINS(
-        label = "Contains",
+        labelRes = R.string.ui_mode_contains,
         pubChemOperation = "fastsuperstructure",
-        description = "Find compounds containing this drawing"
+        descriptionRes = R.string.ui_mode_contains_desc
     ),
     PART_OF(
-        label = "Part of",
+        labelRes = R.string.ui_mode_part_of,
         pubChemOperation = "fastsubstructure",
-        description = "Find structures inside this drawing"
+        descriptionRes = R.string.ui_mode_part_of_desc
     )
 }
 
@@ -478,20 +480,20 @@ data class StructureSketch(
 }
 
 data class StructureSearchWarning(
-    val message: String
+    @StringRes val messageRes: Int
 ) {
     companion object {
         fun forSketch(sketch: StructureSketch): List<StructureSearchWarning> = buildList {
             if (sketch.atoms.size >= 2 && sketch.bonds.isEmpty()) {
-                add(StructureSearchWarning("Add at least one bond so PubChem can compare a structure."))
+                add(StructureSearchWarning(R.string.ui_warning_add_at_least_one_bond))
             } else if (sketch.atoms.size > 1 && !sketch.canSearch) {
-                add(StructureSearchWarning("Connect all fragments before searching."))
+                add(StructureSearchWarning(R.string.ui_warning_connect_fragments))
             }
             if (sketch.atoms.size > 80) {
-                add(StructureSearchWarning("Very large drawings can be slow or may be rejected by PubChem."))
+                add(StructureSearchWarning(R.string.ui_warning_very_large_drawings))
             }
             if (sketch.bonds.any { it.order == BondOrder.AROMATIC.molfileValue }) {
-                add(StructureSearchWarning("Aromatic bonds are exported as V2000 aromatic bond type 4."))
+                add(StructureSearchWarning(R.string.ui_warning_aromatic_bonds_exported))
             }
         }
     }
@@ -590,18 +592,18 @@ data class PeriodicElement(
         get() = pubChemProperties?.cpkHexColor.orMissing()
 }
 
-enum class ElementCategory(val label: String) {
-    ALKALI_METAL("Alkali metal"),
-    ALKALINE_EARTH_METAL("Alkaline earth metal"),
-    TRANSITION_METAL("Transition metal"),
-    POST_TRANSITION_METAL("Post-transition metal"),
-    METALLOID("Metalloid"),
-    REACTIVE_NONMETAL("Reactive nonmetal"),
-    HALOGEN("Halogen"),
-    NOBLE_GAS("Noble gas"),
-    LANTHANIDE("Lanthanide"),
-    ACTINIDE("Actinide"),
-    UNKNOWN("Unknown")
+enum class ElementCategory(val label: String, @StringRes val labelRes: Int) {
+    ALKALI_METAL("Alkali metal", R.string.ui_category_alkali_metal),
+    ALKALINE_EARTH_METAL("Alkaline earth metal", R.string.ui_category_alkaline_earth_metal),
+    TRANSITION_METAL("Transition metal", R.string.ui_category_transition_metal),
+    POST_TRANSITION_METAL("Post-transition metal", R.string.ui_category_post_transition_metal),
+    METALLOID("Metalloid", R.string.ui_category_metalloid),
+    REACTIVE_NONMETAL("Reactive nonmetal", R.string.ui_category_reactive_nonmetal),
+    HALOGEN("Halogen", R.string.ui_category_halogen),
+    NOBLE_GAS("Noble gas", R.string.ui_category_noble_gas),
+    LANTHANIDE("Lanthanide", R.string.ui_category_lanthanide),
+    ACTINIDE("Actinide", R.string.ui_category_actinide),
+    UNKNOWN("Unknown", R.string.ui_category_unknown)
 }
 
 val PeriodicTableElements = listOf(

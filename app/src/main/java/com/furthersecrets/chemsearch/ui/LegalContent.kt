@@ -30,46 +30,46 @@ enum class LegalDocumentType {
 
 data class LegalDocument(
     val type: LegalDocumentType,
-    val title: String,
-    val summary: String,
-    val sections: List<Pair<String, String>>
+    val titleRes: Int,
+    val summaryRes: Int,
+    val sections: List<Pair<Int, Int>>
 )
 
 val legalDocuments = listOf(
     LegalDocument(
         type = LegalDocumentType.PRIVACY,
-        title = "Privacy Policy",
-        summary = "How ChemSearch handles searches, AI providers, saved data, and updates.",
+        titleRes = R.string.ui_privacy_policy,
+        summaryRes = R.string.ui_legal_privacy_summary,
         sections = listOf(
-            "Data on your device" to "Favorites, recent searches, downloads, cache data, settings, API keys, and imported or exported library files are stored on your device unless you choose to share or export them.",
-            "External services" to "ChemSearch can contact PubChem, Wikipedia, NCI/CADD, GitHub, and optional AI providers to fetch compound data, descriptions, structures, updates, and model responses.",
-            "AI descriptions" to "If you use an AI provider, compound names, identifiers, formulas, available source data, and your prompt context may be sent to that provider. Provider API keys are saved locally on your device.",
-            "No account system" to "ChemSearch does not include a ChemSearch account, profile, or built-in analytics account system.",
-            "Your control" to "You can clear cache, delete downloads, remove saved items, change providers, remove API keys, and export or import library data from the app settings."
+            R.string.ui_legal_data_on_device_title to R.string.ui_legal_data_on_device,
+            R.string.ui_legal_external_services_title to R.string.ui_legal_external_services,
+            R.string.ui_legal_ai_descriptions_title to R.string.ui_legal_ai_descriptions,
+            R.string.ui_legal_no_account_system_title to R.string.ui_legal_no_account_system,
+            R.string.ui_legal_your_control_title to R.string.ui_legal_your_control
         )
     ),
     LegalDocument(
         type = LegalDocumentType.TERMS,
-        title = "Terms of Service",
-        summary = "Basic rules for using ChemSearch and its third-party data sources.",
+        titleRes = R.string.ui_terms_of_service,
+        summaryRes = R.string.ui_legal_terms_summary,
         sections = listOf(
-            "Use" to "ChemSearch is a chemistry lookup and study app. Use it responsibly and follow the rules of your school, workplace, lab, and local law.",
-            "Third-party sources" to "Compound data, safety information, descriptions, structures, updates, and AI responses may come from external services. Those services may have their own terms and limits.",
-            "No guarantee" to "ChemSearch is provided as-is. Results can be incomplete, unavailable, outdated, generated, or wrong.",
-            "User content" to "You are responsible for any searches, structure drawings, API keys, imported files, exported files, or prompts you use with the app.",
-            "Changes" to "Features, sources, update behavior, and provider support may change between app versions."
+            R.string.ui_legal_use to R.string.ui_legal_use_body,
+            R.string.ui_legal_third_party_sources to R.string.ui_legal_third_party_sources_body,
+            R.string.ui_legal_no_guarantee to R.string.ui_legal_no_guarantee_body,
+            R.string.ui_legal_user_content to R.string.ui_legal_user_content_body,
+            R.string.ui_legal_changes to R.string.ui_legal_changes_body
         )
     ),
     LegalDocument(
         type = LegalDocumentType.SAFETY,
-        title = "Safety Disclaimer",
-        summary = "ChemSearch is for study and quick checks, not official safety guidance.",
+        titleRes = R.string.ui_safety_disclaimer,
+        summaryRes = R.string.ui_legal_safety_summary,
         sections = listOf(
-            "Quick checks only" to "Chemical and safety information in ChemSearch is for learning, review, and quick checks. It is not a replacement for SDS documents, lab rules, labels, regulations, teacher instructions, or professional judgment.",
-            "Safety data limits" to "GHS and hazard details may be missing, source-dependent, or incomplete. Always verify safety information from official documents before handling chemicals.",
-            "AI limits" to "AI descriptions may sound confident while being incomplete or incorrect. Do not use AI text as your only source for safety, medical, legal, or lab decisions.",
-            "Emergency use" to "Do not rely on ChemSearch during emergencies. Follow your lab, institution, poison control, emergency service, or workplace procedures.",
-            "Generated structures" to "Fallback or generated 3D structures are estimates and should be treated as visual aids, not verified experimental structures."
+            R.string.ui_legal_quick_checks_only to R.string.ui_legal_quick_checks_only_body,
+            R.string.ui_legal_safety_data_limits to R.string.ui_legal_safety_data_limits_body,
+            R.string.ui_legal_ai_limits to R.string.ui_legal_ai_limits_body,
+            R.string.ui_legal_emergency_use to R.string.ui_legal_emergency_use_body,
+            R.string.ui_legal_generated_structures to R.string.ui_legal_generated_structures_body
         )
     )
 )
@@ -88,7 +88,7 @@ fun LegalDocumentDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text(document.title, fontWeight = FontWeight.Bold)
+            Text(stringResource(document.titleRes), fontWeight = FontWeight.Bold)
         },
         text = {
             Column(
@@ -99,20 +99,20 @@ fun LegalDocumentDialog(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
-                    document.summary,
+                    stringResource(document.summaryRes),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.7f)
                 )
-                document.sections.forEach { (title, body) ->
+                document.sections.forEach { (titleRes, bodyRes) ->
                     Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
                         Text(
-                            title,
+                            stringResource(titleRes),
                             style = MaterialTheme.typography.labelLarge,
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            body,
+                            stringResource(bodyRes),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
                         )

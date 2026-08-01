@@ -1,6 +1,8 @@
 package com.furthersecrets.chemsearch.ui
 
+import androidx.annotation.StringRes
 import com.furthersecrets.chemsearch.R
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -110,8 +112,8 @@ fun ChemicalDatabaseTool(
                 selectedCategory != null && query.isBlank() && !showCategoryResults -> {
                     item(key = "database-browser-header") {
                         DatabaseBrowserHeader(
-                            title = selectedCategory!!.label,
-                            subtitle = "${categoryEntries.size} entries",
+                            title = stringResource(selectedCategory!!.labelRes),
+                            subtitle = stringResource(R.string.ui_entries_count, categoryEntries.size),
                             onBack = {
                                 selectedCategory = null
                                 selectedType = null
@@ -140,12 +142,12 @@ fun ChemicalDatabaseTool(
                     item(key = "database-results-header") {
                         DatabaseBrowserHeader(
                             title = when {
-                                query.isNotBlank() && selectedCategory != null -> "Search ${selectedCategory!!.label}"
-                                query.isNotBlank() -> "Search Results"
-                                selectedCategory != null -> selectedType ?: "All ${selectedCategory!!.label}"
-                                else -> "Search Results"
+                                query.isNotBlank() && selectedCategory != null -> stringResource(R.string.ui_search_s, stringResource(selectedCategory!!.labelRes))
+                                query.isNotBlank() -> stringResource(R.string.ui_search_results)
+                                selectedCategory != null -> selectedType ?: stringResource(R.string.ui_all_s, stringResource(selectedCategory!!.labelRes))
+                                else -> stringResource(R.string.ui_search_results)
                             },
-                            subtitle = "${filteredEntries.size} matching entries",
+                            subtitle = pluralStringResource(R.plurals.ui_matching_entries, filteredEntries.size, filteredEntries.size),
                             onBack = {
                                 if (selectedCategory != null && query.isBlank()) {
                                     selectedType = null
@@ -258,8 +260,8 @@ private fun ChemicalDatabaseCategoryCards(
                 .joinToString(" / ")
             DatabaseSelectorCard(
                 icon = category.icon(),
-                title = category.label,
-                subtitle = if (typePreview.isBlank()) "${categoryEntries.size} entries" else typePreview,
+                title = stringResource(category.labelRes),
+                subtitle = if (typePreview.isBlank()) stringResource(R.string.ui_entries_count, categoryEntries.size) else typePreview,
                 meta = "${categoryEntries.size}",
                 onClick = { onSelect(category) }
             )
@@ -279,7 +281,7 @@ private fun ChemicalDatabaseTypeCards(
     Column(verticalArrangement = Arrangement.spacedBy(if (LocalCompactMode.current) 8.dp else 10.dp)) {
         DatabaseSelectorCard(
             icon = category.icon(),
-            title = stringResource(R.string.ui_all_s, category.label),
+            title = stringResource(R.string.ui_all_s, stringResource(category.labelRes)),
             subtitle = stringResource(R.string.ui_show_every_entry),
             meta = "${entries.size}",
             onClick = onSelectAll
@@ -292,7 +294,7 @@ private fun ChemicalDatabaseTypeCards(
             DatabaseSelectorCard(
                 icon = category.icon(),
                 title = type,
-                subtitle = if (examples.isBlank()) "${typeEntries.size} entries" else examples,
+                subtitle = if (examples.isBlank()) stringResource(R.string.ui_entries_count, typeEntries.size) else examples,
                 meta = "${typeEntries.size}",
                 onClick = { onSelectType(type) }
             )
@@ -506,7 +508,7 @@ private fun DatabaseResultCard(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
-            TagRow(tags = listOf(entry.category.label) + entry.tags.take(4))
+            TagRow(tags = listOf(stringResource(entry.category.labelRes)) + entry.tags.take(4))
         }
     }
 }
@@ -546,7 +548,7 @@ private fun DatabaseEntryDetail(
                         ChemIcon(entry.category.icon(), null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(if (compact) 22.dp else 26.dp))
                     }
                     Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(entry.category.label.uppercase(), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                        Text(stringResource(entry.category.labelRes).uppercase(), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
                         Text(entry.title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black, letterSpacing = 0.sp)
                         if (entry.formula.isNotBlank()) {
                             Text(
@@ -566,7 +568,7 @@ private fun DatabaseEntryDetail(
                 }
 
                 Text(entry.summary, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(0.72f), lineHeight = 20.sp)
-                TagRow(tags = listOf(entry.category.label) + entry.tags)
+                TagRow(tags = listOf(stringResource(entry.category.labelRes)) + entry.tags)
 
                 if (entry.actionTarget == ChemicalDbActionTarget.SEARCH_COMPOUND) {
                     Row(
@@ -723,7 +725,11 @@ private fun EmptyDatabaseResults(query: String) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Icon(Icons.Default.SearchOff, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.25f), modifier = Modifier.size(30.dp))
             Text(
-                if (query.isBlank()) "No entries in this category" else "No database entries match \"$query\"",
+                if (query.isBlank()) {
+                    stringResource(R.string.ui_no_entries_in_this_category)
+                } else {
+                    stringResource(R.string.ui_no_database_entries_match_s, query)
+                },
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
             )

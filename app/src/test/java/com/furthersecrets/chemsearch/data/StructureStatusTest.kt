@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.data
 
+import com.furthersecrets.chemsearch.R
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -10,7 +11,7 @@ class StructureStatusTest {
     fun labelsPubChem3dAsConformer() {
         val status = describeStructureStatus(hasSdf = true, source = SdfSource.PUBCHEM, message = null)
 
-        assertEquals("PubChem 3D conformer", status.label)
+        assertEquals(R.string.ui_structure_status_pubchem_3d, status.labelRes)
         assertFalse(status.estimated)
         assertEquals(SourceConfidence.HIGH, status.confidence)
     }
@@ -23,7 +24,7 @@ class StructureStatusTest {
             message = "Generated estimate from SMILES using the NCI/CADD resolver."
         )
 
-        assertEquals("Generated fallback", status.label)
+        assertEquals(R.string.ui_structure_status_generated_fallback, status.labelRes)
         assertTrue(status.estimated)
         assertEquals(SourceConfidence.MEDIUM, status.confidence)
     }
@@ -32,7 +33,7 @@ class StructureStatusTest {
     fun unavailableStructureExplainsIonicAndMetallicLimits() {
         val status = describeStructureStatus(hasSdf = false, source = null, message = null)
 
-        assertEquals("Structure unavailable", status.label)
-        assertTrue(status.detail.contains("ionic lattice", ignoreCase = true))
+        assertEquals(R.string.ui_structure_status_unavailable, status.labelRes)
+        assertEquals(R.string.ui_structure_status_unavailable_detail, status.detailRes)
     }
 }

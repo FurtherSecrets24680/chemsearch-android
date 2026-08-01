@@ -1,12 +1,17 @@
 package com.furthersecrets.chemsearch.data
 
+import androidx.annotation.StringRes
+import com.furthersecrets.chemsearch.R
+
 private val GROUP1 = setOf("Li", "Na", "K", "Rb", "Cs", "Fr")
 private val GROUP2 = setOf("Be", "Mg", "Ca", "Sr", "Ba", "Ra")
 
 data class OxidationStateResult(
     val states: List<Pair<String, String>> = emptyList(),
-    val note: String? = null,
-    val error: String? = null
+    @StringRes val noteRes: Int? = null,
+    val noteArgs: List<Any> = emptyList(),
+    @StringRes val errorRes: Int? = null,
+    val errorArgs: List<Any> = emptyList()
 )
 
 private fun osSign(value: Int): String = if (value > 0) "+$value" else "$value"
@@ -14,13 +19,13 @@ private fun osSign(value: Int): String = if (value > 0) "+$value" else "$value"
 private fun gcdOs(a: Long, b: Long): Long = if (b == 0L) a else gcdOs(b, a % b)
 
 fun calculateOxidationStates(formula: String, chargeIn: Int): OxidationStateResult {
-    if (formula.isBlank()) return OxidationStateResult(error = "Enter a formula")
+    if (formula.isBlank()) return OxidationStateResult(errorRes = R.string.ui_formula_enter_formula)
     val elements = try {
         parseFormulaElementCounts(formula)
     } catch (_: Exception) {
-        return OxidationStateResult(error = "Invalid formula syntax")
+        return OxidationStateResult(errorRes = R.string.ui_error_invalid_formula_syntax)
     }
-    if (elements.isEmpty()) return OxidationStateResult(error = "Could not parse formula")
+    if (elements.isEmpty()) return OxidationStateResult(errorRes = R.string.ui_error_could_not_parse_formula)
 
     val oCount = elements["O"] ?: 0
     val hCount = elements["H"] ?: 0
@@ -34,7 +39,7 @@ fun calculateOxidationStates(formula: String, chargeIn: Int): OxidationStateResu
         return if (cnt == 1) {
             OxidationStateResult(states = listOf(el to osSign(chargeIn)))
         } else {
-            OxidationStateResult(states = listOf(el to "0"), note = "Free element. Oxidation state is 0")
+            OxidationStateResult(states = listOf(el to "0"), noteRes = R.string.ui_note_free_element)
         }
     }
 
@@ -45,7 +50,8 @@ fun calculateOxidationStates(formula: String, chargeIn: Int): OxidationStateResu
         val oOs = (chargeIn + fCount) / oCount
         return OxidationStateResult(
             states = listOf("F" to "-1", "O" to osSign(oOs)),
-            note = "Oxygen fluoride: F is always -1, so O = ${osSign(oOs)}"
+            noteRes = R.string.ui_note_oxygen_fluoride_s,
+            noteArgs = listOf(osSign(oOs))
         )
     }
 
@@ -56,7 +62,7 @@ fun calculateOxidationStates(formula: String, chargeIn: Int): OxidationStateResu
             if (chargeIn - metalSum == -mCnt) {
                 return OxidationStateResult(
                     states = listOf(alkaliEl to "+1", "O" to "-1/2"),
-                    note = "Superoxide: O2- unit, each O has oxidation state = -1/2"
+                    noteRes = R.string.ui_note_superoxide
                 )
             }
         }
@@ -67,7 +73,7 @@ fun calculateOxidationStates(formula: String, chargeIn: Int): OxidationStateResu
         if (oCount == mCnt * 3 && chargeIn - mCnt == -mCnt) {
             return OxidationStateResult(
                 states = listOf(alkaliEl to "+1", "O" to "-1/3"),
-                note = "Ozonide: O3- unit, each O has oxidation state = -1/3"
+                noteRes = R.string.ui_note_ozonide
             )
         }
     }
@@ -109,7 +115,7 @@ fun calculateOxidationStates(formula: String, chargeIn: Int): OxidationStateResu
                 res.add(el to if (rem % cnt == 0) osSign(rem / cnt) else "$rem/$cnt")
             }
         }
-        return OxidationStateResult(states = res, note = "Peroxide compound: O has oxidation state = -1")
+        return OxidationStateResult(states = res, noteRes = R.string.ui_note_peroxide)
     }
 
     val metalHydrideMetals = setOf(
@@ -144,8 +150,8 @@ fun calculateOxidationStates(formula: String, chargeIn: Int): OxidationStateResu
         }
         return OxidationStateResult(
             states = res,
-            note = "Metal hydride: H has oxidation state = -1" +
-                if (sum != chargeIn) " (sum = $sum, charge = $chargeIn, check formula)" else ""
+            noteRes = R.string.ui_note_metal_hydride_suffix_s,
+            noteArgs = listOf(if (sum != chargeIn) " (sum = $sum, charge = $chargeIn, check formula)" else "")
         )
     }
 
@@ -183,7 +189,8 @@ fun calculateOxidationStates(formula: String, chargeIn: Int): OxidationStateResu
             if (knownSum != chargeIn) {
                 OxidationStateResult(
                     states = states,
-                    note = "Sum of known oxidation state ($knownSum) does not match overall charge ($chargeIn). Possible mixed-valence, peroxo group, or formula error."
+                    noteRes = R.string.ui_note_sum_mismatch,
+                    noteArgs = listOf(knownSum, chargeIn)
                 )
             } else {
                 OxidationStateResult(states = states)
@@ -199,7 +206,8 @@ fun calculateOxidationStates(formula: String, chargeIn: Int): OxidationStateResu
                 val states = fixed.entries.map { it.key to osSign(it.value) } + listOf(unknown to fracStr)
                 OxidationStateResult(
                     states = states,
-                    note = "Non-integer oxidation state for $unknown ($fracStr). It may indicate mixed-valence or a special compound."
+                    noteRes = R.string.ui_note_non_integer_os,
+                    noteArgs = listOf(unknown, fracStr)
                 )
             } else {
                 fixed[unknown] = rem / cnt
@@ -210,7 +218,8 @@ fun calculateOxidationStates(formula: String, chargeIn: Int): OxidationStateResu
             val states = fixed.entries.map { it.key to osSign(it.value) } + unknowns.map { it to "?" }
             OxidationStateResult(
                 states = states,
-                error = "Cannot solve! multiple unknown elements: ${unknowns.joinToString(", ")}. For transition metal complexes, use the charge field to provide additional constraints."
+                errorRes = R.string.ui_error_cannot_solve_unknowns_s,
+                errorArgs = listOf(unknowns.joinToString(", "))
             )
         }
     }

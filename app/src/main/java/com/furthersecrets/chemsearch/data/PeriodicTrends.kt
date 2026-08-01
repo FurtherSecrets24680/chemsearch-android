@@ -1,48 +1,50 @@
 package com.furthersecrets.chemsearch.data
 
+import androidx.annotation.StringRes
+import com.furthersecrets.chemsearch.R
 import java.util.Locale
 
 enum class PeriodicTrendMetric(
-    val label: String,
-    val shortLabel: String,
+    @StringRes val labelRes: Int,
+    @StringRes val shortLabelRes: Int,
     val unit: String,
-    val description: String
+    @StringRes val descriptionRes: Int
 ) {
     ELECTRONEGATIVITY(
-        label = "Electronegativity",
-        shortLabel = "EN",
+        labelRes = R.string.ui_trend_electronegativity,
+        shortLabelRes = R.string.ui_trend_electronegativity_short,
         unit = "",
-        description = "How strongly an atom attracts bonding electrons."
+        descriptionRes = R.string.ui_trend_electronegativity_desc
     ),
     ATOMIC_RADIUS(
-        label = "Atomic radius",
-        shortLabel = "Radius",
+        labelRes = R.string.ui_trend_atomic_radius,
+        shortLabelRes = R.string.ui_trend_atomic_radius_short,
         unit = "pm",
-        description = "Approximate atomic size in picometers."
+        descriptionRes = R.string.ui_trend_atomic_radius_desc
     ),
     IONIZATION_ENERGY(
-        label = "Ionization energy",
-        shortLabel = "IE",
+        labelRes = R.string.ui_trend_ionization_energy,
+        shortLabelRes = R.string.ui_trend_ionization_energy_short,
         unit = "eV",
-        description = "Energy needed to remove the first electron from a neutral atom."
+        descriptionRes = R.string.ui_trend_ionization_energy_desc
     ),
     DENSITY(
-        label = "Density",
-        shortLabel = "Density",
+        labelRes = R.string.ui_trend_density,
+        shortLabelRes = R.string.ui_trend_density_short,
         unit = "g/cm3",
-        description = "Mass per unit volume near standard conditions when listed."
+        descriptionRes = R.string.ui_trend_density_desc
     ),
     MELTING_POINT(
-        label = "Melting point",
-        shortLabel = "Melt",
+        labelRes = R.string.ui_trend_melting_point,
+        shortLabelRes = R.string.ui_trend_melting_point_short,
         unit = "K",
-        description = "Temperature where the element changes from solid to liquid."
+        descriptionRes = R.string.ui_trend_melting_point_desc
     ),
     BOILING_POINT(
-        label = "Boiling point",
-        shortLabel = "Boil",
+        labelRes = R.string.ui_trend_boiling_point,
+        shortLabelRes = R.string.ui_trend_boiling_point_short,
         unit = "K",
-        description = "Temperature where the element changes from liquid to gas."
+        descriptionRes = R.string.ui_trend_boiling_point_desc
     )
 }
 
@@ -58,9 +60,9 @@ data class PeriodicTrendPoint(
 data class PeriodicTrendSummary(
     val metric: PeriodicTrendMetric,
     val totalElements: Int,
-    val lowest: String,
-    val highest: String,
-    val rangeLabel: String
+    val lowest: String?,
+    val highest: String?,
+    val rangeLabel: String?
 )
 
 fun periodicTrendPoints(
@@ -93,9 +95,9 @@ fun periodicTrendSummary(
         return PeriodicTrendSummary(
             metric = metric,
             totalElements = 0,
-            lowest = "Not listed",
-            highest = "Not listed",
-            rangeLabel = "No listed values"
+            lowest = null,
+            highest = null,
+            rangeLabel = null
         )
     }
 

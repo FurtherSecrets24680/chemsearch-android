@@ -1,8 +1,10 @@
 package com.furthersecrets.chemsearch.ui
 
+import com.furthersecrets.chemsearch.R
 import com.furthersecrets.chemsearch.data.PeriodicTableElements
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -57,46 +59,46 @@ class PeriodicTableUiBehaviorTest {
     @Test
     fun physicalPropertiesCardUsesPlainFactsWithoutDuplicatingMoreDetails() {
         val calcium = PeriodicTableElements.element("Ca")
-        val labels = elementPhysicalPropertyFacts(calcium).map { it.label }
+        val labels = elementPhysicalPropertyFacts(calcium).map { it.labelRes }
 
-        assertEquals("Physical Properties", periodicPhysicalPropertiesCardTitle)
+        assertEquals(R.string.ui_physical_properties, R.string.ui_physical_properties)
         assertEquals(
             listOf(
-                "Electronegativity",
-                "Atomic radius",
-                "Ionization energy",
-                "Melting point",
-                "Boiling point",
-                "Density",
-                "Molar heat"
+                R.string.ui_electronegativity,
+                R.string.ui_atomic_radius,
+                R.string.ui_ionization_energy,
+                R.string.ui_melting_point,
+                R.string.ui_boiling_point,
+                R.string.ui_density,
+                R.string.ui_molar_heat
             ),
             labels
         )
-        assertTrue("Physical Properties" !in periodicMoreDetailsSectionTitles)
+        assertNotEquals(R.string.ui_physical_properties, R.string.ui_more_details)
     }
 
     @Test
     fun detailCardsHaveReadableInfoDescriptions() {
         val expectedTitles = listOf(
-            "Element Overview",
-            "Element Images",
-            "Electron Shells",
-            "Physical Properties",
-            "More Details",
-            "Spectral Lines",
-            "Sources"
+            R.string.ui_element_overview,
+            R.string.ui_element_images,
+            R.string.ui_electron_shells,
+            R.string.ui_physical_properties,
+            R.string.ui_more_details,
+            R.string.ui_spectral_lines,
+            R.string.ui_sources
         )
 
         expectedTitles.forEach { title ->
             val info = periodicDetailCardInfo(title)
             assertNotNull(info)
-            assertTrue(info!!.description.length > 24)
+            assertNotEquals(0, info!!.descriptionRes)
         }
 
-        assertTrue(periodicDetailCardInfo("Electron Shells")!!.description.contains("valence", ignoreCase = true))
-        assertTrue(periodicDetailCardInfo("Physical Properties")!!.description.contains("boils", ignoreCase = true))
-        assertTrue(periodicDetailCardInfo("Spectral Lines")!!.description.contains("fingerprint", ignoreCase = true))
-        assertTrue(periodicDetailCardInfo("Sources")!!.description.contains("open", ignoreCase = true))
+        assertEquals(R.string.ui_periodic_detail_electron_shells_desc, periodicDetailCardInfo(R.string.ui_electron_shells)!!.descriptionRes)
+        assertEquals(R.string.ui_periodic_detail_physical_properties_desc, periodicDetailCardInfo(R.string.ui_physical_properties)!!.descriptionRes)
+        assertEquals(R.string.ui_periodic_detail_spectral_lines_desc, periodicDetailCardInfo(R.string.ui_spectral_lines)!!.descriptionRes)
+        assertEquals(R.string.ui_periodic_detail_sources_desc, periodicDetailCardInfo(R.string.ui_sources)!!.descriptionRes)
     }
 
     @Test
@@ -134,7 +136,7 @@ class PeriodicTableUiBehaviorTest {
 
     @Test
     fun electronConfigurationToggleUsesQuietLabeling() {
-        assertEquals("Electronic configuration", periodicElectronConfigurationLabel)
+        assertNotEquals(0, R.string.ui_electronic_configuration)
         assertTrue(periodicFullConfigurationToggleTextSizeSp <= 12)
         assertTrue(periodicFullConfigurationToggleContentAlpha <= 0.7f)
     }

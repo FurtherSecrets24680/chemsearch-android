@@ -188,7 +188,6 @@
     <string name="ui_hazard_statements" translatable="true">OŚWIADCZENIA ZAGROŻONE</string>
     <string name="ui_sort_recents" translatable="true">Sortuj ostatnie aplikacje</string>
     <string name="ui_downloading_for_offline_use" translatable="true">Pobieranie do użytku offline</string>
-    <string name="ui_share_compound" translatable="true">Udostępnij mieszankę</string>
     <string name="ui_2d_structure" translatable="true">Struktura 2D</string>
     <string name="ui_download_2d_structure" translatable="true">Pobierz strukturę 2D</string>
     <string name="ui_2d_structure_zoom" translatable="true">Struktura 2D (zoom)</string>
@@ -407,7 +406,6 @@
     <string name="ui_e_g_kmno4" translatable="true">np. KMnO4</string>
     <string name="ui_charge" translatable="true">Ładowanie</string>
     <string name="ui_find_oxidation_states" translatable="true">Znajdź państwa utleniania</string>
-    <string name="ui_oxidation_states" translatable="true">PAŃSTWA OKSIDACJI</string>
     <string name="ui_examples" translatable="true">PRZYKŁADY</string>
     <string name="ui_smiles_visualizer" translatable="true">Wizualizator SMILES</string>
     <string name="ui_smiles_string" translatable="true">Ciąg SMILES</string>
@@ -490,7 +488,6 @@
     <string name="ui_could_not_parse_3d_data" translatable="true">Nie można przetworzyć danych 3D</string>
     <!-- WelcomeScreen.kt -->
     <string name="ui_set_your_look" translatable="true">Ustaw wygląd</string>
-    <string name="ui_appearance" translatable="true">OŚWIADCZENIE</string>
     <string name="ui_choose_theme_accent_body" translatable="true">Wybierz motyw i kolor akcentu ChemSearch powinien używać pomiędzy wyszukiwarkami, narzędziami i ustawieniami.</string>
     <string name="ui_light" translatable="true">Światło</string>
     <string name="ui_dark" translatable="true">Ciemny</string>

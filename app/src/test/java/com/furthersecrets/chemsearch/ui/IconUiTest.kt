@@ -23,7 +23,7 @@ class IconUiTest {
             val selected = item.selectedIcon as ChemIconSpec.Vector
             val unselected = item.unselectedIcon as ChemIconSpec.Vector
 
-            assertNotSame("${item.label} selected icon should differ", selected.imageVector, unselected.imageVector)
+            assertNotSame("${item.tab} selected icon should differ", selected.imageVector, unselected.imageVector)
         }
 
         val search = mainNavigationItems.first { it.tab == AppTab.SEARCH }.selectedIcon as ChemIconSpec.Vector

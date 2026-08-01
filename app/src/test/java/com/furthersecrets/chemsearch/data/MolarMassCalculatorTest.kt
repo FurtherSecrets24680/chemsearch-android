@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.data
 
+import com.furthersecrets.chemsearch.R
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.junit.Assert.assertEquals
@@ -22,7 +23,7 @@ class MolarMassCalculatorTest {
         loadFixtures().forEach { fixture ->
             val result = calculateMolarMass(fixture.formula)
 
-            assertTrue("${fixture.formula}: ${fixture.notes}", result.error == null)
+            assertTrue("${fixture.formula}: ${fixture.notes}", result.errorRes == null)
             assertEquals(fixture.expected, result.molarMass, fixture.tolerance)
         }
     }
@@ -31,7 +32,7 @@ class MolarMassCalculatorTest {
     fun reportsUnknownElements() {
         val result = calculateMolarMass("Xx2")
 
-        assertEquals("Unknown element(s): Xx", result.error)
+        assertEquals(R.string.ui_error_unknown_elements_s, result.errorRes)
     }
 
     @Test

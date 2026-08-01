@@ -1,5 +1,7 @@
 package com.furthersecrets.chemsearch.data
 
+import androidx.annotation.StringRes
+import com.furthersecrets.chemsearch.R
 import kotlin.math.abs
 
 enum class SolubilityState {
@@ -11,7 +13,7 @@ enum class SolubilityState {
 
 data class SolubilityRuleResult(
     val state: SolubilityState,
-    val rule: String
+    @StringRes val ruleRes: Int
 )
 
 data class PrecipitationProduct(
@@ -28,15 +30,17 @@ data class PrecipitationPredictionResult(
     val molecularEquation: String = "",
     val completeIonicEquation: String = "",
     val netIonicEquation: String = "",
-    val summary: String = "",
-    val error: String? = null
+    @StringRes val summaryRes: Int? = null,
+    val summaryArgs: List<Any> = emptyList(),
+    @StringRes val errorRes: Int? = null,
+    val errorArgs: List<Any> = emptyList()
 )
 
 fun predictPrecipitation(firstFormula: String, secondFormula: String): PrecipitationPredictionResult {
     val first = identifyCommonIonicCompound(firstFormula)
-        ?: return PrecipitationPredictionResult(error = "Could not identify common aqueous ions in ${firstFormula.trim()}.")
+        ?: return PrecipitationPredictionResult(errorRes = R.string.ui_error_could_not_identify_ions_s, errorArgs = listOf(firstFormula.trim()))
     val second = identifyCommonIonicCompound(secondFormula)
-        ?: return PrecipitationPredictionResult(error = "Could not identify common aqueous ions in ${secondFormula.trim()}.")
+        ?: return PrecipitationPredictionResult(errorRes = R.string.ui_error_could_not_identify_ions_s, errorArgs = listOf(secondFormula.trim()))
 
     val firstProduct = buildIonicCompound(first.cation, second.anion)
     val secondProduct = buildIonicCompound(second.cation, first.anion)
@@ -67,11 +71,12 @@ fun predictPrecipitation(firstFormula: String, secondFormula: String): Precipita
         molecularEquation = molecularEquation,
         completeIonicEquation = formatCompleteIonicEquation(balanced, products),
         netIonicEquation = formatNetIonicEquation(precipitates, firstProduct, secondProduct),
-        summary = if (precipitates.isEmpty()) {
-            "No precipitate predicted"
+        summaryRes = if (precipitates.isEmpty()) {
+            R.string.ui_no_precipitate_predicted
         } else {
-            "Precipitate predicted: ${precipitates.joinToString { it.formula }}"
-        }
+            R.string.ui_precipitate_predicted_s
+        },
+        summaryArgs = if (precipitates.isEmpty()) emptyList() else listOf(precipitates.joinToString { it.formula })
     )
 }
 
@@ -188,25 +193,25 @@ private fun formatIonicFormula(ion: CommonIon, count: Int): String {
 
 private fun predictSolubility(cation: CommonIon, anion: CommonIon): SolubilityRuleResult = when {
     cation.formula in alwaysSolubleCations ->
-        SolubilityRuleResult(SolubilityState.SOLUBLE, "Group 1 and ammonium salts are soluble.")
+        SolubilityRuleResult(SolubilityState.SOLUBLE, R.string.ui_solubility_rule_group_1_ammonium)
     anion.formula in alwaysSolubleAnions ->
-        SolubilityRuleResult(SolubilityState.SOLUBLE, "Nitrates, acetates, chlorates, and perchlorates are soluble.")
+        SolubilityRuleResult(SolubilityState.SOLUBLE, R.string.ui_solubility_rule_nitrates)
     anion.formula in halideAnions && cation.formula in halideExceptions ->
-        SolubilityRuleResult(SolubilityState.INSOLUBLE, "Chlorides, bromides, and iodides are insoluble with Ag+, Pb2+, and Hg2^2+.")
+        SolubilityRuleResult(SolubilityState.INSOLUBLE, R.string.ui_solubility_rule_halides_insoluble)
     anion.formula in halideAnions ->
-        SolubilityRuleResult(SolubilityState.SOLUBLE, "Most chlorides, bromides, and iodides are soluble.")
+        SolubilityRuleResult(SolubilityState.SOLUBLE, R.string.ui_solubility_rule_most_halides)
     anion.formula == "SO4" && cation.formula in sulfateExceptions ->
-        SolubilityRuleResult(SolubilityState.INSOLUBLE, "Sulfates are insoluble or only slightly soluble with Ba2+, Pb2+, Sr2+, Ca2+, Ag+, and Hg2^2+.")
+        SolubilityRuleResult(SolubilityState.INSOLUBLE, R.string.ui_solubility_rule_sulfates_insoluble)
     anion.formula == "SO4" ->
-        SolubilityRuleResult(SolubilityState.SOLUBLE, "Most sulfates are soluble.")
+        SolubilityRuleResult(SolubilityState.SOLUBLE, R.string.ui_solubility_rule_most_sulfates)
     anion.formula == "OH" && cation.formula in setOf("Ba", "Sr", "Ca") ->
-        SolubilityRuleResult(SolubilityState.SLIGHTLY_SOLUBLE, "Hydroxides of Ba2+, Sr2+, and Ca2+ are only partly soluble.")
+        SolubilityRuleResult(SolubilityState.SLIGHTLY_SOLUBLE, R.string.ui_solubility_rule_hydroxides_partly_soluble)
     anion.formula == "OH" ->
-        SolubilityRuleResult(SolubilityState.INSOLUBLE, "Most hydroxides are insoluble except Group 1 and ammonium salts.")
+        SolubilityRuleResult(SolubilityState.INSOLUBLE, R.string.ui_solubility_rule_most_hydroxides)
     anion.formula in mostlyInsolubleAnions ->
-        SolubilityRuleResult(SolubilityState.INSOLUBLE, "Carbonates, phosphates, sulfides, sulfites, chromates, oxalates, and oxides are usually insoluble except with Group 1 or ammonium ions.")
+        SolubilityRuleResult(SolubilityState.INSOLUBLE, R.string.ui_solubility_rule_carbonates)
     else ->
-        SolubilityRuleResult(SolubilityState.UNKNOWN, "No common solubility rule matched this product.")
+        SolubilityRuleResult(SolubilityState.UNKNOWN, R.string.ui_solubility_rule_no_match)
 }
 
 private fun formatPrecipitationMolecularEquation(

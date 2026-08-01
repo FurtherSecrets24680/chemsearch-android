@@ -1,5 +1,8 @@
 package com.furthersecrets.chemsearch.data
 
+import androidx.annotation.StringRes
+import com.furthersecrets.chemsearch.R
+
 enum class ReactionBalanceErrorCode {
     MISSING_ARROW,
     MISSING_REACTANTS,
@@ -10,7 +13,9 @@ enum class ReactionBalanceErrorCode {
 
 data class ReactionBalanceError(
     val code: ReactionBalanceErrorCode,
-    val message: String
+    val message: String,
+    @StringRes val messageRes: Int? = null,
+    val messageArgs: List<Any> = emptyList()
 )
 
 data class BalancedTerm(
@@ -43,16 +48,16 @@ data class BalancedReactionResult(
 fun balanceChemicalReaction(equation: String): BalancedReactionResult {
     val parts = equation.replace("→", "->").replace("⟶", "->").replace("=>", "->").split("->")
     if (parts.size != 2) {
-        return BalancedReactionResult(error = ReactionBalanceError(ReactionBalanceErrorCode.MISSING_ARROW, "Use '⟶' between reactants and products."))
+        return BalancedReactionResult(error = ReactionBalanceError(ReactionBalanceErrorCode.MISSING_ARROW, "Use '⟶' between reactants and products.", R.string.ui_balancer_use_arrow_between))
     }
 
     val reactants = splitReactionSide(parts[0])
     val products = splitReactionSide(parts[1])
     if (reactants.isEmpty()) {
-        return BalancedReactionResult(error = ReactionBalanceError(ReactionBalanceErrorCode.MISSING_REACTANTS, "No reactants found."))
+        return BalancedReactionResult(error = ReactionBalanceError(ReactionBalanceErrorCode.MISSING_REACTANTS, "No reactants found.", R.string.ui_balancer_no_reactants_found))
     }
     if (products.isEmpty()) {
-        return BalancedReactionResult(error = ReactionBalanceError(ReactionBalanceErrorCode.MISSING_PRODUCTS, "No products found."))
+        return BalancedReactionResult(error = ReactionBalanceError(ReactionBalanceErrorCode.MISSING_PRODUCTS, "No products found.", R.string.ui_balancer_no_products_found))
     }
 
     val formulas = reactants + products
@@ -61,7 +66,9 @@ fun balanceChemicalReaction(equation: String): BalancedReactionResult {
             return BalancedReactionResult(
                 error = ReactionBalanceError(
                     ReactionBalanceErrorCode.INVALID_FORMULA,
-                    "Cannot parse formula: $formula"
+                    "Cannot parse formula: $formula",
+                    R.string.ui_balancer_cannot_parse_formula_s,
+                    listOf(formula)
                 )
             )
         }
@@ -69,7 +76,7 @@ fun balanceChemicalReaction(equation: String): BalancedReactionResult {
 
     val elements = parsed.flatMap { it.keys }.distinct().sorted()
     if (elements.isEmpty()) {
-        return BalancedReactionResult(error = ReactionBalanceError(ReactionBalanceErrorCode.INVALID_FORMULA, "No elements found."))
+        return BalancedReactionResult(error = ReactionBalanceError(ReactionBalanceErrorCode.INVALID_FORMULA, "No elements found.", R.string.ui_balancer_no_elements_found))
     }
 
     val matrix = Array(elements.size) { row ->
@@ -96,7 +103,8 @@ fun balanceChemicalReaction(equation: String): BalancedReactionResult {
     return BalancedReactionResult(
         error = ReactionBalanceError(
             ReactionBalanceErrorCode.UNSOLVABLE,
-            "Could not balance this equation. Check that all elements appear on both sides."
+            "Could not balance this equation. Check that all elements appear on both sides.",
+            R.string.ui_balancer_could_not_balance
         )
     )
 }

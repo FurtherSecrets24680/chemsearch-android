@@ -188,7 +188,6 @@
     <string name="ui_hazard_statements" translatable="true">ESTATÍSTICAS PERIGAS</string>
     <string name="ui_sort_recents" translatable="true">Ordenar recentes</string>
     <string name="ui_downloading_for_offline_use" translatable="true">Download para uso offline</string>
-    <string name="ui_share_compound" translatable="true">Composto de compartilhamento</string>
     <string name="ui_2d_structure" translatable="true">Estrutura 2D</string>
     <string name="ui_download_2d_structure" translatable="true">Baixar estrutura 2D</string>
     <string name="ui_2d_structure_zoom" translatable="true">Estrutura 2D (zoom)</string>
@@ -407,7 +406,6 @@
     <string name="ui_e_g_kmno4" translatable="true">ex: KMnO4</string>
     <string name="ui_charge" translatable="true">Carga</string>
     <string name="ui_find_oxidation_states" translatable="true">Encontrar Estados de Oxidação</string>
-    <string name="ui_oxidation_states" translatable="true">OXIDAÇÃO ESTATÍSTICA</string>
     <string name="ui_examples" translatable="true">EXEMPLOS</string>
     <string name="ui_smiles_visualizer" translatable="true">Visualizador de SMILES</string>
     <string name="ui_smiles_string" translatable="true">String SMILES</string>
@@ -490,7 +488,6 @@
     <string name="ui_could_not_parse_3d_data" translatable="true">Não foi possível analisar dados 3D</string>
     <!-- WelcomeScreen.kt -->
     <string name="ui_set_your_look" translatable="true">Defina sua aparência</string>
-    <string name="ui_appearance" translatable="true">APARÊNCIA</string>
     <string name="ui_choose_theme_accent_body" translatable="true">Escolha o tema e a pesquisa de cores em destaque deve ser usada entre as localizações, ferramentas e configurações.</string>
     <string name="ui_light" translatable="true">Fino</string>
     <string name="ui_dark" translatable="true">Escuro</string>

@@ -142,12 +142,12 @@ fun IsomerSearchScreen(
 
     if (showInfo) {
         InfoDialog(
-            title = stringResource(R.string.ui_isomer_search),
+            titleRes = R.string.ui_isomer_search,
             entries = listOf(
-                stringResource(R.string.ui_what_it_does) to stringResource(R.string.ui_isomer_what_it_does_desc),
-                stringResource(R.string.ui_how_to_use_it) to stringResource(R.string.ui_isomer_how_to_desc),
-                stringResource(R.string.ui_results) to stringResource(R.string.ui_isomer_results_desc),
-                stringResource(R.string.ui_limitations) to stringResource(R.string.ui_isomer_limitations_desc)
+                R.string.ui_what_it_does to R.string.ui_isomer_what_it_does_desc,
+                R.string.ui_how_to_use_it to R.string.ui_isomer_how_to_desc,
+                R.string.ui_results to R.string.ui_isomer_results_desc,
+                R.string.ui_limitations to R.string.ui_isomer_limitations_desc
             ),
             onDismiss = { showInfo = false }
         )
@@ -252,7 +252,7 @@ fun IsomerSearchScreen(
                         modifier = Modifier.size(18.dp)
                     )
                 },
-                text = { Text("Compare ${compareQueries.size}") },
+                text = { Text(stringResource(R.string.ui_compare_count, compareQueries.size)) },
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier
@@ -323,8 +323,8 @@ private fun IsotopeFilterRow(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    if (includeIsotopes) "Showing isotope-substituted compounds too."
-                    else "$hiddenCount isotope result${if (hiddenCount == 1) "" else "s"} hidden.",
+                    if (includeIsotopes) stringResource(R.string.ui_isotope_showing_substituted)
+                    else stringResource(R.string.ui_isotope_results_hidden, hiddenCount, if (hiddenCount == 1) "" else "s"),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                 )
@@ -348,7 +348,7 @@ private fun IsomerSearchHeader(
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         IconButton(onClick = onBack, modifier = Modifier.size(42.dp)) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = MaterialTheme.colorScheme.primary)
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.ui_back), tint = MaterialTheme.colorScheme.primary)
         }
         Column(modifier = Modifier.weight(1f)) {
             Text(stringResource(R.string.ui_isomer_search),
@@ -362,7 +362,7 @@ private fun IsomerSearchHeader(
             )
         }
         IconButton(onClick = onInfo, modifier = Modifier.size(42.dp)) {
-            Icon(Icons.Default.Info, "Isomer search info", tint = MaterialTheme.colorScheme.primary)
+            Icon(Icons.Default.Info, stringResource(R.string.ui_isomer_search_info), tint = MaterialTheme.colorScheme.primary)
         }
     }
 }
@@ -427,7 +427,7 @@ fun IsomerSearchBar(
                 if (query.isNotEmpty()) {
                     IconButton(onClick = onClear) {
                         Icon(
-                            Icons.Default.Close, "Clear formula",
+                            Icons.Default.Close, stringResource(R.string.ui_clear_formula),
                             tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.45f),
                             modifier = Modifier.size(17.dp)
                         )
@@ -441,7 +441,7 @@ fun IsomerSearchBar(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowForward, "Find Isomers",
+                            Icons.AutoMirrored.Filled.ArrowForward, stringResource(R.string.ui_find_isomers),
                             tint = Color.White,
                             modifier = Modifier.size(16.dp)
                         )
@@ -477,13 +477,13 @@ fun IsomerResultsHeader(formula: String, count: Int) {
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(
-                text = "Structural Isomers",
+                text = stringResource(R.string.ui_structural_isomers),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = "$count result${if (count != 1) "s" else ""} for ${formula.toFormulaSubscript()}",
+                text = stringResource(R.string.ui_results_count_for_formula, count, if (count != 1) "s" else "", formula.toFormulaSubscript()),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.45f)
             )
@@ -542,7 +542,7 @@ fun IsomerCard(
             ) {
                 AsyncImage(
                     model = imageUrl,
-                    contentDescription = "2D structure of ${isomer.title}",
+                    contentDescription = stringResource(R.string.ui_2d_structure_of, isomer.title),
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(4.dp),
@@ -570,7 +570,7 @@ fun IsomerCard(
                     modifier = Modifier.wrapContentWidth()
                 ) {
                     Text(
-                        text = "CID ${isomer.cid}",
+                        text = stringResource(R.string.ui_cid_label, isomer.cid.toString()),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
@@ -585,7 +585,7 @@ fun IsomerCard(
                         modifier = Modifier.wrapContentWidth()
                     ) {
                         Text(
-                            text = "isotope",
+                            text = stringResource(R.string.ui_isotope),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
@@ -625,15 +625,13 @@ fun IsomerLoadingState() {
                 compactMode = compactMode
             )
             Text(
-                isomerLoadingStatusText,
+                stringResource(R.string.ui_searching_pubchem_for_isomers),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
             )
         }
     }
 }
-
-internal const val isomerLoadingStatusText = "Searching PubChem for isomers…"
 
 internal fun isomerLoadingAnimationLayout(compactMode: Boolean): SearchLoadingAnimationLayout =
     searchLoadingAnimationLayout(compactMode)

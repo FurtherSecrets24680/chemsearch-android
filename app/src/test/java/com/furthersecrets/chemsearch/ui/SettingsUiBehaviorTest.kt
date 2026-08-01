@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.ui
 
+import com.furthersecrets.chemsearch.R
 import com.furthersecrets.chemsearch.data.UpdateStatus
 import com.furthersecrets.chemsearch.data.CacheRetention
 import com.furthersecrets.chemsearch.data.CacheSizeLimit
@@ -21,8 +22,8 @@ class SettingsUiBehaviorTest {
 
     @Test
     fun amoledModeCopyUsesRequestedName() {
-        assertEquals("AMOLED Mode", amoledModeTitle())
-        assertEquals("Turn on dark mode to use AMOLED Mode", amoledModeSubtitle(isDark = false))
+        assertEquals(R.string.ui_amoled_mode, amoledModeTitle())
+        assertEquals(R.string.ui_amoled_mode_light_subtitle, amoledModeSubtitle(isDark = false))
     }
 
     @Test
@@ -33,21 +34,21 @@ class SettingsUiBehaviorTest {
             updateDownloadProgress = 0.42f
         )
 
-        assertEquals("", updateDownloadActionLabel(status))
-        assertEquals("Downloading update (42%)", updateDownloadSubtitle(status))
+        assertEquals(0, updateDownloadActionLabel(status))
+        assertEquals(R.string.ui_downloading_update_d, updateDownloadSubtitle(status))
     }
 
     @Test
     fun newSettingsOptionsUseShortReadableLabels() {
-        assertEquals("3D", defaultStructureViewLabel(DefaultStructureView.THREE_D))
-        assertEquals("Complete", offlineDownloadQualityLabel(OfflineDownloadQuality.COMPLETE))
-        assertEquals("Conventional", formulaDisplayStyleLabel(FormulaDisplayStyle.CONVENTIONAL))
-        assertEquals("Hill", formulaDisplayStyleLabel(FormulaDisplayStyle.HILL))
-        assertEquals("10 MB", cacheSizeLimitLabel(CacheSizeLimit.MB_10))
-        assertEquals("100 MB", cacheSizeLimitLabel(CacheSizeLimit.MB_100))
-        assertEquals("Daily", cacheRetentionLabel(CacheRetention.AUTO_CLEAR_1_DAY))
-        assertEquals("Weekly", cacheRetentionLabel(CacheRetention.AUTO_CLEAR_7_DAYS))
-        assertEquals("Monthly", cacheRetentionLabel(CacheRetention.AUTO_CLEAR_30_DAYS))
+        assertEquals(R.string.ui_structure_view_3d, defaultStructureViewLabel(DefaultStructureView.THREE_D))
+        assertEquals(R.string.ui_offline_quality_complete, offlineDownloadQualityLabel(OfflineDownloadQuality.COMPLETE))
+        assertEquals(R.string.ui_formula_style_conventional, formulaDisplayStyleLabel(FormulaDisplayStyle.CONVENTIONAL))
+        assertEquals(R.string.ui_formula_style_hill, formulaDisplayStyleLabel(FormulaDisplayStyle.HILL))
+        assertEquals(R.string.ui_cache_limit_10_mb, cacheSizeLimitLabel(CacheSizeLimit.MB_10))
+        assertEquals(R.string.ui_cache_limit_100_mb, cacheSizeLimitLabel(CacheSizeLimit.MB_100))
+        assertEquals(R.string.ui_cache_retention_daily, cacheRetentionLabel(CacheRetention.AUTO_CLEAR_1_DAY))
+        assertEquals(R.string.ui_cache_retention_weekly, cacheRetentionLabel(CacheRetention.AUTO_CLEAR_7_DAYS))
+        assertEquals(R.string.ui_cache_retention_monthly, cacheRetentionLabel(CacheRetention.AUTO_CLEAR_30_DAYS))
     }
 
     @Test

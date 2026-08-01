@@ -1,12 +1,14 @@
 package com.furthersecrets.chemsearch.data
 
-const val GHS_SAFETY_DISCLAIMER =
-    "Reference only. This does not replace an official SDS, local lab rules, or supervisor guidance."
+import androidx.annotation.StringRes
+import com.furthersecrets.chemsearch.R
+
+val GHS_SAFETY_DISCLAIMER_RES = R.string.ui_ghs_disclaimer
 
 data class HazardStatementInfo(
     val code: String?,
     val statement: String,
-    val meaning: String?
+    @StringRes val meaningRes: Int?
 )
 
 data class GhsSafetySummary(
@@ -15,23 +17,23 @@ data class GhsSafetySummary(
     val hazards: List<HazardStatementInfo>,
     val source: SourceMetadata,
     val retrievedAt: Long?,
-    val disclaimer: String = GHS_SAFETY_DISCLAIMER
+    @StringRes val disclaimerRes: Int = GHS_SAFETY_DISCLAIMER_RES
 )
 
 private val hazardMeanings = mapOf(
-    "H200" to "Unstable explosive",
-    "H225" to "Highly flammable liquid and vapour",
-    "H226" to "Flammable liquid and vapour",
-    "H301" to "Toxic if swallowed",
-    "H302" to "Harmful if swallowed",
-    "H311" to "Toxic in contact with skin",
-    "H314" to "Causes severe skin burns and eye damage",
-    "H315" to "Causes skin irritation",
-    "H319" to "Causes serious eye irritation",
-    "H331" to "Toxic if inhaled",
-    "H335" to "May cause respiratory irritation",
-    "H350" to "May cause cancer",
-    "H400" to "Very toxic to aquatic life"
+    "H200" to R.string.ui_hazard_unstable_explosive,
+    "H225" to R.string.ui_hazard_highly_flammable,
+    "H226" to R.string.ui_hazard_flammable_liquid,
+    "H301" to R.string.ui_hazard_toxic_if_swallowed,
+    "H302" to R.string.ui_hazard_harmful_if_swallowed,
+    "H311" to R.string.ui_hazard_toxic_skin,
+    "H314" to R.string.ui_hazard_severe_burns,
+    "H315" to R.string.ui_hazard_skin_irritation,
+    "H319" to R.string.ui_hazard_eye_irritation,
+    "H331" to R.string.ui_hazard_toxic_if_inhaled,
+    "H335" to R.string.ui_hazard_respiratory_irritation,
+    "H350" to R.string.ui_hazard_may_cause_cancer,
+    "H400" to R.string.ui_hazard_very_toxic_aquatic
 )
 
 private val hazardCodePattern = Regex("\\bH\\d{3}\\b")
@@ -50,6 +52,6 @@ fun hazardInfo(statement: String): HazardStatementInfo {
     return HazardStatementInfo(
         code = code,
         statement = statement,
-        meaning = code?.let { hazardMeanings[it] }
+        meaningRes = code?.let { hazardMeanings[it] }
     )
 }

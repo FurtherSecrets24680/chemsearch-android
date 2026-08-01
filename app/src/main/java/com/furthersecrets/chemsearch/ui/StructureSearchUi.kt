@@ -2,6 +2,7 @@ package com.furthersecrets.chemsearch.ui
 
 import androidx.annotation.StringRes
 import com.furthersecrets.chemsearch.R
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import android.content.ClipData
 import android.content.Context
@@ -144,12 +145,12 @@ private enum class StructureCanvasMode {
 
 internal fun clampStructureAtomCharge(charge: Int): Int =
     charge.coerceIn(-StructureChargeLimit, StructureChargeLimit)
-
-internal fun structureSearchBlockedMessage(sketch: StructureSketch): String? = when {
-    sketch.atoms.size == 1 -> "Draw at least two connected atoms before searching."
-    sketch.atoms.size > 1 && !sketch.canSearch -> "Connect the atoms before searching."
-    else -> null
-}
+internal fun structureSearchBlockedMessage(sketch: StructureSketch): Int? =
+    when {
+        sketch.atoms.size == 1 -> R.string.ui_structure_search_blocked_two_atoms
+        sketch.atoms.size > 1 && !sketch.canSearch -> R.string.ui_structure_search_blocked_connect
+        else -> null
+    }
 
 internal fun shouldShowStructureSearchResultsDialog(state: StructureSearchUiState): Boolean =
     state.isLoading || state.results.isNotEmpty() || !state.error.isNullOrBlank()
@@ -318,7 +319,7 @@ fun StructureSearchScreen(
             onDismiss = { showExportDialog = false },
             onCopy = { molfile ->
                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
-                clipboard.setPrimaryClip(ClipData.newPlainText("ChemSearch molfile", molfile))
+                clipboard.setPrimaryClip(ClipData.newPlainText(context.getString(R.string.ui_clipboard_molfile), molfile))
                 Toast.makeText(context, context.getString(R.string.ui_structure_copied), Toast.LENGTH_SHORT).show()
             },
             onShare = { molfile ->
@@ -417,7 +418,7 @@ fun StructureSearchScreen(
                             canvasMode = StructureCanvasMode.SELECT
                             selectedTemplate = null
                             selectedChainTemplate = null
-                            selectedToolLabel = "Select"
+                            selectedToolLabel = context.getString(R.string.ui_select)
                         },
                         onClean = { onStandardize(sketch) },
                         onImport = { showImportDialog = true },
@@ -463,7 +464,7 @@ fun StructureSearchScreen(
                             if (it != null) {
                                 selectedAtomId = null
                                 sketch.bonds.firstOrNull { bond -> bond.id == it }?.let { bond ->
-                                    selectedToolLabel = bondToolLabel(bond.order)
+                                    selectedToolLabel = context.getString(bondToolLabel(bond.order))
                                 }
                             }
                             selectedMolecule = false
@@ -489,7 +490,7 @@ fun StructureSearchScreen(
                             selectedBond = it
                             selectedTemplate = null
                             selectedChainTemplate = null
-                            selectedToolLabel = bondToolLabel(it)
+                            selectedToolLabel = context.getString(bondToolLabel(it))
                         },
                         onCharge = { delta ->
                             selectedAtomId?.let { id ->
@@ -622,7 +623,7 @@ fun StructureSearchScreen(
                         resultsDialogArmed = true
                         onSearch(sketch)
                     } else {
-                        blockedSearchMessage = message
+                        blockedSearchMessage = message?.let { context.getString(it) }
                     }
                 },
                 onConfigClick = { showSearchConfigDialog = true },
@@ -680,7 +681,7 @@ private fun StructureSearchHeader(
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         IconButton(onClick = onBack, modifier = Modifier.size(42.dp)) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = MaterialTheme.colorScheme.primary)
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.ui_back), tint = MaterialTheme.colorScheme.primary)
         }
         Column(modifier = Modifier.weight(1f)) {
             Text(stringResource(R.string.ui_structure_search_2),
@@ -694,7 +695,7 @@ private fun StructureSearchHeader(
             )
         }
         IconButton(onClick = onInfo, modifier = Modifier.size(42.dp)) {
-            Icon(Icons.Default.Info, "Structure search info", tint = MaterialTheme.colorScheme.primary)
+            Icon(Icons.Default.Info, stringResource(R.string.ui_structure_search_info), tint = MaterialTheme.colorScheme.primary)
         }
     }
 }
@@ -788,7 +789,7 @@ private fun StructureToolPanel(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                StructurePickerLabel("Atoms")
+                StructurePickerLabel(stringResource(R.string.ui_atoms))
                 Row(
                     modifier = Modifier.horizontalScroll(elementScrollState),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -820,7 +821,7 @@ private fun StructureToolPanel(
             }
 
             Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                StructurePickerLabel("Bond type")
+                StructurePickerLabel(stringResource(R.string.ui_bond_type))
                 Row(
                     modifier = Modifier.horizontalScroll(bondTemplateScrollState),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -834,7 +835,7 @@ private fun StructureToolPanel(
             }
 
             Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                StructurePickerLabel("Templates")
+                StructurePickerLabel(stringResource(R.string.ui_templates))
                 Row(
                     modifier = Modifier.horizontalScroll(rememberScrollState()),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -861,7 +862,7 @@ private fun StructureToolPanel(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Selected: ${selectedAtom?.let { it.element + chargeLabel(it.charge) } ?: selectedToolLabel}",
+                    text = stringResource(R.string.ui_selected_s, selectedAtom?.let { it.element + chargeLabel(it.charge) } ?: selectedToolLabel),
                     modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.58f),
@@ -1220,7 +1221,7 @@ private fun StructureWarningsCard(warnings: List<StructureSearchWarning>) {
         ) {
             warnings.forEach { warning ->
                 Text(
-                    text = warning.message,
+                    text = stringResource(warning.messageRes),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.74f)
                 )
@@ -1396,7 +1397,7 @@ private fun PeriodicTableDialog(
                         )
                     }
                     IconButton(onClick = onDismiss) {
-                        Icon(Icons.Default.Close, "Close")
+                        Icon(Icons.Default.Close, stringResource(R.string.ui_close))
                     }
                 }
 
@@ -1768,6 +1769,7 @@ private fun StructureSketchCanvas(
     val surface = MaterialTheme.colorScheme.surface
     val onSurface = MaterialTheme.colorScheme.onSurface
     val outline = MaterialTheme.colorScheme.outline
+    val placeholderText = stringResource(R.string.ui_tap_to_place_atoms)
 
     Card(
         shape = RoundedCornerShape(24.dp),
@@ -2075,7 +2077,7 @@ private fun StructureSketchCanvas(
                             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
                         }
                         canvas.nativeCanvas.drawText(
-                            "Tap to place atoms",
+                            placeholderText,
                             size.width / 2f,
                             size.height / 2f,
                             paint
@@ -2145,14 +2147,14 @@ private fun StructureSearchControls(
                 Column(modifier = Modifier.weight(1f)) {
                     Text(stringResource(R.string.ui_search_mode), fontWeight = FontWeight.Bold)
                     Text(
-                        mode.description,
+                        stringResource(mode.descriptionRes),
                         color = MaterialTheme.colorScheme.onSurface.copy(0.52f),
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
                 Box {
                     TextButton(onClick = { expanded = true }) {
-                        Text(mode.label, fontWeight = FontWeight.Bold)
+                        Text(stringResource(mode.labelRes), fontWeight = FontWeight.Bold)
                         Icon(Icons.Default.KeyboardArrowDown, null, modifier = Modifier.size(16.dp))
                     }
                     SettingsDropdownMenu(
@@ -2163,9 +2165,9 @@ private fun StructureSearchControls(
                             DropdownMenuItem(
                                 text = {
                                     Column {
-                                        Text(item.label, fontWeight = FontWeight.Bold)
+                                        Text(stringResource(item.labelRes), fontWeight = FontWeight.Bold)
                                         Text(
-                                            item.description,
+                                            stringResource(item.descriptionRes),
                                             style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.onSurface.copy(0.52f)
                                         )
@@ -2190,7 +2192,7 @@ private fun StructureSearchControls(
                         onClick = { maxRecordsExpanded = true },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("$maxRecords results", maxLines = 1)
+                        Text(stringResource(R.string.ui_d_s_results, maxRecords), maxLines = 1)
                         Spacer(Modifier.width(4.dp))
                         Icon(Icons.Default.KeyboardArrowDown, null, modifier = Modifier.size(16.dp))
                     }
@@ -2200,7 +2202,7 @@ private fun StructureSearchControls(
                     ) {
                         listOf(10, 20, 30, 50).forEach { value ->
                             DropdownMenuItem(
-                                text = { Text("$value results") },
+                                text = { Text(stringResource(R.string.ui_d_s_results, value)) },
                                 onClick = {
                                     onMaxRecordsChange(value)
                                     maxRecordsExpanded = false
@@ -2215,7 +2217,7 @@ private fun StructureSearchControls(
                         modifier = Modifier.fillMaxWidth(),
                         enabled = mode == StructureSearchMode.SIMILAR
                     ) {
-                        Text("$similarityThreshold% similar", maxLines = 1)
+                        Text(stringResource(R.string.ui_d_percent_similar, similarityThreshold), maxLines = 1)
                         Spacer(Modifier.width(4.dp))
                         Icon(Icons.Default.KeyboardArrowDown, null, modifier = Modifier.size(16.dp))
                     }
@@ -2225,7 +2227,7 @@ private fun StructureSearchControls(
                     ) {
                         listOf(70, 80, 85, 90, 95).forEach { value ->
                             DropdownMenuItem(
-                                text = { Text("$value% similarity") },
+                                text = { Text(stringResource(R.string.ui_d_percent_similarity, value)) },
                                 onClick = {
                                     onThresholdChange(value)
                                     thresholdExpanded = false
@@ -2266,7 +2268,7 @@ private fun StructureSearchConfigDialog(
                 ) {
                     Text(stringResource(R.string.ui_structure_search), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold)
                     IconButton(onClick = onDismiss) {
-                        Icon(Icons.Default.Close, "Close")
+                        Icon(Icons.Default.Close, stringResource(R.string.ui_close))
                     }
                 }
                 StructureSearchControls(
@@ -2333,7 +2335,10 @@ private fun FloatingStructureSearchButton(
                     )
                 }
                 Spacer(Modifier.width(10.dp))
-                Text(if (isLoading) "Searching..." else "Search structure", fontWeight = FontWeight.Bold)
+                Text(
+                    stringResource(if (isLoading) R.string.ui_searching else R.string.ui_search_structure),
+                    fontWeight = FontWeight.Bold
+                )
             }
             Surface(
                 modifier = Modifier.size(58.dp).clickable(onClick = onConfigClick),
@@ -2390,18 +2395,18 @@ private fun StructureSearchResultsDialog(
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             if (!state.error.isNullOrBlank() && !state.isLoading && state.results.isEmpty()) {
-                                "Structure search failed"
+                                stringResource(R.string.ui_structure_search_failed)
                             } else {
-                                "Matching results"
+                                stringResource(R.string.ui_matching_results)
                             },
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.ExtraBold
                         )
                         Text(
                             when {
-                                state.isLoading -> "Searching PubChem..."
-                                !state.error.isNullOrBlank() && state.results.isEmpty() -> "Try a simpler drawing or clean the structure."
-                                else -> "${state.results.size} match${if (state.results.size == 1) "" else "es"} found"
+                                state.isLoading -> stringResource(R.string.ui_searching_pubchem)
+                                !state.error.isNullOrBlank() && state.results.isEmpty() -> stringResource(R.string.ui_try_a_simpler_drawing_or_clean_the_structure)
+                                else -> pluralStringResource(R.plurals.ui_matches_found, state.results.size, state.results.size)
                             },
                             color = MaterialTheme.colorScheme.onSurface.copy(0.58f),
                             style = MaterialTheme.typography.bodySmall
@@ -2507,8 +2512,8 @@ private fun StructureSearchResults(
                         }
                         Text(
                             buildString {
-                                append("CID ${result.cid}")
-                                if (result.molecularWeight.isNotBlank()) append(" • MW ${result.molecularWeight}")
+                                append(stringResource(R.string.ui_cid_label, result.cid.toString()))
+                                if (result.molecularWeight.isNotBlank()) append(" • " + stringResource(R.string.ui_mw, result.molecularWeight))
                             },
                             color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
                             style = MaterialTheme.typography.bodySmall,
@@ -2605,15 +2610,15 @@ private fun distanceToSegment(point: Offset, start: Offset, end: Offset): Double
 private fun sketchScale(size: IntSize): Float =
     (min(size.width, size.height).coerceAtLeast(1) / 7.0f)
 
-private fun bondToolLabel(order: BondOrder): String =
+private fun bondToolLabel(order: BondOrder): Int =
     when (order) {
-        BondOrder.SINGLE -> "Single bond"
-        BondOrder.DOUBLE -> "Double bond"
-        BondOrder.TRIPLE -> "Triple bond"
-        BondOrder.AROMATIC -> "Aromatic bond"
+        BondOrder.SINGLE -> R.string.ui_bond_single
+        BondOrder.DOUBLE -> R.string.ui_bond_double
+        BondOrder.TRIPLE -> R.string.ui_bond_triple
+        BondOrder.AROMATIC -> R.string.ui_bond_aromatic
     }
 
-private fun bondToolLabel(order: Int): String =
+private fun bondToolLabel(order: Int): Int =
     bondToolLabel(BondOrder.entries.firstOrNull { it.molfileValue == order } ?: BondOrder.SINGLE)
 
 private fun ringTemplateLabel(template: RingTemplate): String =

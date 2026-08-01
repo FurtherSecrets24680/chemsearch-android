@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.data
 
+import com.furthersecrets.chemsearch.R
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -18,8 +19,8 @@ class GhsSafetyEnrichmentTest {
 
         assertEquals("PubChem GHS Classification", summary.source.name)
         assertEquals(2, summary.hazards.size)
-        assertEquals("Highly flammable liquid and vapour", summary.hazards.first { it.code == "H225" }.meaning)
-        assertTrue(summary.disclaimer.contains("does not replace", ignoreCase = true))
+        assertEquals(R.string.ui_hazard_highly_flammable, summary.hazards.first { it.code == "H225" }.meaningRes)
+        assertEquals(R.string.ui_ghs_disclaimer, summary.disclaimerRes)
         assertNotNull(summary.retrievedAt)
     }
 }

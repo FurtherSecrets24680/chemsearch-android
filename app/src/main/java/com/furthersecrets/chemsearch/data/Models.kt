@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.data
 
+import com.furthersecrets.chemsearch.R
 import com.google.gson.JsonElement
 import com.google.gson.annotations.SerializedName
 
@@ -268,80 +269,80 @@ data class PubChemSectionText(
 
 enum class DescSource { PUBCHEM, WIKI, AI }
 enum class AiProvider(
-    val displayName: String,
+    val displayNameRes: Int,
     val shortName: String,
     val modelName: String,
     val defaultModels: List<String>,
     val keyPref: String,
     val helpHost: String,
-    val description: String
+    val descriptionRes: Int
 ) {
     GEMINI(
-        displayName = "Google Gemini",
+        displayNameRes = R.string.ui_credit_google_gemini,
         shortName = "Gemini",
         modelName = "gemini-flash-latest",
         defaultModels = listOf("gemini-flash-latest", "gemini-1.5-flash-latest", "gemini-1.5-pro-latest"),
         keyPref = "gemini_key",
         helpHost = "aistudio.google.com",
-        description = "Fast general chemistry summaries from Google."
+        descriptionRes = R.string.ui_credit_google_gemini_desc
     ),
     GROQ(
-        displayName = "Groq Cloud",
+        displayNameRes = R.string.ui_credit_groq_cloud,
         shortName = "Groq",
         modelName = "openai/gpt-oss-120b",
         defaultModels = listOf("openai/gpt-oss-120b", "openai/gpt-oss-20b", "llama-3.3-70b-versatile"),
         keyPref = "groq_key",
         helpHost = "console.groq.com",
-        description = "Very fast OpenAI-compatible chat completions."
+        descriptionRes = R.string.ui_credit_groq_cloud_desc
     ),
     OPENAI(
-        displayName = "OpenAI",
+        displayNameRes = R.string.ui_credit_openai,
         shortName = "OpenAI",
         modelName = "gpt-4o-mini",
         defaultModels = listOf("gpt-4o-mini", "gpt-4o", "gpt-4.1-mini"),
         keyPref = "openai_key",
         helpHost = "platform.openai.com/api-keys",
-        description = "Balanced AI descriptions using OpenAI chat completions."
+        descriptionRes = R.string.ui_credit_openai_desc
     ),
     OPENROUTER(
-        displayName = "OpenRouter",
+        displayNameRes = R.string.ui_credit_openrouter,
         shortName = "OpenRouter",
         modelName = "openrouter/auto",
         defaultModels = listOf("openrouter/auto", "openai/gpt-4o-mini", "anthropic/claude-3.5-haiku"),
         keyPref = "openrouter_key",
         helpHost = "openrouter.ai/keys",
-        description = "Routes requests to an available model through OpenRouter."
+        descriptionRes = R.string.ui_credit_openrouter_desc
     ),
     MISTRAL(
-        displayName = "Mistral AI",
+        displayNameRes = R.string.ui_credit_mistral_ai,
         shortName = "Mistral",
         modelName = "mistral-small-latest",
         defaultModels = listOf("mistral-small-latest", "mistral-medium-latest", "mistral-large-latest"),
         keyPref = "mistral_key",
         helpHost = "console.mistral.ai/api-keys",
-        description = "Lightweight summaries from Mistral's chat API."
+        descriptionRes = R.string.ui_credit_mistral_ai_desc
     )
 }
 enum class MolTab { TWO_D, THREE_D }
 enum class SdfSource { PUBCHEM, GENERATED }
 enum class AppColorScheme { BLUE, VIOLET, EMERALD, ROSE, AMBER }
-enum class AppLanguage(val preferenceKey: String, val localeTag: String?, val displayName: String) {
-    SYSTEM("system", null, "System default"),
-    ENGLISH("en", "en", "English"),
-    DANISH("da", "da", "Dansk"),
-    GERMAN("de", "de", "Deutsch"),
-    GREEK("el", "el", "Ελληνικά"),
-    SPANISH("es", "es", "Español"),
-    FINNISH("fi", "fi", "Suomi"),
-    FRENCH("fr", "fr", "Français"),
-    ITALIAN("it", "it", "Italiano"),
-    JAPANESE("ja", "ja", "日本語"),
-    DUTCH("nl", "nl", "Nederlands"),
-    NORWEGIAN("no", "no", "Norsk"),
-    POLISH("pl", "pl", "Polski"),
-    PORTUGUESE("pt", "pt", "Português"),
-    RUSSIAN("ru", "ru", "Русский"),
-    SWEDISH("sv", "sv", "Svenska");
+enum class AppLanguage(val preferenceKey: String, val localeTag: String?, val displayNameRes: Int) {
+    SYSTEM("system", null, R.string.ui_language_system_default),
+    ENGLISH("en", "en", R.string.ui_language_english),
+    DANISH("da", "da", R.string.ui_language_danish),
+    GERMAN("de", "de", R.string.ui_language_german),
+    GREEK("el", "el", R.string.ui_language_greek),
+    SPANISH("es", "es", R.string.ui_language_spanish),
+    FINNISH("fi", "fi", R.string.ui_language_finnish),
+    FRENCH("fr", "fr", R.string.ui_language_french),
+    ITALIAN("it", "it", R.string.ui_language_italian),
+    JAPANESE("ja", "ja", R.string.ui_language_japanese),
+    DUTCH("nl", "nl", R.string.ui_language_dutch),
+    NORWEGIAN("no", "no", R.string.ui_language_norwegian),
+    POLISH("pl", "pl", R.string.ui_language_polish),
+    PORTUGUESE("pt", "pt", R.string.ui_language_portuguese),
+    RUSSIAN("ru", "ru", R.string.ui_language_russian),
+    SWEDISH("sv", "sv", R.string.ui_language_swedish);
 
     companion object {
         fun fromPreferenceKey(key: String?): AppLanguage =

@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.furthersecrets.chemsearch.R
 import com.furthersecrets.chemsearch.data.*
 import com.furthersecrets.chemsearch.data.local.ChemSearchDatabase
 import com.furthersecrets.chemsearch.data.local.OfflineDownloadRepository
@@ -268,7 +269,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     if (latestTag.isBlank()) {
                         currentStatus.copy(
                             isChecking = false,
-                            error = "No release tag found.",
+                            error = getApplication<Application>().getString(R.string.ui_error_no_release_tag),
                             lastCheckedAt = now
                         )
                     } else {
@@ -294,7 +295,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 onFailure = { e ->
                     currentStatus.copy(
                         isChecking = false,
-                        error = e.message ?: "Update check failed.",
+                        error = e.message ?: getApplication<Application>().getString(R.string.ui_error_update_check_failed),
                         lastCheckedAt = now
                     )
                 }
@@ -321,7 +322,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
         val downloadUrl = status.downloadUrl?.takeIf { it.isNotBlank() }
         if (downloadUrl == null) {
-            _updateStatus.update { it.copy(error = "No APK download link found.") }
+            _updateStatus.update { it.copy(error = getApplication<Application>().getString(R.string.ui_error_no_apk_download_link)) }
             return
         }
 
@@ -368,7 +369,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                         isDownloadingUpdate = false,
                         updateDownloadProgress = null,
                         downloadedUpdateApkPath = null,
-                        error = e.message ?: "Update download failed."
+                        error = e.message ?: getApplication<Application>().getString(R.string.ui_error_update_download_failed)
                     )
                 }
                 DebugLog.e("ChemSearch", "Update download failed: ${e.message}")
@@ -394,7 +395,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
         ApiClient.rawHttp.newCall(request).execute().use { response ->
             if (!response.isSuccessful) {
-                throw IOException("Download failed: HTTP ${response.code}")
+                throw IOException(getApplication<Application>().getString(R.string.ui_error_download_failed_http, response.code))
             }
             val body = response.body
             val totalBytes = body.contentLength()
@@ -423,7 +424,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
         if (temp.length() == 0L) {
             temp.delete()
-            throw IOException("Downloaded APK was empty.")
+            throw IOException(getApplication<Application>().getString(R.string.ui_error_apk_empty))
         }
         if (target.exists()) target.delete()
         if (!temp.renameTo(target)) {
@@ -441,7 +442,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 it.copy(
                     downloadedUpdateApkPath = null,
                     updateDownloadProgress = null,
-                    error = "Downloaded APK is missing."
+                    error = getApplication<Application>().getString(R.string.ui_error_apk_missing)
                 )
             }
             return
@@ -454,7 +455,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             runCatching { context.startActivity(settingsIntent) }
             _updateStatus.update {
-                it.copy(error = "Allow installs from ChemSearch, then tap Install.")
+                it.copy(                    error = getApplication<Application>().getString(R.string.ui_error_allow_installs))
             }
             return
         }
@@ -468,7 +469,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         runCatching { context.startActivity(installIntent) }
             .onFailure { e ->
                 _updateStatus.update {
-                    it.copy(error = e.message ?: "Could not open installer.")
+                    it.copy(error = e.message ?: getApplication<Application>().getString(R.string.ui_error_could_not_open_installer))
                 }
             }
     }
@@ -589,7 +590,14 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 DebugLog.d("ChemSearch", "Downloaded offline compound: ${snapshot.name} (CID $cid)")
             } catch (e: Exception) {
                 DebugLog.e("ChemSearch", "Offline download failed for CID $cid: ${e.message}")
-                _uiState.update { it.copy(error = "Offline download failed: ${e.message ?: "unknown error"}") }
+                _uiState.update {
+                    it.copy(
+                        error = getApplication<Application>().getString(
+                            R.string.ui_error_offline_download_failed,
+                            e.message ?: getApplication<Application>().getString(R.string.ui_unknown_error)
+                        )
+                    )
+                }
             } finally {
                 delay(250)
                 _isSavingOffline.value = false
@@ -879,7 +887,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun setAiProvider(provider: AiProvider) {
         _uiState.update { it.copy(aiProvider = provider) }
         prefs.edit().putString("ai_provider", provider.name).apply()
-        DebugLog.d("ChemSearch", "AI provider → ${provider.displayName}")
+        DebugLog.d("ChemSearch", "AI provider → ${provider.shortName}")
         if (_uiState.value.descSource == DescSource.AI) {
             fetchAiDescription()
         }
@@ -1643,7 +1651,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             if (candidates.isNotEmpty()) {
                 _uiState.update { state ->
                     if (state.cid == cid) {
-                        state.copy(sdfMessage = "PubChem 3D unavailable. Trying generated fallback...")
+                        state.copy(sdfMessage = getApplication<Application>().getString(R.string.ui_pubchem_3d_trying_generated_fallback))
                     } else state
                 }
             }
@@ -1662,13 +1670,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                         isLoadingSdf = false,
                         sdfData = fallback.sdf,
                         sdfSource = fallback.source,
-                        sdfMessage = fallback.message
+                        sdfMessage = getApplication<Application>().getString(fallback.messageRes!!, *fallback.messageArgs.toTypedArray())
                     )
                 } else {
                     val message = if (candidates.isEmpty()) {
-                        "PubChem 3D unavailable and no SMILES/InChI fallback identifier was found."
+                        getApplication<Application>().getString(R.string.ui_pubchem_3d_unavailable_no_fallback_identifier)
                     } else {
-                        "PubChem 3D and formula-matched generated fallback are unavailable for this compound."
+                        getApplication<Application>().getString(R.string.ui_pubchem_3d_and_generated_unavailable)
                     }
                     DebugLog.e("ChemSearch", message)
                     state.copy(
@@ -1898,7 +1906,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }.getOrNull()
 
         return fallback?.let {
-            OfflineSdfResult(it.sdf, it.source, it.message)
+            OfflineSdfResult(it.sdf, it.source, getApplication<Application>().getString(it.messageRes!!, *it.messageArgs.toTypedArray()))
         }
     }
 
@@ -2453,8 +2461,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             _structureSearchState.update {
                 it.copy(
                     isLoading = false,
-                    error = StructureSearchWarning.forSketch(sketch).firstOrNull()?.message
-                        ?: "Draw at least two connected atoms before searching.",
+                    error = StructureSearchWarning.forSketch(sketch).firstOrNull()?.let { warning ->
+                        getApplication<Application>().getString(warning.messageRes)
+                    } ?: getApplication<Application>().getString(R.string.ui_error_draw_at_least_two_connected_atoms),
                     results = emptyList()
                 )
             }
@@ -2924,8 +2933,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }
         val builder = NotificationCompat.Builder(context, UPDATE_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_stat_chemsearch)
-            .setContentTitle("ChemSearch update available")
-            .setContentText("Version $latestTag is available")
+            .setContentTitle(context.getString(R.string.ui_notification_update_title))
+            .setContentText(context.getString(R.string.ui_notification_update_text, latestTag))
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         if (pendingIntent != null) builder.setContentIntent(pendingIntent)
@@ -2939,10 +2948,10 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         if (manager.getNotificationChannel(UPDATE_CHANNEL_ID) != null) return
         val channel = NotificationChannel(
             UPDATE_CHANNEL_ID,
-            "Updates",
+            context.getString(R.string.ui_notification_channel_updates),
             NotificationManager.IMPORTANCE_DEFAULT
         )
-        channel.description = "Notifications when a new version is available"
+        channel.description = context.getString(R.string.ui_notification_channel_updates_desc)
         manager.createNotificationChannel(channel)
     }
 

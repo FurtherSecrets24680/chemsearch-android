@@ -31,10 +31,11 @@ import com.furthersecrets.chemsearch.data.calculateEmpiricalFormulaFromCompositi
 import com.furthersecrets.chemsearch.data.calculateEmpiricalFormulaFromMolecularFormula
 import com.furthersecrets.chemsearch.data.predictPrecipitation
 
-private enum class EmpiricalFormulaEntryMode(val label: String) {
-    PERCENT("Percent"),
-    MASS("Mass"),
-    FORMULA("Formula")
+private enum class EmpiricalFormulaEntryMode(val labelRes: Int) {
+
+    PERCENT(R.string.ui_percent),
+    MASS(R.string.ui_mass),
+    FORMULA(R.string.ui_formula)
 }
 
 private data class EmpiricalFormulaInputRow(
@@ -87,12 +88,12 @@ fun EmpiricalFormulaFinderTool() {
 
     if (showInfo) {
         InfoDialog(
-            title = stringResource(R.string.ui_empirical_formula_finder),
+            titleRes = R.string.ui_empirical_formula_finder,
             entries = listOf(
-                stringResource(R.string.ui_percent_mode) to stringResource(R.string.ui_percent_mode_desc),
-                stringResource(R.string.ui_mass_mode) to stringResource(R.string.ui_mass_mode_desc),
-                stringResource(R.string.ui_formula_mode) to stringResource(R.string.ui_formula_mode_desc),
-                stringResource(R.string.ui_molecular_formula) to stringResource(R.string.ui_molecular_formula_desc)
+                R.string.ui_percent_mode to R.string.ui_percent_mode_desc,
+                R.string.ui_mass_mode to R.string.ui_mass_mode_desc,
+                R.string.ui_formula_mode to R.string.ui_formula_mode_desc,
+                R.string.ui_molecular_formula to R.string.ui_molecular_formula_desc
             ),
             onDismiss = { showInfo = false }
         )
@@ -114,7 +115,7 @@ fun EmpiricalFormulaFinderTool() {
                         result = null
                         focusManager.clearFocus()
                     },
-                    label = { Text(option.label) },
+                    label = { Text(stringResource(option.labelRes)) },
                     colors = chemFilterChipColors(),
                     leadingIcon = if (mode == option) {
                         { Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.size(16.dp)) }
@@ -156,7 +157,7 @@ fun EmpiricalFormulaFinderTool() {
                         OutlinedTextField(
                             value = row.amount,
                             onValueChange = { value -> rows[index] = row.copy(amount = value) },
-                            label = { Text(if (mode == EmpiricalFormulaEntryMode.PERCENT) "%" else "Mass") },
+                            label = { Text(if (mode == EmpiricalFormulaEntryMode.PERCENT) stringResource(R.string.ui_percent_sign) else stringResource(R.string.ui_mass)) },
                             modifier = Modifier.weight(1.2f),
                             shape = RoundedCornerShape(12.dp),
                             singleLine = true,
@@ -217,7 +218,7 @@ fun PrecipitatePredictorTool() {
     fun predict() {
         focusManager.clearFocus()
         result = if (first.text.isBlank() || second.text.isBlank()) {
-            PrecipitationPredictionResult(error = "Enter two aqueous ionic compounds")
+            PrecipitationPredictionResult(errorRes = R.string.ui_error_enter_two_aqueous_ionic_compounds)
         } else {
             predictPrecipitation(first.text, second.text)
         }
@@ -225,12 +226,12 @@ fun PrecipitatePredictorTool() {
 
     if (showInfo) {
         InfoDialog(
-            title = stringResource(R.string.ui_precipitate_predictor),
+            titleRes = R.string.ui_precipitate_predictor,
             entries = listOf(
-                stringResource(R.string.ui_what_it_does) to stringResource(R.string.ui_pp_what_it_does_desc),
-                stringResource(R.string.ui_best_inputs) to stringResource(R.string.ui_pp_best_inputs_desc),
-                stringResource(R.string.ui_limits) to stringResource(R.string.ui_pp_limits_desc),
-                stringResource(R.string.ui_net_ionic_equation) to stringResource(R.string.ui_pp_net_ionic_desc)
+                R.string.ui_what_it_does to R.string.ui_pp_what_it_does_desc,
+                R.string.ui_best_inputs to R.string.ui_pp_best_inputs_desc,
+                R.string.ui_limits to R.string.ui_pp_limits_desc,
+                R.string.ui_net_ionic_equation to R.string.ui_pp_net_ionic_desc
             ),
             onDismiss = { showInfo = false }
         )
@@ -272,7 +273,7 @@ fun PrecipitatePredictorTool() {
                 Triple("AgCl", "AgNO3", "NaCl"),
                 Triple("BaSO4", "BaCl2", "Na2SO4"),
                 Triple("CaCO3", "Ca(OH)2", "Na2CO3"),
-                Triple("No ppt", "NaCl", "KNO3")
+                Triple(stringResource(R.string.ui_no_ppt), "NaCl", "KNO3")
             ).forEach { (label, a, b) ->
                 AssistChip(
                     onClick = {
@@ -305,25 +306,25 @@ fun PrecipitatePredictorTool() {
 
 @Composable
 private fun EmpiricalFormulaResultCard(result: EmpiricalFormulaCalculationResult) {
-    if (result.error != null) {
-        ToolErrorCard(result.error)
+    if (result.errorRes != null) {
+        ToolErrorCard(stringResource(result.errorRes, *result.errorArgs.toTypedArray()))
         return
     }
     Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                FormulaMetricCard("Empirical", toSubscriptFormula(result.empiricalFormula), Modifier.weight(1f))
-                FormulaMetricCard("Empirical mass", "${toolNumber(result.empiricalMass, 3)} g/mol", Modifier.weight(1f))
+                FormulaMetricCard(stringResource(R.string.ui_empirical), toSubscriptFormula(result.empiricalFormula), Modifier.weight(1f))
+                FormulaMetricCard(stringResource(R.string.ui_empirical_mass), "${toolNumber(result.empiricalMass, 3)} g/mol", Modifier.weight(1f))
             }
             result.molecularFormula?.let { formula ->
                 FormulaMetricCard(
-                    label = "Molecular formula",
+                    label = stringResource(R.string.ui_molecular_formula),
                     value = toSubscriptFormula(formula) + (result.molecularMultiplier?.let { "  x$it" } ?: ""),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-            result.warning?.let {
-                Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+            result.warningRes?.let {
+                Text(stringResource(it), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
             }
             if (result.rows.isNotEmpty()) {
                 HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.12f))
@@ -348,8 +349,8 @@ private fun EmpiricalFormulaResultCard(result: EmpiricalFormulaCalculationResult
 
 @Composable
 private fun PrecipitationResultCard(result: PrecipitationPredictionResult) {
-    if (result.error != null) {
-        ToolErrorCard(result.error)
+    if (result.errorRes != null) {
+        ToolErrorCard(stringResource(result.errorRes, *result.errorArgs.toTypedArray()))
         return
     }
     Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
@@ -365,13 +366,15 @@ private fun PrecipitationResultCard(result: PrecipitationPredictionResult) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(stringResource(R.string.ui_result), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface.copy(0.62f))
-                    Text(result.summary, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, textAlign = TextAlign.End)
+                    result.summaryRes?.let {
+                        Text(stringResource(it, *result.summaryArgs.toTypedArray()), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, textAlign = TextAlign.End)
+                    }
                 }
             }
 
-            FormulaDisplayLine("Molecular equation", result.molecularEquation)
-            if (result.netIonicEquation.isNotBlank()) FormulaDisplayLine("Net ionic equation", result.netIonicEquation)
-            if (result.completeIonicEquation.isNotBlank()) FormulaDisplayLine("Complete ionic equation", result.completeIonicEquation)
+            FormulaDisplayLine(stringResource(R.string.ui_molecular_equation), result.molecularEquation)
+            if (result.netIonicEquation.isNotBlank()) FormulaDisplayLine(stringResource(R.string.ui_net_ionic_equation), result.netIonicEquation)
+            if (result.completeIonicEquation.isNotBlank()) FormulaDisplayLine(stringResource(R.string.ui_complete_ionic_equation), result.completeIonicEquation)
 
             HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.12f))
             Text(stringResource(R.string.ui_product_check),
@@ -391,7 +394,7 @@ private fun PrecipitationResultCard(result: PrecipitationPredictionResult) {
                             Text(toSubscriptFormula(product.formula), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace)
                             SolubilityStatePill(product.solubility.state)
                         }
-                        Text(product.solubility.rule, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.66f))
+                        Text(stringResource(product.solubility.ruleRes), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.66f))
                     }
                 }
             }

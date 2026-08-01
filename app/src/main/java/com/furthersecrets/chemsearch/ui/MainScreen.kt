@@ -77,18 +77,6 @@ internal const val IsomerSearchRoute = "isomer_search"
 internal fun isStandalonePageRoute(route: String?): Boolean =
     route == StructureSearchRoute || route == AboutRoute || route == IsomerSearchRoute
 
-internal fun compoundExtraInfoSectionOrder(showExtraInfo: Boolean, hasExtraInfo: Boolean): List<String> = buildList {
-    add("GHS Safety")
-    if (hasExtraInfo) {
-        add("More information toggle")
-        if (showExtraInfo) {
-            add("Uses & Occurrence")
-            add("Advanced Properties")
-            add("Classification")
-        }
-    }
-}
-
 internal data class MainNavigationItem(
     val tab: AppTab,
     val selectedIcon: ChemIconSpec,
@@ -609,7 +597,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
 
     editingAiKeyProvider?.let { provider ->
         ApiKeyDialog(
-            title = context.getString(R.string.ui_api_key_for_provider, provider.displayName),
+            title = context.getString(R.string.ui_api_key_for_provider, context.getString(provider.displayNameRes)),
             link = provider.helpHost,
             current = vm.getAiKey(provider) ?: "",
             onSave = { key ->

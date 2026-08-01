@@ -548,7 +548,7 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
             onClick = { rotX = 0.25f; rotY = 0f; zoom = 1f; panOffset = Offset.Zero; autoSpin = !reduceMotion },
             modifier = Modifier.align(Alignment.TopStart).padding(4.dp).size(32.dp)
         ) {
-            Icon(Icons.Default.Refresh, "Reset view", tint = overlayTextColor.copy(0.4f), modifier = Modifier.size(16.dp))
+            Icon(Icons.Default.Refresh, stringResource(R.string.ui_reset_view), tint = overlayTextColor.copy(0.4f), modifier = Modifier.size(16.dp))
         }
 
         // Top right: hints
@@ -585,16 +585,16 @@ fun Viewer3D(cid: Long, sdfData: String, isDark: Boolean = true) {
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             Text(
-                "${parsedMolecule.atoms.size} atoms  •  ${parsedMolecule.bonds.size} bonds",
+                stringResource(R.string.ui_viewer_stats, parsedMolecule.atoms.size, parsedMolecule.bonds.size),
                 color = overlayTextColor.copy(0.35f), fontSize = 9.sp, fontFamily = FontFamily.Monospace
             )
             Text(
-                if (reduceMotion) "● Motion reduced" else if (autoSpin) "⟳ Auto-spin" else "● Paused",
+                if (reduceMotion) stringResource(R.string.ui_motion_reduced) else if (autoSpin) stringResource(R.string.ui_auto_spin) else stringResource(R.string.ui_paused),
                 color = if (autoSpin) colorScheme.primary.copy(0.78f) else overlayTextColor.copy(0.3f),
                 fontSize = 9.sp, fontFamily = FontFamily.Monospace
             )
             Text(
-                if (reduceMotion) "Disabled in settings" else "Tap to toggle",
+                if (reduceMotion) stringResource(R.string.ui_disabled_in_settings) else stringResource(R.string.ui_tap_to_toggle),
                 color = overlayTextColor.copy(0.25f),
                 fontSize = 8.sp,
                 fontFamily = FontFamily.Monospace

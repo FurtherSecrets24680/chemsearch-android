@@ -32,8 +32,8 @@ class MainNavigationItemsTest {
             val unselected = item.unselectedIcon as ChemIconSpec.Vector
             val (selectedIcon, unselectedIcon) = expected.getValue(item.tab)
 
-            assertSame("${item.label} selected icon should use the filled matching glyph", selectedIcon, selected.imageVector)
-            assertSame("${item.label} unselected icon should use the bold matching glyph", unselectedIcon, unselected.imageVector)
+            assertSame("${item.tab} selected icon should use the filled matching glyph", selectedIcon, selected.imageVector)
+            assertSame("${item.tab} unselected icon should use the bold matching glyph", unselectedIcon, unselected.imageVector)
         }
     }
 }

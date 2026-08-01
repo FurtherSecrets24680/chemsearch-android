@@ -34,7 +34,7 @@ class NetworkDiagnosticsTest {
 
         AiProvider.entries.forEach { provider ->
             assertTrue(
-                "${provider.displayName} endpoint missing",
+                "${provider.shortName} endpoint missing",
                 endpointLabels.any { it.startsWith("${provider.shortName}: ") }
             )
         }

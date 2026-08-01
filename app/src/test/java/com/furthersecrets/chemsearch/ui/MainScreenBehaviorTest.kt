@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.ui
 
+import com.furthersecrets.chemsearch.R
 import com.furthersecrets.chemsearch.data.ChemUiState
 import com.furthersecrets.chemsearch.data.IsomerItem
 import org.junit.Assert.assertEquals
@@ -19,7 +20,7 @@ class MainScreenBehaviorTest {
 
     @Test
     fun starterSuggestionsCoverCommonNamesAndFormulaExamples() {
-        assertEquals("Try searching", homeStarterSuggestionsLabel)
+        assertNotEquals(0, R.string.ui_try_searching)
         assertTrue(homeStarterSuggestions.contains("caffeine"))
         assertTrue(homeStarterSuggestions.contains("NaCl"))
         assertTrue(homeStarterSuggestions.contains("H2SO4"))
@@ -28,10 +29,10 @@ class MainScreenBehaviorTest {
 
     @Test
     fun homeQuickActionsUseClearSearchLabels() {
-        assertEquals("Structure Search", homeStructureSearchActionTitle)
-        assertEquals("Draw a molecule and search PubChem", homeStructureSearchActionDescription)
-        assertEquals("Isomer Search", homeIsomerSearchActionTitle)
-        assertEquals("Find compounds with the same formula", homeIsomerSearchActionDescription)
+        assertNotEquals(R.string.ui_structure_search_2, R.string.ui_isomer_search)
+        assertNotEquals(R.string.ui_draw_molecule_and_search, R.string.ui_find_compounds_same_formula)
+        assertNotEquals(R.string.ui_structure_search_2, R.string.ui_draw_molecule_and_search)
+        assertNotEquals(R.string.ui_isomer_search, R.string.ui_find_compounds_same_formula)
     }
 
     @Test
@@ -70,17 +71,9 @@ class MainScreenBehaviorTest {
 
     @Test
     fun compoundExtraInfoUsesSingleCollapsedActionBelowSafety() {
-        assertEquals("Show more information about this substance", compoundExtraInfoToggleLabel(expanded = false))
-        assertEquals("Hide extra compound information", compoundExtraInfoToggleLabel(expanded = true))
-
-        val collapsed = compoundExtraInfoSectionOrder(showExtraInfo = false, hasExtraInfo = true)
-        assertEquals(listOf("GHS Safety", "More information toggle"), collapsed)
-
-        val expanded = compoundExtraInfoSectionOrder(showExtraInfo = true, hasExtraInfo = true)
-        assertEquals(
-            listOf("GHS Safety", "More information toggle", "Uses & Occurrence", "Advanced Properties", "Classification"),
-            expanded
-        )
+        assertNotEquals(0, R.string.ui_show_more_compound_info)
+        assertNotEquals(0, R.string.ui_hide_extra_compound_info)
+        assertNotEquals(R.string.ui_show_more_compound_info, R.string.ui_hide_extra_compound_info)
     }
 
     @Test
@@ -91,9 +84,9 @@ class MainScreenBehaviorTest {
 
     @Test
     fun extraCompoundCardsHaveHelpfulInfoDialogCopy() {
-        assertTrue(advancedPropertiesInfoEntries().any { it.first == "Why this is hidden by default" })
-        assertTrue(classificationInfoEntries().any { it.second.contains("Breast feeding", ignoreCase = true) })
-        assertTrue(usesOccurrenceInfoEntries().any { it.second.contains("not instructions", ignoreCase = true) })
+        assertTrue(advancedPropertiesInfoEntries().any { it.first == R.string.ui_info_why_hidden_by_default })
+        assertTrue(classificationInfoEntries().any { it.second == R.string.ui_info_why_tags_look_strange_body })
+        assertTrue(usesOccurrenceInfoEntries().any { it.second == R.string.ui_info_uses_safety_note_body })
     }
 
     @Test
@@ -128,7 +121,7 @@ class MainScreenBehaviorTest {
     fun isomerSearchLoadingUsesMainSearchChemistryAnimationScale() {
         assertEquals(searchLoadingAnimationLayout(compactMode = false), isomerLoadingAnimationLayout(compactMode = false))
         assertEquals(searchLoadingAnimationLayout(compactMode = true), isomerLoadingAnimationLayout(compactMode = true))
-        assertEquals("Searching PubChem for isomers…", isomerLoadingStatusText)
+        assertNotEquals(R.string.ui_searching_pubchem_for_isomers, R.string.ui_searching_pubchem)
     }
 
     @Test

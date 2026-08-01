@@ -31,7 +31,8 @@ class AppSettingsSnapshotTest {
             cacheSizeLimitName = "MB_10",
             cacheRetentionName = "AUTO_CLEAR_1_DAY",
             reduceMotion = true,
-            highContrastOutlines = true
+            highContrastOutlines = true,
+        languageKey = null
         )
 
         assertTrue(snapshot.isDarkTheme)
@@ -70,7 +71,8 @@ class AppSettingsSnapshotTest {
             cacheSizeLimitName = "BAD_LIMIT",
             cacheRetentionName = "BAD_RETENTION",
             reduceMotion = null,
-            highContrastOutlines = null
+            highContrastOutlines = null,
+        languageKey = null
         )
 
         assertFalse(snapshot.isDarkTheme)
@@ -109,7 +111,8 @@ class AppSettingsSnapshotTest {
             cacheSizeLimitName = null,
             cacheRetentionName = null,
             reduceMotion = null,
-            highContrastOutlines = null
+            highContrastOutlines = null,
+        languageKey = null
         )
         val removedChargeMode = AppSettingsSnapshot.fromRawValues(
             isDarkTheme = null,
@@ -127,7 +130,8 @@ class AppSettingsSnapshotTest {
             cacheSizeLimitName = null,
             cacheRetentionName = null,
             reduceMotion = null,
-            highContrastOutlines = null
+            highContrastOutlines = null,
+        languageKey = null
         )
 
         assertEquals(FormulaDisplayStyle.HILL, oldPubChem.formulaDisplayStyle)

@@ -188,7 +188,6 @@
     <string name="ui_hazard_statements" translatable="true">HAZARD STATEMENTEN</string>
     <string name="ui_sort_recents" translatable="true">Sorteer Recente apps</string>
     <string name="ui_downloading_for_offline_use" translatable="true">Downloaden voor offline gebruik</string>
-    <string name="ui_share_compound" translatable="true">Delen samengestelde</string>
     <string name="ui_2d_structure" translatable="true">2D Structuur</string>
     <string name="ui_download_2d_structure" translatable="true">2D structuur downloaden</string>
     <string name="ui_2d_structure_zoom" translatable="true">2D Structuur (zoom)</string>
@@ -407,7 +406,6 @@
     <string name="ui_e_g_kmno4" translatable="true">bijv. KMnO4</string>
     <string name="ui_charge" translatable="true">Toeslag</string>
     <string name="ui_find_oxidation_states" translatable="true">Oxidatie staten zoeken</string>
-    <string name="ui_oxidation_states" translatable="true">OXIDATIE STATIES</string>
     <string name="ui_examples" translatable="true">VOORBEELD</string>
     <string name="ui_smiles_visualizer" translatable="true">SLIMME Visualizer</string>
     <string name="ui_smiles_string" translatable="true">SMILES String</string>
@@ -490,7 +488,6 @@
     <string name="ui_could_not_parse_3d_data" translatable="true">Kan 3D-gegevens niet verwerken</string>
     <!-- WelcomeScreen.kt -->
     <string name="ui_set_your_look" translatable="true">Stel je uiterlijk in</string>
-    <string name="ui_appearance" translatable="true">APPEARANTIE</string>
     <string name="ui_choose_theme_accent_body" translatable="true">Kies het thema en accentueer kleur ChemSearch moet gebruikt worden over zoek-, gereedschappen en instellingen.</string>
     <string name="ui_light" translatable="true">Licht</string>
     <string name="ui_dark" translatable="true">Donker</string>

@@ -1,10 +1,12 @@
 package com.furthersecrets.chemsearch.data
 
+import androidx.annotation.StringRes
+import com.furthersecrets.chemsearch.R
 import kotlin.math.abs
 import kotlin.math.log10
 import kotlin.math.pow
 
-const val PH_POH_ASSUMPTION = "Assumes 25 C and pKw = 14.00"
+class PhPohInputException(@StringRes val messageRes: Int) : IllegalArgumentException()
 
 enum class PhPohInputType(val label: String, val symbol: String) {
     PH("pH", "pH"),
@@ -18,30 +20,30 @@ data class PhPohResult(
     val poh: Double,
     val hydrogenConcentration: Double,
     val hydroxideConcentration: Double,
-    val classification: String,
-    val assumption: String = PH_POH_ASSUMPTION
+    @StringRes val classificationRes: Int,
+    @StringRes val assumptionRes: Int = R.string.ui_phpoh_assumption
 )
 
 fun calculatePhPoh(rawInput: String, inputType: PhPohInputType): PhPohResult {
     val value = rawInput.trim().toDoubleOrNull()
-        ?: throw IllegalArgumentException("Enter a valid number.")
+        ?: throw PhPohInputException(R.string.ui_error_enter_a_valid_number)
 
     val (ph, poh) = when (inputType) {
         PhPohInputType.PH -> {
-            require(value.isFinite()) { "pH must be a valid number." }
+            require(value.isFinite()) { throw PhPohInputException(R.string.ui_error_ph_must_be_a_valid_number) }
             value to (14.0 - value)
         }
         PhPohInputType.POH -> {
-            require(value.isFinite()) { "pOH must be a valid number." }
+            require(value.isFinite()) { throw PhPohInputException(R.string.ui_error_poh_must_be_a_valid_number) }
             (14.0 - value) to value
         }
         PhPohInputType.HYDROGEN -> {
-            require(value > 0.0 && value.isFinite()) { "Concentration must be greater than 0." }
+            require(value > 0.0 && value.isFinite()) { throw PhPohInputException(R.string.ui_error_concentration_must_be_greater_than_zero) }
             val calculatedPh = -log10(value)
             calculatedPh to (14.0 - calculatedPh)
         }
         PhPohInputType.HYDROXIDE -> {
-            require(value > 0.0 && value.isFinite()) { "Concentration must be greater than 0." }
+            require(value > 0.0 && value.isFinite()) { throw PhPohInputException(R.string.ui_error_concentration_must_be_greater_than_zero) }
             val calculatedPoh = -log10(value)
             (14.0 - calculatedPoh) to calculatedPoh
         }
@@ -54,7 +56,7 @@ fun calculatePhPoh(rawInput: String, inputType: PhPohInputType): PhPohResult {
         poh = poh,
         hydrogenConcentration = hydrogen,
         hydroxideConcentration = hydroxide,
-        classification = classifyPh(ph)
+        classificationRes = classifyPh(ph)
     )
 }
 
@@ -67,10 +69,10 @@ fun formatPhPohNumber(value: Double): String {
     }
 }
 
-private fun classifyPh(ph: Double): String = when {
-    ph < 6.95 -> "Acidic"
-    ph > 7.05 -> "Basic"
-    else -> "Neutral"
+private fun classifyPh(ph: Double): Int = when {
+    ph < 6.95 -> R.string.ui_classification_acidic
+    ph > 7.05 -> R.string.ui_classification_basic
+    else -> R.string.ui_classification_neutral
 }
 
 private fun trimTrailingZeros(value: String): String =

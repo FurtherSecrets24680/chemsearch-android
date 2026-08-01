@@ -1,5 +1,8 @@
 package com.furthersecrets.chemsearch.data
 
+import androidx.annotation.StringRes
+import com.furthersecrets.chemsearch.R
+
 data class FormulaComposition(
     val elements: Map<String, Int>
 )
@@ -15,6 +18,8 @@ enum class FormulaParseErrorCode {
 data class FormulaParseError(
     val code: FormulaParseErrorCode,
     val message: String,
+    @StringRes val messageRes: Int? = null,
+    val messageArgs: List<Any> = emptyList(),
     val position: Int? = null,
     val token: String? = null
 )
@@ -58,7 +63,8 @@ fun parseFormula(formula: String): FormulaParseResult {
         return FormulaParseResult.Failure(
             FormulaParseError(
                 code = FormulaParseErrorCode.EMPTY_FORMULA,
-                message = "Enter a formula"
+                message = "Enter a formula",
+                messageRes = R.string.ui_formula_enter_formula
             )
         )
     }
@@ -71,7 +77,8 @@ fun parseFormula(formula: String): FormulaParseResult {
         return FormulaParseResult.Failure(
             FormulaParseError(
                 code = FormulaParseErrorCode.EMPTY_FORMULA,
-                message = "Enter a formula"
+                message = "Enter a formula",
+                messageRes = R.string.ui_formula_enter_formula
             )
         )
     }
@@ -82,6 +89,7 @@ fun parseFormula(formula: String): FormulaParseResult {
                 FormulaParseError(
                     code = FormulaParseErrorCode.INVALID_MULTIPLIER,
                     message = "Invalid leading multiplier",
+                    messageRes = R.string.ui_formula_invalid_leading_multiplier,
                     token = part
                 )
             )
@@ -90,6 +98,7 @@ fun parseFormula(formula: String): FormulaParseResult {
                 FormulaParseError(
                     code = FormulaParseErrorCode.INVALID_MULTIPLIER,
                     message = "Multiplier must be followed by a formula",
+                    messageRes = R.string.ui_formula_multiplier_followed_by_formula,
                     token = part
                 )
             )
@@ -101,6 +110,8 @@ fun parseFormula(formula: String): FormulaParseResult {
                 FormulaParseError(
                     code = FormulaParseErrorCode.INVALID_CHARACTER,
                     message = "Could not parse formula near '${body[parsed.index]}'",
+                    messageRes = R.string.ui_formula_could_not_parse_near_s,
+                    messageArgs = listOf(body[parsed.index]),
                     position = parsed.index,
                     token = body[parsed.index].toString()
                 )
@@ -115,7 +126,8 @@ fun parseFormula(formula: String): FormulaParseResult {
         return FormulaParseResult.Failure(
             FormulaParseError(
                 code = FormulaParseErrorCode.EMPTY_FORMULA,
-                message = "Could not parse formula"
+                message = "Could not parse formula",
+                messageRes = R.string.ui_formula_could_not_parse
             )
         )
     }
@@ -248,6 +260,7 @@ private fun parseSequence(input: String, startIndex: Int, close: Char?): ParseOu
                     error = FormulaParseError(
                         code = FormulaParseErrorCode.UNMATCHED_GROUP,
                         message = "Unmatched closing group",
+                        messageRes = R.string.ui_formula_unmatched_closing_group,
                         position = index,
                         token = char.toString()
                     )
@@ -263,6 +276,7 @@ private fun parseSequence(input: String, startIndex: Int, close: Char?): ParseOu
                         error = FormulaParseError(
                             code = FormulaParseErrorCode.UNCLOSED_GROUP,
                             message = "Unclosed group",
+                            messageRes = R.string.ui_formula_unclosed_group,
                             position = index,
                             token = char.toString()
                         )
@@ -275,6 +289,7 @@ private fun parseSequence(input: String, startIndex: Int, close: Char?): ParseOu
                         error = FormulaParseError(
                             code = FormulaParseErrorCode.INVALID_MULTIPLIER,
                             message = "Group multiplier must be greater than zero",
+                            messageRes = R.string.ui_formula_group_multiplier_positive,
                             position = inner.index
                         )
                     )
@@ -296,6 +311,7 @@ private fun parseSequence(input: String, startIndex: Int, close: Char?): ParseOu
                         error = FormulaParseError(
                             code = FormulaParseErrorCode.INVALID_MULTIPLIER,
                             message = "Element count must be greater than zero",
+                            messageRes = R.string.ui_formula_element_count_positive,
                             position = index,
                             token = symbol
                         )
@@ -310,6 +326,8 @@ private fun parseSequence(input: String, startIndex: Int, close: Char?): ParseOu
                     error = FormulaParseError(
                         code = FormulaParseErrorCode.INVALID_CHARACTER,
                         message = "Invalid formula character '$char'",
+                        messageRes = R.string.ui_formula_invalid_character_s,
+                        messageArgs = listOf(char),
                         position = index,
                         token = char.toString()
                     )
@@ -324,6 +342,7 @@ private fun parseSequence(input: String, startIndex: Int, close: Char?): ParseOu
             error = FormulaParseError(
                 code = FormulaParseErrorCode.UNCLOSED_GROUP,
                 message = "Unclosed group",
+                messageRes = R.string.ui_formula_unclosed_group,
                 position = startIndex - 1
             )
         )

@@ -41,7 +41,7 @@ fun buildOfflineDownloadMetadata(
         if (!state.pubDescription.isNullOrBlank()) add("PubChem description")
         if (!state.wikiDescription.isNullOrBlank()) add("Wikipedia")
         if (state.ghsData != null) add("PubChem GHS")
-        state.sdfSource?.let { add(describeStructureStatus(state.sdfData != null, it, state.sdfMessage).label) }
+        state.sdfSource?.let { add(describeStructureStatus(state.sdfData != null, it, state.sdfMessage).promptLabel) }
     }
     return OfflineDownloadMetadata(
         savedAt = savedAt,

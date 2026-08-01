@@ -1,5 +1,7 @@
 package com.furthersecrets.chemsearch.data
 
+import androidx.annotation.StringRes
+import com.furthersecrets.chemsearch.R
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -25,8 +27,9 @@ data class EmpiricalFormulaCalculationResult(
     val molecularFormula: String? = null,
     val molecularMultiplier: Int? = null,
     val rows: List<EmpiricalFormulaRow> = emptyList(),
-    val error: String? = null,
-    val warning: String? = null
+    @StringRes val errorRes: Int? = null,
+    val errorArgs: List<Any> = emptyList(),
+    @StringRes val warningRes: Int? = null
 )
 
 fun calculateEmpiricalFormulaFromComposition(
@@ -41,17 +44,17 @@ fun calculateEmpiricalFormulaFromComposition(
         }
 
     if (cleanComponents.isEmpty()) {
-        return EmpiricalFormulaCalculationResult(error = "Enter at least one element amount")
+        return EmpiricalFormulaCalculationResult(errorRes = R.string.ui_error_enter_at_least_one_element_amount)
     }
 
     val unknown = cleanComponents.map { it.element }.filter { it !in STANDARD_ATOMIC_WEIGHTS }.distinct()
     if (unknown.isNotEmpty()) {
-        return EmpiricalFormulaCalculationResult(error = "Unknown element(s): ${unknown.joinToString(", ")}")
+        return EmpiricalFormulaCalculationResult(errorRes = R.string.ui_error_unknown_elements_s, errorArgs = listOf(unknown.joinToString(", ")))
     }
 
     if (mode == FormulaCompositionMode.PERCENT) {
         val total = cleanComponents.sumOf { it.amount }
-        if (total <= 0.0) return EmpiricalFormulaCalculationResult(error = "Percent composition must be greater than zero")
+        if (total <= 0.0) return EmpiricalFormulaCalculationResult(errorRes = R.string.ui_error_percent_composition_positive)
     }
 
     val moleRows = cleanComponents.map { component ->
@@ -65,7 +68,7 @@ fun calculateEmpiricalFormulaFromComposition(
     }
 
     val minMoles = moleRows.minOf { it.moles }
-    if (minMoles <= 0.0) return EmpiricalFormulaCalculationResult(error = "Amounts must be greater than zero")
+    if (minMoles <= 0.0) return EmpiricalFormulaCalculationResult(errorRes = R.string.ui_error_amounts_positive)
 
     val ratios = moleRows.map { it.moles / minMoles }
     val ratioMultiplier = findWholeRatioMultiplier(ratios)
@@ -96,7 +99,7 @@ fun calculateEmpiricalFormulaFromComposition(
         molecularFormula = molecular?.formula,
         molecularMultiplier = molecular?.multiplier,
         rows = rows,
-        warning = molecular?.warning
+        warningRes = molecular?.warningRes
     )
 }
 
@@ -107,13 +110,13 @@ fun calculateEmpiricalFormulaFromMolecularFormula(
     val counts = try {
         parseFormulaElementCounts(formula)
     } catch (error: FormulaParseException) {
-        return EmpiricalFormulaCalculationResult(error = error.parseError.message)
+        return EmpiricalFormulaCalculationResult(errorRes = error.parseError.messageRes, errorArgs = error.parseError.messageArgs)
     }
-    if (counts.isEmpty()) return EmpiricalFormulaCalculationResult(error = "Enter a formula")
+    if (counts.isEmpty()) return EmpiricalFormulaCalculationResult(errorRes = R.string.ui_formula_enter_formula)
 
     val unknown = counts.keys.filter { it !in STANDARD_ATOMIC_WEIGHTS }
     if (unknown.isNotEmpty()) {
-        return EmpiricalFormulaCalculationResult(error = "Unknown element(s): ${unknown.joinToString(", ")}")
+        return EmpiricalFormulaCalculationResult(errorRes = R.string.ui_error_unknown_elements_s, errorArgs = listOf(unknown.joinToString(", ")))
     }
 
     val divisor = counts.values.reduce { a, b -> gcd(a, b) }.coerceAtLeast(1)
@@ -141,7 +144,7 @@ fun calculateEmpiricalFormulaFromMolecularFormula(
                 wholeNumber = empiricalCounts.getValue(element)
             )
         },
-        warning = molecular?.warning
+        warningRes = molecular?.warningRes
     )
 }
 
@@ -155,7 +158,7 @@ private data class EmpiricalMoleRow(
 private data class MolecularFormulaCandidate(
     val formula: String?,
     val multiplier: Int?,
-    val warning: String? = null
+    @StringRes val warningRes: Int? = null
 )
 
 private fun buildMolecularFormula(
@@ -168,11 +171,11 @@ private fun buildMolecularFormula(
     val rawMultiplier = molecularMass / empiricalMass
     val multiplier = rawMultiplier.roundToInt()
     if (multiplier < 1) {
-        return MolecularFormulaCandidate(null, null, "Molecular mass must be at least the empirical formula mass")
+        return MolecularFormulaCandidate(null, null, R.string.ui_molecular_mass_at_least_empirical)
     }
     val tolerance = if (molecularMass < 100.0) 0.18 else 0.12
     if (abs(rawMultiplier - multiplier) > tolerance) {
-        return MolecularFormulaCandidate(null, null, "Molecular mass is not a clean multiple of the empirical formula mass")
+        return MolecularFormulaCandidate(null, null, R.string.ui_molecular_mass_not_clean_multiple)
     }
 
     val molecularCounts = empiricalCounts.mapValues { (_, count) -> count * multiplier }

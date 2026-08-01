@@ -1,13 +1,15 @@
 package com.furthersecrets.chemsearch.data
 
 import android.content.Context
+import androidx.annotation.StringRes
+import com.furthersecrets.chemsearch.R
 import com.google.gson.Gson
 
-enum class ChemicalDbCategory(val label: String) {
-    SUBSTANCES("Substances"),
-    REACTIONS("Reactions"),
-    FUNCTIONAL_GROUPS("Functional Groups"),
-    IONS("Ions")
+enum class ChemicalDbCategory(val label: String, @StringRes val labelRes: Int) {
+    SUBSTANCES("Substances", R.string.ui_category_substances),
+    REACTIONS("Reactions", R.string.ui_category_reactions),
+    FUNCTIONAL_GROUPS("Functional Groups", R.string.ui_category_functional_groups),
+    IONS("Ions", R.string.ui_category_ions)
 }
 
 enum class ChemicalDbActionTarget {

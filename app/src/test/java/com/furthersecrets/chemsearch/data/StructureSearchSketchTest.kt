@@ -1,5 +1,6 @@
 package com.furthersecrets.chemsearch.data
 
+import com.furthersecrets.chemsearch.R
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -222,7 +223,7 @@ class StructureSearchSketchTest {
         assertTrue(StructureSearchWarning.forSketch(StructureSketch.empty()).isEmpty())
         assertFalse(
             StructureSearchWarning.forSketch(singleAtom)
-                .any { it.message == "Draw at least two connected atoms before searching." }
+                .any { it.messageRes == R.string.ui_error_draw_at_least_two_connected_atoms }
         )
         assertTrue(StructureSearchWarning.forSketch(ethanolSkeleton).isEmpty())
     }
