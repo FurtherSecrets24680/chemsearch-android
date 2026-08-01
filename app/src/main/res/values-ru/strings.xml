@@ -133,7 +133,7 @@
     <string name="ui_group_period" translatable="true">Группа / период</string>
     <string name="ui_standard_state" translatable="true">Стандартное состояние</string>
     <string name="ui_year_discovered" translatable="true">Обнаружен год</string>
-    <string name="ui_appearance" translatable="true">Внешний вид</string>
+    <string name="ui_appearance_label" translatable="true">Appearance</string>
     <string name="ui_discovered_by" translatable="true">Найдено</string>
     <string name="ui_named_by" translatable="true">Названо</string>
     <string name="ui_orbital_block" translatable="true">Орбитальный блок</string>
@@ -141,7 +141,7 @@
     <string name="ui_model_color" translatable="true">Цвет модели</string>
     <string name="ui_electron_configuration" translatable="true">Конфигурация Electron</string>
     <string name="ui_shell_distribution" translatable="true">Распределение оболочки</string>
-    <string name="ui_oxidation_states" translatable="true">Состояния окисления</string>
+    <string name="ui_oxidation_states_label" translatable="true">Oxidation states</string>
     <string name="ui_expanded_configuration" translatable="true">Расширенная конфигурация</string>
     <string name="ui_electronegativity" translatable="true">Электроника</string>
     <string name="ui_atomic_radius" translatable="true">Атомный радиус</string>

@@ -133,7 +133,7 @@
     <string name="ui_group_period" translatable="true">Gruppe / periode</string>
     <string name="ui_standard_state" translatable="true">Standard tilstand</string>
     <string name="ui_year_discovered" translatable="true">År oppdaget</string>
-    <string name="ui_appearance" translatable="true">Utseende</string>
+    <string name="ui_appearance_label" translatable="true">Appearance</string>
     <string name="ui_discovered_by" translatable="true">Oppdaget av</string>
     <string name="ui_named_by" translatable="true">Navngitt av</string>
     <string name="ui_orbital_block" translatable="true">Orbital blokk</string>
@@ -141,7 +141,7 @@
     <string name="ui_model_color" translatable="true">Modell farge</string>
     <string name="ui_electron_configuration" translatable="true">Elektronisk konfigurasjon</string>
     <string name="ui_shell_distribution" translatable="true">Shell distribusjon</string>
-    <string name="ui_oxidation_states" translatable="true">Oksidasjon tilstander</string>
+    <string name="ui_oxidation_states_label" translatable="true">Oxidation states</string>
     <string name="ui_expanded_configuration" translatable="true">Utvidet konfigurasjon</string>
     <string name="ui_electronegativity" translatable="true">Elektronegativitet</string>
     <string name="ui_atomic_radius" translatable="true">Atomisk radius</string>

@@ -133,7 +133,7 @@
     <string name="ui_group_period" translatable="true">Grupa / okres</string>
     <string name="ui_standard_state" translatable="true">Stan standardowy</string>
     <string name="ui_year_discovered" translatable="true">Rok odkryty</string>
-    <string name="ui_appearance" translatable="true">Wygląd</string>
+    <string name="ui_appearance_label" translatable="true">Appearance</string>
     <string name="ui_discovered_by" translatable="true">Odkryte przez</string>
     <string name="ui_named_by" translatable="true">Nazwisko</string>
     <string name="ui_orbital_block" translatable="true">Blok orbitalny</string>
@@ -141,7 +141,7 @@
     <string name="ui_model_color" translatable="true">Kolor modelu</string>
     <string name="ui_electron_configuration" translatable="true">Konfiguracja Electrona</string>
     <string name="ui_shell_distribution" translatable="true">Rozkład powłoki</string>
-    <string name="ui_oxidation_states" translatable="true">Stacje utleniania</string>
+    <string name="ui_oxidation_states_label" translatable="true">Oxidation states</string>
     <string name="ui_expanded_configuration" translatable="true">Rozszerzone konfiguracje</string>
     <string name="ui_electronegativity" translatable="true">Elektroniczność</string>
     <string name="ui_atomic_radius" translatable="true">Promień atomowy</string>
