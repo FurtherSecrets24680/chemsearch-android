@@ -542,10 +542,10 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
-<a href="https://www.star-history.com/?repos=furthersecrets24680%2Fchemsearch-android&type=timeline&logscale=&legend=top-left">
+<a href="https://www.star-history.com/?repos=FurtherSecrets24680%2Fchemsearch-android&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=furthersecrets24680/chemsearch-android&type=timeline&theme=dark&logscale&legend=top-left&sealed_token=WwcSlk8vt0tJbz_9klm4Yj9YnbLuPYy6Zwm1HJKwLWpDRnp60TjbmP7O3cl3SX7QJ1zmrUgiC9-3QW9VgqouL3-EJXs0Ss5-ZjkB9FUzAp1Gb6M2hqO5oI6YEaPrRbkmNFKeowefS8j5_I7pcn_bbQEplm7T_uxJXeg2ODWjIoFSF_Tszb8hdWfplDTl" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=furthersecrets24680/chemsearch-android&type=timeline&logscale&legend=top-left&sealed_token=WwcSlk8vt0tJbz_9klm4Yj9YnbLuPYy6Zwm1HJKwLWpDRnp60TjbmP7O3cl3SX7QJ1zmrUgiC9-3QW9VgqouL3-EJXs0Ss5-ZjkB9FUzAp1Gb6M2hqO5oI6YEaPrRbkmNFKeowefS8j5_I7pcn_bbQEplm7T_uxJXeg2ODWjIoFSF_Tszb8hdWfplDTl" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=furthersecrets24680/chemsearch-android&type=timeline&logscale&legend=top-left&sealed_token=WwcSlk8vt0tJbz_9klm4Yj9YnbLuPYy6Zwm1HJKwLWpDRnp60TjbmP7O3cl3SX7QJ1zmrUgiC9-3QW9VgqouL3-EJXs0Ss5-ZjkB9FUzAp1Gb6M2hqO5oI6YEaPrRbkmNFKeowefS8j5_I7pcn_bbQEplm7T_uxJXeg2ODWjIoFSF_Tszb8hdWfplDTl" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=FurtherSecrets24680/chemsearch-android&type=date&theme=dark&legend=top-left&sealed_token=aBMOmSThnEfM7JZnhcDfg1YawaS4ZGNPep5cfmQpN1fwSvIsmXcdhZO6ih15UzoUjFVJuW4Rg3ZGd9Cln4ChTpK4gYSSf0LbylwCK0xxL4abKjE3HYkOFl8DA6Jpwr-8xM4TiSxBSRqbt4imcN8_3Jd6w8fpu57HYMEXYo140V20Q3tF4x6VorvqLlkX" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=FurtherSecrets24680/chemsearch-android&type=date&legend=top-left&sealed_token=aBMOmSThnEfM7JZnhcDfg1YawaS4ZGNPep5cfmQpN1fwSvIsmXcdhZO6ih15UzoUjFVJuW4Rg3ZGd9Cln4ChTpK4gYSSf0LbylwCK0xxL4abKjE3HYkOFl8DA6Jpwr-8xM4TiSxBSRqbt4imcN8_3Jd6w8fpu57HYMEXYo140V20Q3tF4x6VorvqLlkX" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=FurtherSecrets24680/chemsearch-android&type=date&legend=top-left&sealed_token=aBMOmSThnEfM7JZnhcDfg1YawaS4ZGNPep5cfmQpN1fwSvIsmXcdhZO6ih15UzoUjFVJuW4Rg3ZGd9Cln4ChTpK4gYSSf0LbylwCK0xxL4abKjE3HYkOFl8DA6Jpwr-8xM4TiSxBSRqbt4imcN8_3Jd6w8fpu57HYMEXYo140V20Q3tF4x6VorvqLlkX" />
  </picture>
 </a>
