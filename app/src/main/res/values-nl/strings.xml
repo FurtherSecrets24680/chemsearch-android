@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name" translatable="false">chemsearch</string>
     <!-- Shared across multiple screens -->
     <string name="ui_chemsearch_2" translatable="true">ChemSearch</string>
     <string name="ui_close" translatable="true">Sluiten</string>
@@ -9,11 +10,104 @@
     <string name="ui_info" translatable="true">Informatie</string>
     <string name="ui_copy" translatable="true">Kopi\u00ebren</string>
     <string name="ui_got_it" translatable="true">Ik snap het</string>
+    <string name="ui_clipboard_formula" translatable="true">Formule</string>
+    <string name="ui_clipboard_synonym" translatable="true">Synoniem</string>
+    <string name="ui_clipboard_molfile" translatable="true">ChemSearch weekbestand</string>
+    <string name="ui_clipboard_preferences" translatable="true">named@@0</string>
+    <string name="ui_clipboard_logs" translatable="true">Logboeken</string>
+    <string name="ui_clipboard_network_diagnostics" translatable="true">Netwerk diagnostiek</string>
+    <string name="ui_clipboard_memory" translatable="true">Geheugen</string>
+    <string name="ui_clipboard_endpoints" translatable="true">Eindpunten</string>
+    <string name="ui_complete_ionic_equation" translatable="true">Volledige ionische vergelijking</string>
+    <string name="ui_molecular_equation" translatable="true">Moleculaire vergelijking</string>
+    <string name="ui_no_ppt" translatable="true">Geen ppt</string>
+    <string name="ui_reset_view" translatable="true">Reset weergave</string>
+    <string name="ui_motion_reduced" translatable="true">● Beweging verminderd</string>
+    <string name="ui_auto_spin" translatable="true">γAuto-draaien</string>
+    <string name="ui_paused" translatable="true">● Onderbroken</string>
+    <string name="ui_disabled_in_settings" translatable="true">Uitgeschakeld in instellingen</string>
+    <string name="ui_tap_to_toggle" translatable="true">Tik om te schakelen</string>
+    <string name="ui_viewer_stats" translatable="true">%1$d atomen •  %2$d obligaties</string>
+    <string name="ui_spectral_lines_of_s" translatable="true">Spectrale lijnen van %1$s</string>
+    <string name="ui_enter_v1" translatable="true">V1 invoeren</string>
+    <string name="ui_enter_v2" translatable="true">Voer V2 in</string>
+    <string name="ui_enter_c1" translatable="true">Voer C1 in</string>
+    <string name="ui_enter_c2" translatable="true">Voer C2 in</string>
+    <string name="ui_enter_moles" translatable="true">Rol binnengaan</string>
+    <string name="ui_enter_temperature" translatable="true">Temperatuur invoeren</string>
+    <string name="ui_enter_volume" translatable="true">Voer volume in</string>
+    <string name="ui_enter_pressure" translatable="true">Voer druk in</string>
+    <string name="ui_enter_molarity" translatable="true">Voer bewegingshelderheid in</string>
+    <string name="ui_enter_valid_amount" translatable="true">Voer een geldig bedrag in</string>
+    <string name="ui_molar_mass_unavailable" translatable="true">Massaal Molar niet beschikbaar</string>
+    <string name="ui_invalid_molar_volume" translatable="true">Ongeldig molair volume</string>
+    <string name="ui_invalid_purity" translatable="true">Ongeldige zuiverheid %%</string>
+    <string name="ui_purity_must_be_100" translatable="true">Zuiverheid moet \u003C= 100%%</string>
+    <string name="ui_balancer_use_arrow_between" translatable="true">Gebruik \u0027ww\u0027 tussen reactants en producten.</string>
+    <string name="ui_balancer_no_reactants_found" translatable="true">Geen reacties gevonden.</string>
+    <string name="ui_balancer_no_products_found" translatable="true">Geen producten gevonden.</string>
+    <string name="ui_balancer_cannot_parse_formula_s" translatable="true">Kan formule niet verwerken: %1$s</string>
+    <string name="ui_balancer_no_elements_found" translatable="true">Geen elementen gevonden.</string>
+    <string name="ui_balancer_could_not_balance" translatable="true">Deze vergelijking kon niet worden evenwichtig. Controleer of alle elementen aan beide kanten verschijnen.</string>
+    <string name="ui_formula_enter_formula" translatable="true">Voer een formule in</string>
+    <string name="ui_formula_invalid_leading_multiplier" translatable="true">Ongeldige toonaangevende hefboom</string>
+    <string name="ui_formula_multiplier_followed_by_formula" translatable="true">Hefboom moet worden gevolgd door een formule</string>
+    <string name="ui_formula_could_not_parse_near_s" translatable="true">Kan formule niet verwerken bij \u0027%1$s\u0027</string>
+    <string name="ui_formula_could_not_parse" translatable="true">Kon formule niet parsen</string>
+    <string name="ui_formula_unmatched_closing_group" translatable="true">Niet-geëvenaarde sluitende groep</string>
+    <string name="ui_formula_unclosed_group" translatable="true">Ongesloten groep</string>
+    <string name="ui_formula_group_multiplier_positive" translatable="true">Groep multiplier moet groter zijn dan nul</string>
+    <string name="ui_formula_element_count_positive" translatable="true">Element aantal moet groter zijn dan nul</string>
+    <string name="ui_formula_invalid_character_s" translatable="true">Ongeldig karakter \u0027%1$s\u0027</string>
+    <string name="ui_error_enter_at_least_one_element_amount" translatable="true">Voer ten minste één element bedrag in</string>
+    <string name="ui_error_unknown_elements_s" translatable="true">Onbekende elementen: %1$s</string>
+    <string name="ui_error_percent_composition_positive" translatable="true">Percentage moet groter zijn dan nul</string>
+    <string name="ui_error_amounts_positive" translatable="true">Bedragen moet groter zijn dan nul</string>
+    <string name="ui_error_invalid_formula_syntax" translatable="true">Ongeldige formatie syntaxis</string>
+    <string name="ui_error_could_not_parse_formula" translatable="true">Kon formule niet parsen</string>
+    <string name="ui_error_cannot_solve_unknowns_s" translatable="true">Kan niet oplossen! Meerdere onbekende elementen: %1$s. Voor transitie metalen complexen, gebruik het oplaadveld om extra beperkingen aan te brengen.</string>
+    <string name="ui_error_could_not_identify_ions_s" translatable="true">Kan gemeenschappelijke aqueous ions niet identificeren in %1$s.</string>
+    <string name="ui_no_precipitate_predicted" translatable="true">Geen overhaaste voorspelling</string>
+    <string name="ui_precipitate_predicted_s" translatable="true">Neerslag voorspeld: %1$s</string>
+    <string name="ui_note_free_element" translatable="true">Vrij element. Oxidatietoestand is 0</string>
+    <string name="ui_note_peroxide" translatable="true">Peroxide verbinding: O heeft oxidatie status = -1</string>
+    <string name="ui_note_non_integer_os" translatable="true">Niet-integer oxidatiestatus voor %1$s (%2$s). Het kan een gemengde waarde-waarde of een speciaal materiaal bevatten.</string>
+    <string name="ui_note_oxygen_fluoride_s" translatable="true">Zuurstof fluoride: F is altijd -1, dus O = %1$s</string>
+    <string name="ui_note_superoxide" translatable="true">Superoxide: O2- eenheid, elke O heeft oxidatietoestand = -1/2</string>
+    <string name="ui_note_ozonide" translatable="true">Ozonide: O3- eenheid, elke O heeft oxidatietoestand = -1/3</string>
+    <string name="ui_note_metal_hydride_suffix_s" translatable="true">Metalen hydride: H heeft oxidatie status = -1%1$s</string>
+    <string name="ui_note_sum_mismatch" translatable="true">Som van de bekende oxidatiestatus (%1$d) komt niet overeen met de algemene kosten (%2$d). Mogelijke mengwaardering, peroxo groep of formule-fout.</string>
+    <string name="ui_molecular_mass_at_least_empirical" translatable="true">Moleculaire massa moet ten minste de empirische formule massa zijn</string>
+    <string name="ui_molecular_mass_not_clean_multiple" translatable="true">Moleculaire massa is geen schone veelvoud van de empirische flessenmassa</string>
+    <string name="ui_sdf_generated_estimate_s" translatable="true">Geschatte %1$s met behulp van de NCI/CADD resolver gegenereerd.</string>
+    <string name="ui_pubchem_3d_trying_generated_fallback" translatable="true">PubChem 3D niet beschikbaar. Bezig met terugval...</string>
+    <string name="ui_pubchem_3d_unavailable_no_fallback_identifier" translatable="true">PubChem 3D niet beschikbaar en er is geen SMILES/InChI fallback ID gevonden.</string>
+    <string name="ui_pubchem_3d_and_generated_unavailable" translatable="true">PubChem 3D en formule, gematched gegenereerde fallback zijn niet beschikbaar voor deze compound.</string>
+    <string name="ui_mode_exact" translatable="true">Exacte</string>
+    <string name="ui_mode_exact_desc" translatable="true">Zoek dezelfde structuur</string>
+    <string name="ui_mode_similar" translatable="true">Vergelijkbaar</string>
+    <string name="ui_mode_similar_desc" translatable="true">Vind 2D wedstrijden</string>
+    <string name="ui_mode_contains" translatable="true">Bevat</string>
+    <string name="ui_mode_contains_desc" translatable="true">Vind samenstellingen die deze tekening bevatten</string>
+    <string name="ui_mode_part_of" translatable="true">Onderdeel van</string>
+    <string name="ui_mode_part_of_desc" translatable="true">Vind constructies in deze tekening</string>
     <string name="ui_selected" translatable="true">Geselecteerd</string>
     <string name="ui_source" translatable="true">Bron</string>
     <string name="ui_remove" translatable="true">Verwijderen</string>
     <string name="ui_element" translatable="true">Element</string>
     <string name="ui_formula" translatable="true">Formule</string>
+    <string name="ui_percent" translatable="true">Percentage</string>
+    <string name="ui_error_enter_two_aqueous_ionic_compounds" translatable="true">Voer twee aqueous ionische verbindingen in</string>
+    <string name="ui_welcome_tagline" translatable="true">CHEMIE VEREENVOUDIGD</string>
+    <string name="ui_welcome_tagline_body" translatable="true">Zoek samenstellingen, inspecteer structuren, bewaar nuttige resultaten, en gebruik praktische chemiegereedschappen in één native Android app.</string>
+    <string name="ui_welcome_feature_search_title" translatable="true">Samengestelde zoekopdracht</string>
+    <string name="ui_welcome_feature_search_body" translatable="true">Zoek PubChem gegevens op door naam, formule, CAS-stijl ID of CID.</string>
+    <string name="ui_welcome_feature_structures_title" translatable="true">2D en 3D-constructies</string>
+    <string name="ui_welcome_feature_structures_body" translatable="true">Bekijk structuurafbeeldingen, draai 3D-modellen en sla structuurbestanden op.</string>
+    <string name="ui_welcome_feature_tools_title" translatable="true">Scheikunde gereedschappen</string>
+    <string name="ui_welcome_feature_tools_body" translatable="true">Balans reactie, berekent molaire massa, los stoichiometrie op en meer.</string>
+    <string name="ui_welcome_feature_local_title" translatable="true">Lokale workflow</string>
+    <string name="ui_welcome_feature_local_body" translatable="true">Bewaar favorieten, recente zoekopdrachten, gecachete resultaten en offline scheikundige gegevens.</string>
     <string name="ui_compare" translatable="true">Vergelijken</string>
     <string name="ui_save" translatable="true">Opslaan</string>
     <string name="ui_ok" translatable="true">OK</string>
@@ -26,6 +120,26 @@
     <string name="ui_search" translatable="true">Zoeken</string>
     <!-- ChemicalDatabaseUi.kt -->
     <string name="ui_all_s" translatable="true">Alle %1$s</string>
+    <string name="ui_entries_count" translatable="true">%1$d invoergegevens</string>
+    <string name="ui_error_no_release_tag" translatable="true">Geen release tag gevonden.</string>
+    <string name="ui_error_update_check_failed" translatable="true">Update controle mislukt.</string>
+    <string name="ui_error_no_apk_download_link" translatable="true">Geen APK download link gevonden.</string>
+    <string name="ui_error_update_download_failed" translatable="true">Downloaden van update mislukt.</string>
+    <string name="ui_error_download_failed_http" translatable="true">Downloaden mislukt: HTTP %1$d</string>
+    <string name="ui_error_apk_empty" translatable="true">Gedownloade APK was leeg.</string>
+    <string name="ui_error_apk_missing" translatable="true">Gedownloade APK ontbreekt.</string>
+    <string name="ui_error_allow_installs" translatable="true">Installeren toestaan vanaf ChemSearch, en tik op installeren.</string>
+    <string name="ui_error_could_not_open_installer" translatable="true">Kan de installateur niet openen.</string>
+    <string name="ui_error_offline_download_failed" translatable="true">Offline downloaden mislukt: %1$s</string>
+    <string name="ui_unknown_error" translatable="true">onbekende fout</string>
+    <string name="ui_notification_channel_updates" translatable="true">Bijwerken</string>
+    <string name="ui_notification_channel_updates_desc" translatable="true">Notificaties wanneer een nieuwe versie beschikbaar is</string>
+    <string name="ui_notification_update_title" translatable="true">ChemSearch update beschikbaar</string>
+    <string name="ui_notification_update_text" translatable="true">Versie %1$s is beschikbaar</string>
+    <string name="ui_category_substances" translatable="true">Stoffen</string>
+    <string name="ui_category_reactions" translatable="true">Reacties</string>
+    <string name="ui_category_functional_groups" translatable="true">Functionele groepen</string>
+    <string name="ui_category_ions" translatable="true">Ionen</string>
     <string name="ui_show_every_entry" translatable="true">Toon elk item in deze sectie</string>
     <string name="ui_s_copied" translatable="true">%1$s gekopieerd</string>
     <string name="ui_back_to_database" translatable="true">Terug naar database</string>
@@ -33,10 +147,14 @@
     <string name="ui_search_substances_reactions_groups_ions" translatable="true">Zoek stoffen, reacties, groepen, ionen...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Moleculaire formule</string>
+    <string name="ui_empirical" translatable="true">Empirisch</string>
+    <string name="ui_empirical_mass" translatable="true">Empirische massa</string>
     <string name="ui_empirical_formula_finder" translatable="true">Empirische formule zoeken</string>
     <string name="ui_percent_mode" translatable="true">Percentagemodus</string>
     <string name="ui_percent_mode_desc" translatable="true">Behandelt percentages als grammen in een monster van 100 g en zet elk element daarna om naar mol.</string>
     <string name="ui_mass_mode" translatable="true">Massamodus</string>
+    <string name="ui_mass" translatable="true">Massa</string>
+    <string name="ui_percent_sign" translatable="true">%</string>
     <string name="ui_mass_mode_desc" translatable="true">Gebruikt de ingevoerde massa van elk element rechtstreeks.</string>
     <string name="ui_formula_mode" translatable="true">Formulemodus</string>
     <string name="ui_formula_mode_desc" translatable="true">Reduceert een moleculaire formule tot de eenvoudigste verhouding van hele getallen.</string>
@@ -131,6 +249,17 @@
     <string name="ui_atomic_number" translatable="true">Atoomnummer</string>
     <string name="ui_category" translatable="true">Categorie</string>
     <string name="ui_group_period" translatable="true">Groep / periode</string>
+    <string name="ui_category_alkali_metal" translatable="true">Alkali metaal</string>
+    <string name="ui_category_alkaline_earth_metal" translatable="true">Alkaline aardemetaal</string>
+    <string name="ui_category_transition_metal" translatable="true">Transitie metaal</string>
+    <string name="ui_category_post_transition_metal" translatable="true">Metaal na overgang</string>
+    <string name="ui_category_metalloid" translatable="true">Metalloïde</string>
+    <string name="ui_category_reactive_nonmetal" translatable="true">Blindstroom non-metal</string>
+    <string name="ui_category_halogen" translatable="true">Halogeen</string>
+    <string name="ui_category_noble_gas" translatable="true">Edele gas</string>
+    <string name="ui_category_lanthanide" translatable="true">Lanthanide</string>
+    <string name="ui_category_actinide" translatable="true">Actinide</string>
+    <string name="ui_category_unknown" translatable="true">onbekend</string>
     <string name="ui_standard_state" translatable="true">Standaardtoestand</string>
     <string name="ui_year_discovered" translatable="true">Ontdekkingsjaar</string>
     <string name="ui_appearance_label" translatable="true">Uiterlijk</string>
@@ -251,8 +380,8 @@
     <string name="ui_theme_mode" translatable="true">Themamodus</string>
     <string name="ui_color_scheme" translatable="true">Kleurenschema</string>
     <string name="ui_language">Taal</string>
-    <string name="ui_language_subtitle">Kies de taal die ChemSearch gebruikt</string>
-    <string name="ui_language_system_default">Systeemstandaard</string>
+    <string name="ui_language_subtitle">Choose the language used by ChemSearch</string>
+    <string name="ui_language_system_default">System default</string>
     <string name="ui_language_english">English</string>
     <string name="ui_language_danish">Dansk</string>
     <string name="ui_language_german">Deutsch</string>
@@ -268,7 +397,7 @@
     <string name="ui_language_portuguese">Português</string>
     <string name="ui_language_russian">Русский</string>
     <string name="ui_language_swedish">Svenska</string>
-    <string name="ui_language_restart">De app wordt opnieuw gestart om de taal toe te passen.</string>
+    <string name="ui_language_restart">The app will restart to apply the language.</string>
     <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">Automatisch getoond wanneer je een verbinding zoekt</string>
     <string name="ui_chemsearch_app_icon" translatable="true">ChemSearch app-icoon</string>
     <string name="ui_move_up" translatable="true">Naar boven</string>
@@ -287,6 +416,9 @@
     <string name="ui_tap_a_card_to_open_favorites_are_stored" translatable="true">Tik op een kaart om te openen. Favorieten worden alleen op dit apparaat opgeslagen.</string>
     <string name="ui_reorder_mode_use_the_arrows_to_move_items" translatable="true">Herschikmodus: gebruik de pijlen om items te verplaatsen.</string>
     <string name="ui_no_matches_found" translatable="true">Geen overeenkomsten gevonden.</string>
+    <string name="ui_no_match_for" translatable="true">Geen match voor \"%1$s\"</string>
+    <string name="ui_newest_first" translatable="true">Nieuwste eerst</string>
+    <string name="ui_oldest_first" translatable="true">Oudste eerst</string>
     <string name="ui_try_a_different_name_formula_or_cid" translatable="true">Probeer een andere naam, formule of CID.</string>
     <!-- SettingsUi.kt: Toasts and user notifications -->
     <string name="ui_notifications_permission_denied" translatable="true">Toestemming voor meldingen geweigerd</string>
@@ -325,7 +457,7 @@
     <string name="ui_jvm_heap" translatable="true">JVM-heap</string>
     <string name="ui_system_ram" translatable="true">Systeem-RAM</string>
     <string name="ui_low_memory" translatable="true">Weinig geheugen</string>
-    <string name="ui_memory" translatable="true">memory</string>
+    <string name="ui_memory" translatable="true">geheugen</string>
     <string name="ui_wipe_all_preferences" translatable="true">Alle voorkeuren wissen?</string>
     <string name="ui_this_clears_legacy_preferences_encrypted_key_records_history" translatable="true">Hiermee worden oude voorkeuren, versleutelde sleutelrecords, geschiedenis, favorieten en debugvlaggen gewist. DataStore-instellingen, Room-downloads en cachebestanden worden niet verwijderd. Je moet de debug-instellingen opnieuw ontgrendelen.</string>
     <string name="ui_wipe_now" translatable="true">Nu wissen</string>
@@ -336,6 +468,18 @@
     <string name="ui_tag_chemsearch" translatable="true">Tag: ChemSearch</string>
     <string name="ui_endpoints" translatable="true">endpoints</string>
     <string name="ui_hide_debug_settings" translatable="true">Debug-instellingen verbergen</string>
+    <string name="ui_debug_settings_title" translatable="true">Debug Instellingen</string>
+    <string name="ui_debug_verbose_logging_body" translatable="true">Maakt debug/info logs (getagd \'ChemSearch\') in Logcat en de in-app buffer. Fouten worden altijd vastgelegd. Uitschakelen om geluid te verminderen.</string>
+    <string name="ui_debug_live_log_viewer_body" translatable="true">Toont in-app logbuffer in realtime (tot 200 regels). Verbose logs (D/) worden alleen weergegeven wanneer uitgebreide logbestanden ingeschakeld zijn. Fouten (E/) worden altijd opgenomen. U kunt de buffer kopiëren of wissen.</string>
+    <string name="ui_debug_inspect_prefs_body" translatable="true">Dumps legacy SharedPreferences en versleutelde sleutelrecords met gevoelige waarden gemaskeerd. DataOpslag instellingen en kamerdownloads worden apart opgeslagen.</string>
+    <string name="ui_debug_memory_info_body" translatable="true">Toont huidige heap gebruik van de JVM runtime en de Android ActivityManager. Handig voor het spotten van geheugen lekken of ongewoon hoge toewijzingen.</string>
+    <string name="ui_debug_network_diagnostics_body" translatable="true">Voert eindpuntcontroles uit tegen PubChem-zoeken, autocompletering, GHS-data, 2D/3D-structuren, de NCI/CADD-fallbackresolver, Wikipedia, GitHub-releases en elke geconfigureerde AI-provider. Toont HTTP-status, latentie en responsvoorbeelden voor elke service.</string>
+    <string name="ui_debug_show_welcome_body" translatable="true">Verwijdert de skipvlag van het welkomstscherm en opent het welkomstscherm voor de eerste start.</string>
+    <string name="ui_debug_api_endpoints_body" translatable="true">Kopieert basis-URL\'s voor PubChem, NCI/CADD, Wikipedia, GitHub releases, en ondersteunde AI providers naar je klembord voor handmatige testen.</string>
+    <string name="ui_debug_wipe_prefs_body" translatable="true">Roept prefs.edit().clear() aan. Verwijdert oude voorkeurswaarden, versleutelde sleutelrecords, geschiedenis, favorieten en foutopsporingsvlaggen. DataStore-instellingen, Room-downloads en app-cachebestanden worden niet verwijderd door deze actie; herstart wordt aanbevolen.</string>
+    <string name="ui_debug_force_crash" translatable="true">Forceer crash</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Met opzet gooit een onafgehandelde RuntimeExceptie. Wordt gebruikt om te verifiëren dat crash rapportage/Logcat correct werkt. Er is een bevestigingsstap voordat het vuurt.</string>
+    <string name="ui_debug_hide_body" translatable="true">Stelt dev_mode=false in en verbergt dit gedeelte. Tik 5 keer op het buildnummer op het Over-scherm om het opnieuw te ontgrendelen.</string>
     <string name="ui_remove_key" translatable="true">Sleutel verwijderen</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Gevoelige waarden worden gemaskeerd en nooit uit deze weergave gekopieerd.</string>
     <string name="ui_run_diagnostics_to_test_pubchem_lookup_structures_ghs" translatable="true">Voer diagnostiek uit om PubChem-zoekopdrachten, structuren, GHS-gegevens, fallback-3D-laden, Wikipedia, GitHub-releases en AI-eindpunten te testen.</string>
@@ -406,6 +550,7 @@
     <string name="ui_e_g_kmno4" translatable="true">bijv. KMnO4</string>
     <string name="ui_charge" translatable="true">Lading</string>
     <string name="ui_find_oxidation_states" translatable="true">Oxidatietoestanden zoeken</string>
+    <string name="ui_oxidation_states" translatable="true">OXIDATIE STATIES</string>
     <string name="ui_examples" translatable="true">VOORBEELDEN</string>
     <string name="ui_smiles_visualizer" translatable="true">SMILES-viewer</string>
     <string name="ui_smiles_string" translatable="true">SMILES-tekenreeks</string>
@@ -419,6 +564,34 @@
     <string name="ui_atom_count_verification" translatable="true">CONTROLE AANTAL ATOMEN</string>
     <string name="ui_reactants" translatable="true">Reactanten</string>
     <string name="ui_products" translatable="true">Producten</string>
+    <string name="ui_d_s_results" translatable="true">%1$d resultaten</string>
+    <string name="ui_d_percent_similar" translatable="true">%1$d%% gelijk aan</string>
+    <string name="ui_d_percent_similarity" translatable="true">%1$d%% gelijkenis</string>
+    <string name="ui_default_sdf_file_name" translatable="true">file.sdf</string>
+    <string name="ui_step_s_of_d" translatable="true">Stap %1$d van %2$d</string>
+    <string name="ui_phpoh_assumption" translatable="true">Ga uit van 25 C en pKw = 14.00 uur</string>
+    <string name="ui_classification_acidic" translatable="true">Zuur</string>
+    <string name="ui_classification_basic" translatable="true">Eenvoudig</string>
+    <string name="ui_classification_neutral" translatable="true">Neutraal</string>
+    <string name="ui_error_enter_a_valid_number" translatable="true">Voer een geldig nummer in.</string>
+    <string name="ui_error_ph_must_be_a_valid_number" translatable="true">pH moet een geldig nummer zijn.</string>
+    <string name="ui_error_poh_must_be_a_valid_number" translatable="true">pOH moet een geldig getal zijn.</string>
+    <string name="ui_error_concentration_must_be_greater_than_zero" translatable="true">Concentratie moet groter zijn dan 0.</string>
+    <string name="ui_solubility_rule_group_1_ammonium" translatable="true">Groep 1 en ammoniumzout zijn oplosbaar.</string>
+    <string name="ui_solubility_rule_nitrates" translatable="true">Nitraten, acetaten, chloorfluoraten en perchloorproducten zijn oplosbaar.</string>
+    <string name="ui_solubility_rule_halides_insoluble" translatable="true">Chlorides, bromides en iodides zijn onoplosbaar met Ag+, Pb2+, en Hg2^2+.</string>
+    <string name="ui_solubility_rule_most_halides" translatable="true">De meeste chlorides, bromides en iodides zijn oplosbaar.</string>
+    <string name="ui_solubility_rule_sulfates_insoluble" translatable="true">Sulfaten zijn onoplosbaar of slechts licht oplosbaar met Ba2+, Pb2+, Sr2+, Ca2+, Ag+, en Hg2^2+.</string>
+    <string name="ui_solubility_rule_most_sulfates" translatable="true">De meeste sulfaten zijn oplosbaar.</string>
+    <string name="ui_solubility_rule_hydroxides_partly_soluble" translatable="true">Hydroxides van Ba2+, Sr2+ en Ca2+ zijn slechts gedeeltelijk oplosbaar.</string>
+    <string name="ui_solubility_rule_most_hydroxides" translatable="true">De meeste hydroxides zijn onoplosbaar, behalve zouten van groep 1 en ammonium.</string>
+    <string name="ui_solubility_rule_carbonates" translatable="true">Carbonaten, fosfaten, sulfiden, sulfieten, chromaten, oxalaten en oxides zijn meestal onoplosbaar, behalve met betrekking tot groep 1 of ammonionen.</string>
+    <string name="ui_solubility_rule_no_match" translatable="true">Geen gemeenschappelijke oplossingregel komt overeen met dit product.</string>
+    <string name="ui_warning_add_at_least_one_bond" translatable="true">Voeg ten minste één bond toe zodat PubChem een structuur kan vergelijken.</string>
+    <string name="ui_warning_connect_fragments" translatable="true">Verbind alle fragmenten voordat u zoekt.</string>
+    <string name="ui_warning_very_large_drawings" translatable="true">Zeer grote tekeningen kunnen traag zijn of door PubChem worden afgewezen.</string>
+    <string name="ui_warning_aromatic_bonds_exported" translatable="true">Aromatische obligaties worden geëxporteerd als V2000 aromatische obligatietype 4.</string>
+    <string name="ui_error_draw_at_least_two_connected_atoms" translatable="true">Teken ten minste twee verbonden atomen voordat u zoekt.</string>
     <string name="ui_compare_compounds" translatable="true">Verbindingen vergelijken</string>
     <string name="ui_ph_poh_calculator" translatable="true">pH / pOH-calculator</string>
     <string name="ui_solution_type" translatable="true">Soort oplossing</string>
@@ -450,7 +623,7 @@
     <string name="ui_enter_an_amount_to_compute_moles" translatable="true">Voer een hoeveelheid in om het aantal mol te berekenen.</string>
     <string name="ui_clear_all_amounts" translatable="true">Alle hoeveelheden wissen</string>
     <string name="ui_stoichiometry_summary" translatable="true">SAMENVATTING STOCHIOMETRIE</string>
-    <string name="ui_limiting_reagent" translatable="true">Beperkend reagens</string>
+    <string name="ui_limiting_reagent_label" translatable="true">Reagent beperken</string>
     <string name="ui_mole_ratios_relative_to_limiting_reagent" translatable="true">MOLVERHOUDINGEN (ten opzichte van het beperkend reagens)</string>
     <string name="ui_theoretical_yield" translatable="true">THEORETISCHE OPBRENGST</string>
     <string name="ui_excess_reactants" translatable="true">OVERMAAT REACTANTEN</string>
@@ -488,6 +661,7 @@
     <string name="ui_could_not_parse_3d_data" translatable="true">Kan 3D-gegevens niet verwerken</string>
     <!-- WelcomeScreen.kt -->
     <string name="ui_set_your_look" translatable="true">Stel je uiterlijk in</string>
+    <string name="ui_appearance" translatable="true">APPEARANTIE</string>
     <string name="ui_choose_theme_accent_body" translatable="true">Kies het thema en de accentkleur die ChemSearch moet gebruiken bij zoeken, hulpmiddelen en instellingen.</string>
     <string name="ui_light" translatable="true">Licht</string>
     <string name="ui_dark" translatable="true">Donker</string>
@@ -508,5 +682,851 @@
     <string name="ui_chemsearch" translatable="true">ChemSearch</string>
     <string name="ui_configure_ai_provider" translatable="true">AI-provider configureren</string>
     <string name="ui_skip" translatable="true">Overslaan</string>
+    <string name="ui_next" translatable="true">Volgende</string>
+    <string name="ui_welcome_start_using_chemsearch" translatable="true">Start met ChemSearch</string>
     <string name="ui_always_follow_sds_documents_lab_rules_labels_and" translatable="true">Volg altijd SDS-documenten, laboratoriumregels, etiketten en officiële richtlijnen voordat je met chemicaliën werkt.</string>
+    <!-- ToolCatalog titles (some already existed as ui_molar_mass_calculator etc.) -->
+    <string name="ui_limiting_reagent" translatable="true">Beperkend reagens</string>
+    <string name="ui_percent_yield" translatable="true">Percentage rente</string>
+    <string name="ui_reaction_scaling" translatable="true">Reactie Schalen</string>
+    <!-- ToolCatalog subtitles -->
+    <string name="ui_molar_mass_calculator_subtitle" translatable="true">Voer een moleculaire formule in en pak de molaire massa</string>
+    <string name="ui_empirical_formula_finder_subtitle" translatable="true">Vind empirische en moleculaire formules uit samengestelde gegevens</string>
+    <string name="ui_reaction_balancer_subtitle" translatable="true">Balans elke chemische vergelijking automatisch</string>
+    <string name="ui_precipitate_predictor_subtitle" translatable="true">Voorspelling van neerslag en netto ionische vergelijkingen van twee zout</string>
+    <string name="ui_ph_poh_calculator_subtitle" translatable="true">Converteer pH, pOH, [H+], en [OH-]</string>
+    <string name="ui_oxidation_state_finder_subtitle" translatable="true">Zoek oxidatiestatus van elk element in een samenstelling</string>
+    <string name="ui_limiting_reagent_subtitle" translatable="true">Vind beperking van reagent, ratio\'s en theoretische opbrengst</string>
+    <string name="ui_percent_yield_subtitle" translatable="true">Vergelijk de werkelijke opbrengst met de theoretische opbrengst</string>
+    <string name="ui_dilution_calculator_subtitle" translatable="true">Los C1V1 = C2V2 op voor oplossingen</string>
+    <string name="ui_ideal_gas_law_subtitle" translatable="true">Los PV = nRT op voor gassen</string>
+    <string name="ui_compare_compounds_subtitle" translatable="true">Vergelijk formules, massa, ID, veiligheid en structuren</string>
+    <string name="ui_smiles_visualizer_subtitle" translatable="true">Plak een SMILES string om de 2D en 3D-structuur ervan te bekijken</string>
+    <string name="ui_custom_3d_viewer_subtitle" translatable="true">Laad een .sdf of .mol bestand en bekijk het in 3D</string>
+    <string name="ui_reaction_scaling_subtitle" translatable="true">Schaal reacties voor een doelproduct hoeveelheid</string>
+    <!-- ToolCategory labels -->
+    <string name="ui_tool_category_all" translatable="true">Allemaal</string>
+    <string name="ui_tool_category_visualize" translatable="true">Visualiseren</string>
+    <string name="ui_tool_category_calculators" translatable="true">Rekenmachines</string>
+    <string name="ui_tool_category_reactions" translatable="true">Reacties</string>
+    <string name="ui_tool_category_stoichiometry" translatable="true">Stoichiometrie</string>
+    <!-- SettingsUi section titles -->
+    <string name="ui_section_ai_providers" translatable="true">AI-PROVIDERS</string>
+    <string name="ui_section_app_links" translatable="true">APP-LINKS</string>
+    <string name="ui_section_built_with" translatable="true">GEBOUWD MET</string>
+    <string name="ui_section_chemistry_data" translatable="true">CHEMISCHE GEGEVENS</string>
+    <string name="ui_check_for_updates" translatable="true">Op updates controleren</string>
+    <string name="ui_chemical_database" translatable="true">Chemisch databestand</string>
+    <string name="ui_compound_cache" translatable="true">Compoundcache</string>
+    <string name="ui_data_and_storage" translatable="true">Gegevens &amp; Opslag</string>
+    <string name="ui_default_description_source" translatable="true">Standaard beschrijving bron</string>
+    <string name="ui_developer" translatable="true">Ontwikkelaar</string>
+    <string name="ui_display_and_search" translatable="true">Weergave &amp; Zoeken</string>
+    <string name="ui_downloads" translatable="true">Downloads</string>
+    <string name="ui_export_settings" translatable="true">Exporteer instellingen</string>
+    <string name="ui_faq" translatable="true">FAQ</string>
+    <string name="ui_faq_what_for_q" translatable="true">Waar is ChemSearch voor?</string>
+    <string name="ui_faq_what_for_a" translatable="true">ChemSearch is voor snel scheikunde opzoeken, studeren en naslagwerk. Het brengt zoeken naar verbindingen, structuren, veiligheidssamenvattingen, offline opslaan, referenties en rekenmachines in één Android-app.</string>
+    <string name="ui_faq_replacement_q" translatable="true">Is ChemSearch een vervanging voor PubChem?</string>
+    <string name="ui_faq_replacement_a" translatable="true">Nee. ChemSearch gebruikt PubChem als hoofdbron voor gegevens en presenteert nuttige onderdelen op een telefoon-vriendelijke manier. Open PubChem direct wanneer je het volledige record of originele pad nodig hebt.</string>
+    <string name="ui_faq_data_source_q" translatable="true">Waar komen samengestelde gegevens vandaan?</string>
+    <string name="ui_faq_data_source_a" translatable="true">De meeste samengestelde eigenschappen, identiteiten, structuren, synonyms, classificaties en GHS samenvattingen zijn afkomstig van PubChem. Sommige omschrijvingen kunnen afkomstig zijn van Wikipedia of uw geselecteerde AI-provider, afhankelijk van de instellingen.</string>
+    <string name="ui_faq_pt_data_q" translatable="true">Waar komen periodieke tabel gegevens vandaan?</string>
+    <string name="ui_faq_pt_data_a" translatable="true">Periodieke tabel details worden gebundeld van publieke referentie gegevens, waaronder PubChem, Wikipedia en Bowserinator/Periodic-Table-JSON. Sommige velden worden verborgen wanneer een waarde niet wordt vermeld.</string>
+    <string name="ui_faq_trust_q" translatable="true">Kan ik de gegevens vertrouwen?</string>
+    <string name="ui_faq_trust_a" translatable="true">Gebruik ChemSearch voor studie en snelle controles. Chemische databanken kunnen verschillend zijn omdat namen, tautomers, zouten, hydraten, stereotypen en normalisatieregels ingewikkeld zijn. Voor lab, medische, wettelijke of regelgevende beslissingen, controleer deze met officiële bronnen.</string>
+    <string name="ui_faq_safety_official_q" translatable="true">Is de veiligheidsinformatie officieel ambtenaar?</string>
+    <string name="ui_faq_safety_official_a" translatable="true">Nee. GHS-kaarten zijn korte referentie samenvattingen van PubChem gegevens. Zij vervangen geen leveranciersveiligheidsinformatieblad, lab beleid, lerareninstructies of lokale veiligheidsregels.</string>
+    <string name="ui_faq_safety_missing_q" translatable="true">Waarom kunnen veiligheidsgegevens ontbreken of anders zijn dan een SDS?</string>
+    <string name="ui_faq_safety_missing_a" translatable="true">Veiligheidsgegevens hangen af van bron, zuiverheid, mengsel, concentratie, fysieke vorm, regio en datum van de update. Een leverancier SDS is geschreven voor een specifiek product; ChemSearch toont meestal gegevens op substantieel niveau.</string>
+    <string name="ui_faq_lab_advice_q" translatable="true">Geeft ChemSearch lab-procedure of syntheseadvies?</string>
+    <string name="ui_faq_lab_advice_a" translatable="true">Nee. ChemSearch is voor zoeken en leren. Het controleert geen experimentele procedures, blootstellingslimieten, dosages, opslag compatibiliteit of veilige afhandelingsstappen.</string>
+    <string name="ui_faq_search_what_q" translatable="true">Waar kan ik naar zoeken?</string>
+    <string name="ui_faq_search_what_a" translatable="true">U kunt zoeken op gemeenschappelijke naam, IUPAC-naam, CAS-nummer, PubChem CID, formule, of getekende structuur. Sommige modi werken beter voor exacte id\'s dan korte namen.</string>
+    <string name="ui_faq_search_fail_q" translatable="true">Waarom is mijn zoekopdracht mislukt?</string>
+    <string name="ui_faq_search_fail_a" translatable="true">Probeer een spellingscorrectie, CID, CAS-nummer of een meer specifieke naam. Zeer brede namen, onofficiële namen, onstabiele structuren en samenstellingen die niet aanwezig zijn bij PubChem zullen wellicht geen nuttige match opleveren.</string>
+    <string name="ui_faq_did_you_mean_q" translatable="true">Waarom bedoelde je dat suggesties soms ontbreken?</string>
+    <string name="ui_faq_did_you_mean_a" translatable="true">ChemSearch toont alleen nauwe spellingswedstrijden. Het verbergt losse PubChem autocomplete resultaten als ze er geen verband mee houden, dus het kan niets laten zien in plaats van een slechte suggestie.</string>
+    <string name="ui_faq_normal_vs_isomer_q" translatable="true">Wat is het verschil tussen normale zoekopdracht en isomerzoeken?</string>
+    <string name="ui_faq_normal_vs_isomer_a" translatable="true">Normaal zoeken probeert één van de beste verbindingen te vinden. Isomer zoekt behandelt de input als een moleculaire formule en geeft een lijst van samenstellingen met dezelfde formule.</string>
+    <string name="ui_faq_formula_style_q" translatable="true">Waarom lijken formules soms anders dan tekstboeken?</string>
+    <string name="ui_faq_formula_style_a" translatable="true">ChemSearch kan formules in verschillende stijlen tonen. Hill order sorteer sorteert koolhydraten, waterstof, dan de rest alfabetisch. Conventionele volgorde probeert de bekende scheikunde vorm te tonen, zoals NaCl of H2SO4.</string>
+    <string name="ui_faq_ions_q" translatable="true">Waarom hebben ionen soms kosten nodig die apart getoond worden?</string>
+    <string name="ui_faq_ions_a" translatable="true">Formule tekst en opladen van tekst zijn verschillende stukken gegevens. ChemSearch probeert de kosten zichtbaar te houden met superscripts, maar sommige bronrecords kunnen ions opslaan in ongebruikelijke formaten.</string>
+    <string name="ui_faq_2d_hydrogen_q" translatable="true">Waarom geeft een 2D-structuur niet elke waterstof weer?</string>
+    <string name="ui_faq_2d_hydrogen_a" translatable="true">Veel chemische diagrammen laten waterstof op de koolstof, tenzij ze duidelijk zijn, dat is normaal voor de structuren in het luchtledige en PubChem-stijl 2D.</string>
+    <string name="ui_faq_3d_missing_q" translatable="true">Waarom ontbreekt een 3D-model?</string>
+    <string name="ui_faq_3d_missing_a" translatable="true">Sommige verbindingen hebben geen PubChem 3D-conformer. Zopen, metalen, coördinatie-verbindingen, ionische records, zeer flexibele moleculen en zeer grote moleculen zijn gangbaar.</string>
+    <string name="ui_faq_3d_exact_q" translatable="true">Zijn 3D modellen exacte echte vormen?</string>
+    <string name="ui_faq_3d_exact_a" translatable="true">Nee. PubChem 3D-conformers zijn berekende modellen, geen gegarandeerde experimentele structuren. Ze zijn nuttig om te visualiseren, maar ze vertegenwoordigen niet de exacte vorm in een kristallen oplosser, eiwitzakken of klaslokaal.</string>
+    <string name="ui_faq_3d_bond_order_q" translatable="true">Waarom zien obligatiebestellingen er anders uit in 3D?</string>
+    <string name="ui_faq_3d_bond_order_a" translatable="true">3D coördineert bestanden gericht op atompositie en connectiviteit. Bond order, aromatisme, laad plaatsing en tautomer vorm kunnen anders worden geïnterpreteerd door verschillende tools.</string>
+    <string name="ui_faq_structure_search_q" translatable="true">Wat doet Structuur Zoeken?</string>
+    <string name="ui_faq_structure_search_a" translatable="true">Structuurzoekopdracht stuurt de getekende molecule als structuur query en zoekt naar overeenkomende PubChed-verbindingen. Ongeldige klep, onvolledige tekeningen, of zeer complexe schetsen kunnen mislukken.</string>
+    <string name="ui_faq_structure_diff_q" translatable="true">Waarom geeft bouwwerk zoeken een andere samenstelling terug dan verwacht?</string>
+    <string name="ui_faq_structure_diff_a" translatable="true">Kleine trekkingsverschillen kunnen verandering brengen in de zoektocht, vooral met lasten, aromatische ringen, tautomaten, stereochemie, zout en impliciete hydrogens. Gebruik exacte id\'s wanneer u één specifiek record nodig hebt.</string>
+    <string name="ui_faq_ai_wrong_q" translatable="true">Kunnen AI beschrijvingen niet kloppen?</string>
+    <string name="ui_faq_ai_wrong_a" translatable="true">Ja. De AI-tekst kan vertrouwen wekken wanneer details ontbreken of feiten door elkaar lopen. Gebruik AI beschrijvingen als een platte taalhelper, niet als de laatste bron voor veiligheid, examens, lab work of citaten.</string>
+    <string name="ui_faq_ai_data_q" translatable="true">Welke gegevens worden naar AI providers gestuurd?</string>
+    <string name="ui_faq_ai_data_a" translatable="true">Alleen wanneer je een AI-beschrijving aanvraagt, stuurt ChemSearch samengestelde context naar de aanbieder die je hebt geselecteerd. Die provider behandelt het verzoek volgens zijn eigen voorwaarden en privacybeleid.</string>
+    <string name="ui_faq_ai_key_q" translatable="true">Heb ik een API-sleutel nodig voor AI-beschrijvingen?</string>
+    <string name="ui_faq_ai_key_a" translatable="true">Ja. Google Gemini, Groq Cloud, OpenAI, OpenRouter en Mistral AI hebben beide hun eigen API-sleutel nodig. Voeg sleutels toe in Instellingen &gt; AI Provider &amp; Keys.</string>
+    <string name="ui_faq_key_storage_q" translatable="true">Waar worden API-sleutels opgeslagen?</string>
+    <string name="ui_faq_key_storage_a" translatable="true">API-sleutels worden lokaal opgeslagen met door Android Keystore-ondersteunde encryptie. ChemSearch synchroniseert ze niet naar een ChemSearch account.</string>
+    <string name="ui_faq_collect_q" translatable="true">Verzamelt ChemSearch mijn zoekopdrachten?</string>
+    <string name="ui_faq_collect_a" translatable="true">ChemSearch heeft geen account systeem. Zoek geschiedenis, favorieten, downloads en cache worden opgeslagen op uw apparaat. Live zoekopdrachten nemen nog steeds contact op met externe diensten zoals PubChem, Wikipedia, GitHub updates, of uw gekozen AI provider indien nodig.</string>
+    <string name="ui_faq_collect_no_updates_a" translatable="true">ChemSearch heeft geen account systeem. Zoek geschiedenis, favorieten, downloads en cache worden opgeslagen op uw apparaat. Live-zoekopdrachten nemen nog steeds contact op met externe diensten zoals PubChem, Wikipedia, of uw gekozen AI-provider indien nodig.</string>
+    <string name="ui_faq_offline_q" translatable="true">Wat werkt offline?</string>
+    <string name="ui_faq_offline_a" translatable="true">De ingebouwde bibliotheekverwijzingen, calculators, favorieten en gedownloade verbindingen kunnen offline werken. Live verbindingen opzoeken, nieuwe omschrijvingen, structuur zoeken, update controles en AI omschrijvingen hebben internettoegang nodig.</string>
+    <string name="ui_faq_offline_no_updates_a" translatable="true">De ingebouwde bibliotheekreferenties, calculators, favorieten en gedownloade verbindingen kunnen offline werken. Live-samenstelling zoeken, nieuwe beschrijvingen, structuur zoeken, en AI beschrijvingen hebben toegang tot internet nodig.</string>
+    <string name="ui_faq_cache_vs_downloads_q" translatable="true">Wat is het verschil tussen cache en Downloads?</string>
+    <string name="ui_faq_cache_vs_downloads_a" translatable="true">Cache maakt herhaalde zoekopdrachten sneller en kan automatisch worden gewist. Downloads zijn opzettelijke offline samengestelde opgeslagen met ID\'s, beschrijvingen, structuren, synonimen, veiligheidsinformatie en brongegevens indien beschikbaar.</string>
+    <string name="ui_faq_downloads_stored_q" translatable="true">Waar worden de gedownloade verbindingen opgeslagen?</string>
+    <string name="ui_faq_downloads_stored_a" translatable="true">Gedownloade verbindingen worden opgeslagen in de lokale kamerdatabase van de app op uw apparaat. Deïnstalleren van de app kan ze verwijderen tenzij u ze eerst exporteert of een back-up maakt.</string>
+    <string name="ui_faq_save_q" translatable="true">Hoe bewaar ik een verbinding?</string>
+    <string name="ui_faq_save_a" translatable="true">Gebruik de ster voor favorieten of de downloadknop voor een volledige offline opslag. Favorieten zijn snelle bladwijzers; Downloads zijn bedoeld voor offline lezen.</string>
+    <string name="ui_faq_compare_q" translatable="true">Kan ik opgeslagen verbindingen vergelijken?</string>
+    <string name="ui_faq_compare_a" translatable="true">Ja. Selecteer twee of meer verbindingen in Favorieten, Downloads, of ondersteunde Chemische Database-vermeldingen en gebruik daarna de zwevende vergelijk knop.</string>
+    <string name="ui_faq_database_q" translatable="true">Wat is de Chemische Database?</string>
+    <string name="ui_faq_database_a" translatable="true">Het is een bundelende verwijzing naar gemeenschappelijke stoffen, ions, functionele groepen en reacties die offline nuttig zijn, maar niet zo breed als PubChem.</string>
+    <string name="ui_faq_compare_reactions_q" translatable="true">Waarom kan ik stoffen en ions vergelijken, maar geen reacties of functionele groepen?</string>
+    <string name="ui_faq_compare_reactions_a" translatable="true">Vergelijk Compounds verwacht samengestelde records met formules en ID\'s. Reacties en functionele groepen zijn referentiemateriaal, niet volledige samengestelde records.</string>
+    <string name="ui_faq_tags_q" translatable="true">Waarom zien sommige classificatie tags er niet uit?</string>
+    <string name="ui_faq_tags_a" translatable="true">Classificatie- en aantekeningen zijn afkomstig uit bronrecords Een tag kan een gegevenscontext, literatuur categorie, assay onderwerp of indexeringsvoorwaarden beschrijven; het betekent niet altijd dat de samenstelling vooral voor dat onderwerp wordt gebruikt.</string>
+    <string name="ui_faq_long_names_q" translatable="true">Waarom zijn sommige namen zeer lang of truncat?</string>
+    <string name="ui_faq_long_names_a" translatable="true">Sommige IUPAC-namen en biomolecule namen zijn te lang voor compacte schermen. Tik op de naam of breid controle uit indien beschikbaar om de volledige tekst te zien.</string>
+    <string name="ui_faq_molar_mass_q" translatable="true">Hoe wordt de mannelijke massa berekend?</string>
+    <string name="ui_faq_molar_mass_a" translatable="true">De rekenmachine stelt standaard atomische gewichten samen van de bovenste formule. Onderdelen, geneste groepen, hydraten en gemeenschappelijke notatie van formules worden ondersteund.</string>
+    <string name="ui_faq_oxidation_q" translatable="true">Waarom kunnen oxidatielanden verkeerd zijn voor ongebruikelijke formules?</string>
+    <string name="ui_faq_oxidation_a" translatable="true">Oxidatieregels vereisen aannames over obligaties, heffingen en bekende uitzonderingen. Het instrument behandelt gemeenschappelijke scheikunde, maar coördinatie verbindt zich en dubbelzinnige formules kunnen handmatige controles vereisen.</string>
+    <string name="ui_faq_balancing_q" translatable="true">Waarom kan men reageren op het evenwicht?</string>
+    <string name="ui_faq_balancing_a" translatable="true">De balansen gebruiken parsing van formules en exacte rekeningen. Het kan mislukken als formules ongeldig zijn, heffingen ontbreken, of de reactie heeft een scheikundige context nodig die verder gaat dan het behoud van atomen.</string>
+    <string name="ui_faq_homework_q" translatable="true">Kan ik de gereedschappen voor huiswerk gebruiken?</string>
+    <string name="ui_faq_homework_a" translatable="true">Ja, als een checker en leerhulpprogramma. Nog steeds uw werk weergeven, omdat de app antwoorden geeft en een overzicht geeft, niet de vereiste redeneringsstappen van uw leraar.</string>
+    <string name="ui_faq_updates_q" translatable="true">Hoe werken app-updates?</string>
+    <string name="ui_faq_updates_a" translatable="true">ChemSearch kan GitHub releases controleren, de APK downloaden in de app en vervolgens overdragen aan het Android-installatieprogramma. U kunt ook handmatig bijwerken vanaf GitHub.</string>
+    <string name="ui_faq_updates_optional_q" translatable="true">Zijn meldingen voor updates optioneel?</string>
+    <string name="ui_faq_updates_optional_a" translatable="true">Ja. U kunt notificaties in- of uitschakelen in Instellingen en toch handmatig controleren wanneer u dat wilt.</string>
+    <string name="ui_faq_clear_q" translatable="true">Hoe kan ik geschiedenis of cache wissen?</string>
+    <string name="ui_faq_clear_a" translatable="true">Open instellingen &gt; Data. U kunt recente zoekopdrachten wissen, de cachegrootte beheren, automatisch wissen en tijdelijke gegevens verwijderen.</string>
+    <string name="ui_faq_debug_q" translatable="true">Hoe ontgrendel ik debug instellingen?</string>
+    <string name="ui_faq_debug_a" translatable="true">Tik op het build-nummer op het ongeveer scherm. Foutopsporingsinstellingen zijn voor diagnose, eindpuntcontroles, logboeken en ontwikkeltesten.</string>
+    <string name="ui_frequently_asked_questions" translatable="true">Veel gestelde vragen</string>
+    <string name="ui_settings_favorites" translatable="true">Favorieten</string>
+    <string name="ui_formula_display" translatable="true">Formule weergave</string>
+    <string name="ui_import_settings" translatable="true">Instellingen importeren</string>
+    <string name="ui_live_log_viewer" translatable="true">Live logviewer</string>
+    <string name="ui_ai_provider_and_keys" translatable="true">AI-provider en sleutels</string>
+    <string name="ui_dark_mode" translatable="true">Donkere modus</string>
+    <string name="ui_search_history" translatable="true">Geschiedenis doorzoeken</string>
+    <string name="ui_autosuggestions" translatable="true">AutoSuggesties</string>
+    <string name="ui_compact_mode" translatable="true">Compacte modus</string>
+    <string name="ui_reduce_motion" translatable="true">Verminder beweging</string>
+    <string name="ui_high_contrast_outlines" translatable="true">Hoog contrast contouren</string>
+    <string name="ui_default_structure_view" translatable="true">Standaard structuurweergave</string>
+    <string name="ui_offline_download_quality" translatable="true">Offline downloadkwaliteit</string>
+    <string name="ui_cache_size_limit" translatable="true">Limiet cache grootte</string>
+    <string name="ui_auto_clear_cache" translatable="true">Cache automatisch wissen</string>
+    <string name="ui_api_endpoints" translatable="true">API-endpoints</string>
+    <string name="ui_test_update_notification" translatable="true">Test update melding</string>
+    <string name="ui_show_welcome_screen" translatable="true">Toon welkomstscherm</string>
+    <string name="ui_inspect_sharedpreferences" translatable="true">Gedeelde voorkeuren inspecteren</string>
+    <string name="ui_wipe_all_sharedpreferences" translatable="true">Alle gedeelde voorkeuren wissen</string>
+    <string name="ui_update_notifications" translatable="true">Update meldingen</string>
+    <string name="ui_update_available" translatable="true">Update beschikbaar</string>
+    <string name="ui_periodic_table" translatable="true">Periodieke tafel</string>
+    <string name="ui_periodic_detail_element_overview_desc" translatable="true">Het snelle identiteitsvenster voor dit element. Het toont het symbool, de elementfamilie, de tabelpositie, de gebruikelijke toestand, de atoommassa, het ontdekkingsjaar en een korte samenvatting in eenvoudige taal.</string>
+    <string name="ui_periodic_detail_element_images_desc" translatable="true">Een referentie afbeelding van het element wanneer er een beschikbaar is. Het helpt om de tabelinvoer te verbinden met hoe het element of een monster er in het echte leven uit kan zien.</string>
+    <string name="ui_periodic_detail_electron_shells_desc" translatable="true">Een schaalweergave van hoe elektronen worden geregeld rond de atoom. De buitenste granaat is vooral handig omdat valentie-elektronica veel binding en reactiviteit patronen uitlegt.</string>
+    <string name="ui_periodic_detail_physical_properties_desc" translatable="true">Gemeten eigenschappen die beschrijven hoe het element zich fysiek verhoudt: hoe sterk het elektronica aantrekt, hoe groot zijn atomen zijn, als ze smelten of boilen, en hoe dicht ze zijn.</string>
+    <string name="ui_periodic_detail_more_details_desc" translatable="true">Extra referentie feiten voor het element, gegroepeerd op identiteit, atoomgegevens en elektron data. Dit houdt gedetailleerde waarden gescheiden van het snelle overzicht.</string>
+    <string name="ui_periodic_detail_spectral_lines_desc" translatable="true">Het zichtbare emissiepatroon voor het element. Deze heldere lijnen gedragen zich als een vingerafdruk, helpen een element te identificeren uit het licht dat het uitstoot.</string>
+    <string name="ui_periodic_detail_sources_desc" translatable="true">Open de originele data en afbeeldingsbronnen die worden gebruikt voor deze pagina. Gebruik deze links als je een waarde wilt verifiëren of meer wilt lezen uit de bron.</string>
+    <string name="ui_state" translatable="true">Provincie</string>
+    <string name="ui_found" translatable="true">Gevonden</string>
+    <string name="ui_unknown" translatable="true">onbekend</string>
+    <string name="ui_loading_wikipedia_description" translatable="true">Wikipedia-beschrijving laden...</string>
+    <string name="ui_no_wikipedia_summary_available" translatable="true">Er is geen Wikipedia-samenvatting beschikbaar voor dit element.</string>
+    <string name="ui_wikipedia_description_could_not_be_loaded" translatable="true">Wikipedia-beschrijving kon niet worden geladen.</string>
+    <string name="ui_element_image_desc" translatable="true">%1$s element afbeelding</string>
+    <string name="ui_shell_n" translatable="true">n=%1$d</string>
+    <string name="ui_show_short_configuration" translatable="true">Korte configuratie tonen</string>
+    <string name="ui_show_full_configuration" translatable="true">Volledige configuratie tonen</string>
+    <string name="ui_group_period_s" translatable="true">Groep %1$d, periode %2$d</string>
+    <string name="ui_group_period_state_s" translatable="true">Groep %1$d · Periode %2$d · %3$s</string>
+    <string name="ui_period_s" translatable="true">Periode %1$d</string>
+    <string name="ui_lanthanides" translatable="true">Lanthaniden</string>
+    <string name="ui_actinides" translatable="true">Actiniden</string>
+    <string name="ui_about_s" translatable="true">Over %1$s</string>
+    <string name="ui_x_summary" translatable="true">%1$s-samenvatting</string>
+    <string name="ui_no_downloads_yet" translatable="true">Nog geen downloads</string>
+    <string name="ui_label_recent" translatable="true">Recentelijk</string>
+    <string name="ui_most_atoms" translatable="true">Meeste atomen</string>
+    <string name="ui_least_atoms" translatable="true">Minste atomen</string>
+    <string name="ui_no_matches_found_title" translatable="true">Geen overeenkomsten gevonden</string>
+    <!-- SettingsUi subtitles -->
+    <string name="ui_subtitle_all_118_offline" translatable="true">Alle 118 elementen offline</string>
+    <string name="ui_subtitle_about_links" translatable="true">App-informatie, links, gegevensbronnen en credits</string>
+    <string name="ui_subtitle_pubchem_etc" translatable="true">PubChem · NCI/CADD · Wikipedia · GitHub · AI</string>
+    <string name="ui_subtitle_choose_description" translatable="true">Kies welk beschrijvingstype als eerste wordt weergegeven</string>
+    <string name="ui_subtitle_choose_structure_tab" translatable="true">Kies welke tab de structuur opent na zoekopdracht</string>
+    <string name="ui_subtitle_conventional_hill" translatable="true">Conventioneel gebruikt gebruikelijke onderdeel volgorde; Hill Beheert PubChem/Hill volgorde</string>
+    <string name="ui_subtitle_clear_recent_searches" translatable="true">Alle recente zoekopdrachten wissen</string>
+    <string name="ui_subtitle_clear_history_cache" translatable="true">Geschiedenis wissen/cache en lokale instellingen importeren of exporteren.</string>
+    <string name="ui_subtitle_clears_legacy_prefs" translatable="true">Wist alleen oude prefs en versleutelde sleutelrecords</string>
+    <string name="ui_subtitle_diagnostics_tools" translatable="true">Diagnose en geavanceerde debugging tools.</string>
+    <string name="ui_subtitle_control_theme" translatable="true">Bepaal thema, autoSuggesties en standaard beschrijvingsgedrag.</string>
+    <string name="ui_subtitle_full_offline_copies" translatable="true">Volledige offline kopieën</string>
+    <string name="ui_subtitle_make_cards_easier" translatable="true">Maak kaarten en controles gemakkelijker om te scheiden</string>
+    <string name="ui_subtitle_limit_temp_cache" translatable="true">Limiteer tijdelijke compound cache opslag</string>
+    <string name="ui_subtitle_pick_provider" translatable="true">Kies een provider en beheer versleutelde lokale API-sleutels.</string>
+    <string name="ui_subtitle_pick_offline_quality" translatable="true">Kies hoeveel extra gegevens ChemSearch saves voor offline weergave</string>
+    <string name="ui_subtitle_save_settings" translatable="true">Sla instellingen, AI providermodellen en API-sleutels op naar JSON</string>
+    <string name="ui_subtitle_restore_settings" translatable="true">Herstel instellingen vanuit een JSON back-up</string>
+    <string name="ui_subtitle_saved_quick_links" translatable="true">Opgeslagen snelle links</string>
+    <string name="ui_subtitle_replay_intro" translatable="true">Herhaal de introductie van de eerste lancering</string>
+    <string name="ui_subtitle_remove_old_cache" translatable="true">Verwijder oude tijdelijke cachebestanden in dit schema</string>
+    <string name="ui_subtitle_send_sample_notification" translatable="true">Stuur nu een voorbeeld update notificatie</string>
+    <string name="ui_subtitle_show_dropdown" translatable="true">Toon dropdown tijdens typen</string>
+    <string name="ui_subtitle_show_more_content" translatable="true">Toon meer inhoud per scherm</string>
+    <string name="ui_subtitle_use_calmer_transitions" translatable="true">Gebruik kalmer overgangen en grootte</string>
+    <string name="ui_subtitle_notify_new_version" translatable="true">Waarschuw wanneer er een nieuwe versie beschikbaar is</string>
+    <string name="ui_subtitle_try_different" translatable="true">Probeer een andere naam, formule of CID.</string>
+    <string name="ui_subtitle_quick_answers" translatable="true">Snelle antwoorden over ChemSearch</string>
+    <string name="ui_subtitle_substances_etc" translatable="true">Substanden, ionen, groepen, reacties</string>
+    <string name="ui_subtitle_tap_download_icon" translatable="true">Tik op het downloadpictogram onder de ster op een compound</string>
+    <string name="ui_subtitle_tap_star_icon" translatable="true">Tik op het sterpictogram op een compound</string>
+    <string name="ui_subtitle_throws_exception" translatable="true">Onafgehandelde uitzondering voor testen</string>
+    <string name="ui_subtitle_jvm_system_ram" translatable="true">JVM heap + systeem RAM</string>
+    <!-- SettingsUi.kt: labels, actions, dialogs -->
+    <string name="ui_amoled_mode" translatable="true">AMOLED Modus</string>
+    <string name="ui_amoled_mode_dark_subtitle" translatable="true">Ware zwarte achtergrond voor elk kleurenschema</string>
+    <string name="ui_amoled_mode_light_subtitle" translatable="true">Schakel donkere modus in om de AMOLED modus te gebruiken</string>
+    <string name="ui_currently_dark" translatable="true">Momenteel donker</string>
+    <string name="ui_currently_light" translatable="true">Momenteel licht</string>
+    <string name="ui_structure_view_2d" translatable="true">2D</string>
+    <string name="ui_structure_view_3d" translatable="true">3D</string>
+    <string name="ui_structure_view_last_used" translatable="true">Laatst gebruikt</string>
+    <string name="ui_offline_quality_basic" translatable="true">Eenvoudig</string>
+    <string name="ui_offline_quality_structures" translatable="true">Structuren</string>
+    <string name="ui_offline_quality_complete" translatable="true">Compleet</string>
+    <string name="ui_formula_style_conventional" translatable="true">Conventioneel</string>
+    <string name="ui_formula_style_hill" translatable="true">Heuvel</string>
+    <string name="ui_desc_source_pubchem" translatable="true">PubChem</string>
+    <string name="ui_desc_source_wikipedia" translatable="true">Wikipedia</string>
+    <string name="ui_desc_source_ai" translatable="true">AI</string>
+    <string name="ui_cache_limit_10_mb" translatable="true">10 MB</string>
+    <string name="ui_cache_limit_50_mb" translatable="true">50 MB</string>
+    <string name="ui_cache_limit_100_mb" translatable="true">100 MB</string>
+    <string name="ui_cache_limit_unlimited" translatable="true">Onbeperkt</string>
+    <string name="ui_cache_retention_daily" translatable="true">Dagelijks</string>
+    <string name="ui_cache_retention_weekly" translatable="true">wekelijks</string>
+    <string name="ui_cache_retention_monthly" translatable="true">maandelijks</string>
+    <string name="ui_cache_retention_manual" translatable="true">Handleiding</string>
+    <string name="ui_color_blue" translatable="true">Blauw</string>
+    <string name="ui_color_violet" translatable="true">Paars</string>
+    <string name="ui_color_emerald" translatable="true">Smaragd</string>
+    <string name="ui_color_rose" translatable="true">Roos</string>
+    <string name="ui_color_amber" translatable="true">Barnsteen</string>
+    <string name="ui_section_data" translatable="true">Gegevens</string>
+    <string name="ui_section_updates" translatable="true">Updates</string>
+    <string name="ui_reference" translatable="true">Referentie</string>
+    <string name="ui_open" translatable="true">Openen</string>
+    <string name="ui_install" translatable="true">Installeren</string>
+    <string name="ui_download" translatable="true">downloaden</string>
+    <string name="ui_check" translatable="true">Controleer</string>
+    <string name="ui_checking" translatable="true">Controleren...</string>
+    <string name="ui_never_checked" translatable="true">Nooit gecontroleerd</string>
+    <string name="ui_last_checked_s" translatable="true">Laatst gecontroleerd op %1$s</string>
+    <string name="ui_downloading_update_d" translatable="true">Update downloaden (%1$d%%)</string>
+    <string name="ui_download_complete_tap_install" translatable="true">Downloaden voltooid. Druk op Installeren als de prompt is gesloten.</string>
+    <string name="ui_latest_s" translatable="true">Nieuwste: %1$s</string>
+    <string name="ui_up_to_date_latest_s" translatable="true">U bent up to date (nieuwste %1$s)</string>
+    <string name="ui_update_check_failed_s" translatable="true">Update controle mislukt: %1$s</string>
+    <string name="ui_package_s" translatable="true">Pakket: %1$s</string>
+    <string name="ui_version_s_d" translatable="true">v%1$s (%2$d)</string>
+    <string name="ui_debug" translatable="true">Debug</string>
+    <string name="ui_release" translatable="true">Vrijgeven</string>
+    <string name="ui_empty" translatable="true">Leeg</string>
+    <string name="ui_default_location" translatable="true">Standaard locatie</string>
+    <string name="ui_app_internal_cache_default" translatable="true">App interne cache (standaard)</string>
+    <string name="ui_key_saved" translatable="true">Sleutel opgeslagen</string>
+    <string name="ui_needs_key" translatable="true">Benodigd sleutel</string>
+    <string name="ui_needs_api_key" translatable="true">Heeft API-sleutel nodig</string>
+    <string name="ui_add_key" translatable="true">Sleutel toevoegen</string>
+    <string name="ui_use_ai" translatable="true">Gebruik AI</string>
+    <string name="ui_get_or_manage_a_key_at_s" translatable="true">Verkrijg of beheer een sleutel bij %1$s</string>
+    <string name="ui_imported_d_favorites_and_d_downloads" translatable="true">Geïmporteerde %1$d favorieten en %2$d downloads</string>
+    <string name="ui_replaced_library_with_d_favorites_and_d_downloads" translatable="true">Vervangen bibliotheek met %1$d favorieten en %2$d downloads</string>
+    <string name="ui_saved_d" translatable="true">%1$d opgeslagen</string>
+    <string name="ui_a_z" translatable="true">A-Z</string>
+    <string name="ui_filter_downloads" translatable="true">Downloads filteren</string>
+    <string name="ui_updates_and_help" translatable="true">Updates &amp; hulp</string>
+    <string name="ui_help" translatable="true">Hulp</string>
+    <string name="ui_settings_description_updates" translatable="true">Pas zoek-, AI, opslag en app updates aan.</string>
+    <string name="ui_settings_description_support" translatable="true">Zoek-, AI-opslag, opslag- en ondersteuningsopties aanpassen.</string>
+    <string name="ui_control_update_checks_and_open_support_resources" translatable="true">Controleert updatecontroles en open support bronnen.</string>
+    <string name="ui_faq_and_support_resources" translatable="true">FAQ en ondersteunende hulpbronnen.</string>
+    <string name="ui_subtitle_saved_quick_links_device" translatable="true">Snelle links opgeslagen op dit apparaat.</string>
+    <string name="ui_subtitle_offline_copies_saved_data" translatable="true">Offline samengestelde kopieën met opgeslagen structuren en gegevens.</string>
+    <string name="ui_subtitle_browse_database" translatable="true">Blader door stoffen, reacties, functionele groepen en ionen.</string>
+    <string name="ui_subtitle_browse_periodic_table" translatable="true">Blader door alle elementen, groepen, massa\'s en gemeenschappelijke oxidatielanden.</string>
+    <string name="ui_not_run_yet" translatable="true">Nog niet uitgevoerd</string>
+    <string name="ui_last_run_s" translatable="true">Laatst uitgevoerd: %1$s</string>
+    <string name="ui_success_d_failed_d_skipped_d" translatable="true">Succes %1$d · Mislukt %2$d · Overgeslagen %3$d</string>
+    <string name="ui_run" translatable="true">Uitvoeren</string>
+    <string name="ui_re_run" translatable="true">Herstarten</string>
+    <string name="ui_running" translatable="true">Bezig...</string>
+    <string name="ui_no_logs_yet_perform_an_action" translatable="true">Nog geen logs. Voer een actie uit in de app.</string>
+    <string name="ui_verbose_logging_off_only_errors_captured" translatable="true">Uitgebreide logboekregistratie is uitgeschakeld. Alleen fouten worden vastgelegd.\nSchakel het in om debug-logboeken te zien.</string>
+    <string name="ui_ping_pubchem_fallback_3d_wikipedia_github_and_ai" translatable="true">Ping PubChem, fallback 3D, Wikipedia, GitHub, en AI providers</string>
+    <string name="ui_last_run_d_ok_d_failed_d_skipped" translatable="true">Laatst uitgevoerd: %1$d ok • %2$d mislukt • %3$d overgeslagen</string>
+    <string name="ui_d_legacy_keys_stored_secrets_masked" translatable="true">%1$d oudere sleutels opgeslagen · geheimen gemaskeerd</string>
+    <string name="ui_view" translatable="true">Bekijken</string>
+    <string name="ui_send" translatable="true">Verzenden</string>
+    <string name="ui_wipe" translatable="true">Wissen</string>
+    <string name="ui_crash" translatable="true">Crash</string>
+    <string name="ui_used_d_mb_of_d_mb_max" translatable="true">%1$d MB van %2$d MB max gebruikt</string>
+    <string name="ui_used_d_mb_of_d_mb_total" translatable="true">%1$d MB van %2$d MB in totaal gebruikt</string>
+    <string name="ui_mem_used" translatable="true">Gebruikt</string>
+    <string name="ui_mem_allocated" translatable="true">Toegewezen</string>
+    <string name="ui_mem_max" translatable="true">Max.</string>
+    <string name="ui_mem_headroom" translatable="true">Hoofdkamer</string>
+    <string name="ui_mem_available" translatable="true">Beschikbaar</string>
+    <string name="ui_mem_total" translatable="true">Totaal</string>
+    <!-- StructureSearchUi.kt: drawing tools, editor, and results dialog -->
+    <string name="ui_structure_search_blocked_two_atoms" translatable="true">Teken ten minste twee verbonden atomen voordat u zoekt.</string>
+    <string name="ui_structure_search_blocked_connect" translatable="true">Verbind de atomen voordat u gaat zoeken.</string>
+    <string name="ui_structure_search_info" translatable="true">Constructie zoek informatie</string>
+    <string name="ui_atoms" translatable="true">atomen</string>
+    <string name="ui_bond_type" translatable="true">Type band</string>
+    <string name="ui_templates" translatable="true">Sjablonen</string>
+    <string name="ui_selected_s" translatable="true">Geselecteerd: %1$s</string>
+    <string name="ui_tap_to_place_atoms" translatable="true">Tik om atomen te plaatsen</string>
+    <string name="ui_search_structure" translatable="true">Structuur zoeken</string>
+    <string name="ui_structure_search_failed" translatable="true">Structuurzoekopdracht mislukt</string>
+    <string name="ui_matching_results" translatable="true">Overeenkomende resultaten</string>
+    <string name="ui_searching_pubchem" translatable="true">PubChem zoeken...</string>
+    <string name="ui_try_a_simpler_drawing_or_clean_the_structure" translatable="true">Probeer een eenvoudigere tekening of schoon deze constructie.</string>
+    <string name="ui_bond_single" translatable="true">Enkele obligatie</string>
+    <string name="ui_bond_double" translatable="true">Dubbele obligatie</string>
+    <string name="ui_bond_triple" translatable="true">Drievoudige bond</string>
+    <string name="ui_bond_aromatic" translatable="true">Aromatische bond</string>
+    <!-- ChemicalDatabaseUi.kt: browser headers, search results, empty states -->
+    <string name="ui_search_s" translatable="true">Zoek %1$s</string>
+    <string name="ui_search_results" translatable="true">Zoek resultaten</string>
+    <string name="ui_no_entries_in_this_category" translatable="true">Geen items in deze categorie</string>
+    <string name="ui_no_database_entries_match_s" translatable="true">Geen database items gevonden \"%1$s\"</string>
+    <!-- PeriodicTrends -->
+    <string name="ui_trend_electronegativity_short" translatable="true">NL</string>
+    <string name="ui_trend_atomic_radius_short" translatable="true">Straal</string>
+    <string name="ui_trend_ionization_energy_short" translatable="true">IJs</string>
+    <string name="ui_trend_density_short" translatable="true">Dichtheid</string>
+    <string name="ui_trend_melting_point_short" translatable="true">Smelten</string>
+    <string name="ui_trend_boiling_point_short" translatable="true">Kook</string>
+    <string name="ui_trend_electronegativity_desc" translatable="true">Hoe sterk een atoom bindende elektronen aantrekt.</string>
+    <string name="ui_trend_atomic_radius_desc" translatable="true">Geschatte atoomgrootte in picometers.</string>
+    <string name="ui_trend_ionization_energy_desc" translatable="true">Energie nodig om de eerste elektron van een neutrale atoom te verwijderen.</string>
+    <string name="ui_trend_density_desc" translatable="true">Groepsgewijs per eenheid in de buurt van standaard voorwaarden in de lijst.</string>
+    <string name="ui_trend_melting_point_desc" translatable="true">Temperatuur waar het element verandert van vast naar vloeistof.</string>
+    <string name="ui_trend_boiling_point_desc" translatable="true">Temperatuur waar het element verandert van vloeibaar naar gas.</string>
+    <string name="ui_trend_variable" translatable="true">Varia</string>
+    <string name="ui_trend_electronegativity" translatable="true">Elektronegativiteit</string>
+    <string name="ui_trend_atomic_radius" translatable="true">Atoomstraal</string>
+    <string name="ui_trend_ionization_energy" translatable="true">Ionisatie energie</string>
+    <string name="ui_trend_density" translatable="true">Dichtheid</string>
+    <string name="ui_trend_melting_point" translatable="true">Melding punt</string>
+    <string name="ui_trend_boiling_point" translatable="true">Kook punt</string>
+    <string name="ui_lowest" translatable="true">Laagste</string>
+    <string name="ui_highest" translatable="true">Hoogste</string>
+    <string name="ui_not_listed" translatable="true">Niet vermeld</string>
+    <string name="ui_no_listed_values" translatable="true">Geen genoteerde waarden</string>
+    <string name="ui_trend_summary_footer" translatable="true">%1$d vermelde waarden · Bereik %2$s</string>
+    <string name="ui_na" translatable="true">n/a</string>
+    <!-- StructureSearch modes -->
+    <string name="ui_structure_search_exact" translatable="true">Exacte</string>
+    <string name="ui_structure_search_similar" translatable="true">Vergelijkbaar</string>
+    <string name="ui_structure_search_contains" translatable="true">Bevat</string>
+    <string name="ui_structure_search_part_of" translatable="true">Onderdeel van</string>
+    <string name="ui_structure_search_exact_desc" translatable="true">Zoek dezelfde structuur</string>
+    <string name="ui_structure_search_similar_desc" translatable="true">Vind 2D wedstrijden</string>
+    <string name="ui_structure_search_contains_desc" translatable="true">Vind samenstellingen die deze tekening bevatten</string>
+    <string name="ui_structure_search_part_of_desc" translatable="true">Vind constructies in deze tekening</string>
+    <!-- StructureSearch rings -->
+    <string name="ui_ring_cyclopropane" translatable="true">Cyclopropan</string>
+    <string name="ui_ring_cyclobutane" translatable="true">Cyclobutaan</string>
+    <string name="ui_ring_cyclopentane" translatable="true">Cyclopentaan</string>
+    <string name="ui_ring_cyclohexane" translatable="true">Cyclohexaan</string>
+    <string name="ui_ring_cycloheptane" translatable="true">Cyclohetaan</string>
+    <string name="ui_ring_cyclooctane" translatable="true">Cyclooctaan</string>
+    <string name="ui_ring_benzene" translatable="true">Benzeen</string>
+    <string name="ui_ring_pyridine" translatable="true">Pyridine</string>
+    <string name="ui_ring_furan" translatable="true">Furaan</string>
+    <string name="ui_ring_thiophene" translatable="true">Thiofieen</string>
+    <string name="ui_ring_pyrrole" translatable="true">Pyrrool</string>
+    <string name="ui_ring_imidazole" translatable="true">Imidazool</string>
+    <string name="ui_ring_oxazole" translatable="true">Oxazol</string>
+    <string name="ui_ring_thiazole" translatable="true">Thiazool</string>
+    <!-- StructureSearch chains -->
+    <string name="ui_chain_ethyl" translatable="true">Ethyl keten</string>
+    <string name="ui_chain_propyl" translatable="true">Propyl keten</string>
+    <string name="ui_chain_butyl" translatable="true">Butyl keten</string>
+    <string name="ui_chain_hexyl" translatable="true">Hexyl keten</string>
+    <string name="ui_chain_carbonyl" translatable="true">Carbonyl</string>
+    <string name="ui_chain_nitrile" translatable="true">Nitrile</string>
+    <string name="ui_chain_hydroxyl" translatable="true">Hydroxyl</string>
+    <string name="ui_chain_amino" translatable="true">Amino</string>
+    <!-- StructureSearch warnings -->
+    <string name="ui_structure_warning_no_bonds" translatable="true">Voeg ten minste één bond toe zodat PubChem een structuur kan vergelijken.</string>
+    <string name="ui_structure_warning_disconnected" translatable="true">Verbind alle fragmenten voordat u zoekt.</string>
+    <string name="ui_structure_warning_large" translatable="true">Zeer grote tekeningen kunnen traag zijn of door PubChem worden afgewezen.</string>
+    <string name="ui_structure_warning_aromatic" translatable="true">Aromatische obligaties worden geëxporteerd als V2000 aromatische obligatietype 4.</string>
+    <!-- FormulaParser validation messages -->
+    <string name="ui_formula_parser_empty" translatable="true">Voer een formule in</string>
+    <string name="ui_formula_parser_invalid_char" translatable="true">Kon formule niet parsen bij \'%1$s\'</string>
+    <string name="ui_formula_parser_unparseable" translatable="true">Kon formule niet parsen</string>
+    <string name="ui_formula_parser_zero_count" translatable="true">Element aantal moet groter zijn dan nul</string>
+    <string name="ui_formula_parser_invalid_multiplier" translatable="true">Ongeldige toonaangevende hefboom</string>
+    <string name="ui_formula_parser_multiplier_empty" translatable="true">Hefboom moet worden gevolgd door een formule</string>
+    <string name="ui_formula_parser_invalid_character" translatable="true">Ongeldig formule teken \'%1$s\'</string>
+    <string name="ui_formula_parser_unclosed_group" translatable="true">Ongesloten groep</string>
+    <string name="ui_formula_parser_unmatched_group" translatable="true">Niet-geëvenaarde sluitende groep</string>
+    <!-- StructureStatus labels -->
+    <string name="ui_structure_status_pubchem_3d" translatable="true">PubChem 3D-conformator</string>
+    <string name="ui_structure_status_generated_fallback" translatable="true">Gegenereerde fallback</string>
+    <string name="ui_structure_status_unavailable" translatable="true">Structuur niet beschikbaar</string>
+    <string name="ui_structure_status_pubchem_3d_detail" translatable="true">3D conformer van PubChem. Het is een moleculaire conformiteit, niet een kristal of een ion lattice model.</string>
+    <string name="ui_structure_status_generated_fallback_detail" translatable="true">Gegenereerde schatting van SMILES, InChI of InChIKey. Bevestig voordat u exacte geometrie gebruikt.</string>
+    <string name="ui_structure_status_unavailable_detail" translatable="true">Er is geen bruikbaar 3D-model beschikbaar. Metallic solids, salts en ionische lattice constructies hebben geen enkele PubChem-stijl moleculaire 3D-conformer.</string>
+    <!-- SourceMetadata / Credits -->
+    <string name="ui_source_iupac_gold_book" translatable="true">IUPAC Gold Book</string>
+    <string name="ui_source_iupac_red_book" translatable="true">IUPAC Red Book</string>
+    <string name="ui_source_pubchem_pug_rest" translatable="true">PubChem PUG REST</string>
+    <string name="ui_source_pubchem_pug_view" translatable="true">PubChem PUG View</string>
+    <string name="ui_source_nci_cadd_resolver" translatable="true">NCI/CADD Resolver</string>
+    <string name="ui_source_unece_ghs" translatable="true">UNECE GHS</string>
+    <string name="ui_source_android_offline_first" translatable="true">Android Offline eerst</string>
+    <string name="ui_source_pubchem_ghs" translatable="true">PubChem GHS classificatie</string>
+    <string name="ui_credit_github_repository" translatable="true">GitHub repository</string>
+    <string name="ui_credit_latest_release" translatable="true">Latest release</string>
+    <string name="ui_credit_wiki" translatable="true">Wiki</string>
+    <string name="ui_credit_issue_tracker" translatable="true">Issue tracker</string>
+    <string name="ui_credit_product_hunt" translatable="true">Product Hunt</string>
+    <string name="ui_credit_license" translatable="true">License</string>
+    <string name="ui_credit_pubchem_periodic_table" translatable="true">PubChem Periodic Table</string>
+    <string name="ui_credit_wikipedia_wikimedia" translatable="true">Wikipedia and Wikimedia Commons</string>
+    <string name="ui_credit_google_gemini" translatable="true">Google Gemini</string>
+    <string name="ui_credit_google_gemini_desc" translatable="true">Snelle algemene scheikunde samenvattingen van Google.</string>
+    <string name="ui_credit_groq_cloud" translatable="true">Groq Cloud</string>
+    <string name="ui_credit_groq_cloud_desc" translatable="true">Zeer snelle OpenAI-compatibele chat completies.</string>
+    <string name="ui_credit_openai" translatable="true">OpenAI</string>
+    <string name="ui_credit_openai_desc" translatable="true">Evenwichtige AI beschrijvingen met behulp van OpenAI chat completies.</string>
+    <string name="ui_credit_openrouter" translatable="true">OpenRouter</string>
+    <string name="ui_credit_openrouter_desc" translatable="true">Routes aanvragen naar een beschikbaar model via OpenRouter.</string>
+    <string name="ui_credit_mistral_ai" translatable="true">Mistral AI</string>
+    <string name="ui_credit_mistral_ai_desc" translatable="true">Lichtgewicht samenvattingen van Mistral\'s chatAPI.</string>
+    <string name="ui_credit_jetpack_compose" translatable="true">Jetpack Compose</string>
+    <string name="ui_credit_material_3" translatable="true">Material 3</string>
+    <string name="ui_credit_androidx_navigation" translatable="true">AndroidX Navigation Compose</string>
+    <string name="ui_credit_androidx_room" translatable="true">AndroidX Room</string>
+    <string name="ui_credit_androidx_datastore" translatable="true">AndroidX DataStore</string>
+    <string name="ui_credit_androidx_workmanager" translatable="true">AndroidX WorkManager</string>
+    <string name="ui_credit_retrofit" translatable="true">Retrofit</string>
+    <string name="ui_credit_okhttp" translatable="true">OkHttp</string>
+    <string name="ui_credit_coil" translatable="true">Coil</string>
+    <string name="ui_credit_gson" translatable="true">Gson</string>
+    <string name="ui_credit_coroutines" translatable="true">Kotlin Coroutines</string>
+    <string name="ui_credit_phosphor_icons" translatable="true">Phosphor Icons</string>
+    <string name="ui_credit_icons8" translatable="true">Icons8</string>
+    <string name="ui_credit_github_repository_detail" translatable="true">Bron, releases, problemen en projectnotities</string>
+    <string name="ui_credit_latest_release_detail" translatable="true">De nieuwste APK downloaden</string>
+    <string name="ui_credit_wiki_detail" translatable="true">Feature gids en setup notities</string>
+    <string name="ui_credit_issue_tracker_detail" translatable="true">Bugrapporten en functieverzoeken</string>
+    <string name="ui_credit_product_hunt_detail" translatable="true">ChemSearch projectpagina</string>
+    <string name="ui_credit_license_detail" translatable="true">Open-source licentie</string>
+    <string name="ui_credit_pubchem_pug_rest_detail" translatable="true">Samengestelde zoeken, ID\'s, eigenschappen, afbeeldingen, synonyms, isomers en SDF structuren</string>
+    <string name="ui_credit_pubchem_pug_view_detail" translatable="true">Veiligheidssecties, GHS-gegevens, beschrijvingen en bronrecords</string>
+    <string name="ui_credit_pubchem_periodic_table_detail" translatable="true">Element eigenschappen voor de periodiek</string>
+    <string name="ui_credit_wikipedia_wikimedia_detail" translatable="true">Beschrijving samenvattingen, element afbeeldingen en spectral-line afbeeldingen</string>
+    <string name="ui_credit_bowserinator_detail" translatable="true">Extra element gegevens, elektron shells, samenvattingen en afbeeldingslinks</string>
+    <string name="ui_credit_nci_cadd_detail" translatable="true">Fallback SDF generatie wanneer PubChem 3D niet beschikbaar is</string>
+    <string name="ui_credit_iupac_gold_book_detail" translatable="true">Chemie termen en definities</string>
+    <string name="ui_credit_iupac_red_book_detail" translatable="true">Inorganische benamingsregels</string>
+    <string name="ui_credit_unece_ghs_detail" translatable="true">GHS pictogrammen en gevarenlabels</string>
+    <string name="ui_credit_ai_descriptions_detail" translatable="true">Optionele AI beschrijvingen</string>
+    <string name="ui_credit_jetpack_compose_detail" translatable="true">Oorspronkelijke Android UI</string>
+    <string name="ui_credit_material_3_detail" translatable="true">UI componenten en thema</string>
+    <string name="ui_credit_androidx_navigation_detail" translatable="true">Scherm navigatie</string>
+    <string name="ui_credit_androidx_room_detail" translatable="true">Offline compound library opslag</string>
+    <string name="ui_credit_androidx_datastore_detail" translatable="true">Opslag van app instellingen</string>
+    <string name="ui_credit_androidx_workmanager_detail" translatable="true">Controle op achtergrondupdate</string>
+    <string name="ui_credit_retrofit_detail" translatable="true">HTTP API-client</string>
+    <string name="ui_credit_okhttp_detail" translatable="true">Netwerk transport</string>
+    <string name="ui_credit_coil_detail" translatable="true">Thumbnails en externe afbeeldingen bouwen</string>
+    <string name="ui_credit_gson_detail" translatable="true">JSON conversie</string>
+    <string name="ui_credit_coroutines_detail" translatable="true">Asynchroon werk</string>
+    <string name="ui_credit_phosphor_icons_detail" translatable="true">App pictogram ingesteld</string>
+    <string name="ui_credit_icons8_detail" translatable="true">Wikipedia-logo icoon</string>
+    <!-- Search / ChemicalDatabase / IsomerFinder extras -->
+    <string name="ui_view_in_pubchem" translatable="true">Bekijken in PubChem</string>
+    <string name="ui_toggle_theme" translatable="true">Thema aan/uit</string>
+    <string name="ui_structural_isomers" translatable="true">Structurele Isomers</string>
+    <string name="ui_isotope" translatable="true">Isotoop</string>
+    <string name="ui_cid_label" translatable="true">CID %1$s</string>
+    <string name="ui_compare_count" translatable="true">Vergelijk %1$d</string>
+    <string name="ui_isotope_showing_substituted" translatable="true">Ook isotope-vervangende verbindingen weergeven.</string>
+    <string name="ui_isotope_results_hidden" translatable="true">%1$d isotope resultaat%2$s verborgen.</string>
+    <string name="ui_isomer_search_info" translatable="true">Isomer zoek informatie</string>
+    <string name="ui_clear_formula" translatable="true">Formule wissen</string>
+    <string name="ui_results_count_for_formula" translatable="true">%1$d resultaat%2$s voor %3$s</string>
+    <string name="ui_2d_structure_of" translatable="true">2D structuur van %1$s</string>
+    <string name="ui_searching_pubchem_for_isomers" translatable="true">PubChem zoeken voor isomers…</string>
+    <string name="ui_results_count" translatable="true">%1$d resultaat%2$s</string>
+    <string name="ui_min_weight" translatable="true">Min. gewicht</string>
+    <string name="ui_max_weight" translatable="true">Max. gewicht</string>
+    <string name="ui_has_3d" translatable="true">Heeft 3D</string>
+    <string name="ui_has_ghs" translatable="true">Heeft GHS</string>
+    <string name="ui_structure_of" translatable="true">Structuur van %1$s</string>
+    <string name="ui_mw" translatable="true">MW %1$s</string>
+    <string name="ui_charge_value" translatable="true">lading %1$s</string>
+    <!-- SdfFallback -->
+    <string name="ui_sdf_fallback_message" translatable="true">Geschatte %1$s met behulp van de NCI/CADD resolver gegenereerd.</string>
+    <!-- SearchUi info dialogs -->
+    <string name="ui_info_iupac_name" translatable="true">IUPAC naam</string>
+    <string name="ui_info_iupac_name_body" translatable="true">De systematische naam die is toegewezen door de Internationale Vereniging van Pure en Toegepaste Chemistry. Uniek beschrijft de structuur met een standaard naamsconventie.</string>
+    <string name="ui_info_cid" translatable="true">CID</string>
+    <string name="ui_info_cid_body" translatable="true">PubChem Compound ID (CID) is een uniek nummer toegewezen door de PubChem database om deze exacte samenstelling te identificeren.</string>
+    <string name="ui_info_cas_number" translatable="true">CAS Nummer</string>
+    <string name="ui_info_cas_number_body" translatable="true">Chemische Abstracts Service register nummer. Een wereldwijd herkende unieke id toegewezen aan elke chemische stof.</string>
+    <string name="ui_info_condensed_formula" translatable="true">Gecondenseerde formule</string>
+    <string name="ui_info_condensed_formula_body" translatable="true">Een compacte structuur formule gegenereerd van SMILES connectiviteit wanneer de app de structuur vol vertrouwen kan lezen.</string>
+    <string name="ui_info_smiles" translatable="true">SMILES</string>
+    <string name="ui_info_smiles_body" translatable="true">Vereenvoudigd moleculaire invoerregelsysteem. Een tekstnotatie die de moleculaire structuur met behulp van atomen en obligaties in een enkele regel beschrijft.</string>
+    <string name="ui_info_inchi" translatable="true">InChI</string>
+    <string name="ui_info_inchi_body" translatable="true">Internationale Chemische Identificatie. Een standaardtekst die zich identificeert voor chemische stoffen die zijn ontworpen als uniek en niet-merkbaar.</string>
+    <string name="ui_info_inchikey" translatable="true">InChIKey</string>
+    <string name="ui_info_inchikey_body" translatable="true">Een vaste lengte, gehashte versie van de volledige InChI. Makkelijker te zoeken en te indexeren dan de volledige InChI string.</string>
+    <string name="ui_info_empirical_formula" translatable="true">Empirische Formule</string>
+    <string name="ui_info_empirical_formula_body" translatable="true">De eenvoudigste breedteverhouding van atomen in een samenstelling. Differs uit moleculaire formule voor verbindingen zoals benzeen (C6H6 → CH).</string>
+    <string name="ui_info_atom_number" translatable="true">Atom getal</string>
+    <string name="ui_info_atom_number_body" translatable="true">Totaal aantal atomen vertegenwoordigd in het structuurrecord.</string>
+    <string name="ui_info_bond_number" translatable="true">Band nummer</string>
+    <string name="ui_info_bond_number_body" translatable="true">Het totale aantal obligaties in het structuurrecord.</string>
+    <string name="ui_info_formal_charge" translatable="true">Formele Charge</string>
+    <string name="ui_info_formal_charge_body" translatable="true">De elektrische lading die aan een atoom is toegewezen in een molecule, ervan uitgaande dat alle obligaties gelijkwaardig zijn gedeeld.</string>
+    <string name="ui_info_what_this_shows" translatable="true">Wat dit laat zien</string>
+    <string name="ui_info_advanced_properties_what_body" translatable="true">Extra PubChem berekende eigenschappen voor mensen die een diepere look willen dan formules, massa, identificatiemiddelen en veiligheid.</string>
+    <string name="ui_info_why_hidden_by_default" translatable="true">Waarom dit standaard verborgen is</string>
+    <string name="ui_info_advanced_properties_why_hidden_body" translatable="true">Deze waarden zijn nuttig, maar ze kunnen technisch ervaren tijdens het normaal opzoeken. De hoofdresultatenpagina houdt ze achter de link voor meer informatie.</string>
+    <string name="ui_info_xlogp" translatable="true">XLogP</string>
+    <string name="ui_info_xlogp_body" translatable="true">Geschatte partitie tussen olie en water. Hogere waarden betekenen meestal dat de stof meer hydrofobie is; lagere of negatieve waarden betekenen meestal dat het watervriendelijker is.</string>
+    <string name="ui_info_tpsa" translatable="true">TPSA</string>
+    <string name="ui_info_tpsa_body" translatable="true">Het oppervlakte van de topologische polaire stof wordt hiermee vergeleken hoeveel polaire oppervlakte een molecule heeft, die vaak van belang is voor de oplossing en de biologische beweging.</string>
+    <string name="ui_info_complexity" translatable="true">Complexiteit</string>
+    <string name="ui_info_complexity_body" translatable="true">Een PubChem score gebaseerd op structurele kenmerken zoals ringen, branches, atomen, obligaties en stereochemie. Het is nuttig voor vergelijking en niet als moeilijkheidsgraad.</string>
+    <string name="ui_info_mass_values" translatable="true">Bulk waarden</string>
+    <string name="ui_info_mass_values_body" translatable="true">Exacte massa en monoisotopische massa gebruik isotopische massa\'s. Ze zijn het meest nuttig voor massa spectrommetrie en nauwkeurig analytisch werk.</string>
+    <string name="ui_info_3d_values" translatable="true">3D waarden</string>
+    <string name="ui_info_3d_values_body" translatable="true">3D velden worden alleen weergegeven wanneer PubChem gegevens heeft die met hem verbonden zijn. 3D-waarden missen betekent niet dat de samenstelling ongeldig is.</string>
+    <string name="ui_info_what_tags_mean" translatable="true">Wat deze tags betekenen</string>
+    <string name="ui_info_what_tags_mean_body" translatable="true">Dit zijn korte etiketten uit PubChem annotaties, zoals chemische klassen, drugsklassen en onderwerpcategorieën in de stijl van MeSH.</string>
+    <string name="ui_info_why_tags_look_strange" translatable="true">Waarom sommige tags er vreemd uitzien</string>
+    <string name="ui_info_why_tags_look_strange_body" translatable="true">PubChem kan bronindexeringstermen als borstvoeding, Lactatie, Melk of Menselijk bijvoegen wanneer een stof voorkomt in medische, blootstellingsbronnen of drugreferentie. Het zijn broncategorieën, niet altijd platte taalbeschrijvingen van de inhoud.</string>
+    <string name="ui_info_how_to_read_tags" translatable="true">Hoe ze te lezen</string>
+    <string name="ui_info_how_to_read_tags_body" translatable="true">Gebruik deze chips als snelle aanwijzingen, niet als eindlabels. Een label vertelt u dat de stof voorkomt in de categorie gegevens ergens in PubChem.</string>
+    <string name="ui_info_why_classification_empty" translatable="true">Waarom het leeg kan zijn</string>
+    <string name="ui_info_why_classification_empty_body" translatable="true">Sommige eenvoudige of ongewone stoffen hebben geen nuttige openbare classificatieaantekeningen, dus ChemSearch verbergt de kaart wanneer er niets nuttigs te laten zien.</string>
+    <string name="ui_info_uses_what_body" translatable="true">Korte PubChem annotatie snippets over gerapporteerde gebruik, rollen, voorvallen of bronnotities wanneer PubChem gegevens leesbaar heeft.</string>
+    <string name="ui_info_why_bullets_vary" translatable="true">Waarom kogels kunnen variëren</string>
+    <string name="ui_info_why_bullets_vary_body" translatable="true">Deze notities komen uit verschillende PubChem bronnen. dus één stof mag gedetailleerde gebruiksaantekeningen hebben, terwijl een andere stof slechts één korte of helemaal geen enkele categorie heeft.</string>
+    <string name="ui_info_safety_note" translatable="true">Veiligheids notitie</string>
+    <string name="ui_info_uses_safety_note_body" translatable="true">Deze kogels zijn snelle referentienotities, geen instructies voor het gebruiken, doven, maken, opslaan of verwerken van chemicaliën.</string>
+    <string name="ui_info_why_uses_empty" translatable="true">Waarom het leeg kan zijn</string>
+    <string name="ui_info_why_uses_empty_body" translatable="true">Veel stoffen hebben geen openbare aantekeningen in PubChem. In dat geval verbergt ChemSearch simpelweg de kaart.</string>
+    <string name="ui_info_elemental_analysis_what" translatable="true">Wat is dit?</string>
+    <string name="ui_info_elemental_analysis_what_body" translatable="true">Toont het percentage van elk element per massa in het samen. Berekend van atomische gewichten en de moleculaire formule.</string>
+    <string name="ui_info_elemental_analysis_example" translatable="true">Voorbeeld</string>
+    <string name="ui_info_elemental_analysis_example_body" translatable="true">Water (H2O) is ~11% waterstof en ~89% zuurstof door de massa, aangezien zuurstofatomen veel zwaarder zijn dan waterstofatomen.</string>
+    <string name="ui_info_elemental_analysis_why" translatable="true">Waarom het belangrijk is</string>
+    <string name="ui_info_elemental_analysis_why_body" translatable="true">Nuttig in analytische scheikunde om de samengestelde identiteit te verifiëren en in voedingswetenschap om de samenstelling van de voedingsstoffen te begrijpen.</string>
+    <string name="ui_info_what_is_ghs" translatable="true">Wat is GHS?</string>
+    <string name="ui_info_what_is_ghs_body" translatable="true">Het wereldwijd geharmoniseerde systeem voor de indeling en etikettering van chemische stoffen (GHS) is een standaard van de VN voor de communicatie van chemische gevaren in de wereld.</string>
+    <string name="ui_info_signal_word" translatable="true">Signaal Woord</string>
+    <string name="ui_info_signal_word_body" translatable="true">\'Gevaar\' geeft een ernstiger risico aan. \'Waarschuwing\' geeft een minder ernstig risico aan.</string>
+    <string name="ui_info_pictograms" translatable="true">Pictogram</string>
+    <string name="ui_info_pictograms_body" translatable="true">Standaardsymbolen (GHS01–GHS09) die visueel het type gevaar communiceren, zoals brandbaarheid, toxiciteit, corrosie of beschadiging van het milieu.</string>
+    <string name="ui_info_hazard_statements" translatable="true">Risico statements</string>
+    <string name="ui_info_hazard_statements_body" translatable="true">Gestandaardiseerde H-codes die de aard en de mate van gevaar beschrijven. Bijvoorbeeld, H225 betekent \'Grote smaakbare vloeistof en vapour\'.</string>
+    <string name="ui_info_ghs_data_source" translatable="true">Data bron</string>
+    <string name="ui_info_ghs_data_source_body" translatable="true">GHS-gegevens zijn afkomstig uit PubChem\'s geaggregeerde classificatierecords. Pictogram-artwork gebruikt de officiële UNECE GHS-symbolen.</string>
+    <string name="ui_ghs_label_explosive" translatable="true">Explosief</string>
+    <string name="ui_ghs_label_flammable" translatable="true">Ontvlambaar</string>
+    <string name="ui_ghs_label_oxidizing" translatable="true">Oxidialiseren</string>
+    <string name="ui_ghs_label_compressed_gas" translatable="true">Gecomprimeerde Gas</string>
+    <string name="ui_ghs_label_corrosive" translatable="true">Corrosief</string>
+    <string name="ui_ghs_label_toxic" translatable="true">Giftig</string>
+    <string name="ui_ghs_label_harmful" translatable="true">Schadelijk</string>
+    <string name="ui_ghs_label_health_hazard" translatable="true">Gevaren gezondheid</string>
+    <string name="ui_ghs_label_environmental" translatable="true">Milieu</string>
+    <string name="ui_ghs_disclaimer" translatable="true">Alleen verwijzing. Dit vervangt niet een officiële SDS, lokale lab regels of toezichtbegeleiding.</string>
+    <string name="ui_hazard_unstable_explosive" translatable="true">Onstabiele explosief</string>
+    <string name="ui_hazard_highly_flammable" translatable="true">Zeer ontvlambare vloeistof en damp</string>
+    <string name="ui_hazard_flammable_liquid" translatable="true">Vlambare vloeistof en damp</string>
+    <string name="ui_hazard_toxic_if_swallowed" translatable="true">Giftig bij inslikken</string>
+    <string name="ui_hazard_harmful_if_swallowed" translatable="true">Schadelijk als slikt</string>
+    <string name="ui_hazard_toxic_skin" translatable="true">Giftig in contact met huid</string>
+    <string name="ui_hazard_severe_burns" translatable="true">Veroorzaakt ernstige huid brandt en schade aan de ogen</string>
+    <string name="ui_hazard_skin_irritation" translatable="true">Zorgt voor huidirritatie</string>
+    <string name="ui_hazard_eye_irritation" translatable="true">Zorgt voor ernstige oogirritatie</string>
+    <string name="ui_hazard_toxic_if_inhaled" translatable="true">Giftig bij inhalatie</string>
+    <string name="ui_hazard_respiratory_irritation" translatable="true">Kan ademhalingsirritatie veroorzaken</string>
+    <string name="ui_hazard_may_cause_cancer" translatable="true">Kan kanker veroorzaken</string>
+    <string name="ui_hazard_very_toxic_aquatic" translatable="true">Zeer giftig voor het aquatisch leven</string>
+    <string name="ui_show_less" translatable="true">Minder weergeven</string>
+    <string name="ui_show_more_count" translatable="true">Toon %1$d meer</string>
+    <string name="ui_expand" translatable="true">uitbreiden</string>
+    <string name="ui_download_sdf" translatable="true">SDF downloaden</string>
+    <string name="ui_source_label" translatable="true">Bron: %1$s</string>
+    <string name="ui_share_compound_name" translatable="true">Verbinding</string>
+    <string name="ui_share_formula" translatable="true">Formule: %1$s</string>
+    <string name="ui_share_cid" translatable="true">PubChem CID: %1$d</string>
+    <string name="ui_share_cas" translatable="true">CAS: %1$s</string>
+    <string name="ui_share_molecular_weight" translatable="true">Moleculair gewicht: %1$s g/mol</string>
+    <string name="ui_share_iupac" translatable="true">IUPAC: %1$s</string>
+    <string name="ui_share_pubchem_url" translatable="true">PubChem: %1$s</string>
+    <string name="ui_condensed_formula_label" translatable="true">Gecondenseerde formule</string>
+    <string name="ui_iupac_name_label" translatable="true">IUPAC naam</string>
+    <string name="ui_smiles_connectivity_label" translatable="true">SMILES (Connectiviteit)</string>
+    <string name="ui_smiles_full_label" translatable="true">SMILES (volledig)</string>
+    <string name="ui_inchikey_label" translatable="true">InChIKey</string>
+    <string name="ui_inchi_label" translatable="true">InChI</string>
+    <string name="ui_empirical_formula_label" translatable="true">Empirische Formule</string>
+    <string name="ui_atom_number_label" translatable="true">Atom getal</string>
+    <string name="ui_bond_number_label" translatable="true">Band nummer</string>
+    <string name="ui_formal_charge_label" translatable="true">Formele Charge</string>
+    <string name="ui_3d_unavailable_body" translatable="true">de OMEGA-toolkit en het MMFF94s-krachtveld. Een verbinding krijgt geen 3D-model als het niet aan deze criteria voldoet. ChemSearch probeert ook een gegenereerde SDF-fallback van SMILES, InChI of InChIKey wanneer PubChem 3D ontbreekt.</string>
+    <string name="ui_3d_reason_too_large" translatable="true">Te groot: meer dan 50 niet-waterstof atomen</string>
+    <string name="ui_3d_reason_too_flexible" translatable="true">Te flexibel: meer dan 15 draaibare obligaties</string>
+    <string name="ui_3d_reason_unsupported_elements" translatable="true">Niet-ondersteunde elementen: alleen H, C, N, O, F, Si, S, Cl, Br en ik worden ondersteund door het force field. Metalen worden niet ondersteund.</string>
+    <string name="ui_3d_reason_salt_or_mixture" translatable="true">Zout of menging: de samenstelling heeft meer dan één covalent (bijvoorbeeld NaCl). PubChem kan een 3D model hebben voor de gratis bovenliggende basis</string>
+    <string name="ui_3d_reason_crystal_or_metallic" translatable="true">Kristal- of metallisch rooster: SMILES/InChI beschrijven formule/connectiviteit, niet een volledig uitgebreid vastestoffase-rooster</string>
+    <string name="ui_3d_reason_too_many_undefined_stereo" translatable="true">Te veel niet-gedefinieerde stereo-centra : 6 of meer ongedefinieerde atom- of bond stereo-centra</string>
+    <string name="ui_3d_reason_conformer_failure" translatable="true">Conformer generatie fout: het algoritme kon niet converteren op een stabiele geometrie</string>
+    <string name="ui_pin" translatable="true">Vastzetten</string>
+    <string name="ui_unpin" translatable="true">Losmaken</string>
+    <string name="ui_show_full_name" translatable="true">Toon volledige naam</string>
+    <string name="ui_remove_favorite" translatable="true">Favoriet verwijderen</string>
+    <string name="ui_add_favorite" translatable="true">Favoriet toevoegen</string>
+    <string name="ui_update_offline_download" translatable="true">Offline download bijwerken</string>
+    <string name="ui_download_for_offline_use" translatable="true">Downloaden voor offline gebruik</string>
+    <string name="ui_mw_g_mol" translatable="true">MW (g/mol)</string>
+    <string name="ui_loading_3d_model" translatable="true">3D model laden...</string>
+    <string name="ui_synonyms" translatable="true">Synoniemen</string>
+    <string name="ui_description" translatable="true">Beschrijving</string>
+    <string name="ui_pubchem_desc_not_available" translatable="true">PubChem-beschrijving niet beschikbaar.</string>
+    <string name="ui_wiki_desc_not_available" translatable="true">Wikipedia-beschrijving niet beschikbaar voor deze compound.</string>
+    <string name="ui_ai_desc_not_available" translatable="true">AI beschrijving niet beschikbaar. Controleer je API key in Instellingen.</string>
+    <string name="ui_read_more" translatable="true">Meer informatie</string>
+    <string name="ui_read_less" translatable="true">Minder lezen</string>
+    <string name="ui_based_on" translatable="true">Gebaseerd op: %1$s</string>
+    <string name="ui_via" translatable="true">via %1$s</string>
+    <!-- ToolsScreen extra labels -->
+    <string name="ui_compound_label" translatable="true">Samenstelling %1$d</string>
+    <string name="ui_molarity_label" translatable="true">Molariteit (M)</string>
+    <string name="ui_amount_label" translatable="true">Hoeveelheid</string>
+    <!-- Legal section content -->
+    <string name="ui_legal_data_on_device_title" translatable="true">Gegevens op uw apparaat</string>
+    <string name="ui_legal_data_on_device" translatable="true">Favorieten, recente zoekopdrachten, downloads, cache-gegevens, instellingen, API-sleutels en bibliotheekbestanden worden opgeslagen op uw apparaat, tenzij u ervoor kiest deze te delen of te exporteren.</string>
+    <string name="ui_legal_external_services_title" translatable="true">Externe diensten</string>
+    <string name="ui_legal_external_services" translatable="true">ChemSearch kan contact opnemen met PubChem, Wikipedia, NCI/CADD, GitHub, en optionele AI providers om samengestelde gegevens, beschrijvingen, structuren, updates en model antwoorden op te halen.</string>
+    <string name="ui_legal_ai_descriptions_title" translatable="true">AI beschrijvingen</string>
+    <string name="ui_legal_ai_descriptions" translatable="true">Als u een AI-provider, samengestelde namen, ID\'s, formules, beschikbare brongegevens gebruikt en uw prompt context kan worden verzonden naar die provider. Zoekmachine API keys worden lokaal opgeslagen op uw apparaat.</string>
+    <string name="ui_legal_no_account_system_title" translatable="true">Geen rekening systeem</string>
+    <string name="ui_legal_no_account_system" translatable="true">ChemSearch bevat geen ChemSearch account, profiel of ingebouwde analytics account systeem.</string>
+    <string name="ui_legal_your_control_title" translatable="true">Uw controle</string>
+    <string name="ui_legal_your_control" translatable="true">Je kunt de cache wissen, downloads, opgeslagen items verwijderen, aanbieders wijzigen, API-sleutels verwijderen en gegevens van de bibliotheek exporteren of importeren vanuit de app instellingen.</string>
+    <string name="ui_legal_privacy_summary" translatable="true">Hoe ChemSearch omgaat met zoeken, AI providers, opgeslagen gegevens en updates.</string>
+    <string name="ui_legal_terms_summary" translatable="true">Basisregels voor het gebruik van ChemSearch en de bronnen van gegevens van derden.</string>
+    <string name="ui_legal_safety_summary" translatable="true">ChemSearch is bedoeld voor onderzoek en snelle controles, niet voor officiële veiligheidsbegeleiding.</string>
+    <string name="ui_legal_use" translatable="true">Gebruik</string>
+    <string name="ui_legal_use_body" translatable="true">ChemSearch is een scheikundige zoek- en studieapp. Gebruik het verantwoord en volg de regels van je school, werkplek, lab en lokale wetgeving.</string>
+    <string name="ui_legal_third_party_sources" translatable="true">Bronnen van derden</string>
+    <string name="ui_legal_third_party_sources_body" translatable="true">Samengestelde gegevens, veiligheidsinformatie, omschrijvingen, structuren, updates en AI-antwoorden kunnen van externe diensten komen.</string>
+    <string name="ui_legal_no_guarantee" translatable="true">Geen garantie</string>
+    <string name="ui_legal_no_guarantee_body" translatable="true">Chemsearch wordt verstrekt zoals het is. Resultaten kunnen incompleet zijn, onbeschikbaar, verouderd, gegenereerd of fout zijn.</string>
+    <string name="ui_legal_user_content" translatable="true">Gebruikers inhoud</string>
+    <string name="ui_legal_user_content_body" translatable="true">Je bent verantwoordelijk voor zoekopdrachten, structuurtekeningen, API-sleutels, geïmporteerde bestanden, geëxporteerde bestanden of vraagt om gebruik met de app.</string>
+    <string name="ui_legal_changes" translatable="true">Veranderingen</string>
+    <string name="ui_legal_changes_body" translatable="true">Functies, bronnen, het bijwerken van gedrag en providerondersteuning kunnen veranderen tussen app versies.</string>
+    <string name="ui_legal_quick_checks_only" translatable="true">Alleen snelle controles</string>
+    <string name="ui_legal_quick_checks_only_body" translatable="true">Chemische en veiligheidsinformatie in ChemSearch is bedoeld om te leren en voor snelle controles. Het is geen vervanging voor SDS-documenten, laboratoriumregels of professioneel advies.</string>
+    <string name="ui_legal_safety_data_limits" translatable="true">Limiet veiligheidsgegevens</string>
+    <string name="ui_legal_safety_data_limits_body" translatable="true">GHS en gevarengegevens kunnen ontbreken, bronafhankelijk of onvolledig zijn. Controleer van officiële documenten voordat u chemische stoffen afhandelt.</string>
+    <string name="ui_legal_ai_limits" translatable="true">AI limieten</string>
+    <string name="ui_legal_ai_limits_body" translatable="true">AI-beschrijvingen kunnen vertrouwen geven terwijl ze onvolledig of onjuist zijn. Gebruik de AI-tekst niet als de enige bron voor veiligheid, medische of lab-beslissingen.</string>
+    <string name="ui_legal_emergency_use" translatable="true">Gebruik voor noodgevallen</string>
+    <string name="ui_legal_emergency_use_body" translatable="true">Geloof niet op ChemSearch tijdens noodgevallen. Volg uw lab, instelling of werkplaatsprocedures.</string>
+    <string name="ui_legal_generated_structures" translatable="true">Gegenereerde structuren</string>
+    <string name="ui_legal_generated_structures_body" translatable="true">Terugvallen of gegenereerde 3D-structuren zijn schattingen en moeten worden behandeld als visuele hulpmiddelen, niet als geverifieerde experimentele structuren.</string>
+    <!-- ToolsScreen strings -->
+    <string name="ui_done" translatable="true">Voltooid</string>
+    <string name="ui_reorder" translatable="true">Herordenen</string>
+    <string name="ui_no_tools_match_s" translatable="true">Geen gereedschappen gevonden \"%1$s\"</string>
+    <string name="ui_list_view" translatable="true">Lijst weergave</string>
+    <string name="ui_grid_view" translatable="true">Raster weergave</string>
+    <string name="ui_visualize" translatable="true">Visualiseren</string>
+    <string name="ui_looking_up" translatable="true">Aan het kijken...</string>
+    <string name="ui_comparing" translatable="true">Vergelijk...</string>
+    <string name="ui_tap_to_collapse" translatable="true">Tik om in te klappen</string>
+    <string name="ui_tap_to_expand" translatable="true">Tik om uit te klappen</string>
+    <string name="ui_known_s" translatable="true">Bekend %1$s</string>
+    <string name="ui_e_g_1e_7" translatable="true">bijv. 1e-7</string>
+    <string name="ui_e_g_7" translatable="true">bijv. 7</string>
+    <string name="ui_neutral_water" translatable="true">Neutraal water</string>
+    <string name="ui_acidic_ph" translatable="true">Zure pH</string>
+    <string name="ui_basic_poh" translatable="true">Basis POH</string>
+    <string name="ui_h_plus_example" translatable="true">[H+] voorbeeld</string>
+    <string name="ui_ph_poh_explanation" translatable="true">Bij 25 C tellen pH en pOH op tot 14. Lagere pH is zuurder, hogere pH is basisch, en pH nabij 7 is neutraal.</string>
+    <string name="ui_dilution_explanation" translatable="true">Stockconcentratie en -volume zijn gerelateerd aan de eindconcentratie en het eindvolume. Met drie bekende waarden wordt de vierde direct uit deze vergelijking bepaald.</string>
+    <string name="ui_ideal_gas_explanation" translatable="true">Druk, hoeveelheid en temperatuur hangen samen met de ideale gaswet. Los een variabele op wanneer de andere drie bekend zijn en eenheden consistent zijn.</string>
+    <string name="ui_stoichiometry_calculator" translatable="true">Stoichiometrie rekenmachine</string>
+    <string name="ui_molar_mass_na" translatable="true">Molaire massa N/A</string>
+    <string name="ui_purity_applied" translatable="true">(zuiverheid toegepast)</string>
+    <string name="ui_moles_available" translatable="true">Beschikbare mol: %1$s mol</string>
+    <string name="ui_reaction_extent" translatable="true">Reactie verwijderd: %1$s mol</string>
+    <string name="ui_percent_yield_value" translatable="true">Percentage opbrengst: %1$s%%</string>
+    <string name="ui_yield_scaling_section" translatable="true">OPBRENGST &amp; SCHALING</string>
+    <string name="ui_percent_yield_section" translatable="true">GROOTTE VALLEN</string>
+    <string name="ui_scaling_section" translatable="true">SCALEN</string>
+    <string name="ui_core" translatable="true">Kern</string>
+    <string name="ui_molar_mass_label" translatable="true">Molaire massa</string>
+    <string name="ui_compare_iupac_name" translatable="true">IUPAC naam</string>
+    <string name="ui_cas" translatable="true">CAS</string>
+    <string name="ui_connectivity_smiles" translatable="true">Connectiviteit SMILES</string>
+    <string name="ui_structure" translatable="true">Structuur</string>
+    <string name="ui_covalent_units" translatable="true">Covalent eenheden</string>
+    <string name="ui_atom_count" translatable="true">Aantal Atoom</string>
+    <string name="ui_bond_count" translatable="true">Aantal obligaties</string>
+    <string name="ui_description_safety" translatable="true">Beschrijving &amp; Veiligheid</string>
+    <string name="ui_safety" translatable="true">Veiligheid</string>
+    <string name="ui_description_with_source" translatable="true">Beschrijving (%1$s)</string>
+    <string name="ui_gas_solve_pressure" translatable="true">Drukdruk</string>
+    <string name="ui_gas_solve_volume" translatable="true">Volume</string>
+    <string name="ui_gas_solve_moles" translatable="true">Mol</string>
+    <string name="ui_gas_solve_temperature" translatable="true">Temperatuur</string>
+    <string name="ui_dilution_c1" translatable="true">C1 (voorraad)</string>
+    <string name="ui_dilution_v1" translatable="true">V1 (voorraad)</string>
+    <string name="ui_dilution_c2" translatable="true">C2 (uiteindelijk)</string>
+    <string name="ui_dilution_v2" translatable="true">V2 (uiteindelijk)</string>
+    <string name="ui_compound_placeholder" translatable="true">Samenstelling %1$d</string>
+    <string name="ui_could_not_read_file" translatable="true">Kan bestand niet lezen.</string>
+    <string name="ui_error_reading_file_s" translatable="true">Kan bestand niet lezen: %1$s</string>
+    <string name="ui_compound_not_found_on_pubchem" translatable="true">Verbinding niet gevonden in PubChem. Controleer je SMILES-tekenreeks.</string>
+    <string name="ui_no_compound_found_for_smiles" translatable="true">Geen samenstelling gevonden voor deze SMILES-string.</string>
+    <string name="ui_pubchem_3d_unavailable_fallback" translatable="true">PubChem 3D niet beschikbaar. Bezig met terugval...</string>
+    <string name="ui_formula_matched_3d_fallback_unavailable" translatable="true">Formule overeenkomende 3D fallback niet beschikbaar voor dit SMILES.</string>
+    <string name="ui_error_s" translatable="true">Fout: %1$s</string>
+    <string name="ui_enter_at_least_two_compounds" translatable="true">Voer ten minste twee verbindingen in.</string>
+    <string name="ui_could_not_load_s" translatable="true">Kan niet laden: %1$s</string>
+    <string name="ui_skipped_s" translatable="true">Overgeslagen: %1$s</string>
+    <string name="ui_enter_a_valid_value" translatable="true">Voer een geldige waarde in.</string>
+    <string name="ui_pubchem_cid_s" translatable="true">PubChem CID: %1$s</string>
+    <!-- ToolsScreen InfoDialog shared terms -->
+    <string name="ui_info_equation" translatable="true">Vergelijking</string>
+    <string name="ui_info_units" translatable="true">Eenheden</string>
+    <!-- ToolsScreen InfoDialog: Custom 3D Molecule Viewer -->
+    <string name="ui_sdf_info_what_is_sdf_term" translatable="true">Wat is een SDF-bestand?</string>
+    <string name="ui_sdf_info_what_is_sdf_body" translatable="true">Constructiedatabestand (.sdf) is een standaard chemische bestandsindeling die 3D atomische coördinaten en obligatie-informatie opslaat voor één of meer moleculen.</string>
+    <string name="ui_sdf_info_what_is_mol_term" translatable="true">Wat is een MOL-bestand?</string>
+    <string name="ui_sdf_info_what_is_mol_body" translatable="true">Een .mol bestand is de single-molecule variant van SDF. Beide formaten worden breed geëxporteerd door chemie-software zoals ChemDraw, Avogadro en PubChem.</string>
+    <string name="ui_sdf_info_how_to_get_term" translatable="true">Hoe krijg je een SDF-bestand</string>
+    <string name="ui_sdf_info_how_to_get_body" translatable="true">Je kunt SDF-bestanden downloaden van PubChem door te zoeken naar een compound en te kiezen voor \'3D SDF\' uit de downloadopties, of exporteer ze uit elke moleculaire editor.</string>
+    <string name="ui_sdf_info_controls_term" translatable="true">Bedieningsknoppen</string>
+    <string name="ui_sdf_info_controls_body" translatable="true">Sleep om de molecule te roteren. Knijp om in en uit te zoomen. Het model draait automatisch wanneer inactief, tik dus om te pauzeren. Tik op de resetknop om terug te gaan naar de standaardweergave.</string>
+    <string name="ui_sdf_info_cpk_term" translatable="true">PK kleuren</string>
+    <string name="ui_sdf_info_cpk_body" translatable="true">Atomen zijn gekleurd met behulp van de Jmol CPK-conventie: koolstof is donker grijs, zuurstof is rood, stikstof is blauw, waterstof is wit en dat geldt voor alle 118 elementen.</string>
+    <!-- ToolsScreen InfoDialog: Molar Mass Calculator -->
+    <string name="ui_molar_info_what_is_term" translatable="true">Wat is een molaire massa?</string>
+    <string name="ui_molar_info_what_is_body" translatable="true">De massamassa van molen is de massa van één mol (6,022 x 1023 deeltjes) van een stof, uitgedrukt in gram per mol (g/mol). Het is de som van de kerngewichten van alle atomen in de formule.</string>
+    <string name="ui_molar_info_how_to_enter_term" translatable="true">Hoe een formule in te voeren</string>
+    <string name="ui_molar_info_how_to_enter_body" translatable="true">Typ de moleculaire formule met behulp van standaard element symbolen met nummers voor het tellen van getallen. haakjes worden ondersteund voor groepen, bijvoorbeeld Ca(OH)2 of Al2(SO4)3.</string>
+    <string name="ui_molar_info_case_sensitivity_term" translatable="true">Geval gevoeligheid</string>
+    <string name="ui_molar_info_case_sensitivity_body" translatable="true">Elementsymbolen zijn hoofdlettergevoelig! \'Co\' is kobold, \'CO\' is koolmonoxide. Altijd de eerste letter van elk element symbool uitkleden.</string>
+    <string name="ui_molar_info_atomic_weights_term" translatable="true">Atomic gewichten</string>
+    <string name="ui_molar_info_atomic_weights_body" translatable="true">Atoomgewichten die hier worden gebruikt zijn de standaardwaarden van IUPAC, gebaseerd op de natuurlijke isotopische overvloed van elk element.</string>
+    <string name="ui_molar_info_elemental_breakdown_term" translatable="true">Elementale verdeling</string>
+    <string name="ui_molar_info_elemental_breakdown_body" translatable="true">De uitdelingstabel toont de bijdrage van elk element aan de totale molaire massa, zowel als een absolute waarde (g/mol) en als een percentage voor massa.</string>
+    <!-- ToolsScreen InfoDialog: Oxidation State Finder -->
+    <string name="ui_os_info_what_is_term" translatable="true">Wat is een oxidatiestaat?</string>
+    <string name="ui_os_info_what_is_body" translatable="true">Een nummer toegewezen aan een atoom dat de mate van oxidatie weergeeft. Positief = elektroons verloren, negatief = elektrons gewonnen. Gebruikt om elektron transfer bij te houden in redox redox reacties.</string>
+    <string name="ui_os_info_rules_term" translatable="true">Regels toegepast</string>
+    <string name="ui_os_info_rules_body" translatable="true">F is altijd -1. Groep 1 = +1, groep 2 = +2. Al, Ga, In, Sc, Y, La, Lu = +3. Zn, Cd = +2. Ag = +1. O standaard -2 (behalve peroxide/superoxide). H standaard op +1 (behalve metalen hydrides). Halogenen (Cl, Br, I) worden standaard -1 in eenvoudige haliden, maar worden opgelost als ze gebonden zijn met zuurstof of meer elektronegatieve halogen.</string>
+    <string name="ui_os_info_halogen_priority_term" translatable="true">Halogeen prioriteit</string>
+    <string name="ui_os_info_halogen_priority_body" translatable="true">Elektronegativiteit volgt: F &gt; Cl &gt; Br &gt; I. In oxo-halogeenverbindingen en interhalogeenverbindingen kan de minder elektronegatieve halogeen een positief besturingssysteem gebruiken. Voorbeeld: HOCl »Cl=+1. ICl3 ∙ I=+3, Cl=-1. ClF3 fits Cl=+3, F=-1.</string>
+    <string name="ui_os_info_special_cases_term" translatable="true">Speciale gevallen behandeld</string>
+    <string name="ui_os_info_special_cases_body" translatable="true">Peroxides (O=-1): H2O2, Na2O2, BaO2. Superoxides (O=-1sieke 2): KO2, NaO2. Ozonides (O=-1sieke 3): KO3. Metalen hydrides (H=-1): NaH, LiAlH4, NaBH4, CaH2.</string>
+    <string name="ui_os_info_overall_charge_term" translatable="true">Algemene kosten</string>
+    <string name="ui_os_info_overall_charge_body" translatable="true">Voor neutrale verbindingen voert u 0 in. Voor polyatomische ions voert u de ion toeslag in. Voorbeelden: SO42 (→ lading -2. NH4+ → lading +1 (MnO4)→ oplaad-1.</string>
+    <string name="ui_os_info_organic_term" translatable="true">Biologische verbindingen</string>
+    <string name="ui_os_info_organic_body" translatable="true">Voor verbindingen met één koolstof (CH4, CO2, CCl4) is het resultaat precies. Voor multi-koolstofverbindingen berekent de app een gemiddelde oxidatietoestand over alle koolhydraten die chemisch gezien zinvol is voor vergelijkingen, maar niet de individuele koolstofomgevingen weerspiegelt. Ethanol (C2H5OH) heeft koolhydraten van -3 en -1, maar de app retourneert -2 als gemiddelde.</string>
+    <string name="ui_os_info_example_term" translatable="true">Voorbeeld</string>
+    <string name="ui_os_info_example_body" translatable="true">KMnO4 (lading 0): K=+1 (vast), O=-2 (vast, ×4). Mn = 0 − (+1) − 4(−2) = +7.</string>
+    <string name="ui_os_info_limitations_body" translatable="true">Compounds met 2 of meer overgangsmetalen of onbekende elementen kunnen niet zonder aanvullende informatie worden opgelost. Mixed-valence verbindingen zoals Fe3O4 (Fe2+ en Fe3+ coexist) geven een fractioneel gemiddelde terug met een waarschuwing. Hiervoor geef je afzonderlijk de ion lading op indien bekend.</string>
+    <!-- ToolsScreen InfoDialog: SMILES Visualizer -->
+    <string name="ui_smiles_info_what_is_term" translatable="true">Wat is SMILES?</string>
+    <string name="ui_smiles_info_what_is_body" translatable="true">Vereenvoudigd moleculaire invoer regel systeem voor invoer. Een notatie die moleculaire structuur als een tekst met behulp van atom-symbolen en bond tekens codeert.</string>
+    <string name="ui_smiles_info_how_to_use_term" translatable="true">Hoe te gebruiken</string>
+    <string name="ui_smiles_info_how_to_use_body" translatable="true">Plak een geldige SMILES-string en tik op Visualize. De app zoekt de verbinding op PubChem en toont de 2D-structuur en 3D-model.</string>
+    <string name="ui_smiles_info_where_to_get_term" translatable="true">Waar SMILES te verkrijgen</string>
+    <string name="ui_smiles_info_where_to_get_body" translatable="true">PubChem, ChemDraw, SciFinder en de meeste chemiedatabases bieden SMILES-strings voor samenvoegen. U kunt ze ook vinden in gepubliceerde documenten.</string>
+    <string name="ui_smiles_info_aromatic_term" translatable="true">Aromatische notatie</string>
+    <string name="ui_smiles_info_aromatic_body" translatable="true">Lagerletters (c, n, o) denote aromatische atomen. benzeen is \'c1ccc1\' en pyridine is \'c1ccncc1\'.</string>
+    <string name="ui_smiles_info_chirality_term" translatable="true">Kiraliteit</string>
+    <string name="ui_smiles_info_chirality_body" translatable="true">\@ en @@ in SMILES denote stereocenters. De visualizer geeft zowel standaard als isomeric SMILES.</string>
+    <string name="ui_smiles_info_limitations_body" translatable="true">Alleen SMILES tekenreeksen herkend door PubChem kunnen worden visualiseerd. Nieuwe of hypothetische moleculen die niet in PubChem aanwezig zijn, zullen geen resultaat opleveren.</string>
+    <!-- ToolsScreen InfoDialog: Reaction Balancer -->
+    <string name="ui_balancer_info_how_to_enter_term" translatable="true">Hoe u vergelijkingen invoert</string>
+    <string name="ui_balancer_info_how_to_enter_body" translatable="true">Typ de reactants aan de linkerkant en de producten aan de rechterzijde, gescheiden door \'ats. Scheid de verbindingen met \'+\'. Voorbeeld: H2 + O2 the H2O</string>
+    <string name="ui_balancer_info_coefficients_term" translatable="true">Coëfficiënten</string>
+    <string name="ui_balancer_info_coefficients_body" translatable="true">Voer geen coëfficiënten in. De app bepaalt ze. H2 + O2 - O2 - H2O, niet 2H2 + O2 - 2H2O.</string>
+    <string name="ui_balancer_info_how_it_works_term" translatable="true">Hoe het werkt</string>
+    <string name="ui_balancer_info_how_it_works_body" translatable="true">De balancer bouwt een matrix van element telt en lost het systeem op door gebruik te maken van Gaussiaanse eliminatie met exact rationele rekenkunde om integercoëfficiënten te vinden.</string>
+    <string name="ui_balancer_info_supported_formulas_term" translatable="true">Ondersteunde formules</string>
+    <string name="ui_balancer_info_supported_formulas_body" translatable="true">Standaard moleculaire formules met haakjes worden ondersteund, bijvoorbeeld Ca(OH)2, Al2(SO4)3.</string>
+    <string name="ui_balancer_info_limitations_body" translatable="true">Vergelijkingen die niet kunnen worden gebalanceerd door integer stochiometrie (bijvoorbeeld sommige redox reacties die een halve reactiemethode vereisen) kunnen mogelijk niet correct worden opgelost.</string>
+    <string name="ui_balancer_info_verification_term" translatable="true">Verificatie</string>
+    <string name="ui_balancer_info_verification_body" translatable="true">De teller van elementen onder het resultaat laat zien dat atomen bewaard blijven. Je kunt het evenwicht handmatig verifiëren.</string>
+    <!-- ToolsScreen InfoDialog: pH / pOH Calculator -->
+    <string name="ui_phpoh_info_what_it_solves_term" translatable="true">Wat het oplost</string>
+    <string name="ui_phpoh_info_what_it_solves_body" translatable="true">Voer pH, pOH, [H+], of [OH-] in om de andere drie waarden te berekenen.</string>
+    <string name="ui_phpoh_info_concentration_units_term" translatable="true">Concentratie eenheden</string>
+    <string name="ui_phpoh_info_concentration_units_body" translatable="true">[H+] en [OH-] zijn mol/L.</string>
+    <string name="ui_phpoh_info_assumption_term" translatable="true">Aanhanging</string>
+    <string name="ui_phpoh_info_assumption_body" translatable="true">Gebruikt pH + pOH = 14 voor water op 25 C.</string>
+    <!-- ToolsScreen InfoDialog: Dilution Calculator -->
+    <string name="ui_dilution_info_equation_body" translatable="true">Gebruikt C1V1 = C2V2 om verdunning op te lossen.</string>
+    <string name="ui_dilution_info_units_body" translatable="true">Houd de concentratie eenheden consistent (M) en volume eenheden (mL of L).</string>
+    <string name="ui_dilution_info_tip_term" translatable="true">Tip</string>
+    <string name="ui_dilution_info_tip_body" translatable="true">Kies de variabele die je wilt oplossen, vul dan de andere drie in.</string>
+    <!-- ToolsScreen InfoDialog: Ideal Gas Law -->
+    <string name="ui_gas_info_equation_body" translatable="true">Gebruikt PV = nRT om op te lossen voor elke variabele.</string>
+    <string name="ui_gas_info_units_body" translatable="true">P in atom, V in literen, n in moles, T in Kelvin.</string>
+    <string name="ui_gas_info_gas_constant_term" translatable="true">Gas constante</string>
+    <string name="ui_gas_info_gas_constant_body" translatable="true">R = 0.082057 L·atm/mol·K.</string>
+    <!-- ToolsScreen InfoDialog: Stoichiometry tools -->
+    <string name="ui_stoich_info_what_this_does_term" translatable="true">Wat doet dit</string>
+    <string name="ui_stoich_info_what_this_does_body" translatable="true">Een balans van een reactie, vindt de beperkende reagent, computert theoretische opbrengsten, overtollige reagents, en rescaling.</string>
+    <string name="ui_stoich_info_limiting_reagent_term" translatable="true">Reagent beperken</string>
+    <string name="ui_stoich_info_limiting_reagent_body" translatable="true">De beperkende reagent heeft de kleinste (molen / coefficient) verhouding. Het bepaalt de reactieschaal.</string>
+    <string name="ui_stoich_info_units_supported_term" translatable="true">Eenheden ondersteund</string>
+    <string name="ui_stoich_info_units_supported_body" translatable="true">Massa (g, kg), hoeveelheid (mol, mmol), gasvolume (L, mL), oplossingen (M en mL), en deeltjes (x10^23).</string>
+    <string name="ui_stoich_info_gas_volumes_term" translatable="true">Gasvolumes</string>
+    <string name="ui_stoich_info_gas_volumes_body" translatable="true">Gasmol worden berekend met een molair volume dat u kunt bewerken (22.414 L/mol bij STP).</string>
+    <string name="ui_stoich_info_purity_term" translatable="true">Zuiverheid</string>
+    <string name="ui_stoich_info_purity_body" translatable="true">Optionele zuiverheid %% past een correctie toe op effectieve molen voor elke reactor.</string>
+    <string name="ui_stoich_info_percent_yield_term" translatable="true">Percentage opbrengst</string>
+    <string name="ui_stoich_info_percent_yield_body" translatable="true">Vergelijk het werkelijke rendement met de theoretische opbrengst van het geselecteerde product.</string>
+    <string name="ui_stoich_info_scaling_term" translatable="true">Schalen</string>
+    <string name="ui_stoich_info_scaling_body" translatable="true">Voer een gewenste product-bedrag in om de vereiste reactant bedragen te zien.</string>
 </resources>
+
