@@ -1451,7 +1451,7 @@
     <string name="ui_molar_info_how_to_enter_term" translatable="true">Hur man skriver in en formel</string>
     <string name="ui_molar_info_how_to_enter_body" translatable="true">Skriv den molekylära formeln med hjälp av standardelementsymboler med siffror för atom räknas. Parenteser stöds för grupper, t.ex. Ca(OH)2 eller Al2(SO4)3.</string>
     <string name="ui_molar_info_case_sensitivity_term" translatable="true">Ärendets känslighet</string>
-    <string name="ui_molar_info_case_sensitivity_body" translatable="true">Elementsymboler är skiftlägeskänsliga! 'Co' är kobolt, 'CO' är kolmonoxid. Använd alltid endast stor bokstav på första bokstaven i varje elementsymbol.</string>
+    <string name="ui_molar_info_case_sensitivity_body" translatable="true">Elementsymboler är skiftlägeskänsliga! \'Co\' är kobolt, \'CO\' är kolmonoxid. Använd alltid endast stor bokstav på första bokstaven i varje elementsymbol.</string>
     <string name="ui_molar_info_atomic_weights_term" translatable="true">Atomvikt</string>
     <string name="ui_molar_info_atomic_weights_body" translatable="true">Atomvikter som används här är standardvärdena från IUPAC, baserade på det naturliga isotopiska överflödet av varje element.</string>
     <string name="ui_molar_info_elemental_breakdown_term" translatable="true">Elementell nedbrytning</string>

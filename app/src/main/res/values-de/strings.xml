@@ -1451,7 +1451,7 @@
     <string name="ui_molar_info_how_to_enter_term" translatable="true">Wie man eine Formel eingeben</string>
     <string name="ui_molar_info_how_to_enter_body" translatable="true">Geben Sie die Molekularformel unter Verwendung von Standardelement-Symbolen mit Zahlen für Atomzähler ein.</string>
     <string name="ui_molar_info_case_sensitivity_term" translatable="true">Groß-/Kleinschreibung</string>
-    <string name="ui_molar_info_case_sensitivity_body" translatable="true">Elementsymbole sind groß-/kleinschreibungssensitiv! 'Co' ist Kobalt, 'CO' ist Kohlenmonoxid. Schreibe immer nur den ersten Buchstaben jedes Elementsymbols groß.</string>
+    <string name="ui_molar_info_case_sensitivity_body" translatable="true">Elementsymbole sind groß-/kleinschreibungssensitiv! \'Co\' ist Kobalt, \'CO\' ist Kohlenmonoxid. Schreibe immer nur den ersten Buchstaben jedes Elementsymbols groß.</string>
     <string name="ui_molar_info_atomic_weights_term" translatable="true">Atomgewichte</string>
     <string name="ui_molar_info_atomic_weights_body" translatable="true">Die hier verwendeten Atomgewichte sind die Standardwerte von IUPAC, basierend auf dem natürlichen Isotopium-Überfluss jedes Elements.</string>
     <string name="ui_molar_info_elemental_breakdown_term" translatable="true">Elementaraufschlüsselung</string>

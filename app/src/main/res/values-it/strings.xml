@@ -712,7 +712,7 @@
     <string name="ui_tool_category_stoichiometry" translatable="true">Stoichiometria</string>
     <!-- SettingsUi section titles -->
     <string name="ui_section_ai_providers" translatable="true">PROVIDER AI</string>
-    <string name="ui_section_app_links" translatable="true">LINK DELL'APP</string>
+    <string name="ui_section_app_links" translatable="true">LINK DELL\'APP</string>
     <string name="ui_section_built_with" translatable="true">REALIZZATO CON</string>
     <string name="ui_section_chemistry_data" translatable="true">DATI CHIMICI</string>
     <string name="ui_check_for_updates" translatable="true">Controlla aggiornamenti</string>
@@ -726,7 +726,7 @@
     <string name="ui_export_settings" translatable="true">Esporta impostazioni</string>
     <string name="ui_faq" translatable="true">FAQ</string>
     <string name="ui_faq_what_for_q" translatable="true">Per che cosa è ChemSearch for?</string>
-    <string name="ui_faq_what_for_a" translatable="true">ChemSearch serve per ricerche chimiche rapide, studio e riferimento. Riunisce ricerca dei composti, strutture, sintesi di sicurezza, salvataggio offline, riferimenti e calcolatrici in un'unica app Android.</string>
+    <string name="ui_faq_what_for_a" translatable="true">ChemSearch serve per ricerche chimiche rapide, studio e riferimento. Riunisce ricerca dei composti, strutture, sintesi di sicurezza, salvataggio offline, riferimenti e calcolatrici in un\'unica app Android.</string>
     <string name="ui_faq_replacement_q" translatable="true">ChemSearch è un sostituto per PubChem?</string>
     <string name="ui_faq_replacement_a" translatable="true">No. ChemSearch utilizza PubChem come fonte di dati principale e presenta parti utili in un modo phone-friendly. Apri PubChem direttamente quando hai bisogno del record completo o del percorso originale dei sorgenti.</string>
     <string name="ui_faq_data_source_q" translatable="true">Da dove provengono i dati composti?</string>
@@ -1193,7 +1193,7 @@
     <string name="ui_sdf_fallback_message" translatable="true">Preventivo generato da %1$s utilizzando il risolutore NCI/CADD.</string>
     <!-- SearchUi info dialogs -->
     <string name="ui_info_iupac_name" translatable="true">Denominazione IUPAC</string>
-    <string name="ui_info_iupac_name_body" translatable="true">Il nome sistematico assegnato dall'International Union of Pure and Applied Chemistry. Descrive in modo univoco la struttura utilizzando una convenzione di denominazione standard.</string>
+    <string name="ui_info_iupac_name_body" translatable="true">Il nome sistematico assegnato dall\'International Union of Pure and Applied Chemistry. Descrive in modo univoco la struttura utilizzando una convenzione di denominazione standard.</string>
     <string name="ui_info_cid" translatable="true">CID</string>
     <string name="ui_info_cid_body" translatable="true">PubChem Compound ID (CID) è un numero univoco assegnato dal database PubChem per identificare questo composto esatto.</string>
     <string name="ui_info_cas_number" translatable="true">Numero CAS</string>
@@ -1355,7 +1355,7 @@
     <string name="ui_legal_no_guarantee" translatable="true">Nessuna garanzia</string>
     <string name="ui_legal_no_guarantee_body" translatable="true">ChemSearch è fornito così come è. I risultati possono essere incompleti, non disponibili, obsoleti, generati o errati.</string>
     <string name="ui_legal_user_content" translatable="true">Contenuto utente</string>
-    <string name="ui_legal_user_content_body" translatable="true">Sei responsabile di qualsiasi ricerca, disegno di strutture, chiavi API, file importati, file esportati o prompt che usi con l'app.</string>
+    <string name="ui_legal_user_content_body" translatable="true">Sei responsabile di qualsiasi ricerca, disegno di strutture, chiavi API, file importati, file esportati o prompt che usi con l\'app.</string>
     <string name="ui_legal_changes" translatable="true">Modifiche</string>
     <string name="ui_legal_changes_body" translatable="true">Caratteristiche, sorgenti, comportamento di aggiornamento e supporto al provider possono cambiare tra le versioni dell\'app.</string>
     <string name="ui_legal_quick_checks_only" translatable="true">Solo controlli rapidi</string>
@@ -1462,7 +1462,7 @@
     <string name="ui_os_info_rules_term" translatable="true">Regole applicate</string>
     <string name="ui_os_info_rules_body" translatable="true">F è sempre -1. Gruppo 1 = +1, Gruppo 2 = +2. Al, Ga, In, Sc, Y, La, Lu = +3. Zn, Cd = +2. Ag = +1. O predefinito a -2 (eccetto perossi/superossidi). H valore predefinito è +1 (tranne idride metallica). Alogeni (Cl, Br, I) di default a -1 in alogenuri semplici, ma sono risolti quando legati con ossigeno o un alogeno più elettronegativo.</string>
     <string name="ui_os_info_halogen_priority_term" translatable="true">Priorità alogena</string>
-    <string name="ui_os_info_halogen_priority_body" translatable="true">Ordine di elettronegatività: F &gt; Cl &gt; Br &gt; I. Nei composti osso-alogeni e interalogeni, l'alogeno meno elettronegativo può assumere un OS positivo. Esempio: HOCl ⟶ Cl=+1. ICl3 ⟶ I=+3, Cl=-1. ClF3 ⟶ Cl=+3, F=-1.</string>
+    <string name="ui_os_info_halogen_priority_body" translatable="true">Ordine di elettronegatività: F &gt; Cl &gt; Br &gt; I. Nei composti osso-alogeni e interalogeni, l\'alogeno meno elettronegativo può assumere un OS positivo. Esempio: HOCl ⟶ Cl=+1. ICl3 ⟶ I=+3, Cl=-1. ClF3 ⟶ Cl=+3, F=-1.</string>
     <string name="ui_os_info_special_cases_term" translatable="true">Casi particolari trattati</string>
     <string name="ui_os_info_special_cases_body" translatable="true">Perossidi (O=-1): H2O2, Na2O2, BaO2. Superossidi (O=-½): KO2, NaO2. Ozonidi (O=-⅓): KO3. Idruri metallici (H=-1): NaH, LiAlH4, NaBH4, CaH2.</string>
     <string name="ui_os_info_overall_charge_term" translatable="true">Onere globale</string>
@@ -1488,7 +1488,7 @@
     <string name="ui_balancer_info_how_to_enter_term" translatable="true">Come inserire le equazioni</string>
     <string name="ui_balancer_info_how_to_enter_body" translatable="true">Digita i reagenti a sinistra e i prodotti a destra, separati da \'⟶\'. Separa i composti con \'+\'. Esempio: H2 + O2 ⟶ H2O</string>
     <string name="ui_balancer_info_coefficients_term" translatable="true">Coefficienti</string>
-    <string name="ui_balancer_info_coefficients_body" translatable="true">Non inserire i coefficienti. Li determina l'app. H2 + O2 ⟶ H2O, non 2H2 + O2 ⟶ 2H2O.</string>
+    <string name="ui_balancer_info_coefficients_body" translatable="true">Non inserire i coefficienti. Li determina l\'app. H2 + O2 ⟶ H2O, non 2H2 + O2 ⟶ 2H2O.</string>
     <string name="ui_balancer_info_how_it_works_term" translatable="true">Come funziona</string>
     <string name="ui_balancer_info_how_it_works_body" translatable="true">Il bilanciatore costruisce una matrice di elementi conta e risolve il sistema usando l\'eliminazione gaussiana con l\'esatta aritmetica razionale per trovare coefficienti interi.</string>
     <string name="ui_balancer_info_supported_formulas_term" translatable="true">Formule supportate</string>

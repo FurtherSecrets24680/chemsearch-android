@@ -1480,7 +1480,7 @@
     <string name="ui_smiles_info_where_to_get_term" translatable="true">Где получить SMILES</string>
     <string name="ui_smiles_info_where_to_get_body" translatable="true">PubChem, ChemDraw, SciFinder, и большинство баз данных по химии предоставляют SMILES строки для соединений.</string>
     <string name="ui_smiles_info_aromatic_term" translatable="true">Ароматическая нотация</string>
-    <string name="ui_smiles_info_aromatic_body" translatable="true">Строчные буквы (c, n, o) обозначают ароматические атомы. Например, бензол - 'c1ccccc1', пиридин - 'c1ccncc1'.</string>
+    <string name="ui_smiles_info_aromatic_body" translatable="true">Строчные буквы (c, n, o) обозначают ароматические атомы. Например, бензол - \'c1ccccc1\', пиридин - \'c1ccncc1\'.</string>
     <string name="ui_smiles_info_chirality_term" translatable="true">Хирализм</string>
     <string name="ui_smiles_info_chirality_body" translatable="true">\@ и @ в SMILES обозначают стереоцентры. Визуализатор обрабатывает как стандартные, так и изомерные SMILES.</string>
     <string name="ui_smiles_info_limitations_body" translatable="true">Только SMILES строки, признанные PubChem, могут быть визуализированы.</string>

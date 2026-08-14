@@ -1451,7 +1451,7 @@
     <string name="ui_molar_info_how_to_enter_term" translatable="true">Slik registrerer du en formel</string>
     <string name="ui_molar_info_how_to_enter_body" translatable="true">Skriv inn molekylærformelen ved å bruke standard elementsymboler med tall for atom antall. Parenttheses støttes for grupper, f.eks. Ca(OH)2 eller Al2(SO4)3.</string>
     <string name="ui_molar_info_case_sensitivity_term" translatable="true">Kasse følsomhet</string>
-    <string name="ui_molar_info_case_sensitivity_body" translatable="true">Elementsymboler er følsomme for store og små bokstaver! 'Co' er kobolt, 'CO' er karbonmonoksid. Bruk alltid bare stor forbokstav på hvert elementsymbol.</string>
+    <string name="ui_molar_info_case_sensitivity_body" translatable="true">Elementsymboler er følsomme for store og små bokstaver! \'Co\' er kobolt, \'CO\' er karbonmonoksid. Bruk alltid bare stor forbokstav på hvert elementsymbol.</string>
     <string name="ui_molar_info_atomic_weights_term" translatable="true">Atomvekter</string>
     <string name="ui_molar_info_atomic_weights_body" translatable="true">Atomvekter som brukes her, er standardverdiene fra IUPAC, basert på den naturlige isotopiske overskuddet på hver bygningsdel.</string>
     <string name="ui_molar_info_elemental_breakdown_term" translatable="true">Oppdeling av resultat</string>

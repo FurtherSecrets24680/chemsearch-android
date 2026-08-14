@@ -1451,7 +1451,7 @@
     <string name="ui_molar_info_how_to_enter_term" translatable="true">Sådan indtaster du en formel</string>
     <string name="ui_molar_info_how_to_enter_body" translatable="true">Skriv molekylær formlen ved brug af standard elementsymboler med tal for atom møder. Parenteser understøttes for grupper, f.eks. Ca(OH)2 eller Al2(SO4)3.</string>
     <string name="ui_molar_info_case_sensitivity_term" translatable="true">Kasse følsomhed</string>
-    <string name="ui_molar_info_case_sensitivity_body" translatable="true">Elementsymboler skelner mellem store og små bogstaver! 'Co' er kobolt, 'CO' er kulilte. Brug altid kun stort begyndelsesbogstav på hvert elementsymbol.</string>
+    <string name="ui_molar_info_case_sensitivity_body" translatable="true">Elementsymboler skelner mellem store og små bogstaver! \'Co\' er kobolt, \'CO\' er kulilte. Brug altid kun stort begyndelsesbogstav på hvert elementsymbol.</string>
     <string name="ui_molar_info_atomic_weights_term" translatable="true">Atomvægte</string>
     <string name="ui_molar_info_atomic_weights_body" translatable="true">Atomvægte, der anvendes her, er standardværdierne fra IUPAC, baseret på den naturlige isotopiske overflod af hvert element.</string>
     <string name="ui_molar_info_elemental_breakdown_term" translatable="true">Elementær opdeling</string>

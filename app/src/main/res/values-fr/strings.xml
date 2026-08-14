@@ -158,15 +158,15 @@
     <string name="ui_mass_mode_desc" translatable="true">Utilise directement la masse saisie de chaque élément.</string>
     <string name="ui_formula_mode" translatable="true">Mode formule</string>
     <string name="ui_formula_mode_desc" translatable="true">Réduit une formule moléculaire à son rapport en nombres entiers le plus simple.</string>
-    <string name="ui_molecular_formula_desc" translatable="true">Si la masse molaire est saisie, l'application vérifie qu'elle est un multiple exact de la masse de la formule empirique.</string>
+    <string name="ui_molecular_formula_desc" translatable="true">Si la masse molaire est saisie, l\'application vérifie qu\'elle est un multiple exact de la masse de la formule empirique.</string>
     <string name="ui_precipitate_predictor" translatable="true">Prédicteur de précipités</string>
     <string name="ui_best_inputs" translatable="true">Exemples recommandés</string>
     <string name="ui_pp_best_inputs_desc" translatable="true">Utilisez des composés ioniques aqueux courants comme AgNO3, NaCl, BaCl2, Na2SO4, Ca(OH)2 ou Na2CO3.</string>
     <string name="ui_limits" translatable="true">Limites</string>
     <string name="ui_pp_limits_desc" translatable="true">Cette première version se concentre sur les règles de solubilité courantes des écoles et des laboratoires, pas sur tous les ions complexes ou composés de coordination.</string>
     <string name="ui_net_ionic_equation" translatable="true">Équation ionique nette</string>
-    <string name="ui_pp_net_ionic_desc" translatable="true">Les ions spectateurs sont retirés lorsqu'une seule précipitation est prédite.</string>
-    <string name="ui_pp_what_it_does_desc" translatable="true">Prédit les produits d'une réaction de double déplacement et vérifie les règles de solubilité courantes.</string>
+    <string name="ui_pp_net_ionic_desc" translatable="true">Les ions spectateurs sont retirés lorsqu\'une seule précipitation est prédite.</string>
+    <string name="ui_pp_what_it_does_desc" translatable="true">Prédit les produits d\'une réaction de double déplacement et vérifie les règles de solubilité courantes.</string>
     <string name="ui_e_g_c6h12o6" translatable="true">p. ex. C6H12O6</string>
     <string name="ui_add_element" translatable="true">Ajouter un élément</string>
     <string name="ui_molar_mass_for_molecular_formula_optional" translatable="true">Masse molaire pour la formule moléculaire (facultatif)</string>
@@ -185,9 +185,9 @@
     <string name="ui_product_check" translatable="true">CONTRÔLE DU PRODUIT</string>
     <!-- IsomerFinder.kt -->
     <string name="ui_enter_a_molecular_formula_to_find_matching_structural" translatable="true">Saisissez une formule moléculaire pour trouver les isomères structuraux correspondants sur PubChem.</string>
-    <string name="ui_what_it_does" translatable="true">Ce qu'il fait</string>
+    <string name="ui_what_it_does" translatable="true">Ce qu\'il fait</string>
     <string name="ui_isomer_what_it_does_desc" translatable="true">Recherche sur PubChem les composés ayant la même formule moléculaire.</string>
-    <string name="ui_how_to_use_it" translatable="true">Comment l'utiliser</string>
+    <string name="ui_how_to_use_it" translatable="true">Comment l\'utiliser</string>
     <string name="ui_isomer_how_to_desc" translatable="true">Saisissez une formule telle que C6H6, C2H6O ou C6H12O6, puis appuyez sur Rechercher.</string>
     <string name="ui_results" translatable="true">Résultats</string>
     <string name="ui_isomer_results_desc" translatable="true">Touchez un résultat pour ouvrir le composé sur la page principale de recherche.</string>
@@ -195,17 +195,17 @@
     <string name="ui_isomer_limitations_desc" translatable="true">Seuls les composés indexés par PubChem peuvent apparaître ici.</string>
     <string name="ui_show_20_more" translatable="true">Afficher 20 de plus</string>
     <string name="ui_include_isotopes" translatable="true">Inclure les isotopes</string>
-    <string name="ui_isomer_search" translatable="true">Recherche d'isomères</string>
+    <string name="ui_isomer_search" translatable="true">Recherche d\'isomères</string>
     <string name="ui_search_compounds_by_molecular_formula" translatable="true">Recherchez des composés par formule moléculaire.</string>
-    <string name="ui_no_isomer_search_yet" translatable="true">Aucune recherche d'isomères pour l'instant</string>
+    <string name="ui_no_isomer_search_yet" translatable="true">Aucune recherche d\'isomères pour l\'instant</string>
     <string name="ui_try_formulas_like_c2h6o_c6h6_or_c6h12o6" translatable="true">Essayez des formules comme C2H6O, C6H6 ou C6H12O6.</string>
     <string name="ui_molecular_formula_e_g_c_h_o" translatable="true">Formule moléculaire, p. ex. C6H12O6</string>
     <string name="ui_loading_more" translatable="true">Charger plus</string>
     <!-- LegalContent.kt -->
     <string name="ui_privacy_policy" translatable="true">Politique de confidentialité</string>
-    <string name="ui_terms_of_service" translatable="true">Conditions d'utilisation</string>
+    <string name="ui_terms_of_service" translatable="true">Conditions d\'utilisation</string>
     <string name="ui_safety_disclaimer" translatable="true">Avertissement de sécurité</string>
-    <string name="ui_this_in_app_notice_is_a_practical_summary" translatable="true">Cet avis intégré à l'application est un résumé pratique destiné aux utilisateurs de ChemSearch. Il ne constitue pas un avis juridique.</string>
+    <string name="ui_this_in_app_notice_is_a_practical_summary" translatable="true">Cet avis intégré à l\'application est un résumé pratique destiné aux utilisateurs de ChemSearch. Il ne constitue pas un avis juridique.</string>
     <!-- MainScreen.kt -->
     <string name="ui_exit_chemsearch" translatable="true">Quitter ChemSearch ?</string>
     <string name="ui_are_you_sure_you_want_to_exit" translatable="true">Voulez-vous vraiment quitter ?</string>
@@ -214,7 +214,7 @@
     <string name="ui_looking_up_compound" translatable="true">Recherche du composé...</string>
     <string name="ui_try_searching" translatable="true">Essayez de rechercher</string>
     <string name="ui_hide_extra_compound_info" translatable="true">Masquer les informations supplémentaires sur le composé</string>
-    <string name="ui_show_more_compound_info" translatable="true">Afficher plus d'informations sur ce composé</string>
+    <string name="ui_show_more_compound_info" translatable="true">Afficher plus d\'informations sur ce composé</string>
     <string name="ui_recent" translatable="true">Récentes</string>
     <string name="ui_draw_molecule_and_search" translatable="true">Dessiner une molécule et rechercher sur PubChem</string>
     <string name="ui_find_compounds_same_formula" translatable="true">Trouver des composés avec la même formule</string>
@@ -230,10 +230,10 @@
     <string name="ui_spectral_lines" translatable="true">Lignes spectrales</string>
     <string name="ui_electron_shells" translatable="true">Couches électroniques</string>
     <string name="ui_more_details" translatable="true">Plus de détails</string>
-    <string name="ui_element_image" translatable="true">Image de l'élément</string>
+    <string name="ui_element_image" translatable="true">Image de l\'élément</string>
     <string name="ui_spectral_lines_small" translatable="true">Lignes spectrales</string>
-    <string name="ui_element_properties" translatable="true">Propriétés de l'élément</string>
-    <string name="ui_extra_element_data" translatable="true">Données supplémentaires de l'élément</string>
+    <string name="ui_element_properties" translatable="true">Propriétés de l\'élément</string>
+    <string name="ui_extra_element_data" translatable="true">Données supplémentaires de l\'élément</string>
     <string name="ui_image_file" translatable="true">Fichier image</string>
     <string name="ui_pt_pubchem" translatable="true">Tableau périodique PubChem</string>
     <string name="ui_pt_bowserinator" translatable="true">Bowserinator/Periodic-Table-JSON</string>
@@ -243,7 +243,7 @@
     <string name="ui_identity" translatable="true">Identité</string>
     <string name="ui_atomic_data" translatable="true">Données atomiques</string>
     <string name="ui_electrons" translatable="true">Électrons</string>
-    <string name="ui_element_overview" translatable="true">Aperçu de l'élément</string>
+    <string name="ui_element_overview" translatable="true">Aperçu de l\'élément</string>
     <string name="ui_name" translatable="true">Nom</string>
     <string name="ui_symbol" translatable="true">Symbole</string>
     <string name="ui_atomic_number" translatable="true">Numéro atomique</string>
@@ -270,18 +270,18 @@
     <string name="ui_model_color" translatable="true">Couleur du modèle</string>
     <string name="ui_electron_configuration" translatable="true">Configuration électronique</string>
     <string name="ui_shell_distribution" translatable="true">Répartition par couches</string>
-    <string name="ui_oxidation_states_label" translatable="true">États d'oxydation</string>
+    <string name="ui_oxidation_states_label" translatable="true">États d\'oxydation</string>
     <string name="ui_expanded_configuration" translatable="true">Configuration étendue</string>
     <string name="ui_electronegativity" translatable="true">Électronégativité</string>
     <string name="ui_atomic_radius" translatable="true">Rayon atomique</string>
-    <string name="ui_ionization_energy" translatable="true">Énergie d'ionisation</string>
+    <string name="ui_ionization_energy" translatable="true">Énergie d\'ionisation</string>
     <string name="ui_electron_affinity" translatable="true">Affinité électronique</string>
     <string name="ui_melting_point" translatable="true">Point de fusion</string>
-    <string name="ui_boiling_point" translatable="true">Point d'ébullition</string>
+    <string name="ui_boiling_point" translatable="true">Point d\'ébullition</string>
     <string name="ui_density" translatable="true">Densité</string>
     <string name="ui_molar_heat" translatable="true">Capacité thermique molaire</string>
-    <string name="ui_element_type" translatable="true">Type d'élément</string>
-    <string name="ui_ionization_energies" translatable="true">Énergies d'ionisation</string>
+    <string name="ui_element_type" translatable="true">Type d\'élément</string>
+    <string name="ui_ionization_energies" translatable="true">Énergies d\'ionisation</string>
     <string name="ui_search_elements" translatable="true">Rechercher des éléments</string>
     <string name="ui_full_details" translatable="true">Détails complets</string>
     <string name="ui_sources" translatable="true">Sources</string>
@@ -293,7 +293,7 @@
     <string name="ui_saving_offline_copy" translatable="true">Enregistrement de la copie hors ligne...</string>
     <string name="ui_saved_s_to_downloads" translatable="true">%1$s enregistré dans Téléchargements</string>
     <string name="ui_download_failed_s" translatable="true">Échec du téléchargement : %1$s</string>
-    <string name="ui_storage_permission_denied" translatable="true">Autorisation de stockage refusée. Impossible d'enregistrer le fichier</string>
+    <string name="ui_storage_permission_denied" translatable="true">Autorisation de stockage refusée. Impossible d\'enregistrer le fichier</string>
     <string name="ui_synonym_copied" translatable="true">Synonyme copié</string>
     <string name="ui_saved_s_to_pictures" translatable="true">%1$s enregistré dans Images</string>
     <string name="ui_about_identifiers" translatable="true">À propos des identifiants</string>
@@ -321,9 +321,9 @@
     <string name="ui_download_2d_structure" translatable="true">Télécharger la structure 2D</string>
     <string name="ui_2d_structure_zoom" translatable="true">Structure 2D (zoom)</string>
     <string name="ui_chemistry_simplified" translatable="true">CHIMIE SIMPLIFIÉE</string>
-    <string name="ui_search_any_compound" translatable="true">Rechercher n'importe quel composé...</string>
+    <string name="ui_search_any_compound" translatable="true">Rechercher n\'importe quel composé...</string>
     <string name="ui_did_you_mean" translatable="true">Vouliez-vous dire :</string>
-    <string name="ui_search_any_compound_2" translatable="true">Rechercher n'importe quel composé</string>
+    <string name="ui_search_any_compound_2" translatable="true">Rechercher n\'importe quel composé</string>
     <string name="ui_type_a_compound_name_formula_cid_or_cas" translatable="true">Saisissez un nom de composé, une formule, un CID ou un CAS.</string>
     <string name="ui_recent_searches" translatable="true">Recherches récentes</string>
     <string name="ui_clear_all_2" translatable="true">Tout effacer</string>
@@ -333,18 +333,18 @@
     <string name="ui_3d_model" translatable="true">Modèle 3D</string>
     <string name="ui_3d_model_not_available_2" translatable="true">Modèle 3D non disponible</string>
     <string name="ui_learn_why" translatable="true">Pourquoi →</string>
-    <string name="ui_pinch_to_zoom_tap_outside_to_close" translatable="true">Pincer pour zoomer · Toucher à l'extérieur pour fermer</string>
+    <string name="ui_pinch_to_zoom_tap_outside_to_close" translatable="true">Pincer pour zoomer · Toucher à l\'extérieur pour fermer</string>
     <string name="ui_why_is_3d_unavailable" translatable="true">Pourquoi la 3D est-elle indisponible ?</string>
-    <string name="ui_pubchem_pre_computes_3d_conformer_models_for_90" translatable="true">PubChem précalcule des modèles 3D de conformères pour ~90 % de ses composés à l'aide de </string>
+    <string name="ui_pubchem_pre_computes_3d_conformer_models_for_90" translatable="true">PubChem précalcule des modèles 3D de conformères pour ~90 % de ses composés à l\'aide de </string>
     <string name="ui_source_pubchem3d_project" translatable="true">Source : projet PubChem3D</string>
     <string name="ui_loading_pubchem_categories" translatable="true">Chargement des catégories PubChem...</string>
-    <string name="ui_loading_pubchem_use_notes" translatable="true">Chargement des notes d'utilisation PubChem...</string>
+    <string name="ui_loading_pubchem_use_notes" translatable="true">Chargement des notes d\'utilisation PubChem...</string>
     <string name="ui_source_pubchem_annotations" translatable="true">Source : annotations PubChem</string>
     <string name="ui_loading_pubchem_properties" translatable="true">Chargement des propriétés PubChem...</string>
     <string name="ui_loading_synonyms" translatable="true">Chargement des synonymes...</string>
     <string name="ui_collapse" translatable="true">Réduire</string>
     <string name="ui_loading" translatable="true">Chargement...</string>
-    <string name="ui_configure_ai_provider_2" translatable="true">Configurer le fournisseur d'IA</string>
+    <string name="ui_configure_ai_provider_2" translatable="true">Configurer le fournisseur d\'IA</string>
     <!-- SettingsUi.kt: AI provider configuration -->
     <string name="ui_refresh_models" translatable="true">Actualiser les modèles</string>
     <string name="ui_ai_description_source" translatable="true">Source des descriptions IA</string>
@@ -361,9 +361,9 @@
     <string name="ui_library" translatable="true">Bibliothèque</string>
     <string name="ui_back_to_library" translatable="true">Retour à la bibliothèque</string>
     <string name="ui_favorites" translatable="true">Favoris</string>
-    <string name="ui_no_favorites_yet" translatable="true">Aucun favori pour l'instant</string>
-    <string name="ui_tap_the_star_icon_on_any_compound" translatable="true">Touchez l'icône étoile sur n'importe quel composé</string>
-    <string name="ui_tap_the_favorite_icon_on_any_compound" translatable="true">Touchez l'icône favori sur n'importe quel composé</string>
+    <string name="ui_no_favorites_yet" translatable="true">Aucun favori pour l\'instant</string>
+    <string name="ui_tap_the_star_icon_on_any_compound" translatable="true">Touchez l\'icône étoile sur n\'importe quel composé</string>
+    <string name="ui_tap_the_favorite_icon_on_any_compound" translatable="true">Touchez l\'icône favori sur n\'importe quel composé</string>
     <string name="ui_filter_favorites" translatable="true">Filtrer les favoris</string>
     <string name="ui_clear_filter" translatable="true">Effacer le filtre</string>
     <string name="ui_cache_location" translatable="true">Emplacement du cache</string>
@@ -372,8 +372,8 @@
     <string name="ui_export_library" translatable="true">Exporter la bibliothèque</string>
     <string name="ui_chemsearch_molfile" translatable="true">Molfile ChemSearch</string>
     <string name="ui_merge_the_backup_with_your_current_library_or" translatable="true">Fusionnez la sauvegarde avec votre bibliothèque actuelle, ou remplacez vos favoris et téléchargements actuels par le fichier de sauvegarde.</string>
-    <string name="ui_enter_a_custom_path_or_leave_blank_to" translatable="true">Saisissez un chemin personnalisé ou laissez vide pour utiliser le répertoire de cache par défaut de l'application.</string>
-    <string name="ui_default_app_internal_cache_custom_paths_must_be" translatable="true">Par défaut : cache interne de l'application. Les chemins personnalisés doivent être accessibles en écriture.</string>
+    <string name="ui_enter_a_custom_path_or_leave_blank_to" translatable="true">Saisissez un chemin personnalisé ou laissez vide pour utiliser le répertoire de cache par défaut de l\'application.</string>
+    <string name="ui_default_app_internal_cache_custom_paths_must_be" translatable="true">Par défaut : cache interne de l\'application. Les chemins personnalisés doivent être accessibles en écriture.</string>
     <!-- SettingsUi.kt: General settings -->
     <string name="ui_settings" translatable="true">Paramètres</string>
     <string name="ui_settings_2" translatable="true">Paramètres</string>
@@ -399,7 +399,7 @@
     <string name="ui_language_swedish">Svenska</string>
     <string name="ui_language_restart">The app will restart to apply the language.</string>
     <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">Affiché automatiquement lorsque vous recherchez un composé</string>
-    <string name="ui_chemsearch_app_icon" translatable="true">Icône de l'app ChemSearch</string>
+    <string name="ui_chemsearch_app_icon" translatable="true">Icône de l\'app ChemSearch</string>
     <string name="ui_move_up" translatable="true">Monter</string>
     <string name="ui_move_down" translatable="true">Descendre</string>
     <string name="ui_sort" translatable="true">Trier</string>
@@ -408,12 +408,12 @@
     <string name="ui_chemistry_simplified_for_android" translatable="true">La chimie, simplifiée pour Android.</string>
     <string name="ui_search_compounds_draw_structures_view_2d_3d_models" translatable="true">Recherchez des composés, dessinez des structures, consultez des modèles 2D/3D, enregistrez des données hors ligne, comparez des composés et utilisez des outils de chimie.</string>
     <string name="ui_built_by_furthersecrets" translatable="true">Créé par FurtherSecrets</string>
-    <string name="ui_app_info_links_data_sources_and_credits" translatable="true">Informations sur l'application, liens, sources de données et crédits.</string>
+    <string name="ui_app_info_links_data_sources_and_credits" translatable="true">Informations sur l\'application, liens, sources de données et crédits.</string>
     <string name="ui_legal_and_safety" translatable="true">LÉGAL &amp; SÉCURITÉ</string>
     <string name="ui_open_saved_compounds_offline_copies_the_periodic_table" translatable="true">Ouvrez des composés enregistrés, des copies hors ligne, le tableau périodique ou la base de données chimique.</string>
     <string name="ui_reorder_mode_use_the_arrows_to_move_favorite" translatable="true">Mode de réorganisation : utilisez les flèches pour déplacer les favoris.</string>
     <string name="ui_tap_the_arrows_to_move_favorites" translatable="true">Touchez les flèches pour déplacer les favoris.</string>
-    <string name="ui_tap_a_card_to_open_favorites_are_stored" translatable="true">Touchez une carte pour l'ouvrir. Les favoris sont stockés uniquement sur cet appareil.</string>
+    <string name="ui_tap_a_card_to_open_favorites_are_stored" translatable="true">Touchez une carte pour l\'ouvrir. Les favoris sont stockés uniquement sur cet appareil.</string>
     <string name="ui_reorder_mode_use_the_arrows_to_move_items" translatable="true">Mode de réorganisation : utilisez les flèches pour déplacer les éléments.</string>
     <string name="ui_no_matches_found" translatable="true">Aucune correspondance trouvée.</string>
     <string name="ui_no_match_for" translatable="true">Pas de correspondance pour \"%1$s\"</string>
@@ -427,21 +427,21 @@
     <string name="ui_one_more_tap_to_unlock" translatable="true">Encore 1 touche pour déverrouiller les paramètres de débogage</string>
     <string name="ui_debug_settings_unlocked" translatable="true">Paramètres de débogage déverrouillés</string>
     <string name="ui_library_exported" translatable="true">Bibliothèque exportée</string>
-    <string name="ui_export_failed_s" translatable="true">Échec de l'exportation : %1$s</string>
-    <string name="ui_import_failed_s" translatable="true">Échec de l'importation : %1$s</string>
+    <string name="ui_export_failed_s" translatable="true">Échec de l\'exportation : %1$s</string>
+    <string name="ui_import_failed_s" translatable="true">Échec de l\'importation : %1$s</string>
     <string name="ui_select_two_different_compounds" translatable="true">Sélectionnez deux composés différents à comparer</string>
     <string name="ui_settings_exported_with_keys" translatable="true">Paramètres exportés avec les clés API.</string>
     <string name="ui_imported_d_settings" translatable="true">%1$d paramètres importés</string>
     <string name="ui_cache_location_updated" translatable="true">Emplacement du cache mis à jour</string>
-    <string name="ui_cache_not_writable" translatable="true">Cet emplacement de cache n'est pas accessible en écriture</string>
+    <string name="ui_cache_not_writable" translatable="true">Cet emplacement de cache n\'est pas accessible en écriture</string>
     <string name="ui_copied_masked_prefs" translatable="true">Préférences masquées copiées</string>
     <string name="ui_copied_d_lines" translatable="true">%1$d lignes copiées</string>
     <string name="ui_diagnostics_copied" translatable="true">Diagnostics copiés</string>
     <string name="ui_copied_memory_snapshot" translatable="true">Instantané de la mémoire copié</string>
-    <string name="ui_all_preferences_wiped" translatable="true">Toutes les préférences ont été supprimées. Redémarrez l'application.</string>
-    <string name="ui_grant_notification_permission" translatable="true">Accordez d'abord l'autorisation de notifications</string>
+    <string name="ui_all_preferences_wiped" translatable="true">Toutes les préférences ont été supprimées. Redémarrez l\'application.</string>
+    <string name="ui_grant_notification_permission" translatable="true">Accordez d\'abord l\'autorisation de notifications</string>
     <string name="ui_test_notification_sent" translatable="true">Notification de test envoyée</string>
-    <string name="ui_welcome_screen_restored" translatable="true">Écran d'accueil restauré</string>
+    <string name="ui_welcome_screen_restored" translatable="true">Écran d\'accueil restauré</string>
     <string name="ui_copied_to_clipboard" translatable="true">Copié dans le presse-papiers</string>
     <string name="ui_debug_settings_hidden" translatable="true">Paramètres de débogage masqués</string>
     <!-- SettingsUi.kt: Developer and diagnostic settings -->
@@ -459,30 +459,30 @@
     <string name="ui_low_memory" translatable="true">Mémoire faible</string>
     <string name="ui_memory" translatable="true">Mémoire</string>
     <string name="ui_wipe_all_preferences" translatable="true">Effacer toutes les préférences ?</string>
-    <string name="ui_this_clears_legacy_preferences_encrypted_key_records_history" translatable="true">Cela supprime les anciennes préférences, les enregistrements de clés chiffrés, l'historique, les favoris et les indicateurs de débogage. Les paramètres DataStore, les téléchargements Room et les fichiers de cache ne sont pas supprimés. Vous devrez déverrouiller à nouveau les paramètres de débogage.</string>
+    <string name="ui_this_clears_legacy_preferences_encrypted_key_records_history" translatable="true">Cela supprime les anciennes préférences, les enregistrements de clés chiffrés, l\'historique, les favoris et les indicateurs de débogage. Les paramètres DataStore, les téléchargements Room et les fichiers de cache ne sont pas supprimés. Vous devrez déverrouiller à nouveau les paramètres de débogage.</string>
     <string name="ui_wipe_now" translatable="true">Effacer maintenant</string>
     <string name="ui_force_crash" translatable="true">Forcer le plantage ?</string>
-    <string name="ui_this_will_immediately_crash_the_app_with_an" translatable="true">Cela fera planter immédiatement l'application avec une exception non gérée. Sert à vérifier le fonctionnement des rapports de plantage.</string>
+    <string name="ui_this_will_immediately_crash_the_app_with_an" translatable="true">Cela fera planter immédiatement l\'application avec une exception non gérée. Sert à vérifier le fonctionnement des rapports de plantage.</string>
     <string name="ui_crash_now" translatable="true">Planter maintenant</string>
     <string name="ui_verbose_logging" translatable="true">Journalisation détaillée</string>
     <string name="ui_tag_chemsearch" translatable="true">Tag: ChemSearch</string>
-    <string name="ui_endpoints" translatable="true">Points d'accès</string>
+    <string name="ui_endpoints" translatable="true">Points d\'accès</string>
     <string name="ui_hide_debug_settings" translatable="true">Masquer les paramètres de débogage</string>
     <string name="ui_debug_settings_title" translatable="true">Paramètres de débogage</string>
     <string name="ui_debug_verbose_logging_body" translatable="true">Active les logs debug/info (tagged \'ChemSearch\') dans Logcat et le tampon dans l\'application. Les erreurs sont toujours capturées. Désactivez pour réduire le bruit.</string>
     <string name="ui_debug_live_log_viewer_body" translatable="true">Affiche le tampon de log dans l\'application en temps réel (jusqu\'à 200 lignes). Les logs verbeux (D/) n\'apparaissent que lorsque l\'enregistrement verbeux est activé. Les erreurs (E/) sont toujours capturées. Vous pouvez copier ou effacer le tampon.</string>
     <string name="ui_debug_inspect_prefs_body" translatable="true">Supprime les Préférences partagées et les enregistrements de clés chiffrés avec des valeurs sensibles masquées. Les paramètres du magasin de données et les téléchargements de la salle sont stockés séparément.</string>
     <string name="ui_debug_memory_info_body" translatable="true">Affiche l\'utilisation actuelle du tas depuis l\'exécutable JVM et le Gestionnaire d\'Activité Android. Utile pour détecter les fuites de mémoire ou les allocations exceptionnellement élevées.</string>
-    <string name="ui_debug_network_diagnostics_body" translatable="true">Effectue des vérifications des points d'accès sur PubChem, l'autocomplétion des données GHS, les structures 2D/3D, la solution de secours NCI/CADD, Wikipedia, les versions GitHub et tous les fournisseurs d'IA configurés. Affiche l'état HTTP, la latence et la réponse pour chaque service.</string>
+    <string name="ui_debug_network_diagnostics_body" translatable="true">Effectue des vérifications des points d\'accès sur PubChem, l\'autocomplétion des données GHS, les structures 2D/3D, la solution de secours NCI/CADD, Wikipedia, les versions GitHub et tous les fournisseurs d\'IA configurés. Affiche l\'état HTTP, la latence et la réponse pour chaque service.</string>
     <string name="ui_debug_show_welcome_body" translatable="true">Efface le drapeau de salubrité de l\'écran d\'accueil et ouvre à nouveau l\'écran d\'accueil du premier lancement.</string>
     <string name="ui_debug_api_endpoints_body" translatable="true">Copie des URL de base pour PubChem, NCI/CADD, Wikipedia, GitHub, et support les fournisseurs AI dans votre presse-papiers pour les tests manuels.</string>
-    <string name="ui_debug_wipe_prefs_body" translatable="true">Appelle prefs.edit().clear(). Supprime les valeurs de préférences héritées, les enregistrements de clés chiffrés, l'historique, les favoris et les indicateurs de débogage. Les paramètres du DataStore, les téléchargements des salles et les fichiers de cache des applications ne sont pas supprimés par cette action ; redémarrage recommandé.</string>
+    <string name="ui_debug_wipe_prefs_body" translatable="true">Appelle prefs.edit().clear(). Supprime les valeurs de préférences héritées, les enregistrements de clés chiffrés, l\'historique, les favoris et les indicateurs de débogage. Les paramètres du DataStore, les téléchargements des salles et les fichiers de cache des applications ne sont pas supprimés par cette action ; redémarrage recommandé.</string>
     <string name="ui_debug_force_crash" translatable="true">Forcer le plantage</string>
     <string name="ui_debug_force_crash_body" translatable="true">Lance délibérément une exception Runtime non gérée. Utilisée pour vérifier que le rapport de plantage/Logcat fonctionne correctement. Il y a une étape de confirmation avant qu\'il ne se déclenche.</string>
     <string name="ui_debug_hide_body" translatable="true">Définit dev_mode=false et masque cette section. Appuyez sur le numéro de build 5 fois sur l\'écran À propos pour le déverrouiller à nouveau.</string>
     <string name="ui_remove_key" translatable="true">Supprimer la clé</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Les valeurs sensibles sont masquées et ne sont jamais copiées depuis cette vue.</string>
-    <string name="ui_run_diagnostics_to_test_pubchem_lookup_structures_ghs" translatable="true">Exécutez les diagnostics pour tester la recherche PubChem, les structures, les données GHS, le chargement 3D de secours, Wikipedia, les versions GitHub et les points d'accès IA.</string>
+    <string name="ui_run_diagnostics_to_test_pubchem_lookup_structures_ghs" translatable="true">Exécutez les diagnostics pour tester la recherche PubChem, les structures, les données GHS, le chargement 3D de secours, Wikipedia, les versions GitHub et les points d\'accès IA.</string>
     <!-- StructureSearchUi.kt -->
     <string name="ui_redo" translatable="true">Rétablir</string>
     <string name="ui_select" translatable="true">Sélectionner</string>
@@ -498,17 +498,17 @@
     <string name="ui_delete_selected" translatable="true">Supprimer la sélection</string>
     <string name="ui_molecule_selected" translatable="true">Molécule sélectionnée</string>
     <string name="ui_select_molecule" translatable="true">Sélectionner la molécule</string>
-    <string name="ui_restores_previous_drawing" translatable="true">Restaure l'étape de dessin précédente.</string>
-    <string name="ui_restores_drawing_step_undid" translatable="true">Restaure l'étape de dessin que vous venez d'annuler.</string>
+    <string name="ui_restores_previous_drawing" translatable="true">Restaure l\'étape de dessin précédente.</string>
+    <string name="ui_restores_drawing_step_undid" translatable="true">Restaure l\'étape de dessin que vous venez d\'annuler.</string>
     <string name="ui_selects_atoms_or_bonds" translatable="true">Sélectionne les atomes ou les liaisons sans les dessiner, les déplacer ou les modifier.</string>
     <string name="ui_asks_pubchem_standardize_drawing" translatable="true">Demande à PubChem de standardiser le dessin.</string>
     <string name="ui_imports_smiles_inchi_molfile" translatable="true">Importe des SMILES, InChI ou un molfile V2000.</string>
     <string name="ui_copies_or_shares_as_molfile" translatable="true">Copie ou partage ce dessin en tant que molfile.</string>
     <string name="ui_removes_whole_drawing_and_results" translatable="true">Supprime tout le dessin et les résultats de structure actuels.</string>
     <string name="ui_removes_selected_molecule" translatable="true">Supprime la molécule sélectionnée du dessin.</string>
-    <string name="ui_removes_selected_atom_or_bond" translatable="true">Supprime l'atome ou la liaison sélectionné(e) du dessin.</string>
+    <string name="ui_removes_selected_atom_or_bond" translatable="true">Supprime l\'atome ou la liaison sélectionné(e) du dessin.</string>
     <string name="ui_selects_whole_molecule" translatable="true">Sélectionne la molécule entière afin que vous puissiez la déplacer ou la supprimer.</string>
-    <string name="ui_copies_connected_fragment" translatable="true">Copie le fragment connecté contenant l'atome sélectionné.</string>
+    <string name="ui_copies_connected_fragment" translatable="true">Copie le fragment connecté contenant l\'atome sélectionné.</string>
     <string name="ui_structure_copied" translatable="true">Structure copiée</string>
     <string name="ui_share_structure" translatable="true">Partager la structure</string>
     <string name="ui_import_structure" translatable="true">Importer une structure</string>
@@ -517,7 +517,7 @@
     <string name="ui_share" translatable="true">Partager</string>
     <string name="ui_search_mode" translatable="true">Mode de recherche</string>
     <string name="ui_structure_search" translatable="true">Recherche de structure</string>
-    <string name="ui_close_export_dialog" translatable="true">Fermer la boîte de dialogue d'exportation</string>
+    <string name="ui_close_export_dialog" translatable="true">Fermer la boîte de dialogue d\'exportation</string>
     <string name="ui_structure_search_settings" translatable="true">Paramètres de la recherche de structure</string>
     <string name="ui_close_results" translatable="true">Fermer les résultats</string>
     <string name="ui_structure_search_2" translatable="true">Recherche de structure</string>
@@ -525,7 +525,7 @@
     <string name="ui_structure_search_3" translatable="true">Recherche de structure</string>
     <string name="ui_tap_the_canvas_to_place_atoms_select_two" translatable="true">Touchez la zone de dessin pour placer des atomes. Sélectionnez deux atomes pour les relier avec la liaison choisie.</string>
     <string name="ui_drag_atoms_bonds_or_the_whole_selected_molecule" translatable="true">Faites glisser les atomes, les liaisons ou la molécule sélectionnée entière pour les repositionner. Faites glisser le vide de la zone de dessin pour déplacer la vue.</string>
-    <string name="ui_clean_can_standardize_the_drawing_through_pubchem_before" translatable="true">« Nettoyer » peut standardiser le dessin via PubChem avant la recherche. L'import et l'export utilisent du texte SMILES, InChI ou V2000 molfile.</string>
+    <string name="ui_clean_can_standardize_the_drawing_through_pubchem_before" translatable="true">« Nettoyer » peut standardiser le dessin via PubChem avant la recherche. L\'import et l\'export utilisent du texte SMILES, InChI ou V2000 molfile.</string>
     <string name="ui_paste_smiles_inchi_or_a_v2000_molfile" translatable="true">Collez SMILES, InChI ou un molfile V2000.</string>
     <string name="ui_export_structure" translatable="true">Exporter la structure</string>
     <string name="ui_select_element" translatable="true">Sélectionner un élément</string>
@@ -546,10 +546,10 @@
     <string name="ui_g_mol" translatable="true">g/mol</string>
     <string name="ui_3f" translatable="true">%.3f</string>
     <string name="ui_1f" translatable="true">%.1f%%</string>
-    <string name="ui_oxidation_state_finder" translatable="true">Rechercheur d'états d'oxydation</string>
+    <string name="ui_oxidation_state_finder" translatable="true">Rechercheur d\'états d\'oxydation</string>
     <string name="ui_e_g_kmno4" translatable="true">p. ex. KMnO4</string>
     <string name="ui_charge" translatable="true">Charge</string>
-    <string name="ui_find_oxidation_states" translatable="true">Trouver les états d'oxydation</string>
+    <string name="ui_find_oxidation_states" translatable="true">Trouver les états d\'oxydation</string>
     <string name="ui_oxidation_states" translatable="true">ÉTAT D\'OXIDATION</string>
     <string name="ui_examples" translatable="true">EXEMPLES</string>
     <string name="ui_smiles_visualizer" translatable="true">Visualiseur SMILES</string>
@@ -561,7 +561,7 @@
     <string name="ui_h2_o2_h2o" translatable="true">H2 + O2 ⟶ H2O</string>
     <string name="ui_balance" translatable="true">Équilibrer</string>
     <string name="ui_balanced_equation" translatable="true">ÉQUATION ÉQUILIBRÉE</string>
-    <string name="ui_atom_count_verification" translatable="true">VÉRIFICATION DU NOMBRE D'ATOMES</string>
+    <string name="ui_atom_count_verification" translatable="true">VÉRIFICATION DU NOMBRE D\'ATOMES</string>
     <string name="ui_reactants" translatable="true">Réactifs</string>
     <string name="ui_products" translatable="true">Produits</string>
     <string name="ui_d_s_results" translatable="true">Résultats %1$d</string>
@@ -636,7 +636,7 @@
     <string name="ui_e_g_5_0" translatable="true">p. ex. 5.0</string>
     <string name="ui_e_g_500" translatable="true">p. ex. 500</string>
     <string name="ui_required_reactants_theoretical" translatable="true">Réactifs requis (théorique)</string>
-    <string name="ui_reset_tool_order" translatable="true">Réinitialiser l'ordre des outils</string>
+    <string name="ui_reset_tool_order" translatable="true">Réinitialiser l\'ordre des outils</string>
     <string name="ui_clear_search" translatable="true">Effacer la recherche</string>
     <string name="ui_drag_to_reorder" translatable="true">Faire glisser pour réorganiser</string>
     <string name="ui_swap_sides" translatable="true">Échanger les côtés</string>
@@ -645,7 +645,7 @@
     <string name="ui_open_in_search" translatable="true">Ouvrir dans la recherche</string>
     <string name="ui_reorder_mode_long_press_and_drag_tools_to" translatable="true">Mode de réorganisation : appuyez longuement et faites glisser les outils pour les réorganiser.</string>
     <string name="ui_search_tools" translatable="true">Rechercher des outils…</string>
-    <string name="ui_load_any_sdf_or_mol_file_from_your" translatable="true">Chargez n'importe quel fichier .sdf ou .mol de votre appareil pour l'afficher en 3D</string>
+    <string name="ui_load_any_sdf_or_mol_file_from_your" translatable="true">Chargez n\'importe quel fichier .sdf ou .mol de votre appareil pour l\'afficher en 3D</string>
     <string name="ui_elemental_breakdown" translatable="true">DÉCOMPOSITION ÉLÉMENTAIRE</string>
     <string name="ui_examples_2" translatable="true">EXEMPLES</string>
     <string name="ui_generated_estimate" translatable="true">Estimation générée</string>
@@ -660,27 +660,27 @@
     <string name="ui_pinch_drag_to_pan" translatable="true">Faire glisser pour déplacer la vue</string>
     <string name="ui_could_not_parse_3d_data" translatable="true">Impossible de lire les données 3D</string>
     <!-- WelcomeScreen.kt -->
-    <string name="ui_set_your_look" translatable="true">Personnalisez l'apparence</string>
+    <string name="ui_set_your_look" translatable="true">Personnalisez l\'apparence</string>
     <string name="ui_appearance" translatable="true">APPARENCE</string>
-    <string name="ui_choose_theme_accent_body" translatable="true">Choisissez le thème et la couleur d'accent que ChemSearch doit utiliser dans les recherches, les outils et les paramètres.</string>
+    <string name="ui_choose_theme_accent_body" translatable="true">Choisissez le thème et la couleur d\'accent que ChemSearch doit utiliser dans les recherches, les outils et les paramètres.</string>
     <string name="ui_light" translatable="true">Clair</string>
     <string name="ui_dark" translatable="true">Sombre</string>
     <string name="ui_bright_surfaces" translatable="true">Surfaces claires</string>
     <string name="ui_low_light_ui" translatable="true">Interface en faible luminosité</string>
     <string name="ui_pick_descriptions" translatable="true">Choisir les descriptions</string>
     <string name="ui_compound_summaries" translatable="true">RÉSUMÉS DE COMPOSÉS</string>
-    <string name="ui_choose_default_desc_body" translatable="true">Choisissez quelle source doit s'ouvrir par défaut après une recherche de composé.</string>
+    <string name="ui_choose_default_desc_body" translatable="true">Choisissez quelle source doit s\'ouvrir par défaut après une recherche de composé.</string>
     <string name="ui_scientific_summaries" translatable="true">Résumés scientifiques des enregistrements PubChem.</string>
-    <string name="ui_general_readable_summaries" translatable="true">Résumés généraux lisibles lorsqu'une page existe.</string>
+    <string name="ui_general_readable_summaries" translatable="true">Résumés généraux lisibles lorsqu\'une page existe.</string>
     <string name="ui_generated_explanations_ai" translatable="true">Explications générées par votre fournisseur IA sélectionné.</string>
     <string name="ui_before_you_start" translatable="true">Avant de commencer</string>
     <string name="ui_privacy_and_safety" translatable="true">CONFIDENTIALITÉ &amp; SÉCURITÉ</string>
     <string name="ui_pubchem" translatable="true">PubChem</string>
     <string name="ui_wikipedia" translatable="true">Wikipédia</string>
     <string name="ui_ai" translatable="true">AI</string>
-    <string name="ui_welcome_privacy_body" translatable="true">ChemSearch utilise des sources publiques de chimie et des fournisseurs d'IA facultatifs. Les informations chimiques sont destinées à l'étude et aux vérifications rapides.</string>
+    <string name="ui_welcome_privacy_body" translatable="true">ChemSearch utilise des sources publiques de chimie et des fournisseurs d\'IA facultatifs. Les informations chimiques sont destinées à l\'étude et aux vérifications rapides.</string>
     <string name="ui_chemsearch" translatable="true">ChemSearch</string>
-    <string name="ui_configure_ai_provider" translatable="true">Configurer le fournisseur d'IA</string>
+    <string name="ui_configure_ai_provider" translatable="true">Configurer le fournisseur d\'IA</string>
     <string name="ui_skip" translatable="true">Ignorer</string>
     <string name="ui_next" translatable="true">Suivant</string>
     <string name="ui_welcome_start_using_chemsearch" translatable="true">Commencer à utiliser ChemSearch</string>
@@ -711,8 +711,8 @@
     <string name="ui_tool_category_reactions" translatable="true">Réactions</string>
     <string name="ui_tool_category_stoichiometry" translatable="true">Stoichiométrie</string>
     <!-- SettingsUi section titles -->
-    <string name="ui_section_ai_providers" translatable="true">FOURNISSEURS D'IA</string>
-    <string name="ui_section_app_links" translatable="true">LIENS DE L'APPLICATION</string>
+    <string name="ui_section_ai_providers" translatable="true">FOURNISSEURS D\'IA</string>
+    <string name="ui_section_app_links" translatable="true">LIENS DE L\'APPLICATION</string>
     <string name="ui_section_built_with" translatable="true">CONSTRUIT AVEC</string>
     <string name="ui_section_chemistry_data" translatable="true">DONNÉES DE CHIMIE</string>
     <string name="ui_check_for_updates" translatable="true">Vérifier les mises à jour</string>
@@ -726,11 +726,11 @@
     <string name="ui_export_settings" translatable="true">Exporter les paramètres</string>
     <string name="ui_faq" translatable="true">Foire Aux Questions</string>
     <string name="ui_faq_what_for_q" translatable="true">À quoi sert ChemSearch ?</string>
-    <string name="ui_faq_what_for_a" translatable="true">ChemSearch est un outil de recherche de chimie rapide, d'étude et de référence. Il regroupe la recherche de composés, les structures, les résumés de sécurité, l'enregistrement hors ligne, les références et les calculatrices dans une seule application Android.</string>
+    <string name="ui_faq_what_for_a" translatable="true">ChemSearch est un outil de recherche de chimie rapide, d\'étude et de référence. Il regroupe la recherche de composés, les structures, les résumés de sécurité, l\'enregistrement hors ligne, les références et les calculatrices dans une seule application Android.</string>
     <string name="ui_faq_replacement_q" translatable="true">ChemSearch remplace-t-il PubChem?</string>
-    <string name="ui_faq_replacement_a" translatable="true">Non. ChemSearch utilise PubChem comme source de données principale et présente les parties utiles de manière conviviale. Ouvrez PubChem directement lorsque vous avez besoin de l'enregistrement complet ou de la piste de la source originale.</string>
+    <string name="ui_faq_replacement_a" translatable="true">Non. ChemSearch utilise PubChem comme source de données principale et présente les parties utiles de manière conviviale. Ouvrez PubChem directement lorsque vous avez besoin de l\'enregistrement complet ou de la piste de la source originale.</string>
     <string name="ui_faq_data_source_q" translatable="true">D\'où viennent les données composées ?</string>
-    <string name="ui_faq_data_source_a" translatable="true">La plupart des propriétés des composés, identifiants, structures, synonymes, classifications et résumés GHS proviennent de PubChem. Certaines descriptions peuvent provenir de Wikipédia ou de votre fournisseur d'IA sélectionné, selon les paramètres.</string>
+    <string name="ui_faq_data_source_a" translatable="true">La plupart des propriétés des composés, identifiants, structures, synonymes, classifications et résumés GHS proviennent de PubChem. Certaines descriptions peuvent provenir de Wikipédia ou de votre fournisseur d\'IA sélectionné, selon les paramètres.</string>
     <string name="ui_faq_pt_data_q" translatable="true">D\'où viennent les données périodiques des tableaux?</string>
     <string name="ui_faq_pt_data_a" translatable="true">Les détails de la table périodique sont regroupés à partir de données de référence publique, y compris PubChem, Wikipédia, et Bowserinator/Periodic-Table-JSON. Certains champs sont cachés lorsqu\'une valeur n\'est pas listée.</string>
     <string name="ui_faq_trust_q" translatable="true">Puis-je faire confiance aux données ?</string>
@@ -788,7 +788,7 @@
     <string name="ui_faq_compare_q" translatable="true">Puis-je comparer les composés enregistrés ?</string>
     <string name="ui_faq_compare_a" translatable="true">Oui. Sélectionnez deux combinés ou plus dans les Favoris, Téléchargements ou entrées de la base de données chimique prises en charge, puis utilisez le bouton de comparaison flottante.</string>
     <string name="ui_faq_database_q" translatable="true">Qu\'est-ce que la base de données sur les produits chimiques?</string>
-    <string name="ui_faq_database_a" translatable="true">Il s'agit d'une référence intégrée pour les substances courantes, les ions, les groupes fonctionnels et les réactions. Elle est utile hors ligne, mais pas aussi complète que PubChem.</string>
+    <string name="ui_faq_database_a" translatable="true">Il s\'agit d\'une référence intégrée pour les substances courantes, les ions, les groupes fonctionnels et les réactions. Elle est utile hors ligne, mais pas aussi complète que PubChem.</string>
     <string name="ui_faq_compare_reactions_q" translatable="true">Pourquoi puis-je comparer des substances et des ions mais pas des réactions ou des groupes fonctionnels?</string>
     <string name="ui_faq_compare_reactions_a" translatable="true">Compare Compounds attend des enregistrements ressemblant à des composés avec des formules et des identifiants. Les réactions et les groupes fonctionnels sont des entrées de référence, et non des enregistrements composés complets.</string>
     <string name="ui_faq_tags_q" translatable="true">Pourquoi certaines balises de classification paraissent-elles sans lien ?</string>
@@ -816,7 +816,7 @@
     <string name="ui_formula_display" translatable="true">Affichage de la formule</string>
     <string name="ui_import_settings" translatable="true">Importer les paramètres</string>
     <string name="ui_live_log_viewer" translatable="true">Visionneuse de journaux en direct</string>
-    <string name="ui_ai_provider_and_keys" translatable="true">Fournisseur d'IA et clés</string>
+    <string name="ui_ai_provider_and_keys" translatable="true">Fournisseur d\'IA et clés</string>
     <string name="ui_dark_mode" translatable="true">Mode Sombre</string>
     <string name="ui_search_history" translatable="true">Rechercher dans l\'historique</string>
     <string name="ui_autosuggestions" translatable="true">Auto-suggestions</string>
@@ -838,7 +838,7 @@
     <string name="ui_periodic_detail_element_overview_desc" translatable="true">Le panneau d’identité rapide pour cet élément. Il montre le symbole, la famille d\'éléments, la position de table, l\'état habituel, la masse atomique, l\'année de découverte, et un court résumé en langage clair.</string>
     <string name="ui_periodic_detail_element_images_desc" translatable="true">Une image de référence de l\'élément lorsque celui-ci est disponible. Il aide à relier l\'entrée de la table à ce à quoi peut ressembler l\'élément ou un échantillon de celui-ci dans la vie réelle.</string>
     <string name="ui_periodic_detail_electron_shells_desc" translatable="true">Une vue de la coquille de la façon dont les électrons sont disposés autour de l\'atome. La coquille externe est particulièrement utile parce que les électrons de fréquence expliquent de nombreux modèles de liaison et de réactivité.</string>
-    <string name="ui_periodic_detail_physical_properties_desc" translatable="true">Propriétés mesurées qui décrivent le comportement physique de l'élément : combien il attire les électrons, la taille de ses atomes, quand il fond ou bout, et sa densité.</string>
+    <string name="ui_periodic_detail_physical_properties_desc" translatable="true">Propriétés mesurées qui décrivent le comportement physique de l\'élément : combien il attire les électrons, la taille de ses atomes, quand il fond ou bout, et sa densité.</string>
     <string name="ui_periodic_detail_more_details_desc" translatable="true">Éléments de référence supplémentaires pour l\'élément, regroupés par identité, données atomiques et données d\'électron. Cela garde les valeurs détaillées séparées de la vue d\'ensemble rapide.</string>
     <string name="ui_periodic_detail_spectral_lines_desc" translatable="true">Le schéma d\'émission visible pour l\'élément. Ces lignes lumineuses agissent comme une empreinte digitale, aidant à identifier un élément de la lumière qu\'il émet.</string>
     <string name="ui_periodic_detail_sources_desc" translatable="true">Ouvrir les sources originales de données et d\'images utilisées pour cette page. Utilisez ces liens lorsque vous voulez vérifier une valeur ou en lire plus à partir de la source.</string>
@@ -1175,12 +1175,12 @@
     <string name="ui_cid_label" translatable="true">CID %1$s</string>
     <string name="ui_compare_count" translatable="true">Comparer %1$d</string>
     <string name="ui_isotope_showing_substituted" translatable="true">Afficher également les composés remplacés par l\'isole.</string>
-    <string name="ui_isotope_results_hidden" translatable="true">%1$d résultat%2$s d'isotope masqué.</string>
+    <string name="ui_isotope_results_hidden" translatable="true">%1$d résultat%2$s d\'isotope masqué.</string>
     <string name="ui_isomer_search_info" translatable="true">Infos de recherche Isomer</string>
     <string name="ui_clear_formula" translatable="true">Vider la formule</string>
     <string name="ui_results_count_for_formula" translatable="true">Résultat %1$d%2$s pour %3$s</string>
     <string name="ui_2d_structure_of" translatable="true">Structure 2D de %1$s</string>
-    <string name="ui_searching_pubchem_for_isomers" translatable="true">Recherche d'isomères sur PubChem…</string>
+    <string name="ui_searching_pubchem_for_isomers" translatable="true">Recherche d\'isomères sur PubChem…</string>
     <string name="ui_results_count" translatable="true">Résultat %1$d%2$s</string>
     <string name="ui_min_weight" translatable="true">Poids minimum</string>
     <string name="ui_max_weight" translatable="true">Poids maximum</string>
@@ -1211,7 +1211,7 @@
     <string name="ui_info_atom_number" translatable="true">Numéro Atom</string>
     <string name="ui_info_atom_number_body" translatable="true">Nombre total d\'atomes représentés dans l\'enregistrement de la structure.</string>
     <string name="ui_info_bond_number" translatable="true">Numéro d\'obligation</string>
-    <string name="ui_info_bond_number_body" translatable="true">Nombre total de liaisons représentées dans l'enregistrement de la structure.</string>
+    <string name="ui_info_bond_number_body" translatable="true">Nombre total de liaisons représentées dans l\'enregistrement de la structure.</string>
     <string name="ui_info_formal_charge" translatable="true">Charge Formale</string>
     <string name="ui_info_formal_charge_body" translatable="true">La charge électrique attribuée à un atome dans une molécule, en supposant que toutes les obligations sont également partagées.</string>
     <string name="ui_info_what_this_shows" translatable="true">Ce que cela montre</string>
@@ -1272,7 +1272,7 @@
     <string name="ui_hazard_unstable_explosive" translatable="true">Explosif instable</string>
     <string name="ui_hazard_highly_flammable" translatable="true">Liquide et vapeur hautement inflammables</string>
     <string name="ui_hazard_flammable_liquid" translatable="true">Liquide inflammable et vapeur</string>
-    <string name="ui_hazard_toxic_if_swallowed" translatable="true">Toxique en cas d'ingestion</string>
+    <string name="ui_hazard_toxic_if_swallowed" translatable="true">Toxique en cas d\'ingestion</string>
     <string name="ui_hazard_harmful_if_swallowed" translatable="true">Dommage si avalé</string>
     <string name="ui_hazard_toxic_skin" translatable="true">Toxique en contact avec la peau</string>
     <string name="ui_hazard_severe_burns" translatable="true">Provoque de graves brûlures de la peau et des dommages oculaires</string>
@@ -1462,7 +1462,7 @@
     <string name="ui_os_info_rules_term" translatable="true">Règles appliquées</string>
     <string name="ui_os_info_rules_body" translatable="true">F est toujours -1. Groupe 1 = +1, Groupe 2 = +2. Al, Ga, In, Sc, Y, La, Lu = +3. Zn, Cd = +2. Ag = +1. O par défaut à -2 (sauf peroxides/superoxides). H par défaut à +1 (sauf hydrides en métal). Les halogènes (Cl, Br, I) sont par défaut à -1 en halides simples, mais sont résolus lorsqu\'ils sont liés à l\'oxygène ou à un halogène plus électronique.</string>
     <string name="ui_os_info_halogen_priority_term" translatable="true">Priorité halogène</string>
-    <string name="ui_os_info_halogen_priority_body" translatable="true">Ordre d'électronégativité : F &gt; Cl &gt; Br &gt; I. Dans les composés oxo-halogénés et les composés interhalogénés, l'halogène le moins électronégatif peut prendre un OS positif. Exemple : HOCl ⟶ Cl=+1. ICl3 ⟶ I=+3, Cl=-1. ClF3 ⟶ Cl=+3, F=-1.</string>
+    <string name="ui_os_info_halogen_priority_body" translatable="true">Ordre d\'électronégativité : F &gt; Cl &gt; Br &gt; I. Dans les composés oxo-halogénés et les composés interhalogénés, l\'halogène le moins électronégatif peut prendre un OS positif. Exemple : HOCl ⟶ Cl=+1. ICl3 ⟶ I=+3, Cl=-1. ClF3 ⟶ Cl=+3, F=-1.</string>
     <string name="ui_os_info_special_cases_term" translatable="true">Cas spéciaux gérés</string>
     <string name="ui_os_info_special_cases_body" translatable="true">Peroxydes (O=-1) : H2O2, Na2O2, BaO2. Superoxydes (O=-½) : KO2, NaO2. Ozonides (O=-⅓) : KO3. Hydrures métalliques (H=-1) : NaH, LiAlH4, NaBH4, CaH2.</string>
     <string name="ui_os_info_overall_charge_term" translatable="true">Charge globale</string>
@@ -1488,7 +1488,7 @@
     <string name="ui_balancer_info_how_to_enter_term" translatable="true">Comment saisir des équations</string>
     <string name="ui_balancer_info_how_to_enter_body" translatable="true">Saisissez les réactifs à gauche et les produits à droite, séparés par \'⟶\'. Séparez les composés par \'+\'. Exemple : H2 + O2 ⟶ H2O</string>
     <string name="ui_balancer_info_coefficients_term" translatable="true">Coefficients</string>
-    <string name="ui_balancer_info_coefficients_body" translatable="true">Ne saisissez pas de coefficients. L'application les détermine. H2 + O2 ⟶ H2O, pas 2H2 + O2 ⟶ 2H2O.</string>
+    <string name="ui_balancer_info_coefficients_body" translatable="true">Ne saisissez pas de coefficients. L\'application les détermine. H2 + O2 ⟶ H2O, pas 2H2 + O2 ⟶ 2H2O.</string>
     <string name="ui_balancer_info_how_it_works_term" translatable="true">Comment ça marche</string>
     <string name="ui_balancer_info_how_it_works_body" translatable="true">L\'équilibreur construit une matrice de comptage d\'éléments et résout le système à l\'aide d\'élimination Gaussienne avec une arithmétique rationnelle exacte pour trouver des coefficients entiers.</string>
     <string name="ui_balancer_info_supported_formulas_term" translatable="true">Formes prises en charge</string>
