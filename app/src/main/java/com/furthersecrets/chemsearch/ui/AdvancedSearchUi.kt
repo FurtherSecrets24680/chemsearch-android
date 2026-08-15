@@ -54,8 +54,9 @@ import com.furthersecrets.chemsearch.data.AdvancedSearchResultItem
 import com.furthersecrets.chemsearch.data.AdvancedSearchType
 import com.furthersecrets.chemsearch.data.AdvancedSearchUiState
 import com.furthersecrets.chemsearch.data.advancedSearchTypeForQuery
-import com.furthersecrets.chemsearch.data.filterSummary
+import com.furthersecrets.chemsearch.data.elementBySymbol
 import com.furthersecrets.chemsearch.data.parseElementFilterText
+import java.util.Locale
 
 @Composable
 fun AdvancedSearchDialog(
@@ -104,8 +105,18 @@ fun AdvancedSearchDialog(
             ) {
                 Column {
                     Text(stringResource(R.string.ui_advanced_search), fontWeight = FontWeight.Bold)
+                    val filters = buildFilters()
+                    val summaryParts = buildList {
+                        if (filters.includeElements.isNotEmpty()) add(stringResource(R.string.ui_filter_includes_s, filters.includeElements.sortedBy { elementBySymbol(it)?.atomicNumber ?: Int.MAX_VALUE }.joinToString(", ")))
+                        if (filters.excludeElements.isNotEmpty()) add(stringResource(R.string.ui_filter_excludes_s, filters.excludeElements.sortedBy { elementBySymbol(it)?.atomicNumber ?: Int.MAX_VALUE }.joinToString(", ")))
+                        filters.minMolecularWeight?.let { add(stringResource(R.string.ui_filter_mw_ge_s, it.cleanNumber())) }
+                        filters.maxMolecularWeight?.let { add(stringResource(R.string.ui_filter_mw_le_s, it.cleanNumber())) }
+                        filters.charge?.let { add(stringResource(R.string.ui_filter_charge_s, if (it > 0) "+$it" else it.toString())) }
+                        if (filters.requireThreeD) add(stringResource(R.string.ui_filter_has_3d))
+                        if (filters.requireGhs) add(stringResource(R.string.ui_filter_has_ghs))
+                    }
                     Text(
-                        filterSummary(buildFilters()),
+                        summaryParts.joinToString(" | ").ifBlank { stringResource(R.string.ui_filter_no_filters) },
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
                         maxLines = 2,
@@ -150,7 +161,7 @@ fun AdvancedSearchDialog(
                                 horizontalArrangement = Arrangement.spacedBy(4.dp)
                             ) {
                                 Text(
-                                    selectedType.label,
+                                    advancedSearchTypeLabel(selectedType),
                                     style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.primary
@@ -164,7 +175,7 @@ fun AdvancedSearchDialog(
                         ) {
                             AdvancedSearchType.entries.forEach { type ->
                                 DropdownMenuItem(
-                                    text = { Text(type.label) },
+                                    text = { Text(advancedSearchTypeLabel(type)) },
                                     onClick = {
                                         selectedType = type
                                         typeExpanded = false
@@ -393,3 +404,14 @@ private fun AdvancedSearchResultCard(
         }
     }
 }
+
+@Composable
+private fun advancedSearchTypeLabel(type: AdvancedSearchType): String = when (type) {
+    AdvancedSearchType.NAME -> stringResource(R.string.ui_name)
+    AdvancedSearchType.FORMULA -> stringResource(R.string.ui_formula)
+    AdvancedSearchType.CID -> "CID"
+    AdvancedSearchType.CAS -> "CAS"
+}
+
+private fun Double.cleanNumber(): String =
+    if (this % 1.0 == 0.0) toInt().toString() else String.format(Locale.US, "%.2f", this)

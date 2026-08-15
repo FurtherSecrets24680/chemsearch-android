@@ -1,59 +1,119 @@
 package com.furthersecrets.chemsearch.data
 
+import android.content.Context
+import com.furthersecrets.chemsearch.R
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import java.util.Locale
 
-fun buildAdvancedProperties(props: CompoundProperty): List<AdvancedPropertyRow> = buildList {
-    props.xLogP?.let { add(AdvancedPropertyRow("XLogP", formatPropertyNumber(it))) }
-    props.tpsa?.let { add(AdvancedPropertyRow("Topological polar surface area", "${formatPropertyNumber(it)} A^2")) }
-    props.complexity?.let { add(AdvancedPropertyRow("Complexity", formatPropertyNumber(it))) }
-    props.exactMass?.takeIf { it.isNotBlank() }?.let { add(AdvancedPropertyRow("Exact mass", "$it Da")) }
-    props.monoisotopicMass?.takeIf { it.isNotBlank() }?.let { add(AdvancedPropertyRow("Monoisotopic mass", "$it Da")) }
-    props.hBondDonorCount?.let { add(AdvancedPropertyRow("Hydrogen bond donors", it.toString())) }
-    props.hBondAcceptorCount?.let { add(AdvancedPropertyRow("Hydrogen bond acceptors", it.toString())) }
-    props.rotatableBondCount?.let { add(AdvancedPropertyRow("Rotatable bonds", it.toString())) }
-    props.heavyAtomCount?.let { add(AdvancedPropertyRow("Heavy atom count", it.toString())) }
-    props.covalentUnitCount?.let { add(AdvancedPropertyRow("Covalently bonded units", it.toString())) }
-    props.isotopeAtomCount?.takeIf { it > 0 }?.let { add(AdvancedPropertyRow("Isotope atom count", it.toString())) }
+data class AdvancedPropertyLabels(
+    val tpsa: String = "Topological polar surface area",
+    val complexity: String = "Complexity",
+    val exactMass: String = "Exact mass",
+    val monoisotopicMass: String = "Monoisotopic mass",
+    val hBondDonors: String = "Hydrogen bond donors",
+    val hBondAcceptors: String = "Hydrogen bond acceptors",
+    val rotatableBonds: String = "Rotatable bonds",
+    val heavyAtomCount: String = "Heavy atom count",
+    val covalentUnits: String = "Covalently bonded units",
+    val isotopeAtomCount: String = "Isotope atom count",
+    val volume3d: String = "3D volume",
+    val featureCount3d: String = "3D feature count",
+    val acceptorFeatures3d: String = "3D acceptor features",
+    val donorFeatures3d: String = "3D donor features",
+    val anionFeatures3d: String = "3D anion features",
+    val cationFeatures3d: String = "3D cation features",
+    val ringFeatures3d: String = "3D ring features",
+    val hydrophobeFeatures3d: String = "3D hydrophobe features",
+    val effectiveRotors3d: String = "Effective 3D rotors",
+    val conformerRmsd: String = "Conformer RMSD",
+    val conformerCount3d: String = "3D conformer count",
+    val atomStereocenters: String = "Atom stereocenters",
+    val bondStereocenters: String = "Bond stereocenters",
+    val countTotal: String = "%1\$d total",
+    val countDefined: String = "%1\$d defined",
+    val countUndefined: String = "%1\$d undefined"
+)
 
-    val stereoRows = buildStereoRows(props)
+fun localizedAdvancedPropertyLabels(context: Context): AdvancedPropertyLabels = AdvancedPropertyLabels(
+    tpsa = context.getString(R.string.ui_prop_tpsa),
+    complexity = context.getString(R.string.ui_prop_complexity),
+    exactMass = context.getString(R.string.ui_prop_exact_mass),
+    monoisotopicMass = context.getString(R.string.ui_prop_monoisotopic_mass),
+    hBondDonors = context.getString(R.string.ui_prop_hbond_donors),
+    hBondAcceptors = context.getString(R.string.ui_prop_hbond_acceptors),
+    rotatableBonds = context.getString(R.string.ui_prop_rotatable_bonds),
+    heavyAtomCount = context.getString(R.string.ui_prop_heavy_atom_count),
+    covalentUnits = context.getString(R.string.ui_prop_covalent_units),
+    isotopeAtomCount = context.getString(R.string.ui_prop_isotope_atom_count),
+    volume3d = context.getString(R.string.ui_prop_volume_3d),
+    featureCount3d = context.getString(R.string.ui_prop_feature_count_3d),
+    acceptorFeatures3d = context.getString(R.string.ui_prop_acceptor_features_3d),
+    donorFeatures3d = context.getString(R.string.ui_prop_donor_features_3d),
+    anionFeatures3d = context.getString(R.string.ui_prop_anion_features_3d),
+    cationFeatures3d = context.getString(R.string.ui_prop_cation_features_3d),
+    ringFeatures3d = context.getString(R.string.ui_prop_ring_features_3d),
+    hydrophobeFeatures3d = context.getString(R.string.ui_prop_hydrophobe_features_3d),
+    effectiveRotors3d = context.getString(R.string.ui_prop_effective_rotors_3d),
+    conformerRmsd = context.getString(R.string.ui_prop_conformer_rmsd),
+    conformerCount3d = context.getString(R.string.ui_prop_conformer_count_3d),
+    atomStereocenters = context.getString(R.string.ui_prop_atom_stereocenters),
+    bondStereocenters = context.getString(R.string.ui_prop_bond_stereocenters),
+    countTotal = context.getString(R.string.ui_prop_count_total),
+    countDefined = context.getString(R.string.ui_prop_count_defined),
+    countUndefined = context.getString(R.string.ui_prop_count_undefined)
+)
+
+fun buildAdvancedProperties(props: CompoundProperty, labels: AdvancedPropertyLabels = AdvancedPropertyLabels()): List<AdvancedPropertyRow> = buildList {
+    props.xLogP?.let { add(AdvancedPropertyRow("XLogP", formatPropertyNumber(it))) }
+    props.tpsa?.let { add(AdvancedPropertyRow(labels.tpsa, "${formatPropertyNumber(it)} A^2")) }
+    props.complexity?.let { add(AdvancedPropertyRow(labels.complexity, formatPropertyNumber(it))) }
+    props.exactMass?.takeIf { it.isNotBlank() }?.let { add(AdvancedPropertyRow(labels.exactMass, "$it Da")) }
+    props.monoisotopicMass?.takeIf { it.isNotBlank() }?.let { add(AdvancedPropertyRow(labels.monoisotopicMass, "$it Da")) }
+    props.hBondDonorCount?.let { add(AdvancedPropertyRow(labels.hBondDonors, it.toString())) }
+    props.hBondAcceptorCount?.let { add(AdvancedPropertyRow(labels.hBondAcceptors, it.toString())) }
+    props.rotatableBondCount?.let { add(AdvancedPropertyRow(labels.rotatableBonds, it.toString())) }
+    props.heavyAtomCount?.let { add(AdvancedPropertyRow(labels.heavyAtomCount, it.toString())) }
+    props.covalentUnitCount?.let { add(AdvancedPropertyRow(labels.covalentUnits, it.toString())) }
+    props.isotopeAtomCount?.takeIf { it > 0 }?.let { add(AdvancedPropertyRow(labels.isotopeAtomCount, it.toString())) }
+
+    val stereoRows = buildStereoRows(props, labels)
     addAll(stereoRows)
 
-    props.volume3d?.let { add(AdvancedPropertyRow("3D volume", formatPropertyNumber(it))) }
-    props.featureCount3d?.let { add(AdvancedPropertyRow("3D feature count", it.toString())) }
-    props.featureAcceptorCount3d?.let { add(AdvancedPropertyRow("3D acceptor features", it.toString())) }
-    props.featureDonorCount3d?.let { add(AdvancedPropertyRow("3D donor features", it.toString())) }
-    props.featureAnionCount3d?.let { add(AdvancedPropertyRow("3D anion features", it.toString())) }
-    props.featureCationCount3d?.let { add(AdvancedPropertyRow("3D cation features", it.toString())) }
-    props.featureRingCount3d?.let { add(AdvancedPropertyRow("3D ring features", it.toString())) }
-    props.featureHydrophobeCount3d?.let { add(AdvancedPropertyRow("3D hydrophobe features", it.toString())) }
-    props.effectiveRotorCount3d?.let { add(AdvancedPropertyRow("Effective 3D rotors", formatPropertyNumber(it))) }
-    props.conformerModelRmsd3d?.let { add(AdvancedPropertyRow("Conformer RMSD", formatPropertyNumber(it))) }
-    props.conformerCount3d?.let { add(AdvancedPropertyRow("3D conformer count", it.toString())) }
+    props.volume3d?.let { add(AdvancedPropertyRow(labels.volume3d, formatPropertyNumber(it))) }
+    props.featureCount3d?.let { add(AdvancedPropertyRow(labels.featureCount3d, it.toString())) }
+    props.featureAcceptorCount3d?.let { add(AdvancedPropertyRow(labels.acceptorFeatures3d, it.toString())) }
+    props.featureDonorCount3d?.let { add(AdvancedPropertyRow(labels.donorFeatures3d, it.toString())) }
+    props.featureAnionCount3d?.let { add(AdvancedPropertyRow(labels.anionFeatures3d, it.toString())) }
+    props.featureCationCount3d?.let { add(AdvancedPropertyRow(labels.cationFeatures3d, it.toString())) }
+    props.featureRingCount3d?.let { add(AdvancedPropertyRow(labels.ringFeatures3d, it.toString())) }
+    props.featureHydrophobeCount3d?.let { add(AdvancedPropertyRow(labels.hydrophobeFeatures3d, it.toString())) }
+    props.effectiveRotorCount3d?.let { add(AdvancedPropertyRow(labels.effectiveRotors3d, formatPropertyNumber(it))) }
+    props.conformerModelRmsd3d?.let { add(AdvancedPropertyRow(labels.conformerRmsd, formatPropertyNumber(it))) }
+    props.conformerCount3d?.let { add(AdvancedPropertyRow(labels.conformerCount3d, it.toString())) }
 }
 
-private fun buildStereoRows(props: CompoundProperty): List<AdvancedPropertyRow> = buildList {
+private fun buildStereoRows(props: CompoundProperty, labels: AdvancedPropertyLabels): List<AdvancedPropertyRow> = buildList {
     val atomStereo = props.atomStereoCount
     val definedAtomStereo = props.definedAtomStereoCount
     val undefinedAtomStereo = props.undefinedAtomStereoCount
     if ((atomStereo ?: 0) > 0 || (definedAtomStereo ?: 0) > 0 || (undefinedAtomStereo ?: 0) > 0) {
-        add(AdvancedPropertyRow("Atom stereocenters", stereoSummary(atomStereo, definedAtomStereo, undefinedAtomStereo)))
+        add(AdvancedPropertyRow(labels.atomStereocenters, stereoSummary(labels, atomStereo, definedAtomStereo, undefinedAtomStereo)))
     }
 
     val bondStereo = props.bondStereoCount
     val definedBondStereo = props.definedBondStereoCount
     val undefinedBondStereo = props.undefinedBondStereoCount
     if ((bondStereo ?: 0) > 0 || (definedBondStereo ?: 0) > 0 || (undefinedBondStereo ?: 0) > 0) {
-        add(AdvancedPropertyRow("Bond stereocenters", stereoSummary(bondStereo, definedBondStereo, undefinedBondStereo)))
+        add(AdvancedPropertyRow(labels.bondStereocenters, stereoSummary(labels, bondStereo, definedBondStereo, undefinedBondStereo)))
     }
 }
 
-private fun stereoSummary(total: Int?, defined: Int?, undefined: Int?): String {
+private fun stereoSummary(labels: AdvancedPropertyLabels, total: Int?, defined: Int?, undefined: Int?): String {
     val parts = buildList {
-        total?.let { add("$it total") }
-        defined?.takeIf { it > 0 }?.let { add("$it defined") }
-        undefined?.takeIf { it > 0 }?.let { add("$it undefined") }
+        total?.let { add(String.format(Locale.US, labels.countTotal, it)) }
+        defined?.takeIf { it > 0 }?.let { add(String.format(Locale.US, labels.countDefined, it)) }
+        undefined?.takeIf { it > 0 }?.let { add(String.format(Locale.US, labels.countUndefined, it)) }
     }
     return parts.joinToString(", ").ifBlank { "0" }
 }

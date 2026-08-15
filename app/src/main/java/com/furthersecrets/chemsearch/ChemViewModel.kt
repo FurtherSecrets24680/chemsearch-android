@@ -662,9 +662,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val result = runCatching {
                 val backup = gson.fromJson(rawJson, LibraryBackup::class.java)
-                    ?: throw IllegalArgumentException("Invalid library backup file.")
+                    ?: throw IllegalArgumentException(getApplication<Application>().getString(R.string.ui_error_invalid_library_backup))
                 if (backup.format != LIBRARY_BACKUP_FORMAT) {
-                    throw IllegalArgumentException("This is not a ChemSearch library backup.")
+                    throw IllegalArgumentException(getApplication<Application>().getString(R.string.ui_error_not_chemsearch_backup))
                 }
 
                 val (mergedFavorites, importedFavorites) = mergeFavoritesForImport(
@@ -1342,7 +1342,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     aiProvider = _uiState.value.aiProvider,
                     isCached = false,
                     isLoadingSynonyms = true,
-                    advancedProperties = buildAdvancedProperties(props)
+                    advancedProperties = buildAdvancedProperties(props, localizedAdvancedPropertyLabels(getApplication<Application>()))
                 )
                 _uiState.update { newState }
                 if (newState.activeTab == MolTab.THREE_D) fetchSdfData()
@@ -1563,7 +1563,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     AiProvider.OPENAI -> ApiClient.openAi
                     AiProvider.OPENROUTER -> ApiClient.openRouter
                     AiProvider.MISTRAL -> ApiClient.mistral
-                    AiProvider.GEMINI -> error("Gemini uses a separate API")
+                    AiProvider.GEMINI -> error(getApplication<Application>().getString(R.string.ui_error_gemini_separate_api))
                 }
                 val response = api.generateContent("Bearer $key", req)
                 val text = response.choices?.firstOrNull()?.message?.content
@@ -1814,7 +1814,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 .propertyTable
                 ?.properties
                 ?.firstOrNull()
-                ?.let(::buildAdvancedProperties)
+                ?.let { buildAdvancedProperties(it, localizedAdvancedPropertyLabels(getApplication<Application>())) }
                 .orEmpty()
         }.getOrDefault(emptyList())
     }
@@ -2018,7 +2018,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                                 AiProvider.OPENAI -> ApiClient.openAi
                                 AiProvider.OPENROUTER -> ApiClient.openRouter
                                 AiProvider.MISTRAL -> ApiClient.mistral
-                                AiProvider.GEMINI -> error("Gemini uses a separate API")
+                                AiProvider.GEMINI -> error(getApplication<Application>().getString(R.string.ui_error_gemini_separate_api))
                             }
                             api.listModels("Bearer $key").data?.mapNotNull { it.id } ?: emptyList()
                         }
@@ -2657,7 +2657,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     isomers = emptyList(),
                     isCached = false,
                     isLoadingSynonyms = true,
-                    advancedProperties = buildAdvancedProperties(props)
+                    advancedProperties = buildAdvancedProperties(props, localizedAdvancedPropertyLabels(getApplication<Application>()))
                 )
                 _uiState.update { newState }
                 if (newState.activeTab == MolTab.THREE_D) fetchSdfData()

@@ -1561,5 +1561,70 @@
     <string name="ui_error_could_not_import_structure" translatable="true">Не удалось импортировать эту структуру. Попробуйте корректный SMILES, InChI или V2000 molfile.</string>
     <string name="ui_error_no_isomers" translatable="true">Изомеры не найдены.</string>
     <string name="ui_error_could_not_create_destination_file" translatable="true">Не удалось создать целевой файл</string>
+    <string name="ui_prop_volume_3d" translatable="true">3D-объём</string>
+    <string name="ui_db_section_general_formula" translatable="true">Общая формула</string>
+    <string name="ui_db_total_entries" translatable="true">Всего записей: %1$d</string>
+    <string name="ui_db_section_other_names" translatable="true">Другие названия</string>
+    <string name="ui_prop_tpsa" translatable="true">Топологическая полярная площадь поверхности</string>
+    <string name="ui_compound_fallback" translatable="true">Соединение</string>
+    <string name="ui_db_section_notes" translatable="true">Примечания</string>
+    <string name="ui_prop_ring_features_3d" translatable="true">3D-характеристики колец</string>
+    <string name="ui_prop_complexity" translatable="true">Сложность</string>
+    <string name="ui_prop_rotatable_bonds" translatable="true">Вращаемые связи</string>
+    <string name="ui_db_section_type" translatable="true">Тип</string>
+    <string name="ui_db_section_behavior" translatable="true">Поведение</string>
+    <string name="ui_prop_hydrophobe_features_3d" translatable="true">3D-характеристики гидрофобности</string>
+    <string name="ui_saved_search_count_many" translatable="true">%1$d сохранённых поисков</string>
+    <string name="ui_prop_acceptor_features_3d" translatable="true">3D-характеристики акцепторов</string>
+    <string name="ui_prop_bond_stereocenters" translatable="true">Стереоцентры связей</string>
+    <string name="ui_db_section_observation" translatable="true">Наблюдение</string>
+    <string name="ui_db_section_common_compounds" translatable="true">Обычные соединения</string>
+    <string name="ui_error_gemini_separate_api" translatable="true">Gemini использует отдельный API</string>
+    <string name="ui_prop_count_undefined" translatable="true">не определено: %1$d</string>
+    <string name="ui_filter_excludes_s" translatable="true">Исключает %1$s</string>
+    <string name="ui_prop_isotope_atom_count" translatable="true">Число атомов изотопов</string>
+    <string name="ui_prop_atom_stereocenters" translatable="true">Стереоцентры атомов</string>
+    <string name="ui_prop_anion_features_3d" translatable="true">3D-характеристики анионов</string>
+    <string name="ui_prop_cation_features_3d" translatable="true">3D-характеристики катионов</string>
+    <string name="ui_prop_feature_count_3d" translatable="true">Число 3D-характеристик</string>
+    <string name="ui_db_section_naming_cue" translatable="true">Подсказка по названию</string>
+    <string name="ui_filter_mw_ge_s" translatable="true">ММ >= %1$s</string>
+    <string name="ui_error_invalid_library_backup" translatable="true">Недопустимый файл резервной копии библиотеки.</string>
+    <string name="ui_db_section_example" translatable="true">Пример</string>
+    <string name="ui_db_section_equation" translatable="true">Уравнение</string>
+    <string name="ui_db_section_common_uses" translatable="true">Обычное применение</string>
+    <string name="ui_db_section_typical_conditions" translatable="true">Типичные условия</string>
+    <string name="ui_prop_covalent_units" translatable="true">Ковалентно связанные единицы</string>
+    <string name="ui_prop_hbond_acceptors" translatable="true">Акцепторы водородных связей</string>
+    <string name="ui_filter_includes_s" translatable="true">Включает %1$s</string>
+    <string name="ui_filter_no_filters" translatable="true">Нет фильтров</string>
+    <string name="ui_prop_exact_mass" translatable="true">Точная масса</string>
+    <string name="ui_saved_search_count_one" translatable="true">1 сохранённый поиск</string>
+    <string name="ui_prop_monoisotopic_mass" translatable="true">Моноизотопная масса</string>
+    <string name="ui_db_summary_ions" translatable="true">Ионы</string>
+    <string name="ui_group_period_d" translatable="true">Группа %1$d, период %2$d</string>
+    <string name="ui_prop_count_total" translatable="true">всего %1$d</string>
+    <string name="ui_filter_has_ghs" translatable="true">Есть GHS</string>
+    <string name="ui_db_summary_reactions" translatable="true">Реакции</string>
+    <string name="ui_prop_hbond_donors" translatable="true">Доноры водородных связей</string>
+    <string name="ui_prop_donor_features_3d" translatable="true">3D-характеристики доноров</string>
+    <string name="ui_filter_mw_le_s" translatable="true">ММ &lt;= %1$s</string>
+    <string name="ui_prop_count_defined" translatable="true">определено: %1$d</string>
+    <string name="ui_prop_effective_rotors_3d" translatable="true">Эффективные 3D-ротаторы</string>
+    <string name="ui_db_summary_substances" translatable="true">Вещества</string>
+    <string name="ui_prop_heavy_atom_count" translatable="true">Число тяжёлых атомов</string>
+    <string name="ui_prop_conformer_count_3d" translatable="true">Число 3D-конформеров</string>
+    <string name="ui_db_summary_functional_groups" translatable="true">Функциональные группы</string>
+    <string name="ui_filter_has_3d" translatable="true">Есть 3D</string>
+    <string name="ui_filter_charge_s" translatable="true">Заряд %1$s</string>
+    <string name="ui_prop_conformer_rmsd" translatable="true">RMSD конформера</string>
+    <string name="ui_error_not_chemsearch_backup" translatable="true">Это не файл резервной копии библиотеки ChemSearch.</string>
+    <string name="ui_recent_group_older" translatable="true">Старые</string>
+    <string name="ui_recent_group_previous_7_days" translatable="true">Последние 7 дней</string>
+    <string name="ui_recent_group_today" translatable="true">Сегодня</string>
+    <string name="ui_recent_group_pinned" translatable="true">Закреплённые</string>
+    <string name="ui_recent_group_previous_30_days" translatable="true">Последние 30 дней</string>
+    <string name="ui_recent_group_yesterday" translatable="true">Вчера</string>
+    <string name="ui_db_section_details" translatable="true">Подробности</string>
 </resources>
 

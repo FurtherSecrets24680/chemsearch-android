@@ -79,7 +79,6 @@ import com.furthersecrets.chemsearch.data.calculatePhPoh
 import com.furthersecrets.chemsearch.data.calculateMolarMass as calculateDomainMolarMass
 import com.furthersecrets.chemsearch.data.formatPhPohNumber
 import com.furthersecrets.chemsearch.data.formatConventionalFormula
-import com.furthersecrets.chemsearch.data.formatCompoundComparisonValue
 import com.furthersecrets.chemsearch.data.isUsableSdf
 import com.furthersecrets.chemsearch.data.parseFormulaElementCounts
 import com.furthersecrets.chemsearch.data.parseCompareCompoundInputs
@@ -2596,8 +2595,11 @@ private fun ExpandableCompareValueCard(
     monospace: Boolean = false,
     maxPreviewChars: Int = 180
 ) {
+    val compoundFallback = stringResource(R.string.ui_compound_fallback)
     val fullValue = remember(compoundName, value) {
-        formatCompoundComparisonValue(compoundName, value)
+        val cleanName = compoundName.trim().ifBlank { compoundFallback }
+        val cleanValue = value.trim().ifBlank { "—" }
+        "$cleanName: $cleanValue"
     }
     val previewValue = remember(fullValue, maxPreviewChars) {
         previewComparisonCellText(fullValue, maxPreviewChars)

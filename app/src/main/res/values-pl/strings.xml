@@ -1561,5 +1561,70 @@
     <string name="ui_error_could_not_import_structure" translatable="true">Nie udało się zaimportować tej struktury. Spróbuj prawidłowego SMILES, InChI lub pliku molfile V2000.</string>
     <string name="ui_error_no_isomers" translatable="true">Nie znaleziono izomerów.</string>
     <string name="ui_error_could_not_create_destination_file" translatable="true">Nie można utworzyć pliku docelowego</string>
+    <string name="ui_prop_volume_3d" translatable="true">Objętość 3D</string>
+    <string name="ui_db_section_general_formula" translatable="true">Wzór ogólny</string>
+    <string name="ui_db_total_entries" translatable="true">Łącznie %1$d wpisów</string>
+    <string name="ui_db_section_other_names" translatable="true">Inne nazwy</string>
+    <string name="ui_prop_tpsa" translatable="true">Topologiczna powierzchnia polarna</string>
+    <string name="ui_compound_fallback" translatable="true">Związek</string>
+    <string name="ui_db_section_notes" translatable="true">Uwagi</string>
+    <string name="ui_prop_ring_features_3d" translatable="true">Cechy pierścieni 3D</string>
+    <string name="ui_prop_complexity" translatable="true">Złożoność</string>
+    <string name="ui_prop_rotatable_bonds" translatable="true">Wiązania rotacyjne</string>
+    <string name="ui_db_section_type" translatable="true">Typ</string>
+    <string name="ui_db_section_behavior" translatable="true">Zachowanie</string>
+    <string name="ui_prop_hydrophobe_features_3d" translatable="true">Cechy hydrofobowe 3D</string>
+    <string name="ui_saved_search_count_many" translatable="true">%1$d zapisanych wyszukiwań</string>
+    <string name="ui_prop_acceptor_features_3d" translatable="true">Cechy akceptorów 3D</string>
+    <string name="ui_prop_bond_stereocenters" translatable="true">Stereocentra wiązań</string>
+    <string name="ui_db_section_observation" translatable="true">Obserwacja</string>
+    <string name="ui_db_section_common_compounds" translatable="true">Typowe związki</string>
+    <string name="ui_error_gemini_separate_api" translatable="true">Gemini używa osobnego API</string>
+    <string name="ui_prop_count_undefined" translatable="true">%1$d niezdefiniowanych</string>
+    <string name="ui_filter_excludes_s" translatable="true">Wyklucza %1$s</string>
+    <string name="ui_prop_isotope_atom_count" translatable="true">Liczba atomów izotopowych</string>
+    <string name="ui_prop_atom_stereocenters" translatable="true">Stereocentra atomowe</string>
+    <string name="ui_prop_anion_features_3d" translatable="true">Cechy anionów 3D</string>
+    <string name="ui_prop_cation_features_3d" translatable="true">Cechy kationów 3D</string>
+    <string name="ui_prop_feature_count_3d" translatable="true">Liczba cech 3D</string>
+    <string name="ui_db_section_naming_cue" translatable="true">Wskazówka nazewnicza</string>
+    <string name="ui_filter_mw_ge_s" translatable="true">MW >= %1$s</string>
+    <string name="ui_error_invalid_library_backup" translatable="true">Nieprawidłowy plik kopii zapasowej biblioteki.</string>
+    <string name="ui_db_section_example" translatable="true">Przykład</string>
+    <string name="ui_db_section_equation" translatable="true">Równanie</string>
+    <string name="ui_db_section_common_uses" translatable="true">Typowe zastosowania</string>
+    <string name="ui_db_section_typical_conditions" translatable="true">Typowe warunki</string>
+    <string name="ui_prop_covalent_units" translatable="true">Jednostki związane kowalencyjnie</string>
+    <string name="ui_prop_hbond_acceptors" translatable="true">Akceptory wiązań wodorowych</string>
+    <string name="ui_filter_includes_s" translatable="true">Zawiera %1$s</string>
+    <string name="ui_filter_no_filters" translatable="true">Brak filtrów</string>
+    <string name="ui_prop_exact_mass" translatable="true">Dokładna masa</string>
+    <string name="ui_saved_search_count_one" translatable="true">1 zapisane wyszukiwanie</string>
+    <string name="ui_prop_monoisotopic_mass" translatable="true">Masa monoisotopowa</string>
+    <string name="ui_db_summary_ions" translatable="true">Jony</string>
+    <string name="ui_group_period_d" translatable="true">Grupa %1$d, okres %2$d</string>
+    <string name="ui_prop_count_total" translatable="true">%1$d łącznie</string>
+    <string name="ui_filter_has_ghs" translatable="true">Ma GHS</string>
+    <string name="ui_db_summary_reactions" translatable="true">Reakcje</string>
+    <string name="ui_prop_hbond_donors" translatable="true">Donory wiązań wodorowych</string>
+    <string name="ui_prop_donor_features_3d" translatable="true">Cechy donorów 3D</string>
+    <string name="ui_filter_mw_le_s" translatable="true">MW &lt;= %1$s</string>
+    <string name="ui_prop_count_defined" translatable="true">%1$d zdefiniowanych</string>
+    <string name="ui_prop_effective_rotors_3d" translatable="true">Efektywne rotory 3D</string>
+    <string name="ui_db_summary_substances" translatable="true">Substancje</string>
+    <string name="ui_prop_heavy_atom_count" translatable="true">Liczba ciężkich atomów</string>
+    <string name="ui_prop_conformer_count_3d" translatable="true">Liczba konformerów 3D</string>
+    <string name="ui_db_summary_functional_groups" translatable="true">Grupy funkcyjne</string>
+    <string name="ui_filter_has_3d" translatable="true">Ma 3D</string>
+    <string name="ui_filter_charge_s" translatable="true">Ładunek %1$s</string>
+    <string name="ui_prop_conformer_rmsd" translatable="true">RMSD konformera</string>
+    <string name="ui_error_not_chemsearch_backup" translatable="true">To nie jest plik kopii zapasowej biblioteki ChemSearch.</string>
+    <string name="ui_recent_group_older" translatable="true">Starsze</string>
+    <string name="ui_recent_group_previous_7_days" translatable="true">Ostatnie 7 dni</string>
+    <string name="ui_recent_group_today" translatable="true">Dziś</string>
+    <string name="ui_recent_group_pinned" translatable="true">Przypięte</string>
+    <string name="ui_recent_group_previous_30_days" translatable="true">Ostatnie 30 dni</string>
+    <string name="ui_recent_group_yesterday" translatable="true">Wczoraj</string>
+    <string name="ui_db_section_details" translatable="true">Szczegóły</string>
 </resources>
 

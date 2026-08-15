@@ -2101,7 +2101,12 @@ private fun ChemicalDatabaseSummaryBreakdown(
             ),
             verticalArrangement = Arrangement.spacedBy(if (compact) 1.dp else 2.dp)
         ) {
-            chemicalDatabaseSummaryRows(summary).forEach { row ->
+            listOf(
+                ChemicalDatabaseSummaryRow(stringResource(R.string.ui_db_summary_substances), summary.substances),
+                ChemicalDatabaseSummaryRow(stringResource(R.string.ui_db_summary_ions), summary.ions),
+                ChemicalDatabaseSummaryRow(stringResource(R.string.ui_db_summary_functional_groups), summary.functionalGroups),
+                ChemicalDatabaseSummaryRow(stringResource(R.string.ui_db_summary_reactions), summary.reactions)
+            ).forEach { row ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,

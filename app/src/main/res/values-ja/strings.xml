@@ -1561,5 +1561,70 @@
     <string name="ui_error_could_not_import_structure" translatable="true">この構造をインポートできませんでした。有効なSMILES、InChI、またはV2000 molfileをお試しください。</string>
     <string name="ui_error_no_isomers" translatable="true">異性体が見つかりませんでした。</string>
     <string name="ui_error_could_not_create_destination_file" translatable="true">保存先ファイルを作成できませんでした</string>
+    <string name="ui_prop_volume_3d" translatable="true">3D体積</string>
+    <string name="ui_db_section_general_formula" translatable="true">一般式</string>
+    <string name="ui_db_total_entries" translatable="true">全 %1$d 件</string>
+    <string name="ui_db_section_other_names" translatable="true">別名</string>
+    <string name="ui_prop_tpsa" translatable="true">トポロジカル極性表面積</string>
+    <string name="ui_compound_fallback" translatable="true">化合物</string>
+    <string name="ui_db_section_notes" translatable="true">注記</string>
+    <string name="ui_prop_ring_features_3d" translatable="true">3D環特徴</string>
+    <string name="ui_prop_complexity" translatable="true">複雑性</string>
+    <string name="ui_prop_rotatable_bonds" translatable="true">回転可能な結合</string>
+    <string name="ui_db_section_type" translatable="true">種類</string>
+    <string name="ui_db_section_behavior" translatable="true">挙動</string>
+    <string name="ui_prop_hydrophobe_features_3d" translatable="true">3D疎水性特徴</string>
+    <string name="ui_saved_search_count_many" translatable="true">保存済みの検索 %1$d 件</string>
+    <string name="ui_prop_acceptor_features_3d" translatable="true">3D受容体特徴</string>
+    <string name="ui_prop_bond_stereocenters" translatable="true">結合の立体中心</string>
+    <string name="ui_db_section_observation" translatable="true">観察結果</string>
+    <string name="ui_db_section_common_compounds" translatable="true">一般的な化合物</string>
+    <string name="ui_error_gemini_separate_api" translatable="true">Geminiは別のAPIを使用します</string>
+    <string name="ui_prop_count_undefined" translatable="true">未定義%1$d</string>
+    <string name="ui_filter_excludes_s" translatable="true">%1$s を除く</string>
+    <string name="ui_prop_isotope_atom_count" translatable="true">同位体原子数</string>
+    <string name="ui_prop_atom_stereocenters" translatable="true">原子の立体中心</string>
+    <string name="ui_prop_anion_features_3d" translatable="true">3Dアニオン特徴</string>
+    <string name="ui_prop_cation_features_3d" translatable="true">3Dカチオン特徴</string>
+    <string name="ui_prop_feature_count_3d" translatable="true">3D特徴数</string>
+    <string name="ui_db_section_naming_cue" translatable="true">命名の手がかり</string>
+    <string name="ui_filter_mw_ge_s" translatable="true">分子量 >= %1$s</string>
+    <string name="ui_error_invalid_library_backup" translatable="true">ライブラリのバックアップファイルが無効です。</string>
+    <string name="ui_db_section_example" translatable="true">例</string>
+    <string name="ui_db_section_equation" translatable="true">化学反応式</string>
+    <string name="ui_db_section_common_uses" translatable="true">一般的な用途</string>
+    <string name="ui_db_section_typical_conditions" translatable="true">代表的な条件</string>
+    <string name="ui_prop_covalent_units" translatable="true">共有結合単位</string>
+    <string name="ui_prop_hbond_acceptors" translatable="true">水素結合受容体</string>
+    <string name="ui_filter_includes_s" translatable="true">%1$s を含む</string>
+    <string name="ui_filter_no_filters" translatable="true">フィルターなし</string>
+    <string name="ui_prop_exact_mass" translatable="true">精密質量</string>
+    <string name="ui_saved_search_count_one" translatable="true">保存済みの検索 1 件</string>
+    <string name="ui_prop_monoisotopic_mass" translatable="true">モノアイソトピック質量</string>
+    <string name="ui_db_summary_ions" translatable="true">イオン</string>
+    <string name="ui_group_period_d" translatable="true">第%1$d族、第%2$d周期</string>
+    <string name="ui_prop_count_total" translatable="true">合計%1$d</string>
+    <string name="ui_filter_has_ghs" translatable="true">GHSあり</string>
+    <string name="ui_db_summary_reactions" translatable="true">反応</string>
+    <string name="ui_prop_hbond_donors" translatable="true">水素結合供与体</string>
+    <string name="ui_prop_donor_features_3d" translatable="true">3D供与体特徴</string>
+    <string name="ui_filter_mw_le_s" translatable="true">分子量 &lt;= %1$s</string>
+    <string name="ui_prop_count_defined" translatable="true">定義済み%1$d</string>
+    <string name="ui_prop_effective_rotors_3d" translatable="true">有効3Dローター数</string>
+    <string name="ui_db_summary_substances" translatable="true">物質</string>
+    <string name="ui_prop_heavy_atom_count" translatable="true">重原子数</string>
+    <string name="ui_prop_conformer_count_3d" translatable="true">3Dコンフォーマー数</string>
+    <string name="ui_db_summary_functional_groups" translatable="true">官能基</string>
+    <string name="ui_filter_has_3d" translatable="true">3Dあり</string>
+    <string name="ui_filter_charge_s" translatable="true">電荷 %1$s</string>
+    <string name="ui_prop_conformer_rmsd" translatable="true">コンフォーマーRMSD</string>
+    <string name="ui_error_not_chemsearch_backup" translatable="true">これはChemSearchライブラリのバックアップファイルではありません。</string>
+    <string name="ui_recent_group_older" translatable="true">それ以前</string>
+    <string name="ui_recent_group_previous_7_days" translatable="true">過去7日間</string>
+    <string name="ui_recent_group_today" translatable="true">今日</string>
+    <string name="ui_recent_group_pinned" translatable="true">固定済み</string>
+    <string name="ui_recent_group_previous_30_days" translatable="true">過去30日間</string>
+    <string name="ui_recent_group_yesterday" translatable="true">昨日</string>
+    <string name="ui_db_section_details" translatable="true">詳細</string>
 </resources>
 

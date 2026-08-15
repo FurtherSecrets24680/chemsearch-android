@@ -39,7 +39,6 @@ import com.furthersecrets.chemsearch.data.ChemicalDbCategory
 import com.furthersecrets.chemsearch.data.ChemicalDbEntry
 import com.furthersecrets.chemsearch.data.ChemicalDbRow
 import com.furthersecrets.chemsearch.data.LibrarySelectionItem
-import com.furthersecrets.chemsearch.data.chemicalDatabaseTotalEntriesLabel
 import com.furthersecrets.chemsearch.data.toComparableLibrarySelectionItem
 
 @Composable
@@ -227,7 +226,7 @@ private fun ChemicalDatabaseSearchSection(
             onClear = onClear
         )
         Text(
-            chemicalDatabaseTotalEntriesLabel(total),
+            stringResource(R.string.ui_db_total_entries, total),
             modifier = Modifier.padding(start = if (compact) 2.dp else 4.dp),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurface.copy(0.52f),
@@ -591,7 +590,7 @@ private fun DatabaseEntryDetail(
         }
 
         entry.sections.forEach { section ->
-            DetailSectionCard(section.title, section.rows, onCopy)
+            DetailSectionCard(sectionTitleText(section.title), section.rows, onCopy)
         }
 
         if (entry.sourceLabel.isNotBlank()) {
@@ -654,9 +653,10 @@ private fun DetailSectionCard(
             modifier = Modifier.padding(if (compact) 12.dp else 14.dp),
             verticalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)
         ) {
-            Text(title.uppercase(), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.45f), letterSpacing = 0.8.sp)
+            Text(sectionTitleText(title).uppercase(), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.45f), letterSpacing = 0.8.sp)
             rows.forEachIndexed { index, row ->
                 val label = row.label
+                val displayLabel = databaseRowLabelText(label)
                 val value = row.value
                 val displayValue = remember(label, value) {
                     chemicalDatabaseDisplayText(label, value)
@@ -665,12 +665,12 @@ private fun DetailSectionCard(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { onCopy(value, label) },
+                        .clickable { onCopy(value, displayLabel) },
                     verticalAlignment = Alignment.Top,
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.SemiBold)
+                        Text(displayLabel, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.SemiBold)
                         Text(
                             displayValue,
                             style = MaterialTheme.typography.bodySmall.copy(
@@ -869,4 +869,30 @@ private fun List<String>.sortedByTypePriority(): List<String> {
             priority.indexOf(type).takeIf { it >= 0 } ?: Int.MAX_VALUE
         }.thenBy { it.lowercase() }
     )
+}
+
+@Composable
+private fun sectionTitleText(title: String): String = when (title) {
+    "Details" -> stringResource(R.string.ui_db_section_details)
+    else -> title
+}
+
+@Composable
+private fun databaseRowLabelText(label: String): String = when (label) {
+    "Formula" -> stringResource(R.string.ui_formula)
+    "Charge" -> stringResource(R.string.ui_charge)
+    "Structure" -> stringResource(R.string.ui_structure)
+    "Type" -> stringResource(R.string.ui_db_section_type)
+    "Common uses" -> stringResource(R.string.ui_db_section_common_uses)
+    "Notes" -> stringResource(R.string.ui_db_section_notes)
+    "Other names" -> stringResource(R.string.ui_db_section_other_names)
+    "Equation" -> stringResource(R.string.ui_db_section_equation)
+    "Typical conditions" -> stringResource(R.string.ui_db_section_typical_conditions)
+    "Observation" -> stringResource(R.string.ui_db_section_observation)
+    "General formula" -> stringResource(R.string.ui_db_section_general_formula)
+    "Naming cue" -> stringResource(R.string.ui_db_section_naming_cue)
+    "Example" -> stringResource(R.string.ui_db_section_example)
+    "Behavior" -> stringResource(R.string.ui_db_section_behavior)
+    "Common compounds" -> stringResource(R.string.ui_db_section_common_compounds)
+    else -> label
 }

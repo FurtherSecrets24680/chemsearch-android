@@ -716,7 +716,7 @@ private fun ElementDetailDialog(
                     facts = listOf(
                         ElementFactItem(R.string.ui_element_type, element.groupBlock),
                         ElementFactItem(R.string.ui_atomic_mass, withUnit(element.atomicWeightLabel, "u")),
-                        ElementFactItem(R.string.ui_group_period, "Group ${element.group}, period ${element.period}"),
+                        ElementFactItem(R.string.ui_group_period, stringResource(R.string.ui_group_period_s, element.group, element.period)),
                         ElementFactItem(R.string.ui_standard_state, element.standardState),
                         ElementFactItem(R.string.ui_electron_configuration, toElectronConfigurationDisplay(element.electronConfiguration, stringResource(R.string.ui_not_listed))),
                         ElementFactItem(R.string.ui_oxidation_states_label, element.commonOxidationStates)

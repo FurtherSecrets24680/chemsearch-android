@@ -1561,5 +1561,70 @@
     <string name="ui_error_could_not_import_structure" translatable="true">Δεν ήταν δυνατή η εισαγωγή της δομής. Δοκιμάστε έγκυρο SMILES, InChI ή V2000 molfile.</string>
     <string name="ui_error_no_isomers" translatable="true">Δεν βρέθηκαν ισομερή.</string>
     <string name="ui_error_could_not_create_destination_file" translatable="true">Δεν ήταν δυνατή η δημιουργία του αρχείου προορισμού</string>
+    <string name="ui_prop_volume_3d" translatable="true">3D όγκος</string>
+    <string name="ui_db_section_general_formula" translatable="true">Γενικός τύπος</string>
+    <string name="ui_db_total_entries" translatable="true">Σύνολο καταχωρίσεων: %1$d</string>
+    <string name="ui_db_section_other_names" translatable="true">Άλλες ονομασίες</string>
+    <string name="ui_prop_tpsa" translatable="true">Τοπολογική πολική επιφάνεια</string>
+    <string name="ui_compound_fallback" translatable="true">Ένωση</string>
+    <string name="ui_db_section_notes" translatable="true">Σημειώσεις</string>
+    <string name="ui_prop_ring_features_3d" translatable="true">3D χαρακτηριστικά δακτυλίων</string>
+    <string name="ui_prop_complexity" translatable="true">Πολυπλοκότητα</string>
+    <string name="ui_prop_rotatable_bonds" translatable="true">Περιστρεφόμενοι δεσμοί</string>
+    <string name="ui_db_section_type" translatable="true">Τύπος</string>
+    <string name="ui_db_section_behavior" translatable="true">Συμπεριφορά</string>
+    <string name="ui_prop_hydrophobe_features_3d" translatable="true">3D χαρακτηριστικά υδρόφοβων</string>
+    <string name="ui_saved_search_count_many" translatable="true">%1$d αποθηκευμένες αναζητήσεις</string>
+    <string name="ui_prop_acceptor_features_3d" translatable="true">3D χαρακτηριστικά δέκτη</string>
+    <string name="ui_prop_bond_stereocenters" translatable="true">Στερεοκέντρα δεσμών</string>
+    <string name="ui_db_section_observation" translatable="true">Παρατήρηση</string>
+    <string name="ui_db_section_common_compounds" translatable="true">Συνήθεις ενώσεις</string>
+    <string name="ui_error_gemini_separate_api" translatable="true">Το Gemini χρησιμοποιεί ξεχωριστό API</string>
+    <string name="ui_prop_count_undefined" translatable="true">%1$d αόριστα</string>
+    <string name="ui_filter_excludes_s" translatable="true">Αποκλείει %1$s</string>
+    <string name="ui_prop_isotope_atom_count" translatable="true">Αριθμός ατόμων ισοτόπων</string>
+    <string name="ui_prop_atom_stereocenters" translatable="true">Στερεοκέντρα ατόμων</string>
+    <string name="ui_prop_anion_features_3d" translatable="true">3D χαρακτηριστικά ανιόντων</string>
+    <string name="ui_prop_cation_features_3d" translatable="true">3D χαρακτηριστικά κατιόντων</string>
+    <string name="ui_prop_feature_count_3d" translatable="true">Αριθμός 3D χαρακτηριστικών</string>
+    <string name="ui_db_section_naming_cue" translatable="true">Ένδειξη ονομασίας</string>
+    <string name="ui_filter_mw_ge_s" translatable="true">MW >= %1$s</string>
+    <string name="ui_error_invalid_library_backup" translatable="true">Μη έγκυρο αρχείο αντιγράφου ασφαλείας βιβλιοθήκης.</string>
+    <string name="ui_db_section_example" translatable="true">Παράδειγμα</string>
+    <string name="ui_db_section_equation" translatable="true">Εξίσωση</string>
+    <string name="ui_db_section_common_uses" translatable="true">Συνήθεις χρήσεις</string>
+    <string name="ui_db_section_typical_conditions" translatable="true">Τυπικές συνθήκες</string>
+    <string name="ui_prop_covalent_units" translatable="true">Μονάδες ομοιοπολικών δεσμών</string>
+    <string name="ui_prop_hbond_acceptors" translatable="true">Δέκτες δεσμών υδρογόνου</string>
+    <string name="ui_filter_includes_s" translatable="true">Περιλαμβάνει %1$s</string>
+    <string name="ui_filter_no_filters" translatable="true">Χωρίς φίλτρα</string>
+    <string name="ui_prop_exact_mass" translatable="true">Ακριβής μάζα</string>
+    <string name="ui_saved_search_count_one" translatable="true">1 αποθηκευμένη αναζήτηση</string>
+    <string name="ui_prop_monoisotopic_mass" translatable="true">Μονοισοτοπική μάζα</string>
+    <string name="ui_db_summary_ions" translatable="true">Ιόντα</string>
+    <string name="ui_group_period_d" translatable="true">Ομάδα %1$d, περίοδος %2$d</string>
+    <string name="ui_prop_count_total" translatable="true">%1$d σύνολο</string>
+    <string name="ui_filter_has_ghs" translatable="true">Έχει GHS</string>
+    <string name="ui_db_summary_reactions" translatable="true">Αντιδράσεις</string>
+    <string name="ui_prop_hbond_donors" translatable="true">Δότες δεσμών υδρογόνου</string>
+    <string name="ui_prop_donor_features_3d" translatable="true">3D χαρακτηριστικά δότη</string>
+    <string name="ui_filter_mw_le_s" translatable="true">MW &lt;= %1$s</string>
+    <string name="ui_prop_count_defined" translatable="true">%1$d ορισμένα</string>
+    <string name="ui_prop_effective_rotors_3d" translatable="true">Ενεργοί 3D περιστροφείς</string>
+    <string name="ui_db_summary_substances" translatable="true">Ουσίες</string>
+    <string name="ui_prop_heavy_atom_count" translatable="true">Αριθμός βαρέων ατόμων</string>
+    <string name="ui_prop_conformer_count_3d" translatable="true">Αριθμός 3D συμμορφωτών</string>
+    <string name="ui_db_summary_functional_groups" translatable="true">Λειτουργικές ομάδες</string>
+    <string name="ui_filter_has_3d" translatable="true">Έχει 3D</string>
+    <string name="ui_filter_charge_s" translatable="true">Φορτίο %1$s</string>
+    <string name="ui_prop_conformer_rmsd" translatable="true">RMSD συμμορφωτή</string>
+    <string name="ui_error_not_chemsearch_backup" translatable="true">Αυτό δεν είναι αντίγραφο ασφαλείας βιβλιοθήκης του ChemSearch.</string>
+    <string name="ui_recent_group_older" translatable="true">Παλαιότερα</string>
+    <string name="ui_recent_group_previous_7_days" translatable="true">Τελευταίες 7 ημέρες</string>
+    <string name="ui_recent_group_today" translatable="true">Σήμερα</string>
+    <string name="ui_recent_group_pinned" translatable="true">Καρφιτσωμένα</string>
+    <string name="ui_recent_group_previous_30_days" translatable="true">Τελευταίες 30 ημέρες</string>
+    <string name="ui_recent_group_yesterday" translatable="true">Χθες</string>
+    <string name="ui_db_section_details" translatable="true">Λεπτομέρειες</string>
 </resources>
 

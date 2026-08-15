@@ -85,11 +85,21 @@ private fun copyTextWithFeedback(
     context: Context,
     label: String,
     value: String,
-    message: String = "$label copied"
+    message: String = context.getString(R.string.ui_s_copied, label)
 ) {
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     clipboard.setPrimaryClip(ClipData.newPlainText(label, value))
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+}
+
+@Composable
+private fun recentSearchGroupLabel(label: String): String = when (label) {
+    "Pinned" -> stringResource(R.string.ui_recent_group_pinned)
+    "Today" -> stringResource(R.string.ui_recent_group_today)
+    "Yesterday" -> stringResource(R.string.ui_recent_group_yesterday)
+    "Previous 7 days" -> stringResource(R.string.ui_recent_group_previous_7_days)
+    "Previous 30 days" -> stringResource(R.string.ui_recent_group_previous_30_days)
+    else -> stringResource(R.string.ui_recent_group_older)
 }
 
 internal fun appHeaderLogoHueRotationDegrees(primary: Color): Float =
@@ -617,7 +627,7 @@ fun HistorySection(
                     var renderedRows = 0
                     displayGroups.forEach { group ->
                         Text(
-                            group.label,
+                            recentSearchGroupLabel(group.label),
                             modifier = Modifier.padding(
                                 start = if (compact) 10.dp else 12.dp,
                                 end = if (compact) 10.dp else 12.dp,
@@ -687,7 +697,7 @@ fun HistorySection(
                         }
                     }
                     Text(
-                        recentSearchCountLabel(recentSearches.size),
+                        if (recentSearches.size == 1) stringResource(R.string.ui_saved_search_count_one) else stringResource(R.string.ui_saved_search_count_many, recentSearches.size),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = if (compact) 3.dp else 5.dp, bottom = if (compact) 7.dp else 9.dp),

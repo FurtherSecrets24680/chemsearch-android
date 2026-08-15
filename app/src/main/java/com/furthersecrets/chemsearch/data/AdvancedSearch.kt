@@ -1,7 +1,5 @@
 package com.furthersecrets.chemsearch.data
 
-import java.util.Locale
-
 enum class AdvancedSearchType(val label: String) {
     NAME("Name"),
     FORMULA("Formula"),
@@ -85,23 +83,3 @@ fun advancedSearchTypeForQuery(query: String): AdvancedSearchType =
         looksLikeFormulaQuery(query) -> AdvancedSearchType.FORMULA
         else -> AdvancedSearchType.NAME
     }
-
-fun formatAdvancedFilterElements(elements: Set<String>): String =
-    elements.sortedBy { elementBySymbol(it)?.atomicNumber ?: Int.MAX_VALUE }
-        .joinToString(", ")
-
-fun filterSummary(filters: AdvancedSearchFilters): String {
-    val parts = buildList {
-        if (filters.includeElements.isNotEmpty()) add("Includes ${formatAdvancedFilterElements(filters.includeElements)}")
-        if (filters.excludeElements.isNotEmpty()) add("Excludes ${formatAdvancedFilterElements(filters.excludeElements)}")
-        filters.minMolecularWeight?.let { add("MW >= ${it.cleanNumber()}") }
-        filters.maxMolecularWeight?.let { add("MW <= ${it.cleanNumber()}") }
-        filters.charge?.let { add("Charge ${if (it > 0) "+$it" else it.toString()}") }
-        if (filters.requireThreeD) add("Has 3D")
-        if (filters.requireGhs) add("Has GHS")
-    }
-    return parts.joinToString(" | ").ifBlank { "No filters" }
-}
-
-private fun Double.cleanNumber(): String =
-    if (this % 1.0 == 0.0) toInt().toString() else String.format(Locale.US, "%.2f", this)
