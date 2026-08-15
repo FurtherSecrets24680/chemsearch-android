@@ -1241,7 +1241,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val cidResponse = ApiClient.pubChem.getCid(q)
                 val cid = cidResponse.identifierList?.cid?.firstOrNull()
-                    ?: throw NoSuchElementException("Chemical not found.")
+                    ?: throw NoSuchElementException(getApplication<Application>().getString(R.string.ui_error_chemical_not_found))
                 DebugLog.d("ChemSearch", "CID resolved: $cid for \"$q\"")
 
                 val cached = readCache(cid)
@@ -1360,9 +1360,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
             } catch (e: Exception) {
                 val msg = when (e) {
-                    is IOException -> "Network error. Check your connection."
-                    is NoSuchElementException -> e.message ?: "Not found"
-                    else -> "Chemical not found. Try a different name or spelling."
+                    is IOException -> getApplication<Application>().getString(R.string.ui_error_network)
+                    is NoSuchElementException -> e.message ?: getApplication<Application>().getString(R.string.ui_error_not_found)
+                    else -> getApplication<Application>().getString(R.string.ui_error_chemical_not_found_try_other)
                 }
                 val corrections = if (e is IOException) emptyList() else fetchSearchCorrectionSuggestions(q)
                 DebugLog.e("ChemSearch", "Search failed for \"$q\": ${e::class.simpleName} — ${e.message}")
@@ -1402,7 +1402,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         )
         if (normalized.query.isBlank()) {
             _advancedSearchState.update {
-                it.copy(filters = normalized, error = "Enter a name, formula, CID, or CAS number.")
+                it.copy(filters = normalized, error = getApplication<Application>().getString(R.string.ui_error_enter_query))
             }
             return
         }
@@ -1415,7 +1415,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 val cids = resolveAdvancedSearchCids(normalized)
                     .distinct()
                     .take(normalized.maxRecords)
-                if (cids.isEmpty()) throw NoSuchElementException("No candidates found.")
+                if (cids.isEmpty()) throw NoSuchElementException(getApplication<Application>().getString(R.string.ui_error_no_candidates))
 
                 val cidString = cids.joinToString(",")
                 val properties = ApiClient.pubChem.getAdvancedSearchProperties(cidString)
@@ -1439,15 +1439,15 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     )
                 }.filterNotNull()
 
-                if (decorated.isEmpty()) throw NoSuchElementException("No compounds matched those filters.")
+                if (decorated.isEmpty()) throw NoSuchElementException(getApplication<Application>().getString(R.string.ui_error_no_compounds_matched_filters))
                 _advancedSearchState.update {
                     it.copy(isLoading = false, results = decorated, error = null)
                 }
             } catch (e: Exception) {
                 val msg = when (e) {
-                    is IOException -> "Network error. Check your connection."
-                    is NoSuchElementException -> e.message ?: "No advanced search results."
-                    else -> "Advanced search failed. Try fewer filters."
+                    is IOException -> getApplication<Application>().getString(R.string.ui_error_network)
+                    is NoSuchElementException -> e.message ?: getApplication<Application>().getString(R.string.ui_error_no_advanced_results)
+                    else -> getApplication<Application>().getString(R.string.ui_error_advanced_search_failed)
                 }
                 DebugLog.e("ChemSearch", "Advanced search failed: ${e.message}")
                 _advancedSearchState.update { it.copy(isLoading = false, error = msg) }
@@ -1995,7 +1995,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         val key = getAiKey(provider) ?: run {
             _aiModelCatalogs.update { catalogs ->
                 val current = catalogs[provider] ?: AiModelCatalog(models = provider.defaultModels, selectedModel = provider.modelName)
-                catalogs + (provider to current.copy(error = "Add an API key first."))
+                catalogs + (provider to current.copy(error = getApplication<Application>().getString(R.string.ui_error_add_api_key)))
             }
             return
         }
@@ -2035,13 +2035,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                             models = models,
                             selectedModel = selected,
                             isLoading = false,
-                            error = if (fetched.isEmpty()) "No models returned. Keeping defaults." else null
+                            error = if (fetched.isEmpty()) getApplication<Application>().getString(R.string.ui_error_no_models_returned) else null
                         ))
                     },
                     onFailure = { e ->
                         catalogs + (provider to current.copy(
                             isLoading = false,
-                            error = e.message ?: "Could not refresh models."
+                            error = e.message ?: getApplication<Application>().getString(R.string.ui_error_could_not_refresh_models)
                         ))
                     }
                 )
@@ -2282,7 +2282,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             }
             try {
                 val cids = fetchFormulaCids(formula, maxRecords).take(maxRecords)
-                if (cids.isEmpty()) throw NoSuchElementException("No isomers found for $formula.")
+                if (cids.isEmpty()) throw NoSuchElementException(getApplication<Application>().getString(R.string.ui_error_no_isomers_for_formula, formula))
 
                 DebugLog.d("ChemSearch", "Isomers: ${cids.size} CIDs for $formula")
 
@@ -2315,9 +2315,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
             } catch (e: Exception) {
                 val msg = when (e) {
-                    is java.io.IOException -> "Network error. Check your connection."
-                    is NoSuchElementException -> e.message ?: "No isomers found."
-                    else -> "No isomers found for \"$formula\". Check the formula and try again."
+                    is java.io.IOException -> getApplication<Application>().getString(R.string.ui_error_network)
+                    is NoSuchElementException -> e.message ?: getApplication<Application>().getString(R.string.ui_error_no_isomers)
+                    else -> getApplication<Application>().getString(R.string.ui_error_no_isomers_for_formula, formula)
                 }
                 DebugLog.e("ChemSearch", "Isomer search failed: ${e.message}")
                 _uiState.update {
@@ -2370,7 +2370,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun standardizeStructure(sketch: StructureSketch) {
         if (sketch.atoms.isEmpty()) {
             _structureSearchState.update {
-                it.copy(error = "Draw or import a structure before cleaning it.")
+                it.copy(error = getApplication<Application>().getString(R.string.ui_error_draw_structure_first))
             }
             return
         }
@@ -2381,12 +2381,12 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val sdf = ApiClient.pubChem.standardizeSdf(sketch.toMolfile()).string()
                 val standardized = StructureSketch.fromMolfile(sdf)
-                if (standardized.atoms.isEmpty()) throw IllegalArgumentException("PubChem could not clean this drawing.")
+                if (standardized.atoms.isEmpty()) throw IllegalArgumentException(getApplication<Application>().getString(R.string.ui_error_pubchem_could_not_clean))
                 _structureSearchState.update {
                     it.copy(
                         isStandardizing = false,
                         standardizedSketch = standardized,
-                        standardizeMessage = "Structure cleaned with PubChem standardization."
+                        standardizeMessage = getApplication<Application>().getString(R.string.ui_message_structure_cleaned)
                     )
                 }
             } catch (e: Exception) {
@@ -2395,8 +2395,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     it.copy(
                         isStandardizing = false,
                         error = when (e) {
-                            is IOException -> "Network error. Check your connection."
-                            else -> e.message ?: "Could not clean this structure."
+                            is IOException -> getApplication<Application>().getString(R.string.ui_error_network)
+                            else -> e.message ?: getApplication<Application>().getString(R.string.ui_error_could_not_clean)
                         }
                     )
                 }
@@ -2407,7 +2407,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun importStructureText(text: String) {
         val input = text.trim()
         if (input.isBlank()) {
-            _structureSearchState.update { it.copy(error = "Paste a SMILES, InChI, or molfile first.") }
+            _structureSearchState.update { it.copy(error = getApplication<Application>().getString(R.string.ui_error_paste_structure_first)) }
             return
         }
         viewModelScope.launch {
@@ -2425,12 +2425,12 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     }
                     StructureSketch.fromMolfile(sdf)
                 }
-                if (imported.atoms.isEmpty()) throw IllegalArgumentException("Could not read that structure.")
+                if (imported.atoms.isEmpty()) throw IllegalArgumentException(getApplication<Application>().getString(R.string.ui_error_could_not_read_structure))
                 _structureSearchState.update {
                     it.copy(
                         isStandardizing = false,
                         standardizedSketch = imported,
-                        standardizeMessage = "Imported ${imported.formula.ifBlank { "structure" }}."
+                        standardizeMessage = getApplication<Application>().getString(R.string.ui_message_imported_s, imported.formula.ifBlank { getApplication<Application>().getString(R.string.ui_structure) })
                     )
                 }
             } catch (e: Exception) {
@@ -2439,8 +2439,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     it.copy(
                         isStandardizing = false,
                         error = when (e) {
-                            is IOException -> "Network error. Check your connection."
-                            else -> "Could not import that structure. Try a valid SMILES, InChI, or V2000 molfile."
+                            is IOException -> getApplication<Application>().getString(R.string.ui_error_network)
+                            else -> getApplication<Application>().getString(R.string.ui_error_could_not_import_structure)
                         }
                     )
                 }
@@ -2488,7 +2488,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     threshold = if (mode == StructureSearchMode.SIMILAR) threshold else null
                 )
                 val cids = response.identifierList?.cid?.take(maxRecords).orEmpty()
-                if (cids.isEmpty()) throw NoSuchElementException("No structure matches found.")
+                if (cids.isEmpty()) throw NoSuchElementException(getApplication<Application>().getString(R.string.ui_error_no_structure_matches))
 
                 val propertyMap = loadStructurePropertiesForCids(cids)
                 val results = cids.map { cid ->
@@ -2510,9 +2510,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 }
             } catch (e: Exception) {
                 val msg = when (e) {
-                    is IOException -> "Network error. Check your connection."
-                    is NoSuchElementException -> e.message ?: "No structure matches found."
-                    else -> "Structure search failed. Try a simpler drawing."
+                    is IOException -> getApplication<Application>().getString(R.string.ui_error_network)
+                    is NoSuchElementException -> e.message ?: getApplication<Application>().getString(R.string.ui_error_no_structure_matches)
+                    else -> getApplication<Application>().getString(R.string.ui_error_structure_search_failed)
                 }
                 DebugLog.e("ChemSearch", "Structure search failed: ${e.message}")
                 _structureSearchState.update { it.copy(isLoading = false, error = msg) }
@@ -2675,8 +2675,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
             } catch (e: Exception) {
                 val msg = when (e) {
-                    is java.io.IOException -> "Network error. Check your connection."
-                    else -> "Could not load compound (CID $cid)."
+                    is java.io.IOException -> getApplication<Application>().getString(R.string.ui_error_network)
+                    else -> getApplication<Application>().getString(R.string.ui_error_could_not_load_compound, cid)
                 }
                 DebugLog.e("ChemSearch", "searchByCid failed for $cid: ${e.message}")
                 _uiState.update { it.copy(isLoading = false, error = msg) }

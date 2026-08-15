@@ -380,8 +380,8 @@
     <string name="ui_theme_mode" translatable="true">Teematila</string>
     <string name="ui_color_scheme" translatable="true">Väriskeema</string>
     <string name="ui_language">Kieli</string>
-    <string name="ui_language_subtitle">Choose the language used by ChemSearch</string>
-    <string name="ui_language_system_default">System default</string>
+    <string name="ui_language_subtitle">Valitse ChemSearchin käyttämä kieli</string>
+    <string name="ui_language_system_default">Järjestelmän oletus</string>
     <string name="ui_language_english">English</string>
     <string name="ui_language_danish">Dansk</string>
     <string name="ui_language_german">Deutsch</string>
@@ -397,7 +397,7 @@
     <string name="ui_language_portuguese">Português</string>
     <string name="ui_language_russian">Русский</string>
     <string name="ui_language_swedish">Svenska</string>
-    <string name="ui_language_restart">The app will restart to apply the language.</string>
+    <string name="ui_language_restart">Sovellus käynnistyy uudelleen, jotta kieli otetaan käyttöön.</string>
     <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">Näytetään automaattisesti, kun haet yhdistettä</string>
     <string name="ui_chemsearch_app_icon" translatable="true">ChemSearch-sovelluskuvake</string>
     <string name="ui_move_up" translatable="true">Siirrä ylös</string>
@@ -1528,5 +1528,38 @@
     <string name="ui_stoich_info_percent_yield_body" translatable="true">Vertaa todellista tuottoa valitun tuotteen teoreettiseen tuottoon.</string>
     <string name="ui_stoich_info_scaling_term" translatable="true">Skaalaus</string>
     <string name="ui_stoich_info_scaling_body" translatable="true">Anna haluamasi tuotemäärä, jotta näet vaaditut reagenssin määrät.</string>
+    <string name="ui_error_structure_search_failed" translatable="true">Rakennehaku epäonnistui. Kokeile yksinkertaisempaa piirrosta.</string>
+    <string name="ui_error_pubchem_could_not_clean" translatable="true">PubChem ei voinut puhdistaa tätä piirrosta.</string>
+    <string name="ui_error_advanced_search_failed" translatable="true">Kehittynyt haku epäonnistui. Kokeile vähemmillä suodattimilla.</string>
+    <string name="ui_error_chemical_not_found" translatable="true">Kemiallista yhdistettä ei löytynyt.</string>
+    <string name="ui_error_no_advanced_results" translatable="true">Ei kehittyneen haun tuloksia.</string>
+    <string name="ui_error_could_not_refresh_models" translatable="true">Malleja ei voitu päivittää.</string>
+    <string name="ui_error_unable_to_open_output_stream" translatable="true">Lähtövirtaa ei voitu avata</string>
+    <string name="ui_error_could_not_read_structure" translatable="true">Rakennetta ei voitu lukea.</string>
+    <string name="ui_error_enter_query" translatable="true">Anna nimi, kaava, CID tai CAS-numero.</string>
+    <string name="ui_empirical_formula_explanation" translatable="true">Jaa kaikki mooliarvot pienimmällä arvolla ja kerro tarvittaessa, jotta alaindeksit ovat kokonaislukuja.</string>
+    <string name="ui_error_no_isomers_for_formula" translatable="true">Isomeerejä ei löytynyt kaavalle "%1$s". Tarkista kaava ja yritä uudelleen.</string>
+    <string name="ui_message_structure_cleaned" translatable="true">Rakenne puhdistettiin PubChem-standardisoinnilla.</string>
+    <string name="ui_error_no_compounds_matched_filters" translatable="true">Mikään yhdiste ei vastannut näitä suodattimia.</string>
+    <string name="ui_error_unable_to_open_export_file" translatable="true">Tiedostoa ei voitu avata vientiä varten</string>
+    <string name="ui_error_network" translatable="true">Verkkovirhe. Tarkista yhteytesi.</string>
+    <string name="ui_error_image_download_failed" translatable="true">Kuvan lataaminen epäonnistui (%1$d)</string>
+    <string name="ui_error_no_candidates" translatable="true">Ehdokkaita ei löytynyt.</string>
+    <string name="ui_error_draw_structure_first" translatable="true">Piirrä tai tuo rakenne ennen sen puhdistamista.</string>
+    <string name="ui_error_paste_structure_first" translatable="true">Liitä ensin SMILES-, InChI- tai molfile-merkkijono.</string>
+    <string name="ui_error_no_models_returned" translatable="true">Malleja ei palautettu. Oletusmallit säilytetään.</string>
+    <string name="ui_error_chemical_not_found_try_other" translatable="true">Kemiallista yhdistettä ei löytynyt. Kokeile toista nimeä tai kirjoitusasua.</string>
+    <string name="ui_error_not_found" translatable="true">Ei löytynyt</string>
+    <string name="ui_error_could_not_load_compound" translatable="true">Yhdistettä ei voitu ladata (CID %1$d).</string>
+    <string name="ui_error_could_not_clean" translatable="true">Rakennetta ei voitu puhdistaa.</string>
+    <string name="ui_error_no_structure_matches" translatable="true">Rakenneosumia ei löytynyt.</string>
+    <string name="ui_error_add_api_key" translatable="true">Lisää ensin API-avain.</string>
+    <string name="ui_error_unable_to_open_import_file" translatable="true">Tiedostoa ei voitu avata tuontia varten</string>
+    <string name="ui_error_invalid_settings_backup" translatable="true">Virheellinen asetusten varmuuskopiotiedosto.</string>
+    <string name="ui_precipitate_explanation" translatable="true">Työkalu vaihtaa ionit, tasapainottaa yhtälön ja soveltaa sitten tavallisia liukoisuussääntöjä jokaiseen tuotteeseen.</string>
+    <string name="ui_message_imported_s" translatable="true">Tuotu: %1$s.</string>
+    <string name="ui_error_could_not_import_structure" translatable="true">Rakennetta ei voitu tuoda. Kokeile kelvollista SMILES-, InChI- tai V2000-molfile-merkkijonoa.</string>
+    <string name="ui_error_no_isomers" translatable="true">Isomeerejä ei löytynyt.</string>
+    <string name="ui_error_could_not_create_destination_file" translatable="true">Kohdetiedostoa ei voitu luoda</string>
 </resources>
 

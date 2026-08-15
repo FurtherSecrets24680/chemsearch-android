@@ -380,8 +380,8 @@
     <string name="ui_theme_mode" translatable="true">Temaläge</string>
     <string name="ui_color_scheme" translatable="true">Färgschema</string>
     <string name="ui_language">Språk</string>
-    <string name="ui_language_subtitle">Choose the language used by ChemSearch</string>
-    <string name="ui_language_system_default">System default</string>
+    <string name="ui_language_subtitle">Välj språket som ChemSearch använder</string>
+    <string name="ui_language_system_default">Systemets standard</string>
     <string name="ui_language_english">English</string>
     <string name="ui_language_danish">Dansk</string>
     <string name="ui_language_german">Deutsch</string>
@@ -397,7 +397,7 @@
     <string name="ui_language_portuguese">Português</string>
     <string name="ui_language_russian">Русский</string>
     <string name="ui_language_swedish">Svenska</string>
-    <string name="ui_language_restart">The app will restart to apply the language.</string>
+    <string name="ui_language_restart">Appen startas om för att tillämpa språket.</string>
     <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">Visas automatiskt när du söker efter en förening</string>
     <string name="ui_chemsearch_app_icon" translatable="true">ChemSearch-appikon</string>
     <string name="ui_move_up" translatable="true">Flytta upp</string>
@@ -1528,5 +1528,38 @@
     <string name="ui_stoich_info_percent_yield_body" translatable="true">Jämför faktisk avkastning med teoretisk avkastning för den valda produkten.</string>
     <string name="ui_stoich_info_scaling_term" translatable="true">Skalning</string>
     <string name="ui_stoich_info_scaling_body" translatable="true">Ange ett önskat produktbelopp för att se de erforderliga reaktantbeloppen.</string>
+    <string name="ui_error_structure_search_failed" translatable="true">Struktursökning misslyckades. Prova en enklare ritning.</string>
+    <string name="ui_error_pubchem_could_not_clean" translatable="true">PubChem kunde inte rensa denna ritning.</string>
+    <string name="ui_error_advanced_search_failed" translatable="true">Avancerad sökning misslyckades. Prova med färre filter.</string>
+    <string name="ui_error_chemical_not_found" translatable="true">Kemisk förening hittades inte.</string>
+    <string name="ui_error_no_advanced_results" translatable="true">Inga avancerade sökresultat.</string>
+    <string name="ui_error_could_not_refresh_models" translatable="true">Det gick inte att uppdatera modellerna.</string>
+    <string name="ui_error_unable_to_open_output_stream" translatable="true">Det gick inte att öppna utdataströmmen</string>
+    <string name="ui_error_could_not_read_structure" translatable="true">Det gick inte att läsa denna struktur.</string>
+    <string name="ui_error_enter_query" translatable="true">Ange ett namn, en formel, ett CID- eller CAS-nummer.</string>
+    <string name="ui_empirical_formula_explanation" translatable="true">Dela alla molvärden med det minsta värdet och multiplicera vid behov för att få heltalsindex.</string>
+    <string name="ui_error_no_isomers_for_formula" translatable="true">Inga isomerer hittades för "%1$s". Kontrollera formeln och försök igen.</string>
+    <string name="ui_message_structure_cleaned" translatable="true">Strukturen har rensats med PubChem-standardisering.</string>
+    <string name="ui_error_no_compounds_matched_filters" translatable="true">Inga föreningar matchade dessa filter.</string>
+    <string name="ui_error_unable_to_open_export_file" translatable="true">Det gick inte att öppna filen för export</string>
+    <string name="ui_error_network" translatable="true">Nätverksfel. Kontrollera din anslutning.</string>
+    <string name="ui_error_image_download_failed" translatable="true">Bildnedladdning misslyckades (%1$d)</string>
+    <string name="ui_error_no_candidates" translatable="true">Inga kandidater hittades.</string>
+    <string name="ui_error_draw_structure_first" translatable="true">Rita eller importera en struktur innan du rensar den.</string>
+    <string name="ui_error_paste_structure_first" translatable="true">Klistra in en SMILES, InChI eller molfile först.</string>
+    <string name="ui_error_no_models_returned" translatable="true">Inga modeller returnerades. Standardmodeller behålls.</string>
+    <string name="ui_error_chemical_not_found_try_other" translatable="true">Kemisk förening hittades inte. Prova ett annat namn eller en annan stavning.</string>
+    <string name="ui_error_not_found" translatable="true">Hittades inte</string>
+    <string name="ui_error_could_not_load_compound" translatable="true">Det gick inte att läsa in föreningen (CID %1$d).</string>
+    <string name="ui_error_could_not_clean" translatable="true">Det gick inte att rensa denna struktur.</string>
+    <string name="ui_error_no_structure_matches" translatable="true">Inga strukturer matchade.</string>
+    <string name="ui_error_add_api_key" translatable="true">Lägg till en API-nyckel först.</string>
+    <string name="ui_error_unable_to_open_import_file" translatable="true">Det gick inte att öppna filen för import</string>
+    <string name="ui_error_invalid_settings_backup" translatable="true">Ogiltig säkerhetskopia av inställningar.</string>
+    <string name="ui_precipitate_explanation" translatable="true">Verktyget byter joner, balanserar ekvationen och tillämpar sedan vanliga löslighetsregler på varje produkt.</string>
+    <string name="ui_message_imported_s" translatable="true">Importerat: %1$s.</string>
+    <string name="ui_error_could_not_import_structure" translatable="true">Det gick inte att importera denna struktur. Prova en giltig SMILES, InChI eller V2000-molfile.</string>
+    <string name="ui_error_no_isomers" translatable="true">Inga isomerer hittades.</string>
+    <string name="ui_error_could_not_create_destination_file" translatable="true">Det gick inte att skapa målfilen</string>
 </resources>
 

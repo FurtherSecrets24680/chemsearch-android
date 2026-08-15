@@ -380,8 +380,8 @@
     <string name="ui_theme_mode" translatable="true">Designmodus</string>
     <string name="ui_color_scheme" translatable="true">Farbschema</string>
     <string name="ui_language">Sprache</string>
-    <string name="ui_language_subtitle">Choose the language used by ChemSearch</string>
-    <string name="ui_language_system_default">System default</string>
+    <string name="ui_language_subtitle">Wählen Sie die Sprache, die ChemSearch verwendet</string>
+    <string name="ui_language_system_default">Systemstandard</string>
     <string name="ui_language_english">English</string>
     <string name="ui_language_danish">Dansk</string>
     <string name="ui_language_german">Deutsch</string>
@@ -397,7 +397,7 @@
     <string name="ui_language_portuguese">Português</string>
     <string name="ui_language_russian">Русский</string>
     <string name="ui_language_swedish">Svenska</string>
-    <string name="ui_language_restart">The app will restart to apply the language.</string>
+    <string name="ui_language_restart">Die App wird neu gestartet, um die Sprache zu übernehmen.</string>
     <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">Wird automatisch angezeigt, wenn Sie eine Verbindung suchen</string>
     <string name="ui_chemsearch_app_icon" translatable="true">ChemSearch App-Symbol</string>
     <string name="ui_move_up" translatable="true">Nach oben</string>
@@ -1528,5 +1528,38 @@
     <string name="ui_stoich_info_percent_yield_body" translatable="true">Vergleichen Sie den tatsächlichen Ertrag mit dem theoretischen Ertrag für das ausgewählte Produkt.</string>
     <string name="ui_stoich_info_scaling_term" translatable="true">Skalierung</string>
     <string name="ui_stoich_info_scaling_body" translatable="true">Geben Sie eine gewünschte Produktmenge ein, um die benötigten Reaktionsmengen zu sehen.</string>
+    <string name="ui_error_structure_search_failed" translatable="true">Struktursuche fehlgeschlagen. Versuchen Sie eine einfachere Zeichnung.</string>
+    <string name="ui_error_pubchem_could_not_clean" translatable="true">PubChem konnte diese Zeichnung nicht bereinigen.</string>
+    <string name="ui_error_advanced_search_failed" translatable="true">Erweiterte Suche fehlgeschlagen. Versuchen Sie es mit weniger Filtern.</string>
+    <string name="ui_error_chemical_not_found" translatable="true">Chemische Substanz nicht gefunden.</string>
+    <string name="ui_error_no_advanced_results" translatable="true">Keine erweiterten Suchergebnisse.</string>
+    <string name="ui_error_could_not_refresh_models" translatable="true">Modelle konnten nicht aktualisiert werden.</string>
+    <string name="ui_error_unable_to_open_output_stream" translatable="true">Ausgabestream konnte nicht geöffnet werden</string>
+    <string name="ui_error_could_not_read_structure" translatable="true">Struktur konnte nicht gelesen werden.</string>
+    <string name="ui_error_enter_query" translatable="true">Geben Sie einen Namen, eine Formel, eine CID oder eine CAS-Nummer ein.</string>
+    <string name="ui_empirical_formula_explanation" translatable="true">Teilen Sie alle Molwerte durch den kleinsten Wert und multiplizieren Sie bei Bedarf, um ganzzahlige Indizes zu erhalten.</string>
+    <string name="ui_error_no_isomers_for_formula" translatable="true">Keine Isomere für "%1$s" gefunden. Überprüfen Sie die Formel und versuchen Sie es erneut.</string>
+    <string name="ui_message_structure_cleaned" translatable="true">Struktur mit PubChem-Standardisierung bereinigt.</string>
+    <string name="ui_error_no_compounds_matched_filters" translatable="true">Keine Verbindungen entsprachen diesen Filtern.</string>
+    <string name="ui_error_unable_to_open_export_file" translatable="true">Datei konnte nicht für den Export geöffnet werden</string>
+    <string name="ui_error_network" translatable="true">Netzwerkfehler. Überprüfen Sie Ihre Verbindung.</string>
+    <string name="ui_error_image_download_failed" translatable="true">Bilddownload fehlgeschlagen (%1$d)</string>
+    <string name="ui_error_no_candidates" translatable="true">Keine Kandidaten gefunden.</string>
+    <string name="ui_error_draw_structure_first" translatable="true">Zeichnen oder importieren Sie zuerst eine Struktur, bevor Sie sie bereinigen.</string>
+    <string name="ui_error_paste_structure_first" translatable="true">Fügen Sie zuerst eine SMILES, InChI oder Molfile ein.</string>
+    <string name="ui_error_no_models_returned" translatable="true">Keine Modelle zurückgegeben. Standardwerte werden beibehalten.</string>
+    <string name="ui_error_chemical_not_found_try_other" translatable="true">Chemische Substanz nicht gefunden. Versuchen Sie einen anderen Namen oder eine andere Schreibweise.</string>
+    <string name="ui_error_not_found" translatable="true">Nicht gefunden</string>
+    <string name="ui_error_could_not_load_compound" translatable="true">Verbindung konnte nicht geladen werden (CID %1$d).</string>
+    <string name="ui_error_could_not_clean" translatable="true">Struktur konnte nicht bereinigt werden.</string>
+    <string name="ui_error_no_structure_matches" translatable="true">Keine passenden Strukturen gefunden.</string>
+    <string name="ui_error_add_api_key" translatable="true">Fügen Sie zuerst einen API-Schlüssel hinzu.</string>
+    <string name="ui_error_unable_to_open_import_file" translatable="true">Datei konnte nicht für den Import geöffnet werden</string>
+    <string name="ui_error_invalid_settings_backup" translatable="true">Ungültige Sicherungsdatei für Einstellungen.</string>
+    <string name="ui_precipitate_explanation" translatable="true">Das Werkzeug tauscht Ionen aus, gleicht die Gleichung aus und wendet dann die üblichen Löslichkeitsregeln auf jedes Produkt an.</string>
+    <string name="ui_message_imported_s" translatable="true">Importiert: %1$s.</string>
+    <string name="ui_error_could_not_import_structure" translatable="true">Struktur konnte nicht importiert werden. Versuchen Sie eine gültige SMILES, InChI oder V2000-Molfile.</string>
+    <string name="ui_error_no_isomers" translatable="true">Keine Isomere gefunden.</string>
+    <string name="ui_error_could_not_create_destination_file" translatable="true">Zieldatei konnte nicht erstellt werden</string>
 </resources>
 

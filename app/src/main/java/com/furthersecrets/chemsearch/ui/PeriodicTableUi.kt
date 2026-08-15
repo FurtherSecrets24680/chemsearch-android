@@ -718,7 +718,7 @@ private fun ElementDetailDialog(
                         ElementFactItem(R.string.ui_atomic_mass, withUnit(element.atomicWeightLabel, "u")),
                         ElementFactItem(R.string.ui_group_period, "Group ${element.group}, period ${element.period}"),
                         ElementFactItem(R.string.ui_standard_state, element.standardState),
-                        ElementFactItem(R.string.ui_electron_configuration, toElectronConfigurationDisplay(element.electronConfiguration)),
+                        ElementFactItem(R.string.ui_electron_configuration, toElectronConfigurationDisplay(element.electronConfiguration, stringResource(R.string.ui_not_listed))),
                         ElementFactItem(R.string.ui_oxidation_states_label, element.commonOxidationStates)
                     )
                 )
@@ -1031,7 +1031,7 @@ private fun ElectronShellCard(element: PeriodicElement, color: Color) {
         }
         ElementFactList(
             facts = listOf(
-                ElementFactItem(R.string.ui_electronic_configuration, electronConfigurationText(element, showFull = showFullConfiguration))
+                ElementFactItem(R.string.ui_electronic_configuration, electronConfigurationText(element, showFull = showFullConfiguration, notListedLabel = stringResource(R.string.ui_not_listed)))
             )
         )
         Text(
@@ -1130,18 +1130,18 @@ private fun ElementAllFactsCard(element: PeriodicElement, color: Color) {
         )
 
         DetailSubhead(stringResource(R.string.ui_electrons))
-        val electronConfiguration = toElectronConfigurationDisplay(element.electronConfiguration)
+        val electronConfiguration = toElectronConfigurationDisplay(element.electronConfiguration, stringResource(R.string.ui_not_listed))
         ElementFactList(
             facts = buildList {
                 add(ElementFactItem(R.string.ui_electron_configuration, electronConfiguration))
                 add(ElementFactItem(R.string.ui_shell_distribution, electronShellCounts(element).joinToString(" · ")))
                 add(ElementFactItem(R.string.ui_oxidation_states_label, element.commonOxidationStates))
                 extra?.let {
-                    val expandedConfiguration = toElectronConfigurationDisplay(it.electronConfigurationSemantic.removePrefix("*"))
+                    val expandedConfiguration = toElectronConfigurationDisplay(it.electronConfigurationSemantic.removePrefix("*"), stringResource(R.string.ui_not_listed))
                     if (!expandedConfiguration.isMissingValue() && expandedConfiguration != electronConfiguration) {
                         add(ElementFactItem(R.string.ui_expanded_configuration, expandedConfiguration))
                     }
-                    add(ElementFactItem(R.string.ui_ionization_energies, formatJsonArrayList(it.ionizationEnergiesKjMol, "kJ/mol")))
+                    add(ElementFactItem(R.string.ui_ionization_energies, formatJsonArrayList(it.ionizationEnergiesKjMol, "kJ/mol", stringResource(R.string.ui_not_listed))))
                 }
             }
         )
@@ -1509,16 +1509,16 @@ internal fun electronShellOrbitRadii(
     return List(shellCount) { index -> firstRadius + spacing * index }
 }
 
-internal fun electronConfigurationText(element: PeriodicElement, showFull: Boolean): String {
+internal fun electronConfigurationText(element: PeriodicElement, showFull: Boolean, notListedLabel: String): String {
     val configuration = if (showFull) {
-        fullElectronConfiguration(element)
+        fullElectronConfiguration(element, notListedLabel)
     } else {
         element.electronConfiguration
     }
-    return toElectronConfigurationDisplay(configuration)
+    return toElectronConfigurationDisplay(configuration, notListedLabel)
 }
 
-private fun fullElectronConfiguration(element: PeriodicElement): String {
+private fun fullElectronConfiguration(element: PeriodicElement, notListedLabel: String): String {
     val extraConfiguration = element.extraProperties?.electronConfiguration.orEmpty().trim()
     if (!extraConfiguration.isMissingValue() && !extraConfiguration.contains("[")) {
         return extraConfiguration
@@ -1526,9 +1526,9 @@ private fun fullElectronConfiguration(element: PeriodicElement): String {
     return expandElectronConfiguration(element.electronConfiguration)
 }
 
-private fun formatJsonArrayList(value: String, unit: String): String {
+private fun formatJsonArrayList(value: String, unit: String, missingLabel: String): String {
     val values = Regex("""-?\d+(?:\.\d+)?""").findAll(value).map { it.value }.toList()
-    if (values.isEmpty()) return "Not listed"
+    if (values.isEmpty()) return missingLabel
     return values.joinToString(", ") { "$it $unit" }
 }
 
@@ -1576,8 +1576,8 @@ private val nobleGasConfigurations = mapOf(
     "Og" to "1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d10 7p6"
 )
 
-private fun toElectronConfigurationDisplay(configuration: String): String {
-    if (configuration == "Not listed") return configuration
+private fun toElectronConfigurationDisplay(configuration: String, notListedLabel: String): String {
+    if (configuration == "Not listed") return notListedLabel
     return Regex("""([spdfgh])(\d+)""").replace(configuration) { match ->
         match.groupValues[1] + match.groupValues[2].map { electronSuperscriptMap[it] ?: it }.joinToString("")
     }

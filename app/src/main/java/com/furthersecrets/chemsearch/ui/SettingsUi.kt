@@ -2481,7 +2481,7 @@ fun LibraryInline(
             val json = onBuildLibraryBackupJson()
             context.contentResolver.openOutputStream(uri)?.bufferedWriter()?.use { writer ->
                 writer.write(json)
-            } ?: error("Unable to open file for export")
+            } ?: error(context.getString(R.string.ui_error_unable_to_open_export_file))
         }.onSuccess {
             Toast.makeText(context, context.getString(R.string.ui_library_exported), Toast.LENGTH_SHORT).show()
         }.onFailure { e ->
@@ -2495,7 +2495,7 @@ fun LibraryInline(
         runCatching {
             context.contentResolver.openInputStream(uri)?.bufferedReader()?.use { reader ->
                 reader.readText()
-            } ?: error("Unable to open file for import")
+            } ?: error(context.getString(R.string.ui_error_unable_to_open_import_file))
         }.onSuccess {
             pendingLibraryImportJson = it
         }.onFailure { e ->
@@ -3484,7 +3484,7 @@ fun SettingsInline(
             val json = buildSettingsBackupJson(prefs)
             context.contentResolver.openOutputStream(uri)?.bufferedWriter()?.use { writer ->
                 writer.write(json)
-            } ?: error("Unable to open file for export")
+            } ?: error(context.getString(R.string.ui_error_unable_to_open_export_file))
         }.onSuccess {
             Toast.makeText(context, context.getString(R.string.ui_settings_exported_with_keys), Toast.LENGTH_LONG).show()
         }.onFailure { e ->
@@ -3498,8 +3498,8 @@ fun SettingsInline(
         runCatching {
             val raw = context.contentResolver.openInputStream(uri)?.bufferedReader()?.use { reader ->
                 reader.readText()
-            } ?: error("Unable to open file for import")
-            restoreSettingsFromBackup(prefs, raw)
+            } ?: error(context.getString(R.string.ui_error_unable_to_open_import_file))
+            restoreSettingsFromBackup(context, prefs, raw)
         }.onSuccess { restoredCount ->
             onSettingsImported()
             Toast.makeText(context, context.getString(R.string.ui_imported_d_settings, restoredCount), Toast.LENGTH_SHORT).show()

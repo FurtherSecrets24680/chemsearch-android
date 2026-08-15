@@ -380,8 +380,8 @@
     <string name="ui_theme_mode" translatable="true">Λειτουργία θέματος</string>
     <string name="ui_color_scheme" translatable="true">Συνδυασμός χρωμάτων</string>
     <string name="ui_language">Γλώσσα</string>
-    <string name="ui_language_subtitle">Choose the language used by ChemSearch</string>
-    <string name="ui_language_system_default">System default</string>
+    <string name="ui_language_subtitle">Επιλέξτε τη γλώσσα που χρησιμοποιεί το ChemSearch</string>
+    <string name="ui_language_system_default">Προεπιλογή συστήματος</string>
     <string name="ui_language_english">English</string>
     <string name="ui_language_danish">Dansk</string>
     <string name="ui_language_german">Deutsch</string>
@@ -397,7 +397,7 @@
     <string name="ui_language_portuguese">Português</string>
     <string name="ui_language_russian">Русский</string>
     <string name="ui_language_swedish">Svenska</string>
-    <string name="ui_language_restart">The app will restart to apply the language.</string>
+    <string name="ui_language_restart">Η εφαρμογή θα επανεκκινηθεί για να εφαρμοστεί η γλώσσα.</string>
     <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">Εμφανίζεται αυτόματα όταν αναζητάτε μια ένωση</string>
     <string name="ui_chemsearch_app_icon" translatable="true">Εικονίδιο εφαρμογής ChemSearch</string>
     <string name="ui_move_up" translatable="true">Μετακίνηση πάνω</string>
@@ -1528,5 +1528,38 @@
     <string name="ui_stoich_info_percent_yield_body" translatable="true">Σύγκριση πραγματικής απόδοσης στη θεωρητική απόδοση για το επιλεγμένο προϊόν.</string>
     <string name="ui_stoich_info_scaling_term" translatable="true">Κλιμάκωση</string>
     <string name="ui_stoich_info_scaling_body" translatable="true">Εισαγάγετε ένα επιθυμητό ποσό προϊόντος για να δείτε τις απαιτούμενες ποσότητες αντιδραστικών.</string>
+    <string name="ui_error_structure_search_failed" translatable="true">Η αναζήτηση δομής απέτυχε. Δοκιμάστε ένα απλούστερο σχέδιο.</string>
+    <string name="ui_error_pubchem_could_not_clean" translatable="true">Το PubChem δεν μπόρεσε να καθαρίσει αυτό το σχέδιο.</string>
+    <string name="ui_error_advanced_search_failed" translatable="true">Η σύνθετη αναζήτηση απέτυχε. Δοκιμάστε με λιγότερα φίλτρα.</string>
+    <string name="ui_error_chemical_not_found" translatable="true">Η χημική ένωση δεν βρέθηκε.</string>
+    <string name="ui_error_no_advanced_results" translatable="true">Δεν υπάρχουν αποτελέσματα σύνθετης αναζήτησης.</string>
+    <string name="ui_error_could_not_refresh_models" translatable="true">Δεν ήταν δυνατή η ανανέωση των μοντέλων.</string>
+    <string name="ui_error_unable_to_open_output_stream" translatable="true">Δεν ήταν δυνατό το άνοιγμα της ροής εξόδου</string>
+    <string name="ui_error_could_not_read_structure" translatable="true">Δεν ήταν δυνατή η ανάγνωση της δομής.</string>
+    <string name="ui_error_enter_query" translatable="true">Εισαγάγετε όνομα, τύπο, CID ή αριθμό CAS.</string>
+    <string name="ui_empirical_formula_explanation" translatable="true">Διαιρέστε όλες τις τιμές mol με τη μικρότερη τιμή και πολλαπλασιάστε εάν χρειάζεται για να λάβετε ακέραιους δείκτες.</string>
+    <string name="ui_error_no_isomers_for_formula" translatable="true">Δεν βρέθηκαν ισομερή για "%1$s". Ελέγξτε τον τύπο και δοκιμάστε ξανά.</string>
+    <string name="ui_message_structure_cleaned" translatable="true">Η δομή καθαρίστηκε με τυποποίηση PubChem.</string>
+    <string name="ui_error_no_compounds_matched_filters" translatable="true">Καμία ένωση δεν ταίριαξε με αυτά τα φίλτρα.</string>
+    <string name="ui_error_unable_to_open_export_file" translatable="true">Δεν ήταν δυνατό το άνοιγμα του αρχείου για εξαγωγή</string>
+    <string name="ui_error_network" translatable="true">Σφάλμα δικτύου. Ελέγξτε τη σύνδεσή σας.</string>
+    <string name="ui_error_image_download_failed" translatable="true">Η λήψη της εικόνας απέτυχε (%1$d)</string>
+    <string name="ui_error_no_candidates" translatable="true">Δεν βρέθηκαν υποψήφια.</string>
+    <string name="ui_error_draw_structure_first" translatable="true">Σχεδιάστε ή εισαγάγετε μια δομή πριν την καθαρίσετε.</string>
+    <string name="ui_error_paste_structure_first" translatable="true">Επικολλήστε πρώτα ένα SMILES, InChI ή molfile.</string>
+    <string name="ui_error_no_models_returned" translatable="true">Δεν επιστράφηκαν μοντέλα. Διατηρούνται τα προεπιλεγμένα.</string>
+    <string name="ui_error_chemical_not_found_try_other" translatable="true">Η χημική ένωση δεν βρέθηκε. Δοκιμάστε διαφορετικό όνομα ή ορθογραφία.</string>
+    <string name="ui_error_not_found" translatable="true">Δεν βρέθηκε</string>
+    <string name="ui_error_could_not_load_compound" translatable="true">Δεν ήταν δυνατή η φόρτωση της ένωσης (CID %1$d).</string>
+    <string name="ui_error_could_not_clean" translatable="true">Δεν ήταν δυνατός ο καθαρισμός της δομής.</string>
+    <string name="ui_error_no_structure_matches" translatable="true">Δεν βρέθηκαν αντιστοιχίες δομών.</string>
+    <string name="ui_error_add_api_key" translatable="true">Προσθέστε πρώτα ένα κλειδί API.</string>
+    <string name="ui_error_unable_to_open_import_file" translatable="true">Δεν ήταν δυνατό το άνοιγμα του αρχείου για εισαγωγή</string>
+    <string name="ui_error_invalid_settings_backup" translatable="true">Μη έγκυρο αρχείο αντιγράφου ασφαλείας ρυθμίσεων.</string>
+    <string name="ui_precipitate_explanation" translatable="true">Το εργαλείο ανταλλάσσει ιόντα, εξισορροπεί την εξίσωση και στη συνέχεια εφαρμόζει τους συνήθεις κανόνες διαλυτότητας σε κάθε προϊόν.</string>
+    <string name="ui_message_imported_s" translatable="true">Εισαγωγή: %1$s.</string>
+    <string name="ui_error_could_not_import_structure" translatable="true">Δεν ήταν δυνατή η εισαγωγή της δομής. Δοκιμάστε έγκυρο SMILES, InChI ή V2000 molfile.</string>
+    <string name="ui_error_no_isomers" translatable="true">Δεν βρέθηκαν ισομερή.</string>
+    <string name="ui_error_could_not_create_destination_file" translatable="true">Δεν ήταν δυνατή η δημιουργία του αρχείου προορισμού</string>
 </resources>
 

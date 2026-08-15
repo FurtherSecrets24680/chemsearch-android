@@ -1,7 +1,9 @@
 package com.furthersecrets.chemsearch.ui
 
+import android.content.Context
 import android.content.SharedPreferences
 import com.furthersecrets.chemsearch.BuildConfig
+import com.furthersecrets.chemsearch.R
 import com.furthersecrets.chemsearch.data.AiProvider
 import com.furthersecrets.chemsearch.data.SecurePrefs
 import org.json.JSONArray
@@ -71,12 +73,13 @@ internal fun buildSettingsBackupJson(prefs: SharedPreferences): String {
 }
 
 internal fun restoreSettingsFromBackup(
+    context: Context,
     prefs: SharedPreferences,
     rawJson: String
 ): Int {
     val root = JSONObject(rawJson)
     val entries = root.optJSONObject("entries")
-        ?: throw IllegalArgumentException("Invalid settings backup file.")
+        ?: throw IllegalArgumentException(context.getString(R.string.ui_error_invalid_settings_backup))
     val apiKeys = root.optJSONObject("api_keys")
     val shouldPreserveExistingSecrets = apiKeys == null
     val preservedSecrets = if (shouldPreserveExistingSecrets) SECRET_PREF_KEYS.mapNotNull { key ->

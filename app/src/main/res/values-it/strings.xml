@@ -380,8 +380,8 @@
     <string name="ui_theme_mode" translatable="true">Modalità del tema</string>
     <string name="ui_color_scheme" translatable="true">Schema colori</string>
     <string name="ui_language">Lingua</string>
-    <string name="ui_language_subtitle">Choose the language used by ChemSearch</string>
-    <string name="ui_language_system_default">System default</string>
+    <string name="ui_language_subtitle">Scegli la lingua usata da ChemSearch</string>
+    <string name="ui_language_system_default">Predefinito di sistema</string>
     <string name="ui_language_english">English</string>
     <string name="ui_language_danish">Dansk</string>
     <string name="ui_language_german">Deutsch</string>
@@ -397,7 +397,7 @@
     <string name="ui_language_portuguese">Português</string>
     <string name="ui_language_russian">Русский</string>
     <string name="ui_language_swedish">Svenska</string>
-    <string name="ui_language_restart">The app will restart to apply the language.</string>
+    <string name="ui_language_restart">L\'app si riavvierà per applicare la lingua.</string>
     <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">Mostrata automaticamente quando cerchi un composto</string>
     <string name="ui_chemsearch_app_icon" translatable="true">Icona dell\u2019app ChemSearch</string>
     <string name="ui_move_up" translatable="true">Sposta su</string>
@@ -1528,5 +1528,38 @@
     <string name="ui_stoich_info_percent_yield_body" translatable="true">Confrontare la resa effettiva con la resa teorica del prodotto selezionato.</string>
     <string name="ui_stoich_info_scaling_term" translatable="true">Scala</string>
     <string name="ui_stoich_info_scaling_body" translatable="true">Immettere una quantità di prodotto desiderata per vedere le quantità di reattori richieste.</string>
+    <string name="ui_error_structure_search_failed" translatable="true">Ricerca per struttura non riuscita. Prova con un disegno più semplice.</string>
+    <string name="ui_error_pubchem_could_not_clean" translatable="true">PubChem non ha potuto pulire questo disegno.</string>
+    <string name="ui_error_advanced_search_failed" translatable="true">Ricerca avanzata non riuscita. Prova con meno filtri.</string>
+    <string name="ui_error_chemical_not_found" translatable="true">Composto chimico non trovato.</string>
+    <string name="ui_error_no_advanced_results" translatable="true">Nessun risultato di ricerca avanzata.</string>
+    <string name="ui_error_could_not_refresh_models" translatable="true">Impossibile aggiornare i modelli.</string>
+    <string name="ui_error_unable_to_open_output_stream" translatable="true">Impossibile aprire il flusso di output</string>
+    <string name="ui_error_could_not_read_structure" translatable="true">Impossibile leggere questa struttura.</string>
+    <string name="ui_error_enter_query" translatable="true">Inserisci un nome, una formula, un CID o un numero CAS.</string>
+    <string name="ui_empirical_formula_explanation" translatable="true">Dividi tutti i valori di moli per il valore più piccolo, poi moltiplica se necessario per ottenere indici interi.</string>
+    <string name="ui_error_no_isomers_for_formula" translatable="true">Nessun isomero trovato per "%1$s". Controlla la formula e riprova.</string>
+    <string name="ui_message_structure_cleaned" translatable="true">Struttura pulita con la standardizzazione PubChem.</string>
+    <string name="ui_error_no_compounds_matched_filters" translatable="true">Nessun composto corrisponde a questi filtri.</string>
+    <string name="ui_error_unable_to_open_export_file" translatable="true">Impossibile aprire il file per l\'esportazione</string>
+    <string name="ui_error_network" translatable="true">Errore di rete. Controlla la tua connessione.</string>
+    <string name="ui_error_image_download_failed" translatable="true">Download dell\'immagine non riuscito (%1$d)</string>
+    <string name="ui_error_no_candidates" translatable="true">Nessun candidato trovato.</string>
+    <string name="ui_error_draw_structure_first" translatable="true">Disegna o importa una struttura prima di pulirla.</string>
+    <string name="ui_error_paste_structure_first" translatable="true">Incolla prima un SMILES, InChI o molfile.</string>
+    <string name="ui_error_no_models_returned" translatable="true">Nessun modello restituito. Vengono mantenuti quelli predefiniti.</string>
+    <string name="ui_error_chemical_not_found_try_other" translatable="true">Composto chimico non trovato. Prova con un altro nome o un\'altra grafia.</string>
+    <string name="ui_error_not_found" translatable="true">Non trovato</string>
+    <string name="ui_error_could_not_load_compound" translatable="true">Impossibile caricare il composto (CID %1$d).</string>
+    <string name="ui_error_could_not_clean" translatable="true">Impossibile pulire questa struttura.</string>
+    <string name="ui_error_no_structure_matches" translatable="true">Nessuna corrispondenza di struttura trovata.</string>
+    <string name="ui_error_add_api_key" translatable="true">Aggiungi prima una chiave API.</string>
+    <string name="ui_error_unable_to_open_import_file" translatable="true">Impossibile aprire il file per l\'importazione</string>
+    <string name="ui_error_invalid_settings_backup" translatable="true">File di backup delle impostazioni non valido.</string>
+    <string name="ui_precipitate_explanation" translatable="true">Lo strumento scambia gli ioni, bilancia l\'equazione e poi applica le regole di solubilità comuni a ogni prodotto.</string>
+    <string name="ui_message_imported_s" translatable="true">Importato: %1$s.</string>
+    <string name="ui_error_could_not_import_structure" translatable="true">Impossibile importare questa struttura. Prova con un SMILES, InChI o molfile V2000 valido.</string>
+    <string name="ui_error_no_isomers" translatable="true">Nessun isomero trovato.</string>
+    <string name="ui_error_could_not_create_destination_file" translatable="true">Impossibile creare il file di destinazione</string>
 </resources>
 

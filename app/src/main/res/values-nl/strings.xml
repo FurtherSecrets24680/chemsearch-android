@@ -380,8 +380,8 @@
     <string name="ui_theme_mode" translatable="true">Themamodus</string>
     <string name="ui_color_scheme" translatable="true">Kleurenschema</string>
     <string name="ui_language">Taal</string>
-    <string name="ui_language_subtitle">Choose the language used by ChemSearch</string>
-    <string name="ui_language_system_default">System default</string>
+    <string name="ui_language_subtitle">Kies de taal die ChemSearch gebruikt</string>
+    <string name="ui_language_system_default">Systeemstandaard</string>
     <string name="ui_language_english">English</string>
     <string name="ui_language_danish">Dansk</string>
     <string name="ui_language_german">Deutsch</string>
@@ -397,7 +397,7 @@
     <string name="ui_language_portuguese">Português</string>
     <string name="ui_language_russian">Русский</string>
     <string name="ui_language_swedish">Svenska</string>
-    <string name="ui_language_restart">The app will restart to apply the language.</string>
+    <string name="ui_language_restart">De app wordt opnieuw gestart om de taal toe te passen.</string>
     <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">Automatisch getoond wanneer je een verbinding zoekt</string>
     <string name="ui_chemsearch_app_icon" translatable="true">ChemSearch app-icoon</string>
     <string name="ui_move_up" translatable="true">Naar boven</string>
@@ -1528,5 +1528,38 @@
     <string name="ui_stoich_info_percent_yield_body" translatable="true">Vergelijk het werkelijke rendement met de theoretische opbrengst van het geselecteerde product.</string>
     <string name="ui_stoich_info_scaling_term" translatable="true">Schalen</string>
     <string name="ui_stoich_info_scaling_body" translatable="true">Voer een gewenste product-bedrag in om de vereiste reactant bedragen te zien.</string>
+    <string name="ui_error_structure_search_failed" translatable="true">Structuur zoeken mislukt. Probeer een eenvoudigere tekening.</string>
+    <string name="ui_error_pubchem_could_not_clean" translatable="true">PubChem kon deze tekening niet opschonen.</string>
+    <string name="ui_error_advanced_search_failed" translatable="true">Geavanceerd zoeken mislukt. Probeer het met minder filters.</string>
+    <string name="ui_error_chemical_not_found" translatable="true">Chemische stof niet gevonden.</string>
+    <string name="ui_error_no_advanced_results" translatable="true">Geen geavanceerde zoekresultaten.</string>
+    <string name="ui_error_could_not_refresh_models" translatable="true">Modellen konden niet worden vernieuwd.</string>
+    <string name="ui_error_unable_to_open_output_stream" translatable="true">Kan de uitvoerstroom niet openen</string>
+    <string name="ui_error_could_not_read_structure" translatable="true">Deze structuur kon niet worden gelezen.</string>
+    <string name="ui_error_enter_query" translatable="true">Voer een naam, formule, CID of CAS-nummer in.</string>
+    <string name="ui_empirical_formula_explanation" translatable="true">Deel alle molwaarden door de kleinste waarde en vermenigvuldig indien nodig om gehele subscripts te krijgen.</string>
+    <string name="ui_error_no_isomers_for_formula" translatable="true">Geen isomeren gevonden voor "%1$s". Controleer de formule en probeer het opnieuw.</string>
+    <string name="ui_message_structure_cleaned" translatable="true">Structuur opgeschoond met PubChem-standaardisatie.</string>
+    <string name="ui_error_no_compounds_matched_filters" translatable="true">Geen verbindingen kwamen overeen met die filters.</string>
+    <string name="ui_error_unable_to_open_export_file" translatable="true">Kan het bestand niet openen voor export</string>
+    <string name="ui_error_network" translatable="true">Netwerkfout. Controleer je verbinding.</string>
+    <string name="ui_error_image_download_failed" translatable="true">Afbeelding downloaden mislukt (%1$d)</string>
+    <string name="ui_error_no_candidates" translatable="true">Geen kandidaten gevonden.</string>
+    <string name="ui_error_draw_structure_first" translatable="true">Teken of importeer eerst een structuur voordat je deze opschoont.</string>
+    <string name="ui_error_paste_structure_first" translatable="true">Plak eerst een SMILES, InChI of molfile.</string>
+    <string name="ui_error_no_models_returned" translatable="true">Geen modellen geretourneerd. Standaardwaarden worden behouden.</string>
+    <string name="ui_error_chemical_not_found_try_other" translatable="true">Chemische stof niet gevonden. Probeer een andere naam of spelling.</string>
+    <string name="ui_error_not_found" translatable="true">Niet gevonden</string>
+    <string name="ui_error_could_not_load_compound" translatable="true">De verbinding kon niet worden geladen (CID %1$d).</string>
+    <string name="ui_error_could_not_clean" translatable="true">Deze structuur kon niet worden opgeschoond.</string>
+    <string name="ui_error_no_structure_matches" translatable="true">Geen overeenkomende structuren gevonden.</string>
+    <string name="ui_error_add_api_key" translatable="true">Voeg eerst een API-sleutel toe.</string>
+    <string name="ui_error_unable_to_open_import_file" translatable="true">Kan het bestand niet openen voor import</string>
+    <string name="ui_error_invalid_settings_backup" translatable="true">Ongeldig back-upbestand van instellingen.</string>
+    <string name="ui_precipitate_explanation" translatable="true">Het gereedschap wisselt ionen uit, balanceert de vergelijking en past daarna de gebruikelijke oplosbaarheidsregels toe op elk product.</string>
+    <string name="ui_message_imported_s" translatable="true">Geïmporteerd: %1$s.</string>
+    <string name="ui_error_could_not_import_structure" translatable="true">Deze structuur kon niet worden geïmporteerd. Probeer een geldige SMILES, InChI of V2000-molfile.</string>
+    <string name="ui_error_no_isomers" translatable="true">Geen isomeren gevonden.</string>
+    <string name="ui_error_could_not_create_destination_file" translatable="true">Kan het doelbestand niet maken</string>
 </resources>
 

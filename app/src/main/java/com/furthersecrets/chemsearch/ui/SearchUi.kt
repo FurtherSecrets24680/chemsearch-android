@@ -1259,10 +1259,10 @@ private suspend fun saveSdfFile(context: Context, compoundName: String, sdfData:
                     put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
                 }
                 val uri = context.contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
-                    ?: error("Could not create destination file")
+                    ?: error(context.getString(R.string.ui_error_could_not_create_destination_file))
                 context.contentResolver.openOutputStream(uri)?.bufferedWriter()?.use { writer ->
                     writer.write(sdfData)
-                } ?: error("Unable to open output stream")
+                } ?: error(context.getString(R.string.ui_error_unable_to_open_output_stream))
             } else {
                 val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                 File(dir, fileName).bufferedWriter().use { writer ->
@@ -2907,7 +2907,7 @@ private suspend fun save2dPng(context: Context, compoundName: String, cid: Long)
         val request = okhttp3.Request.Builder().url(url).build()
         withContext(Dispatchers.IO) {
             com.furthersecrets.chemsearch.data.ApiClient.rawHttp.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) error("Image download failed (${response.code})")
+                if (!response.isSuccessful) error(context.getString(R.string.ui_error_image_download_failed, response.code))
                 val body = response.body
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     val values = ContentValues().apply {
@@ -2916,12 +2916,12 @@ private suspend fun save2dPng(context: Context, compoundName: String, cid: Long)
                         put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
                     }
                     val uri = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-                        ?: error("Could not create destination file")
+                        ?: error(context.getString(R.string.ui_error_could_not_create_destination_file))
                     context.contentResolver.openOutputStream(uri)?.use { output ->
                         body.byteStream().use { input ->
                             input.copyTo(output)
                         }
-                    } ?: error("Unable to open output stream")
+                    } ?: error(context.getString(R.string.ui_error_unable_to_open_output_stream))
                 } else {
                     val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
                     File(dir, fileName).outputStream().use { output ->

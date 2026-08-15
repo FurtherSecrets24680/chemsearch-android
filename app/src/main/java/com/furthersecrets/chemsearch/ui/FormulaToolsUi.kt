@@ -201,7 +201,7 @@ fun EmpiricalFormulaFinderTool() {
         result?.let { EmpiricalFormulaResultCard(it) }
         FormulaExplanationCard(
             latexFormula = "moles = mass / atomic mass",
-            explanation = "Divide all mole values by the smallest value, then multiply if needed to get whole-number subscripts."
+            explanation = stringResource(R.string.ui_empirical_formula_explanation)
         )
     }
 }
@@ -299,7 +299,7 @@ fun PrecipitatePredictorTool() {
         result?.let { PrecipitationResultCard(it) }
         FormulaExplanationCard(
             latexFormula = "AB(aq) + CD(aq) ⟶ AD + CB",
-            explanation = "The tool swaps ions, balances the equation, then applies common solubility rules to each product."
+            explanation = stringResource(R.string.ui_precipitate_explanation)
         )
     }
 }

@@ -380,8 +380,8 @@
     <string name="ui_theme_mode" translatable="true">Mode du thème</string>
     <string name="ui_color_scheme" translatable="true">Schéma de couleurs</string>
     <string name="ui_language">Langue</string>
-    <string name="ui_language_subtitle">Choose the language used by ChemSearch</string>
-    <string name="ui_language_system_default">System default</string>
+    <string name="ui_language_subtitle">Choisissez la langue utilisée par ChemSearch</string>
+    <string name="ui_language_system_default">Paramètre système par défaut</string>
     <string name="ui_language_english">English</string>
     <string name="ui_language_danish">Dansk</string>
     <string name="ui_language_german">Deutsch</string>
@@ -397,7 +397,7 @@
     <string name="ui_language_portuguese">Português</string>
     <string name="ui_language_russian">Русский</string>
     <string name="ui_language_swedish">Svenska</string>
-    <string name="ui_language_restart">The app will restart to apply the language.</string>
+    <string name="ui_language_restart">L\'application redémarrera pour appliquer la langue.</string>
     <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">Affiché automatiquement lorsque vous recherchez un composé</string>
     <string name="ui_chemsearch_app_icon" translatable="true">Icône de l\'app ChemSearch</string>
     <string name="ui_move_up" translatable="true">Monter</string>
@@ -1528,5 +1528,38 @@
     <string name="ui_stoich_info_percent_yield_body" translatable="true">Comparer le rendement réel au rendement théorique du produit sélectionné.</string>
     <string name="ui_stoich_info_scaling_term" translatable="true">Mise à l\'échelle</string>
     <string name="ui_stoich_info_scaling_body" translatable="true">Entrez un montant de produit désiré pour voir les quantités de réacteurs requises.</string>
+    <string name="ui_error_structure_search_failed" translatable="true">La recherche de structure a échoué. Essayez un dessin plus simple.</string>
+    <string name="ui_error_pubchem_could_not_clean" translatable="true">PubChem n\'a pas pu nettoyer ce dessin.</string>
+    <string name="ui_error_advanced_search_failed" translatable="true">La recherche avancée a échoué. Essayez avec moins de filtres.</string>
+    <string name="ui_error_chemical_not_found" translatable="true">Composé chimique introuvable.</string>
+    <string name="ui_error_no_advanced_results" translatable="true">Aucun résultat de recherche avancée.</string>
+    <string name="ui_error_could_not_refresh_models" translatable="true">Impossible d\'actualiser les modèles.</string>
+    <string name="ui_error_unable_to_open_output_stream" translatable="true">Impossible d\'ouvrir le flux de sortie</string>
+    <string name="ui_error_could_not_read_structure" translatable="true">Impossible de lire cette structure.</string>
+    <string name="ui_error_enter_query" translatable="true">Saisissez un nom, une formule, un CID ou un numéro CAS.</string>
+    <string name="ui_empirical_formula_explanation" translatable="true">Divisez toutes les valeurs de moles par la plus petite valeur, puis multipliez si nécessaire pour obtenir des indices entiers.</string>
+    <string name="ui_error_no_isomers_for_formula" translatable="true">Aucun isomère trouvé pour "%1$s". Vérifiez la formule et réessayez.</string>
+    <string name="ui_message_structure_cleaned" translatable="true">Structure nettoyée avec la standardisation PubChem.</string>
+    <string name="ui_error_no_compounds_matched_filters" translatable="true">Aucun composé ne correspond à ces filtres.</string>
+    <string name="ui_error_unable_to_open_export_file" translatable="true">Impossible d\'ouvrir le fichier pour l\'export</string>
+    <string name="ui_error_network" translatable="true">Erreur réseau. Vérifiez votre connexion.</string>
+    <string name="ui_error_image_download_failed" translatable="true">Le téléchargement de l\'image a échoué (%1$d)</string>
+    <string name="ui_error_no_candidates" translatable="true">Aucun candidat trouvé.</string>
+    <string name="ui_error_draw_structure_first" translatable="true">Dessinez ou importez une structure avant de la nettoyer.</string>
+    <string name="ui_error_paste_structure_first" translatable="true">Collez d\'abord un SMILES, InChI ou molfile.</string>
+    <string name="ui_error_no_models_returned" translatable="true">Aucun modèle renvoyé. Les valeurs par défaut sont conservées.</string>
+    <string name="ui_error_chemical_not_found_try_other" translatable="true">Composé chimique introuvable. Essayez un autre nom ou une autre orthographe.</string>
+    <string name="ui_error_not_found" translatable="true">Introuvable</string>
+    <string name="ui_error_could_not_load_compound" translatable="true">Impossible de charger le composé (CID %1$d).</string>
+    <string name="ui_error_could_not_clean" translatable="true">Impossible de nettoyer cette structure.</string>
+    <string name="ui_error_no_structure_matches" translatable="true">Aucune correspondance de structure trouvée.</string>
+    <string name="ui_error_add_api_key" translatable="true">Ajoutez d\'abord une clé API.</string>
+    <string name="ui_error_unable_to_open_import_file" translatable="true">Impossible d\'ouvrir le fichier pour l\'import</string>
+    <string name="ui_error_invalid_settings_backup" translatable="true">Fichier de sauvegarde des paramètres invalide.</string>
+    <string name="ui_precipitate_explanation" translatable="true">L\'outil échange les ions, équilibre l\'équation, puis applique les règles de solubilité courantes à chaque produit.</string>
+    <string name="ui_message_imported_s" translatable="true">Importé : %1$s.</string>
+    <string name="ui_error_could_not_import_structure" translatable="true">Impossible d\'importer cette structure. Essayez un SMILES, InChI ou molfile V2000 valide.</string>
+    <string name="ui_error_no_isomers" translatable="true">Aucun isomère trouvé.</string>
+    <string name="ui_error_could_not_create_destination_file" translatable="true">Impossible de créer le fichier de destination</string>
 </resources>
 

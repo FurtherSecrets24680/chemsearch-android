@@ -380,8 +380,8 @@
     <string name="ui_theme_mode" translatable="true">Режим темы</string>
     <string name="ui_color_scheme" translatable="true">Цветовая схема</string>
     <string name="ui_language">Язык</string>
-    <string name="ui_language_subtitle">Choose the language used by ChemSearch</string>
-    <string name="ui_language_system_default">System default</string>
+    <string name="ui_language_subtitle">Выберите язык, который использует ChemSearch</string>
+    <string name="ui_language_system_default">По умолчанию (системный)</string>
     <string name="ui_language_english">English</string>
     <string name="ui_language_danish">Dansk</string>
     <string name="ui_language_german">Deutsch</string>
@@ -397,7 +397,7 @@
     <string name="ui_language_portuguese">Português</string>
     <string name="ui_language_russian">Русский</string>
     <string name="ui_language_swedish">Svenska</string>
-    <string name="ui_language_restart">The app will restart to apply the language.</string>
+    <string name="ui_language_restart">Приложение перезапустится, чтобы применить язык.</string>
     <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">Показывается автоматически при поиске соединения</string>
     <string name="ui_chemsearch_app_icon" translatable="true">Значок приложения ChemSearch</string>
     <string name="ui_move_up" translatable="true">Переместить вверх</string>
@@ -1528,5 +1528,38 @@
     <string name="ui_stoich_info_percent_yield_body" translatable="true">Сравнить фактическую урожайность по выбранному продукту.</string>
     <string name="ui_stoich_info_scaling_term" translatable="true">Масштабирование</string>
     <string name="ui_stoich_info_scaling_body" translatable="true">Введите желаемую сумму продукта, чтобы увидеть требуемые реагенты.</string>
+    <string name="ui_error_structure_search_failed" translatable="true">Поиск по структуре не удался. Попробуйте более простой рисунок.</string>
+    <string name="ui_error_pubchem_could_not_clean" translatable="true">PubChem не смог очистить этот рисунок.</string>
+    <string name="ui_error_advanced_search_failed" translatable="true">Расширенный поиск не удался. Попробуйте с меньшим числом фильтров.</string>
+    <string name="ui_error_chemical_not_found" translatable="true">Химическое соединение не найдено.</string>
+    <string name="ui_error_no_advanced_results" translatable="true">Нет результатов расширенного поиска.</string>
+    <string name="ui_error_could_not_refresh_models" translatable="true">Не удалось обновить модели.</string>
+    <string name="ui_error_unable_to_open_output_stream" translatable="true">Не удалось открыть поток вывода</string>
+    <string name="ui_error_could_not_read_structure" translatable="true">Не удалось прочитать эту структуру.</string>
+    <string name="ui_error_enter_query" translatable="true">Введите название, формулу, CID или номер CAS.</string>
+    <string name="ui_empirical_formula_explanation" translatable="true">Разделите все значения молей на наименьшее значение, затем при необходимости умножьте, чтобы получить целые индексы.</string>
+    <string name="ui_error_no_isomers_for_formula" translatable="true">Изомеры для "%1$s" не найдены. Проверьте формулу и попробуйте снова.</string>
+    <string name="ui_message_structure_cleaned" translatable="true">Структура очищена с помощью стандартизации PubChem.</string>
+    <string name="ui_error_no_compounds_matched_filters" translatable="true">Ни одно соединение не соответствует этим фильтрам.</string>
+    <string name="ui_error_unable_to_open_export_file" translatable="true">Не удалось открыть файл для экспорта</string>
+    <string name="ui_error_network" translatable="true">Ошибка сети. Проверьте подключение.</string>
+    <string name="ui_error_image_download_failed" translatable="true">Не удалось загрузить изображение (%1$d)</string>
+    <string name="ui_error_no_candidates" translatable="true">Кандидаты не найдены.</string>
+    <string name="ui_error_draw_structure_first" translatable="true">Нарисуйте или импортируйте структуру перед очисткой.</string>
+    <string name="ui_error_paste_structure_first" translatable="true">Сначала вставьте SMILES, InChI или molfile.</string>
+    <string name="ui_error_no_models_returned" translatable="true">Модели не получены. Остаются значения по умолчанию.</string>
+    <string name="ui_error_chemical_not_found_try_other" translatable="true">Химическое соединение не найдено. Попробуйте другое название или написание.</string>
+    <string name="ui_error_not_found" translatable="true">Не найдено</string>
+    <string name="ui_error_could_not_load_compound" translatable="true">Не удалось загрузить соединение (CID %1$d).</string>
+    <string name="ui_error_could_not_clean" translatable="true">Не удалось очистить эту структуру.</string>
+    <string name="ui_error_no_structure_matches" translatable="true">Совпадающие структуры не найдены.</string>
+    <string name="ui_error_add_api_key" translatable="true">Сначала добавьте ключ API.</string>
+    <string name="ui_error_unable_to_open_import_file" translatable="true">Не удалось открыть файл для импорта</string>
+    <string name="ui_error_invalid_settings_backup" translatable="true">Недопустимый файл резервной копии настроек.</string>
+    <string name="ui_precipitate_explanation" translatable="true">Инструмент меняет ионы местами, уравнивает уравнение, а затем применяет обычные правила растворимости к каждому продукту.</string>
+    <string name="ui_message_imported_s" translatable="true">Импортировано: %1$s.</string>
+    <string name="ui_error_could_not_import_structure" translatable="true">Не удалось импортировать эту структуру. Попробуйте корректный SMILES, InChI или V2000 molfile.</string>
+    <string name="ui_error_no_isomers" translatable="true">Изомеры не найдены.</string>
+    <string name="ui_error_could_not_create_destination_file" translatable="true">Не удалось создать целевой файл</string>
 </resources>
 

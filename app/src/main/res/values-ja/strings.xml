@@ -380,8 +380,8 @@
     <string name="ui_theme_mode" translatable="true">テーマモード</string>
     <string name="ui_color_scheme" translatable="true">配色</string>
     <string name="ui_language">言語</string>
-    <string name="ui_language_subtitle">Choose the language used by ChemSearch</string>
-    <string name="ui_language_system_default">System default</string>
+    <string name="ui_language_subtitle">ChemSearch で使用する言語を選択してください</string>
+    <string name="ui_language_system_default">システムの既定</string>
     <string name="ui_language_english">English</string>
     <string name="ui_language_danish">Dansk</string>
     <string name="ui_language_german">Deutsch</string>
@@ -397,7 +397,7 @@
     <string name="ui_language_portuguese">Português</string>
     <string name="ui_language_russian">Русский</string>
     <string name="ui_language_swedish">Svenska</string>
-    <string name="ui_language_restart">The app will restart to apply the language.</string>
+    <string name="ui_language_restart">言語を適用するためにアプリが再起動します。</string>
     <string name="ui_automatically_shown_when_you_search_a_compound" translatable="true">化合物を検索すると自動的に表示されます</string>
     <string name="ui_chemsearch_app_icon" translatable="true">ChemSearch アプリアイコン</string>
     <string name="ui_move_up" translatable="true">上へ移動</string>
@@ -1528,5 +1528,38 @@
     <string name="ui_stoich_info_percent_yield_body" translatable="true">選択した製品の実際の収率と理論的収率を比較します。</string>
     <string name="ui_stoich_info_scaling_term" translatable="true">拡大縮小</string>
     <string name="ui_stoich_info_scaling_body" translatable="true">必要なリタント量を確認するには、必要な製品量を入力してください。</string>
+    <string name="ui_error_structure_search_failed" translatable="true">構造検索に失敗しました。より簡単な描画をお試しください。</string>
+    <string name="ui_error_pubchem_could_not_clean" translatable="true">PubChemはこの描画をクリーンにできませんでした。</string>
+    <string name="ui_error_advanced_search_failed" translatable="true">高度な検索に失敗しました。フィルターを減らしてお試しください。</string>
+    <string name="ui_error_chemical_not_found" translatable="true">化合物が見つかりませんでした。</string>
+    <string name="ui_error_no_advanced_results" translatable="true">高度な検索結果はありません。</string>
+    <string name="ui_error_could_not_refresh_models" translatable="true">モデルを更新できませんでした。</string>
+    <string name="ui_error_unable_to_open_output_stream" translatable="true">出力ストリームを開けませんでした</string>
+    <string name="ui_error_could_not_read_structure" translatable="true">この構造を読み取れませんでした。</string>
+    <string name="ui_error_enter_query" translatable="true">名前、分子式、CID、またはCAS番号を入力してください。</string>
+    <string name="ui_empirical_formula_explanation" translatable="true">すべてのモル数を最小値で割り、必要に応じて掛け算して整数の下付き数字にします。</string>
+    <string name="ui_error_no_isomers_for_formula" translatable="true">「%1$s」の異性体は見つかりませんでした。分子式を確認して再度お試しください。</string>
+    <string name="ui_message_structure_cleaned" translatable="true">PubChemの標準化により構造をクリーンにしました。</string>
+    <string name="ui_error_no_compounds_matched_filters" translatable="true">これらのフィルターに一致する化合物はありませんでした。</string>
+    <string name="ui_error_unable_to_open_export_file" translatable="true">エクスポート用のファイルを開けませんでした</string>
+    <string name="ui_error_network" translatable="true">ネットワークエラーです。接続を確認してください。</string>
+    <string name="ui_error_image_download_failed" translatable="true">画像のダウンロードに失敗しました (%1$d)</string>
+    <string name="ui_error_no_candidates" translatable="true">候補が見つかりませんでした。</string>
+    <string name="ui_error_draw_structure_first" translatable="true">クリーンにする前に、構造を描画またはインポートしてください。</string>
+    <string name="ui_error_paste_structure_first" translatable="true">最初にSMILES、InChI、またはmolfileを貼り付けてください。</string>
+    <string name="ui_error_no_models_returned" translatable="true">モデルが返されませんでした。既定のモデルを維持します。</string>
+    <string name="ui_error_chemical_not_found_try_other" translatable="true">化合物が見つかりませんでした。別の名前または表記をお試しください。</string>
+    <string name="ui_error_not_found" translatable="true">見つかりません</string>
+    <string name="ui_error_could_not_load_compound" translatable="true">化合物を読み込めませんでした (CID %1$d)。</string>
+    <string name="ui_error_could_not_clean" translatable="true">この構造をクリーンにできませんでした。</string>
+    <string name="ui_error_no_structure_matches" translatable="true">一致する構造は見つかりませんでした。</string>
+    <string name="ui_error_add_api_key" translatable="true">最初にAPIキーを追加してください。</string>
+    <string name="ui_error_unable_to_open_import_file" translatable="true">インポート用のファイルを開けませんでした</string>
+    <string name="ui_error_invalid_settings_backup" translatable="true">設定のバックアップファイルが無効です。</string>
+    <string name="ui_precipitate_explanation" translatable="true">このツールはイオンを交換し、方程式を釣り合わせてから、各生成物に一般的な溶解度の規則を適用します。</string>
+    <string name="ui_message_imported_s" translatable="true">%1$s をインポートしました。</string>
+    <string name="ui_error_could_not_import_structure" translatable="true">この構造をインポートできませんでした。有効なSMILES、InChI、またはV2000 molfileをお試しください。</string>
+    <string name="ui_error_no_isomers" translatable="true">異性体が見つかりませんでした。</string>
+    <string name="ui_error_could_not_create_destination_file" translatable="true">保存先ファイルを作成できませんでした</string>
 </resources>
 
