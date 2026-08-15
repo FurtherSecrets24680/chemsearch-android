@@ -1,0 +1,3 @@
+- Full app localization in 15 languages (English, Danish, Dutch, Finnish, French, German, Greek, Italian, Japanese, Norwegian, Polish, Portuguese, Russian, Spanish, Swedish). More will be added soon!
+- In-app language selector in Settings.
+- New "View in PubChem" button on the compound result page.
