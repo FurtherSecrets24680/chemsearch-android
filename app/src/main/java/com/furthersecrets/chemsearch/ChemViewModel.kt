@@ -47,6 +47,17 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
     private val prefs = application.getSharedPreferences("chemsearch_prefs", Context.MODE_PRIVATE)
 
+    private fun localizedAppContext(): Context {
+        val app = getApplication<Application>()
+        val languageKey = prefs.getString("language", AppLanguage.SYSTEM.preferenceKey)
+        return app.withAppLanguage(languageKey)
+    }
+
+    private fun localizedString(resId: Int): String = localizedAppContext().getString(resId)
+
+    private fun localizedString(resId: Int, vararg formatArgs: Any): String =
+        localizedAppContext().getString(resId, *formatArgs)
+
     private val gson = Gson()
     private val settingsStore = AppSettingsStore(application)
     private val offlineDownloadRepository = OfflineDownloadRepository(
@@ -269,7 +280,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     if (latestTag.isBlank()) {
                         currentStatus.copy(
                             isChecking = false,
-                            error = getApplication<Application>().getString(R.string.ui_error_no_release_tag),
+                            error = localizedString(R.string.ui_error_no_release_tag),
                             lastCheckedAt = now
                         )
                     } else {
@@ -295,7 +306,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 onFailure = { e ->
                     currentStatus.copy(
                         isChecking = false,
-                        error = e.message ?: getApplication<Application>().getString(R.string.ui_error_update_check_failed),
+                        error = e.message ?: localizedString(R.string.ui_error_update_check_failed),
                         lastCheckedAt = now
                     )
                 }
@@ -322,7 +333,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
         val downloadUrl = status.downloadUrl?.takeIf { it.isNotBlank() }
         if (downloadUrl == null) {
-            _updateStatus.update { it.copy(error = getApplication<Application>().getString(R.string.ui_error_no_apk_download_link)) }
+            _updateStatus.update { it.copy(error = localizedString(R.string.ui_error_no_apk_download_link)) }
             return
         }
 
@@ -369,7 +380,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                         isDownloadingUpdate = false,
                         updateDownloadProgress = null,
                         downloadedUpdateApkPath = null,
-                        error = e.message ?: getApplication<Application>().getString(R.string.ui_error_update_download_failed)
+                        error = e.message ?: localizedString(R.string.ui_error_update_download_failed)
                     )
                 }
                 DebugLog.e("ChemSearch", "Update download failed: ${e.message}")
@@ -395,7 +406,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
         ApiClient.rawHttp.newCall(request).execute().use { response ->
             if (!response.isSuccessful) {
-                throw IOException(getApplication<Application>().getString(R.string.ui_error_download_failed_http, response.code))
+                throw IOException(localizedString(R.string.ui_error_download_failed_http, response.code))
             }
             val body = response.body
             val totalBytes = body.contentLength()
@@ -424,7 +435,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
         if (temp.length() == 0L) {
             temp.delete()
-            throw IOException(getApplication<Application>().getString(R.string.ui_error_apk_empty))
+            throw IOException(localizedString(R.string.ui_error_apk_empty))
         }
         if (target.exists()) target.delete()
         if (!temp.renameTo(target)) {
@@ -442,7 +453,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 it.copy(
                     downloadedUpdateApkPath = null,
                     updateDownloadProgress = null,
-                    error = getApplication<Application>().getString(R.string.ui_error_apk_missing)
+                    error = localizedString(R.string.ui_error_apk_missing)
                 )
             }
             return
@@ -455,7 +466,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             runCatching { context.startActivity(settingsIntent) }
             _updateStatus.update {
-                it.copy(                    error = getApplication<Application>().getString(R.string.ui_error_allow_installs))
+                it.copy(                    error = localizedString(R.string.ui_error_allow_installs))
             }
             return
         }
@@ -469,7 +480,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         runCatching { context.startActivity(installIntent) }
             .onFailure { e ->
                 _updateStatus.update {
-                    it.copy(error = e.message ?: getApplication<Application>().getString(R.string.ui_error_could_not_open_installer))
+                    it.copy(error = e.message ?: localizedString(R.string.ui_error_could_not_open_installer))
                 }
             }
     }
@@ -592,9 +603,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 DebugLog.e("ChemSearch", "Offline download failed for CID $cid: ${e.message}")
                 _uiState.update {
                     it.copy(
-                        error = getApplication<Application>().getString(
+                        error = localizedString(
                             R.string.ui_error_offline_download_failed,
-                            e.message ?: getApplication<Application>().getString(R.string.ui_unknown_error)
+                            e.message ?: localizedString(R.string.ui_unknown_error)
                         )
                     )
                 }
@@ -662,9 +673,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val result = runCatching {
                 val backup = gson.fromJson(rawJson, LibraryBackup::class.java)
-                    ?: throw IllegalArgumentException(getApplication<Application>().getString(R.string.ui_error_invalid_library_backup))
+                    ?: throw IllegalArgumentException(localizedString(R.string.ui_error_invalid_library_backup))
                 if (backup.format != LIBRARY_BACKUP_FORMAT) {
-                    throw IllegalArgumentException(getApplication<Application>().getString(R.string.ui_error_not_chemsearch_backup))
+                    throw IllegalArgumentException(localizedString(R.string.ui_error_not_chemsearch_backup))
                 }
 
                 val (mergedFavorites, importedFavorites) = mergeFavoritesForImport(
@@ -1241,7 +1252,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val cidResponse = ApiClient.pubChem.getCid(q)
                 val cid = cidResponse.identifierList?.cid?.firstOrNull()
-                    ?: throw NoSuchElementException(getApplication<Application>().getString(R.string.ui_error_chemical_not_found))
+                    ?: throw NoSuchElementException(localizedString(R.string.ui_error_chemical_not_found))
                 DebugLog.d("ChemSearch", "CID resolved: $cid for \"$q\"")
 
                 val cached = readCache(cid)
@@ -1342,7 +1353,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     aiProvider = _uiState.value.aiProvider,
                     isCached = false,
                     isLoadingSynonyms = true,
-                    advancedProperties = buildAdvancedProperties(props, localizedAdvancedPropertyLabels(getApplication<Application>()))
+                    advancedProperties = buildAdvancedProperties(props, localizedAdvancedPropertyLabels(localizedAppContext()))
                 )
                 _uiState.update { newState }
                 if (newState.activeTab == MolTab.THREE_D) fetchSdfData()
@@ -1360,9 +1371,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
             } catch (e: Exception) {
                 val msg = when (e) {
-                    is IOException -> getApplication<Application>().getString(R.string.ui_error_network)
-                    is NoSuchElementException -> e.message ?: getApplication<Application>().getString(R.string.ui_error_not_found)
-                    else -> getApplication<Application>().getString(R.string.ui_error_chemical_not_found_try_other)
+                    is IOException -> localizedString(R.string.ui_error_network)
+                    is NoSuchElementException -> e.message ?: localizedString(R.string.ui_error_not_found)
+                    else -> localizedString(R.string.ui_error_chemical_not_found_try_other)
                 }
                 val corrections = if (e is IOException) emptyList() else fetchSearchCorrectionSuggestions(q)
                 DebugLog.e("ChemSearch", "Search failed for \"$q\": ${e::class.simpleName} — ${e.message}")
@@ -1402,7 +1413,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         )
         if (normalized.query.isBlank()) {
             _advancedSearchState.update {
-                it.copy(filters = normalized, error = getApplication<Application>().getString(R.string.ui_error_enter_query))
+                it.copy(filters = normalized, error = localizedString(R.string.ui_error_enter_query))
             }
             return
         }
@@ -1415,7 +1426,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 val cids = resolveAdvancedSearchCids(normalized)
                     .distinct()
                     .take(normalized.maxRecords)
-                if (cids.isEmpty()) throw NoSuchElementException(getApplication<Application>().getString(R.string.ui_error_no_candidates))
+                if (cids.isEmpty()) throw NoSuchElementException(localizedString(R.string.ui_error_no_candidates))
 
                 val cidString = cids.joinToString(",")
                 val properties = ApiClient.pubChem.getAdvancedSearchProperties(cidString)
@@ -1439,15 +1450,15 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     )
                 }.filterNotNull()
 
-                if (decorated.isEmpty()) throw NoSuchElementException(getApplication<Application>().getString(R.string.ui_error_no_compounds_matched_filters))
+                if (decorated.isEmpty()) throw NoSuchElementException(localizedString(R.string.ui_error_no_compounds_matched_filters))
                 _advancedSearchState.update {
                     it.copy(isLoading = false, results = decorated, error = null)
                 }
             } catch (e: Exception) {
                 val msg = when (e) {
-                    is IOException -> getApplication<Application>().getString(R.string.ui_error_network)
-                    is NoSuchElementException -> e.message ?: getApplication<Application>().getString(R.string.ui_error_no_advanced_results)
-                    else -> getApplication<Application>().getString(R.string.ui_error_advanced_search_failed)
+                    is IOException -> localizedString(R.string.ui_error_network)
+                    is NoSuchElementException -> e.message ?: localizedString(R.string.ui_error_no_advanced_results)
+                    else -> localizedString(R.string.ui_error_advanced_search_failed)
                 }
                 DebugLog.e("ChemSearch", "Advanced search failed: ${e.message}")
                 _advancedSearchState.update { it.copy(isLoading = false, error = msg) }
@@ -1563,7 +1574,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     AiProvider.OPENAI -> ApiClient.openAi
                     AiProvider.OPENROUTER -> ApiClient.openRouter
                     AiProvider.MISTRAL -> ApiClient.mistral
-                    AiProvider.GEMINI -> error(getApplication<Application>().getString(R.string.ui_error_gemini_separate_api))
+                    AiProvider.GEMINI -> error(localizedString(R.string.ui_error_gemini_separate_api))
                 }
                 val response = api.generateContent("Bearer $key", req)
                 val text = response.choices?.firstOrNull()?.message?.content
@@ -1651,7 +1662,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             if (candidates.isNotEmpty()) {
                 _uiState.update { state ->
                     if (state.cid == cid) {
-                        state.copy(sdfMessage = getApplication<Application>().getString(R.string.ui_pubchem_3d_trying_generated_fallback))
+                        state.copy(sdfMessage = localizedString(R.string.ui_pubchem_3d_trying_generated_fallback))
                     } else state
                 }
             }
@@ -1670,13 +1681,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                         isLoadingSdf = false,
                         sdfData = fallback.sdf,
                         sdfSource = fallback.source,
-                        sdfMessage = getApplication<Application>().getString(fallback.messageRes!!, *fallback.messageArgs.toTypedArray())
+                        sdfMessage = localizedString(fallback.messageRes!!, *fallback.messageArgs.toTypedArray())
                     )
                 } else {
                     val message = if (candidates.isEmpty()) {
-                        getApplication<Application>().getString(R.string.ui_pubchem_3d_unavailable_no_fallback_identifier)
+                        localizedString(R.string.ui_pubchem_3d_unavailable_no_fallback_identifier)
                     } else {
-                        getApplication<Application>().getString(R.string.ui_pubchem_3d_and_generated_unavailable)
+                        localizedString(R.string.ui_pubchem_3d_and_generated_unavailable)
                     }
                     DebugLog.e("ChemSearch", message)
                     state.copy(
@@ -1814,7 +1825,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 .propertyTable
                 ?.properties
                 ?.firstOrNull()
-                ?.let { buildAdvancedProperties(it, localizedAdvancedPropertyLabels(getApplication<Application>())) }
+                ?.let { buildAdvancedProperties(it, localizedAdvancedPropertyLabels(localizedAppContext())) }
                 .orEmpty()
         }.getOrDefault(emptyList())
     }
@@ -1906,7 +1917,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         }.getOrNull()
 
         return fallback?.let {
-            OfflineSdfResult(it.sdf, it.source, getApplication<Application>().getString(it.messageRes!!, *it.messageArgs.toTypedArray()))
+            OfflineSdfResult(it.sdf, it.source, localizedString(it.messageRes!!, *it.messageArgs.toTypedArray()))
         }
     }
 
@@ -1995,7 +2006,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         val key = getAiKey(provider) ?: run {
             _aiModelCatalogs.update { catalogs ->
                 val current = catalogs[provider] ?: AiModelCatalog(models = provider.defaultModels, selectedModel = provider.modelName)
-                catalogs + (provider to current.copy(error = getApplication<Application>().getString(R.string.ui_error_add_api_key)))
+                catalogs + (provider to current.copy(error = localizedString(R.string.ui_error_add_api_key)))
             }
             return
         }
@@ -2018,7 +2029,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                                 AiProvider.OPENAI -> ApiClient.openAi
                                 AiProvider.OPENROUTER -> ApiClient.openRouter
                                 AiProvider.MISTRAL -> ApiClient.mistral
-                                AiProvider.GEMINI -> error(getApplication<Application>().getString(R.string.ui_error_gemini_separate_api))
+                                AiProvider.GEMINI -> error(localizedString(R.string.ui_error_gemini_separate_api))
                             }
                             api.listModels("Bearer $key").data?.mapNotNull { it.id } ?: emptyList()
                         }
@@ -2035,13 +2046,13 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                             models = models,
                             selectedModel = selected,
                             isLoading = false,
-                            error = if (fetched.isEmpty()) getApplication<Application>().getString(R.string.ui_error_no_models_returned) else null
+                            error = if (fetched.isEmpty()) localizedString(R.string.ui_error_no_models_returned) else null
                         ))
                     },
                     onFailure = { e ->
                         catalogs + (provider to current.copy(
                             isLoading = false,
-                            error = e.message ?: getApplication<Application>().getString(R.string.ui_error_could_not_refresh_models)
+                            error = e.message ?: localizedString(R.string.ui_error_could_not_refresh_models)
                         ))
                     }
                 )
@@ -2282,7 +2293,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             }
             try {
                 val cids = fetchFormulaCids(formula, maxRecords).take(maxRecords)
-                if (cids.isEmpty()) throw NoSuchElementException(getApplication<Application>().getString(R.string.ui_error_no_isomers_for_formula, formula))
+                if (cids.isEmpty()) throw NoSuchElementException(localizedString(R.string.ui_error_no_isomers_for_formula, formula))
 
                 DebugLog.d("ChemSearch", "Isomers: ${cids.size} CIDs for $formula")
 
@@ -2315,9 +2326,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
             } catch (e: Exception) {
                 val msg = when (e) {
-                    is java.io.IOException -> getApplication<Application>().getString(R.string.ui_error_network)
-                    is NoSuchElementException -> e.message ?: getApplication<Application>().getString(R.string.ui_error_no_isomers)
-                    else -> getApplication<Application>().getString(R.string.ui_error_no_isomers_for_formula, formula)
+                    is java.io.IOException -> localizedString(R.string.ui_error_network)
+                    is NoSuchElementException -> e.message ?: localizedString(R.string.ui_error_no_isomers)
+                    else -> localizedString(R.string.ui_error_no_isomers_for_formula, formula)
                 }
                 DebugLog.e("ChemSearch", "Isomer search failed: ${e.message}")
                 _uiState.update {
@@ -2370,7 +2381,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun standardizeStructure(sketch: StructureSketch) {
         if (sketch.atoms.isEmpty()) {
             _structureSearchState.update {
-                it.copy(error = getApplication<Application>().getString(R.string.ui_error_draw_structure_first))
+                it.copy(error = localizedString(R.string.ui_error_draw_structure_first))
             }
             return
         }
@@ -2381,12 +2392,12 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val sdf = ApiClient.pubChem.standardizeSdf(sketch.toMolfile()).string()
                 val standardized = StructureSketch.fromMolfile(sdf)
-                if (standardized.atoms.isEmpty()) throw IllegalArgumentException(getApplication<Application>().getString(R.string.ui_error_pubchem_could_not_clean))
+                if (standardized.atoms.isEmpty()) throw IllegalArgumentException(localizedString(R.string.ui_error_pubchem_could_not_clean))
                 _structureSearchState.update {
                     it.copy(
                         isStandardizing = false,
                         standardizedSketch = standardized,
-                        standardizeMessage = getApplication<Application>().getString(R.string.ui_message_structure_cleaned)
+                        standardizeMessage = localizedString(R.string.ui_message_structure_cleaned)
                     )
                 }
             } catch (e: Exception) {
@@ -2395,8 +2406,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     it.copy(
                         isStandardizing = false,
                         error = when (e) {
-                            is IOException -> getApplication<Application>().getString(R.string.ui_error_network)
-                            else -> e.message ?: getApplication<Application>().getString(R.string.ui_error_could_not_clean)
+                            is IOException -> localizedString(R.string.ui_error_network)
+                            else -> e.message ?: localizedString(R.string.ui_error_could_not_clean)
                         }
                     )
                 }
@@ -2407,7 +2418,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
     fun importStructureText(text: String) {
         val input = text.trim()
         if (input.isBlank()) {
-            _structureSearchState.update { it.copy(error = getApplication<Application>().getString(R.string.ui_error_paste_structure_first)) }
+            _structureSearchState.update { it.copy(error = localizedString(R.string.ui_error_paste_structure_first)) }
             return
         }
         viewModelScope.launch {
@@ -2425,12 +2436,12 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     }
                     StructureSketch.fromMolfile(sdf)
                 }
-                if (imported.atoms.isEmpty()) throw IllegalArgumentException(getApplication<Application>().getString(R.string.ui_error_could_not_read_structure))
+                if (imported.atoms.isEmpty()) throw IllegalArgumentException(localizedString(R.string.ui_error_could_not_read_structure))
                 _structureSearchState.update {
                     it.copy(
                         isStandardizing = false,
                         standardizedSketch = imported,
-                        standardizeMessage = getApplication<Application>().getString(R.string.ui_message_imported_s, imported.formula.ifBlank { getApplication<Application>().getString(R.string.ui_structure) })
+                        standardizeMessage = localizedString(R.string.ui_message_imported_s, imported.formula.ifBlank { localizedString(R.string.ui_structure) })
                     )
                 }
             } catch (e: Exception) {
@@ -2439,8 +2450,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     it.copy(
                         isStandardizing = false,
                         error = when (e) {
-                            is IOException -> getApplication<Application>().getString(R.string.ui_error_network)
-                            else -> getApplication<Application>().getString(R.string.ui_error_could_not_import_structure)
+                            is IOException -> localizedString(R.string.ui_error_network)
+                            else -> localizedString(R.string.ui_error_could_not_import_structure)
                         }
                     )
                 }
@@ -2462,8 +2473,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 it.copy(
                     isLoading = false,
                     error = StructureSearchWarning.forSketch(sketch).firstOrNull()?.let { warning ->
-                        getApplication<Application>().getString(warning.messageRes)
-                    } ?: getApplication<Application>().getString(R.string.ui_error_draw_at_least_two_connected_atoms),
+                        localizedString(warning.messageRes)
+                    } ?: localizedString(R.string.ui_error_draw_at_least_two_connected_atoms),
                     results = emptyList()
                 )
             }
@@ -2488,7 +2499,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     threshold = if (mode == StructureSearchMode.SIMILAR) threshold else null
                 )
                 val cids = response.identifierList?.cid?.take(maxRecords).orEmpty()
-                if (cids.isEmpty()) throw NoSuchElementException(getApplication<Application>().getString(R.string.ui_error_no_structure_matches))
+                if (cids.isEmpty()) throw NoSuchElementException(localizedString(R.string.ui_error_no_structure_matches))
 
                 val propertyMap = loadStructurePropertiesForCids(cids)
                 val results = cids.map { cid ->
@@ -2510,9 +2521,9 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                 }
             } catch (e: Exception) {
                 val msg = when (e) {
-                    is IOException -> getApplication<Application>().getString(R.string.ui_error_network)
-                    is NoSuchElementException -> e.message ?: getApplication<Application>().getString(R.string.ui_error_no_structure_matches)
-                    else -> getApplication<Application>().getString(R.string.ui_error_structure_search_failed)
+                    is IOException -> localizedString(R.string.ui_error_network)
+                    is NoSuchElementException -> e.message ?: localizedString(R.string.ui_error_no_structure_matches)
+                    else -> localizedString(R.string.ui_error_structure_search_failed)
                 }
                 DebugLog.e("ChemSearch", "Structure search failed: ${e.message}")
                 _structureSearchState.update { it.copy(isLoading = false, error = msg) }
@@ -2657,7 +2668,7 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     isomers = emptyList(),
                     isCached = false,
                     isLoadingSynonyms = true,
-                    advancedProperties = buildAdvancedProperties(props, localizedAdvancedPropertyLabels(getApplication<Application>()))
+                    advancedProperties = buildAdvancedProperties(props, localizedAdvancedPropertyLabels(localizedAppContext()))
                 )
                 _uiState.update { newState }
                 if (newState.activeTab == MolTab.THREE_D) fetchSdfData()
@@ -2675,8 +2686,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
 
             } catch (e: Exception) {
                 val msg = when (e) {
-                    is java.io.IOException -> getApplication<Application>().getString(R.string.ui_error_network)
-                    else -> getApplication<Application>().getString(R.string.ui_error_could_not_load_compound, cid)
+                    is java.io.IOException -> localizedString(R.string.ui_error_network)
+                    else -> localizedString(R.string.ui_error_could_not_load_compound, cid)
                 }
                 DebugLog.e("ChemSearch", "searchByCid failed for $cid: ${e.message}")
                 _uiState.update { it.copy(isLoading = false, error = msg) }
