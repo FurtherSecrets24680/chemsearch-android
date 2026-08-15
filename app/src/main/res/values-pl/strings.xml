@@ -1557,4 +1557,37 @@
     <string name="ui_stoich_info_percent_yield_body" translatable="true">Porównaj faktyczną wydajność z teoretyczną wydajnością dla wybranego produktu.</string>
     <string name="ui_stoich_info_scaling_term" translatable="true">Skalowanie</string>
     <string name="ui_stoich_info_scaling_body" translatable="true">Wprowadź żądaną ilość produktu, aby zobaczyć wymagane ilości substratów.</string>
+    <string name="ui_error_structure_search_failed" translatable="true">Structure search failed. Try a simpler drawing.</string>
+    <string name="ui_error_pubchem_could_not_clean" translatable="true">PubChem could not clean this drawing.</string>
+    <string name="ui_error_advanced_search_failed" translatable="true">Advanced search failed. Try fewer filters.</string>
+    <string name="ui_error_chemical_not_found" translatable="true">Chemical not found.</string>
+    <string name="ui_error_no_advanced_results" translatable="true">No advanced search results.</string>
+    <string name="ui_error_could_not_refresh_models" translatable="true">Could not refresh models.</string>
+    <string name="ui_error_unable_to_open_output_stream" translatable="true">Unable to open output stream</string>
+    <string name="ui_error_could_not_read_structure" translatable="true">Could not read that structure.</string>
+    <string name="ui_error_enter_query" translatable="true">Enter a name, formula, CID, or CAS number.</string>
+    <string name="ui_empirical_formula_explanation" translatable="true">Divide all mole values by the smallest value, then multiply if needed to get whole-number subscripts.</string>
+    <string name="ui_error_no_isomers_for_formula" translatable="true">No isomers found for \"%1$s\". Check the formula and try again.</string>
+    <string name="ui_message_structure_cleaned" translatable="true">Structure cleaned with PubChem standardization.</string>
+    <string name="ui_error_no_compounds_matched_filters" translatable="true">No compounds matched those filters.</string>
+    <string name="ui_error_unable_to_open_export_file" translatable="true">Unable to open file for export</string>
+    <string name="ui_error_network" translatable="true">Network error. Check your connection.</string>
+    <string name="ui_error_image_download_failed" translatable="true">Image download failed (%1$d)</string>
+    <string name="ui_error_no_candidates" translatable="true">No candidates found.</string>
+    <string name="ui_error_draw_structure_first" translatable="true">Draw or import a structure before cleaning it.</string>
+    <string name="ui_error_paste_structure_first" translatable="true">Paste a SMILES, InChI, or molfile first.</string>
+    <string name="ui_error_no_models_returned" translatable="true">No models returned. Keeping defaults.</string>
+    <string name="ui_error_chemical_not_found_try_other" translatable="true">Chemical not found. Try a different name or spelling.</string>
+    <string name="ui_error_not_found" translatable="true">Not found</string>
+    <string name="ui_error_could_not_load_compound" translatable="true">Could not load compound (CID %1$d).</string>
+    <string name="ui_error_could_not_clean" translatable="true">Could not clean this structure.</string>
+    <string name="ui_error_no_structure_matches" translatable="true">No structure matches found.</string>
+    <string name="ui_error_add_api_key" translatable="true">Add an API key first.</string>
+    <string name="ui_error_unable_to_open_import_file" translatable="true">Unable to open file for import</string>
+    <string name="ui_error_invalid_settings_backup" translatable="true">Invalid settings backup file.</string>
+    <string name="ui_precipitate_explanation" translatable="true">The tool swaps ions, balances the equation, then applies common solubility rules to each product.</string>
+    <string name="ui_message_imported_s" translatable="true">Imported %1$s.</string>
+    <string name="ui_error_could_not_import_structure" translatable="true">Could not import that structure. Try a valid SMILES, InChI, or V2000 molfile.</string>
+    <string name="ui_error_no_isomers" translatable="true">No isomers found.</string>
+    <string name="ui_error_could_not_create_destination_file" translatable="true">Could not create destination file</string>
 </resources>
