@@ -1580,4 +1580,69 @@
     <string name="ui_error_could_not_import_structure" translatable="true">Could not import that structure. Try a valid SMILES, InChI, or V2000 molfile.</string>
     <string name="ui_error_no_isomers" translatable="true">No isomers found.</string>
     <string name="ui_error_could_not_create_destination_file" translatable="true">Could not create destination file</string>
+    <string name="ui_prop_volume_3d" translatable="true">3D volume</string>
+    <string name="ui_db_section_general_formula" translatable="true">General formula</string>
+    <string name="ui_db_total_entries" translatable="true">Total entries: %1$d</string>
+    <string name="ui_db_section_other_names" translatable="true">Other names</string>
+    <string name="ui_prop_tpsa" translatable="true">Topological polar surface area</string>
+    <string name="ui_compound_fallback" translatable="true">Compound</string>
+    <string name="ui_db_section_notes" translatable="true">Notes</string>
+    <string name="ui_prop_ring_features_3d" translatable="true">3D ring features</string>
+    <string name="ui_prop_complexity" translatable="true">Complexity</string>
+    <string name="ui_prop_rotatable_bonds" translatable="true">Rotatable bonds</string>
+    <string name="ui_db_section_type" translatable="true">Type</string>
+    <string name="ui_db_section_behavior" translatable="true">Behavior</string>
+    <string name="ui_prop_hydrophobe_features_3d" translatable="true">3D hydrophobe features</string>
+    <string name="ui_saved_search_count_many" translatable="true">%1$d saved searches</string>
+    <string name="ui_prop_acceptor_features_3d" translatable="true">3D acceptor features</string>
+    <string name="ui_prop_bond_stereocenters" translatable="true">Bond stereocenters</string>
+    <string name="ui_db_section_observation" translatable="true">Observation</string>
+    <string name="ui_db_section_common_compounds" translatable="true">Common compounds</string>
+    <string name="ui_error_gemini_separate_api" translatable="true">Gemini uses a separate API</string>
+    <string name="ui_prop_count_undefined" translatable="true">%1$d undefined</string>
+    <string name="ui_filter_excludes_s" translatable="true">Excludes %1$s</string>
+    <string name="ui_prop_isotope_atom_count" translatable="true">Isotope atom count</string>
+    <string name="ui_prop_atom_stereocenters" translatable="true">Atom stereocenters</string>
+    <string name="ui_prop_anion_features_3d" translatable="true">3D anion features</string>
+    <string name="ui_prop_cation_features_3d" translatable="true">3D cation features</string>
+    <string name="ui_prop_feature_count_3d" translatable="true">3D feature count</string>
+    <string name="ui_db_section_naming_cue" translatable="true">Naming cue</string>
+    <string name="ui_filter_mw_ge_s" translatable="true">MW &gt;= %1$s</string>
+    <string name="ui_error_invalid_library_backup" translatable="true">Invalid library backup file.</string>
+    <string name="ui_db_section_example" translatable="true">Example</string>
+    <string name="ui_db_section_equation" translatable="true">Equation</string>
+    <string name="ui_db_section_common_uses" translatable="true">Common uses</string>
+    <string name="ui_db_section_typical_conditions" translatable="true">Typical conditions</string>
+    <string name="ui_prop_covalent_units" translatable="true">Covalently bonded units</string>
+    <string name="ui_prop_hbond_acceptors" translatable="true">Hydrogen bond acceptors</string>
+    <string name="ui_filter_includes_s" translatable="true">Includes %1$s</string>
+    <string name="ui_filter_no_filters" translatable="true">No filters</string>
+    <string name="ui_prop_exact_mass" translatable="true">Exact mass</string>
+    <string name="ui_saved_search_count_one" translatable="true">1 saved search</string>
+    <string name="ui_prop_monoisotopic_mass" translatable="true">Monoisotopic mass</string>
+    <string name="ui_db_summary_ions" translatable="true">Ions</string>
+    <string name="ui_group_period_d" translatable="true">Group %1$d, period %2$d</string>
+    <string name="ui_prop_count_total" translatable="true">%1$d total</string>
+    <string name="ui_filter_has_ghs" translatable="true">Has GHS</string>
+    <string name="ui_db_summary_reactions" translatable="true">Reactions</string>
+    <string name="ui_prop_hbond_donors" translatable="true">Hydrogen bond donors</string>
+    <string name="ui_prop_donor_features_3d" translatable="true">3D donor features</string>
+    <string name="ui_filter_mw_le_s" translatable="true">MW &lt;= %1$s</string>
+    <string name="ui_prop_count_defined" translatable="true">%1$d defined</string>
+    <string name="ui_prop_effective_rotors_3d" translatable="true">Effective 3D rotors</string>
+    <string name="ui_db_summary_substances" translatable="true">Substances</string>
+    <string name="ui_prop_heavy_atom_count" translatable="true">Heavy atom count</string>
+    <string name="ui_prop_conformer_count_3d" translatable="true">3D conformer count</string>
+    <string name="ui_db_summary_functional_groups" translatable="true">Functional groups</string>
+    <string name="ui_filter_has_3d" translatable="true">Has 3D</string>
+    <string name="ui_filter_charge_s" translatable="true">Charge %1$s</string>
+    <string name="ui_prop_conformer_rmsd" translatable="true">Conformer RMSD</string>
+    <string name="ui_error_not_chemsearch_backup" translatable="true">This is not a ChemSearch library backup.</string>
+    <string name="ui_recent_group_older" translatable="true">Older</string>
+    <string name="ui_recent_group_previous_7_days" translatable="true">Previous 7 days</string>
+    <string name="ui_recent_group_today" translatable="true">Today</string>
+    <string name="ui_recent_group_pinned" translatable="true">Pinned</string>
+    <string name="ui_recent_group_previous_30_days" translatable="true">Previous 30 days</string>
+    <string name="ui_recent_group_yesterday" translatable="true">Yesterday</string>
+    <string name="ui_db_section_details" translatable="true">Details</string>
 </resources>
