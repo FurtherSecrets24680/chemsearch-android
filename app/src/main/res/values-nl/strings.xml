@@ -101,13 +101,13 @@
     <string name="ui_welcome_tagline" translatable="true">CHEMIE VEREENVOUDIGD</string>
     <string name="ui_welcome_tagline_body" translatable="true">Zoek samenstellingen, inspecteer structuren, bewaar nuttige resultaten, en gebruik praktische chemiegereedschappen in één native Android app.</string>
     <string name="ui_welcome_feature_search_title" translatable="true">Samengestelde zoekopdracht</string>
-    <string name="ui_welcome_feature_search_body" translatable="true">Zoek PubChem gegevens op door naam, formule, CAS-stijl ID of CID.</string>
+    <string name="ui_welcome_feature_search_body" translatable="true">Zoek PubChem-gegevens op naam, formule, CAS-achtige identificatie of CID, met autosuggestie, geavanceerde filters en zoek op getekende structuur.</string>
     <string name="ui_welcome_feature_structures_title" translatable="true">2D en 3D-constructies</string>
     <string name="ui_welcome_feature_structures_body" translatable="true">Bekijk structuurafbeeldingen, draai 3D-modellen en sla structuurbestanden op.</string>
     <string name="ui_welcome_feature_tools_title" translatable="true">Scheikunde gereedschappen</string>
     <string name="ui_welcome_feature_tools_body" translatable="true">Balans reactie, berekent molaire massa, los stoichiometrie op en meer.</string>
     <string name="ui_welcome_feature_local_title" translatable="true">Lokale workflow</string>
-    <string name="ui_welcome_feature_local_body" translatable="true">Bewaar favorieten, recente zoekopdrachten, gecachete resultaten en offline scheikundige gegevens.</string>
+    <string name="ui_welcome_feature_local_body" translatable="true">Bewaar favorieten, recente zoekopdrachten en offline gegevens; ontmoet de stof van de dag en voeg startscherm-widgets toe.</string>
     <string name="ui_compare" translatable="true">Vergelijken</string>
     <string name="ui_save" translatable="true">Opslaan</string>
     <string name="ui_ok" translatable="true">OK</string>
@@ -542,6 +542,15 @@
     <string name="ui_e_g_h2o_ca_oh_2_cuso4_5h2o" translatable="true">bijv. H2O, Ca(OH)2, CuSO4·5H2O</string>
     <string name="ui_insert" translatable="true">Invoegen:</string>
     <string name="ui_molar_mass" translatable="true">MOLAIRE MASSA</string>
+    <string name="ui_isomer_invalid_formula" translatable="true">Dit lijkt geen geldige formule</string>
+    <string name="ui_isomer_insight_formula" translatable="true">FORMULE</string>
+    <string name="ui_isomer_insight_atoms" translatable="true">ATOMEN</string>
+    <string name="ui_isomer_mass" translatable="true">MASSA</string>
+    <string name="ui_isomer_insight_dbe" translatable="true">Graden van onverzadiging</string>
+    <string name="ui_isomer_insight_dbe_desc" translatable="true">Ringen + dubbele bindingen tellen als 1, drievoudige als 2. Elk isomeer van deze formule deelt deze waarde.</string>
+    <string name="ui_isomer_sort_relevance" translatable="true">Bovenste</string>
+    <string name="ui_isomer_sort_name" translatable="true">A-Z</string>
+    <string name="ui_retry" translatable="true">Opnieuw</string>
     <string name="ui_count" translatable="true">Aantal</string>
     <string name="ui_g_mol" translatable="true">g/mol</string>
     <string name="ui_3f" translatable="true">%.3f</string>
@@ -744,7 +753,7 @@
     <string name="ui_faq_search_what_q" translatable="true">Waar kan ik naar zoeken?</string>
     <string name="ui_faq_search_what_a" translatable="true">U kunt zoeken op gemeenschappelijke naam, IUPAC-naam, CAS-nummer, PubChem CID, formule, of getekende structuur. Sommige modi werken beter voor exacte id\'s dan korte namen.</string>
     <string name="ui_faq_search_fail_q" translatable="true">Waarom is mijn zoekopdracht mislukt?</string>
-    <string name="ui_faq_search_fail_a" translatable="true">Probeer een spellingscorrectie, CID, CAS-nummer of een meer specifieke naam. Zeer brede namen, onofficiële namen, onstabiele structuren en samenstellingen die niet aanwezig zijn bij PubChem zullen wellicht geen nuttige match opleveren.</string>
+    <string name="ui_faq_search_fail_a" translatable="true">Probeer een spellingscorrectie, CID, CAS-nummer of een specifiekere naam. Zeer brede namen, onofficiële namen, instabiele structuren en stoffen die niet in PubChem staan, geven misschien geen bruikbaar resultaat. Als een zoekopdracht mislukt, legt de foutmelding uit wat er misging en is ze per type kleurgecodeerd.</string>
     <string name="ui_faq_did_you_mean_q" translatable="true">Waarom bedoelde je dat suggesties soms ontbreken?</string>
     <string name="ui_faq_did_you_mean_a" translatable="true">ChemSearch toont alleen nauwe spellingswedstrijden. Het verbergt losse PubChem autocomplete resultaten als ze er geen verband mee houden, dus het kan niets laten zien in plaats van een slechte suggestie.</string>
     <string name="ui_faq_normal_vs_isomer_q" translatable="true">Wat is het verschil tussen normale zoekopdracht en isomerzoeken?</string>
@@ -777,14 +786,16 @@
     <string name="ui_faq_collect_a" translatable="true">ChemSearch heeft geen account systeem. Zoek geschiedenis, favorieten, downloads en cache worden opgeslagen op uw apparaat. Live zoekopdrachten nemen nog steeds contact op met externe diensten zoals PubChem, Wikipedia, GitHub updates, of uw gekozen AI provider indien nodig.</string>
     <string name="ui_faq_collect_no_updates_a" translatable="true">ChemSearch heeft geen account systeem. Zoek geschiedenis, favorieten, downloads en cache worden opgeslagen op uw apparaat. Live-zoekopdrachten nemen nog steeds contact op met externe diensten zoals PubChem, Wikipedia, of uw gekozen AI-provider indien nodig.</string>
     <string name="ui_faq_offline_q" translatable="true">Wat werkt offline?</string>
-    <string name="ui_faq_offline_a" translatable="true">De ingebouwde bibliotheekverwijzingen, calculators, favorieten en gedownloade verbindingen kunnen offline werken. Live verbindingen opzoeken, nieuwe omschrijvingen, structuur zoeken, update controles en AI omschrijvingen hebben internettoegang nodig.</string>
+    <string name="ui_faq_offline_a" translatable="true">De ingebouwde bibliotheekreferenties, rekenmachines, favorieten, gedownloade stoffen, de stof van de dag, startscherm-widgets en de reactievoorspeller werken allemaal offline. Live stoffen zoeken, actuele beschrijvingen, structuurzoeken, updatecontroles en AI-beschrijvingen hebben internettoegang nodig.</string>
     <string name="ui_faq_offline_no_updates_a" translatable="true">De ingebouwde bibliotheekreferenties, calculators, favorieten en gedownloade verbindingen kunnen offline werken. Live-samenstelling zoeken, nieuwe beschrijvingen, structuur zoeken, en AI beschrijvingen hebben toegang tot internet nodig.</string>
     <string name="ui_faq_cache_vs_downloads_q" translatable="true">Wat is het verschil tussen cache en Downloads?</string>
     <string name="ui_faq_cache_vs_downloads_a" translatable="true">Cache maakt herhaalde zoekopdrachten sneller en kan automatisch worden gewist. Downloads zijn opzettelijke offline samengestelde opgeslagen met ID\'s, beschrijvingen, structuren, synonimen, veiligheidsinformatie en brongegevens indien beschikbaar.</string>
     <string name="ui_faq_downloads_stored_q" translatable="true">Waar worden de gedownloade verbindingen opgeslagen?</string>
     <string name="ui_faq_downloads_stored_a" translatable="true">Gedownloade verbindingen worden opgeslagen in de lokale kamerdatabase van de app op uw apparaat. Deïnstalleren van de app kan ze verwijderen tenzij u ze eerst exporteert of een back-up maakt.</string>
     <string name="ui_faq_save_q" translatable="true">Hoe bewaar ik een verbinding?</string>
-    <string name="ui_faq_save_a" translatable="true">Gebruik de ster voor favorieten of de downloadknop voor een volledige offline opslag. Favorieten zijn snelle bladwijzers; Downloads zijn bedoeld voor offline lezen.</string>
+    <string name="ui_faq_save_a" translatable="true">Gebruik de ster voor favorieten of de downloadknop voor een volledige offline opslag. Houd een bibliotheekkaart ingedrukt om de formule te kopiëren, in PubChem te openen of te verwijderen, en exporteer de hele bibliotheek als CSV of JSON vanuit het bibliotheekscherm.</string>
+    <string name="ui_faq_export_q" translatable="true">Hoe exporteer ik mijn bibliotheek?</string>
+    <string name="ui_faq_export_a" translatable="true">Open de bibliotheek, open het exportmenu en kies CSV voor spreadsheets of JSON voor een volledige back-up die je op een ander apparaat opnieuw kunt importeren. De chemische database zit in de app zelf en hoeft niet geëxporteerd te worden.</string>
     <string name="ui_faq_compare_q" translatable="true">Kan ik opgeslagen verbindingen vergelijken?</string>
     <string name="ui_faq_compare_a" translatable="true">Ja. Selecteer twee of meer verbindingen in Favorieten, Downloads, of ondersteunde Chemische Database-vermeldingen en gebruik daarna de zwevende vergelijk knop.</string>
     <string name="ui_faq_database_q" translatable="true">Wat is de Chemische Database?</string>
@@ -821,6 +832,8 @@
     <string name="ui_search_history" translatable="true">Geschiedenis doorzoeken</string>
     <string name="ui_autosuggestions" translatable="true">AutoSuggesties</string>
     <string name="ui_compact_mode" translatable="true">Compacte modus</string>
+    <string name="ui_cards" translatable="true">Kaarten</string>
+    <string name="ui_subtitle_cards" translatable="true">Toon inhoud in afgeronde kaarten; uitschakelen voor een vlakke pagina</string>
     <string name="ui_reduce_motion" translatable="true">Verminder beweging</string>
     <string name="ui_high_contrast_outlines" translatable="true">Hoog contrast contouren</string>
     <string name="ui_default_structure_view" translatable="true">Standaard structuurweergave</string>
@@ -1246,7 +1259,7 @@
     <string name="ui_info_elemental_analysis_what" translatable="true">Wat is dit?</string>
     <string name="ui_info_elemental_analysis_what_body" translatable="true">Toont het percentage van elk element per massa in het samen. Berekend van atomische gewichten en de moleculaire formule.</string>
     <string name="ui_info_elemental_analysis_example" translatable="true">Voorbeeld</string>
-    <string name="ui_info_elemental_analysis_example_body" translatable="true">Water (H2O) is ~11% waterstof en ~89% zuurstof door de massa, aangezien zuurstofatomen veel zwaarder zijn dan waterstofatomen.</string>
+    <string name="ui_info_elemental_analysis_example_body" formatted="false" translatable="true">Water (H2O) is ~11% waterstof en ~89% zuurstof door de massa, aangezien zuurstofatomen veel zwaarder zijn dan waterstofatomen.</string>
     <string name="ui_info_elemental_analysis_why" translatable="true">Waarom het belangrijk is</string>
     <string name="ui_info_elemental_analysis_why_body" translatable="true">Nuttig in analytische scheikunde om de samengestelde identiteit te verifiëren en in voedingswetenschap om de samenstelling van de voedingsstoffen te begrijpen.</string>
     <string name="ui_info_what_is_ghs" translatable="true">Wat is GHS?</string>
@@ -1626,5 +1639,137 @@
     <string name="ui_recent_group_previous_30_days" translatable="true">Afgelopen 30 dagen</string>
     <string name="ui_recent_group_yesterday" translatable="true">Gisteren</string>
     <string name="ui_db_section_details" translatable="true">Details</string>
+    <string name="ui_reaction_predictor">Reactievoorspeller</string>
+    <string name="ui_reaction_predictor_subtitle">Voorselt producten uit reactanten met behulp van de chemische database en reactieregels</string>
+    <string name="ui_reactant_n">Reactant %1$d</string>
+    <string name="ui_add_reactant">Reactant toevoegen</string>
+    <string name="ui_predict_reaction">Producten voorspellen</string>
+    <string name="ui_error_enter_two_reactants">Voer twee reactanten in.</string>
+    <string name="ui_error_no_prediction_available">Geen bekende regel past bij deze reactanten. Probeer een gebruikelijk paar zoals een zuur met een base, een metaal of een carbonaat.</string>
+    <string name="ui_pred_rule_neutralization">Neutralisatieregel</string>
+    <string name="ui_pred_rule_acid_carbonate">Zuur + carbonaat-regel</string>
+    <string name="ui_pred_rule_metal_acid">Metaal + zuur-regel</string>
+    <string name="ui_pred_rule_single_displacement">Spanningsreeks-regel</string>
+    <string name="ui_pred_rule_combustion">Verbrandingsregel</string>
+    <string name="ui_pred_rule_synthesis">Syntheseregel</string>
+    <string name="ui_pred_note_neutralization">water gevormd</string>
+    <string name="ui_pred_note_effervescence">bruisen</string>
+    <string name="ui_pred_note_hydrogen_gas">waterstofgas</string>
+    <string name="ui_pred_note_metal_deposited">metaal afgezet</string>
+    <string name="ui_pred_rule_ammonium_base">Ammoniumzout + base-regel</string>
+    <string name="ui_pred_rule_acid_oxide">Zuur + metaaloxide-regel</string>
+    <string name="ui_pred_rule_acid_sulfite">Zuur + sulfiet-regel</string>
+    <string name="ui_pred_rule_acid_sulfide">Zuur + sulfide-regel</string>
+    <string name="ui_pred_rule_metal_water">Metaal + koud water-regel</string>
+    <string name="ui_pred_rule_metal_steam">Metaal + stoom-regel</string>
+    <string name="ui_pred_note_ammonia_gas">ammoniakgas</string>
+    <string name="ui_pred_note_pungent_gas">prikkelend SO2-gas</string>
+    <string name="ui_pred_note_rotten_egg">geur van rotte eieren</string>
+    <string name="ui_rp_what_it_does_desc">Voer twee reactanten in om de voorspelde producten, een gebalanceerde vergelijking en de regel of database-invoer achter de voorspelling te zien.</string>
+    <string name="ui_rp_best_inputs_desc">Gewone anorganische paren werken het beste: zuren met basen, metalen of carbonaten; actieve metalen in zoutoplossingen; koolwaterstoffen met O2; en twee elementen die een bekende binaire verbinding vormen.</string>
+    <string name="ui_rp_limits_desc">De voorspeller dekt alleen gewone regels. Organische chemie, redox met speciale omstandigheden en reacties die een katalysator of warmte vereisen kunnen ontbreken. Controleer een referentie voordat je op een voorspelling vertrouwt.</string>
+    <string name="ui_language_bengali">বাংলা</string>
+    <string name="ui_copy_summary">Samenvatting kopiëren</string>
+    <string name="ui_copied_summary">Samenvatting gekopieerd</string>
+    <string name="ui_consumption_label">%1$s%% verbruikt</string>
+    <string name="ui_atom_economy_label">Atomeconomie: %1$s%%</string>
+    <string name="ui_widget_name_placeholder" translatable="true">ChemSearch openen…</string>
+    <string name="ui_widget_random_refresh" translatable="true">Nieuwe willekeurige verbinding</string>
+    <string name="ui_widget_todays_pick" translatable="true">Keuze van vandaag</string>
+    <string name="ui_widget_random_tap_refresh" translatable="true">Tik op Vernieuwen voor een andere</string>
+    <string name="ui_widget_refresh" translatable="true">Vernieuwen</string>
+    <string name="ui_section_what_to_search" translatable="true">Wat te zoeken</string>
+    <string name="ui_section_narrow_by" translatable="true">Verfijnen op</string>
+    <string name="ui_section_properties" translatable="true">Eigenschappen</string>
+    <string name="ui_section_results" translatable="true">Resultaten</string>
+    <string name="ui_name_contains" translatable="true">Naam bevat</string>
+    <string name="ui_name_contains_hint" translatable="true">bijv. acid of benz</string>
+    <string name="ui_filters_active_count" translatable="true">%1$d actief</string>
+    <string name="ui_filter_name_contains_s" translatable="true">naam: %1$s</string>
+    <string name="ui_results_limit_n" translatable="true">%1$d tonen</string>
+    <string name="ui_widget_daily_desc" translatable="true">Stof van de dag - elke dag een nieuwe stof</string>
+    <string name="ui_widget_random_desc" translatable="true">Willekeurige stof - tik op Vernieuwen voor een andere</string>
+    <string name="ui_compare_subtitle" translatable="true">Haal verbindingen op en vergelijk eigenschappen naast elkaar</string>
+    <string name="ui_clear_results" translatable="true">Resultaten wissen</string>
+    <string name="ui_comparing_n_compounds" translatable="true">%1$d verbindingen vergelijken</string>
+    <string name="ui_copied_short" translatable="true">Gekopieerd</string>
+    <string name="ui_copy_row_values" translatable="true">Kopieer alle waarden in deze rij</string>
+    <string name="ui_structure_search_summary" translatable="true">%1$s-modus · %2$d%% gelijkenis · %3$d resultaten</string>
+    <string name="ui_structure_search_add_mode_chip" translatable="true">%1$s-modus toevoegen</string>
+    <string name="ui_structure_search_import_hint" translatable="true">Plak SMILES zoals CCO of CC(=O)O, InChI of een V2000 MOL-bestand</string>
+    <string name="ui_faq_widget_daily_q" translatable="true">Wat is het verschil tussen de twee widgets?</string>
+    <string name="ui_faq_widget_daily_a" translatable="true">De Verbinding van de dag-widget leidt zijn keuze af uit de kalenderdatum en toont daardoor de hele dag dezelfde verbinding die om middernacht wisselt. De Willekeurige verbinding-widget kiest op verzoek — druk op zijn vernieuwknop voor altijd een nieuwe.</string>
+    <string name="ui_faq_reaction_predictor_q" translatable="true">Hoe werkt de Reactievoorspeller?</string>
+    <string name="ui_faq_reaction_predictor_a" translatable="true">Hij matcht je geselecteerde reagentia met een offline regelset die is opgebouwd uit de meegeleverde chemische database en stelt waarschijnlijke producten, reactietypes en waarnemingen voor. Hij dekt gangbare studiereacties — controleer ongewone gevallen altijd met een leerboek.</string>
+    <string name="ui_faq_database_size_q" translatable="true">Hoe groot is de ingebouwde chemische database?</string>
+    <string name="ui_faq_database_size_a" translatable="true">Hij bevat 575 stoffen, 108 ionen, 71 functionele groepen en 149 reacties, allemaal offline beschikbaar. De 118 periodiek-systeem-elementen staan in het periodiek systeem, dus de twee referenties dupliceren elkaar nooit.</string>
+    <string name="ui_faq_languages_q" translatable="true">Welke talen ondersteunt ChemSearch?</string>
+    <string name="ui_faq_languages_a" translatable="true">De interface is volledig vertaald in 15 talen: Bengaals, Deens, Duits, Grieks, Spaans, Fins, Frans, Italiaans, Japans, Nederlands, Noors, Pools, Portugees, Russisch en Zweeds. Wijzig het op elk moment via Instellingen > Taal.</string>
+    <string name="ui_whats_new_section_features" translatable="true">Nieuwe functies</string>
+    <string name="ui_whats_new_section_improvements" translatable="true">Verbeteringen</string>
+    <string name="ui_section_whats_new" translatable="true">Wat is er nieuw</string>
+    <string name="ui_whats_new_bullet_reaction" translatable="true">Reactievoorspeller: een offline regelmotor toegevoegd, gebaseerd op de meegeleverde chemische database. Voer maximaal drie reagentia in en ontvang voorspelde producten, reactietypes, waarnemingen en betrouwbaarheidsniveaus.</string>
+    <string name="ui_whats_new_bullet_widgets" translatable="true">Startscherm-widgets: widgets voor Verbinding van de dag en Willekeurige verbinding toegevoegd. De dagelijke wisselt om middernacht, de willekeurige heeft zijn eigen vernieuwknop.</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">Chemische database: uitgebreid van 331 naar 575 stoffen, waaronder aminozuren, vitamines, geneesmiddelen, esters, organometaalverbindingen, silicaten, alkaloïden en meer. De 118 elementen staan nu in het Periodiek systeem in plaats van dat ze in de database werden gedupliceerd.</string>
+    <string name="ui_whats_new_bullet_search" translatable="true">Geavanceerd zoeken: keuzeknop voor resultaatlimiet, naam-bevat-filter en teller van actieve filters met alles wissen in één tik toegevoegd.</string>
+    <string name="ui_whats_new_bullet_tools" translatable="true">Tools: het raster past zich nu aan van 2 kolommen op smalle telefoons tot 5 op brede schermen en tablets. Toolcategorieën gebruiken eigen accentkleuren en rasterrijen houden kaarten van gelijke hoogte.</string>
+    <string name="ui_whats_new_bullet_structure" translatable="true">Structuurzoeken: configuratieoverzicht in één oogopslag, gelijkenisschuif, duidelijkere actieve status, hints voor importformaten en een live formulebadge toegevoegd.</string>
+    <string name="ui_whats_new_bullet_polish" translatable="true">Zoekfouten: specifieke, kleurgecodeerde meldingen toegevoegd voor tarieflimieten, time-outs, ongeldige verzoeken, netwerkstoringen, serverfouten en lege resultaten.</string>
+    <string name="ui_whats_new_bullet_home" translatable="true">Verkennen: snelle acties voor Structuurzoeken, Isomeerzoeken, Periodiek systeem en Chemische database toegevoegd.</string>
+    <string name="ui_whats_new_bullet_library" translatable="true">Bibliotheekacties: houd een opgeslagen verbinding ingedrukt om de formule te kopiëren, deze in PubChem te openen of te verwijderen zonder de invoer te openen.</string>
+    <string name="ui_whats_new_bullet_shortcuts" translatable="true">Launcher-snelkoppelingen: houd het app-icoon ingedrukt om direct naar Zoeken, Bibliotheek, Tools of Instellingen te gaan.</string>
+    <string name="ui_whats_new_bullet_daily" translatable="true">Verbinding van de dag: een startschermskaart toegevoegd die dezelfde dagelijkse verbinding toont als de widget, met formule en typische toepassingen.</string>
+    <string name="ui_whats_new_bullet_csv" translatable="true">Bibliotheekexport: CSV-export toegevoegd naast de bestaande JSON-back-up en importondersteuning.</string>
+    <string name="ui_whats_new_bullet_compare" translatable="true">Verbindingen vergelijken: kopiëren van eigenschappenrijen met één tik, verbindingchips, een actie om resultaten te wissen en ondersteuning voor maximaal zes verbindingen toegevoegd.</string>
+    <string name="ui_whats_new_bullet_periodic" translatable="true">Periodiek systeem: interactieve categoriefilters, fellere elementtegels, verloop-trendheatmaps, min/max-legenda\'s en een klikbare strook met de topvijf elementen toegevoegd.</string>
+    <string name="ui_whats_new_bullet_stoich" translatable="true">Stoichiometrie: atoomeconomie, verbruik en restant per reagens, verbeterde eenhedenconversie en kopieerbare analysesamenvattingen toegevoegd.</string>
+    <string name="ui_whats_new_bullet_display" translatable="true">Weergave: app-brede instelling voor de temperatuureenheid (K, °C of °F) toegevoegd.</string>
+    <string name="ui_whats_new_bullet_haptics" translatable="true">Haptiek: haptische feedback toegevoegd aan ondersteunde interacties.</string>
+    <string name="ui_whats_new_bullet_offline_mode" translatable="true">Ontwikkelaarstools: Offline testmodus toegevoegd met deterministische testresultaten, instelbare latentie, gesimuleerde fouten, geforceerde fouttypes en een offline banner op het scherm. Ook cache-inspectie, apparaat- en build-details en een catalogus met foutmeldingen toegevoegd.</string>
+    <string name="ui_whats_new_bullet_dialogs" translatable="true">Interface: dialogen in FAQ-, hulp- en bevestigingspopups gestandaardiseerd, met getinte icoonkoppen, sluitknoppen en kleurgecodeerde destructieve acties.</string>
+    <string name="ui_whats_new_bullet_cards" translatable="true">Interface: kaarten, selectiestaten en destructieve acties in de hele app gestandaardiseerd. Een Kaarten-instelling toegevoegd om tussen kaartgebaseerde en vlakkere lay-outs te wisselen.</string>
+    <string name="ui_whats_new_bullet_collapsible" translatable="true">Over: de Wat-is-er-nieuw-kaart kan nu worden ingeklapt en toont de hoogtepunten van de huidige versie.</string>
+    <string name="ui_whats_new_bullet_languages" translatable="true">Nieuwe taal: Bengaals toegevoegd en de gelokaliseerde teksten bijgewerkt. Taalkiezers tonen elke taal nu onder zijn eigen naam.</string>
+    <string name="ui_error_search_not_found_s" translatable="true">Geen overeenkomst gevonden voor “%1$s” in PubChem. Probeer een andere naam, een CAS-nummer, of controleer de spelling.</string>
+    <string name="ui_error_search_throttled" translatable="true">PubChem beperkt op dit moment verzoeken. Wacht een paar seconden en probeer het opnieuw.</string>
+    <string name="ui_error_search_timeout" translatable="true">PubChem deed er te lang over om te reageren. Probeer het opnieuw — zeer complexe zoekopdrachten kunnen de tijdslimiet overschrijden.</string>
+    <string name="ui_error_search_bad_request" translatable="true">PubChem wees de zoekopdracht af als ongeldig. Controleer het invoerformaat (naam, CAS of formule).</string>
+    <string name="ui_error_search_bad_request_detail" translatable="true">PubChem wees de zoekopdracht af: %1$s</string>
+    <string name="ui_error_search_network" translatable="true">Netwerkprobleem — PubChem is niet bereikbaar. Controleer je internetverbinding en probeer het opnieuw.</string>
+    <string name="ui_error_search_server" translatable="true">PubChem-serverfout (HTTP %1$s). De service is mogelijk tijdelijk buiten gebruik — probeer het later opnieuw.</string>
+    <string name="ui_error_search_unknown" translatable="true">Onverwachte fout: %1$s</string>
+    <string name="ui_debug_device_build_info" translatable="true">Apparaat- en build-info</string>
+    <string name="ui_debug_device_body" translatable="true">Model, OS, ABI, kernel, installatieprogramma, versie en live geheugengebruik</string>
+    <string name="ui_debug_cache_stats" translatable="true">Verbinding-cache-inspecteur</string>
+    <string name="ui_debug_cache_body" translatable="true">Gecachte bestanden, grootte en handmatig wissen</string>
+    <string name="ui_debug_cache_files_d" translatable="true">Bestanden in cache: %1$d</string>
+    <string name="ui_debug_cache_empty" translatable="true">Geen gecachte verbindingen — zoek en open een verbinding om de cache te vullen.</string>
+    <string name="ui_debug_error_catalog" translatable="true">Catalogus met foutmeldingen</string>
+    <string name="ui_debug_error_catalog_body" translatable="true">Bekijk zoekfouten met hun kleurcodering</string>
+    <string name="ui_cache_cleared" translatable="true">Cache gewist</string>
+    <string name="ui_clipboard_cache" translatable="true">Verbinding-cache-rapport</string>
+    <string name="ui_about_whats_new_s" translatable="true">Nieuw in v%1$s</string>
+    <string name="ui_trend_top_elements" translatable="true">Top 5 elementen</string>
+    <string name="ui_compound_of_the_day" translatable="true">VERBINDING VAN DE DAG</string>
+    <string name="ui_temperature_unit" translatable="true">Temperatuureenheid</string>
+    <string name="ui_subtitle_temperature_unit" translatable="true">Gebruikt voor smelt- en kookpunten in elementdetails en trends</string>
+    <string name="ui_copy_formula" translatable="true">Formule kopiëren</string>
+    <string name="ui_export_library_csv" translatable="true">Bibliotheek exporteren als CSV</string>
+    <string name="ui_error_no_browser" translatable="true">Geen browser gevonden</string>
+    <string name="ui_explore_chemsearch" translatable="true">ChemSearch verkennen</string>
+    <string name="ui_periodic_table_quick_action_subtitle" translatable="true">Bekijk alle 118 elementen en hun eigenschappen</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">900+ stoffen, ionen, groepen en reacties</string>
+    <string name="ui_offline_test_mode" translatable="true">Offline-testmodus</string>
+    <string name="ui_offline_test_mode_subtitle" translatable="true">Toont dummygegevens zonder echte netwerkoproepen</string>
+    <string name="ui_offline_test_mode_toggle_body" translatable="true">Indien ingeschakeld, geven zoeken, opzoeken, structuur- en AI-aanroepen lokale testrecords terug in plaats van het netwerk te benaderen</string>
+    <string name="ui_offline_test_mode_configure" translatable="true">Testmodus configureren</string>
+    <string name="ui_offline_test_mode_configure_subtitle" translatable="true">Latentie, foutpercentage en gesimuleerd fouttype</string>
+    <string name="ui_offline_test_mode_latency" translatable="true">GESIMULEERDE LATENTIE</string>
+    <string name="ui_offline_test_mode_error_rate" translatable="true">WILLEKEURIG FOUTPERCENTAGE</string>
+    <string name="ui_offline_test_mode_failure" translatable="true">GEFORCEERDE FOUT</string>
+    <string name="ui_offline_test_mode_failure_body" translatable="true">Laat elke dummy-aanroep mislukken met dit fouttype, zodat elke kleurgecodeerde melding kan worden geïnspecteerd</string>
+    <string name="ui_offline_test_mode_footer" translatable="true">Resultaten zijn deterministisch: dezelfde zoekopdracht levert altijd dezelfde teststof op, zodat UI-statussen reproduceerbaar zijn. Er verlaat niets het apparaat zolang deze modus aan staat.</string>
+    <string name="ui_offline_test_mode_badge" translatable="true">OFFLINE</string>
+    <string name="ui_offline_test_mode_active_banner" translatable="true">Offline-testmodus is actief: alle resultaten op dit scherm zijn gesimuleerde dummygegevens</string>
+    <string name="ui_offline_test_mode_active_note" translatable="true">Alle resultaten zijn gesimuleerd</string>
 </resources>
-

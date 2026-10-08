@@ -1,6 +1,9 @@
 package com.furthersecrets.chemsearch.ui
 
 import com.furthersecrets.chemsearch.R
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.ui.res.stringResource
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -13,7 +16,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -25,11 +30,15 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.widget.Toast
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import coil.compose.AsyncImage
 import com.furthersecrets.chemsearch.data.ChemUiState
 import com.furthersecrets.chemsearch.data.IsomerItem
+import com.furthersecrets.chemsearch.data.SearchErrorKind
 
 internal const val InitialIsomerResultLimit = 20
 private const val IsomerResultChunkSize = 20
@@ -118,9 +127,19 @@ fun IsomerSearchScreen(
     val focusManager = androidx.compose.ui.platform.LocalFocusManager.current
     var showInfo by remember { mutableStateOf(false) }
     var includeIsotopes by remember { mutableStateOf(false) }
+    var sortMode by remember { mutableStateOf(IsomerSortMode.RELEVANCE) }
     var selectedCids by remember { mutableStateOf<List<Long>>(emptyList()) }
-    val visibleIsomers = remember(state.isomers, state.isomerResultLimit, includeIsotopes) {
-        visibleIsomersForState(state, includeIsotopes = includeIsotopes)
+    val analysis = remember(state.isomerQuery) { analyzeIsomerFormula(state.isomerQuery) }
+    val showInsight = remember(analysis, state.isomerQuery, state.isomers) {
+        state.isomerQuery.isNotBlank() && (state.isomers.isEmpty() || analysis != null)
+    }
+    val sortedIsomers = remember(state.isomers, sortMode) { sortIsomersForDisplay(state.isomers, sortMode) }
+    val visibleIsomers = remember(sortedIsomers, state.isomerResultLimit, includeIsotopes) {
+        visibleIsomers(
+            isomers = sortedIsomers,
+            includeIsotopes = includeIsotopes,
+            maxResults = state.isomerResultLimit
+        )
     }
     val visibleCidSet = remember(visibleIsomers) { visibleIsomers.map { it.cid }.toSet() }
     val selectedVisibleCids = remember(selectedCids, visibleCidSet) {
@@ -131,6 +150,7 @@ fun IsomerSearchScreen(
     }
     val showCompareAction = shouldShowIsomerCompareAction(compareQueries.size)
     val hiddenIsotopes = hiddenIsotopeCount(state.isomers, includeIsotopes)
+    val hasIsotopeToggle = state.isomers.any { it.isIsotope }
     BackHandler(onBack = onBack)
 
     LaunchedEffect(visibleCidSet) {
@@ -182,20 +202,37 @@ fun IsomerSearchScreen(
                     onClear = onClear
                 )
             }
+            if (showInsight) {
+                item {
+                    IsomerFormulaInsightCard(
+                        analysis = analysis,
+                        rawInput = state.isomerQuery
+                    )
+                }
+            }
             if (state.isLoadingIsomers) {
                 item { IsomerLoadingState() }
+                items(3) { IsomerSkeletonCard() }
             }
             state.isomerError?.let { error ->
-                item { IsomerErrorState(error) }
+                item {
+                    IsomerErrorState(
+                        message = error,
+                        errorKind = state.isomerErrorKind,
+                        onRetry = { onSearch() }
+                    )
+                }
             }
             if (state.isomers.isNotEmpty()) {
                 item {
                     IsomerResultsHeader(
                         formula = state.isomerQuery.trim(),
-                        count = visibleIsomers.size
+                        count = visibleIsomers.size,
+                        sortMode = sortMode,
+                        onSortModeChange = { sortMode = it }
                     )
                 }
-                if (state.isomers.any { it.isIsotope }) {
+                if (hasIsotopeToggle) {
                     item {
                         IsotopeFilterRow(
                             includeIsotopes = includeIsotopes,
@@ -298,6 +335,146 @@ private fun IsomerShowMoreRow(
 
 private fun toggleIsomerSelection(selectedCids: List<Long>, cid: Long): List<Long> =
     if (cid in selectedCids) selectedCids - cid else selectedCids + cid
+
+/**
+ * Live read-out of what the typed formula means, before and after searching:
+ * normalized Hill notation, total atoms, molar mass, and degrees of
+ * unsaturation. Shows an invalid-formula warning instead when parsing fails.
+ */
+@Composable
+private fun IsomerFormulaInsightCard(
+    analysis: IsomerFormulaAnalysis?,
+    rawInput: String
+) {
+    val isLight = MaterialTheme.colorScheme.background.luminance() > 0.5f
+    val accent = if (analysis == null) {
+        MaterialTheme.colorScheme.error
+    } else {
+        MaterialTheme.colorScheme.primary
+    }
+    ChemCardSurfaceStatic(accent = accent) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            if (analysis == null) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Warning,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.size(17.dp)
+                    )
+                    Text(
+                        stringResource(R.string.ui_isomer_invalid_formula),
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+                Text(
+                    stringResource(R.string.ui_try_formulas_like_c2h6o_c6h6_or_c6h12o6),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+                )
+            } else {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    Column(modifier = Modifier.weight(1.2f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                        Text(
+                            stringResource(R.string.ui_isomer_insight_formula),
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = accent
+                        )
+                        Text(
+                            analysis.normalized.toFormulaSubscript(),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = FontFamily.Monospace,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                    Column(modifier = Modifier.weight(0.8f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                        Text(
+                            stringResource(R.string.ui_isomer_insight_atoms),
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = accent
+                        )
+                        Text(
+                            analysis.atomCount.toString(),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = FontFamily.Monospace,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    analysis.molarMass?.let { mass ->
+                        Column(modifier = Modifier.weight(1.3f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                            Text(
+                                stringResource(R.string.ui_isomer_mass),
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = accent
+                            )
+                            Text(
+                                String.format(java.util.Locale.US, "%.2f g/mol", mass),
+                                style = MaterialTheme.typography.titleMedium,
+                                fontFamily = FontFamily.Monospace,
+                                fontWeight = FontWeight.Bold,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+                }
+                analysis.dbe?.let { dbe ->
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.12f))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Surface(
+                            shape = RoundedCornerShape(8.dp),
+                            color = accent.copy(alpha = if (isLight) 0.10f else 0.16f),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, accent.copy(alpha = 0.30f))
+                        ) {
+                            Text(
+                                text = formatIsomerDbe(dbe),
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 3.dp),
+                                style = MaterialTheme.typography.labelMedium,
+                                fontFamily = FontFamily.Monospace,
+                                fontWeight = FontWeight.Bold,
+                                color = accent
+                            )
+                        }
+                        Column(verticalArrangement = Arrangement.spacedBy(1.dp)) {
+                            Text(
+                                stringResource(R.string.ui_isomer_insight_dbe),
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
+                            )
+                            Text(
+                                stringResource(R.string.ui_isomer_insight_dbe_desc),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurface.copy(0.48f),
+                                lineHeight = 14.sp
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 @Composable
 private fun IsotopeFilterRow(
@@ -469,7 +646,12 @@ fun IsomerSearchBar(
 // Header row above results
 
 @Composable
-fun IsomerResultsHeader(formula: String, count: Int) {
+internal fun IsomerResultsHeader(
+    formula: String,
+    count: Int,
+    sortMode: IsomerSortMode,
+    onSortModeChange: (IsomerSortMode) -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -489,16 +671,86 @@ fun IsomerResultsHeader(formula: String, count: Int) {
             )
         }
         Surface(
-            shape = RoundedCornerShape(8.dp),
-            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+            shape = RoundedCornerShape(10.dp),
+            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
+            border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.22f))
         ) {
-            Text(
-                text = count.toString(),
-                modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
+            Row(
+                modifier = Modifier.padding(horizontal = 4.dp, vertical = 3.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+                IsomerSortChip(
+                    label = stringResource(R.string.ui_isomer_sort_relevance),
+                    selected = sortMode == IsomerSortMode.RELEVANCE,
+                    onClick = { onSortModeChange(IsomerSortMode.RELEVANCE) }
+                )
+                IsomerSortChip(
+                    label = stringResource(R.string.ui_isomer_sort_name),
+                    selected = sortMode == IsomerSortMode.NAME,
+                    onClick = { onSortModeChange(IsomerSortMode.NAME) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun IsomerSortChip(
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    Surface(
+        onClick = onClick,
+        shape = RoundedCornerShape(8.dp),
+        color = if (selected) MaterialTheme.colorScheme.primary else Color.Transparent
+    ) {
+        Text(
+            text = label,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+            color = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface.copy(0.6f)
+        )
+    }
+}
+
+// Skeleton placeholder shown while isomers load
+
+@Composable
+private fun IsomerSkeletonCard() {
+    val shimmer = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f)
+    ChemCardSurfaceStatic {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(76.dp)
+                    .background(shimmer, RoundedCornerShape(10.dp))
             )
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.7f)
+                        .height(14.dp)
+                        .background(shimmer, RoundedCornerShape(5.dp))
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.35f)
+                        .height(11.dp)
+                        .background(shimmer, RoundedCornerShape(5.dp))
+                )
+            }
         }
     }
 }
@@ -513,20 +765,14 @@ fun IsomerCard(
     onClick: () -> Unit,
     onToggleSelected: () -> Unit = {}
 ) {
+    val context = LocalContext.current
     val imageUrl = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${isomer.cid}" +
             "/PNG?record_type=2d&image_size=small"
 
-    Card(
+    ChemCardSurface(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = androidx.compose.foundation.BorderStroke(
-            1.dp,
-            if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.75f)
-            else MaterialTheme.colorScheme.outline.copy(alpha = 0.14f)
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = if (selected) 2.dp else 1.dp)
+        selected = selected
     ) {
         Row(
             modifier = Modifier
@@ -564,35 +810,38 @@ fun IsomerCard(
                     overflow = TextOverflow.Ellipsis,
                     lineHeight = 18.sp
                 )
-                Surface(
-                    shape = RoundedCornerShape(6.dp),
-                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                    modifier = Modifier.wrapContentWidth()
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    Text(
+                    ChemAccentPill(
                         text = stringResource(R.string.ui_cid_label, isomer.cid.toString()),
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
-                        style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontFamily = FontFamily.Monospace
+                        accent = MaterialTheme.colorScheme.primary
                     )
-                }
-                if (isomer.isIsotope) {
-                    Surface(
-                        shape = RoundedCornerShape(6.dp),
-                        color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.12f),
-                        modifier = Modifier.wrapContentWidth()
-                    ) {
-                        Text(
+                    if (isomer.isIsotope) {
+                        ChemAccentPill(
                             text = stringResource(R.string.ui_isotope),
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.tertiary
+                            accent = MaterialTheme.colorScheme.tertiary
                         )
                     }
                 }
+            }
+
+            TextButton(
+                onClick = {
+                    val cm = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    cm.setPrimaryClip(ClipData.newPlainText(isomer.title, isomer.title))
+                    Toast.makeText(context, context.getString(R.string.ui_copied_to_clipboard), Toast.LENGTH_SHORT).show()
+                },
+                modifier = Modifier.size(34.dp),
+                contentPadding = PaddingValues(4.dp)
+            ) {
+                Icon(
+                    Icons.Default.Copy,
+                    contentDescription = stringResource(R.string.ui_copy),
+                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.45f),
+                    modifier = Modifier.size(16.dp)
+                )
             }
 
             Checkbox(
@@ -606,6 +855,7 @@ fun IsomerCard(
         }
     }
 }
+
 @Composable
 fun IsomerLoadingState() {
     val reduceMotion = LocalReduceMotion.current
@@ -637,28 +887,58 @@ internal fun isomerLoadingAnimationLayout(compactMode: Boolean): SearchLoadingAn
     searchLoadingAnimationLayout(compactMode)
 
 @Composable
-fun IsomerErrorState(message: String) {
+fun IsomerErrorState(
+    message: String,
+    errorKind: SearchErrorKind? = null,
+    onRetry: (() -> Unit)? = null
+) {
+    val isLight = MaterialTheme.colorScheme.background.luminance() > 0.5f
+    val (accent, containerAlpha) = when (errorKind) {
+        SearchErrorKind.NOT_FOUND ->
+            MaterialTheme.colorScheme.tertiary to 0.08f
+        SearchErrorKind.THROTTLED ->
+            Color(0xFFF59E0B) to 0.10f
+        SearchErrorKind.NETWORK ->
+            Color(0xFFEF4444) to 0.08f
+        SearchErrorKind.TIMEOUT, SearchErrorKind.SERVER ->
+            Color(0xFFF97316) to 0.08f
+        SearchErrorKind.BAD_REQUEST, SearchErrorKind.OTHER, null ->
+            MaterialTheme.colorScheme.error to 0.08f
+    }
     Surface(
         shape = RoundedCornerShape(14.dp),
-        color = MaterialTheme.colorScheme.error.copy(alpha = 0.08f),
+        color = accent.copy(alpha = containerAlpha),
+        border = androidx.compose.foundation.BorderStroke(1.dp, accent.copy(alpha = if (isLight) 0.34f else 0.28f)),
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
-            modifier = Modifier.padding(14.dp),
+            modifier = Modifier.padding(start = 14.dp, end = 6.dp, top = 10.dp, bottom = 10.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                Icons.Default.Atom,
+                Icons.Default.Warning,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f),
+                tint = accent,
                 modifier = Modifier.size(18.dp)
             )
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.error.copy(alpha = 0.85f)
+                color = accent,
+                modifier = Modifier.weight(1f),
+                lineHeight = 16.sp
             )
+            if (onRetry != null) {
+                IconButton(onClick = onRetry, modifier = Modifier.size(34.dp)) {
+                    Icon(
+                        Icons.Default.Search,
+                        contentDescription = stringResource(R.string.ui_retry),
+                        tint = accent,
+                        modifier = Modifier.size(17.dp)
+                    )
+                }
+            }
         }
     }
 }

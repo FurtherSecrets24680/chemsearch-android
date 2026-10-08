@@ -10,7 +10,6 @@
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 .DS_Store
-/build
 /captures
 /tmp/
 .externalNativeBuild
@@ -26,9 +25,30 @@ keystores/
 *.p12
 *.pfx
 
+.freebuff/
+
 # Release outputs
 app/release/
+/build
+/build/
+app/build/
 *.apk
 *.aab
 *.dm
 output-metadata.json
+
+# Local dev scripts (i18n audit, translation applier)
+/tools/
+
+# Local docs (working notes and analysis, not shipped with the repo)
+/docs/
+
+# Staging folders for store screenshots / one-off assets (superseded by phoneScreenshots)
+fastlane/metadata/android/en-US/images/new/
+
+# One-off string backups from translation passes
+.tmp_backup_whatsnew/
+
+# Python bytecode from untracked local tooling
+tools/__pycache__/
+

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="shortcut_search"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_search"
+        android:shortcutShortLabel="@string/ui_search"
+        android:shortcutLongLabel="@string/ui_search">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.furthersecrets.chemsearch"
+            android:targetClass="com.furthersecrets.chemsearch.MainActivity">
+            <extra
+                android:name="chemsearch_extra_tab"
+                android:value="search" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="shortcut_library"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_library"
+        android:shortcutShortLabel="@string/ui_library"
+        android:shortcutLongLabel="@string/ui_library">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.furthersecrets.chemsearch"
+            android:targetClass="com.furthersecrets.chemsearch.MainActivity">
+            <extra
+                android:name="chemsearch_extra_tab"
+                android:value="library" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="shortcut_tools"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_tools"
+        android:shortcutShortLabel="@string/ui_tools"
+        android:shortcutLongLabel="@string/ui_tools">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.furthersecrets.chemsearch"
+            android:targetClass="com.furthersecrets.chemsearch.MainActivity">
+            <extra
+                android:name="chemsearch_extra_tab"
+                android:value="tools" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="shortcut_settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_settings"
+        android:shortcutShortLabel="@string/ui_settings"
+        android:shortcutLongLabel="@string/ui_settings">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.furthersecrets.chemsearch"
+            android:targetClass="com.furthersecrets.chemsearch.MainActivity">
+            <extra
+                android:name="chemsearch_extra_tab"
+                android:value="settings" />
+        </intent>
+    </shortcut>
+</shortcuts>

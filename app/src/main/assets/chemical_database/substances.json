@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "substances": [
     {
       "id": "acetic-acid",
@@ -2454,313 +2454,6 @@
       "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/7962",
       "id": "methylcyclohexane",
       "searchQuery": "Methylcyclohexane"
-    },
-    {
-      "name": "Aluminum",
-      "type": "Element",
-      "uses": "Light structural metal and amphoteric chemistry reference.",
-      "notes": "Dust can be flammable; salts vary in hazard.",
-      "otherNames": [
-        "aluminium"
-      ],
-      "tags": [
-        "element",
-        "metal"
-      ],
-      "formula": "Al",
-      "sourceLabel": "PubChem",
-      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5359268",
-      "id": "aluminum",
-      "searchQuery": "Aluminum"
-    },
-    {
-      "name": "Arsenic",
-      "formula": "As",
-      "otherNames": [
-        "arsenic element"
-      ],
-      "type": "Element",
-      "uses": "Discussed as a toxic water contaminant; historically used in alloys and compounds.",
-      "notes": "Highly toxic in many forms; chronic exposure is dangerous.",
-      "tags": [
-        "element",
-        "water pollution"
-      ],
-      "searchQuery": "Arsenic",
-      "id": "arsenic",
-      "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
-    },
-    {
-      "name": "Calcium",
-      "type": "Element",
-      "uses": "Alkaline earth element found in limestone, bones, and salts.",
-      "notes": "Metal reacts with water/acids; salts vary in hazard.",
-      "otherNames": [],
-      "tags": [
-        "element",
-        "alkaline earth metal"
-      ],
-      "formula": "Ca",
-      "sourceLabel": "PubChem",
-      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5460341",
-      "id": "calcium",
-      "searchQuery": "Calcium"
-    },
-    {
-      "name": "Carbon",
-      "type": "Element",
-      "uses": "Basis of organic chemistry and fuels.",
-      "notes": "Fine powders may be combustible/dusty.",
-      "otherNames": [],
-      "tags": [
-        "element",
-        "nonmetal"
-      ],
-      "formula": "C",
-      "sourceLabel": "PubChem",
-      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5462310",
-      "id": "carbon",
-      "searchQuery": "Carbon"
-    },
-    {
-      "name": "Chromium",
-      "type": "Element",
-      "uses": "Stainless steel and plating metal.",
-      "notes": "Hexavalent compounds are highly hazardous.",
-      "otherNames": [],
-      "tags": [
-        "element",
-        "metal"
-      ],
-      "formula": "Cr",
-      "sourceLabel": "PubChem",
-      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/23976",
-      "id": "chromium",
-      "searchQuery": "Chromium"
-    },
-    {
-      "name": "Copper",
-      "formula": "Cu",
-      "otherNames": [
-        "copper metal"
-      ],
-      "type": "Element",
-      "uses": "Electrode material, conductor, and product in Daniell cell reactions.",
-      "notes": "Metal is low hazard; salts can be harmful and aquatic-toxic.",
-      "tags": [
-        "element",
-        "electrochemistry"
-      ],
-      "searchQuery": "Copper",
-      "id": "copper",
-      "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
-    },
-    {
-      "name": "Iron",
-      "formula": "Fe",
-      "otherNames": [
-        "iron metal"
-      ],
-      "type": "Element",
-      "uses": "Rusting, corrosion, and redox examples.",
-      "notes": "Metal filings may irritate; hot iron and dust need care.",
-      "tags": [
-        "element",
-        "corrosion"
-      ],
-      "searchQuery": "Iron",
-      "id": "iron",
-      "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
-    },
-    {
-      "name": "Lead",
-      "type": "Element",
-      "uses": "Dense metal found in batteries and older paints/pipes.",
-      "notes": "Toxic cumulative heavy metal.",
-      "otherNames": [],
-      "tags": [
-        "element",
-        "metal"
-      ],
-      "formula": "Pb",
-      "sourceLabel": "PubChem",
-      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5352425",
-      "id": "lead",
-      "searchQuery": "Lead"
-    },
-    {
-      "name": "Magnesium",
-      "formula": "Mg",
-      "otherNames": [
-        "magnesium metal"
-      ],
-      "type": "Element",
-      "uses": "Burns with a bright flame to form magnesium oxide; reacts with acids.",
-      "notes": "Flammable as ribbon/powder; bright flame can damage eyes.",
-      "tags": [
-        "element",
-        "combustion"
-      ],
-      "searchQuery": "Magnesium",
-      "id": "magnesium",
-      "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
-    },
-    {
-      "name": "Mercury",
-      "type": "Element",
-      "uses": "Liquid metal used historically in instruments and amalgams.",
-      "notes": "Toxic vapor and cumulative exposure hazard.",
-      "otherNames": [],
-      "tags": [
-        "element",
-        "metal"
-      ],
-      "formula": "Hg",
-      "sourceLabel": "PubChem",
-      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/23931",
-      "id": "mercury",
-      "searchQuery": "Mercury"
-    },
-    {
-      "name": "Nickel",
-      "type": "Element",
-      "uses": "Alloys, plating, and battery chemistry metal.",
-      "notes": "Skin sensitizer; compounds vary in hazard.",
-      "otherNames": [],
-      "tags": [
-        "element",
-        "metal"
-      ],
-      "formula": "Ni",
-      "sourceLabel": "PubChem",
-      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/935",
-      "id": "nickel",
-      "searchQuery": "Nickel"
-    },
-    {
-      "name": "Phosphorus",
-      "type": "Element",
-      "uses": "Nonmetal in phosphates, fertilizers, and matches.",
-      "notes": "White phosphorus is extremely hazardous; allotrope matters.",
-      "otherNames": [],
-      "tags": [
-        "element",
-        "nonmetal"
-      ],
-      "formula": "P",
-      "sourceLabel": "PubChem",
-      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5462309",
-      "id": "phosphorus",
-      "searchQuery": "Phosphorus"
-    },
-    {
-      "name": "Potassium",
-      "type": "Element",
-      "uses": "Essential element, reactive alkali metal, and salt-forming metal.",
-      "notes": "Reacts violently with water as metal.",
-      "otherNames": [],
-      "tags": [
-        "element",
-        "alkali metal"
-      ],
-      "formula": "K",
-      "sourceLabel": "PubChem",
-      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5462222",
-      "id": "potassium",
-      "searchQuery": "Potassium"
-    },
-    {
-      "name": "Silver",
-      "formula": "Ag",
-      "otherNames": [
-        "silver metal"
-      ],
-      "type": "Element",
-      "uses": "Electroplating metal and cathode product in silver-ion cells.",
-      "notes": "Soluble silver salts are irritants/oxidizers.",
-      "tags": [
-        "element",
-        "electroplating"
-      ],
-      "searchQuery": "Silver",
-      "id": "silver",
-      "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
-    },
-    {
-      "name": "Sodium",
-      "formula": "Na",
-      "otherNames": [
-        "sodium metal"
-      ],
-      "type": "Element",
-      "uses": "Reactive metal in synthesis, redox, and ionic-compound examples.",
-      "notes": "Reacts violently with water; corrosive products may form.",
-      "tags": [
-        "element",
-        "redox"
-      ],
-      "searchQuery": "Sodium",
-      "id": "sodium",
-      "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
-    },
-    {
-      "id": "sulfur",
-      "name": "Sulfur",
-      "formula": "S",
-      "otherNames": [
-        "Sulphur"
-      ],
-      "type": "Element",
-      "uses": "Nonmetal used in vulcanization, fertilizers, and sulfuric acid manufacture.",
-      "notes": "Dust can irritate; burns to sulfur dioxide.",
-      "tags": [
-        "element",
-        "nonmetal",
-        "mineral"
-      ],
-      "sourceLabel": "PubChem",
-      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5362487",
-      "searchQuery": "Sulfur"
-    },
-    {
-      "name": "Tin",
-      "type": "Element",
-      "uses": "Tinplate, bronze, and solder-related metal.",
-      "notes": "Metal is low hazard; organotin compounds can be toxic.",
-      "otherNames": [],
-      "tags": [
-        "element",
-        "metal"
-      ],
-      "formula": "Sn",
-      "sourceLabel": "PubChem",
-      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5352426",
-      "id": "tin",
-      "searchQuery": "Tin"
-    },
-    {
-      "name": "Zinc",
-      "formula": "Zn",
-      "otherNames": [
-        "zinc metal"
-      ],
-      "type": "Element",
-      "uses": "Anode metal in galvanic cells, dry cells, and displacement reactions.",
-      "notes": "Metal dust/fumes can be harmful; zinc salts vary in toxicity.",
-      "tags": [
-        "element",
-        "electrochemistry"
-      ],
-      "searchQuery": "Zinc",
-      "id": "zinc",
-      "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
     },
     {
       "name": "Bromine",
@@ -5771,6 +5464,4679 @@
       "searchQuery": "Sodium lauryl sulfate",
       "sourceLabel": "PubChem",
       "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/3423265"
+    },
+    {
+      "id": "chromic-acid",
+      "name": "Chromic acid",
+      "formula": "H2CrO4",
+      "otherNames": [
+        "Dichromic acid solution"
+      ],
+      "type": "Acid",
+      "uses": "Historic glass cleaning, chrome plating baths (largely replaced).",
+      "notes": "Strong oxidiser with Cr(VI), highly toxic and carcinogenic.",
+      "tags": [
+        "acid",
+        "oxidizer",
+        "toxic"
+      ],
+      "searchQuery": "Chromic acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "selenic-acid",
+      "name": "Selenic acid",
+      "formula": "H2SeO4",
+      "otherNames": [],
+      "type": "Acid",
+      "uses": "Specialist analytical reagent; etching.",
+      "notes": "One of the few acids that dissolves gold and even attacks glass slowly.",
+      "tags": [
+        "acid",
+        "oxidizer"
+      ],
+      "searchQuery": "Selenic acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "telluric-acid",
+      "name": "Telluric acid",
+      "formula": "H6TeO6",
+      "otherNames": [],
+      "type": "Acid",
+      "uses": "Analytical chemistry, tellurium chemistry.",
+      "notes": "Octahedral molecular acid, unusual for oxoacids.",
+      "tags": [
+        "acid"
+      ],
+      "searchQuery": "Telluric acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "arsenic-trioxide",
+      "name": "Arsenic trioxide",
+      "formula": "As2O3",
+      "otherNames": [
+        "White arsenic",
+        "Arsenic(III) oxide"
+      ],
+      "type": "Oxide",
+      "uses": "Wood preservatives, pesticides (restricted), historic rat poison.",
+      "notes": "Classic poison of detective fiction; also a leukaemia medicine today.",
+      "tags": [
+        "oxide",
+        "toxic"
+      ],
+      "searchQuery": "Arsenic trioxide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "hydrogen-cyanide",
+      "name": "Hydrogen cyanide",
+      "formula": "HCN",
+      "otherNames": [
+        "Prussic acid",
+        "Hydrocyanic acid"
+      ],
+      "type": "Molecular compound",
+      "uses": "Acrylic fibre and plastics precursor, fumigation (historical).",
+      "notes": "Extremely fast-acting poison; smells of bitter almonds.",
+      "tags": [
+        "toxic",
+        "industrial"
+      ],
+      "searchQuery": "Hydrogen cyanide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "hydrogen-sulfide",
+      "name": "Hydrogen sulfide",
+      "formula": "H2S",
+      "otherNames": [
+        "Sewer gas",
+        "Sulfane hydrogen"
+      ],
+      "type": "Molecular compound",
+      "uses": "Analytical reagent, heavy water production, signalling molecule in biology.",
+      "notes": "Rotten-egg smell; deadens the sense of smell, making it deceptively dangerous.",
+      "tags": [
+        "gas",
+        "toxic"
+      ],
+      "searchQuery": "Hydrogen sulfide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "phosgene",
+      "name": "Phosgene",
+      "formula": "COCl2",
+      "otherNames": [
+        "Carbonyl chloride"
+      ],
+      "type": "Molecular compound",
+      "uses": "Making polyurethanes, polycarbonate and dyes.",
+      "notes": "WWI chemical weapon; today an important industrial intermediate handled with extreme care.",
+      "tags": [
+        "toxic",
+        "industrial"
+      ],
+      "searchQuery": "Phosgene",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "cyanogen",
+      "name": "Cyanogen",
+      "formula": "(CN)2",
+      "otherNames": [
+        "Oxalonitrile",
+        "Dicyan"
+      ],
+      "type": "Molecular compound",
+      "uses": "Organic synthesis, rocket propellant research, welding gas (historical).",
+      "notes": "Colourless gas with almond odour, related to cyanides.",
+      "tags": [
+        "gas",
+        "toxic"
+      ],
+      "searchQuery": "Cyanogen",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "nitrosyl-chloride",
+      "name": "Nitrosyl chloride",
+      "formula": "NOCl",
+      "otherNames": [],
+      "type": "Molecular compound",
+      "uses": "Making caprolactam for nylon-6, aqua regia chemistry.",
+      "notes": "Fuming orange gas formed when nitric oxide meets chlorine.",
+      "tags": [
+        "gas",
+        "industrial"
+      ],
+      "searchQuery": "Nitrosyl chloride",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "chlorine-trifluoride",
+      "name": "Chlorine trifluoride",
+      "formula": "ClF3",
+      "otherNames": [],
+      "type": "Molecular compound",
+      "uses": "Semiconductor chamber cleaning, uranium processing.",
+      "notes": "Sets glass, sand and asbestos on fire; among the most reactive chemicals known.",
+      "tags": [
+        "oxidizer",
+        "toxic",
+        "fluorine"
+      ],
+      "searchQuery": "Chlorine trifluoride",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "hydrazine",
+      "name": "Hydrazine",
+      "formula": "N2H4",
+      "otherNames": [
+        "Diazane"
+      ],
+      "type": "Molecular compound",
+      "uses": "Rocket fuel, boiler water treatment, foaming agents, pesticide precursor.",
+      "notes": "Corrosive liquid that also powers spacecraft thrusters.",
+      "tags": [
+        "rocket",
+        "toxic"
+      ],
+      "searchQuery": "Hydrazine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "phosphine",
+      "name": "Phosphine",
+      "formula": "PH3",
+      "otherNames": [
+        "Hydrogen phosphide"
+      ],
+      "type": "Molecular compound",
+      "uses": "Semiconductor doping, fumigant for grain.",
+      "notes": "Spontaneously flammable impure samples glow faintly.",
+      "tags": [
+        "gas",
+        "toxic"
+      ],
+      "searchQuery": "Phosphine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "silane",
+      "name": "Silane",
+      "formula": "SiH4",
+      "otherNames": [
+        "Silicon hydride"
+      ],
+      "type": "Molecular compound",
+      "uses": "Making silicon films for chips and solar panels.",
+      "notes": "Pyrophoric gas central to the electronics industry.",
+      "tags": [
+        "gas",
+        "semiconductor"
+      ],
+      "searchQuery": "Silane",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "diborane",
+      "name": "Diborane",
+      "formula": "B2H6",
+      "otherNames": [],
+      "type": "Molecular compound",
+      "uses": "Hydroboration in organic synthesis, semiconductor doping.",
+      "notes": "Electron-deficient molecule with unusual three-centre bonds.",
+      "tags": [
+        "gas",
+        "reagent"
+      ],
+      "searchQuery": "Diborane",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "arsine",
+      "name": "Arsine",
+      "formula": "AsH3",
+      "otherNames": [
+        "Arseniuretted hydrogen"
+      ],
+      "type": "Molecular compound",
+      "uses": "Semiconductor doping, analytical tests for arsenic.",
+      "notes": "Deadly gas once used in forensics (Marsh test).",
+      "tags": [
+        "gas",
+        "toxic"
+      ],
+      "searchQuery": "Arsine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "germane",
+      "name": "Germane",
+      "formula": "GeH4",
+      "otherNames": [],
+      "type": "Molecular compound",
+      "uses": "Germanium films for chips and fibre optics.",
+      "notes": "The germanium analogue of methane.",
+      "tags": [
+        "gas",
+        "semiconductor"
+      ],
+      "searchQuery": "Germane",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "white-phosphorus",
+      "name": "White phosphorus",
+      "formula": "P4",
+      "otherNames": [
+        "Yellow phosphorus"
+      ],
+      "type": "Elemental molecule",
+      "uses": "Matches (historical), munitions, phosphoric acid production.",
+      "notes": "Glows in air and burns fiercely; stored under water.",
+      "tags": [
+        "toxic",
+        "pyrophoric"
+      ],
+      "searchQuery": "White phosphorus",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "red-phosphorus",
+      "name": "Red phosphorus",
+      "formula": "P",
+      "otherNames": [],
+      "type": "Elemental molecule",
+      "uses": "Safety match strikers, semiconductors, flame retardants.",
+      "notes": "Polymeric, much safer allotrope of phosphorus.",
+      "tags": [
+        "matches"
+      ],
+      "searchQuery": "Red phosphorus",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "black-phosphorus",
+      "name": "Black phosphorus",
+      "formula": "P",
+      "otherNames": [
+        "Phosphorene (layers)"
+      ],
+      "type": "Elemental molecule",
+      "uses": "Research into 2D electronics and batteries.",
+      "notes": "Least reactive allotrope; its 2D sheets rival graphene.",
+      "tags": [
+        "semiconductor"
+      ],
+      "searchQuery": "Black phosphorus",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "heavy-water",
+      "name": "Heavy water",
+      "formula": "D2O",
+      "otherNames": [
+        "Deuterium oxide"
+      ],
+      "type": "Molecular compound",
+      "uses": "Nuclear reactor moderator, isotope tracing, NMR solvents.",
+      "notes": "Density ~10% above normal water; tastes slightly sweet.",
+      "tags": [
+        "nuclear",
+        "isotope"
+      ],
+      "searchQuery": "Heavy water",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "deuterium",
+      "name": "Deuterium",
+      "formula": "D",
+      "otherNames": [
+        "Hydrogen-2"
+      ],
+      "type": "Isotope",
+      "uses": "Fusion research, isotope labelling, NMR.",
+      "notes": "Stable heavy hydrogen with one proton and one neutron.",
+      "tags": [
+        "isotope",
+        "fusion"
+      ],
+      "searchQuery": "Deuterium",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "tritium",
+      "name": "Tritium",
+      "formula": "T",
+      "otherNames": [
+        "Hydrogen-3"
+      ],
+      "type": "Isotope",
+      "uses": "Self-luminous watch dials, exit signs, fusion research.",
+      "notes": "Radioactive hydrogen that makes glow-in-the-dark tubes work without batteries.",
+      "tags": [
+        "isotope",
+        "radioactive"
+      ],
+      "searchQuery": "Tritium",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "potassium-chloride",
+      "name": "Potassium chloride",
+      "formula": "KCl",
+      "otherNames": [
+        "Sylvite",
+        "Muriate of potash"
+      ],
+      "type": "Salt",
+      "uses": "Fertiliser, low-sodium salt substitute, saline drips, saltwater aquariums.",
+      "notes": "Tastes like salt but feeds plants potassium instead.",
+      "tags": [
+        "salt",
+        "food",
+        "fertiliser"
+      ],
+      "searchQuery": "Potassium chloride",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "barium-sulfate",
+      "name": "Barium sulfate",
+      "formula": "BaSO4",
+      "otherNames": [
+        "Barite",
+        "Blanc fixe"
+      ],
+      "type": "Salt",
+      "uses": "X-ray contrast medium, drilling mud, white pigment extender.",
+      "notes": "Safe to drink despite barium's toxicity because it will not dissolve.",
+      "tags": [
+        "salt",
+        "medical"
+      ],
+      "searchQuery": "Barium sulfate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "potassium-ferricyanide",
+      "name": "Potassium ferricyanide",
+      "formula": "K3[Fe(CN)6]",
+      "otherNames": [
+        "Red prussiate"
+      ],
+      "type": "Salt",
+      "uses": "Blueprint photography, electroplating, iron etching.",
+      "notes": "Not a free-cyanide poison in normal use; famous in blueprint making.",
+      "tags": [
+        "salt",
+        "photography"
+      ],
+      "searchQuery": "Potassium ferricyanide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "potassium-ferrocyanide",
+      "name": "Potassium ferrocyanide",
+      "formula": "K4[Fe(CN)6]",
+      "otherNames": [
+        "Yellow prussiate"
+      ],
+      "type": "Salt",
+      "uses": "Table-salt anticaking agent, wine and salt purification, blueprinting.",
+      "notes": "Food-safe complex; releases HCN only under strong acid and heat.",
+      "tags": [
+        "salt",
+        "food"
+      ],
+      "searchQuery": "Potassium ferrocyanide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "mohr-s-salt",
+      "name": "Mohr's salt",
+      "formula": "(NH4)2Fe(SO4)2·6H2O",
+      "otherNames": [
+        "Ammonium iron(II) sulfate"
+      ],
+      "type": "Hydrate",
+      "uses": "Titration standard for oxidimetry, analytical labs.",
+      "notes": "Air-stable iron(II) double salt used to standardise permanganate.",
+      "tags": [
+        "salt",
+        "hydrate",
+        "school"
+      ],
+      "searchQuery": "Mohr's salt",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "silicon-carbide",
+      "name": "Silicon carbide",
+      "formula": "SiC",
+      "otherNames": [
+        "Carborundum"
+      ],
+      "type": "Salt",
+      "uses": "Sandpaper, brake discs, LED history, kiln furniture.",
+      "notes": "Nearly as hard as diamond; first commercial blue LED used it.",
+      "tags": [
+        "ceramic",
+        "abrasive"
+      ],
+      "searchQuery": "Silicon carbide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "tungsten-carbide",
+      "name": "Tungsten carbide",
+      "formula": "WC",
+      "otherNames": [
+        "Cemented carbide"
+      ],
+      "type": "Salt",
+      "uses": "Drill bits, milling tools, armour-piercing cores, jewellery.",
+      "notes": "Extreme hardness and wear resistance for cutting tools.",
+      "tags": [
+        "ceramic",
+        "tool"
+      ],
+      "searchQuery": "Tungsten carbide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "iron-ii-oxide",
+      "name": "Iron(II) oxide",
+      "formula": "FeO",
+      "otherNames": [
+        "Wuestite"
+      ],
+      "type": "Oxide",
+      "uses": "Steel making, ceramics, research.",
+      "notes": "Black oxide stable only at high temperature or under restraint.",
+      "tags": [
+        "oxide"
+      ],
+      "searchQuery": "Iron(II) oxide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "chromium-iii-oxide",
+      "name": "Chromium(III) oxide",
+      "formula": "Cr2O3",
+      "otherNames": [
+        "Chromia",
+        "Chrome green"
+      ],
+      "type": "Oxide",
+      "uses": "Green pigment, metal polishing, refractory bricks, tanning.",
+      "notes": "One of the most lightfast green pigments known.",
+      "tags": [
+        "oxide",
+        "pigment"
+      ],
+      "searchQuery": "Chromium(III) oxide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "copper-i-oxide",
+      "name": "Copper(I) oxide",
+      "formula": "Cu2O",
+      "otherNames": [
+        "Cuprite"
+      ],
+      "type": "Oxide",
+      "uses": "Red pigments, antifouling ship paint, old rectifiers, ceramics.",
+      "notes": "Red oxide that conducts as a semiconductor.",
+      "tags": [
+        "oxide",
+        "pigment"
+      ],
+      "searchQuery": "Copper(I) oxide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "copper-ii-oxide",
+      "name": "Copper(II) oxide",
+      "formula": "CuO",
+      "otherNames": [
+        "Tenorite"
+      ],
+      "type": "Oxide",
+      "uses": "Black pigment, ceramics glazes, catalysts, wire oxidation.",
+      "notes": "Turns copper wire black when heated in air.",
+      "tags": [
+        "oxide",
+        "pigment"
+      ],
+      "searchQuery": "Copper(II) oxide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "lead-iv-oxide",
+      "name": "Lead(IV) oxide",
+      "formula": "PbO2",
+      "otherNames": [
+        "Plattnerite"
+      ],
+      "type": "Oxide",
+      "uses": "Car battery cathode plates, matches, electrochemistry.",
+      "notes": "Strong oxidiser; the active cathode material in lead-acid batteries.",
+      "tags": [
+        "oxide",
+        "battery",
+        "toxic"
+      ],
+      "searchQuery": "Lead(IV) oxide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "talc",
+      "name": "Talc",
+      "formula": "Mg3Si4O10(OH)2",
+      "otherNames": [
+        "Talcum powder",
+        "Steatite",
+        "Soapstone"
+      ],
+      "type": "Silicate",
+      "uses": "Baby powder, cosmetics, ceramics, paper, paint.",
+      "notes": "Softest mineral on the Mohs scale (1); soapy feel.",
+      "tags": [
+        "mineral",
+        "silicate",
+        "cosmetic"
+      ],
+      "searchQuery": "Talc",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "kaolinite",
+      "name": "Kaolinite",
+      "formula": "Al2Si2O5(OH)4",
+      "otherNames": [
+        "China clay",
+        "Kaolin"
+      ],
+      "type": "Silicate",
+      "uses": "Porcelain, paper coating, medicines (kaolin paste), cosmetics.",
+      "notes": "The white clay of Chinese porcelain.",
+      "tags": [
+        "mineral",
+        "silicate",
+        "ceramic"
+      ],
+      "searchQuery": "Kaolinite",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "muscovite",
+      "name": "Muscovite",
+      "formula": "KAl2(AlSi3O10)(OH)2",
+      "otherNames": [
+        "Mica",
+        "Isinglass"
+      ],
+      "type": "Silicate",
+      "uses": "Electrical insulation, furnace windows, cosmetics shimmer, joint cement.",
+      "notes": "Splits into transparent elastic sheets.",
+      "tags": [
+        "mineral",
+        "silicate"
+      ],
+      "searchQuery": "Muscovite",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "orthoclase",
+      "name": "Orthoclase",
+      "formula": "KAlSi3O8",
+      "otherNames": [
+        "Feldspar",
+        "Potassium feldspar"
+      ],
+      "type": "Silicate",
+      "uses": "Ceramics and glass raw material, gemstones (moonstone), scrubbing powders.",
+      "notes": "One of the most abundant crustal minerals.",
+      "tags": [
+        "mineral",
+        "silicate"
+      ],
+      "searchQuery": "Orthoclase",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "chrysotile",
+      "name": "Chrysotile",
+      "formula": "Mg3Si2O5(OH)4",
+      "otherNames": [
+        "White asbestos"
+      ],
+      "type": "Silicate",
+      "uses": "Historic insulation, brake linings, roofing (banned in most countries).",
+      "notes": "Serpentine asbestos; a serious lung carcinogen when fibres fly.",
+      "tags": [
+        "mineral",
+        "silicate",
+        "toxic"
+      ],
+      "searchQuery": "Chrysotile",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "zeolite-a",
+      "name": "Zeolite A",
+      "formula": "Na12[(AlO2)12(SiO2)12]·27H2O",
+      "otherNames": [
+        "Sodium aluminosilicate",
+        "Molecular sieve"
+      ],
+      "type": "Silicate",
+      "uses": "Laundry detergents (water softener), gas separations, drying solvents.",
+      "notes": "Cage-structured sieve that grabs calcium ions and small molecules.",
+      "tags": [
+        "silicate",
+        "cleaner"
+      ],
+      "searchQuery": "Zeolite A",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "vermiculite",
+      "name": "Vermiculite",
+      "formula": "(Mg,Fe,Al)3(Al,Si)4O10(OH)2·4H2O",
+      "otherNames": [],
+      "type": "Silicate",
+      "uses": "Potting soil additive, insulation, packing material.",
+      "notes": "Expands like an accordion when heated.",
+      "tags": [
+        "mineral",
+        "silicate"
+      ],
+      "searchQuery": "Vermiculite",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "olivine",
+      "name": "Olivine",
+      "formula": "(Mg,Fe)2SiO4",
+      "otherNames": [
+        "Peridot (gem)"
+      ],
+      "type": "Silicate",
+      "uses": "Gemstones, sandblasting, CO2 mineralisation research, refractory sand.",
+      "notes": "Green beach sand in Hawaii is mostly olivine.",
+      "tags": [
+        "mineral",
+        "silicate",
+        "gem"
+      ],
+      "searchQuery": "Olivine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "garnet",
+      "name": "Garnet",
+      "formula": "X3Y2(SiO4)3",
+      "otherNames": [],
+      "type": "Silicate",
+      "uses": "Abrasive papers and waterjet cutting, gemstones.",
+      "notes": "Family of silicates; deep red almandine is the classic garnet.",
+      "tags": [
+        "mineral",
+        "silicate",
+        "gem"
+      ],
+      "searchQuery": "Garnet",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "zircon",
+      "name": "Zircon",
+      "formula": "ZrSiO4",
+      "otherNames": [
+        "Zircon (mineral)",
+        "Hyacinth"
+      ],
+      "type": "Silicate",
+      "uses": "Gemstones, zirconium metal and ceramics, geological dating.",
+      "notes": "Oldest dated Earth material (~4.4 billion years).",
+      "tags": [
+        "mineral",
+        "silicate",
+        "gem"
+      ],
+      "searchQuery": "Zircon",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "beryl",
+      "name": "Beryl",
+      "formula": "Be3Al2Si6O18",
+      "otherNames": [
+        "Emerald (Cr green)",
+        "Aquamarine (blue)"
+      ],
+      "type": "Silicate",
+      "uses": "Beryllium ore, gemstones, historic X-ray windows.",
+      "notes": "Emerald and aquamarine are colour varieties of the same mineral.",
+      "tags": [
+        "mineral",
+        "silicate",
+        "gem"
+      ],
+      "searchQuery": "Beryl",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "opal",
+      "name": "Opal",
+      "formula": "SiO2·nH2O",
+      "otherNames": [
+        "Precious opal"
+      ],
+      "type": "Silicate",
+      "uses": "Gemstones, jewellery.",
+      "notes": "Not crystalline: ordered silica spheres diffract light into play-of-colour.",
+      "tags": [
+        "mineral",
+        "gem"
+      ],
+      "searchQuery": "Opal",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "silica-gel",
+      "name": "Silica gel",
+      "formula": "SiO2",
+      "otherNames": [
+        "Amorphous silica"
+      ],
+      "type": "Oxide",
+      "uses": "Desiccant packets, chromatography, catalyst support, cat litter.",
+      "notes": "Porous sponge of silicon dioxide; those 'do not eat' packets.",
+      "tags": [
+        "oxide",
+        "desiccant"
+      ],
+      "searchQuery": "Silica gel",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "uraninite",
+      "name": "Uraninite",
+      "formula": "UO2",
+      "otherNames": [
+        "Pitchblende"
+      ],
+      "type": "Ore",
+      "uses": "Uranium ore, radium source (historical), nuclear fuel raw material.",
+      "notes": "The ore Marie Curie processed for radium and polonium.",
+      "tags": [
+        "ore",
+        "radioactive"
+      ],
+      "searchQuery": "Uraninite",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "monazite",
+      "name": "Monazite",
+      "formula": "(Ce,La,Nd,Th)PO4",
+      "otherNames": [],
+      "type": "Ore",
+      "uses": "Rare-earth and thorium ore, sand mining.",
+      "notes": "Beach-sand mineral rich in cerium phosphates.",
+      "tags": [
+        "ore",
+        "rare earth"
+      ],
+      "searchQuery": "Monazite",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "wolframite",
+      "name": "Wolframite",
+      "formula": "(Fe,Mn)WO4",
+      "otherNames": [
+        "Wolfram"
+      ],
+      "type": "Ore",
+      "uses": "Principal tungsten ore for mining, hard-metal industry and drilling tools.",
+      "notes": "Source of tungsten's chemical symbol W, from its German name Wolfram.",
+      "tags": [
+        "ore",
+        "metal"
+      ],
+      "searchQuery": "Wolframite",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "graphite",
+      "name": "Graphite",
+      "formula": "C",
+      "otherNames": [
+        "Plumbago",
+        "Black lead"
+      ],
+      "type": "Carbon allotrope",
+      "uses": "Pencil leads, lubricants, electrodes, nuclear moderators, brushes in motors.",
+      "notes": "Sheets of graphene loosely stacked; sliding layers write and lubricate.",
+      "tags": [
+        "carbon",
+        "material"
+      ],
+      "searchQuery": "Graphite",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "diamond",
+      "name": "Diamond",
+      "formula": "C",
+      "otherNames": [],
+      "type": "Carbon allotrope",
+      "uses": "Gemstones, cutting tools, drill bits, heat spreaders, anvil cells.",
+      "notes": "Hardest natural material; superb thermal conductor.",
+      "tags": [
+        "carbon",
+        "material",
+        "gem"
+      ],
+      "searchQuery": "Diamond",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "graphene",
+      "name": "Graphene",
+      "formula": "C",
+      "otherNames": [],
+      "type": "Carbon allotrope",
+      "uses": "Research electronics, sensors, composites, batteries, membranes.",
+      "notes": "One-atom-thick honeycomb sheet, 200x stronger than steel by weight.",
+      "tags": [
+        "carbon",
+        "material",
+        "nano"
+      ],
+      "searchQuery": "Graphene",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "fullerene",
+      "name": "Fullerene",
+      "formula": "C60",
+      "otherNames": [
+        "Buckminsterfullerene",
+        "Buckyball"
+      ],
+      "type": "Carbon allotrope",
+      "uses": "Research in drug delivery, photovoltaics, lubricants.",
+      "notes": "Football-shaped carbon cage discovered in 1985.",
+      "tags": [
+        "carbon",
+        "material",
+        "nano"
+      ],
+      "searchQuery": "Fullerene",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "carbon-nanotube",
+      "name": "Carbon nanotube",
+      "formula": "C",
+      "otherNames": [
+        "CNT",
+        "Buckytube"
+      ],
+      "type": "Carbon allotrope",
+      "uses": "Composites, conductive films, research electronics.",
+      "notes": "Rolled graphene sheets with extraordinary strength and conductivity.",
+      "tags": [
+        "carbon",
+        "material",
+        "nano"
+      ],
+      "searchQuery": "Carbon nanotube",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "polydimethylsiloxane",
+      "name": "Polydimethylsiloxane",
+      "formula": "(C2H6OSi)n",
+      "otherNames": [
+        "PDMS",
+        "Silicone oil",
+        "Silicone rubber"
+      ],
+      "type": "Polymer",
+      "uses": "Silicone sealants, lubricants, medical tubing, silly putty, cosmetics.",
+      "notes": "The backbone polymer of all silicones.",
+      "tags": [
+        "polymer",
+        "silicone"
+      ],
+      "searchQuery": "Polydimethylsiloxane",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "acrylonitrile-butadiene-styrene",
+      "name": "Acrylonitrile butadiene styrene",
+      "formula": "(C8H8·C4H6·C3H3N)n",
+      "otherNames": [
+        "ABS"
+      ],
+      "type": "Polymer",
+      "uses": "LEGO bricks, 3D printer filament, appliance housings, luggage.",
+      "notes": "Tough three-part plastic of toys and dashboards.",
+      "tags": [
+        "polymer",
+        "plastic"
+      ],
+      "searchQuery": "Acrylonitrile butadiene styrene",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "kevlar",
+      "name": "Kevlar",
+      "formula": "(C14H10N2O2)n",
+      "otherNames": [
+        "Aramid (para)",
+        "Poly paraphenylene terephthalamide"
+      ],
+      "type": "Polymer",
+      "uses": "Bulletproof vests, cut-resistant gloves, tyre cords, boat hulls.",
+      "notes": "Five times stronger than steel by weight; spun from liquid crystal solution.",
+      "tags": [
+        "polymer",
+        "material"
+      ],
+      "searchQuery": "Kevlar",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "polylactic-acid",
+      "name": "Polylactic acid",
+      "formula": "(C3H4O2)n",
+      "otherNames": [
+        "PLA",
+        "Polylactide"
+      ],
+      "type": "Polymer",
+      "uses": "3D printing, compostable packaging, medical stitches.",
+      "notes": "Compostable plastic made from fermented plant starch.",
+      "tags": [
+        "polymer",
+        "bioplastic"
+      ],
+      "searchQuery": "Polylactic acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "polyurethane",
+      "name": "Polyurethane",
+      "formula": "(C3H7NO)n",
+      "otherNames": [
+        "PU"
+      ],
+      "type": "Polymer",
+      "uses": "Foam mattresses, insulation, shoe soles, spandex fibres, varnish.",
+      "notes": "Foam and elastic fibres from isocyanate chemistry.",
+      "tags": [
+        "polymer",
+        "foam"
+      ],
+      "searchQuery": "Polyurethane",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "epoxy-resin",
+      "name": "Epoxy resin",
+      "formula": "(C15H16O2)n",
+      "otherNames": [
+        "Epoxy",
+        "Bisphenol A epoxy"
+      ],
+      "type": "Polymer",
+      "uses": "Adhesives, composites (carbon fibre), coatings, circuit boards.",
+      "notes": "Two-part adhesive that cures to a rock-hard thermoset.",
+      "tags": [
+        "polymer",
+        "adhesive"
+      ],
+      "searchQuery": "Epoxy resin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "styrene-butadiene-rubber",
+      "name": "Styrene-butadiene rubber",
+      "formula": "(C8H8·C4H6)n",
+      "otherNames": [
+        "SBR",
+        "Buna-S"
+      ],
+      "type": "Polymer",
+      "uses": "Most car tyres, shoe soles, chewing gum base (food grade).",
+      "notes": "Workhorse synthetic rubber of the tyre industry.",
+      "tags": [
+        "polymer",
+        "rubber"
+      ],
+      "searchQuery": "Styrene-butadiene rubber",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "alanine",
+      "name": "Alanine",
+      "formula": "C3H7NO2",
+      "otherNames": [
+        "Ala",
+        "2-Aminopropanoic acid"
+      ],
+      "type": "Amino acid",
+      "uses": "Protein building block, biosynthesis, sports supplements.",
+      "notes": "Simplest chiral amino acid; glucogenic energy source.",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Alanine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "arginine",
+      "name": "Arginine",
+      "formula": "C6H14N4O2",
+      "otherNames": [
+        "Arg",
+        "2-Amino-5-guanidinopentanoic acid"
+      ],
+      "type": "Amino acid",
+      "uses": "Protein synthesis, nitric oxide precursor in the body, supplements.",
+      "notes": "Most basic of the standard amino acids.",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Arginine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "asparagine",
+      "name": "Asparagine",
+      "formula": "C4H8N2O3",
+      "otherNames": [
+        "Asn"
+      ],
+      "type": "Amino acid",
+      "uses": "Protein synthesis; first amino acid ever isolated (asparagus, 1806).",
+      "notes": "Its name comes from asparagus juice.",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Asparagine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "aspartic-acid",
+      "name": "Aspartic acid",
+      "formula": "C4H7NO4",
+      "otherNames": [
+        "Asp",
+        "Aspartate"
+      ],
+      "type": "Amino acid",
+      "uses": "Protein synthesis, ASPARTAME precursor, metabolism.",
+      "notes": "Acidic amino acid; excitatory neurotransmitter.",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Aspartic acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "cysteine",
+      "name": "Cysteine",
+      "formula": "C3H7NO2S",
+      "otherNames": [
+        "Cys",
+        "2-Amino-3-mercaptopropanoic acid"
+      ],
+      "type": "Amino acid",
+      "uses": "Protein synthesis, disulfide bridges in hair and proteins, NAC precursor.",
+      "notes": "Its thiol gives proteins sulfur cross-links.",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Cysteine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "glutamic-acid",
+      "name": "Glutamic acid",
+      "formula": "C5H9NO4",
+      "otherNames": [
+        "Glu",
+        "Glutamate"
+      ],
+      "type": "Amino acid",
+      "uses": "Protein synthesis, MSG production, umami taste, neurotransmitter.",
+      "notes": "Main excitatory neurotransmitter of the human brain.",
+      "tags": [
+        "biochemistry",
+        "protein",
+        "food"
+      ],
+      "searchQuery": "Glutamic acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "glutamine",
+      "name": "Glutamine",
+      "formula": "C5H10N2O3",
+      "otherNames": [
+        "Gln"
+      ],
+      "type": "Amino acid",
+      "uses": "Protein synthesis, immune and gut-cell fuel, supplements.",
+      "notes": "Most abundant amino acid in blood.",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Glutamine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "histidine",
+      "name": "Histidine",
+      "formula": "C6H9N3O2",
+      "otherNames": [
+        "His"
+      ],
+      "type": "Amino acid",
+      "uses": "Protein synthesis, precursor of histamine, enzyme active sites.",
+      "notes": "Its imidazole side chain buffers pH in proteins.",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Histidine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "isoleucine",
+      "name": "Isoleucine",
+      "formula": "C6H13NO2",
+      "otherNames": [
+        "Ile"
+      ],
+      "type": "Amino acid",
+      "uses": "Essential protein building block, muscle metabolism, BCAA supplements.",
+      "notes": "One of the three branched-chain amino acids.",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Isoleucine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "leucine",
+      "name": "Leucine",
+      "formula": "C6H13NO2",
+      "otherNames": [
+        "Leu"
+      ],
+      "type": "Amino acid",
+      "uses": "Essential amino acid, muscle protein synthesis trigger, BCAA supplements.",
+      "notes": "Strongest activator of muscle building among amino acids.",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Leucine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "lysine",
+      "name": "Lysine",
+      "formula": "C6H14N2O2",
+      "otherNames": [
+        "Lys",
+        "2,6-Diaminohexanoic acid"
+      ],
+      "type": "Amino acid",
+      "uses": "Essential amino acid, animal feed fortification, supplements.",
+      "notes": "Limiting amino acid in cereals; important for collagen.",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Lysine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "methionine",
+      "name": "Methionine",
+      "formula": "C5H11NO2S",
+      "otherNames": [
+        "Met"
+      ],
+      "type": "Amino acid",
+      "uses": "Essential sulfur amino acid, methyl-group donor in metabolism.",
+      "notes": "Start codon amino acid for every new protein.",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Methionine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "phenylalanine",
+      "name": "Phenylalanine",
+      "formula": "C9H11NO2",
+      "otherNames": [
+        "Phe"
+      ],
+      "type": "Amino acid",
+      "uses": "Essential amino acid, aspartame component, neurotransmitter precursor.",
+      "notes": "Accumulates dangerously in phenylketonuria (PKU).",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Phenylalanine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "proline",
+      "name": "Proline",
+      "formula": "C5H9NO2",
+      "otherNames": [
+        "Pro",
+        "Pyrrolidine-2-carboxylic acid"
+      ],
+      "type": "Amino acid",
+      "uses": "Protein synthesis, collagen structure, wound-healing supplements.",
+      "notes": "Cyclic imino acid that kinks protein chains.",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Proline",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "serine",
+      "name": "Serine",
+      "formula": "C3H7NO3",
+      "otherNames": [
+        "Ser"
+      ],
+      "type": "Amino acid",
+      "uses": "Protein synthesis, phospholipid headgroups, enzyme catalysis.",
+      "notes": "Its hydroxyl arm is the workhorse of enzyme active sites.",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Serine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "threonine",
+      "name": "Threonine",
+      "formula": "C4H9NO3",
+      "otherNames": [
+        "Thr"
+      ],
+      "type": "Amino acid",
+      "uses": "Essential amino acid, glycine precursor, feed supplements.",
+      "notes": "Last standard amino acid discovered (1935).",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Threonine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "tryptophan",
+      "name": "Tryptophan",
+      "formula": "C11H12N2O2",
+      "otherNames": [
+        "Trp"
+      ],
+      "type": "Amino acid",
+      "uses": "Essential amino acid, serotonin and melatonin precursor.",
+      "notes": "Thanksgiving-turkey sleepiness fame (though carb-heavy meals matter more).",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Tryptophan",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "tyrosine",
+      "name": "Tyrosine",
+      "formula": "C9H11NO3",
+      "otherNames": [
+        "Tyr"
+      ],
+      "type": "Amino acid",
+      "uses": "Protein synthesis, dopamine/adrenaline/thyroid hormone precursor.",
+      "notes": "Phosphorylated tyrosine residues run cell signalling.",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Tyrosine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "valine",
+      "name": "Valine",
+      "formula": "C5H11NO2",
+      "otherNames": [
+        "Val"
+      ],
+      "type": "Amino acid",
+      "uses": "Essential amino acid, muscle repair, BCAA supplements.",
+      "notes": "Named for the plant valerian.",
+      "tags": [
+        "biochemistry",
+        "protein"
+      ],
+      "searchQuery": "Valine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "thiamine",
+      "name": "Thiamine",
+      "formula": "C12H17N4OS+",
+      "otherNames": [
+        "Vitamin B1",
+        "Aneurine"
+      ],
+      "type": "Vitamin",
+      "uses": "B vitamin supplements, food fortification, beriberi prevention.",
+      "notes": "Deficiency causes beriberi; lost in polished rice.",
+      "tags": [
+        "vitamin",
+        "nutrition"
+      ],
+      "searchQuery": "Thiamine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "riboflavin",
+      "name": "Riboflavin",
+      "formula": "C17H20N4O6",
+      "otherNames": [
+        "Vitamin B2"
+      ],
+      "type": "Vitamin",
+      "uses": "B vitamin fortification, food colouring (yellow).",
+      "notes": "Its fluorescence makes urine bright yellow after supplements.",
+      "tags": [
+        "vitamin",
+        "nutrition"
+      ],
+      "searchQuery": "Riboflavin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "niacin",
+      "name": "Niacin",
+      "formula": "C6H5NO2",
+      "otherNames": [
+        "Vitamin B3",
+        "Nicotinic acid"
+      ],
+      "type": "Vitamin",
+      "uses": "Cholesterol therapy, food fortification, pellagra prevention.",
+      "notes": "Deficiency disease pellagra: dermatitis, diarrhoea, dementia.",
+      "tags": [
+        "vitamin",
+        "nutrition"
+      ],
+      "searchQuery": "Niacin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "pantothenic-acid",
+      "name": "Pantothenic acid",
+      "formula": "C9H17NO5",
+      "otherNames": [
+        "Vitamin B5"
+      ],
+      "type": "Vitamin",
+      "uses": "Cosmetics (hair care), supplements, coenzyme A production.",
+      "notes": "Pantothen means 'from everywhere' — it is in most foods.",
+      "tags": [
+        "vitamin",
+        "nutrition"
+      ],
+      "searchQuery": "Pantothenic acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "pyridoxine",
+      "name": "Pyridoxine",
+      "formula": "C8H11NO3",
+      "otherNames": [
+        "Vitamin B6"
+      ],
+      "type": "Vitamin",
+      "uses": "Supplements, nausea-of-pregnancy therapy, fortification.",
+      "notes": "Cofactor for over 100 enzymes, mostly amino-acid metabolism.",
+      "tags": [
+        "vitamin",
+        "nutrition"
+      ],
+      "searchQuery": "Pyridoxine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "biotin",
+      "name": "Biotin",
+      "formula": "C10H16N2O3S",
+      "otherNames": [
+        "Vitamin B7",
+        "Vitamin H"
+      ],
+      "type": "Vitamin",
+      "uses": "Hair-and-nail supplements, lab assays, enzyme cofactor.",
+      "notes": "The S in its formula betrays the sulfur it carries.",
+      "tags": [
+        "vitamin",
+        "nutrition"
+      ],
+      "searchQuery": "Biotin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "folic-acid",
+      "name": "Folic acid",
+      "formula": "C19H19N7O6",
+      "otherNames": [
+        "Vitamin B9",
+        "Folacin"
+      ],
+      "type": "Vitamin",
+      "uses": "Pregnancy supplements, fortification of flour, anaemia prevention.",
+      "notes": "Prevents neural-tube defects; key to DNA building.",
+      "tags": [
+        "vitamin",
+        "nutrition",
+        "medical"
+      ],
+      "searchQuery": "Folic acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "cyanocobalamin",
+      "name": "Cyanocobalamin",
+      "formula": "C63H88CoN14O14P",
+      "otherNames": [
+        "Vitamin B12"
+      ],
+      "type": "Vitamin",
+      "uses": "B12 injections and supplements, vegan fortification.",
+      "notes": "Largest and most complex vitamin; contains a cobalt atom.",
+      "tags": [
+        "vitamin",
+        "nutrition",
+        "organometallic"
+      ],
+      "searchQuery": "Cyanocobalamin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "retinol",
+      "name": "Retinol",
+      "formula": "C20H30O",
+      "otherNames": [
+        "Vitamin A"
+      ],
+      "type": "Vitamin",
+      "uses": "Eye-health supplements, skin creams, fortification.",
+      "notes": "Night vision depends on its aldehyde in rhodopsin.",
+      "tags": [
+        "vitamin",
+        "nutrition"
+      ],
+      "searchQuery": "Retinol",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "cholecalciferol",
+      "name": "Cholecalciferol",
+      "formula": "C27H44O",
+      "otherNames": [
+        "Vitamin D3"
+      ],
+      "type": "Vitamin",
+      "uses": "Supplements, milk fortification, rickets prevention.",
+      "notes": "Made in skin from sunlight acting on cholesterol.",
+      "tags": [
+        "vitamin",
+        "nutrition"
+      ],
+      "searchQuery": "Cholecalciferol",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "tocopherol",
+      "name": "Tocopherol",
+      "formula": "C29H50O2",
+      "otherNames": [
+        "Vitamin E",
+        "Alpha-tocopherol"
+      ],
+      "type": "Vitamin",
+      "uses": "Antioxidant in supplements and cosmetics, food preservative.",
+      "notes": "Fat-soluble antioxidant protecting cell membranes.",
+      "tags": [
+        "vitamin",
+        "nutrition"
+      ],
+      "searchQuery": "Tocopherol",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "phylloquinone",
+      "name": "Phylloquinone",
+      "formula": "C31H46O2",
+      "otherNames": [
+        "Vitamin K1"
+      ],
+      "type": "Vitamin",
+      "uses": "Blood-clotting support, newborn injections, warfarin antidote.",
+      "notes": "Leafy-green vitamin that lets blood clot.",
+      "tags": [
+        "vitamin",
+        "nutrition",
+        "medical"
+      ],
+      "searchQuery": "Phylloquinone",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "coenzyme-q10",
+      "name": "Coenzyme Q10",
+      "formula": "C59H90O4",
+      "otherNames": [
+        "Ubiquinone",
+        "CoQ10"
+      ],
+      "type": "Quinone",
+      "uses": "Supplements, skincare, mitochondrial research.",
+      "notes": "Named \"ubiquitous\" because it is in every cell membrane.",
+      "tags": [
+        "biochemistry",
+        "nutrition"
+      ],
+      "searchQuery": "Coenzyme Q10",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "serotonin",
+      "name": "Serotonin",
+      "formula": "C10H12N2O",
+      "otherNames": [
+        "5-Hydroxytryptamine",
+        "5-HT"
+      ],
+      "type": "Neurotransmitter",
+      "uses": "Neuroscience research, gut physiology, antidepressant target.",
+      "notes": "Mood, sleep and gut-movement messenger.",
+      "tags": [
+        "biochemistry",
+        "hormone"
+      ],
+      "searchQuery": "Serotonin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "dopamine",
+      "name": "Dopamine",
+      "formula": "C8H11NO2",
+      "otherNames": [
+        "3,4-Dihydroxyphenethylamine"
+      ],
+      "type": "Neurotransmitter",
+      "uses": "Parkinson therapy (as levodopa), critical-care drug, neuroscience.",
+      "notes": "Reward and movement messenger of the brain.",
+      "tags": [
+        "biochemistry",
+        "hormone"
+      ],
+      "searchQuery": "Dopamine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "adrenaline",
+      "name": "Adrenaline",
+      "formula": "C9H13NO3",
+      "otherNames": [
+        "Epinephrine"
+      ],
+      "type": "Hormone",
+      "uses": "Anaphylaxis pens (EpiPen), cardiac arrest, asthma crisis.",
+      "notes": "Fight-or-flight hormone; the emergency drug of anaphylaxis.",
+      "tags": [
+        "hormone",
+        "medical"
+      ],
+      "searchQuery": "Adrenaline",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "noradrenaline",
+      "name": "Noradrenaline",
+      "formula": "C8H11NO3",
+      "otherNames": [
+        "Norepinephrine"
+      ],
+      "type": "Hormone",
+      "uses": "Critical-care blood-pressure drug, neuroscience.",
+      "notes": "Focus and alertness transmitter.",
+      "tags": [
+        "hormone",
+        "medical"
+      ],
+      "searchQuery": "Noradrenaline",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "histamine",
+      "name": "Histamine",
+      "formula": "C5H9N3",
+      "otherNames": [],
+      "type": "Neurotransmitter",
+      "uses": "Allergy research, gastric-acid physiology.",
+      "notes": "The molecule antihistamines block in allergies.",
+      "tags": [
+        "biochemistry"
+      ],
+      "searchQuery": "Histamine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "melatonin",
+      "name": "Melatonin",
+      "formula": "C13H16N2O2",
+      "otherNames": [
+        "N-Acetyl-5-methoxytryptamine"
+      ],
+      "type": "Hormone",
+      "uses": "Jet-lag and sleep supplements.",
+      "notes": "Darkness-triggered sleep hormone from the pineal gland.",
+      "tags": [
+        "hormone",
+        "nutrition"
+      ],
+      "searchQuery": "Melatonin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "testosterone",
+      "name": "Testosterone",
+      "formula": "C19H28O2",
+      "otherNames": [],
+      "type": "Hormone",
+      "uses": "Hormone therapy, hypogonadism treatment, sports-doping control.",
+      "notes": "Primary male sex hormone, an anabolic steroid.",
+      "tags": [
+        "hormone",
+        "medical"
+      ],
+      "searchQuery": "Testosterone",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "progesterone",
+      "name": "Progesterone",
+      "formula": "C21H30O2",
+      "otherNames": [],
+      "type": "Hormone",
+      "uses": "Contraceptive pills, hormone therapy, pregnancy support.",
+      "notes": "Pregnancy-maintaining hormone.",
+      "tags": [
+        "hormone",
+        "medical"
+      ],
+      "searchQuery": "Progesterone",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "estradiol",
+      "name": "Estradiol",
+      "formula": "C18H24O2",
+      "otherNames": [
+        "Oestradiol",
+        "E2"
+      ],
+      "type": "Hormone",
+      "uses": "Hormone therapy, contraceptives, menopause treatment.",
+      "notes": "Primary female sex hormone.",
+      "tags": [
+        "hormone",
+        "medical"
+      ],
+      "searchQuery": "Estradiol",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "cortisol",
+      "name": "Cortisol",
+      "formula": "C21H30O5",
+      "otherNames": [
+        "Hydrocortisone"
+      ],
+      "type": "Hormone",
+      "uses": "Anti-inflammatory creams, adrenal-insufficiency therapy.",
+      "notes": "The stress hormone; also a potent anti-inflammatory.",
+      "tags": [
+        "hormone",
+        "medical"
+      ],
+      "searchQuery": "Cortisol",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "thyroxine",
+      "name": "Thyroxine",
+      "formula": "C15H11I4NO4",
+      "otherNames": [
+        "T4",
+        "Levothyroxine"
+      ],
+      "type": "Hormone",
+      "uses": "Hypothyroidism therapy (one of the most prescribed drugs).",
+      "notes": "Iodine-carrying metabolic-rate hormone; four iodines each.",
+      "tags": [
+        "hormone",
+        "medical"
+      ],
+      "searchQuery": "Thyroxine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "prostaglandin-e2",
+      "name": "Prostaglandin E2",
+      "formula": "C20H32O5",
+      "otherNames": [
+        "Dinoprostone",
+        "PGE2"
+      ],
+      "type": "Eicosanoid",
+      "uses": "Labour induction, ulcer research, inflammation studies.",
+      "notes": "Local hormone of inflammation, fever and labour.",
+      "tags": [
+        "hormone",
+        "medical"
+      ],
+      "searchQuery": "Prostaglandin E2",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "insulin",
+      "name": "Insulin",
+      "formula": "C257H383N65O77S6",
+      "otherNames": [],
+      "type": "Peptide",
+      "uses": "Diabetes therapy (synthetic human insulin).",
+      "notes": "The sugar-uptake hormone; first recombinant-DNA drug (1982).",
+      "tags": [
+        "peptide",
+        "medical"
+      ],
+      "searchQuery": "Insulin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "salicylic-acid",
+      "name": "Salicylic acid",
+      "formula": "C7H6O3",
+      "otherNames": [
+        "2-Hydroxybenzoic acid"
+      ],
+      "type": "Acid",
+      "uses": "Acne treatments, warts, aspirin precursor, dandruff shampoos.",
+      "notes": "Willow-bark acid that aspirin is made from.",
+      "tags": [
+        "acid",
+        "medicine",
+        "cosmetic"
+      ],
+      "searchQuery": "Salicylic acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "naproxen",
+      "name": "Naproxen",
+      "formula": "C14H14O2",
+      "otherNames": [],
+      "type": "Drug",
+      "uses": "Long-acting NSAID for arthritis and cramps.",
+      "notes": "Twice-daily NSAID with long half-life.",
+      "tags": [
+        "medicine",
+        "drug"
+      ],
+      "searchQuery": "Naproxen",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "lidocaine",
+      "name": "Lidocaine",
+      "formula": "C14H22N2O",
+      "otherNames": [
+        "Lignocaine",
+        "Xylocaine"
+      ],
+      "type": "Drug",
+      "uses": "Local anaesthetic injections and creams, heart-rhythm drug.",
+      "notes": "Numbs nerves by blocking sodium channels.",
+      "tags": [
+        "medicine",
+        "drug"
+      ],
+      "searchQuery": "Lidocaine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "morphine",
+      "name": "Morphine",
+      "formula": "C17H19NO3",
+      "otherNames": [
+        "Morphium"
+      ],
+      "type": "Alkaloid",
+      "uses": "Severe pain relief (cancer, trauma, surgery).",
+      "notes": "The original opium alkaloid, named after Morpheus.",
+      "tags": [
+        "alkaloid",
+        "medicine"
+      ],
+      "searchQuery": "Morphine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "codeine",
+      "name": "Codeine",
+      "formula": "C18H21NO3",
+      "otherNames": [
+        "3-Methylmorphine"
+      ],
+      "type": "Alkaloid",
+      "uses": "Cough syrups and mild-to-moderate pain relief.",
+      "notes": "Prodrug mostly converted to morphine in the body.",
+      "tags": [
+        "alkaloid",
+        "medicine"
+      ],
+      "searchQuery": "Codeine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "penicillin-g",
+      "name": "Penicillin G",
+      "formula": "C16H18N2O4S",
+      "otherNames": [
+        "Benzylpenicillin"
+      ],
+      "type": "Antibiotic",
+      "uses": "Bacterial infections (injection), historic first antibiotic.",
+      "notes": "Fleming's 1928 discovery that launched the antibiotic age.",
+      "tags": [
+        "antibiotic",
+        "medicine"
+      ],
+      "searchQuery": "Penicillin G",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "amoxicillin",
+      "name": "Amoxicillin",
+      "formula": "C16H19N3O5S",
+      "otherNames": [],
+      "type": "Antibiotic",
+      "uses": "Broad-spectrum oral antibiotic, ear and chest infections.",
+      "notes": "Workhorse aminopenicillin, often paired with clavulanate.",
+      "tags": [
+        "antibiotic",
+        "medicine"
+      ],
+      "searchQuery": "Amoxicillin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "chloroquine",
+      "name": "Chloroquine",
+      "formula": "C18H26ClN3",
+      "otherNames": [],
+      "type": "Drug",
+      "uses": "Malaria treatment and prophylaxis (where still effective).",
+      "notes": "Old antimalarial; also an autoimmune therapy.",
+      "tags": [
+        "medicine",
+        "drug"
+      ],
+      "searchQuery": "Chloroquine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "metformin",
+      "name": "Metformin",
+      "formula": "C4H11N5",
+      "otherNames": [],
+      "type": "Drug",
+      "uses": "First-line type-2 diabetes medicine.",
+      "notes": "Derived from goat's-rue plant guanidine.",
+      "tags": [
+        "medicine",
+        "drug"
+      ],
+      "searchQuery": "Metformin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "atorvastatin",
+      "name": "Atorvastatin",
+      "formula": "C33H35FN2O5",
+      "otherNames": [
+        "Lipitor"
+      ],
+      "type": "Drug",
+      "uses": "Cholesterol lowering (statin).",
+      "notes": "Once the best-selling drug in history.",
+      "tags": [
+        "medicine",
+        "drug"
+      ],
+      "searchQuery": "Atorvastatin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "sertraline",
+      "name": "Sertraline",
+      "formula": "C17H17Cl2N",
+      "otherNames": [
+        "Zoloft"
+      ],
+      "type": "Drug",
+      "uses": "Depression, anxiety, OCD (SSRI).",
+      "notes": "Selective serotonin reuptake inhibitor.",
+      "tags": [
+        "medicine",
+        "drug"
+      ],
+      "searchQuery": "Sertraline",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "propranolol",
+      "name": "Propranolol",
+      "formula": "C16H21NO2",
+      "otherNames": [],
+      "type": "Drug",
+      "uses": "Beta-blocker for hypertension, tremor, performance anxiety.",
+      "notes": "The first beta-blocker (1964).",
+      "tags": [
+        "medicine",
+        "drug"
+      ],
+      "searchQuery": "Propranolol",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "salbutamol",
+      "name": "Salbutamol",
+      "formula": "C13H21NO3",
+      "otherNames": [
+        "Albuterol"
+      ],
+      "type": "Drug",
+      "uses": "Asthma reliever inhalers.",
+      "notes": "Rapid bronchodilator acting on beta-2 receptors.",
+      "tags": [
+        "medicine",
+        "drug"
+      ],
+      "searchQuery": "Salbutamol",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "omeprazole",
+      "name": "Omeprazole",
+      "formula": "C17H19N3O3S",
+      "otherNames": [],
+      "type": "Drug",
+      "uses": "Heartburn and ulcer therapy (proton-pump inhibitor).",
+      "notes": "Shuts down stomach-acid pumps.",
+      "tags": [
+        "medicine",
+        "drug"
+      ],
+      "searchQuery": "Omeprazole",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "caffeine-citrate",
+      "name": "Caffeine citrate",
+      "formula": "C14H18N4O9",
+      "otherNames": [],
+      "type": "Drug",
+      "uses": "Neonatal apnoea treatment, caffeinated soft drinks.",
+      "notes": "Soluble caffeine salt used in premature-baby wards.",
+      "tags": [
+        "drug",
+        "stimulant"
+      ],
+      "searchQuery": "Caffeine citrate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "quinine",
+      "name": "Quinine",
+      "formula": "C20H24N2O2",
+      "otherNames": [],
+      "type": "Alkaloid",
+      "uses": "Tonic water bitterness, malaria history, cramp remedies.",
+      "notes": "Cinchona-bark alkaloid that made tonic water glow under UV.",
+      "tags": [
+        "alkaloid",
+        "food"
+      ],
+      "searchQuery": "Quinine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "theophylline",
+      "name": "Theophylline",
+      "formula": "C7H8N4O2",
+      "otherNames": [
+        "1,3-Dimethylxanthine"
+      ],
+      "type": "Alkaloid",
+      "uses": "Asthma therapy (oral), tea chemistry.",
+      "notes": "Tea's xanthine; a slower cousin of caffeine.",
+      "tags": [
+        "alkaloid",
+        "stimulant"
+      ],
+      "searchQuery": "Theophylline",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "atropine",
+      "name": "Atropine",
+      "formula": "C17H23NO3",
+      "otherNames": [],
+      "type": "Alkaloid",
+      "uses": "Eye-dilating drops, nerve-agent antidote, bradycardia therapy.",
+      "notes": "From deadly nightshade; pupil dilation was renaissance beauty fashion.",
+      "tags": [
+        "alkaloid",
+        "medicine"
+      ],
+      "searchQuery": "Atropine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "cocaine",
+      "name": "Cocaine",
+      "formula": "C17H21NO4",
+      "otherNames": [
+        "Benzoylmethylecgonine"
+      ],
+      "type": "Alkaloid",
+      "uses": "Valid topical anaesthesia in ENT surgery only; controlled narcotic.",
+      "notes": "Historic first local anaesthetic; strictly controlled.",
+      "tags": [
+        "alkaloid",
+        "controlled"
+      ],
+      "searchQuery": "Cocaine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "strychnine",
+      "name": "Strychnine",
+      "formula": "C21H22N2O2",
+      "otherNames": [],
+      "type": "Alkaloid",
+      "uses": "Rodenticide (restricted), classic poisoning case-study.",
+      "notes": "Infamous convulsant poison of detective fiction.",
+      "tags": [
+        "alkaloid",
+        "toxic"
+      ],
+      "searchQuery": "Strychnine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "ephedrine",
+      "name": "Ephedrine",
+      "formula": "C10H15NO",
+      "otherNames": [],
+      "type": "Alkaloid",
+      "uses": "Decongestants, anaesthesia hypotension therapy.",
+      "notes": "Ma-huang plant alkaloid, precursor concern in regulation.",
+      "tags": [
+        "alkaloid",
+        "medicine"
+      ],
+      "searchQuery": "Ephedrine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "reserpine",
+      "name": "Reserpine",
+      "formula": "C33H40N2O9",
+      "otherNames": [],
+      "type": "Alkaloid",
+      "uses": "Historic antihypertensive and antipsychotic research.",
+      "notes": "Rauwolfia alkaloid that revealed monoamine brain chemistry.",
+      "tags": [
+        "alkaloid",
+        "medicine"
+      ],
+      "searchQuery": "Reserpine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "colchicine",
+      "name": "Colchicine",
+      "formula": "C22H25NO6",
+      "otherNames": [],
+      "type": "Alkaloid",
+      "uses": "Gout therapy, plant polyploid breeding.",
+      "notes": "From autumn crocus; blocks cell division (chromosome doubling in plants).",
+      "tags": [
+        "alkaloid",
+        "medicine"
+      ],
+      "searchQuery": "Colchicine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "alpha-pinene",
+      "name": "Alpha-pinene",
+      "formula": "C10H16",
+      "otherNames": [
+        "Pinene"
+      ],
+      "type": "Terpenoid",
+      "uses": "Turpentine, pine fragrances, resin chemistry.",
+      "notes": "Most abundant terpene in nature; pine-forest smell.",
+      "tags": [
+        "terpenoid",
+        "solvent"
+      ],
+      "searchQuery": "Alpha-pinene",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "eugenol",
+      "name": "Eugenol",
+      "formula": "C10H12O2",
+      "otherNames": [],
+      "type": "Phenol",
+      "uses": "Clove oil, dental analgesia, perfumery, vanilla-like flavour.",
+      "notes": "Dentists still use it for temporary fillings.",
+      "tags": [
+        "phenol",
+        "food",
+        "medicine"
+      ],
+      "searchQuery": "Eugenol",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "geraniol",
+      "name": "Geraniol",
+      "formula": "C10H18O",
+      "otherNames": [],
+      "type": "Terpenoid",
+      "uses": "Rose and citronella fragrances, bee pheromone research.",
+      "notes": "Rose-scented alcohol also made by honeybees.",
+      "tags": [
+        "terpenoid",
+        "fragrance"
+      ],
+      "searchQuery": "Geraniol",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "citral",
+      "name": "Citral",
+      "formula": "C10H16O",
+      "otherNames": [
+        "Lemonal"
+      ],
+      "type": "Terpenoid",
+      "uses": "Lemongrass oil, lemon flavour, vitamin A synthesis start.",
+      "notes": "Mixture of geranial and neral isomers.",
+      "tags": [
+        "terpenoid",
+        "food"
+      ],
+      "searchQuery": "Citral",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "piperine",
+      "name": "Piperine",
+      "formula": "C17H19NO3",
+      "otherNames": [],
+      "type": "Alkaloid",
+      "uses": "Black-pepper pungency, nutrient-absorption enhancer research.",
+      "notes": "Pepper's biting alkaloid.",
+      "tags": [
+        "alkaloid",
+        "food"
+      ],
+      "searchQuery": "Piperine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "zingerone",
+      "name": "Zingerone",
+      "formula": "C11H14O3",
+      "otherNames": [
+        "Vanillyl acetone"
+      ],
+      "type": "Phenol",
+      "uses": "Ginger flavour, cooked-ginger pungency.",
+      "notes": "Ginger's warm taste molecule.",
+      "tags": [
+        "phenol",
+        "food"
+      ],
+      "searchQuery": "Zingerone",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "linoleic-acid",
+      "name": "Linoleic acid",
+      "formula": "C18H32O2",
+      "otherNames": [
+        "Omega-6 fatty acid"
+      ],
+      "type": "Fatty acid",
+      "uses": "Cooking oils, paints (drying oils), nutrition.",
+      "notes": "Essential omega-6 polyunsaturated fatty acid.",
+      "tags": [
+        "fatty acid",
+        "nutrition"
+      ],
+      "searchQuery": "Linoleic acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "alpha-linolenic-acid",
+      "name": "Alpha-linolenic acid",
+      "formula": "C18H30O2",
+      "otherNames": [
+        "ALA",
+        "Omega-3"
+      ],
+      "type": "Fatty acid",
+      "uses": "Flax and chia oils, nutrition, coatings.",
+      "notes": "Essential plant omega-3 fatty acid.",
+      "tags": [
+        "fatty acid",
+        "nutrition"
+      ],
+      "searchQuery": "Alpha-linolenic acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "arachidonic-acid",
+      "name": "Arachidonic acid",
+      "formula": "C20H32O2",
+      "otherNames": [
+        "AA"
+      ],
+      "type": "Fatty acid",
+      "uses": "Inflammation biology, infant formula, eicosanoid synthesis.",
+      "notes": "Omega-6 precursor of prostaglandins and leukotrienes.",
+      "tags": [
+        "fatty acid",
+        "biochemistry"
+      ],
+      "searchQuery": "Arachidonic acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "lauric-acid",
+      "name": "Lauric acid",
+      "formula": "C12H24O2",
+      "otherNames": [
+        "Dodecanoic acid"
+      ],
+      "type": "Fatty acid",
+      "uses": "Coconut oil, soaps (sodium laurate), cosmetics.",
+      "notes": "C12 fatty acid giving coconut oil its character.",
+      "tags": [
+        "fatty acid",
+        "cosmetic"
+      ],
+      "searchQuery": "Lauric acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "myristic-acid",
+      "name": "Myristic acid",
+      "formula": "C14H28O2",
+      "otherNames": [
+        "Tetradecanoic acid"
+      ],
+      "type": "Fatty acid",
+      "uses": "Soaps, cosmetics, nutmeg butter.",
+      "notes": "Named after nutmeg (Myristica).",
+      "tags": [
+        "fatty acid"
+      ],
+      "searchQuery": "Myristic acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "glyceryl-tristearate",
+      "name": "Glyceryl tristearate",
+      "formula": "C57H110O6",
+      "otherNames": [
+        "Tristearin",
+        "Stearin"
+      ],
+      "type": "Triglyceride",
+      "uses": "Candles, hard fats, oleochemistry.",
+      "notes": "Fully saturated hard triglyceride of beef tallow.",
+      "tags": [
+        "lipid",
+        "food"
+      ],
+      "searchQuery": "Glyceryl tristearate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "glyceryl-trioleate",
+      "name": "Glyceryl trioleate",
+      "formula": "C57H104O6",
+      "otherNames": [
+        "Triolein"
+      ],
+      "type": "Triglyceride",
+      "uses": "Oils research, oleochemistry, lubricants.",
+      "notes": "The liquid triglyceride heart of olive oil.",
+      "tags": [
+        "lipid",
+        "food"
+      ],
+      "searchQuery": "Glyceryl trioleate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "beeswax",
+      "name": "Beeswax",
+      "formula": "C15H31COOC30H61 (major ester)",
+      "otherNames": [
+        "Cera alba"
+      ],
+      "type": "Wax",
+      "uses": "Candles, cosmetics, polishes, honeycomb, wood finishing.",
+      "notes": "Complex mix of esters; myricyl palmitate is the flagship.",
+      "tags": [
+        "wax",
+        "cosmetic"
+      ],
+      "searchQuery": "Beeswax",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "carnauba-wax",
+      "name": "Carnauba wax",
+      "formula": "C25H51COOC30H61 (major ester)",
+      "otherNames": [
+        "Brazil wax"
+      ],
+      "type": "Wax",
+      "uses": "Car waxes, shoe polish, sweets glaze, dental floss.",
+      "notes": "Hardest commercial wax, from palm leaves.",
+      "tags": [
+        "wax",
+        "cosmetic"
+      ],
+      "searchQuery": "Carnauba wax",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "cetyl-palmitate",
+      "name": "Cetyl palmitate",
+      "formula": "C32H64O2",
+      "otherNames": [
+        "Spermaceti (synthetic equivalent)"
+      ],
+      "type": "Wax",
+      "uses": "Cosmetics, pharmaceutical creams, historic candle wax.",
+      "notes": "The classic wax ester once whaled from sperm whales.",
+      "tags": [
+        "wax",
+        "cosmetic"
+      ],
+      "searchQuery": "Cetyl palmitate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "squalene",
+      "name": "Squalene",
+      "formula": "C30H50",
+      "otherNames": [],
+      "type": "Terpenoid",
+      "uses": "Cosmetics and skincare oil, vaccine adjuvant, shark-liver oil history.",
+      "notes": "Cholesterol's biochemical precursor.",
+      "tags": [
+        "terpenoid",
+        "cosmetic"
+      ],
+      "searchQuery": "Squalene",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "beta-carotene",
+      "name": "Beta-carotene",
+      "formula": "C40H56",
+      "otherNames": [
+        "Provitamin A",
+        "Carotene"
+      ],
+      "type": "Terpenoid",
+      "uses": "Food colouring (E160a), supplements, sunscreen boosters.",
+      "notes": "The carrot-orange pigment; two vitamin A molecules joined.",
+      "tags": [
+        "pigment",
+        "nutrition"
+      ],
+      "searchQuery": "Beta-carotene",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "lycopene",
+      "name": "Lycopene",
+      "formula": "C40H56",
+      "otherNames": [],
+      "type": "Terpenoid",
+      "uses": "Tomato-red food colouring, antioxidant research.",
+      "notes": "The red pigment of tomatoes and watermelon.",
+      "tags": [
+        "pigment",
+        "food"
+      ],
+      "searchQuery": "Lycopene",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "ethyl-acetate",
+      "name": "Ethyl acetate",
+      "formula": "C4H8O2",
+      "otherNames": [
+        "Ethyl ethanoate"
+      ],
+      "type": "Ester",
+      "uses": "Nail-polish remover, decaffeinating coffee, glues, lab extraction solvent.",
+      "notes": "Fruity-smelling workhorse solvent of organic chemistry.",
+      "tags": [
+        "ester",
+        "solvent"
+      ],
+      "searchQuery": "Ethyl acetate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "butyl-acetate",
+      "name": "Butyl acetate",
+      "formula": "C6H12O2",
+      "otherNames": [
+        "n-Butyl acetate"
+      ],
+      "type": "Ester",
+      "uses": "Paints and coatings thinner, nail polish, leather finishes.",
+      "notes": "Pear-like solvent for lacquers.",
+      "tags": [
+        "ester",
+        "solvent"
+      ],
+      "searchQuery": "Butyl acetate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "isoamyl-acetate",
+      "name": "Isoamyl acetate",
+      "formula": "C7H14O2",
+      "otherNames": [
+        "Isopentyl acetate",
+        "Banana oil"
+      ],
+      "type": "Ester",
+      "uses": "Pear/banana flavouring, synthetic ester labs, bee-attack pheromone mimic.",
+      "notes": "The classic school-lab ester; smells of bananas and alarms bees.",
+      "tags": [
+        "ester",
+        "food"
+      ],
+      "searchQuery": "Isoamyl acetate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "methyl-salicylate",
+      "name": "Methyl salicylate",
+      "formula": "C8H8O3",
+      "otherNames": [
+        "Oil of wintergreen"
+      ],
+      "type": "Ester",
+      "uses": "Liniments (deep heat), mints, aspirin-lab precursor.",
+      "notes": "Wintergreen smell; hydrolyses to salicylic acid and methanol.",
+      "tags": [
+        "ester",
+        "medicine"
+      ],
+      "searchQuery": "Methyl salicylate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "ethyl-butanoate",
+      "name": "Ethyl butanoate",
+      "formula": "C6H12O2",
+      "otherNames": [
+        "Ethyl butyrate"
+      ],
+      "type": "Ester",
+      "uses": "Pineapple flavouring, perfumes, orange flavours.",
+      "notes": "Pineapple aroma molecule.",
+      "tags": [
+        "ester",
+        "food"
+      ],
+      "searchQuery": "Ethyl butanoate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "octyl-acetate",
+      "name": "Octyl acetate",
+      "formula": "C10H20O2",
+      "otherNames": [
+        "2-Ethylhexyl acetate"
+      ],
+      "type": "Ester",
+      "uses": "Orange flavour, solvents, fragrances.",
+      "notes": "Orange-peel ester.",
+      "tags": [
+        "ester",
+        "food"
+      ],
+      "searchQuery": "Octyl acetate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "benzyl-acetate",
+      "name": "Benzyl acetate",
+      "formula": "C9H10O2",
+      "otherNames": [],
+      "type": "Ester",
+      "uses": "Jasmine perfume, polishes, flavour industry.",
+      "notes": "The jasmine-scented ester.",
+      "tags": [
+        "ester",
+        "fragrance"
+      ],
+      "searchQuery": "Benzyl acetate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "linalyl-acetate",
+      "name": "Linalyl acetate",
+      "formula": "C12H20O2",
+      "otherNames": [],
+      "type": "Ester",
+      "uses": "Lavender and bergamot perfumes, aromatherapy oils.",
+      "notes": "Floral ester of lavender oil.",
+      "tags": [
+        "ester",
+        "fragrance"
+      ],
+      "searchQuery": "Linalyl acetate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "methyl-butanoate",
+      "name": "Methyl butanoate",
+      "formula": "C5H10O2",
+      "otherNames": [
+        "Methyl butyrate"
+      ],
+      "type": "Ester",
+      "uses": "Apple and pineapple flavourings.",
+      "notes": "Apple-ish small ester.",
+      "tags": [
+        "ester",
+        "food"
+      ],
+      "searchQuery": "Methyl butanoate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "propyl-acetate",
+      "name": "Propyl acetate",
+      "formula": "C5H10O2",
+      "otherNames": [],
+      "type": "Ester",
+      "uses": "Print inks, flavouring, lab solvent.",
+      "notes": "Pear-drop fast-evaporating solvent.",
+      "tags": [
+        "ester",
+        "solvent"
+      ],
+      "searchQuery": "Propyl acetate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "methyl-anthranilate",
+      "name": "Methyl anthranilate",
+      "formula": "C8H9NO2",
+      "otherNames": [
+        "Grape flavouring"
+      ],
+      "type": "Ester",
+      "uses": "Grape candy and soda flavour, bird repellent, sunscreen UV-B filter.",
+      "notes": "The concord-grape smell that also scares birds.",
+      "tags": [
+        "ester",
+        "food"
+      ],
+      "searchQuery": "Methyl anthranilate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "benzyl-benzoate",
+      "name": "Benzyl benzoate",
+      "formula": "C14H12O2",
+      "otherNames": [],
+      "type": "Ester",
+      "uses": "Scabies and lice treatment, fixative in perfume, solvent.",
+      "notes": "Medical acaricide and perfume fixative.",
+      "tags": [
+        "ester",
+        "medicine"
+      ],
+      "searchQuery": "Benzyl benzoate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "nitroglycerin",
+      "name": "Nitroglycerin",
+      "formula": "C3H5N3O9",
+      "otherNames": [
+        "GTN",
+        "Trinitroglycerin"
+      ],
+      "type": "Ester nitrate",
+      "uses": "Heart medicine (angina tablets/spray), dynamite history.",
+      "notes": "Chest medicine and Nobel's explosive in one molecule.",
+      "tags": [
+        "explosive",
+        "medicine"
+      ],
+      "searchQuery": "Nitroglycerin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "trinitrotoluene",
+      "name": "Trinitrotoluene",
+      "formula": "C7H5N3O6",
+      "otherNames": [
+        "TNT",
+        "Tolite"
+      ],
+      "type": "Nitroaromatic",
+      "uses": "Blast scaling standard ('TNT equivalent'), mining, military history.",
+      "notes": "The energy benchmark of explosives; fairly shock-stable.",
+      "tags": [
+        "explosive"
+      ],
+      "searchQuery": "Trinitrotoluene",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "picric-acid",
+      "name": "Picric acid",
+      "formula": "C6H3N3O7",
+      "otherNames": [
+        "Trinitrophenol"
+      ],
+      "type": "Nitroaromatic",
+      "uses": "Historical munitions, burn treatment (historical), analytical reagent.",
+      "notes": "Yellow acidic explosive; dangerously forms shock-sensitive salts.",
+      "tags": [
+        "explosive",
+        "acid"
+      ],
+      "searchQuery": "Picric acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "nitrocellulose",
+      "name": "Nitrocellulose",
+      "formula": "(C6H7N3O11)n",
+      "otherNames": [
+        "Guncotton",
+        "Celluloid base"
+      ],
+      "type": "Nitrate ester",
+      "uses": "Propellants, lacquers, nail polish, early film and ping-pong balls.",
+      "notes": "Cotton dissolved into explosive lacquer; cinematic fire hazard history.",
+      "tags": [
+        "explosive",
+        "polymer"
+      ],
+      "searchQuery": "Nitrocellulose",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "cyclotrimethylenetrinitramine",
+      "name": "Cyclotrimethylenetrinitramine",
+      "formula": "C3H6N6O6",
+      "otherNames": [
+        "RDX",
+        "Cyclonite"
+      ],
+      "type": "Nitramine",
+      "uses": "Military demolition, shaped charges (historical reference).",
+      "notes": "Powerful military explosive of WWII fame.",
+      "tags": [
+        "explosive"
+      ],
+      "searchQuery": "Cyclotrimethylenetrinitramine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "pentaerythritol-tetranitrate",
+      "name": "Pentaerythritol tetranitrate",
+      "formula": "C5H8N4O12",
+      "otherNames": [
+        "PETN",
+        "Penthrite"
+      ],
+      "type": "Nitrate ester",
+      "uses": "Detonators, heart medicine (as dilator in some regions).",
+      "notes": "A blasting explosive that is also a vasodilator drug.",
+      "tags": [
+        "explosive",
+        "medicine"
+      ],
+      "searchQuery": "Pentaerythritol tetranitrate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "triacetone-triperoxide",
+      "name": "Triacetone triperoxide",
+      "formula": "C9H18O6",
+      "otherNames": [
+        "TATP",
+        "Acetone peroxide"
+      ],
+      "type": "Organic peroxide",
+      "uses": "Forensic case studies and detection research only.",
+      "notes": "Shock-sensitive peroxide explosive, notorious in security.",
+      "tags": [
+        "explosive",
+        "peroxide"
+      ],
+      "searchQuery": "Triacetone triperoxide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "black-powder",
+      "name": "Black powder",
+      "formula": "KNO3 + C + S (mixture)",
+      "otherNames": [
+        "Gunpowder"
+      ],
+      "type": "Pyrotechnic mixture",
+      "uses": "Fireworks, historical firearms, mining history, rocket hobbyists.",
+      "notes": "The oldest propellant (9th century China).",
+      "tags": [
+        "pyrotechnic",
+        "mixture"
+      ],
+      "searchQuery": "Black powder",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "flash-powder",
+      "name": "Flash powder",
+      "formula": "Metal powder + oxidiser (mixture)",
+      "otherNames": [],
+      "type": "Pyrotechnic mixture",
+      "uses": "Fireworks salutes, photography history.",
+      "notes": "Aluminium/magnesium + oxidiser mixtures of stage flashes.",
+      "tags": [
+        "pyrotechnic",
+        "mixture"
+      ],
+      "searchQuery": "Flash powder",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "ammonium-perchlorate",
+      "name": "Ammonium perchlorate",
+      "formula": "NH4ClO4",
+      "otherNames": [
+        "AP"
+      ],
+      "type": "Salt",
+      "uses": "Space-shuttle and hobby rocket composite propellants.",
+      "notes": "The oxidiser of solid rocket boosters.",
+      "tags": [
+        "oxidizer",
+        "rocket"
+      ],
+      "searchQuery": "Ammonium perchlorate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "lead-styphnate",
+      "name": "Lead styphnate",
+      "formula": "C6H3N3O8Pb",
+      "otherNames": [],
+      "type": "Salt",
+      "uses": "Percussion primers, detonator mixes.",
+      "notes": "Primary explosive that starts gun and blasting sequences.",
+      "tags": [
+        "explosive",
+        "toxic"
+      ],
+      "searchQuery": "Lead styphnate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "mercury-fulminate",
+      "name": "Mercury fulminate",
+      "formula": "Hg(ONC)2",
+      "otherNames": [],
+      "type": "Salt",
+      "uses": "Historic percussion caps and detonators.",
+      "notes": "The original detonating primer of the 19th century.",
+      "tags": [
+        "explosive",
+        "toxic"
+      ],
+      "searchQuery": "Mercury fulminate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "ferrocene",
+      "name": "Ferrocene",
+      "formula": "C10H10Fe",
+      "otherNames": [
+        "Bis(cyclopentadienyl)iron"
+      ],
+      "type": "Organometallic",
+      "uses": "Fuel additives, electrochemistry teaching, ligand chemistry.",
+      "notes": "The sandwich compound that founded modern organometallic chemistry.",
+      "tags": [
+        "organometallic",
+        "school"
+      ],
+      "searchQuery": "Ferrocene",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "methylmagnesium-bromide",
+      "name": "Methylmagnesium bromide",
+      "formula": "CH3MgBr",
+      "otherNames": [
+        "Grignard reagent (MeMgBr)"
+      ],
+      "type": "Organometallic",
+      "uses": "Carbon-carbon bond formation in synthesis labs.",
+      "notes": "Classic Grignard: grows carbon chains by attacking carbonyls.",
+      "tags": [
+        "organometallic",
+        "reagent"
+      ],
+      "searchQuery": "Methylmagnesium bromide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "n-butyllithium",
+      "name": "n-Butyllithium",
+      "formula": "C4H9Li",
+      "otherNames": [
+        "n-BuLi"
+      ],
+      "type": "Organometallic",
+      "uses": "Polymerisation catalysts, strong base in synthesis.",
+      "notes": "Pyrophoric organolithium base; ignites on contact with air.",
+      "tags": [
+        "organometallic",
+        "reagent"
+      ],
+      "searchQuery": "n-Butyllithium",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "titanium-tetrachloride",
+      "name": "Titanium tetrachloride",
+      "formula": "TiCl4",
+      "otherNames": [
+        "Tickle",
+        "Titanium(IV) chloride"
+      ],
+      "type": "Salt",
+      "uses": "Titanium metal production, Ziegler-Natta catalysts, smoke screens, iridescent glass.",
+      "notes": "Fumes dramatically in moist air making titanium smoke.",
+      "tags": [
+        "catalyst",
+        "industrial"
+      ],
+      "searchQuery": "Titanium tetrachloride",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "wilkinson-s-catalyst",
+      "name": "Wilkinson's catalyst",
+      "formula": "RhCl(PPh3)3",
+      "otherNames": [
+        "Chlorotris(triphenylphosphine)rhodium(I)"
+      ],
+      "type": "Organometallic",
+      "uses": "Homogeneous hydrogenation of alkenes, Nobel-winning chemistry.",
+      "notes": "The catalyst that made selective hydrogenation routine.",
+      "tags": [
+        "organometallic",
+        "catalyst"
+      ],
+      "searchQuery": "Wilkinson's catalyst",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "grubbs-catalyst",
+      "name": "Grubbs catalyst",
+      "formula": "Ru carbene complex",
+      "otherNames": [
+        "Benzylidene ruthenium complex"
+      ],
+      "type": "Organometallic",
+      "uses": "Olefin metathesis in drug and polymer synthesis.",
+      "notes": "Nobel 2005 metathesis catalyst that swaps alkene partners.",
+      "tags": [
+        "organometallic",
+        "catalyst"
+      ],
+      "searchQuery": "Grubbs catalyst",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "palladium-on-carbon",
+      "name": "Palladium on carbon",
+      "formula": "Pd/C",
+      "otherNames": [
+        "Pd on activated charcoal"
+      ],
+      "type": "Catalyst",
+      "uses": "Hydrogenation, deprotection, cross-couplings workhorse.",
+      "notes": "The most common transfer-hydrogenation catalyst.",
+      "tags": [
+        "catalyst"
+      ],
+      "searchQuery": "Palladium on carbon",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "raney-nickel",
+      "name": "Raney nickel",
+      "formula": "Ni (alloy-derived)",
+      "otherNames": [
+        "Sponge nickel"
+      ],
+      "type": "Catalyst",
+      "uses": "Hydrogenation of fats and oils, hydrogenolysis.",
+      "notes": "Pyrophoric sponge nickel; runs margarine hardening.",
+      "tags": [
+        "catalyst"
+      ],
+      "searchQuery": "Raney nickel",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "ziegler-natta-catalyst",
+      "name": "Ziegler-Natta catalyst",
+      "formula": "TiCl3/Al(C2H5)3",
+      "otherNames": [
+        "Ziegler-Natta system"
+      ],
+      "type": "Catalyst",
+      "uses": "Polypropylene and polyethylene manufacture.",
+      "notes": "Nobel-winning system that made modern plastics possible.",
+      "tags": [
+        "catalyst",
+        "polymer"
+      ],
+      "searchQuery": "Ziegler-Natta catalyst",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "zinc-dialkyldithiophosphate",
+      "name": "Zinc dialkyldithiophosphate",
+      "formula": "C4H9O)2P(S)S]2Zn (generic)",
+      "otherNames": [
+        "ZDDP"
+      ],
+      "type": "Organometallic",
+      "uses": "Antiwear engine-oil additive.",
+      "notes": "The antiwear guardian of car engines for 80 years.",
+      "tags": [
+        "lubricant",
+        "organometallic"
+      ],
+      "searchQuery": "Zinc dialkyldithiophosphate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "sodium-borohydride",
+      "name": "Sodium borohydride",
+      "formula": "NaBH4",
+      "otherNames": [
+        "Sodium tetrahydridoborate"
+      ],
+      "type": "Hydride",
+      "uses": "Carbonyl reductions in labs, fuel-hydrogen research, bleaching.",
+      "notes": "Gentle hydride that turns aldehydes/ketones to alcohols.",
+      "tags": [
+        "reagent",
+        "hydride"
+      ],
+      "searchQuery": "Sodium borohydride",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "lithium-aluminium-hydride",
+      "name": "Lithium aluminium hydride",
+      "formula": "LiAlH4",
+      "otherNames": [
+        "LAH",
+        "Lithal"
+      ],
+      "type": "Hydride",
+      "uses": "Powerful reductions of esters and acids in synthesis.",
+      "notes": "Reacts violently with water; the strong brother of NaBH4.",
+      "tags": [
+        "reagent",
+        "hydride"
+      ],
+      "searchQuery": "Lithium aluminium hydride",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "boron-trifluoride-etherate",
+      "name": "Boron trifluoride etherate",
+      "formula": "BF3·O(C2H5)2",
+      "otherNames": [
+        "BF3 etherate"
+      ],
+      "type": "Lewis acid",
+      "uses": "Polymerisation catalysts, Lewis-acid catalysis.",
+      "notes": "Handy bottled Lewis acid for synthesis.",
+      "tags": [
+        "catalyst",
+        "fluorine"
+      ],
+      "searchQuery": "Boron trifluoride etherate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "congo-red",
+      "name": "Congo red",
+      "formula": "C32H22N6Na2O6S2",
+      "otherNames": [],
+      "type": "Azo dye",
+      "uses": "pH indicator, histology staining, amyloid detection.",
+      "notes": "First direct cotton dye (1884); turns blue in strong acid.",
+      "tags": [
+        "dye",
+        "indicator"
+      ],
+      "searchQuery": "Congo red",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "crystal-violet",
+      "name": "Crystal violet",
+      "formula": "C25H30ClN3",
+      "otherNames": [
+        "Gentian violet",
+        "Hexamethyl pararosaniline"
+      ],
+      "type": "Triarylmethane dye",
+      "uses": "Gram staining of bacteria, fingerprint detection, ink and antiseptic history.",
+      "notes": "Deep purple dye of microbiology labs.",
+      "tags": [
+        "dye",
+        "biology"
+      ],
+      "searchQuery": "Crystal violet",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "methylene-blue",
+      "name": "Methylene blue",
+      "formula": "C16H18ClN3S",
+      "otherNames": [
+        "Methylthioninium chloride"
+      ],
+      "type": "Thiazine dye",
+      "uses": "Biology stains, methaemoglobinaemia antidote, aquarium treatment, redox indicator.",
+      "notes": "The first synthetic drug used in medicine (1891).",
+      "tags": [
+        "dye",
+        "medicine"
+      ],
+      "searchQuery": "Methylene blue",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "eosin",
+      "name": "Eosin",
+      "formula": "C20H8Br4O5",
+      "otherNames": [
+        "Eosin Y"
+      ],
+      "type": "Xanthene dye",
+      "uses": "Histology (H&E stains), cosmetics, red ink.",
+      "notes": "Pink-red counterstain paired with haematoxylin.",
+      "tags": [
+        "dye",
+        "biology"
+      ],
+      "searchQuery": "Eosin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "fluorescein",
+      "name": "Fluorescein",
+      "formula": "C20H12O5",
+      "otherNames": [
+        "Uranine"
+      ],
+      "type": "Xanthene dye",
+      "uses": "Eye tests, leak detection in plumbing and rivers, cave diving tracing.",
+      "notes": "Insanely bright green fluorescer used to trace water leaks.",
+      "tags": [
+        "dye",
+        "fluorescent"
+      ],
+      "searchQuery": "Fluorescein",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "rhodamine-b",
+      "name": "Rhodamine B",
+      "formula": "C28H31ClN2O3",
+      "otherNames": [],
+      "type": "Xanthene dye",
+      "uses": "Laser dyes, water tracing, fluorescence microscopy.",
+      "notes": "Pink laser-dye standard.",
+      "tags": [
+        "dye",
+        "fluorescent"
+      ],
+      "searchQuery": "Rhodamine B",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "indigo",
+      "name": "Indigo",
+      "formula": "C16H10N2O2",
+      "otherNames": [
+        "Indigotin"
+      ],
+      "type": "Vat dye",
+      "uses": "Blue jeans, historic textile dye, art paints.",
+      "notes": "The blue of denim, once worth more than spice routes.",
+      "tags": [
+        "dye",
+        "textile"
+      ],
+      "searchQuery": "Indigo",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "alizarin",
+      "name": "Alizarin",
+      "formula": "C14H8O4",
+      "otherNames": [
+        "Madder red",
+        "Turkey red"
+      ],
+      "type": "Anthraquinone dye",
+      "uses": "Histology calcium stains, historic madder dye, artwork.",
+      "notes": "Ancient madder-root red, first natural dye made synthetically (1868).",
+      "tags": [
+        "dye",
+        "textile"
+      ],
+      "searchQuery": "Alizarin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "starch-iodide-paper-component",
+      "name": "Starch-iodide paper component",
+      "formula": "I2 + starch complex",
+      "otherNames": [
+        "Iodide-starch paper"
+      ],
+      "type": "Indicator",
+      "uses": "Detecting oxidisers (blue-black) in labs and explosives forensics.",
+      "notes": "Starch traps iodine into a deep-blue complex.",
+      "tags": [
+        "indicator",
+        "school"
+      ],
+      "searchQuery": "Starch-iodide paper component",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "benzalkonium-chloride",
+      "name": "Benzalkonium chloride",
+      "formula": "C6H5CH2N(CH3)2RCl (mixture)",
+      "otherNames": [
+        "BAC",
+        "Quat",
+        "Alkyl dimethyl benzyl ammonium chloride"
+      ],
+      "type": "Surfactant",
+      "uses": "Disinfectant wipes and sprays, eye drops preservative, hand sanitizers.",
+      "notes": "Cationic quaternary ammonium germicide.",
+      "tags": [
+        "surfactant",
+        "disinfectant"
+      ],
+      "searchQuery": "Benzalkonium chloride",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "cetyltrimethylammonium-bromide",
+      "name": "Cetyltrimethylammonium bromide",
+      "formula": "C16H33N(CH3)3Br",
+      "otherNames": [
+        "CTAB",
+        "Hexadecyltrimethylammonium bromide"
+      ],
+      "type": "Surfactant",
+      "uses": "DNA extraction, nanomaterial synthesis, hair conditioners.",
+      "notes": "Cationic surfactant that opens cell membranes for DNA.",
+      "tags": [
+        "surfactant",
+        "biology"
+      ],
+      "searchQuery": "Cetyltrimethylammonium bromide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "triton-x-100",
+      "name": "Triton X-100",
+      "formula": "(C2H4O)n-C14H22O (generic)",
+      "otherNames": [
+        "Polyethylene glycol p-isooctylphenyl ether"
+      ],
+      "type": "Surfactant",
+      "uses": "Nonionic lab detergent, immunoassays, cleaning enzyme products.",
+      "notes": "Gentle nonionic detergent of molecular biology.",
+      "tags": [
+        "surfactant",
+        "biology"
+      ],
+      "searchQuery": "Triton X-100",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "sodium-carbonate-peroxide-percarbonate-bleaching",
+      "name": "Sodium carbonate peroxide (percarbonate bleaching)",
+      "formula": "2Na2CO3·3H2O2 (see sodium percarbonate)",
+      "otherNames": [
+        "See sodium percarbonate"
+      ],
+      "type": "Adduct",
+      "uses": "Laundry oxygen bleach.",
+      "notes": "Alias entry for oxygen-bleach chemistry.",
+      "tags": [
+        "cleaner",
+        "oxidizer"
+      ],
+      "searchQuery": "Sodium carbonate peroxide (percarbonate bleaching)",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "magnesium-silicate-antacid",
+      "name": "Magnesium silicate antacid",
+      "formula": "MgSiO3 (generic)",
+      "otherNames": [
+        "Antacid silicate"
+      ],
+      "type": "Salt",
+      "uses": "Antacid formulations, tableting.",
+      "notes": "Gentle antacid excipient in tablets.",
+      "tags": [
+        "medicine",
+        "excipient"
+      ],
+      "searchQuery": "Magnesium silicate antacid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "aspartame",
+      "name": "Aspartame",
+      "formula": "C14H18N2O5",
+      "otherNames": [
+        "E951",
+        "Aspartyl phenylalanine methyl ester"
+      ],
+      "type": "Sweetener",
+      "uses": "Diet drinks, sugar-free gum, tabletop sweeteners.",
+      "notes": "Two amino acids joined; 200x sweeter than sugar.",
+      "tags": [
+        "sweetener",
+        "food"
+      ],
+      "searchQuery": "Aspartame",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "sucralose",
+      "name": "Sucralose",
+      "formula": "C12H19Cl3O8",
+      "otherNames": [
+        "E955"
+      ],
+      "type": "Sweetener",
+      "uses": "Baking-friendly no-calorie sweeteners, soft drinks.",
+      "notes": "Sugar with three chlorines; passes through the body unmetabolised.",
+      "tags": [
+        "sweetener",
+        "food"
+      ],
+      "searchQuery": "Sucralose",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "saccharin",
+      "name": "Saccharin",
+      "formula": "C7H5NO3S",
+      "otherNames": [
+        "Benzoic sulfimide"
+      ],
+      "type": "Sweetener",
+      "uses": "Tabletop sweeteners, diabetic foods, history of regulation.",
+      "notes": "The oldest artificial sweetener (1879), 300x sugar's sweetness.",
+      "tags": [
+        "sweetener",
+        "food"
+      ],
+      "searchQuery": "Saccharin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "xylitol",
+      "name": "Xylitol",
+      "formula": "C5H12O5",
+      "otherNames": [
+        "Birch sugar"
+      ],
+      "type": "Sugar alcohol",
+      "uses": "Sugar-free gum and mints (anti-cavity), diabetic sweets.",
+      "notes": "Cavity-fighting sweetener; highly toxic to dogs.",
+      "tags": [
+        "sweetener",
+        "food"
+      ],
+      "searchQuery": "Xylitol",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "sorbitol",
+      "name": "Sorbitol",
+      "formula": "C6H14O6",
+      "otherNames": [
+        "D-Glucitol"
+      ],
+      "type": "Sugar alcohol",
+      "uses": "Sugar-free candies, laxatives, toothpaste humectant.",
+      "notes": "Sugar alcohol from glucose; gentle laxative in excess.",
+      "tags": [
+        "sweetener",
+        "food"
+      ],
+      "searchQuery": "Sorbitol",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "erythritol",
+      "name": "Erythritol",
+      "formula": "C4H10O4",
+      "otherNames": [],
+      "type": "Sugar alcohol",
+      "uses": "Keto sweeteners, zero-calorie sugar substitutes.",
+      "notes": "Nearly zero-calorie sugar alcohol made by fermentation.",
+      "tags": [
+        "sweetener",
+        "food"
+      ],
+      "searchQuery": "Erythritol",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "potassium-sorbate",
+      "name": "Potassium sorbate",
+      "formula": "C6H7KO2",
+      "otherNames": [
+        "E202"
+      ],
+      "type": "Preservative",
+      "uses": "Wine, cheese, yoghurt and baked goods mould inhibition.",
+      "notes": "Sorbic-acid salt; the world's favourite mould blocker.",
+      "tags": [
+        "preservative",
+        "food"
+      ],
+      "searchQuery": "Potassium sorbate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "acetic-acid-glacial",
+      "name": "Acetic acid (glacial)",
+      "formula": "CH3COOH (pure)",
+      "otherNames": [
+        "Glacial acetic acid",
+        "Ethanoic acid (pure)"
+      ],
+      "type": "Acid",
+      "uses": "Industrial acetate production, photography, pickling at 5% (vinegar).",
+      "notes": "Pure acid freezes at 16.6 C into ice-like crystals.",
+      "tags": [
+        "acid",
+        "food"
+      ],
+      "searchQuery": "Acetic acid (glacial)",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "maltodextrin",
+      "name": "Maltodextrin",
+      "formula": "(C6H10O5)n",
+      "otherNames": [],
+      "type": "Carbohydrate",
+      "uses": "Sports gels, thickening, spray-drying aids, flavour carriers.",
+      "notes": "Short starch chains that dissolve clean and fast.",
+      "tags": [
+        "carbohydrate",
+        "food"
+      ],
+      "searchQuery": "Maltodextrin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "lecithin",
+      "name": "Lecithin",
+      "formula": "Phosphatidylcholine mixture",
+      "otherNames": [
+        "E322",
+        "Soy lecithin"
+      ],
+      "type": "Phospholipid",
+      "uses": "Chocolate emulsification, baking, supplements, sprays.",
+      "notes": "Nature's emulsifier; keeps cocoa and cocoa-butter friends.",
+      "tags": [
+        "emulsifier",
+        "food"
+      ],
+      "searchQuery": "Lecithin",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "guar-gum",
+      "name": "Guar gum",
+      "formula": "Galactomannan polymer",
+      "otherNames": [
+        "E412"
+      ],
+      "type": "Polysaccharide",
+      "uses": "Ice-cream stabiliser, gluten-free baking, fracking fluids, thickening.",
+      "notes": "Bean-seed gum that thickens at tiny doses.",
+      "tags": [
+        "thickener",
+        "food"
+      ],
+      "searchQuery": "Guar gum",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "xanthan-gum",
+      "name": "Xanthan gum",
+      "formula": "(C35H49O29)n",
+      "otherNames": [
+        "E415"
+      ],
+      "type": "Polysaccharide",
+      "uses": "Salad dressings, gluten-free baking, oil drilling, cosmetics.",
+      "notes": "Bacterial-fermentation gum, the sauce-hanging thickener.",
+      "tags": [
+        "thickener",
+        "food"
+      ],
+      "searchQuery": "Xanthan gum",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "carrageenan",
+      "name": "Carrageenan",
+      "formula": "Sulfated galactan mixture",
+      "otherNames": [
+        "E407"
+      ],
+      "type": "Polysaccharide",
+      "uses": "Plant milks, jellies, processed meats, toothpaste.",
+      "notes": "Seaweed gelling polymer of dairy and vegan foods.",
+      "tags": [
+        "thickener",
+        "food"
+      ],
+      "searchQuery": "Carrageenan",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "taurine",
+      "name": "Taurine",
+      "formula": "C2H7NO3S",
+      "otherNames": [
+        "2-Aminoethanesulfonic acid"
+      ],
+      "type": "Aminosulfonic acid",
+      "uses": "Energy drinks, infant formula, cat-food nutrition.",
+      "notes": "The amino-sulfonic acid of bile and energy-drink fame.",
+      "tags": [
+        "nutrition",
+        "food"
+      ],
+      "searchQuery": "Taurine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "creatine",
+      "name": "Creatine",
+      "formula": "C4H9N3O2",
+      "otherNames": [
+        "Creatine monohydrate (salt form)"
+      ],
+      "type": "Guanidine derivative",
+      "uses": "Sports supplementation, muscle research.",
+      "notes": "The muscle-energy phosphate carrier supplement.",
+      "tags": [
+        "nutrition",
+        "sports"
+      ],
+      "searchQuery": "Creatine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "beta-alanine",
+      "name": "Beta-alanine",
+      "formula": "C3H7NO2",
+      "otherNames": [
+        "3-Aminopropanoic acid"
+      ],
+      "type": "Amino acid",
+      "uses": "Sports supplements (muscle carnosine), pre-workout tingles.",
+      "notes": "Non-proteinogenic beta amino acid; causes harmless face tingles.",
+      "tags": [
+        "amino acid",
+        "sports"
+      ],
+      "searchQuery": "Beta-alanine",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "monopotassium-phosphate",
+      "name": "Monopotassium phosphate",
+      "formula": "KH2PO4",
+      "otherNames": [
+        "MKP",
+        "Potassium dihydrogen phosphate"
+      ],
+      "type": "Salt",
+      "uses": "Fertilisers, hydroponics, pH buffers, sports drinks.",
+      "notes": "Phosphorus-and-potassium plant feed.",
+      "tags": [
+        "salt",
+        "fertiliser"
+      ],
+      "searchQuery": "Monopotassium phosphate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "hypophosphorous-acid",
+      "name": "Hypophosphorous acid",
+      "formula": "H3PO2",
+      "otherNames": [
+        "Phosphinic acid"
+      ],
+      "type": "Acid",
+      "uses": "Electroless nickel plating, pharmaceuticals, reductions.",
+      "notes": "Strong monobasic acid with two P-H bonds.",
+      "tags": [
+        "acid",
+        "reagent"
+      ],
+      "searchQuery": "Hypophosphorous acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "chlorous-acid",
+      "name": "Chlorous acid",
+      "formula": "HClO2",
+      "otherNames": [],
+      "type": "Acid",
+      "uses": "Chlorite generation for bleaching paper.",
+      "notes": "Unstable mid oxyacid of chlorine.",
+      "tags": [
+        "acid"
+      ],
+      "searchQuery": "Chlorous acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "hydrobromic-acid",
+      "name": "Hydrobromic acid",
+      "formula": "HBr (aqueous)",
+      "otherNames": [],
+      "type": "Acid",
+      "uses": "Making bromides, inorganic synthesis, alkylation catalysis.",
+      "notes": "Stronger acid than HCl by bond strength.",
+      "tags": [
+        "acid"
+      ],
+      "searchQuery": "Hydrobromic acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "hydroiodic-acid",
+      "name": "Hydroiodic acid",
+      "formula": "HI (aqueous)",
+      "otherNames": [],
+      "type": "Acid",
+      "uses": "Iodide chemistry, methylation catalysis, reductions.",
+      "notes": "One of the strongest simple acids; fumes readily.",
+      "tags": [
+        "acid"
+      ],
+      "searchQuery": "Hydroiodic acid",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "beryllium-hydroxide",
+      "name": "Beryllium hydroxide",
+      "formula": "Be(OH)2",
+      "otherNames": [],
+      "type": "Base",
+      "uses": "Beryllium metal and oxide production.",
+      "notes": "Amphoteric hydroxide of the lightest alkaline earth.",
+      "tags": [
+        "base",
+        "toxic"
+      ],
+      "searchQuery": "Beryllium hydroxide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "lithium-carbonate",
+      "name": "Lithium carbonate",
+      "formula": "Li2CO3",
+      "otherNames": [],
+      "type": "Salt",
+      "uses": "Bipolar-disorder medicine, battery cathodes, glass and ceramics.",
+      "notes": "The original mood stabiliser and modern battery feedstock.",
+      "tags": [
+        "salt",
+        "battery",
+        "medicine"
+      ],
+      "searchQuery": "Lithium carbonate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "calcium-phosphate-hydroxyapatite",
+      "name": "Calcium phosphate (hydroxyapatite)",
+      "formula": "Ca5(PO4)3OH",
+      "otherNames": [
+        "Hydroxylapatite"
+      ],
+      "type": "Mineral",
+      "uses": "Bone and tooth mineral, implants, toothpaste remineralisation.",
+      "notes": "Your skeleton is essentially this compound.",
+      "tags": [
+        "mineral",
+        "medical"
+      ],
+      "searchQuery": "Calcium phosphate (hydroxyapatite)",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "silver-chloride",
+      "name": "Silver chloride",
+      "formula": "AgCl",
+      "otherNames": [
+        "Cerargyrite (horn silver)"
+      ],
+      "type": "Salt",
+      "uses": "Photochemistry history, reference electrodes, antibacterial glass.",
+      "notes": "Darkens in light — the basis of early photography.",
+      "tags": [
+        "salt",
+        "photography"
+      ],
+      "searchQuery": "Silver chloride",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "lead-chromate",
+      "name": "Lead chromate",
+      "formula": "PbCrO4",
+      "otherNames": [
+        "Chrome yellow"
+      ],
+      "type": "Salt",
+      "uses": "Historic yellow paint (Van Gogh era), now restricted.",
+      "notes": "The brilliant but toxic yellow of old masters.",
+      "tags": [
+        "pigment",
+        "toxic"
+      ],
+      "searchQuery": "Lead chromate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "prussian-blue",
+      "name": "Prussian blue",
+      "formula": "Fe4[Fe(CN)6]3",
+      "otherNames": [
+        "Ferric ferrocyanide"
+      ],
+      "type": "Salt",
+      "uses": "Classic blue pigment, radiation (caesium) antidote, blueprinting.",
+      "notes": "The first modern synthetic pigment (1704).",
+      "tags": [
+        "pigment",
+        "medicine"
+      ],
+      "searchQuery": "Prussian blue",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "copper-i-chloride",
+      "name": "Copper(I) chloride",
+      "formula": "CuCl",
+      "otherNames": [
+        "Cuprous chloride"
+      ],
+      "type": "Salt",
+      "uses": "Organic catalysis (Sandmeyer), desulfurisation, flame colouring.",
+      "notes": "White salt that turns blue-green in air.",
+      "tags": [
+        "salt",
+        "catalyst"
+      ],
+      "searchQuery": "Copper(I) chloride",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "ferric-ammonium-citrate",
+      "name": "Ferric ammonium citrate",
+      "formula": "C6H8FeNO7 (approx)",
+      "otherNames": [
+        "Ammonium iron(III) citrate"
+      ],
+      "type": "Salt",
+      "uses": "Blueprint paper, food fortification, blueprints and photography.",
+      "notes": "Light-sensitive iron salt of classic blueprint paper.",
+      "tags": [
+        "salt",
+        "photography"
+      ],
+      "searchQuery": "Ferric ammonium citrate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "calcium-acetate",
+      "name": "Calcium acetate",
+      "formula": "C4H6CaO4",
+      "otherNames": [],
+      "type": "Salt",
+      "uses": "Concrete additives, keto therapy drug (as bivalent), vinegar chemistry.",
+      "notes": "Forms flammable acetone when dry-distilled — old trick.",
+      "tags": [
+        "salt",
+        "industrial"
+      ],
+      "searchQuery": "Calcium acetate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "magnesium-carbonate",
+      "name": "Magnesium carbonate",
+      "formula": "MgCO3",
+      "otherNames": [
+        "Magnesite",
+        "Gym chalk"
+      ],
+      "type": "Salt",
+      "uses": "Climbing and gymnastics chalk, antacids, fireproofing, toothpaste.",
+      "notes": "Dries sweaty palms on the climbing wall.",
+      "tags": [
+        "salt",
+        "sports"
+      ],
+      "searchQuery": "Magnesium carbonate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "aluminium-phosphate",
+      "name": "Aluminium phosphate",
+      "formula": "AlPO4",
+      "otherNames": [],
+      "type": "Salt",
+      "uses": "Vaccine adjuvant, ceramics, cement chemistry.",
+      "notes": "Immune-boosting adjuvant in many vaccines.",
+      "tags": [
+        "salt",
+        "medical"
+      ],
+      "searchQuery": "Aluminium phosphate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "sodium-iodide",
+      "name": "Sodium iodide",
+      "formula": "NaI",
+      "otherNames": [],
+      "type": "Salt",
+      "uses": "Scintillation detectors, iodine supplements, organic synthesis.",
+      "notes": "Gamma-ray detectors use its crystals.",
+      "tags": [
+        "salt",
+        "detector"
+      ],
+      "searchQuery": "Sodium iodide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "ammonium-iron-iii-sulfate",
+      "name": "Ammonium iron(III) sulfate",
+      "formula": "NH4Fe(SO4)2·12H2O",
+      "otherNames": [
+        "Ferric alum"
+      ],
+      "type": "Hydrate",
+      "uses": "Mordant dyeing, etching, water treatment.",
+      "notes": "Purple alum crystal used in etching copper.",
+      "tags": [
+        "hydrate",
+        "salt"
+      ],
+      "searchQuery": "Ammonium iron(III) sulfate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "tetrasodium-edta",
+      "name": "Tetrasodium EDTA",
+      "formula": "C10H12N2Na4O8",
+      "otherNames": [
+        "EDTA tetrasodium",
+        "Ethylenediaminetetraacetate"
+      ],
+      "type": "Chelating agent",
+      "uses": "Water softening, food preservative, chelation therapy, blood tubes.",
+      "notes": "Metal-grabbing molecule that locks up calcium and heavy metals.",
+      "tags": [
+        "chelator",
+        "cleaner"
+      ],
+      "searchQuery": "Tetrasodium EDTA",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "potassium-sodium-tartrate",
+      "name": "Potassium sodium tartrate",
+      "formula": "KNaC4H4O6·4H2O",
+      "otherNames": [
+        "Rochelle salt",
+        "Seignette salt"
+      ],
+      "type": "Hydrate",
+      "uses": "Piezoelectric history, Fehling's solution, baking powder history.",
+      "notes": "First piezoelectric crystal discovered.",
+      "tags": [
+        "hydrate",
+        "piezoelectric"
+      ],
+      "searchQuery": "Potassium sodium tartrate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "sodium-potassium-tartrate-tetrahydrate-fehling-component",
+      "name": "Sodium potassium tartrate tetrahydrate (Fehling component)",
+      "formula": "KNaC4H4O6 (Fehling role)",
+      "otherNames": [
+        "Fehling's salt"
+      ],
+      "type": "Hydrate",
+      "uses": "Sugar tests (Fehling's solution B).",
+      "notes": "Keeps copper dissolved in the classic aldehyde test.",
+      "tags": [
+        "school",
+        "reagent"
+      ],
+      "searchQuery": "Sodium potassium tartrate tetrahydrate (Fehling component)",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "copper-i-iodide",
+      "name": "Copper(I) iodide",
+      "formula": "CuI",
+      "otherNames": [
+        "Cuprous iodide"
+      ],
+      "type": "Salt",
+      "uses": "Organic synthesis, cloud seeding research, timber preservation.",
+      "notes": "White salt used in C-C coupling catalysis.",
+      "tags": [
+        "salt",
+        "catalyst"
+      ],
+      "searchQuery": "Copper(I) iodide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "cobalt-ii-chloride",
+      "name": "Cobalt(II) chloride",
+      "formula": "CoCl2",
+      "otherNames": [],
+      "type": "Salt",
+      "uses": "Humidity indicator gels (blue to pink), invisible ink, catalysts.",
+      "notes": "The colour-changing moisture indicator of desiccator lids.",
+      "tags": [
+        "salt",
+        "indicator"
+      ],
+      "searchQuery": "Cobalt(II) chloride",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "nickel-ii-sulfate",
+      "name": "Nickel(II) sulfate",
+      "formula": "NiSO4",
+      "otherNames": [],
+      "type": "Salt",
+      "uses": "Nickel electroplating, catalysts, ceramics colours.",
+      "notes": "The electrolyte of nickel plating baths.",
+      "tags": [
+        "salt",
+        "plating"
+      ],
+      "searchQuery": "Nickel(II) sulfate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "tin-ii-chloride",
+      "name": "Tin(II) chloride",
+      "formula": "SnCl2",
+      "otherNames": [
+        "Stannous chloride"
+      ],
+      "type": "Salt",
+      "uses": "Tinning steel, mirror silvering, analytical reductions.",
+      "notes": "The mirror-maker's reducing agent.",
+      "tags": [
+        "salt",
+        "reagent"
+      ],
+      "searchQuery": "Tin(II) chloride",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "potassium-cyanide",
+      "name": "Potassium cyanide",
+      "formula": "KCN",
+      "otherNames": [],
+      "type": "Salt",
+      "uses": "Gold mining (restricted), casein historic uses, forensic case studies.",
+      "notes": "Extremely toxic salt; releases HCN with acids.",
+      "tags": [
+        "toxic",
+        "restricted"
+      ],
+      "searchQuery": "Potassium cyanide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "gold-iii-chloride",
+      "name": "Gold(III) chloride",
+      "formula": "AuCl3",
+      "otherNames": [
+        "Auric chloride"
+      ],
+      "type": "Salt",
+      "uses": "Gold nanoparticle synthesis, gilding chemistry, histology.",
+      "notes": "The doorway to colloidal gold chemistry.",
+      "tags": [
+        "salt",
+        "nano"
+      ],
+      "searchQuery": "Gold(III) chloride",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "silver-oxide",
+      "name": "Silver oxide",
+      "formula": "Ag2O",
+      "otherNames": [
+        "Silver(I) oxide"
+      ],
+      "type": "Oxide",
+      "uses": "Button-cell batteries, Tollens' reagent prep, glass polishing.",
+      "notes": "Powers tiny watch batteries.",
+      "tags": [
+        "oxide",
+        "battery"
+      ],
+      "searchQuery": "Silver oxide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "mercury-ii-chloride",
+      "name": "Mercury(II) chloride",
+      "formula": "HgCl2",
+      "otherNames": [
+        "Corrosive sublimate"
+      ],
+      "type": "Salt",
+      "uses": "Historic antiseptic and preservative; laboratory reagent (restricted).",
+      "notes": "Infamous historic poison; now tightly controlled.",
+      "tags": [
+        "toxic",
+        "restricted"
+      ],
+      "searchQuery": "Mercury(II) chloride",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "nitrogen-triiodide",
+      "name": "Nitrogen triiodide",
+      "formula": "NI3·NH3",
+      "otherNames": [
+        "Nitrogen triiodide ammoniate"
+      ],
+      "type": "Iodide",
+      "uses": "Chemistry-demonstration popularity (touch-sensitive cracking).",
+      "notes": "Dries into a solid that detonates on a feather's touch.",
+      "tags": [
+        "explosive",
+        "demo"
+      ],
+      "searchQuery": "Nitrogen triiodide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "dinitrogen-tetroxide",
+      "name": "Dinitrogen tetroxide",
+      "formula": "N2O4",
+      "otherNames": [
+        "NTO",
+        "Nitrogen tetroxide"
+      ],
+      "type": "Oxide",
+      "uses": "Hypergolic rocket propellant oxidiser (Proton, Apollo).",
+      "notes": "Ignites on contact with hydrazine fuels — rocket chemistry.",
+      "tags": [
+        "rocket",
+        "oxidizer"
+      ],
+      "searchQuery": "Dinitrogen tetroxide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "carbon-suboxide",
+      "name": "Carbon suboxide",
+      "formula": "C3O2",
+      "otherNames": [],
+      "type": "Oxide",
+      "uses": "Research chemistry, organic synthesis oddity.",
+      "notes": "Cumulene oxide with linear O=C=C=C=O chain.",
+      "tags": [
+        "oxide",
+        "research"
+      ],
+      "searchQuery": "Carbon suboxide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "ammonium-carbonate",
+      "name": "Ammonium carbonate",
+      "formula": "(NH4)2CO3",
+      "otherNames": [
+        "Baker's ammonia",
+        "Hartshorn"
+      ],
+      "type": "Salt",
+      "uses": "Old-fashioned crisp cookies (smelling salts history).",
+      "notes": "Leavening that vanishes completely in baked goods.",
+      "tags": [
+        "salt",
+        "food"
+      ],
+      "searchQuery": "Ammonium carbonate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "urea-peroxide",
+      "name": "Urea peroxide",
+      "formula": "CH4N2O·H2O2",
+      "otherNames": [
+        "Carbamide peroxide"
+      ],
+      "type": "Adduct",
+      "uses": "Teeth whitening, earwax softening drops, disinfection.",
+      "notes": "Stable solid peroxide for whitening gels.",
+      "tags": [
+        "oxidizer",
+        "cosmetic"
+      ],
+      "searchQuery": "Urea peroxide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "calcium-cyanamide",
+      "name": "Calcium cyanamide",
+      "formula": "CaCN2",
+      "otherNames": [
+        "Nitrolime"
+      ],
+      "type": "Salt",
+      "uses": "Slow-release nitrogen fertiliser, weed killer, steel nitriding.",
+      "notes": "Fertiliser that also inhibits weeds in the soil.",
+      "tags": [
+        "fertiliser",
+        "salt"
+      ],
+      "searchQuery": "Calcium cyanamide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "basic-bismuth-nitrate",
+      "name": "Basic bismuth nitrate",
+      "formula": "BiONO3 (approx)",
+      "otherNames": [
+        "Bismuth subnitrate"
+      ],
+      "type": "Salt",
+      "uses": "Antidiarrhoeal medicines, cosmetic pearlescence, firework effects.",
+      "notes": "Stomach-soothing bismuth salt.",
+      "tags": [
+        "medicine",
+        "salt"
+      ],
+      "searchQuery": "Basic bismuth nitrate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "bismuth-subsalicylate",
+      "name": "Bismuth subsalicylate",
+      "formula": "C7H5BiO4",
+      "otherNames": [
+        "Bismuth salicylate"
+      ],
+      "type": "Salt",
+      "uses": "Upset-stomach medicines (pink bismuth).",
+      "notes": "The pink liquid of travellers' stomach troubles.",
+      "tags": [
+        "medicine",
+        "salt"
+      ],
+      "searchQuery": "Bismuth subsalicylate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "aluminium-chlorohydrate",
+      "name": "Aluminium chlorohydrate",
+      "formula": "Al2(OH)5Cl (approx)",
+      "otherNames": [
+        "ACH"
+      ],
+      "type": "Salt",
+      "uses": "Antiperspirants, water treatment, deodorants.",
+      "notes": "Blocks sweat ducts in antiperspirant sticks.",
+      "tags": [
+        "cosmetic",
+        "salt"
+      ],
+      "searchQuery": "Aluminium chlorohydrate",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "silver-cyanide",
+      "name": "Silver cyanide",
+      "formula": "AgCN",
+      "otherNames": [],
+      "type": "Salt",
+      "uses": "Silver electroplating (restricted handling).",
+      "notes": "Plating-bath salt handled under strict cyanide rules.",
+      "tags": [
+        "toxic",
+        "plating"
+      ],
+      "searchQuery": "Silver cyanide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "potassium-gold-cyanide",
+      "name": "Potassium gold cyanide",
+      "formula": "KAu(CN)2",
+      "otherNames": [],
+      "type": "Salt",
+      "uses": "Gold electroplating baths (jewellery, electronics).",
+      "notes": "The gold source of most plated contacts and jewellery.",
+      "tags": [
+        "toxic",
+        "plating"
+      ],
+      "searchQuery": "Potassium gold cyanide",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "nickel-tetracarbonyl",
+      "name": "Nickel tetracarbonyl",
+      "formula": "Ni(CO)4",
+      "otherNames": [
+        "Tetracarbonylnickel"
+      ],
+      "type": "Organometallic",
+      "uses": "Nickel refining (Mond process), research.",
+      "notes": "Deadly volatile liquid used to purify nickel metal.",
+      "tags": [
+        "organometallic",
+        "toxic"
+      ],
+      "searchQuery": "Nickel tetracarbonyl",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "iron-pentacarbonyl",
+      "name": "Iron pentacarbonyl",
+      "formula": "Fe(CO)5",
+      "otherNames": [],
+      "type": "Organometallic",
+      "uses": "Anti-knock additive history, iron nanoparticle synthesis.",
+      "notes": "Orange liquid carbonyl of iron-nano chemistry.",
+      "tags": [
+        "organometallic"
+      ],
+      "searchQuery": "Iron pentacarbonyl",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "tetrakis-triphenylphosphine-palladium",
+      "name": "Tetrakis(triphenylphosphine)palladium",
+      "formula": "Pd(PPh3)4",
+      "otherNames": [
+        "Pd(PPh3)4",
+        "Tetrakis palladium"
+      ],
+      "type": "Organometallic",
+      "uses": "Suzuki and Heck cross-couplings in drug discovery.",
+      "notes": "The cross-coupling workhorse of modern medicinal chemistry.",
+      "tags": [
+        "organometallic",
+        "catalyst"
+      ],
+      "searchQuery": "Tetrakis(triphenylphosphine)palladium",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "methylmercury",
+      "name": "Methylmercury",
+      "formula": "CH3Hg+",
+      "otherNames": [
+        "Methylmercury cation"
+      ],
+      "type": "Organometallic",
+      "uses": "Environmental toxicology case studies (Minamata).",
+      "notes": "Bioaccumulating neurotoxin of mercury-pollution history.",
+      "tags": [
+        "organometallic",
+        "toxic"
+      ],
+      "searchQuery": "Methylmercury",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "tetraethyllead",
+      "name": "Tetraethyllead",
+      "formula": "Pb(C2H5)4",
+      "otherNames": [
+        "TEL",
+        "Lead tetraethyl"
+      ],
+      "type": "Organometallic",
+      "uses": "Leaded-petrol history (now banned nearly everywhere), aviation piston fuel.",
+      "notes": "The octane booster that poisoned a century.",
+      "tags": [
+        "organometallic",
+        "toxic"
+      ],
+      "searchQuery": "Tetraethyllead",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
+    },
+    {
+      "id": "diethylzinc",
+      "name": "Diethylzinc",
+      "formula": "Zn(C2H5)2",
+      "otherNames": [],
+      "type": "Organometallic",
+      "uses": "Semiconductor doping (MOCVD), atomic-layer deposition.",
+      "notes": "Spontaneously flammable zinc alkyl of chip making.",
+      "tags": [
+        "organometallic",
+        "semiconductor"
+      ],
+      "searchQuery": "Diethylzinc",
+      "sourceLabel": "PubChem / Wikipedia chemistry reference",
+      "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/"
     }
   ]
 }

@@ -101,13 +101,13 @@
     <string name="ui_welcome_tagline" translatable="true">KEMI FORENKLET</string>
     <string name="ui_welcome_tagline_body" translatable="true">Søg forbindelser, inspicere strukturer, gemme nyttige resultater, og bruge praktiske kemi værktøjer i en indfødt Android-app.</string>
     <string name="ui_welcome_feature_search_title" translatable="true">Compound søgning</string>
-    <string name="ui_welcome_feature_search_body" translatable="true">Slå PubChem data op efter navn, formel, CAS-stil identifikator eller CID.</string>
+    <string name="ui_welcome_feature_search_body" translatable="true">Slå PubChem-data op efter navn, formel, CAS-agtig identifikator eller CID, med autoforslag, avancerede filtre og tegnet struktursøgning.</string>
     <string name="ui_welcome_feature_structures_title" translatable="true">2D og 3D strukturer</string>
     <string name="ui_welcome_feature_structures_body" translatable="true">Se strukturbilleder, rotere 3D-modeller, og gem strukturfiler.</string>
     <string name="ui_welcome_feature_tools_title" translatable="true">Kemi værktøjer</string>
     <string name="ui_welcome_feature_tools_body" translatable="true">Balancereaktioner, beregne molær masse, løse støkiometri og meget mere.</string>
     <string name="ui_welcome_feature_local_title" translatable="true">Lokal arbejdsgang</string>
-    <string name="ui_welcome_feature_local_body" translatable="true">Hold favoritter, seneste søgninger, cachede resultater, og offline kemi data.</string>
+    <string name="ui_welcome_feature_local_body" translatable="true">Gem favoritter, seneste søgninger og offline-data; mød dagens forbindelse og tilføj hjemmeskærms-widgets.</string>
     <string name="ui_compare" translatable="true">Sammenlign</string>
     <string name="ui_save" translatable="true">Gem</string>
     <string name="ui_ok" translatable="true">Ok</string>
@@ -542,6 +542,15 @@
     <string name="ui_e_g_h2o_ca_oh_2_cuso4_5h2o" translatable="true">f.eks. H2O, Ca(OH)2, CuSO4·5H2O</string>
     <string name="ui_insert" translatable="true">Indsæt:</string>
     <string name="ui_molar_mass" translatable="true">MOLMASSE</string>
+    <string name="ui_isomer_invalid_formula" translatable="true">Dette ligner ikke en gyldig formel</string>
+    <string name="ui_isomer_insight_formula" translatable="true">FORMEL</string>
+    <string name="ui_isomer_insight_atoms" translatable="true">ATOMER</string>
+    <string name="ui_isomer_mass" translatable="true">MASSE</string>
+    <string name="ui_isomer_insight_dbe" translatable="true">Grader af umættethed</string>
+    <string name="ui_isomer_insight_dbe_desc" translatable="true">Ringe + dobbeltbindinger tæller som 1, tredobbelt som 2. Alle isomere af denne formel deler denne værdi.</string>
+    <string name="ui_isomer_sort_relevance" translatable="true">Top</string>
+    <string name="ui_isomer_sort_name" translatable="true">A-Å</string>
+    <string name="ui_retry" translatable="true">Prøv igen</string>
     <string name="ui_count" translatable="true">Antal</string>
     <string name="ui_g_mol" translatable="true">g/mol</string>
     <string name="ui_3f" translatable="true">%.3f</string>
@@ -744,7 +753,7 @@
     <string name="ui_faq_search_what_q" translatable="true">Hvad kan jeg søge efter?</string>
     <string name="ui_faq_search_what_a" translatable="true">Du kan søge efter almindeligt navn, IUPAC-navn, CAS-nummer, PubChem CID, formel eller tegnet struktur. Nogle tilstande fungerer bedre for nøjagtige identifikatorer end korte navne.</string>
     <string name="ui_faq_search_fail_q" translatable="true">Hvorfor mislykkedes min søgning?</string>
-    <string name="ui_faq_search_fail_a" translatable="true">Prøv en rettelse til stavning, CID, CAS-nummer eller et mere specifikt navn. Meget brede navne, uofficielle navne, ustabile strukturer, og forbindelser fraværende fra PubChem kan ikke returnere en nyttig kamp.</string>
+    <string name="ui_faq_search_fail_a" translatable="true">Prøv en stavekorrektion, CID, CAS-nummer eller et mere specifikt navn. Meget brede navne, uofficielle navne, ustabile strukturer og forbindelser, der ikke findes i PubChem, giver måske ikke et brugbart match. Når en søgning fejler, forklarer fejlbeskeden, hvad der gik galt, og er farvekodet efter type.</string>
     <string name="ui_faq_did_you_mean_q" translatable="true">Hvorfor er du mener forslag nogle gange mangler?</string>
     <string name="ui_faq_did_you_mean_a" translatable="true">ChemSearch viser kun tætte stavekampe. Det skjuler løs PubChem autocomplete resultater, når de ser urelateret, så det kan vise intet i stedet for et dårligt forslag.</string>
     <string name="ui_faq_normal_vs_isomer_q" translatable="true">Hvad er forskellen mellem normal søgning og isomer søgning?</string>
@@ -777,14 +786,16 @@
     <string name="ui_faq_collect_a" translatable="true">ChemSearch har ingen kontosystem. Søgehistorik, favoritter, downloads og cache gemmes på din enhed. Live søgninger stadig kontakte eksterne tjenester såsom PubChem, Wikipedia, GitHub opdateringer, eller din valgte AI udbyder, når det er nødvendigt.</string>
     <string name="ui_faq_collect_no_updates_a" translatable="true">ChemSearch har ingen kontosystem. Søgehistorik, favoritter, downloads og cache gemmes på din enhed. Live søgninger stadig kontakte eksterne tjenester såsom PubChem, Wikipedia, eller din valgte AI udbyder, når det er nødvendigt.</string>
     <string name="ui_faq_offline_q" translatable="true">Hvad virker offline?</string>
-    <string name="ui_faq_offline_a" translatable="true">De indbyggede Bibliotek referencer, regnemaskiner, favoritter og downloadede forbindelser kan arbejde offline. Live sammensatte opslag, friske beskrivelser, struktur søgning, opdatering kontroller, og AI beskrivelser har brug for internetadgang.</string>
+    <string name="ui_faq_offline_a" translatable="true">De indbyggede biblioteksreferencer, lommeregnere, favoritter, downloadede forbindelser, dagens forbindelse, hjemmeskærms-widgets og reaktionsforudsigelsen virker alle offline. Live-forbindelsessøgning, friske beskrivelser, struktursøgning, opdateringstjek og AI-beskrivelser kræver internetadgang.</string>
     <string name="ui_faq_offline_no_updates_a" translatable="true">De indbyggede Bibliotek referencer, regnemaskiner, favoritter, og downloadede forbindelser kan arbejde offline. Live sammensatte opslag, friske beskrivelser, struktur søgning, og AI beskrivelser har brug for internetadgang.</string>
     <string name="ui_faq_cache_vs_downloads_q" translatable="true">Hvad er forskellen på cache og Downloads?</string>
     <string name="ui_faq_cache_vs_downloads_a" translatable="true">Cache gør gentagne søgninger hurtigere og kan ryddes automatisk. Downloads er tilsigtet offline sammensatte gemmer med identifikatorer, beskrivelser, strukturer, synonymer, sikkerhedsoplysninger og kildedata, når de er tilgængelige.</string>
     <string name="ui_faq_downloads_stored_q" translatable="true">Hvor gemmes downloadede forbindelser?</string>
     <string name="ui_faq_downloads_stored_a" translatable="true">Downloadede forbindelser gemmes i appens lokale rumdatabase på din enhed. Afinstallere app kan fjerne dem, medmindre du eksporterer eller sikkerhedskopiere dem først.</string>
     <string name="ui_faq_save_q" translatable="true">Hvordan gemmer jeg en forbindelse?</string>
-    <string name="ui_faq_save_a" translatable="true">Brug stjernen til Favoritter eller download-knappen til en fuld offline sparing. Favoritter er hurtige bogmærker; Downloads er beregnet til offline læsning.</string>
+    <string name="ui_faq_save_a" translatable="true">Brug stjernen til favoritter eller download-knappen til en fuld offline gemning. Tryk længe på et bibliotekskort for at kopiere formlen, åbne i PubChem eller fjerne den, og eksportér hele biblioteket som CSV eller JSON fra biblioteksskærmen.</string>
+    <string name="ui_faq_export_q" translatable="true">Hvordan eksporterer jeg mit bibliotek?</string>
+    <string name="ui_faq_export_a" translatable="true">Åbn biblioteket, åbn eksportmenuen, og vælg CSV til regneark eller JSON til en fuld sikkerhedskopi, du kan importere igen på en anden enhed. Kemidatabasen følger selv med i appen og kræver ingen eksport.</string>
     <string name="ui_faq_compare_q" translatable="true">Kan jeg sammenligne gemte forbindelser?</string>
     <string name="ui_faq_compare_a" translatable="true">Ja. Vælg to eller flere forbindelser i Favoritter, Downloads, eller understøttet Kemisk Database poster, og brug derefter den flydende Sammenlign knap.</string>
     <string name="ui_faq_database_q" translatable="true">Hvad er den kemiske database?</string>
@@ -821,6 +832,8 @@
     <string name="ui_search_history" translatable="true">Søg I Historik</string>
     <string name="ui_autosuggestions" translatable="true">Autoforslag</string>
     <string name="ui_compact_mode" translatable="true">Kompakt tilstand</string>
+    <string name="ui_cards" translatable="true">Kort</string>
+    <string name="ui_subtitle_cards" translatable="true">Vis indhold i afrundede kort; slå fra for en flad side</string>
     <string name="ui_reduce_motion" translatable="true">Reducer bevægelse</string>
     <string name="ui_high_contrast_outlines" translatable="true">Høj kontrast skitser</string>
     <string name="ui_default_structure_view" translatable="true">Standard strukturvisning</string>
@@ -1246,7 +1259,7 @@
     <string name="ui_info_elemental_analysis_what" translatable="true">Hvad er dette?</string>
     <string name="ui_info_elemental_analysis_what_body" translatable="true">Viser procentdelen af hvert element efter masse i forbindelsen. Beregnet ud fra atomvægt og molekylær formel.</string>
     <string name="ui_info_elemental_analysis_example" translatable="true">Eksempel</string>
-    <string name="ui_info_elemental_analysis_example_body" translatable="true">Vand (H2O) er ~11% hydrogen og ~89% oxygen i masse, da oxygenatomer er meget tungere end hydrogenatomer.</string>
+    <string name="ui_info_elemental_analysis_example_body" formatted="false" translatable="true">Vand (H2O) er ~11% hydrogen og ~89% oxygen i masse, da oxygenatomer er meget tungere end hydrogenatomer.</string>
     <string name="ui_info_elemental_analysis_why" translatable="true">Hvorfor det betyder noget</string>
     <string name="ui_info_elemental_analysis_why_body" translatable="true">Nyttigt i analytisk kemi til at verificere sammensatte identitet, og i ernæring videnskab til at forstå næringsstof sammensætning.</string>
     <string name="ui_info_what_is_ghs" translatable="true">Hvad er GHS?</string>
@@ -1626,5 +1639,137 @@
     <string name="ui_recent_group_previous_30_days" translatable="true">Sidste 30 dage</string>
     <string name="ui_recent_group_yesterday" translatable="true">I går</string>
     <string name="ui_db_section_details" translatable="true">Detaljer</string>
+    <string name="ui_reaction_predictor">Reaktionsforudsigelse</string>
+    <string name="ui_reaction_predictor_subtitle">Forudsig produkter ud fra reaktanter ved hjælp af den kemiske database og reaktionsregler</string>
+    <string name="ui_reactant_n">Reaktant %1$d</string>
+    <string name="ui_add_reactant">Tilføj reaktant</string>
+    <string name="ui_predict_reaction">Forudsig produkter</string>
+    <string name="ui_error_enter_two_reactants">Indtast to reaktanter.</string>
+    <string name="ui_error_no_prediction_available">Ingen kendt regel passer til disse reaktanter. Prøv et almindeligt par som en syre med en base, et metal eller et karbonat.</string>
+    <string name="ui_pred_rule_neutralization">Neutralisationsregel</string>
+    <string name="ui_pred_rule_acid_carbonate">Syre + karbonat-regel</string>
+    <string name="ui_pred_rule_metal_acid">Metal + syre-regel</string>
+    <string name="ui_pred_rule_single_displacement">Aktivitetsrække-regel</string>
+    <string name="ui_pred_rule_combustion">Forbrændingsregel</string>
+    <string name="ui_pred_rule_synthesis">Synteseregel</string>
+    <string name="ui_pred_note_neutralization">vand dannes</string>
+    <string name="ui_pred_note_effervescence">bobler</string>
+    <string name="ui_pred_note_hydrogen_gas">hydrogengas</string>
+    <string name="ui_pred_note_metal_deposited">metal udfældes</string>
+    <string name="ui_pred_rule_ammonium_base">Ammoniumsalt + base-regel</string>
+    <string name="ui_pred_rule_acid_oxide">Syre + metaloxid-regel</string>
+    <string name="ui_pred_rule_acid_sulfite">Syre + sulfrit-regel</string>
+    <string name="ui_pred_rule_acid_sulfide">Syre + sulfid-regel</string>
+    <string name="ui_pred_rule_metal_water">Metal + koldt vand-regel</string>
+    <string name="ui_pred_rule_metal_steam">Metal + damp-regel</string>
+    <string name="ui_pred_note_ammonia_gas">ammoniakgas</string>
+    <string name="ui_pred_note_pungent_gas">stinkende SO2-gas</string>
+    <string name="ui_pred_note_rotten_egg">lugt af rådne æg</string>
+    <string name="ui_rp_what_it_does_desc">Indtast to reaktanter for at se de forudsagte produkter, en balanceret ligning og den regel eller databasepost, der ligger bag forudsigelsen.</string>
+    <string name="ui_rp_best_inputs_desc">Almindelige uorganiske par fungerer bedst: syrer med baser, metaller eller karbonater; aktive metaller i saltopløsninger; kulbrinter med O2; og to grundstoffer, der danner en kendt binær forbindelse.</string>
+    <string name="ui_rp_limits_desc">Forudsigelsen dækker kun almindelige regler. Organisk kemi, redox med særlige betingelser og reaktioner, der kræver katalysator eller varme, kan mangle. Tjek en reference, før du stoler på en forudsigelse.</string>
+    <string name="ui_language_bengali">বাংলা</string>
+    <string name="ui_copy_summary">Kopiér resumé</string>
+    <string name="ui_copied_summary">Resumé kopieret</string>
+    <string name="ui_consumption_label">%1$s%% forbrugt</string>
+    <string name="ui_atom_economy_label">Atomøkonomi: %1$s%%</string>
+    <string name="ui_widget_name_placeholder" translatable="true">Åbn ChemSearch…</string>
+    <string name="ui_widget_random_refresh" translatable="true">Ny tilfældig forbindelse</string>
+    <string name="ui_widget_todays_pick" translatable="true">Dagens udvalgte</string>
+    <string name="ui_widget_random_tap_refresh" translatable="true">Tryk på opdater for en anden</string>
+    <string name="ui_widget_refresh" translatable="true">Opdater</string>
+    <string name="ui_section_what_to_search" translatable="true">Hvad skal søges</string>
+    <string name="ui_section_narrow_by" translatable="true">Indsnævr med</string>
+    <string name="ui_section_properties" translatable="true">Egenskaber</string>
+    <string name="ui_section_results" translatable="true">Resultater</string>
+    <string name="ui_name_contains" translatable="true">Navn indeholder</string>
+    <string name="ui_name_contains_hint" translatable="true">f.eks. syre eller benz</string>
+    <string name="ui_filters_active_count" translatable="true">%1$d aktive</string>
+    <string name="ui_filter_name_contains_s" translatable="true">navn: %1$s</string>
+    <string name="ui_results_limit_n" translatable="true">Vis %1$d</string>
+    <string name="ui_widget_daily_desc" translatable="true">Dagens stof - et nyt stof hver dag</string>
+    <string name="ui_widget_random_desc" translatable="true">Tilfældigt stof - tryk opdater for at rulle igen</string>
+    <string name="ui_compare_subtitle" translatable="true">Hent forbindelser og sammenlign egenskaber side om side</string>
+    <string name="ui_clear_results" translatable="true">Ryd resultater</string>
+    <string name="ui_comparing_n_compounds" translatable="true">Sammenligner %1$d forbindelser</string>
+    <string name="ui_copied_short" translatable="true">Kopieret</string>
+    <string name="ui_copy_row_values" translatable="true">Kopiér alle værdier i denne række</string>
+    <string name="ui_structure_search_summary" translatable="true">%1$s-tilstand · %2$d%% lighed · %3$d resultater</string>
+    <string name="ui_structure_search_add_mode_chip" translatable="true">Tilføj %1$s-tilstand</string>
+    <string name="ui_structure_search_import_hint" translatable="true">Indsæt SMILES som CCO eller CC(=O)O, InChI eller en V2000 MOL-fil</string>
+    <string name="ui_faq_widget_daily_q" translatable="true">Hvad er forskellen på de to widgets?</string>
+    <string name="ui_faq_widget_daily_a" translatable="true">Dagens forbindelse-widget afleder sit valg af kalenderdatoen, så den viser samme forbindelse hele dagen og skifter ved midnat. Widgetten Tilfældig forbindelse vælger efter behov — tryk på dens opdateringsknap for en ny når som helst.</string>
+    <string name="ui_faq_reaction_predictor_q" translatable="true">Hvordan fungerer reaktionsforudsigelsen?</string>
+    <string name="ui_faq_reaction_predictor_a" translatable="true">Den matcher dine valgte reaktanter mod et offline-regelsæt bygget fra den medfølgende kemiske database og foreslår sandsynlige produkter, reaktionstyper og observationer. Den dækker almindelige skolereaktioner — tjek altid usædvanlige tilfælde med en lærebog.</string>
+    <string name="ui_faq_database_size_q" translatable="true">Hvor stor er den indbyggede kemiske database?</string>
+    <string name="ui_faq_database_size_a" translatable="true">Den indeholder 575 stoffer, 108 ioner, 71 funktionelle grupper og 149 reaktioner, alle tilgængelige offline. De 119 periodiske elementer findes i det periodiske system, så de to referencer duplicerer aldrig hinanden.</string>
+    <string name="ui_faq_languages_q" translatable="true">Hvilke sprog understøtter ChemSearch?</string>
+    <string name="ui_faq_languages_a" translatable="true">Brugerfladen er fuldt oversat til 15 sprog: bengali, dansk, tysk, græsk, spansk, finsk, fransk, italiensk, japansk, hollandsk, norsk, polsk, portugisisk, russisk og svensk. Skift når som helst i Indstillinger > Sprog.</string>
+    <string name="ui_whats_new_section_features" translatable="true">Nye funktioner</string>
+    <string name="ui_whats_new_section_improvements" translatable="true">Forbedringer</string>
+    <string name="ui_section_whats_new" translatable="true">Nyheder</string>
+    <string name="ui_whats_new_bullet_reaction" translatable="true">Reaktionsforudsigelse: Tilføjet en offline regelmotor baseret på den medfølgende kemiske database. Indtast op til tre reaktanter og få forudsagte produkter, reaktionstyper, observationer og sikkerhedsniveauer.</string>
+    <string name="ui_whats_new_bullet_widgets" translatable="true">Hjemmeskærm-widgets: Tilføjet Dagens forbindelse og Tilfældig forbindelse-widgets. Daglig-widgeten skifter ved midnat, mens den tilfældige har sin egen opdateringsknap.</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">Kemisk database: Udvidet fra 331 til 575 stoffer, herunder aminosyrer, vitaminer, lægemidler, estere, organometaller, silikater, alkaloider og mere. De 118 grundstoffer findes nu i det periodiske system i stedet for at være duplikeret i databasen.</string>
+    <string name="ui_whats_new_bullet_search" translatable="true">Avanceret søgning: Tilføjet vælger for resultatgrænse, navneindhold-filter og tæller for aktive filtre med ét-tryks ryd alle.</string>
+    <string name="ui_whats_new_bullet_tools" translatable="true">Værktøjer: Gitteret er omarbejdet, så det tilpasser sig fra 2 kolonner på smalle telefoner til 5 på brede skærme og tablets. Værktøjskategorier bruger nu tydelige accentfarver, og gitterrækker bevarer lige høje kort.</string>
+    <string name="ui_whats_new_bullet_structure" translatable="true">Struktursøgning: Tilføjet konfigurationsoversigt på et øjeblik, lighedsregulator, tydeligere aktiv tilstand, hints om importformater og et live-formel-badge.</string>
+    <string name="ui_whats_new_bullet_polish" translatable="true">Søgefejl: Tilføjet specifikke, farvekodede beskeder for hastighedsbegrænsning, timeouts, ugyldige forespørgsler, netværksfejl, serverfejl og tomme resultater.</string>
+    <string name="ui_whats_new_bullet_home" translatable="true">Explore: Tilføjet genveje til Struktursøgning, Isomersøgning, Det periodiske system og Kemisk database.</string>
+    <string name="ui_whats_new_bullet_library" translatable="true">Bibliotekshandlinger: Langt tryk på en gemt forbindelse for at kopiere formlen, åbne den i PubChem eller fjerne den uden at åbne posten.</string>
+    <string name="ui_whats_new_bullet_shortcuts" translatable="true">Launcher-genveje: Tryk længe på app-ikonet for at gå direkte til Søg, Bibliotek, Værktøjer eller Indstillinger.</string>
+    <string name="ui_whats_new_bullet_daily" translatable="true">Dagens forbindelse: Tilføjet et hjemmeskærmskort, der viser samme daglige forbindelse som widgeten, med formel og typiske anvendelser.</string>
+    <string name="ui_whats_new_bullet_csv" translatable="true">Bibliotekseksport: Tilføjet CSV-eksport ved siden af den eksisterende JSON-sikkerhedskopi og importunderstøttelse.</string>
+    <string name="ui_whats_new_bullet_compare" translatable="true">Sammenlign forbindelser: Tilføjet ét-tryks kopi af egenskabsrækker, forbindelseschips, en ryd-resultater-handling og understøttelse af op til seks forbindelser.</string>
+    <string name="ui_whats_new_bullet_periodic" translatable="true">Det periodiske system: Tilføjet interaktive kategorifiltre, lysere grundstofsfliser, gradient-trendheatmaps, min/max-forklaringer og en klikbar top-fem-grundstofstribe.</string>
+    <string name="ui_whats_new_bullet_stoich" translatable="true">Støkiometri: Tilføjet atomøkonomi, forbrug og resterende mængder pr. reagens, forbedret enhedskonvertering og kopierbare analysesummarer.</string>
+    <string name="ui_whats_new_bullet_display" translatable="true">Visning: Tilføjet appomfattende indstilling for temperaturenhed (K, °C eller °F).</string>
+    <string name="ui_whats_new_bullet_haptics" translatable="true">Haptik: Tilføjet haptisk feedback til understøttede interaktioner.</string>
+    <string name="ui_whats_new_bullet_offline_mode" translatable="true">Udviklerværktøjer: Tilføjet offline testtilstand med deterministiske testresultater, justerbar latenstid, simulerede fejl, tvungne fejlkoder og et offline-banner på skærmen. Også tilføjet cache-inspektion, enheds- og build-detaljer samt et fejlbeskedkatalog.</string>
+    <string name="ui_whats_new_bullet_dialogs" translatable="true">Brugerflade: Standardiseret dialoger på tværs af FAQ-, hjælpe- og bekræftelsespopups med tonede ikonhoveder, lukknapper og farvekodede destruktive handlinger.</string>
+    <string name="ui_whats_new_bullet_cards" translatable="true">Brugerflade: Standardiseret kort, valgtilstande og destruktive handlinger i hele appen. Tilføjet en Kort-indstilling til at skifte mellem kortbaserede og fladere layouts.</string>
+    <string name="ui_whats_new_bullet_collapsible" translatable="true">Om: Nyheder-kortet kan nu sammenklappes og viser højdepunkterne fra den aktuelle udgivelse.</string>
+    <string name="ui_whats_new_bullet_languages" translatable="true">Nyt sprog: Tilføjet bengali og opdateret de lokaliserede strenge. Sprogvælgere viser nu hvert sprog med dets oprindelige navn.</string>
+    <string name="ui_error_search_not_found_s" translatable="true">Ingen match fundet for “%1$s” i PubChem. Prøv et andet navn, et CAS-nummer, eller tjek stavningen.</string>
+    <string name="ui_error_search_throttled" translatable="true">PubChem begrænser anmodninger lige nu. Vent et par sekunder og prøv igen.</string>
+    <string name="ui_error_search_timeout" translatable="true">PubChem tog for lang tid om at svare. Prøv igen — meget komplekse forespørgsler kan nå tiden ud.</string>
+    <string name="ui_error_search_bad_request" translatable="true">PubChem afviste forespørgslen som ugyldig. Tjek inputformatet (navn, CAS eller formel).</string>
+    <string name="ui_error_search_bad_request_detail" translatable="true">PubChem afviste forespørgslen: %1$s</string>
+    <string name="ui_error_search_network" translatable="true">Netværksproblem — PubChem kan ikke nås. Tjek din internetforbindelse og prøv igen.</string>
+    <string name="ui_error_search_server" translatable="true">PubChem-serverfejl (HTTP %1$s). Tjenesten kan være midlertidigt nede — prøv igen senere.</string>
+    <string name="ui_error_search_unknown" translatable="true">Uventet fejl: %1$s</string>
+    <string name="ui_debug_device_build_info" translatable="true">Enheds- og build-oplysninger</string>
+    <string name="ui_debug_device_body" translatable="true">Model, OS, ABI, kernel, installer, version og live-hukommelsesforbrug</string>
+    <string name="ui_debug_cache_stats" translatable="true">Cacheinspektør for forbindelser</string>
+    <string name="ui_debug_cache_body" translatable="true">Cachelagrede filer, størrelse og manuel rydning</string>
+    <string name="ui_debug_cache_files_d" translatable="true">Filer i cache: %1$d</string>
+    <string name="ui_debug_cache_empty" translatable="true">Ingen cachede forbindelser — søg og åbn en forbindelse for at udfylde cachen.</string>
+    <string name="ui_debug_error_catalog" translatable="true">Katalog over fejlbeskeder</string>
+    <string name="ui_debug_error_catalog_body" translatable="true">Forhåndsvis søgefejl med deres farvekodning</string>
+    <string name="ui_cache_cleared" translatable="true">Cache ryddet</string>
+    <string name="ui_clipboard_cache" translatable="true">Rapport over forbindelsescache</string>
+    <string name="ui_about_whats_new_s" translatable="true">Nyt i v%1$s</string>
+    <string name="ui_trend_top_elements" translatable="true">Top 5 grundstoffer</string>
+    <string name="ui_compound_of_the_day" translatable="true">DAGENS FORBINDELSE</string>
+    <string name="ui_temperature_unit" translatable="true">Temperatur/enhed</string>
+    <string name="ui_subtitle_temperature_unit" translatable="true">Bruges til smelte- og kogepunkter i grundstofdetaljer og trends</string>
+    <string name="ui_copy_formula" translatable="true">Kopiér formel</string>
+    <string name="ui_export_library_csv" translatable="true">Eksportér bibliotek som CSV</string>
+    <string name="ui_error_no_browser" translatable="true">Ingen browser fundet</string>
+    <string name="ui_explore_chemsearch" translatable="true">Udforsk ChemSearch</string>
+    <string name="ui_periodic_table_quick_action_subtitle" translatable="true">Gennemse alle 118 grundstoffer og deres egenskaber</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">900+ stoffer, ioner, grupper og reaktioner</string>
+    <string name="ui_offline_test_mode" translatable="true">Offline-testtilstand</string>
+    <string name="ui_offline_test_mode_subtitle" translatable="true">Vis dummydata uden rigtige netværkskald</string>
+    <string name="ui_offline_test_mode_toggle_body" translatable="true">Når den er slået til, returnerer søgning, opslag, struktur- og AI-kald lokale testposter i stedet for at kontakte netværket</string>
+    <string name="ui_offline_test_mode_configure" translatable="true">Konfigurér testtilstand</string>
+    <string name="ui_offline_test_mode_configure_subtitle" translatable="true">Latens, fejlsats og simuleret fejtype</string>
+    <string name="ui_offline_test_mode_latency" translatable="true">SIMULERET LATENS</string>
+    <string name="ui_offline_test_mode_error_rate" translatable="true">TILFÆLDIG FEJLSATS</string>
+    <string name="ui_offline_test_mode_failure" translatable="true">TVUNGEN FEJL</string>
+    <string name="ui_offline_test_mode_failure_body" translatable="true">Tvinger hvert dummykald til at fejle med denne fejltype, så hver farvekodet besked kan kontrolleres</string>
+    <string name="ui_offline_test_mode_footer" translatable="true">Resultaterne er deterministiske: Den samme søgning giver altid samme testforbindelse, så UI-tilstande kan genskabes. Intet forlader enheden, mens tilstanden er aktiveret.</string>
+    <string name="ui_offline_test_mode_badge" translatable="true">OFFLINE</string>
+    <string name="ui_offline_test_mode_active_banner" translatable="true">Offline-testtilstand er aktiv: Alle resultater på denne skærm er simulerede dummydata</string>
+    <string name="ui_offline_test_mode_active_note" translatable="true">Alle resultater er simulerede</string>
 </resources>
-

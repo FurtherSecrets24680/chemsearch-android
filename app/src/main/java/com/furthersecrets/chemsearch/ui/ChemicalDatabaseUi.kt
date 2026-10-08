@@ -331,11 +331,9 @@ private fun DatabaseSelectorCard(
     onClick: () -> Unit
 ) {
     val compact = LocalCompactMode.current
-    Card(
+    ChemCardSurface(
         onClick = onClick,
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(if (compact) 14.dp else 16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        modifier = Modifier.fillMaxWidth()
     ) {
         Row(
             modifier = Modifier.padding(if (compact) 12.dp else 16.dp),
@@ -451,12 +449,10 @@ private fun DatabaseResultCard(
     val displayFormula = remember(entry.category, entry.formula) {
         chemicalDatabaseDisplayText(entry.primaryFormulaLabel(), entry.formula)
     }
-    Card(
+    ChemCardSurface(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(if (compact) 14.dp else 16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = if (selected) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.42f)) else null
+        selected = selected
     ) {
         Column(
             modifier = Modifier.padding(if (compact) 12.dp else 14.dp),

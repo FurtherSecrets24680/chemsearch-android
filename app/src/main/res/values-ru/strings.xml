@@ -101,13 +101,13 @@
     <string name="ui_welcome_tagline" translatable="true">ХИМИЯ УПРОЩЕНА</string>
     <string name="ui_welcome_tagline_body" translatable="true">Поисковые составы, исследовать структуры, сохранять полезные результаты и использовать практические инструменты химии в одном собственном Android приложении.</string>
     <string name="ui_welcome_feature_search_title" translatable="true">Составной поиск</string>
-    <string name="ui_welcome_feature_search_body" translatable="true">Ищите данные PubChem по имени, формуле, идентификатору в стиле CAS, или CID.</string>
+    <string name="ui_welcome_feature_search_body" translatable="true">Ищите данные PubChem по названию, формуле, идентификатору типа CAS или CID, с автоподсказками, расширенными фильтрами и поиском по нарисованной структуре.</string>
     <string name="ui_welcome_feature_structures_title" translatable="true">2D и 3D структуры</string>
     <string name="ui_welcome_feature_structures_body" translatable="true">Просматривайте структурные изображения, поворачивайте 3D-модели и сохраняйте файлы структуры.</string>
     <string name="ui_welcome_feature_tools_title" translatable="true">Химические инструменты</string>
     <string name="ui_welcome_feature_tools_body" translatable="true">Реакции баланса, вычисляют молярную массу, решают стоициометрию и многое другое.</string>
     <string name="ui_welcome_feature_local_title" translatable="true">Локальный рабочий процесс</string>
-    <string name="ui_welcome_feature_local_body" translatable="true">Сохранять избранное, последние поиски, кэшированные результаты и данные об оффлайн химии.</string>
+    <string name="ui_welcome_feature_local_body" translatable="true">Храните избранное, недавние запросы и офлайн-данные; знакомьтесь с соединением дня и добавляйте виджеты на главный экран.</string>
     <string name="ui_compare" translatable="true">Сравнить</string>
     <string name="ui_save" translatable="true">Сохранить</string>
     <string name="ui_ok" translatable="true">ОК</string>
@@ -542,6 +542,15 @@
     <string name="ui_e_g_h2o_ca_oh_2_cuso4_5h2o" translatable="true">напр. H2O, Ca(OH)2, CuSO4·5H2O</string>
     <string name="ui_insert" translatable="true">Вставить:</string>
     <string name="ui_molar_mass" translatable="true">МОЛЯРНАЯ МАССА</string>
+    <string name="ui_isomer_invalid_formula" translatable="true">Это не похоже на корректную формулу</string>
+    <string name="ui_isomer_insight_formula" translatable="true">ФОРМУЛА</string>
+    <string name="ui_isomer_insight_atoms" translatable="true">АТОМЫ</string>
+    <string name="ui_isomer_mass" translatable="true">МАССА</string>
+    <string name="ui_isomer_insight_dbe" translatable="true">Степени ненасыщенности</string>
+    <string name="ui_isomer_insight_dbe_desc" translatable="true">Циклы + двойные связи считаются как 1, тройные как 2. Каждый изомер этой формулы имеет то же значение.</string>
+    <string name="ui_isomer_sort_relevance" translatable="true">Топ</string>
+    <string name="ui_isomer_sort_name" translatable="true">А-Я</string>
+    <string name="ui_retry" translatable="true">Повторить</string>
     <string name="ui_count" translatable="true">Количество</string>
     <string name="ui_g_mol" translatable="true">г/моль</string>
     <string name="ui_3f" translatable="true">%.3f</string>
@@ -744,7 +753,7 @@
     <string name="ui_faq_search_what_q" translatable="true">Что я могу найти?</string>
     <string name="ui_faq_search_what_a" translatable="true">Вы можете искать по обычному имени, имени IUPAC, номеру CAS, PubChem CID, формуле или нарисованной структуре. Некоторые режимы лучше работают для точных идентификаторов, чем короткие имена.</string>
     <string name="ui_faq_search_fail_q" translatable="true">Почему мой поиск не удался?</string>
-    <string name="ui_faq_search_fail_a" translatable="true">Попробуйте коррекцию орфографии, CID, CAS номер или более специфичное имя. Очень широкие имена, неофициальные имена, нестабильные структуры и соединения, отсутствующие в PubChem, могут не возвращать полезного матча.</string>
+    <string name="ui_faq_search_fail_a" translatable="true">Попробуйте исправить написание, CID, номер CAS или более конкретное название. Очень широкие названия, неофициальные названия, нестабильные структуры и соединения, отсутствующие в PubChem, могут не дать полезного совпадения. Когда поиск завершается ошибкой, сообщение объясняет, что пошло не так, и выделено цветом по типу.</string>
     <string name="ui_faq_did_you_mean_q" translatable="true">Почему вы иногда не имели в виду предложения?</string>
     <string name="ui_faq_did_you_mean_a" translatable="true">ChemSearch показывает только близкие по написанию совпадения. Он скрывает свободные результаты автозаполнения PubChem, если они выглядят несвязанными, поэтому вместо плохого предложения может ничего не показывать.</string>
     <string name="ui_faq_normal_vs_isomer_q" translatable="true">В чем разница между обычным поиском и поиском изомеров?</string>
@@ -777,14 +786,16 @@
     <string name="ui_faq_collect_a" translatable="true">В ChemSearch отсутствует система аккаунта. Ищите историю, избранное, загрузки и кэш хранятся на вашем устройстве. Живой поиск по-прежнему контактирует с внешними сервисами, такими как PubChem, Wikipedia, GitHub обновляется, или выбранный вами поставщик AI, когда это необходимо.</string>
     <string name="ui_faq_collect_no_updates_a" translatable="true">В ChemSearch отсутствует система аккаунта. Ищите историю, избранное, загрузки и кэш хранятся на вашем устройстве. Живой поиск все еще контактирует с внешними услугами, такими как PubChem, Wikipedia, или выбранным вами AI провайдером, когда это необходимо.</string>
     <string name="ui_faq_offline_q" translatable="true">Что работает в автономном режиме?</string>
-    <string name="ui_faq_offline_a" translatable="true">Встроенные ссылки на библиотеку, калькуляторы, избранные и загруженные соединения могут работать в автономном режиме. Живой сложный поиск, свежие описания, поиск структуры, проверка обновлений и ИИ описания нуждаются в интернете.</string>
+    <string name="ui_faq_offline_a" translatable="true">Встроенные справочники библиотеки, калькуляторы, избранное, загруженные соединения, соединение дня, виджеты главного экрана и предсказатель реакций работают офлайн. Живой поиск соединений, свежие описания, поиск по структуре, проверка обновлений и описания от ИИ требуют доступа к интернету.</string>
     <string name="ui_faq_offline_no_updates_a" translatable="true">Встроенные ссылки на библиотеку, калькуляторы, избранные и загруженные соединения могут работать в автономном режиме.</string>
     <string name="ui_faq_cache_vs_downloads_q" translatable="true">В чем разница между кэшем и загрузками?</string>
     <string name="ui_faq_cache_vs_downloads_a" translatable="true">Кэш делает повторный поиск быстрее и может быть очищен автоматически. Загрузки - это преднамеренные автономные сохранения с идентификаторами, описаниями, структурами, синонимами, информацией о безопасности и исходными данными, если таковые имеются.</string>
     <string name="ui_faq_downloads_stored_q" translatable="true">Где хранятся загруженные соединения?</string>
     <string name="ui_faq_downloads_stored_a" translatable="true">Загруженные соединения хранятся в базе данных приложения на вашем устройстве. Удаление приложения может удалить их, если вы не экспортируете или не создадите резервную копию.</string>
     <string name="ui_faq_save_q" translatable="true">Как сохранить соединение?</string>
-    <string name="ui_faq_save_a" translatable="true">Используйте звёздочку для избранного или кнопку загрузки для полного автономного сохранения. Избранное - это быстрые закладки; Загрузки предназначены для автономного чтения.</string>
+    <string name="ui_faq_save_a" translatable="true">Используйте звезду для избранного или кнопку загрузки для полного офлайн-сохранения. Удерживайте карточку библиотеки, чтобы скопировать формулу, открыть в PubChem или удалить её, и экспортируйте всю библиотеку в CSV или JSON на экране библиотеки.</string>
+    <string name="ui_faq_export_q" translatable="true">Как экспортировать библиотеку?</string>
+    <string name="ui_faq_export_a" translatable="true">Откройте библиотеку, откройте меню экспорта и выберите CSV для таблиц или JSON для полной резервной копии, которую можно импортировать на другом устройстве. Химическая база данных встроена в приложение и не требует экспорта.</string>
     <string name="ui_faq_compare_q" translatable="true">Могу ли я сравнивать сохраненные соединения?</string>
     <string name="ui_faq_compare_a" translatable="true">Да. Выберите два или более соединений в Избранном, Загрузках или поддерживаемых Хим-БД, затем используйте плавающую кнопку сравнения.</string>
     <string name="ui_faq_database_q" translatable="true">Что такое база данных по химическим веществам?</string>
@@ -821,6 +832,8 @@
     <string name="ui_search_history" translatable="true">История поиска</string>
     <string name="ui_autosuggestions" translatable="true">Автоподсказки</string>
     <string name="ui_compact_mode" translatable="true">Компактный режим</string>
+    <string name="ui_cards" translatable="true">Карточки</string>
+    <string name="ui_subtitle_cards" translatable="true">Показывать содержимое в скруглённых карточках; выключите для плоской страницы</string>
     <string name="ui_reduce_motion" translatable="true">Уменьшить движение</string>
     <string name="ui_high_contrast_outlines" translatable="true">Контрастные контуры</string>
     <string name="ui_default_structure_view" translatable="true">Вид структуры по умолчанию</string>
@@ -1246,7 +1259,7 @@
     <string name="ui_info_elemental_analysis_what" translatable="true">Что это?</string>
     <string name="ui_info_elemental_analysis_what_body" translatable="true">Показывает процент каждого элемента по массе в составе. Вычисляется из атомной массы и молекулярной формулы.</string>
     <string name="ui_info_elemental_analysis_example" translatable="true">Пример</string>
-    <string name="ui_info_elemental_analysis_example_body" translatable="true">Вода (H2O) составляет около 11% водорода и около 89% кислорода по массе, так как кислородные атомы значительно тяжелее атомов водорода.</string>
+    <string name="ui_info_elemental_analysis_example_body" formatted="false" translatable="true">Вода (H2O) составляет около 11% водорода и около 89% кислорода по массе, так как кислородные атомы значительно тяжелее атомов водорода.</string>
     <string name="ui_info_elemental_analysis_why" translatable="true">Почему важно</string>
     <string name="ui_info_elemental_analysis_why_body" translatable="true">Полезно в аналитической химии для проверки сложной идентичности, а также в пищевой науке для понимания состава питательных веществ.</string>
     <string name="ui_info_what_is_ghs" translatable="true">Что такое GHS?</string>
@@ -1626,5 +1639,137 @@
     <string name="ui_recent_group_previous_30_days" translatable="true">Последние 30 дней</string>
     <string name="ui_recent_group_yesterday" translatable="true">Вчера</string>
     <string name="ui_db_section_details" translatable="true">Подробности</string>
+    <string name="ui_reaction_predictor">Предсказатель реакций</string>
+    <string name="ui_reaction_predictor_subtitle">Предсказывает продукты из реагентов, используя химическую базу данных и правила реакций</string>
+    <string name="ui_reactant_n">Реагент %1$d</string>
+    <string name="ui_add_reactant">Добавить реагент</string>
+    <string name="ui_predict_reaction">Предсказать продукты</string>
+    <string name="ui_error_enter_two_reactants">Введите два реагента.</string>
+    <string name="ui_error_no_prediction_available">Ни одно известное правило не подходит к этим реагентам. Попробуйте типичную пару: кислота с основанием, металлом или карбонатом.</string>
+    <string name="ui_pred_rule_neutralization">Правило нейтрализации</string>
+    <string name="ui_pred_rule_acid_carbonate">Правило кислота + карбонат</string>
+    <string name="ui_pred_rule_metal_acid">Правило металл + кислота</string>
+    <string name="ui_pred_rule_single_displacement">Правило ряда активности</string>
+    <string name="ui_pred_rule_combustion">Правило горения</string>
+    <string name="ui_pred_rule_synthesis">Правило синтеза</string>
+    <string name="ui_pred_note_neutralization">образовалась вода</string>
+    <string name="ui_pred_note_effervescence">вспенивание</string>
+    <string name="ui_pred_note_hydrogen_gas">газ водород</string>
+    <string name="ui_pred_note_metal_deposited">осажденный металл</string>
+    <string name="ui_pred_rule_ammonium_base">Правило соль аммония + основание</string>
+    <string name="ui_pred_rule_acid_oxide">Правило кислота + оксид металла</string>
+    <string name="ui_pred_rule_acid_sulfite">Правило кислота + сульфит</string>
+    <string name="ui_pred_rule_acid_sulfide">Правило кислота + сульфид</string>
+    <string name="ui_pred_rule_metal_water">Правило металл + холодная вода</string>
+    <string name="ui_pred_rule_metal_steam">Правило металл + пар</string>
+    <string name="ui_pred_note_ammonia_gas">газ аммиак</string>
+    <string name="ui_pred_note_pungent_gas">едкий газ SO2</string>
+    <string name="ui_pred_note_rotten_egg">запах тухлых яиц</string>
+    <string name="ui_rp_what_it_does_desc">Введите два реагента, чтобы увидеть предсказанные продукты, сбалансированное уравнение и правило или запись базы данных, лежащие в основе предсказания.</string>
+    <string name="ui_rp_best_inputs_desc">Лучше всего работают типичные неорганические пары: кислоты с основаниями, металлами или карбонатами; активные металлы в растворах солей; углеводороды с O2; и два элемента, образующие известное бинарное соединение.</string>
+    <string name="ui_rp_limits_desc">Предсказатель охватывает только типичные правила. Органическая химия, окислительно-восстановительные реакции в особых условиях и реакции с катализатором или нагревом могут отсутствовать. Проверьте справочник, прежде чем полагаться на предсказание.</string>
+    <string name="ui_language_bengali">বাংলা</string>
+    <string name="ui_copy_summary">Копировать сводку</string>
+    <string name="ui_copied_summary">Сводка скопирована</string>
+    <string name="ui_consumption_label">израсходовано %1$s%%</string>
+    <string name="ui_atom_economy_label">Атомная экономия: %1$s%%</string>
+    <string name="ui_widget_name_placeholder" translatable="true">Открыть ChemSearch…</string>
+    <string name="ui_widget_random_refresh" translatable="true">Новое случайное соединение</string>
+    <string name="ui_widget_todays_pick" translatable="true">Выбор дня</string>
+    <string name="ui_widget_random_tap_refresh" translatable="true">Нажмите «Обновить» для другого</string>
+    <string name="ui_widget_refresh" translatable="true">Обновить</string>
+    <string name="ui_section_what_to_search" translatable="true">Что искать</string>
+    <string name="ui_section_narrow_by" translatable="true">Уточнить по</string>
+    <string name="ui_section_properties" translatable="true">Свойства</string>
+    <string name="ui_section_results" translatable="true">Результаты</string>
+    <string name="ui_name_contains" translatable="true">Имя содержит</string>
+    <string name="ui_name_contains_hint" translatable="true">напр. acid или benz</string>
+    <string name="ui_filters_active_count" translatable="true">%1$d активных</string>
+    <string name="ui_filter_name_contains_s" translatable="true">имя: %1$s</string>
+    <string name="ui_results_limit_n" translatable="true">Показать %1$d</string>
+    <string name="ui_widget_daily_desc" translatable="true">Вещество дня - новое вещество каждый день</string>
+    <string name="ui_widget_random_desc" translatable="true">Случайное вещество - нажмите «Обновить», чтобы перебросить</string>
+    <string name="ui_compare_subtitle" translatable="true">Получите соединения и сравните свойства бок о бок</string>
+    <string name="ui_clear_results" translatable="true">Очистить результаты</string>
+    <string name="ui_comparing_n_compounds" translatable="true">Сравнение %1$d соединений</string>
+    <string name="ui_copied_short" translatable="true">Скопировано</string>
+    <string name="ui_copy_row_values" translatable="true">Копировать все значения этой строки</string>
+    <string name="ui_structure_search_summary" translatable="true">Режим %1$s · %2$d%% сходства · %3$d результатов</string>
+    <string name="ui_structure_search_add_mode_chip" translatable="true">Добавить режим %1$s</string>
+    <string name="ui_structure_search_import_hint" translatable="true">Вставьте SMILES, например CCO или CC(=O)O, InChI или файл MOL V2000</string>
+    <string name="ui_faq_widget_daily_q" translatable="true">В чём разница между двумя виджетами?</string>
+    <string name="ui_faq_widget_daily_a" translatable="true">Виджет «Соединение дня» определяет свой выбор по календарной дате, поэтому весь день показывает одно и то же соединение и меняется в полночь. Виджет «Случайное соединение» выбирает по требованию — нажмите его кнопку обновления для нового в любой момент.</string>
+    <string name="ui_faq_reaction_predictor_q" translatable="true">Как работает Предсказатель реакций?</string>
+    <string name="ui_faq_reaction_predictor_a" translatable="true">Он сопоставляет выбранные реагенты с автономным набором правил, построенным на основе встроенной химической базы данных, и предлагает вероятные продукты, типы реакций и наблюдения. Он охватывает обычные учебные реакции — необычные случаи всегда проверяйте по учебнику.</string>
+    <string name="ui_faq_database_size_q" translatable="true">Насколько велика встроенная химическая база данных?</string>
+    <string name="ui_faq_database_size_a" translatable="true">Она включает 575 веществ, 108 ионов, 71 функциональную группу и 149 реакций, всё доступно офлайн. 118 элементов периодической таблицы находятся в самой таблице, поэтому эти два справочника никогда не дублируют друг друга.</string>
+    <string name="ui_faq_languages_q" translatable="true">Какие языки поддерживает ChemSearch?</string>
+    <string name="ui_faq_languages_a" translatable="true">Интерфейс полностью переведён на 15 языков: бенгальский, датский, немецкий, греческий, испанский, финский, французский, итальянский, японский, нидерландский, норвежский, польский, португальский, русский и шведский. Изменить можно в любой момент в Настройки > Язык.</string>
+    <string name="ui_whats_new_section_features" translatable="true">Новые функции</string>
+    <string name="ui_whats_new_section_improvements" translatable="true">Улучшения</string>
+    <string name="ui_section_whats_new" translatable="true">Что нового</string>
+    <string name="ui_whats_new_bullet_reaction" translatable="true">Предсказатель реакций: добавлен автономный механизм правил на основе встроенной химической базы данных. Введите до трёх реагентов и получите предсказанные продукты, типы реакций, наблюдения и уровни достоверности.</string>
+    <string name="ui_whats_new_bullet_widgets" translatable="true">Виджеты на главном экране: добавлены виджеты «Соединение дня» и «Случайное соединение». Дневной меняется в полночь, у случайного есть собственная кнопка обновления.</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">Химическая база данных: расширена с 331 до 575 веществ, включая аминокислоты, витамины, лекарства, сложные эфиры, металлоорганические соединения, силикаты, алкалоиды и другое. 118 элементов теперь находятся в Периодической таблице, а не дублируются в базе данных.</string>
+    <string name="ui_whats_new_bullet_search" translatable="true">Расширенный поиск: добавлены выбор лимита результатов, фильтр по части названия и счётчик активных фильтров с очисткой всех одним касанием.</string>
+    <string name="ui_whats_new_bullet_tools" translatable="true">Инструменты: сетка переработана и адаптируется от 2 колонок на узких телефонах до 5 на широких экранах и планшетах. Категории инструментов получили собственные акцентные цвета, а строки сетки сохраняют одинаковую высоту карточек.</string>
+    <string name="ui_whats_new_bullet_structure" translatable="true">Поиск по структуре: добавлены сводка настроек с одного взгляда, ползунок сходства, более ясный индикатор активного режима, подсказки по форматам импорта и живой значок формулы.</string>
+    <string name="ui_whats_new_bullet_polish" translatable="true">Ошибки поиска: добавлены конкретные, выделенные цветом сообщения об ограничении частоты запросов, тайм-аутах, неверных запросах, сбоях сети, ошибках сервера и пустых результатах.</string>
+    <string name="ui_whats_new_bullet_home" translatable="true">Обзор: добавлены быстрые действия для поиска по структуре, поиска изомеров, Периодической таблицы и химической базы данных.</string>
+    <string name="ui_whats_new_bullet_library" translatable="true">Действия библиотеки: долгое нажатие на сохранённое соединение позволяет скопировать формулу, открыть его в PubChem или удалить, не открывая запись.</string>
+    <string name="ui_whats_new_bullet_shortcuts" translatable="true">Ярлыки лаунчера: удерживайте значок приложения, чтобы сразу перейти в Поиск, Библиотеку, Инструменты или Настройки.</string>
+    <string name="ui_whats_new_bullet_daily" translatable="true">Соединение дня: добавлена карточка на главном экране, показывающая то же ежедневное соединение, что и виджет, с формулой и типичным применением.</string>
+    <string name="ui_whats_new_bullet_csv" translatable="true">Экспорт библиотеки: добавлен экспорт в CSV в дополнение к существующей резервной копии JSON и поддержке импорта.</string>
+    <string name="ui_whats_new_bullet_compare" translatable="true">Сравнение соединений: добавлены копирование строк свойств одним касанием, плашки соединений, действие очистки результатов и поддержка до шести соединений.</string>
+    <string name="ui_whats_new_bullet_periodic" translatable="true">Периодическая таблица: добавлены интерактивные фильтры категорий, более яркие плитки элементов, градиентные карты трендов, обозначения минимума/максимума и нажимаемая полоса пяти ведущих элементов.</string>
+    <string name="ui_whats_new_bullet_stoich" translatable="true">Стехиометрия: добавлены атомная экономия, расход и остатки по реагентам, улучшенное преобразование единиц и копируемые сводные данные анализа.</string>
+    <string name="ui_whats_new_bullet_display" translatable="true">Экран: добавлена общая для приложения настройка единицы температуры (K, °C или °F).</string>
+    <string name="ui_whats_new_bullet_haptics" translatable="true">Вибрация: добавлена тактильная отдача в поддерживаемых взаимодействиях.</string>
+    <string name="ui_whats_new_bullet_offline_mode" translatable="true">Инструменты разработчика: добавлен офлайн-тестовый режим с детерминированными результатами, регулируемой задержкой, имитируемыми ошибками, принудительными типами сбоев и баннером на экране. Также добавлены просмотр кэша, сведения об устройстве и сборке и каталог сообщений об ошибках.</string>
+    <string name="ui_whats_new_bullet_dialogs" translatable="true">Интерфейс: стандартизированы диалоги FAQ, справки и подтверждения с тонированными заголовками значков, кнопками закрытия и выделенными цветом опасными действиями.</string>
+    <string name="ui_whats_new_bullet_cards" translatable="true">Интерфейс: стандартизированы карточки, состояния выбора и опасные действия во всём приложении. Добавлена настройка «Карточки» для переключения между карточным и более плоским оформлением.</string>
+    <string name="ui_whats_new_bullet_collapsible" translatable="true">О приложении: карточку «Что нового» теперь можно свернуть, и она показывает основные изменения текущего выпуска.</string>
+    <string name="ui_whats_new_bullet_languages" translatable="true">Новый язык: добавлен бенгальский и обновлены переводы строк. Селекторы языка показывают каждый язык под его собственным названием.</string>
+    <string name="ui_error_search_not_found_s" translatable="true">Совпадения для “%1$s” в PubChem не найдено. Попробуйте другое название, номер CAS или проверьте написание.</string>
+    <string name="ui_error_search_throttled" translatable="true">PubChem сейчас ограничивает количество запросов. Подождите несколько секунд и попробуйте снова.</string>
+    <string name="ui_error_search_timeout" translatable="true">PubChem отвечал слишком долго. Попробуйте снова — очень сложные запросы могут превысить лимит времени.</string>
+    <string name="ui_error_search_bad_request" translatable="true">PubChem отклонил запрос как недопустимый. Проверьте формат ввода (название, CAS или формула).</string>
+    <string name="ui_error_search_bad_request_detail" translatable="true">PubChem отклонил запрос: %1$s</string>
+    <string name="ui_error_search_network" translatable="true">Проблема с сетью — PubChem недоступен. Проверьте интернет-соединение и попробуйте снова.</string>
+    <string name="ui_error_search_server" translatable="true">Ошибка сервера PubChem (HTTP %1$s). Сервис может быть временно недоступен — попробуйте позже.</string>
+    <string name="ui_error_search_unknown" translatable="true">Непредвиденная ошибка: %1$s</string>
+    <string name="ui_debug_device_build_info" translatable="true">Сведения об устройстве и сборке</string>
+    <string name="ui_debug_device_body" translatable="true">Модель, ОС, ABI, ядро, установщик, версия и текущее использование памяти</string>
+    <string name="ui_debug_cache_stats" translatable="true">Инспектор кэша соединений</string>
+    <string name="ui_debug_cache_body" translatable="true">Файлы в кэше, размер и ручная очистка</string>
+    <string name="ui_debug_cache_files_d" translatable="true">Файлов в кэше: %1$d</string>
+    <string name="ui_debug_cache_empty" translatable="true">Нет соединений в кэше — выполните поиск и откройте соединение, чтобы заполнить кэш.</string>
+    <string name="ui_debug_error_catalog" translatable="true">Каталог сообщений об ошибках</string>
+    <string name="ui_debug_error_catalog_body" translatable="true">Предпросмотр ошибок поиска с цветовой кодировкой</string>
+    <string name="ui_cache_cleared" translatable="true">Кэш очищен</string>
+    <string name="ui_clipboard_cache" translatable="true">Отчёт о кэше соединений</string>
+    <string name="ui_about_whats_new_s" translatable="true">Новое в версии %1$s</string>
+    <string name="ui_trend_top_elements" translatable="true">Топ-5 элементов</string>
+    <string name="ui_compound_of_the_day" translatable="true">СОЕДИНЕНИЕ ДНЯ</string>
+    <string name="ui_temperature_unit" translatable="true">Единица температуры</string>
+    <string name="ui_subtitle_temperature_unit" translatable="true">Используется для температур плавления и кипения в деталях элементов и трендах</string>
+    <string name="ui_copy_formula" translatable="true">Копировать формулу</string>
+    <string name="ui_export_library_csv" translatable="true">Экспортировать библиотеку в CSV</string>
+    <string name="ui_error_no_browser" translatable="true">Браузер не найден</string>
+    <string name="ui_explore_chemsearch" translatable="true">Обзор ChemSearch</string>
+    <string name="ui_periodic_table_quick_action_subtitle" translatable="true">Просмотр всех 118 элементов и их свойств</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">Более 900 веществ, ионов, групп и реакций</string>
+    <string name="ui_offline_test_mode" translatable="true">Автономный тестовый режим</string>
+    <string name="ui_offline_test_mode_subtitle" translatable="true">Показывает фиктивные данные без реальных сетевых запросов</string>
+    <string name="ui_offline_test_mode_toggle_body" translatable="true">При включении поиск, запросы, вызовы структуры и ИИ возвращают локальные тестовые записи вместо обращения к сети</string>
+    <string name="ui_offline_test_mode_configure" translatable="true">Настроить тестовый режим</string>
+    <string name="ui_offline_test_mode_configure_subtitle" translatable="true">Задержка, частота ошибок и тип имитируемого сбоя</string>
+    <string name="ui_offline_test_mode_latency" translatable="true">ИМИТИРУЕМАЯ ЗАДЕРЖКА</string>
+    <string name="ui_offline_test_mode_error_rate" translatable="true">СЛУЧАЙНАЯ ЧАСТОТА ОШИБОК</string>
+    <string name="ui_offline_test_mode_failure" translatable="true">ПРИНУДИТЕЛЬНЫЙ СБОЙ</string>
+    <string name="ui_offline_test_mode_failure_body" translatable="true">Заставляет каждый фиктивный запрос завершаться этой ошибкой, чтобы можно было проверить каждое цветное сообщение</string>
+    <string name="ui_offline_test_mode_footer" translatable="true">Результаты детерминированные: одинаковый запрос всегда даёт одинаковое тестовое соединение, поэтому состояния интерфейса воспроизводимы. Пока этот режим включён, ничего не покидает устройство.</string>
+    <string name="ui_offline_test_mode_badge" translatable="true">БЕЗ СЕТИ</string>
+    <string name="ui_offline_test_mode_active_banner" translatable="true">Автономный тестовый режим активен: все результаты на этом экране — имитированные фиктивные данные</string>
+    <string name="ui_offline_test_mode_active_note" translatable="true">Все результаты имитированы</string>
 </resources>
-

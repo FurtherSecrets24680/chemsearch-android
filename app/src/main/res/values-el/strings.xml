@@ -101,13 +101,13 @@
     <string name="ui_welcome_tagline" translatable="true">ΧΗΜΕΙΑ ΑΠΛΟΠΟΙΗΜΕΝΗ</string>
     <string name="ui_welcome_tagline_body" translatable="true">Αναζήτηση ενώσεων, επιθεωρήστε τις δομές, αποθηκεύστε χρήσιμα αποτελέσματα και χρησιμοποιήστε πρακτικά εργαλεία χημείας σε μία εγγενή εφαρμογή Android.</string>
     <string name="ui_welcome_feature_search_title" translatable="true">Σύνθετη αναζήτηση</string>
-    <string name="ui_welcome_feature_search_body" translatable="true">Αναζήτηση δεδομένων PubChem με το όνομα, τον τύπο, το αναγνωριστικό στυλ CAS, ή CID.</string>
+    <string name="ui_welcome_feature_search_body" translatable="true">Αναζητήστε δεδομένα PubChem με όνομα, τύπο, αναγνωριστικό τύπου CAS ή CID, με αυτόματες προτάσεις, προχωρημένα φίλτρα και αναζήτηση σχεδιασμένης δομής.</string>
     <string name="ui_welcome_feature_structures_title" translatable="true">Δομές 2D και 3D</string>
     <string name="ui_welcome_feature_structures_body" translatable="true">Προβολή εικόνων δομής, περιστροφή 3D μοντέλα, και αποθήκευση αρχείων δομής.</string>
     <string name="ui_welcome_feature_tools_title" translatable="true">Εργαλεία χημείας</string>
     <string name="ui_welcome_feature_tools_body" translatable="true">Οι αντιδράσεις ισορροπίας, υπολογίζουν τη γραμμομοριακή μάζα, επιλύουν τη στοιχειομετρία και πολλά άλλα.</string>
     <string name="ui_welcome_feature_local_title" translatable="true">Τοπική ροή εργασίας</string>
-    <string name="ui_welcome_feature_local_body" translatable="true">Κρατήστε αγαπημένα, πρόσφατες αναζητήσεις, προσωρινά αποτελέσματα και δεδομένα χημείας εκτός σύνδεσης.</string>
+    <string name="ui_welcome_feature_local_body" translatable="true">Διατηρήστε αγαπημένα, πρόσφατες αναζητήσεις και δεδομένα εκτός σύνδεσης· γνωρίστε την ένωση της ημέρας και προσθέστε widgets στην αρχική οθόνη.</string>
     <string name="ui_compare" translatable="true">Σύγκριση</string>
     <string name="ui_save" translatable="true">Αποθήκευση</string>
     <string name="ui_ok" translatable="true">Εντάξει</string>
@@ -542,6 +542,15 @@
     <string name="ui_e_g_h2o_ca_oh_2_cuso4_5h2o" translatable="true">π.χ. H2O, Ca(OH)2, CuSO4·5H2O</string>
     <string name="ui_insert" translatable="true">Εισαγωγή:</string>
     <string name="ui_molar_mass" translatable="true">ΜΟΡΙΑΚΗ ΜΑΖΑ</string>
+    <string name="ui_isomer_invalid_formula" translatable="true">Αυτό δεν μοιάζει με έγκυρο τύπο</string>
+    <string name="ui_isomer_insight_formula" translatable="true">ΤΥΠΟΣ</string>
+    <string name="ui_isomer_insight_atoms" translatable="true">ΑΤΟΜΑ</string>
+    <string name="ui_isomer_mass" translatable="true">ΜΑΖΑ</string>
+    <string name="ui_isomer_insight_dbe" translatable="true">Βαθμοί ακόρεστης</string>
+    <string name="ui_isomer_insight_dbe_desc" translatable="true">Δακτύλιοι + διπλοί δεσμοί μετρούν ως 1, τριπλοί ως 2. Κάθε ισομερές αυτού του τύπου μοιράζεται αυτή την τιμή.</string>
+    <string name="ui_isomer_sort_relevance" translatable="true">Κορυφή</string>
+    <string name="ui_isomer_sort_name" translatable="true">Α-Ω</string>
+    <string name="ui_retry" translatable="true">Επανάληψη</string>
     <string name="ui_count" translatable="true">Αριθμός</string>
     <string name="ui_g_mol" translatable="true">g/mol</string>
     <string name="ui_3f" translatable="true">%.3f</string>
@@ -744,7 +753,7 @@
     <string name="ui_faq_search_what_q" translatable="true">Τι μπορώ να ψάξω για?</string>
     <string name="ui_faq_search_what_a" translatable="true">Μπορείτε να αναζητήσετε με το κοινό όνομα, το όνομα IUPAC, τον αριθμό CAS, το PubChem CID, τον τύπο, ή τη σχεδιασμένη δομή. Μερικοί τρόποι λειτουργίας λειτουργούν καλύτερα για ακριβή αναγνωριστικά από σύντομα ονόματα.</string>
     <string name="ui_faq_search_fail_q" translatable="true">Γιατί η αναζήτησή μου απέτυχε?</string>
-    <string name="ui_faq_search_fail_a" translatable="true">Δοκιμάστε μια διόρθωση ορθογραφίας, CID, αριθμό CAS ή ένα πιο συγκεκριμένο όνομα. Πολύ ευρεία ονόματα, ανεπίσημα ονόματα, ασταθείς δομές και ενώσεις που απουσιάζουν από PubChem μπορεί να μην επιστρέψουν ένα χρήσιμο ταίριασμα.</string>
+    <string name="ui_faq_search_fail_a" translatable="true">Δοκιμάστε μια διόρθωση ορθογραφίας, CID, αριθμό CAS ή ένα πιο συγκεκριμένο όνομα. Πολύ γενικά ονόματα, ανεπίσημα ονόματα, ασταθείς δομές και ενώσεις που λείπουν από το PubChem μπορεί να μην δώσουν χρήσιμο αποτέλεσμα. Όταν μια αναζήτηση αποτύχει, το μήνυμα σφάλματος εξηγεί τι πήγε στραβά και είναι χρωματικά κωδικοποιημένο ανά τύπο.</string>
     <string name="ui_faq_did_you_mean_q" translatable="true">Γιατί εννοείτε προτάσεις που μερικές φορές λείπουν?</string>
     <string name="ui_faq_did_you_mean_a" translatable="true">Η ChemSearch εμφανίζει μόνο τα ορθογραφικά ταιριάσματα. Κρύβει χαλαρά αποτελέσματα PubChem όταν φαίνονται άσχετα, έτσι ώστε να μπορεί να δείξει τίποτα αντί για μια κακή πρόταση.</string>
     <string name="ui_faq_normal_vs_isomer_q" translatable="true">Ποια είναι η διαφορά μεταξύ της κανονικής αναζήτησης και αναζήτησης ισομερών?</string>
@@ -777,14 +786,16 @@
     <string name="ui_faq_collect_a" translatable="true">Η ChemSearch δεν έχει σύστημα λογαριασμού. Αναζήτηση ιστορικού, αγαπημένα, λήψεις και cache αποθηκεύονται στη συσκευή σας. Οι ζωντανές αναζητήσεις εξακολουθούν να έρχονται σε επαφή με εξωτερικές υπηρεσίες όπως PubChem, Wikipedia, GitHub ενημερώσεις ή τον επιλεγμένο πάροχο τεχνητής νοημοσύνης σας, όταν χρειάζεται.</string>
     <string name="ui_faq_collect_no_updates_a" translatable="true">Η ChemSearch δεν έχει σύστημα λογαριασμού. Αναζήτηση ιστορικού, αγαπημένα, λήψεις και cache αποθηκεύονται στη συσκευή σας. Οι ζωντανές αναζητήσεις εξακολουθούν να έρχονται σε επαφή με εξωτερικές υπηρεσίες όπως η PubChem, η Βικιπαίδεια ή ο πάροχος τεχνητής νοημοσύνης που επιλέξατε, όταν χρειάζεται.</string>
     <string name="ui_faq_offline_q" translatable="true">Τι λειτουργεί χωρίς σύνδεση?</string>
-    <string name="ui_faq_offline_a" translatable="true">Οι ενσωματωμένες αναφορές βιβλιοθήκης, αριθμομηχανές, αγαπημένα, και οι κατεβασμένες ενώσεις μπορούν να λειτουργήσουν εκτός σύνδεσης. Ζωντανή σύνθετη αναζήτηση, φρέσκες περιγραφές, αναζήτηση δομών, ελέγχους ενημερώσεων και περιγραφές τεχνητής νοημοσύνης χρειάζονται πρόσβαση στο διαδίκτυο.</string>
+    <string name="ui_faq_offline_a" translatable="true">Οι ενσωματωμένες αναφορές της βιβλιοθήκης, οι αριθμομηχανές, τα αγαπημένα, οι ληφθείσες ενώσεις, η ένωση της ημέρας, τα widgets της αρχικής οθόνης και η πρόβλεψη αντιδράσεων λειτουργούν όλα εκτός σύνδεσης. Η ζωντανή αναζήτηση ενώσεων, οι φρέσκες περιγραφές, η αναζήτηση δομής, οι έλεγχοι ενημερώσεων και οι περιγραφές AI απαιτούν πρόσβαση στο διαδίκτυο.</string>
     <string name="ui_faq_offline_no_updates_a" translatable="true">Οι ενσωματωμένες αναφορές βιβλιοθήκης, αριθμομηχανές, αγαπημένα, και μεταφορτωμένες ενώσεις μπορούν να λειτουργήσουν εκτός σύνδεσης. Ζωντανή σύνθετη αναζήτηση, φρέσκες περιγραφές, αναζήτηση δομών, και περιγραφές τεχνητής νοημοσύνης χρειάζονται πρόσβαση στο διαδίκτυο.</string>
     <string name="ui_faq_cache_vs_downloads_q" translatable="true">Ποια είναι η διαφορά μεταξύ cache και λήψεων;</string>
     <string name="ui_faq_cache_vs_downloads_a" translatable="true">Η λανθάνουσα μνήμη κάνει τις επαναλαμβανόμενες αναζητήσεις πιο γρήγορες και μπορεί να καθαριστεί αυτόματα. Οι λήψεις είναι σκόπιμες offline αποθηκεύσεις ενώσεων με αναγνωριστικά, περιγραφές, δομές, συνώνυμα, πληροφορίες ασφαλείας και δεδομένα πηγής όταν είναι διαθέσιμα.</string>
     <string name="ui_faq_downloads_stored_q" translatable="true">Πού έχουν μεταφορτωθεί οι ενώσεις που αποθηκεύονται?</string>
     <string name="ui_faq_downloads_stored_a" translatable="true">Οι κατεβασμένες ενώσεις αποθηκεύονται στην τοπική βάση δεδομένων δωματίων της εφαρμογής στη συσκευή σας. Η απεγκατάσταση της εφαρμογής μπορεί να τα καταργήσει, εκτός αν πρώτα εξάγετε ή δημιουργήσετε αντίγραφα ασφαλείας.</string>
     <string name="ui_faq_save_q" translatable="true">Πώς μπορώ να αποθηκεύσω μια ένωση?</string>
-    <string name="ui_faq_save_a" translatable="true">Χρησιμοποιήστε το αστέρι για τα Αγαπημένα ή το κουμπί λήψης για μια πλήρη αποθήκευση εκτός σύνδεσης. Τα αγαπημένα είναι γρήγοροι σελιδοδείκτες. Οι λήψεις προορίζονται για ανάγνωση εκτός σύνδεσης.</string>
+    <string name="ui_faq_save_a" translatable="true">Χρησιμοποιήστε το αστέρι για τα αγαπημένα ή το κουμπί λήψης για πλήρη αποθήκευση εκτός σύνδεσης. Πατήστε παρατεταμένα μια κάρτα βιβλιοθήκης για να αντιγράψετε τον τύπο, να ανοίξετε στο PubChem ή να την αφαιρέσετε, και εξάγετε ολόκληρη τη βιβλιοθήκη ως CSV ή JSON από την οθόνη της βιβλιοθήκης.</string>
+    <string name="ui_faq_export_q" translatable="true">Πώς εξάγω τη βιβλιοθήκη μου;</string>
+    <string name="ui_faq_export_a" translatable="true">Ανοίξτε τη βιβλιοθήκη, ανοίξτε το μενού εξαγωγής και επιλέξτε CSV για υπολογιστικά φύλλα ή JSON για πλήρες αντίγραφο ασφαλείας που μπορείτε να εισαγάγετε ξανά σε άλλη συσκευή. Η χημική βάση δεδομένων συνοδεύει την εφαρμογή και δεν χρειάζεται εξαγωγή.</string>
     <string name="ui_faq_compare_q" translatable="true">Μπορώ να συγκρίνω αποθηκευμένες ενώσεις?</string>
     <string name="ui_faq_compare_a" translatable="true">Ναι. Επιλέξτε δύο ή περισσότερες ενώσεις σε Αγαπημένα, Λήψεις ή υποστηριζόμενες καταχωρήσεις Χημικών Βάσεων Δεδομένων και, στη συνέχεια, χρησιμοποιήστε το αιωρούμενο κουμπί Σύγκρισης.</string>
     <string name="ui_faq_database_q" translatable="true">Ποια είναι η βάση δεδομένων χημικών?</string>
@@ -821,6 +832,8 @@
     <string name="ui_search_history" translatable="true">Ιστορικό Αναζήτησης</string>
     <string name="ui_autosuggestions" translatable="true">Αυτόματες Προτιμήσεις</string>
     <string name="ui_compact_mode" translatable="true">Συμπαγής λειτουργία</string>
+    <string name="ui_cards" translatable="true">Κάρτες</string>
+    <string name="ui_subtitle_cards" translatable="true">Εμφάνιση περιεχομένου σε στρογγυλεμένες κάρτες· απενεργοποίηση για επίπεδη σελίδα</string>
     <string name="ui_reduce_motion" translatable="true">Μείωση κίνησης</string>
     <string name="ui_high_contrast_outlines" translatable="true">Περίγραμμα υψηλής αντίθεσης</string>
     <string name="ui_default_structure_view" translatable="true">Προεπιλεγμένη προβολή δομής</string>
@@ -1246,7 +1259,7 @@
     <string name="ui_info_elemental_analysis_what" translatable="true">Τι είναι αυτό?</string>
     <string name="ui_info_elemental_analysis_what_body" translatable="true">Εμφανίζει το ποσοστό κάθε στοιχείου κατά μάζα στην ένωση. Υπολογίζεται από τα ατομικά βάρη και τον μοριακό τύπο.</string>
     <string name="ui_info_elemental_analysis_example" translatable="true">Παράδειγμα</string>
-    <string name="ui_info_elemental_analysis_example_body" translatable="true">Το νερό (H2O) είναι ~11% υδρογόνο και ~89% οξυγόνο κατά μάζα, δεδομένου ότι τα άτομα οξυγόνου είναι πολύ βαρύτερα από τα άτομα υδρογόνου.</string>
+    <string name="ui_info_elemental_analysis_example_body" formatted="false" translatable="true">Το νερό (H2O) είναι ~11% υδρογόνο και ~89% οξυγόνο κατά μάζα, δεδομένου ότι τα άτομα οξυγόνου είναι πολύ βαρύτερα από τα άτομα υδρογόνου.</string>
     <string name="ui_info_elemental_analysis_why" translatable="true">Γιατί έχει σημασία</string>
     <string name="ui_info_elemental_analysis_why_body" translatable="true">Χρήσιμο στην αναλυτική χημεία για την επαλήθευση της σύνθετης ταυτότητας και στην επιστήμη διατροφής για την κατανόηση της θρεπτικής σύνθεσης.</string>
     <string name="ui_info_what_is_ghs" translatable="true">Τι είναι το GHS?</string>
@@ -1626,5 +1639,137 @@
     <string name="ui_recent_group_previous_30_days" translatable="true">Τελευταίες 30 ημέρες</string>
     <string name="ui_recent_group_yesterday" translatable="true">Χθες</string>
     <string name="ui_db_section_details" translatable="true">Λεπτομέρειες</string>
+    <string name="ui_reaction_predictor">Πρόβλεψη Αντίδρασης</string>
+    <string name="ui_reaction_predictor_subtitle">Πρόβλεψε προϊόντα από αντιδραστήρια χρησιμοποιώντας τη χημική βάση δεδομένων και τους κανόνες αντίδρασης</string>
+    <string name="ui_reactant_n">Αντιδραστήριο %1$d</string>
+    <string name="ui_add_reactant">Προσθήκη αντιδραστηρίου</string>
+    <string name="ui_predict_reaction">Πρόβλεψη προϊόντων</string>
+    <string name="ui_error_enter_two_reactants">Εισάγετε δύο αντιδραστήρια.</string>
+    <string name="ui_error_no_prediction_available">Κανένας γνωστός κανόνας δεν ταιριάζει με αυτά τα αντιδραστήρια. Δοκιμάστε ένα συνηθισμένο ζεύγος όπως οξύ με βάση, μέταλλο ή ανθρακικό.</string>
+    <string name="ui_pred_rule_neutralization">Κανόνας εξουδετέρωσης</string>
+    <string name="ui_pred_rule_acid_carbonate">Κανόνας οξύ + ανθρακικό</string>
+    <string name="ui_pred_rule_metal_acid">Κανόνας μέταλλο + οξύ</string>
+    <string name="ui_pred_rule_single_displacement">Κανόνας σειράς δραστικότητας</string>
+    <string name="ui_pred_rule_combustion">Κανόνας καύσης</string>
+    <string name="ui_pred_rule_synthesis">Κανόνας σύνθεσης</string>
+    <string name="ui_pred_note_neutralization">σχηματίστηκε νερό</string>
+    <string name="ui_pred_note_effervescence">αφρισμός</string>
+    <string name="ui_pred_note_hydrogen_gas">αέριο υδρογόνο</string>
+    <string name="ui_pred_note_metal_deposited">εναπόθεση μετάλλου</string>
+    <string name="ui_pred_rule_ammonium_base">Κανόνας αλάτι αμμωνίου + βάση</string>
+    <string name="ui_pred_rule_acid_oxide">Κανόνας οξύ + οξείδιο μετάλλου</string>
+    <string name="ui_pred_rule_acid_sulfite">Κανόνας οξύ + θειώδες άλας</string>
+    <string name="ui_pred_rule_acid_sulfide">Κανόνας οξύ + θειούχο άλας</string>
+    <string name="ui_pred_rule_metal_water">Κανόνας μέταλλο + κρύο νερό</string>
+    <string name="ui_pred_rule_metal_steam">Κανόνας μέταλλο + ατμός</string>
+    <string name="ui_pred_note_ammonia_gas">αέριο αμμωνία</string>
+    <string name="ui_pred_note_pungent_gas">ερεθιστικό αέριο SO2</string>
+    <string name="ui_pred_note_rotten_egg">μυρωδιά σάπιων αυγών</string>
+    <string name="ui_rp_what_it_does_desc">Εισάγετε δύο αντιδραστήρια για να δείτε τα προβλεπόμενα προϊόντα, μια ισορροπημένη εξίσωση και τον κανόνα ή την καταχώρηση βάσης πίσω από την πρόβλεψη.</string>
+    <string name="ui_rp_best_inputs_desc">Τα συνηθισμένα ανόργανα ζεύγη λειτουργούν καλύτερα: οξέα με βάσεις, μέταλλα ή ανθρακικά· ενεργά μέταλλα σε διαλύματα αλάτων· υδρογονάνθρακες με O2· και δύο στοιχεία που σχηματίζουν γνωστή δυαδική ένωση.</string>
+    <string name="ui_rp_limits_desc">Η πρόβλεψη καλύπτει μόνο συνηθισμένους κανόνες. Η οργανική χημεία, το redox με ειδικές συνθήκες και οι αντιδράσεις που χρειάζονται καταλύτη ή θερμότητα μπορεί να λείπουν. Ελέγξτε μια πηγή πριν βασιστείτε σε μια πρόβλεψη.</string>
+    <string name="ui_language_bengali">বাংলা</string>
+    <string name="ui_copy_summary">Αντιγραφή σύνοψης</string>
+    <string name="ui_copied_summary">Η σύνοψη αντιγράφηκε</string>
+    <string name="ui_consumption_label">%1$s%% κατανάλωση</string>
+    <string name="ui_atom_economy_label">Ατομική οικονομικότητα: %1$s%%</string>
+    <string name="ui_widget_name_placeholder" translatable="true">Άνοιγμα ChemSearch…</string>
+    <string name="ui_widget_random_refresh" translatable="true">Νέα τυχαία ένωση</string>
+    <string name="ui_widget_todays_pick" translatable="true">Σημερινή επιλογή</string>
+    <string name="ui_widget_random_tap_refresh" translatable="true">Πατήστε ανανέωση για άλλο</string>
+    <string name="ui_widget_refresh" translatable="true">Ανανέωση</string>
+    <string name="ui_section_what_to_search" translatable="true">Τι να αναζητήσετε</string>
+    <string name="ui_section_narrow_by" translatable="true">Περιορισμός κατά</string>
+    <string name="ui_section_properties" translatable="true">Ιδιότητες</string>
+    <string name="ui_section_results" translatable="true">Αποτελέσματα</string>
+    <string name="ui_name_contains" translatable="true">Το όνομα περιέχει</string>
+    <string name="ui_name_contains_hint" translatable="true">π.χ. acid ή benz</string>
+    <string name="ui_filters_active_count" translatable="true">%1$d ενεργές</string>
+    <string name="ui_filter_name_contains_s" translatable="true">όνομα: %1$s</string>
+    <string name="ui_results_limit_n" translatable="true">Εμάνιση %1$d</string>
+    <string name="ui_widget_daily_desc" translatable="true">Ουσία της ημέρας - μια νέα ουσία καθημερινά</string>
+    <string name="ui_widget_random_desc" translatable="true">Τυχαία ουσία - πατήστε ανανέωση για άλλο</string>
+    <string name="ui_compare_subtitle" translatable="true">Ανάκτηση ενώσεων και σύγκριση ιδιοτήτων δίπλα δίπλα</string>
+    <string name="ui_clear_results" translatable="true">Εκκαθάριση αποτελεσμάτων</string>
+    <string name="ui_comparing_n_compounds" translatable="true">Σύγκριση %1$d ενώσεων</string>
+    <string name="ui_copied_short" translatable="true">Αντιγράφηκε</string>
+    <string name="ui_copy_row_values" translatable="true">Αντιγραφή όλων των τιμών της γραμμής</string>
+    <string name="ui_structure_search_summary" translatable="true">Λειτουργία %1$s · %2$d%% ομοιότητα · %3$d αποτελέσματα</string>
+    <string name="ui_structure_search_add_mode_chip" translatable="true">Προσθήκη λειτουργίας %1$s</string>
+    <string name="ui_structure_search_import_hint" translatable="true">Επικολλήστε SMILES όπως CCO ή CC(=O)O, InChI ή αρχείο V2000 MOL</string>
+    <string name="ui_faq_widget_daily_q" translatable="true">Ποια είναι η διαφορά μεταξύ των δύο widget;</string>
+    <string name="ui_faq_widget_daily_a" translatable="true">Το widget «Ένωση της ημέρας» προκύπτει από την ημερομηνία, οπότε δείχνει την ίδια ένωση όλη την ημέρα και αλλάζει τα μεσάνυχτα. Το widget «Τυχαία ένωση» επιλέγει κατά παραγγελία — πατήστε το κουμπί ανανέωσης όποτε θέλετε νέα.</string>
+    <string name="ui_faq_reaction_predictor_q" translatable="true">Πώς λειτουργεί ο Προβλεπτής Αντιδράσεων;</string>
+    <string name="ui_faq_reaction_predictor_a" translatable="true">Ταιριάζει τα επιλεγμένα αντιδραστήρια με ένα σύνολο κανόνων εκτός σύνδεσης βασισμένο στη συμβεβλημένη χημική βάση δεδομένων και προτείνει πιθανά προϊόντα, τύπους αντιδράσεων και παρατηρήσεις. Καλύπτει συνηθισμένες αντιδράσεις διδασκαλίας — επαληθεύστε πάντα τις ασυνήθιστες περιπτώσεις με εγχειρίδιο.</string>
+    <string name="ui_faq_database_size_q" translatable="true">Πόσο μεγάλη είναι η ενσωματωμένη χημική βάση δεδομένων;</string>
+    <string name="ui_faq_database_size_a" translatable="true">Περιλαμβάνει 575 ουσίες, 108 ιόντα, 71 λειτουργικές ομάδες και 149 αντιδράσεις, όλα διαθέσιμα εκτός σύνδεσης. Τα 118 στοιχεία του περιοδικού πίνακα βρίσκονται στον περιοδικό πίνακα, οπότε οι δύο πηγές δεν διπλασιάζονται ποτέ.</string>
+    <string name="ui_faq_languages_q" translatable="true">Ποιες γλώσσες υποστηρίζει το ChemSearch;</string>
+    <string name="ui_faq_languages_a" translatable="true">Η διεπαφή είναι πλήρως μεταφρασμένη σε 15 γλώσσες: βεγγαλικά, δανικά, γερμανικά, ελληνικά, ισπανικά, φινλανδικά, γαλλικά, ιταλικά, ιαπωνικά, ολλανδικά, νορβηγικά, πολωνικά, πορτογαλικά, ρωσικά και σουηδικά. Αλλάξτε όποτε θέλετε στις Ρυθμίσεις > Γλώσσα.</string>
+    <string name="ui_whats_new_section_features" translatable="true">Νέες λειτουργίες</string>
+    <string name="ui_whats_new_section_improvements" translatable="true">Βελτιώσεις</string>
+    <string name="ui_section_whats_new" translatable="true">Τι νέο υπάρχει</string>
+    <string name="ui_whats_new_bullet_reaction" translatable="true">Πρόβλεψη αντιδράσεων: Προστέθηκε μια μηχανή κανόνων εκτός σύνδεσης βασισμένη στη συνοδευτική χημική βάση δεδομένων. Εισάγετε έως τρία αντιδραστήρια και λάβετε προβλεπόμενα προϊόντα, τύπους αντιδράσεων, παρατηρήσεις και επίπεδα αξιοπιστίας.</string>
+    <string name="ui_whats_new_bullet_widgets" translatable="true">Γραφικά στοιχεία αρχικής οθόνης: Προστέθηκαν στοιχεία για την Ένωση της Ημέρας και Τυχαία Ένωση. Το καθημερινό αλλάζει τα μεσάνυχτα, ενώ το τυχαίο έχει το δικό του κουμπί ανανέωσης.</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">Χημική βάση δεδομένων: Επεκτάθηκε από 331 σε 575 ουσίες, συμπεριλαμβανομένων αμινοξέων, βιταμινών, φαρμάκων, εστέρων, οργανομεταλλικών, πυριτικών, αλκαλοειδών και άλλων. Τα 118 στοιχεία βρίσκονται πλέον στον Περιοδικό Πίνακα αντί να αντιγράφονται στη βάση δεδομένων.</string>
+    <string name="ui_whats_new_bullet_search" translatable="true">Προχωρημένη αναζήτηση: Προστέθηκε επιλογέας ορίου αποτελεσμάτων, φίλτρο «το όνομα περιέχει» και μετρητής ενεργών φίλτρων με καθαρισμό όλων με ένα πάτημα.</string>
+    <string name="ui_whats_new_bullet_tools" translatable="true">Εργαλεία: Το πλέγμα αναδιαμορφώθηκε ώστε να προσαρμόζεται από 2 στήλες σε στενές συσκευές έως 5 σε ευρείες οθόνες και tablet. Οι κατηγορίες εργαλείων χρησιμοποιούν ξεχωριστά χρώματα έμφασης και οι γραμμές διατηρούν κάρτες ίδιου ύψους.</string>
+    <string name="ui_whats_new_bullet_structure" translatable="true">Αναζήτηση δομής: Προστέθηκε σύνοψη ρυθμίσεων με μια ματιά, ρυθμιστής ομοιότητας, σαφέστερη ένδειξη ενεργής λειτουργίας, υποδείξεις μορφών εισαγωγής και ζωντανό σήμα τύπου.</string>
+    <string name="ui_whats_new_bullet_polish" translatable="true">Σφάλματα αναζήτησης: Προστέθηκαν συγκεκριμένα, χρωματικά κωδικοποιημένα μηνύματα για περιορισμό ρυθμού, λήξεις χρόνου, εσφαλμένα αιτήματα, σφάλματα δικτύου, σφάλματα διακομιστή και κενά αποτελέσματα.</string>
+    <string name="ui_whats_new_bullet_home" translatable="true">Εξερεύνηση: Προστέθηκαν γρήγορες ενέργειες για Αναζήτηση δομής, Αναζήτηση ισομερών, Περιοδικό Πίνακα και Χημική βάση δεδομένων.</string>
+    <string name="ui_whats_new_bullet_library" translatable="true">Ενέργειες βιβλιοθήκης: Παρατεταμένο πάτημα σε αποθηκευμένη ένωση για αντιγραφή του τύπου, άνοιγμα στο PubChem ή αφαίρεση χωρίς να ανοίξει η καταχώρηση.</string>
+    <string name="ui_whats_new_bullet_shortcuts" translatable="true">Συντομεύσεις εκκίνησης: Πατήστε παρατεταμένα το εικονίδιο της εφαρμογής για να μεταβείτε απευθείας σε Αναζήτηση, Βιβλιοθήκη, Εργαλεία ή Ρυθμίσεις.</string>
+    <string name="ui_whats_new_bullet_daily" translatable="true">Ένωση της Ημέρας: Προστέθηκε κάρτα αρχικής οθόνης που δείχνει την ίδια καθημερινή ένωση με το γραφικό στοιχείο, με τον τύπο και τις τυπικές χρήσεις.</string>
+    <string name="ui_whats_new_bullet_csv" translatable="true">Εξαγωγή βιβλιοθήκης: Προστέθηκε εξαγωγή CSV δίπλα στην υπάρχουσα δημιουργία αντιγράφων JSON και υποστήριξη εισαγωγής.</string>
+    <string name="ui_whats_new_bullet_compare" translatable="true">Σύγκριση ενώσεων: Προστέθηκε αντιγραφή γραμμών ιδιοτήτων με ένα πάτημα, τσιπ ενώσεων, ενέργεια καθαρισμού αποτελεσμάτων και υποστήριξη έως έξι ενώσεων.</string>
+    <string name="ui_whats_new_bullet_periodic" translatable="true">Περιοδικός Πίνακας: Προστέθηκαν διαδραστικά φίλτρα κατηγοριών, φωτεινότερα πλακίδια στοιχείων, χάρτες θερμότητας τάσεων με διαβάθμιση, υπομνήματα ελάχιστου/μέγιστου και μια λωρίδα με τα πέντε κορυφαία στοιχεία.</string>
+    <string name="ui_whats_new_bullet_stoich" translatable="true">Στοιχειομετρία: Προστέθηκε ατομική απόδοση, κατανάλωση και περίσσεια ανά αντιδραστήριο, βελτιωμένη μετατροπή μονάδων και αντιγράψιμες περιλήψεις ανάλυσης.</string>
+    <string name="ui_whats_new_bullet_display" translatable="true">Οθόνη: Προστέθηκε ρύθμιση μονάδας θερμοκρασίας για όλη την εφαρμογή (K, °C ή °F).</string>
+    <string name="ui_whats_new_bullet_haptics" translatable="true">Απτική ανατροφοδότηση: Προστέθηκε απτική ανατροφοδότηση στις υποστηριζόμενες αλληλεπιδράσεις.</string>
+    <string name="ui_whats_new_bullet_offline_mode" translatable="true">Εργαλεία προγραμματιστή: Προστέθηκε λειτουργία δοκιμής εκτός σύνδεσης με ντετερμινιστικά αποτελέσματα, ρυθμιζόμενη καθυστέρηση, προσομοιωμένα σφάλματα, εξαναγκασμένους τύπους σφαλμάτων και banner εκτός σύνδεσης στην οθόνη. Επίσης προστέθηκαν επιθεώρηση κρυφής μνήμης, λεπτομέρειες συσκευής και έκδοσης και κατάλογος μηνυμάτων σφαλμάτων.</string>
+    <string name="ui_whats_new_bullet_dialogs" translatable="true">Διεπαφή: Τυποποιήθηκαν τα παράθυρα διαλόγου σε FAQ, βοήθεια και αναδυόμενα επιβεβαίωσης, με χρωματιστές κεφαλίδες εικονιδίων, κουμπιά κλεισίματος και χρωματικά κωδικοποιημένες καταστροφικές ενέργειες.</string>
+    <string name="ui_whats_new_bullet_cards" translatable="true">Διεπαφή: Τυποποιήθηκαν οι κάρτες, οι καταστάσεις επιλογής και οι καταστροφικές ενέργειες σε όλη την εφαρμογή. Προστέθηκε ρύθμιση Κάρτες για εναλλαγή ανάμεσα σε κάρτες και πιο επίπεδες διατάξεις.</string>
+    <string name="ui_whats_new_bullet_collapsible" translatable="true">Σχετικά: Η κάρτα «Τι νέο υπάρχει» μπορεί πλέον να συμπτύσσεται και δείχνει τα κύρια σημεία της τρέχουσας έκδοσης.</string>
+    <string name="ui_whats_new_bullet_languages" translatable="true">Νέα γλώσσα: Προστέθηκαν τα βεγγαλικά και ενημερώθηκαν τα μεταφρασμένα κείμενα. Οι επιλογείς γλώσσας δείχνουν πλέον κάθε γλώσσα με το γηγενές όνομά της.</string>
+    <string name="ui_error_search_not_found_s" translatable="true">Δεν βρέθηκε αντιστοιχία για το “%1$s” στο PubChem. Δοκιμάστε άλλο όνομα, αριθμό CAS ή ελέγξτε την ορθογραφία.</string>
+    <string name="ui_error_search_throttled" translatable="true">Το PubChem περιορίζει τα αιτήματα αυτή τη στιγμή. Περιμένετε μερικά δευτερόλεπτα και δοκιμάστε ξανά.</string>
+    <string name="ui_error_search_timeout" translatable="true">Το PubChem άργησε πολύ να απαντήσει. Δοκιμάστε ξανά — οι πολύ σύνθετες ερωτήσεις μπορεί να λήξουν.</string>
+    <string name="ui_error_search_bad_request" translatable="true">Το PubChem απέρριψε το αίτημα ως άκυρο. Ελέγξτε τη μορφή εισόδου (όνομα, CAS ή τύπος).</string>
+    <string name="ui_error_search_bad_request_detail" translatable="true">Το PubChem απέρριψε το αίτημα: %1$s</string>
+    <string name="ui_error_search_network" translatable="true">Πρόβλημα δικτύου — το PubChem δεν είναι προσβάσιμο. Ελέγξτε τη σύνδεσή σας και δοκιμάστε ξανά.</string>
+    <string name="ui_error_search_server" translatable="true">Σφάλμα διακομιστή PubChem (HTTP %1$s). Η υπηρεσία μπορεί να είναι προσωρινά εκτός λειτουργίας — δοκιμάστε αργότερα.</string>
+    <string name="ui_error_search_unknown" translatable="true">Απροσδόκητο σφάλμα: %1$s</string>
+    <string name="ui_debug_device_build_info" translatable="true">Πληροφορίες συσκευής και build</string>
+    <string name="ui_debug_device_body" translatable="true">Μοντέλο, λειτουργικό σύστημα, ABI, πυρήνας, πρόγραμμα εγκατάστασης, έκδοση και ζωντανή χρήση μνήμης</string>
+    <string name="ui_debug_cache_stats" translatable="true">Επιθεώρηση μνήμης cache ενώσεων</string>
+    <string name="ui_debug_cache_body" translatable="true">Αποθηκευμένα αρχεία, μέγεθος και χειροκίνητος καθαρισμός</string>
+    <string name="ui_debug_cache_files_d" translatable="true">Αρχεία σε cache: %1$d</string>
+    <string name="ui_debug_cache_empty" translatable="true">Καμία αποθηκευμένη ένωση — αναζητήστε και ανοίξτε μια ένωση για να γεμίσει η cache.</string>
+    <string name="ui_debug_error_catalog" translatable="true">Κατάλογος μηνυμάτων σφαλμάτων</string>
+    <string name="ui_debug_error_catalog_body" translatable="true">Προεπισκόπηση σφαλμάτων αναζήτησης με χρωματική κωδικοποίηση</string>
+    <string name="ui_cache_cleared" translatable="true">Η cache καθαρίστηκε</string>
+    <string name="ui_clipboard_cache" translatable="true">Αναφορά μνήμης cache ενώσεων</string>
+    <string name="ui_about_whats_new_s" translatable="true">Νέο στην έκδοση %1$s</string>
+    <string name="ui_trend_top_elements" translatable="true">Κορυφαία 5 στοιχεία</string>
+    <string name="ui_compound_of_the_day" translatable="true">Η ΕΝΩΣΗ ΤΗΣ ΗΜΕΡΑΣ</string>
+    <string name="ui_temperature_unit" translatable="true">Μονάδα θερμοκρασίας</string>
+    <string name="ui_subtitle_temperature_unit" translatable="true">Χρησιμοποιείται για σημεία τήξης και ζέσης στις λεπτομέρειες στοιχείων και τις τάσεις</string>
+    <string name="ui_copy_formula" translatable="true">Αντιγραφή τύπου</string>
+    <string name="ui_export_library_csv" translatable="true">Εξαγωγή βιβλιοθήκης ως CSV</string>
+    <string name="ui_error_no_browser" translatable="true">Δεν βρέθηκε πρόγραμμα περιήγησης</string>
+    <string name="ui_explore_chemsearch" translatable="true">Εξερευνήστε το ChemSearch</string>
+    <string name="ui_periodic_table_quick_action_subtitle" translatable="true">Περιηγηθείτε και στα 118 στοιχεία και τις ιδιότητές τους</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">900+ ουσίες, ιόντα, ομάδες και αντιδράσεις</string>
+    <string name="ui_offline_test_mode" translatable="true">Λειτουργία δοκιμής χωρίς σύνδεση</string>
+    <string name="ui_offline_test_mode_subtitle" translatable="true">Εμφάνιση εικονικών δεδομένων χωρίς πραγματικές κλήσεις δικτύου</string>
+    <string name="ui_offline_test_mode_toggle_body" translatable="true">Όταν είναι ενεργή, η αναζήτηση, οι αναζητήσεις, οι κλήσεις δομής και ΕΝ επιστρέφουν τοπικές εγγραφές δοκιμής αντί να επικοινωνούν με το δίκτυο</string>
+    <string name="ui_offline_test_mode_configure" translatable="true">Διαμόρφωση λειτουργίας δοκιμής</string>
+    <string name="ui_offline_test_mode_configure_subtitle" translatable="true">Καθυστέρηση, συντελεστής σφαλμάτων και προσομοιωμένος τύπος σφάλματος</string>
+    <string name="ui_offline_test_mode_latency" translatable="true">ΠΡΟΣΟΜΟΙΩΜΕΝΗ ΚΑΘΥΣΤΕΡΗΣΗ</string>
+    <string name="ui_offline_test_mode_error_rate" translatable="true">ΤΥΧΑΙΟ ΠΟΣΟΣΤΟ ΣΦΑΛΜΑΤΩΝ</string>
+    <string name="ui_offline_test_mode_failure" translatable="true">ΕΞΑΝΑΓΚΣΜΕΝΗ ΑΠΟΤΥΧΙΑ</string>
+    <string name="ui_offline_test_mode_failure_body" translatable="true">Εξαναγκάζει κάθε εικονική κλήση να αποτυγχάνει με αυτόν τον τύπο σφάλματος, ώστε κάθε μηνύμα με χρώματα να επεξεργαστεί</string>
+    <string name="ui_offline_test_mode_footer" translatable="true">Τα αποτελέσματα είναι ντετερμινιστικά: Η ίδια αναζήτηση παρέχει πάντα την ίδια δοκιμαστική ένωση, ώστε οι καταστάσεις να είναι αναπαραγόμενες. Τίποτα δεν φεύγει από τη συσκευή όσο η λειτουργία είναι ενεργή.</string>
+    <string name="ui_offline_test_mode_badge" translatable="true">ΧΩΡΙΣ ΣΥΝΔΕΣΗ</string>
+    <string name="ui_offline_test_mode_active_banner" translatable="true">Η λειτουργία δοκιμής χωρίς σύνδεση είναι ενεργή: Όλα τα αποτελέσματα ειναι προσομοιωμένα δεδομένα</string>
+    <string name="ui_offline_test_mode_active_note" translatable="true">Όλοι οι αποτελέσματες είναι προσομοιωμένοι</string>
 </resources>
-

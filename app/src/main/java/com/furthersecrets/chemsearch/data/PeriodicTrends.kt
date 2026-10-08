@@ -88,7 +88,8 @@ fun periodicTrendPoints(
 
 fun periodicTrendSummary(
     elements: List<PeriodicElement>,
-    metric: PeriodicTrendMetric
+    metric: PeriodicTrendMetric,
+    unit: TemperatureUnit = TemperatureUnit.KELVIN
 ): PeriodicTrendSummary {
     val points = periodicTrendPoints(elements, metric)
     if (points.isEmpty()) {
@@ -106,17 +107,30 @@ fun periodicTrendSummary(
     return PeriodicTrendSummary(
         metric = metric,
         totalElements = points.size,
-        lowest = low.summaryLabel(metric),
-        highest = high.summaryLabel(metric),
-        rangeLabel = "${low.valueLabel} - ${high.valueLabel}${metric.unitLabel()}"
+        lowest = low.summaryLabel(metric, unit),
+        highest = high.summaryLabel(metric, unit),
+        rangeLabel = rangeLabel(low.value, high.value, metric, unit)
     )
 }
 
 fun PeriodicTrendMetric.unitLabel(): String =
     if (unit.isBlank()) "" else " $unit"
 
-private fun PeriodicTrendPoint.summaryLabel(metric: PeriodicTrendMetric): String =
-    "${element.symbol} (${valueLabel}${metric.unitLabel()})"
+private fun PeriodicTrendPoint.summaryLabel(metric: PeriodicTrendMetric, unit: TemperatureUnit): String =
+    when (metric) {
+        PeriodicTrendMetric.MELTING_POINT,
+        PeriodicTrendMetric.BOILING_POINT -> "${element.symbol} (${unit.formatTemperatureFromKelvin(value)})"
+        else -> "${element.symbol} (${valueLabel}${metric.unitLabel()})"
+    }
+
+/** "660.32 - 3400 °C" for temperatures, "31 - 298 pm" otherwise. */
+private fun rangeLabel(low: Double, high: Double, metric: PeriodicTrendMetric, unit: TemperatureUnit): String =
+    when (metric) {
+        PeriodicTrendMetric.MELTING_POINT,
+        PeriodicTrendMetric.BOILING_POINT ->
+            "${unit.formatTemperatureFromKelvin(low)} - ${unit.formatTemperatureFromKelvin(high)}"
+        else -> "${formatPeriodicTrendValue(low)} - ${formatPeriodicTrendValue(high)}${metric.unitLabel()}"
+    }
 
 private fun PeriodicElement.periodicTrendValue(metric: PeriodicTrendMetric): Double? =
     when (metric) {
@@ -139,7 +153,7 @@ private fun String.cleanPeriodicNumber(): Double? {
     return Regex("-?\\d+(\\.\\d+)?").find(normalized)?.value?.toDoubleOrNull()
 }
 
-private fun formatPeriodicTrendValue(value: Double): String =
+internal fun formatPeriodicTrendValue(value: Double): String =
     when {
         value >= 100 -> String.format(Locale.US, "%.0f", value)
         value >= 10 -> String.format(Locale.US, "%.2f", value).trimTrailingZeros()

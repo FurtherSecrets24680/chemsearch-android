@@ -349,7 +349,11 @@ fun SuggestionsDropdown(suggestions: List<String>, onSelect: (String) -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(if (compact) 14.dp else 16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = if (compact) 5.dp else 8.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = if (LocalCardsEnabled.current) {
+                if (compact) 5.dp else 8.dp
+            } else 1.dp
+        ),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(modifier = Modifier.heightIn(max = if (compact) 232.dp else 280.dp).verticalScroll(rememberScrollState())) {
@@ -473,21 +477,15 @@ fun HistorySection(
     }
 
     if (showClearConfirm) {
-        AlertDialog(
-            onDismissRequest = { showClearConfirm = false },
-            title = { Text(stringResource(R.string.ui_clear_recent_searches), fontWeight = FontWeight.Bold) },
-            text = { Text(stringResource(R.string.ui_this_removes_your_recent_search_list_on_this)) },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        showClearConfirm = false
-                        onClear()
-                    },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                ) { Text(stringResource(R.string.ui_clear_all)) }
+        ChemConfirmDialog(
+            title = stringResource(R.string.ui_clear_recent_searches),
+            message = stringResource(R.string.ui_this_removes_your_recent_search_list_on_this),
+            confirmLabel = stringResource(R.string.ui_clear_all),
+            onConfirm = {
+                showClearConfirm = false
+                onClear()
             },
-            dismissButton = { TextButton(onClick = { showClearConfirm = false }) { Text(stringResource(R.string.ui_cancel)) } },
-            containerColor = MaterialTheme.colorScheme.surface
+            onDismiss = { showClearConfirm = false }
         )
     }
 
@@ -614,13 +612,19 @@ fun HistorySection(
         }
 
         if (displayGroups.isNotEmpty()) {
-            Card(
+            Column {
+                ChemFlatDivider()
+                Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(if (compact) 14.dp else 18.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface.copy(if (compact) 0.92f else 0.96f)
+                    containerColor = if (LocalCardsEnabled.current) {
+                        MaterialTheme.colorScheme.surface.copy(if (compact) 0.92f else 0.96f)
+                    } else Color.Transparent
                 ),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.10f))
+                border = if (LocalCardsEnabled.current) {
+                    BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.10f))
+                } else null
             ) {
                 Column {
                     val totalRows = displayGroups.sumOf { it.searches.size }
@@ -707,6 +711,7 @@ fun HistorySection(
                         maxLines = 1
                     )
                 }
+            }
             }
         }
     }
@@ -1032,8 +1037,12 @@ fun CompoundHeader(
                 verticalArrangement = Arrangement.spacedBy(if (compact) 7.dp else 8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                val haptics = rememberChemHaptics()
                 Surface(
-                    onClick = onToggleFavorite,
+                    onClick = {
+                        haptics.confirm()
+                        onToggleFavorite()
+                    },
                     shape = RoundedCornerShape(if (compact) 12.dp else 14.dp),
                     color = MaterialTheme.colorScheme.primary.copy(if (isFavorite) 0.16f else 0.08f),
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(if (isFavorite) 0.35f else 0.16f)),
@@ -1744,71 +1753,58 @@ private fun StructureStatusBadge(status: StructureStatus, modifier: Modifier = M
 // Dialog that appears when 3D model is unavailable
 @Composable
 fun No3DModelDialog(onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = {
+    ChemDialog(
+        title = stringResource(R.string.ui_why_is_3d_unavailable),
+        onDismiss = onDismiss,
+        tone = ChemDialogTone.INFO,
+        icon = Icons.Default.VisibilityOff,
+        actions = {
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.ui_got_it), fontWeight = FontWeight.SemiBold)
             }
-        },
-        icon = {
-            Icon(
-                Icons.Default.VisibilityOff,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
+        }
+    ) {
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Text(stringResource(R.string.ui_pubchem_pre_computes_3d_conformer_models_for_90) +
+                        stringResource(R.string.ui_3d_unavailable_body),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f)
             )
-        },
-        title = {
-            Text(stringResource(R.string.ui_why_is_3d_unavailable),
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleMedium
+
+            val reasons = listOf(
+                R.string.ui_3d_reason_too_large,
+                R.string.ui_3d_reason_too_flexible,
+                R.string.ui_3d_reason_unsupported_elements,
+                R.string.ui_3d_reason_salt_or_mixture,
+                R.string.ui_3d_reason_crystal_or_metallic,
+                R.string.ui_3d_reason_too_many_undefined_stereo,
+                R.string.ui_3d_reason_conformer_failure,
             )
-        },
-        text = {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(stringResource(R.string.ui_pubchem_pre_computes_3d_conformer_models_for_90) +
-                            stringResource(R.string.ui_3d_unavailable_body),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f)
-                )
 
-                val reasons = listOf(
-                    R.string.ui_3d_reason_too_large,
-                    R.string.ui_3d_reason_too_flexible,
-                    R.string.ui_3d_reason_unsupported_elements,
-                    R.string.ui_3d_reason_salt_or_mixture,
-                    R.string.ui_3d_reason_crystal_or_metallic,
-                    R.string.ui_3d_reason_too_many_undefined_stereo,
-                    R.string.ui_3d_reason_conformer_failure,
-                )
-
-                reasons.forEach { textRes ->
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.Top
-                    ) {
-                        Text("•", style = MaterialTheme.typography.bodySmall)
-                        Text(
-                            stringResource(textRes),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
-                        )
-                    }
+            reasons.forEach { textRes ->
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Text("•", style = MaterialTheme.typography.bodySmall)
+                    Text(
+                        stringResource(textRes),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+                    )
                 }
-
-                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
-
-                Text(stringResource(R.string.ui_source_pubchem3d_project),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
-                )
             }
-        },
-        shape = RoundedCornerShape(20.dp),
-        containerColor = MaterialTheme.colorScheme.surface
-    )
+
+            HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
+
+            Text(stringResource(R.string.ui_source_pubchem3d_project),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
+            )
+        }
+    }
 }
 
 // Identifiers
@@ -2554,28 +2550,40 @@ private fun SearchCard(
     )
     val effectiveSpacing = if (spacing == 0.dp) 0.dp else (spacing * scale).coerceAtLeast(4.dp)
     val shape = RoundedCornerShape(if (compact) 16.dp else 22.dp)
-    Surface(
-        modifier = modifier,
-        shape = shape,
-        color = MaterialTheme.colorScheme.surface,
-        tonalElevation = 1.dp,
-        shadowElevation = 0.dp,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.16f))
-    ) {
-        Column(
-            modifier = Modifier
-                .background(
-                    Brush.verticalGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.surface.copy(alpha = 0.98f),
-                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.42f)
-                        )
+    val cardsEnabled = LocalCardsEnabled.current
+    Column {
+        ChemFlatDivider()
+        Surface(
+            modifier = modifier,
+            shape = shape,
+            color = if (cardsEnabled) MaterialTheme.colorScheme.surface else Color.Transparent,
+            tonalElevation = if (cardsEnabled) 1.dp else 0.dp,
+            shadowElevation = 0.dp,
+            border = if (cardsEnabled) {
+                BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.16f))
+            } else null
+        ) {
+            Column(
+                modifier = Modifier
+                    .background(
+                        if (cardsEnabled) {
+                            Brush.verticalGradient(
+                                listOf(
+                                    MaterialTheme.colorScheme.surface.copy(alpha = 0.98f),
+                                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.42f)
+                                )
+                            )
+                        } else {
+                            Brush.verticalGradient(
+                                listOf(Color.Transparent, Color.Transparent)
+                            )
+                        }
                     )
-                )
-                .padding(effectivePadding),
-            verticalArrangement = Arrangement.spacedBy(effectiveSpacing),
-            content = content
-        )
+                    .padding(effectivePadding),
+                verticalArrangement = Arrangement.spacedBy(effectiveSpacing),
+                content = content
+            )
+        }
     }
 }
 
@@ -2818,50 +2826,71 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
 
             if (ghsData.pictogramCodes.isNotEmpty()) {
                 Text(stringResource(R.string.ui_pictograms), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.45f), letterSpacing = 0.5.sp)
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp)
-                ) {
-                    ghsData.pictogramCodes.forEach { code ->
-                        val pictogramRes = ghsPictogramRes(code)
-                        Surface(
-                            shape = RoundedCornerShape(if (compact) 10.dp else 12.dp),
-                            color = MaterialTheme.colorScheme.surfaceVariant,
-                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.25f))
+                // Rows of weighted equal tiles (max 4 per row): every tile gets
+                // exactly its share of the width, so rows never overlap, wrap
+                // raggedly, or leave a gap before a lone last tile.
+                val pictogramGap = if (compact) 6.dp else 8.dp
+                val pictogramTileShape = RoundedCornerShape(if (compact) 10.dp else 12.dp)
+                Column(verticalArrangement = Arrangement.spacedBy(pictogramGap)) {
+                    ghsData.pictogramCodes.chunked(4).forEach { rowCodes ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(pictogramGap)
                         ) {
-                            Column(
-                                modifier = Modifier.padding(
-                                    horizontal = if (compact) 10.dp else 12.dp,
-                                    vertical = if (compact) 8.dp else 10.dp
-                                ),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.spacedBy(if (compact) 3.dp else 4.dp)
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .size(if (compact) 42.dp else 48.dp),
-                                    contentAlignment = Alignment.Center
+                            rowCodes.forEach { code ->
+                                val pictogramRes = ghsPictogramRes(code)
+                                Surface(
+                                    modifier = Modifier.weight(1f),
+                                    shape = pictogramTileShape,
+                                    color = MaterialTheme.colorScheme.surfaceVariant,
+                                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.45f))
                                 ) {
-                                    if (pictogramRes != null) {
-                                        Image(
-                                            painter = painterResource(id = pictogramRes),
-                                            contentDescription = ghsLabelText(code),
-                                            modifier = Modifier.fillMaxSize(),
-                                            contentScale = ContentScale.Fit
-                                        )
-                                    } else {
-                                        Icon(
-                                            Icons.Default.Warning,
-                                            contentDescription = ghsLabelText(code),
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(
+                                                horizontal = if (compact) 4.dp else 6.dp,
+                                                vertical = if (compact) 8.dp else 10.dp
+                                            ),
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.spacedBy(if (compact) 3.dp else 4.dp)
+                                    ) {
+                                        Box(
                                             modifier = Modifier
-                                                .size(if (compact) 30.dp else 34.dp)
-                                                .background(MaterialTheme.colorScheme.error.copy(0.08f), CircleShape)
-                                                .padding(if (compact) 6.dp else 7.dp)
+                                                .size(if (compact) 42.dp else 48.dp),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            if (pictogramRes != null) {
+                                                Image(
+                                                    painter = painterResource(id = pictogramRes),
+                                                    contentDescription = ghsLabelText(code),
+                                                    modifier = Modifier.fillMaxSize(),
+                                                    contentScale = ContentScale.Fit
+                                                )
+                                            } else {
+                                                Icon(
+                                                    Icons.Default.Warning,
+                                                    contentDescription = ghsLabelText(code),
+                                                    modifier = Modifier
+                                                        .size(if (compact) 30.dp else 34.dp)
+                                                        .background(MaterialTheme.colorScheme.error.copy(0.08f), CircleShape)
+                                                        .padding(if (compact) 6.dp else 7.dp)
+                                                )
+                                            }
+                                        }
+                                        Text(code, style = MaterialTheme.typography.labelSmall, fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, maxLines = 1)
+                                        Text(
+                                            ghsLabelText(code),
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.onSurface.copy(0.6f),
+                                            fontSize = 9.sp,
+                                            lineHeight = 11.sp,
+                                            textAlign = TextAlign.Center,
+                                            maxLines = 2,
+                                            overflow = TextOverflow.Ellipsis
                                         )
                                     }
                                 }
-                                Text(code, style = MaterialTheme.typography.labelSmall, fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-                                Text(ghsLabelText(code), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f), fontSize = 9.sp, textAlign = TextAlign.Center)
                             }
                         }
                     }

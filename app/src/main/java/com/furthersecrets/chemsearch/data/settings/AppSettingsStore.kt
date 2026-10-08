@@ -15,6 +15,7 @@ import com.furthersecrets.chemsearch.data.DescSource
 import com.furthersecrets.chemsearch.data.DefaultStructureView
 import com.furthersecrets.chemsearch.data.FormulaDisplayStyle
 import com.furthersecrets.chemsearch.data.OfflineDownloadQuality
+import com.furthersecrets.chemsearch.data.TemperatureUnit
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -39,7 +40,9 @@ data class AppSettingsSnapshot(
     val cacheRetention: CacheRetention,
     val reduceMotion: Boolean,
     val highContrastOutlines: Boolean,
-    val language: AppLanguage
+    val cardsEnabled: Boolean,
+    val language: AppLanguage,
+    val temperatureUnit: TemperatureUnit = TemperatureUnit.KELVIN
 ) {
     companion object {
         fun fromRawValues(
@@ -59,7 +62,9 @@ data class AppSettingsSnapshot(
             cacheRetentionName: String?,
             reduceMotion: Boolean?,
             highContrastOutlines: Boolean?,
-            languageKey: String?
+            cardsEnabled: Boolean?,
+            languageKey: String?,
+            temperatureUnitName: String? = null
         ): AppSettingsSnapshot =
             AppSettingsSnapshot(
                 isDarkTheme = isDarkTheme ?: false,
@@ -85,7 +90,10 @@ data class AppSettingsSnapshot(
                     ?: CacheRetention.MANUAL,
                 reduceMotion = reduceMotion ?: false,
                 highContrastOutlines = highContrastOutlines ?: false,
-                language = AppLanguage.fromPreferenceKey(languageKey)
+                cardsEnabled = cardsEnabled ?: true,
+                language = AppLanguage.fromPreferenceKey(languageKey),
+                temperatureUnit = TemperatureUnit.entries.firstOrNull { it.name == temperatureUnitName }
+                    ?: TemperatureUnit.KELVIN
             )
     }
 }
@@ -128,7 +136,9 @@ class AppSettingsStore(private val context: Context) {
                 cacheRetentionName = preferences[Keys.CACHE_RETENTION],
                 reduceMotion = preferences[Keys.REDUCE_MOTION],
                 highContrastOutlines = preferences[Keys.HIGH_CONTRAST_OUTLINES],
-                languageKey = preferences[Keys.LANGUAGE]
+                cardsEnabled = preferences[Keys.CARDS_ENABLED],
+                languageKey = preferences[Keys.LANGUAGE],
+                temperatureUnitName = preferences[Keys.TEMPERATURE_UNIT]
             )
         }
 
@@ -156,7 +166,9 @@ class AppSettingsStore(private val context: Context) {
                 ?: CacheRetention.MANUAL.name
             preferences[Keys.REDUCE_MOTION] = prefs.getBoolean("reduce_motion", false)
             preferences[Keys.HIGH_CONTRAST_OUTLINES] = prefs.getBoolean("high_contrast_outlines", false)
+            preferences[Keys.CARDS_ENABLED] = prefs.getBoolean("cards_enabled", true)
             preferences[Keys.LANGUAGE] = prefs.getString("language", null) ?: AppLanguage.SYSTEM.preferenceKey
+            preferences[Keys.TEMPERATURE_UNIT] = prefs.getString("temperature_unit", null) ?: TemperatureUnit.KELVIN.name
             preferences[Keys.MIGRATED] = true
         }
     }
@@ -225,8 +237,16 @@ class AppSettingsStore(private val context: Context) {
         dataStore.edit { it[Keys.HIGH_CONTRAST_OUTLINES] = enabled }
     }
 
+    suspend fun setCardsEnabled(enabled: Boolean) {
+        dataStore.edit { it[Keys.CARDS_ENABLED] = enabled }
+    }
+
     suspend fun setLanguage(language: AppLanguage) {
         dataStore.edit { it[Keys.LANGUAGE] = language.preferenceKey }
+    }
+
+    suspend fun setTemperatureUnit(unit: TemperatureUnit) {
+        dataStore.edit { it[Keys.TEMPERATURE_UNIT] = unit.name }
     }
 
     private object Keys {
@@ -246,7 +266,9 @@ class AppSettingsStore(private val context: Context) {
         val CACHE_RETENTION = stringPreferencesKey("cache_retention")
         val REDUCE_MOTION = booleanPreferencesKey("reduce_motion")
         val HIGH_CONTRAST_OUTLINES = booleanPreferencesKey("high_contrast_outlines")
+        val CARDS_ENABLED = booleanPreferencesKey("cards_enabled")
         val LANGUAGE = stringPreferencesKey("language")
+        val TEMPERATURE_UNIT = stringPreferencesKey("temperature_unit")
         val MIGRATED = booleanPreferencesKey("settings_datastore_migrated")
     }
 }

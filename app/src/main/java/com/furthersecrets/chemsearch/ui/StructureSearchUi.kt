@@ -51,6 +51,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -107,6 +108,7 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.hypot
 import kotlin.math.min
+import kotlin.math.roundToInt
 import kotlin.math.sin
 
 private val CommonAtoms = listOf("C", "N", "O", "S", "P", "F", "Cl", "Br", "I", "H")
@@ -388,6 +390,15 @@ fun StructureSearchScreen(
                 }
 
                 item {
+                    StructureSearchSummaryCard(
+                        mode = state.mode,
+                        similarityThreshold = state.similarityThreshold,
+                        maxRecords = state.maxRecords,
+                        onOpenSettings = { showSearchConfigDialog = true }
+                    )
+                }
+
+                item {
                     StructureEditingActions(
                         sketch = sketch,
                         canUndo = undoStack.isNotEmpty(),
@@ -627,6 +638,9 @@ fun StructureSearchScreen(
                     }
                 },
                 onConfigClick = { showSearchConfigDialog = true },
+                mode = state.mode,
+                similarityThreshold = state.similarityThreshold,
+                maxRecords = state.maxRecords,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(horizontal = 16.dp, vertical = if (compact) 14.dp else 18.dp)
@@ -670,6 +684,76 @@ private fun StructureSearchBlockedHint(
     }
 }
 
+/**
+ * Builds the "mode · similarity · results" summary line. Falls back to plain
+ * concatenation if a localized format string mismatches its arguments — a bad
+ * translation must never crash composition (IllegalFormatConversionException).
+ */
+@Composable
+private fun structureSearchSummaryText(
+    mode: StructureSearchMode,
+    similarityThreshold: Int,
+    maxRecords: Int
+): String {
+    val modeLabel = stringResource(mode.labelRes)
+    val context = LocalContext.current
+    return try {
+        context.getString(R.string.ui_structure_search_summary, modeLabel, similarityThreshold, maxRecords)
+    } catch (_: Exception) {
+        "$modeLabel · $similarityThreshold% · $maxRecords"
+    }
+}
+
+/**
+ * Compact at-a-glance card for the current search configuration. Tapping it
+ * opens the same configuration dialog as the tune button, so the settings are
+ * discoverable without hunting for the small floating icon.
+ */
+@Composable
+private fun StructureSearchSummaryCard(
+    mode: StructureSearchMode,
+    similarityThreshold: Int,
+    maxRecords: Int,
+    onOpenSettings: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onOpenSettings),
+        shape = RoundedCornerShape(16.dp),
+        color = MaterialTheme.colorScheme.primary.copy(0.07f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.22f))
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 9.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                Icons.Default.Tune,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(17.dp)
+            )
+            Text(
+                text = structureSearchSummaryText(mode, similarityThreshold, maxRecords),
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.72f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f)
+            )
+            Icon(
+                Icons.Default.KeyboardArrowDown,
+                contentDescription = stringResource(R.string.ui_structure_search_settings),
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(16.dp)
+            )
+        }
+    }
+}
+
 @Composable
 private fun StructureSearchHeader(
     onBack: () -> Unit,
@@ -702,52 +786,28 @@ private fun StructureSearchHeader(
 
 @Composable
 private fun StructureSearchInfoDialog(onDismiss: () -> Unit) {
-    Dialog(onDismissRequest = onDismiss) {
-        Card(
-            shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.18f))
-        ) {
-            Column(
-                modifier = Modifier.padding(18.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    Icon(
-                        Icons.Default.Info,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(26.dp)
-                    )
-                    Text(stringResource(R.string.ui_structure_search_3),
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.ExtraBold,
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-                Text(stringResource(R.string.ui_tap_the_canvas_to_place_atoms_select_two),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
-                )
-                Text(stringResource(R.string.ui_drag_atoms_bonds_or_the_whole_selected_molecule),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
-                )
-                Text(stringResource(R.string.ui_clean_can_standardize_the_drawing_through_pubchem_before),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    TextButton(onClick = onDismiss) { Text(stringResource(R.string.ui_got_it)) }
-                }
-            }
+    ChemDialog(
+        title = stringResource(R.string.ui_structure_search_3),
+        onDismiss = onDismiss,
+        tone = ChemDialogTone.INFO,
+        icon = Icons.Default.Info,
+        actions = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.ui_got_it)) }
+        }
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text(stringResource(R.string.ui_tap_the_canvas_to_place_atoms_select_two),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
+            )
+            Text(stringResource(R.string.ui_drag_atoms_bonds_or_the_whole_selected_molecule),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
+            )
+            Text(stringResource(R.string.ui_clean_can_standardize_the_drawing_through_pubchem_before),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
+            )
         }
     }
 }
@@ -779,10 +839,12 @@ private fun StructureToolPanel(
         )
     }
 
-    Card(
-        shape = RoundedCornerShape(22.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.2f))
+    Column {
+        ChemFlatDivider()
+        Card(
+        shape = chemCardShape(22.dp),
+        colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surface)),
+        border = chemCardBorder(MaterialTheme.colorScheme.outline.copy(0.2f))
     ) {
         Column(
             modifier = Modifier.padding(14.dp),
@@ -878,6 +940,7 @@ private fun StructureToolPanel(
                     enabled = selectedAtom != null && selectedAtom.charge < StructureChargeLimit
                 ) { Text("+") }
             }
+        }
         }
     }
 }
@@ -1005,26 +1068,29 @@ private fun StructureEditingActions(
         )
     }
 
-    Card(
-        shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.2f))
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState())
-                .padding(horizontal = 10.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalAlignment = Alignment.CenterVertically
+    Column {
+        ChemFlatDivider()
+        Card(
+            shape = chemCardShape(18.dp),
+            colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surface)),
+            border = chemCardBorder(MaterialTheme.colorScheme.outline.copy(0.2f))
         ) {
-            actions.forEach { action ->
-                StructureActionButton(
-                    action = action,
-                    size = 42.dp,
-                    iconSize = 20.dp,
-                    onLongPress = { helpAction = action }
-                )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState())
+                    .padding(horizontal = 10.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                actions.forEach { action ->
+                    StructureActionButton(
+                        action = action,
+                        size = 42.dp,
+                        iconSize = 20.dp,
+                        onLongPress = { helpAction = action }
+                    )
+                }
             }
         }
     }
@@ -1181,30 +1247,20 @@ private fun StructureActionHelpDialog(
     action: StructureActionItem,
     onDismiss: () -> Unit
 ) {
-    Dialog(onDismissRequest = onDismiss) {
-        Surface(
-            shape = RoundedCornerShape(20.dp),
-            color = MaterialTheme.colorScheme.inverseSurface,
-            tonalElevation = 8.dp,
-            shadowElevation = 10.dp
-        ) {
-            Column(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                Text(
-                    stringResource(action.labelRes),
-                    color = MaterialTheme.colorScheme.inverseOnSurface,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.ExtraBold
-                )
-                Text(
-                    stringResource(action.descriptionRes),
-                    color = MaterialTheme.colorScheme.inverseOnSurface.copy(0.78f),
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
+    ChemDialog(
+        title = stringResource(action.labelRes),
+        onDismiss = onDismiss,
+        tone = ChemDialogTone.NEUTRAL,
+        icon = Icons.Default.Info,
+        actions = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.ui_got_it)) }
         }
+    ) {
+        Text(
+            stringResource(action.descriptionRes),
+            color = MaterialTheme.colorScheme.onSurface.copy(0.75f),
+            style = MaterialTheme.typography.bodyMedium
+        )
     }
 }
 
@@ -1257,7 +1313,8 @@ private fun StructureImportDialog(
                     onValueChange = { input = it },
                     modifier = Modifier.fillMaxWidth().heightIn(min = 140.dp),
                     minLines = 5,
-                    label = { Text(stringResource(R.string.ui_structure_text)) }
+                    label = { Text(stringResource(R.string.ui_structure_text)) },
+                    supportingText = { Text(stringResource(R.string.ui_structure_search_import_hint)) }
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -1771,12 +1828,14 @@ private fun StructureSketchCanvas(
     val outline = MaterialTheme.colorScheme.outline
     val placeholderText = stringResource(R.string.ui_tap_to_place_atoms)
 
-    Card(
-        shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = surface),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.2f))
-    ) {
-        Box(
+    Column {
+        ChemFlatDivider()
+        Card(
+            shape = chemCardShape(24.dp),
+            colors = CardDefaults.cardColors(containerColor = chemCardColor(surface)),
+            border = chemCardBorder(MaterialTheme.colorScheme.outline.copy(0.2f))
+        ) {
+            Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = 360.dp)
@@ -2086,6 +2145,7 @@ private fun StructureSketchCanvas(
                 }
             }
         }
+        }
     }
 }
 
@@ -2130,15 +2190,17 @@ private fun StructureSearchControls(
     var expanded by remember { mutableStateOf(false) }
     var thresholdExpanded by remember { mutableStateOf(false) }
     var maxRecordsExpanded by remember { mutableStateOf(false) }
-    Card(
-        shape = RoundedCornerShape(22.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.2f))
-    ) {
-        Column(
-            modifier = Modifier.padding(14.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+    Column {
+        ChemFlatDivider()
+        Card(
+            shape = chemCardShape(22.dp),
+            colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surface)),
+            border = chemCardBorder(MaterialTheme.colorScheme.outline.copy(0.2f))
         ) {
+            Column(
+                modifier = Modifier.padding(14.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -2237,6 +2299,23 @@ private fun StructureSearchControls(
                     }
                 }
             }
+            if (mode == StructureSearchMode.SIMILAR) {
+                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    Text(
+                        stringResource(R.string.ui_d_percent_similarity, similarityThreshold),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.62f)
+                    )
+                    Slider(
+                        value = similarityThreshold.toFloat(),
+                        onValueChange = { onThresholdChange(it.roundToInt().coerceIn(70, 99)) },
+                        valueRange = 70f..99f,
+                        steps = 28
+                    )
+                }
+            }
+        }
         }
     }
 }
@@ -2290,7 +2369,10 @@ private fun FloatingStructureSearchButton(
     isLoading: Boolean,
     onClick: () -> Unit,
     onConfigClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    mode: StructureSearchMode? = null,
+    similarityThreshold: Int = 85,
+    maxRecords: Int = 30
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
@@ -2300,13 +2382,27 @@ private fun FloatingStructureSearchButton(
         shadowElevation = 12.dp,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.18f))
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(6.dp),
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Column {
+            if (mode != null) {
+                Text(
+                    text = structureSearchSummaryText(mode, similarityThreshold, maxRecords),
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp, start = 14.dp, end = 14.dp)
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(6.dp),
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
             Button(
                 onClick = onClick,
                 enabled = canSearch,
@@ -2358,6 +2454,7 @@ private fun FloatingStructureSearchButton(
         }
     }
 }
+}
 
 @Composable
 private fun StructureSearchResultsDialog(
@@ -2394,11 +2491,11 @@ private fun StructureSearchResultsDialog(
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            if (!state.error.isNullOrBlank() && !state.isLoading && state.results.isEmpty()) {
+                            (if (!state.error.isNullOrBlank() && !state.isLoading && state.results.isEmpty()) {
                                 stringResource(R.string.ui_structure_search_failed)
                             } else {
                                 stringResource(R.string.ui_matching_results)
-                            },
+                            }) + " · " + stringResource(state.mode.labelRes),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.ExtraBold
                         )
@@ -2446,12 +2543,14 @@ private fun StructureSearchResults(
             }
         }
         if (!state.isLoading && state.results.isEmpty() && !state.error.isNullOrBlank()) {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(18.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.45f)),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(alpha = 0.32f))
-            ) {
+            Column {
+                ChemFlatDivider()
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = chemCardShape(18.dp),
+                    colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.45f))),
+                    border = chemCardBorder(MaterialTheme.colorScheme.error.copy(alpha = 0.32f))
+                ) {
                 Row(
                     modifier = Modifier.padding(14.dp),
                     verticalAlignment = Alignment.CenterVertically,
@@ -2471,13 +2570,12 @@ private fun StructureSearchResults(
                     )
                 }
             }
+            }
         }
         state.results.forEach { result ->
-            Card(
-                modifier = Modifier.fillMaxWidth().clickable { onOpenResult(result.cid) },
-                shape = RoundedCornerShape(18.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.2f))
+            ChemCardSurface(
+                onClick = { onOpenResult(result.cid) },
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Row(
                     modifier = Modifier.padding(14.dp),

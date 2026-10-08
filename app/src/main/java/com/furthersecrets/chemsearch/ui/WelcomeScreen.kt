@@ -55,9 +55,13 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.furthersecrets.chemsearch.BuildConfig
@@ -83,7 +87,7 @@ fun WelcomeScreen(
     val scrollState = rememberScrollState()
     var stage by remember { mutableIntStateOf(0) }
     var selectedLegalDocument by remember { androidx.compose.runtime.mutableStateOf<LegalDocument?>(null) }
-    val stageCount = 4
+    val stageCount = 5
     val spacing = if (compact) 10.dp else 14.dp
     val horizontalPadding = if (compact) 16.dp else 22.dp
     val logoFrame = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) {
@@ -251,6 +255,129 @@ private fun WelcomeStage(
         )
         3 -> WelcomeLegalStage(
             onOpenDocument = onOpenLegalDocument
+        )
+        4 -> WelcomeWhatsNewStage()
+    }
+}
+
+/**
+ * Final welcome stage: recent app changes as a clean bullet list. Bullet items
+ * live in string resources so every release can update them per language.
+ */
+@Composable
+private fun WelcomeWhatsNewStage() {
+    val featureBullets = listOf(
+        R.string.ui_whats_new_bullet_reaction,
+        R.string.ui_whats_new_bullet_widgets,
+        R.string.ui_whats_new_bullet_shortcuts,
+        R.string.ui_whats_new_bullet_database,
+        R.string.ui_whats_new_bullet_daily,
+        R.string.ui_whats_new_bullet_home,
+        R.string.ui_whats_new_bullet_csv,
+        R.string.ui_whats_new_bullet_library
+    )
+    val improvementBullets = listOf(
+        R.string.ui_whats_new_bullet_languages,
+        R.string.ui_whats_new_bullet_search,
+        R.string.ui_whats_new_bullet_tools,
+        R.string.ui_whats_new_bullet_compare,
+        R.string.ui_whats_new_bullet_structure,
+        R.string.ui_whats_new_bullet_polish,
+        R.string.ui_whats_new_bullet_periodic,
+        R.string.ui_whats_new_bullet_stoich,
+        R.string.ui_whats_new_bullet_display,
+        R.string.ui_whats_new_bullet_haptics,
+        R.string.ui_whats_new_bullet_offline_mode,
+        R.string.ui_whats_new_bullet_dialogs,
+        R.string.ui_whats_new_bullet_cards,
+        R.string.ui_whats_new_bullet_collapsible
+    )
+    Column(verticalArrangement = Arrangement.spacedBy(14.dp), modifier = Modifier.fillMaxWidth()) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(5.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = stringResource(R.string.ui_version_s_d, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 1.5.sp,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = stringResource(R.string.ui_section_whats_new),
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.ExtraBold,
+                color = MaterialTheme.colorScheme.onBackground,
+                textAlign = TextAlign.Center
+            )
+        }
+        WelcomeWhatsNewSection(
+            headerRes = R.string.ui_whats_new_section_features,
+            bullets = featureBullets
+        )
+        WelcomeWhatsNewSection(
+            headerRes = R.string.ui_whats_new_section_improvements,
+            bullets = improvementBullets
+        )
+    }
+}
+
+@Composable
+private fun WelcomeWhatsNewSection(
+    headerRes: Int,
+    bullets: List<Int>
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(9.dp), modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = stringResource(headerRes),
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.ExtraBold,
+            letterSpacing = 1.2.sp,
+            color = MaterialTheme.colorScheme.primary
+        )
+        bullets.forEach { bulletRes ->
+            WelcomeWhatsNewBullet(text = stringResource(bulletRes))
+        }
+    }
+}
+
+/**
+ * Renders a plain bullet. The part before the first colon (ASCII ':' or
+ * full-width '：' for locales like Japanese) is bolded, matching the
+ * changelog style "Feature: Description".
+ */
+@Composable
+private fun WelcomeWhatsNewBullet(text: String) {
+    val colonIndex = text.indexOfFirst { it == ':' || it == '：' }
+    val styled: AnnotatedString = if (colonIndex > 0) {
+        buildAnnotatedString {
+            withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)) {
+                append(text.take(colonIndex))
+            }
+            append(text[colonIndex])
+            append(text.substring(colonIndex + 1))
+        }
+    } else {
+        AnnotatedString(text)
+    }
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalAlignment = Alignment.Top
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(top = 7.dp)
+                .size(7.dp)
+                .background(MaterialTheme.colorScheme.primary, CircleShape)
+        )
+        Text(
+            text = styled,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.82f)
         )
     }
 }
@@ -483,7 +610,11 @@ private fun WelcomeLanguageSelector(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text(stringResource(selected.displayNameRes), fontWeight = FontWeight.SemiBold)
+                        Text(
+                            if (selected.nativeName.isBlank()) stringResource(selected.displayNameRes)
+                            else selected.nativeName,
+                            fontWeight = FontWeight.SemiBold
+                        )
                         Text(
                             stringResource(R.string.ui_language_subtitle),
                             style = MaterialTheme.typography.bodySmall,
@@ -496,7 +627,12 @@ private fun WelcomeLanguageSelector(
             SettingsDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 AppLanguage.entries.forEach { language ->
                     DropdownMenuItem(
-                        text = { Text(stringResource(language.displayNameRes)) },
+                        text = {
+                            Text(
+                                if (language.nativeName.isBlank()) stringResource(language.displayNameRes)
+                                else language.nativeName
+                            )
+                        },
                         onClick = {
                             expanded = false
                             onSelect(language)

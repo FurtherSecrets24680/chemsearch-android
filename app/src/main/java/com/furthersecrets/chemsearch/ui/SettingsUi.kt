@@ -25,26 +25,37 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -56,9 +67,12 @@ import coil.compose.AsyncImage
 import com.furthersecrets.chemsearch.BuildConfig
 import com.furthersecrets.chemsearch.R
 import com.furthersecrets.chemsearch.data.*
+import com.google.gson.Gson
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -181,8 +195,7 @@ private fun <T> SettingsDropdownSelector(
         Box {
             Surface(
                 shape = RoundedCornerShape(10.dp),
-                color = MaterialTheme.colorScheme.surface,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.3f)),
+                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
                 modifier = Modifier
                     .widthIn(min = 104.dp, max = 156.dp)
                     .clickable { expanded = true }
@@ -248,8 +261,9 @@ private fun <T> SettingsSliderSelector(
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Text(
             title,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
         )
         if (!subtitle.isNullOrBlank()) {
             Text(
@@ -424,8 +438,9 @@ private fun AiProviderSettings(
 
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Text(stringResource(R.string.ui_provider),
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
         )
         Box {
             Surface(
@@ -504,8 +519,9 @@ private fun AiProviderSettings(
         )
 
         Text(stringResource(R.string.ui_model),
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
         )
         Box {
             Surface(
@@ -617,6 +633,8 @@ fun SettingsSheet(
     formulaDisplayStyle: FormulaDisplayStyle = FormulaDisplayStyle.CONVENTIONAL,
     reduceMotion: Boolean = false,
     highContrastOutlines: Boolean = false,
+    cardsEnabled: Boolean = true,
+    temperatureUnit: TemperatureUnit = TemperatureUnit.KELVIN,
     aiProvider: AiProvider,
     aiKeyStatus: Map<AiProvider, Boolean>,
     aiModelCatalogs: Map<AiProvider, AiModelCatalog>,
@@ -633,6 +651,8 @@ fun SettingsSheet(
     onSetFormulaDisplayStyle: (FormulaDisplayStyle) -> Unit = {},
     onToggleReduceMotion: () -> Unit = {},
     onToggleHighContrastOutlines: () -> Unit = {},
+    onToggleCardsEnabled: () -> Unit = {},
+    onSetTemperatureUnit: (TemperatureUnit) -> Unit = {},
     onSetAiProvider: (AiProvider) -> Unit,
     onSetAiModel: (AiProvider, String) -> Unit,
     onRefreshAiModels: (AiProvider) -> Unit,
@@ -683,8 +703,9 @@ fun SettingsSheet(
                 onToggle = onToggleOledDarkTheme
             )
             Text(stringResource(R.string.ui_color_scheme),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(0.45f),
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.72f),
                 modifier = Modifier.padding(top = 6.dp)
             )
             ColorSchemePicker(
@@ -696,7 +717,11 @@ fun SettingsSheet(
                 subtitle = stringResource(R.string.ui_language_subtitle),
                 selected = appLanguage,
                 options = AppLanguage.entries,
-                labelFor = { language -> context.getString(language.displayNameRes) },
+                labelFor = { language ->
+                    // Languages always display in their own language, independent of the app locale.
+                    if (language.nativeName.isBlank()) context.getString(language.displayNameRes)
+                    else language.nativeName
+                },
                 onSelect = onSetAppLanguage
             )
 
@@ -730,6 +755,13 @@ fun SettingsSheet(
                 checked = highContrastOutlines,
                 onToggle = onToggleHighContrastOutlines
             )
+            SettingsToggleRow(
+                icon = Icons.Default.Cards,
+                title = stringResource(R.string.ui_cards),
+                subtitle = stringResource(R.string.ui_subtitle_cards),
+                checked = cardsEnabled,
+                onToggle = onToggleCardsEnabled
+            )
             SettingsDropdownSelector(
                 title = stringResource(R.string.ui_default_structure_view),
                 subtitle = stringResource(R.string.ui_subtitle_choose_structure_tab),
@@ -745,6 +777,14 @@ fun SettingsSheet(
                 options = FormulaDisplayStyle.entries,
                 labelFor = { context.getString(formulaDisplayStyleLabel(it)) },
                 onSelect = onSetFormulaDisplayStyle
+            )
+            SettingsDropdownSelector(
+                title = stringResource(R.string.ui_temperature_unit),
+                subtitle = stringResource(R.string.ui_subtitle_temperature_unit),
+                selected = temperatureUnit,
+                options = TemperatureUnit.entries,
+                labelFor = { it.suffix },
+                onSelect = onSetTemperatureUnit
             )
 
             Spacer(Modifier.height(4.dp))
@@ -828,14 +868,26 @@ fun SettingsSheet(
 
 @Composable
 fun SettingsSectionHeader(text: String) {
-    Text(
-        text.uppercase(),
-        style = MaterialTheme.typography.labelSmall,
-        fontWeight = FontWeight.Bold,
-        letterSpacing = 1.2.sp,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(top = 8.dp, bottom = 2.dp)
-    )
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 10.dp, bottom = 4.dp)
+    ) {
+        Text(
+            text.uppercase(),
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 1.2.sp,
+            color = MaterialTheme.colorScheme.primary
+        )
+        HorizontalDivider(
+            modifier = Modifier.weight(1f),
+            thickness = 0.5.dp,
+            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.18f)
+        )
+    }
 }
 
 @Composable
@@ -861,12 +913,27 @@ fun SettingsToggleRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.weight(1f, fill = true)
         ) {
-            Icon(icon, null, tint = MaterialTheme.colorScheme.onSurface.copy(0.5f), modifier = Modifier.size(if (compact) 18.dp else 20.dp))
+            Surface(
+                shape = RoundedCornerShape(10.dp),
+                color = if (checked) MaterialTheme.colorScheme.primary.copy(alpha = 0.14f)
+                else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
+                modifier = Modifier.size(if (compact) 30.dp else 34.dp)
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        icon,
+                        null,
+                        tint = if (checked) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                        modifier = Modifier.size(if (compact) 16.dp else 18.dp)
+                    )
+                }
+            }
             Column(modifier = Modifier.weight(1f, fill = true)) {
                 Text(
                     title,
                     style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.SemiBold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -1074,6 +1141,7 @@ private fun AboutCard(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(18.dp)) {
         AboutHero(onVersionTap = onVersionTap)
+        AboutWhatsNewSection()
         AboutLegalSection(onOpenDocument = onOpenLegalDocument)
         AboutSection(
             title = stringResource(R.string.ui_section_app_links),
@@ -1098,6 +1166,141 @@ private fun AboutCard(
     }
 }
 
+/**
+ * About-screen "What's new" card: the same 1.15.0 highlights shown on the
+ * welcome tour, rendered with the bold-before-colon style.
+ */
+@Composable
+private fun AboutWhatsNewSection() {
+    val features = listOf(
+        R.string.ui_whats_new_bullet_reaction,
+        R.string.ui_whats_new_bullet_widgets,
+        R.string.ui_whats_new_bullet_shortcuts,
+        R.string.ui_whats_new_bullet_database,
+        R.string.ui_whats_new_bullet_daily,
+        R.string.ui_whats_new_bullet_home,
+        R.string.ui_whats_new_bullet_csv,
+        R.string.ui_whats_new_bullet_library
+    )
+    val improvements = listOf(
+        R.string.ui_whats_new_bullet_languages,
+        R.string.ui_whats_new_bullet_search,
+        R.string.ui_whats_new_bullet_tools,
+        R.string.ui_whats_new_bullet_compare,
+        R.string.ui_whats_new_bullet_structure,
+        R.string.ui_whats_new_bullet_polish,
+        R.string.ui_whats_new_bullet_periodic,
+        R.string.ui_whats_new_bullet_stoich,
+        R.string.ui_whats_new_bullet_display,
+        R.string.ui_whats_new_bullet_haptics,
+        R.string.ui_whats_new_bullet_offline_mode,
+        R.string.ui_whats_new_bullet_dialogs,
+        R.string.ui_whats_new_bullet_cards,
+        R.string.ui_whats_new_bullet_collapsible
+    )
+    var expanded by remember { mutableStateOf(false) }
+    Surface(
+        shape = RoundedCornerShape(20.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.16f)),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickable { expanded = !expanded }
+                    .padding(vertical = 2.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Icon(Icons.Default.AutoFixHigh, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+                Text(
+                    stringResource(R.string.ui_about_whats_new_s, BuildConfig.VERSION_NAME),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.weight(1f)
+                )
+                val chevronRotation by animateFloatAsState(
+                    targetValue = if (expanded) 180f else 0f,
+                    animationSpec = tween(durationMillis = 200),
+                    label = "whatsNewChevron"
+                )
+                Icon(
+                    Icons.Default.KeyboardArrowDown,
+                    contentDescription = if (expanded) {
+                        stringResource(R.string.ui_collapse)
+                    } else {
+                        stringResource(R.string.ui_expand).replaceFirstChar { it.uppercase(Locale.ROOT) }
+                    },
+                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
+                    modifier = Modifier.size(20.dp).rotate(chevronRotation)
+                )
+            }
+            AnimatedVisibility(visible = expanded) {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    AboutWhatsNewGroup(headerRes = R.string.ui_whats_new_section_features, bullets = features)
+                    AboutWhatsNewGroup(headerRes = R.string.ui_whats_new_section_improvements, bullets = improvements)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AboutWhatsNewGroup(headerRes: Int, bullets: List<Int>) {
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Text(
+            stringResource(headerRes),
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 1.sp,
+            color = MaterialTheme.colorScheme.primary
+        )
+        bullets.forEach { bulletRes ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.Top
+            ) {
+                Box(
+                    modifier = Modifier
+                        .padding(top = 7.dp)
+                        .size(6.dp)
+                        .background(MaterialTheme.colorScheme.primary, CircleShape)
+                )
+                AboutWhatsNewBulletText(text = stringResource(bulletRes))
+            }
+        }
+    }
+}
+
+@Composable
+private fun AboutWhatsNewBulletText(text: String) {
+    val colonIndex = text.indexOfFirst { it == ':' || it == '：' }
+    val styled: AnnotatedString = if (colonIndex > 0) {
+        buildAnnotatedString {
+            withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)) {
+                append(text.take(colonIndex))
+            }
+            append(text[colonIndex])
+            append(text.substring(colonIndex + 1))
+        }
+    } else {
+        AnnotatedString(text)
+    }
+    Text(
+        text = styled,
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+    )
+}
+
 @Composable
 private fun AboutHero(onVersionTap: (() -> Unit)?) {
     val versionModifier = if (onVersionTap != null) {
@@ -1107,9 +1310,9 @@ private fun AboutHero(onVersionTap: (() -> Unit)?) {
     }
 
     Surface(
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(ChemCardStyle.radius(compact = false)),
         color = MaterialTheme.colorScheme.primary.copy(0.08f),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.18f)),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.20f)),
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
@@ -1266,7 +1469,7 @@ fun AboutScreen(
 
 @Composable
 private fun AboutLegalSection(onOpenDocument: (LegalDocument) -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(stringResource(R.string.ui_legal_and_safety),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
@@ -1280,11 +1483,16 @@ private fun AboutLegalSection(onOpenDocument: (LegalDocument) -> Unit) {
 
 @Composable
 private fun AboutLegalRow(document: LegalDocument, onClick: () -> Unit) {
+    Surface(
+        shape = RoundedCornerShape(14.dp),
+        color = Color.Transparent,
+        border = BorderStroke(1.dp, ChemCardStyle.outlineColor())
+    ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(vertical = 7.dp),
+            .padding(horizontal = 6.dp, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -1323,6 +1531,7 @@ private fun AboutLegalRow(document: LegalDocument, onClick: () -> Unit) {
             tint = MaterialTheme.colorScheme.onSurface.copy(0.36f)
         )
     }
+    }
 }
 
 @Composable
@@ -1331,7 +1540,7 @@ private fun AboutSection(
     entries: List<AboutCreditEntry>,
     iconFor: (AboutCreditEntry) -> ImageVector
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
             title,
             style = MaterialTheme.typography.labelSmall,
@@ -1347,11 +1556,16 @@ private fun AboutSection(
 @Composable
 private fun AboutSourceRow(entry: AboutCreditEntry, icon: ImageVector) {
     val context = LocalContext.current
+    Surface(
+        shape = RoundedCornerShape(14.dp),
+        color = Color.Transparent,
+        border = BorderStroke(1.dp, ChemCardStyle.outlineColor())
+    ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(entry.url))) }
-            .padding(vertical = 7.dp),
+            .padding(horizontal = 6.dp, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -1389,6 +1603,7 @@ private fun AboutSourceRow(entry: AboutCreditEntry, icon: ImageVector) {
             modifier = Modifier.size(16.dp),
             tint = MaterialTheme.colorScheme.onSurface.copy(0.36f)
         )
+    }
     }
 }
 
@@ -1565,44 +1780,47 @@ fun AiProviderDialog(
 fun ApiKeyDialog(title: String, link: String, current: String, onSave: (String) -> Unit, onDismiss: () -> Unit) {
     var key by remember { mutableStateOf(current) }
     var visible by remember { mutableStateOf(false) }
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(title, fontWeight = FontWeight.Bold) },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text(stringResource(R.string.ui_required_for_ai_descriptions), style = MaterialTheme.typography.bodySmall)
-                val context = LocalContext.current
-                Text(
-                    stringResource(R.string.ui_get_or_manage_a_key_at_s, link),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.clickable {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://$link"))
-                        context.startActivity(intent)
+    ChemDialog(
+        title = title,
+        onDismiss = onDismiss,
+        tone = ChemDialogTone.NEUTRAL,
+        icon = Icons.Default.Key,
+        actions = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.ui_cancel)) }
+            Button(
+                onClick = { if (key.isNotBlank()) onSave(key.trim()) },
+                shape = RoundedCornerShape(12.dp)
+            ) { Text(stringResource(R.string.ui_save)) }
+        }
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text(stringResource(R.string.ui_required_for_ai_descriptions), style = MaterialTheme.typography.bodySmall)
+            val context = LocalContext.current
+            Text(
+                stringResource(R.string.ui_get_or_manage_a_key_at_s, link),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.clickable {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://$link"))
+                    context.startActivity(intent)
+                }
+            )
+            OutlinedTextField(
+                value = key,
+                onValueChange = { key = it },
+                label = { Text(stringResource(R.string.ui_api_key)) },
+                singleLine = true,
+                shape = RoundedCornerShape(12.dp),
+                visualTransformation = if (visible) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(onClick = { visible = !visible }) {
+                        Icon(if (visible) Icons.Default.VisibilityOff else Icons.Default.Visibility, null)
                     }
-                )
-                OutlinedTextField(
-                    value = key,
-                    onValueChange = { key = it },
-                    label = { Text(stringResource(R.string.ui_api_key)) },
-                    singleLine = true,
-                    shape = RoundedCornerShape(12.dp),
-                    visualTransformation = if (visible) VisualTransformation.None else PasswordVisualTransformation(),
-                    trailingIcon = {
-                        IconButton(onClick = { visible = !visible }) {
-                            Icon(if (visible) Icons.Default.VisibilityOff else Icons.Default.Visibility, null)
-                        }
-                    }
-                )
-                Text(stringResource(R.string.ui_stored_locally_on_your_device_only), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
-            }
-        },
-        confirmButton = {
-            Button(onClick = { if (key.isNotBlank()) onSave(key.trim()) }, shape = RoundedCornerShape(10.dp)) { Text(stringResource(R.string.ui_save)) }
-        },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.ui_cancel)) } },
-        containerColor = MaterialTheme.colorScheme.surface
-    )
+                }
+            )
+            Text(stringResource(R.string.ui_stored_locally_on_your_device_only), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.4f))
+        }
+    }
 }
 
 
@@ -1610,24 +1828,12 @@ fun ApiKeyDialog(title: String, link: String, current: String, onSave: (String) 
 
 @Composable
 fun InfoDialog(titleRes: Int, entries: List<Pair<Int, Int>>, onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(titleRes), fontWeight = FontWeight.Bold) },
-        text = {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                entries.forEach { (termRes, explanationRes) ->
-                    Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                        Text(stringResource(termRes), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-                        Text(stringResource(explanationRes), style = MaterialTheme.typography.bodySmall, lineHeight = 18.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.8f))
-                    }
-                }
-            }
+    ChemInfoDialog(
+        title = stringResource(titleRes),
+        entries = entries.map { (termRes, explanationRes) ->
+            stringResource(termRes) to stringResource(explanationRes)
         },
-        confirmButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.ui_got_it)) } },
-        containerColor = MaterialTheme.colorScheme.surface
+        onDismiss = onDismiss
     )
 }
 
@@ -1661,6 +1867,7 @@ private val FAQ_ENTRIES = listOf(
     R.string.ui_faq_cache_vs_downloads_q to R.string.ui_faq_cache_vs_downloads_a,
     R.string.ui_faq_downloads_stored_q to R.string.ui_faq_downloads_stored_a,
     R.string.ui_faq_save_q to R.string.ui_faq_save_a,
+    R.string.ui_faq_export_q to R.string.ui_faq_export_a,
     R.string.ui_faq_compare_q to R.string.ui_faq_compare_a,
     R.string.ui_faq_database_q to R.string.ui_faq_database_a,
     R.string.ui_faq_compare_reactions_q to R.string.ui_faq_compare_reactions_a,
@@ -1673,21 +1880,74 @@ private val FAQ_ENTRIES = listOf(
     R.string.ui_faq_updates_q to R.string.ui_faq_updates_a,
     R.string.ui_faq_updates_optional_q to R.string.ui_faq_updates_optional_a,
     R.string.ui_faq_clear_q to R.string.ui_faq_clear_a,
-    R.string.ui_faq_debug_q to R.string.ui_faq_debug_a
+    R.string.ui_faq_debug_q to R.string.ui_faq_debug_a,
+    R.string.ui_faq_widget_daily_q to R.string.ui_faq_widget_daily_a,
+    R.string.ui_faq_reaction_predictor_q to R.string.ui_faq_reaction_predictor_a,
+    R.string.ui_faq_database_size_q to R.string.ui_faq_database_size_a,
+    R.string.ui_faq_languages_q to R.string.ui_faq_languages_a
 )
+
+/** Live JVM + system memory snapshot for the merged device info dialog. */
+private data class DebugMemSnapshot(
+    val heapUsedMb: Long,
+    val heapAllocatedMb: Long,
+    val heapMaxMb: Long,
+    val heapHeadroomMb: Long,
+    val heapPercent: Float,
+    val availMb: Long,
+    val totalSystemMb: Long,
+    val usedSystemMb: Long,
+    val systemPercent: Float,
+    val lowMemory: Boolean
+)
+
+private fun readDebugMemSnapshot(context: android.content.Context): DebugMemSnapshot {
+    val rt = Runtime.getRuntime()
+    val heapUsedMb = (rt.totalMemory() - rt.freeMemory()) / 1_048_576L
+    val heapMaxMb = rt.maxMemory() / 1_048_576L
+    val am = context.getSystemService(android.content.Context.ACTIVITY_SERVICE) as android.app.ActivityManager
+    val mi = android.app.ActivityManager.MemoryInfo().also { am.getMemoryInfo(it) }
+    val availMb = mi.availMem / 1_048_576L
+    val totalSystemMb = mi.totalMem / 1_048_576L
+    val usedSystemMb = (totalSystemMb - availMb).coerceAtLeast(0)
+    return DebugMemSnapshot(
+        heapUsedMb = heapUsedMb,
+        heapAllocatedMb = rt.totalMemory() / 1_048_576L,
+        heapMaxMb = heapMaxMb,
+        heapHeadroomMb = (heapMaxMb - heapUsedMb).coerceAtLeast(0),
+        heapPercent = if (heapMaxMb > 0) heapUsedMb.toFloat() / heapMaxMb else 0f,
+        availMb = availMb,
+        totalSystemMb = totalSystemMb,
+        usedSystemMb = usedSystemMb,
+        systemPercent = if (totalSystemMb > 0) usedSystemMb.toFloat() / totalSystemMb else 0f,
+        lowMemory = mi.lowMemory
+    )
+}
 
 private val DEBUG_ENTRIES = listOf(
     R.string.ui_verbose_logging to R.string.ui_debug_verbose_logging_body,
     R.string.ui_live_log_viewer to R.string.ui_debug_live_log_viewer_body,
     R.string.ui_inspect_sharedpreferences to R.string.ui_debug_inspect_prefs_body,
-    R.string.ui_memory_info to R.string.ui_debug_memory_info_body,
+    R.string.ui_debug_device_build_info to R.string.ui_debug_device_body,
+    R.string.ui_debug_cache_stats to R.string.ui_debug_cache_body,
     R.string.ui_network_diagnostics to R.string.ui_debug_network_diagnostics_body,
+    R.string.ui_debug_error_catalog to R.string.ui_debug_error_catalog_body,
     R.string.ui_show_welcome_screen to R.string.ui_debug_show_welcome_body,
     R.string.ui_api_endpoints to R.string.ui_debug_api_endpoints_body,
     R.string.ui_wipe_all_sharedpreferences to R.string.ui_debug_wipe_prefs_body,
     R.string.ui_debug_force_crash to R.string.ui_debug_force_crash_body,
     R.string.ui_hide_debug_settings to R.string.ui_debug_hide_body
 )
+
+/** Short label for the cache-inspector row: custom dir name or "default". */
+private fun cacheRepoShortLabel(prefs: android.content.SharedPreferences, context: android.content.Context): String {
+    val custom = prefs.getString("cache_dir", null)
+    return if (custom.isNullOrBlank()) {
+        context.getString(R.string.ui_cache_location) + ": default"
+    } else {
+        context.getString(R.string.ui_cache_location) + ": " + File(custom).name
+    }
+}
 
 private fun faqEntriesForCurrentBuild(): List<Pair<Int, Int>> {
     if (BuildConfig.GITHUB_UPDATES_ENABLED) return FAQ_ENTRIES
@@ -1760,6 +2020,60 @@ private fun countAtomsInFragment(formula: String): Int {
     return stack.last().values.sum()
 }
 
+/**
+ * Long-press context menu for library cards: copy formula, open in PubChem,
+ * remove. Anchored via a zero-size Box inside the card.
+ */
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun LibraryCardContextMenu(
+    expanded: Boolean,
+    name: String,
+    formula: String,
+    cid: Long,
+    onDismiss: () -> Unit,
+    onDelete: () -> Unit
+) {
+    val context = LocalContext.current
+    Box(modifier = Modifier.size(1.dp)) {
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = onDismiss
+        ) {
+            if (formula.isNotBlank()) {
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.ui_copy_formula)) },
+                    leadingIcon = { Icon(Icons.Default.ContentCopy, null, modifier = Modifier.size(18.dp)) },
+                    onClick = {
+                        val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        cm.setPrimaryClip(ClipData.newPlainText(name, formula))
+                        Toast.makeText(context, context.getString(R.string.ui_copied_short), Toast.LENGTH_SHORT).show()
+                        onDismiss()
+                    }
+                )
+            }
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.ui_view_in_pubchem)) },
+                leadingIcon = { Icon(Icons.Default.Public, null, modifier = Modifier.size(18.dp)) },
+                onClick = {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://pubchem.ncbi.nlm.nih.gov/compound/$cid"))
+                    runCatching { context.startActivity(intent) }
+                        .onFailure {
+                            Toast.makeText(context, context.getString(R.string.ui_error_no_browser), Toast.LENGTH_SHORT).show()
+                        }
+                    onDismiss()
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.ui_remove), color = MaterialTheme.colorScheme.error) },
+                leadingIcon = { Icon(Icons.Default.Delete, null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(18.dp)) },
+                onClick = onDelete
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun FavoriteCard(
     favorite: FavoriteCompound,
@@ -1779,14 +2093,30 @@ private fun FavoriteCard(
     onMoveDown: () -> Unit = {}
 ) {
     val compact = LocalCompactMode.current
+    val context = LocalContext.current
+    var showContextMenu by remember { mutableStateOf(false) }
     Card(
-        onClick = { if (enableSelect) onSelect(favorite.name) },
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        border = if (selected) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.42f)) else null
+        modifier = modifier
+            .fillMaxWidth()
+            .combinedClickable(
+                enabled = enableSelect && !showReorderControls,
+                onClick = { onSelect(favorite.name) },
+                onLongClick = { showContextMenu = true }
+            ),
+        shape = chemCardShape(ChemCardStyle.radius(compact)),
+        colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surface)),
+        elevation = CardDefaults.cardElevation(defaultElevation = chemCardElevation(1.dp)),
+        border = if (!LocalCardsEnabled.current) null
+        else if (selected) BorderStroke(1.dp, ChemCardStyle.selectedColor()) else BorderStroke(1.dp, ChemCardStyle.outlineColor())
     ) {
+        LibraryCardContextMenu(
+            expanded = showContextMenu,
+            name = favorite.name,
+            formula = favorite.formula,
+            cid = favorite.cid,
+            onDismiss = { showContextMenu = false },
+            onDelete = { showContextMenu = false; onDelete(favorite.cid) }
+        )
         Row(
             modifier = Modifier.padding(if (compact) 9.dp else 12.dp).fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -1931,7 +2261,7 @@ private fun SortPill(label: String, selected: Boolean, onClick: () -> Unit) {
     }
 }
 
-private enum class LibraryTab { FAVORITES, DOWNLOADS, DATABASE, PERIODIC_TABLE }
+internal enum class LibraryTab { FAVORITES, DOWNLOADS, DATABASE, PERIODIC_TABLE }
 private enum class LibraryViewMode { LIST, GRID }
 
 private data class LibraryOption(
@@ -2146,11 +2476,9 @@ private fun LibraryOptionListCard(
     onClick: () -> Unit
 ) {
     val compact = LocalCompactMode.current
-    Card(
+    ChemCardSurface(
         onClick = onClick,
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(if (compact) 14.dp else 16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        modifier = modifier.fillMaxWidth()
     ) {
         Row(
             modifier = Modifier
@@ -2159,22 +2487,12 @@ private fun LibraryOptionListCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(if (compact) 10.dp else 14.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .size(if (compact) 44.dp else 52.dp)
-                    .background(
-                        MaterialTheme.colorScheme.primary.copy(0.1f),
-                        RoundedCornerShape(if (compact) 10.dp else 12.dp)
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                ChemIcon(
-                    icon,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(if (compact) 22.dp else 26.dp)
-                )
-            }
+            ChemIconBadge(
+                icon = icon,
+                accent = MaterialTheme.colorScheme.primary,
+                badgeSize = if (compact) 44.dp else 52.dp,
+                iconSize = if (compact) 22.dp else 26.dp
+            )
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(if (compact) 2.dp else 3.dp)
@@ -2353,15 +2671,12 @@ private fun LibraryGridCard(
     onToggleSelection: (LibrarySelectionItem) -> Unit = {}
 ) {
     val compact = LocalCompactMode.current
-    Card(
+    ChemCardSurface(
         onClick = { onSelect(favorite.name) },
         modifier = modifier
             .fillMaxWidth()
             .aspectRatio(if (compact) 0.88f else 0.92f),
-        shape = RoundedCornerShape(if (compact) 16.dp else 18.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        border = if (selected) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.42f)) else null
+        selected = selected
     ) {
         Column(
             modifier = Modifier
@@ -2449,11 +2764,12 @@ private fun LibraryGridCard(
 }
 
 @Composable
-fun LibraryInline(
+internal fun LibraryInline(
     favorites: List<FavoriteCompound>,
     downloads: List<DownloadedCompound>,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
+    initialSection: LibraryTab? = null,
     onSelectFavorite: (String) -> Unit,
     onSelectDownload: (Long) -> Unit,
     onDeleteFavorite: (Long) -> Unit,
@@ -2462,9 +2778,10 @@ fun LibraryInline(
     onSearchCompoundFromDatabase: (String) -> Unit = {},
     onCompareSelected: (List<String>) -> Unit = {},
     onBuildLibraryBackupJson: () -> String = { "" },
+    onBuildLibraryCsv: () -> String = { "" },
     onImportLibraryBackup: (String, Boolean, (Result<LibraryImportResult>) -> Unit) -> Unit = { _, _, _ -> }
 ) {
-    var selectedSection by remember { mutableStateOf<LibraryTab?>(null) }
+    var selectedSection by remember { mutableStateOf<LibraryTab?>(initialSection) }
     var homeViewMode by remember { mutableStateOf(LibraryViewMode.LIST) }
     var itemViewMode by remember { mutableStateOf(LibraryViewMode.LIST) }
     var filterQuery by remember { mutableStateOf("") }
@@ -2493,6 +2810,21 @@ fun LibraryInline(
             Toast.makeText(context, context.getString(R.string.ui_export_failed_s, e.message ?: ""), Toast.LENGTH_LONG).show()
         }
     }
+    val exportLibraryCsvLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("text/csv")
+    ) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        runCatching {
+            val csv = onBuildLibraryCsv()
+            context.contentResolver.openOutputStream(uri)?.bufferedWriter()?.use { writer ->
+                writer.write(csv)
+            } ?: error(context.getString(R.string.ui_error_unable_to_open_export_file))
+        }.onSuccess {
+            Toast.makeText(context, context.getString(R.string.ui_library_exported), Toast.LENGTH_SHORT).show()
+        }.onFailure { e ->
+            Toast.makeText(context, context.getString(R.string.ui_export_failed_s, e.message ?: ""), Toast.LENGTH_LONG).show()
+        }
+    }
     val importLibraryLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocument()
     ) { uri ->
@@ -2509,16 +2841,29 @@ fun LibraryInline(
     }
 
     pendingLibraryImportJson?.let { rawJson ->
-        AlertDialog(
-            onDismissRequest = { pendingLibraryImportJson = null },
-            title = { Text(stringResource(R.string.ui_import_library), fontWeight = FontWeight.Bold) },
-            text = {
-                Text(stringResource(R.string.ui_merge_the_backup_with_your_current_library_or),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.65f)
-                )
-            },
-            confirmButton = {
+        ChemDialog(
+            title = stringResource(R.string.ui_import_library),
+            onDismiss = { pendingLibraryImportJson = null },
+            tone = ChemDialogTone.INFO,
+            icon = Icons.Default.Download,
+            actions = {
+                TextButton(onClick = { pendingLibraryImportJson = null }) { Text(stringResource(R.string.ui_cancel)) }
+                TextButton(
+                    onClick = {
+                        pendingLibraryImportJson = null
+                        onImportLibraryBackup(rawJson, true) { result ->
+                            result.onSuccess { imported ->
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.ui_replaced_library_with_d_favorites_and_d_downloads, imported.favoriteCount, imported.downloadCount),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }.onFailure { e ->
+                                Toast.makeText(context, context.getString(R.string.ui_import_failed_s, e.message ?: ""), Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                ) { Text(stringResource(R.string.ui_replace)) }
                 Button(
                     onClick = {
                         pendingLibraryImportJson = null
@@ -2536,30 +2881,13 @@ fun LibraryInline(
                     },
                     shape = RoundedCornerShape(12.dp)
                 ) { Text(stringResource(R.string.ui_merge)) }
-            },
-            dismissButton = {
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    TextButton(onClick = { pendingLibraryImportJson = null }) { Text(stringResource(R.string.ui_cancel)) }
-                    TextButton(
-                        onClick = {
-                            pendingLibraryImportJson = null
-                            onImportLibraryBackup(rawJson, true) { result ->
-                                result.onSuccess { imported ->
-                                    Toast.makeText(
-                                        context,
-                                        context.getString(R.string.ui_replaced_library_with_d_favorites_and_d_downloads, imported.favoriteCount, imported.downloadCount),
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }.onFailure { e ->
-                                    Toast.makeText(context, context.getString(R.string.ui_import_failed_s, e.message ?: ""), Toast.LENGTH_LONG).show()
-                                }
-                            }
-                        }
-                    ) { Text(stringResource(R.string.ui_replace)) }
-                }
-            },
-            containerColor = MaterialTheme.colorScheme.surface
-        )
+            }
+        ) {
+            Text(stringResource(R.string.ui_merge_the_backup_with_your_current_library_or),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.75f)
+            )
+        }
     }
 
     fun toggleLibrarySelection(item: LibrarySelectionItem) {
@@ -2649,8 +2977,9 @@ fun LibraryInline(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(stringResource(R.string.ui_sort),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
                 )
                 if (filterQuery.isNotBlank()) {
                     Text(
@@ -2706,6 +3035,12 @@ fun LibraryInline(
                         modifier = Modifier.size(34.dp)
                     ) {
                         Icon(Icons.Default.Description, contentDescription = stringResource(R.string.ui_export_library), modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
+                    }
+                    IconButton(
+                        onClick = { exportLibraryCsvLauncher.launch("chemsearch-library-${System.currentTimeMillis()}.csv") },
+                        modifier = Modifier.size(34.dp)
+                    ) {
+                        Icon(Icons.Default.GridView, contentDescription = stringResource(R.string.ui_export_library_csv), modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
                     }
                     IconButton(
                         onClick = { importLibraryLauncher.launch(arrayOf("application/json", "text/plain")) },
@@ -3309,8 +3644,9 @@ fun FavoritesInline(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(stringResource(R.string.ui_sort),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
                     )
                     if (filterQuery.isNotBlank()) {
                         Text(
@@ -3408,7 +3744,7 @@ private fun SettingsGroupCard(
         }
         content()
         HorizontalDivider(
-            color = MaterialTheme.colorScheme.outline.copy(0.14f),
+            color = MaterialTheme.colorScheme.outline.copy(0.08f),
             modifier = Modifier.padding(top = if (compact) 4.dp else 6.dp)
         )
     }
@@ -3416,7 +3752,11 @@ private fun SettingsGroupCard(
 
 @Composable
 private fun SettingsGroupDivider() {
-    HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.14f))
+    HorizontalDivider(
+        modifier = Modifier.padding(start = 46.dp),
+        thickness = 0.5.dp,
+        color = MaterialTheme.colorScheme.outline.copy(0.10f)
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -3436,6 +3776,8 @@ fun SettingsInline(
     cacheRetention: CacheRetention = CacheRetention.MANUAL,
     reduceMotion: Boolean = false,
     highContrastOutlines: Boolean = false,
+    cardsEnabled: Boolean = true,
+    temperatureUnit: TemperatureUnit = TemperatureUnit.KELVIN,
     aiProvider: AiProvider,
     aiKeyStatus: Map<AiProvider, Boolean>,
     aiModelCatalogs: Map<AiProvider, AiModelCatalog>,
@@ -3455,6 +3797,8 @@ fun SettingsInline(
     onSetCacheRetention: (CacheRetention) -> Unit = {},
     onToggleReduceMotion: () -> Unit = {},
     onToggleHighContrastOutlines: () -> Unit = {},
+    onToggleCardsEnabled: () -> Unit = {},
+    onSetTemperatureUnit: (TemperatureUnit) -> Unit = {},
     onSetAiProvider: (AiProvider) -> Unit,
     onSetAiModel: (AiProvider, String) -> Unit,
     onRefreshAiModels: (AiProvider) -> Unit,
@@ -3669,8 +4013,9 @@ fun SettingsInline(
             )
             SettingsGroupDivider()
             Text(stringResource(R.string.ui_color_scheme),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.72f)
             )
             ColorSchemePicker(
                 colorScheme = colorScheme,
@@ -3682,7 +4027,10 @@ fun SettingsInline(
                 subtitle = stringResource(R.string.ui_language_subtitle),
                 selected = appLanguage,
                 options = AppLanguage.entries,
-                labelFor = { language -> context.getString(language.displayNameRes) },
+                labelFor = { language ->
+                    if (language.nativeName.isBlank()) context.getString(language.displayNameRes)
+                    else language.nativeName
+                },
                 onSelect = onSetAppLanguage
             )
             SettingsGroupDivider()
@@ -3718,6 +4066,14 @@ fun SettingsInline(
                 onToggle = onToggleHighContrastOutlines
             )
             SettingsGroupDivider()
+            SettingsToggleRow(
+                icon = Icons.Default.Cards,
+                title = stringResource(R.string.ui_cards),
+                subtitle = stringResource(R.string.ui_subtitle_cards),
+                checked = cardsEnabled,
+                onToggle = onToggleCardsEnabled
+            )
+            SettingsGroupDivider()
             SettingsDropdownSelector(
                 title = stringResource(R.string.ui_default_structure_view),
                 subtitle = stringResource(R.string.ui_subtitle_choose_structure_tab),
@@ -3734,6 +4090,15 @@ fun SettingsInline(
                 options = FormulaDisplayStyle.entries,
                 labelFor = { context.getString(formulaDisplayStyleLabel(it)) },
                 onSelect = onSetFormulaDisplayStyle
+            )
+            SettingsGroupDivider()
+            SettingsDropdownSelector(
+                title = stringResource(R.string.ui_temperature_unit),
+                subtitle = stringResource(R.string.ui_subtitle_temperature_unit),
+                selected = temperatureUnit,
+                options = TemperatureUnit.entries,
+                labelFor = { it.suffix },
+                onSelect = onSetTemperatureUnit
             )
             SettingsGroupDivider()
             SettingsDropdownSelector(
@@ -4042,6 +4407,7 @@ object DebugLog {
 }
 
 @Composable
+@OptIn(ExperimentalLayoutApi::class)
 fun DebugSettingsSection(
     prefs: android.content.SharedPreferences,
     onTestUpdateNotification: () -> Unit,
@@ -4054,9 +4420,16 @@ fun DebugSettingsSection(
     var showInfoDialog by remember { mutableStateOf(false) }
     var showPrefsDialog by remember { mutableStateOf(false) }
     var showLogsDialog by remember { mutableStateOf(false) }
-    var showMemoryDialog by remember { mutableStateOf(false) }
     var showNetworkDialog by remember { mutableStateOf(false) }
+    var showDeviceInfoDialog by remember { mutableStateOf(false) }
+    var showCacheDialog by remember { mutableStateOf(false) }
+    var showErrorCatalogDialog by remember { mutableStateOf(false) }
     var showCrashConfirm by remember { mutableStateOf(false) }
+    var showOfflineModeDialog by remember { mutableStateOf(false) }
+    var offlineModeEnabled by remember { mutableStateOf(OfflineTestMode.enabled) }
+    var offlineLatency by remember { mutableStateOf(OfflineTestMode.latencyMs) }
+    var offlineErrorRate by remember { mutableStateOf(OfflineTestMode.errorRatePercent) }
+    var offlineFailure by remember { mutableStateOf(OfflineTestMode.simulatedFailure) }
     var showWipeConfirm by remember { mutableStateOf(false) }
     var isRunningNetworkDiagnostics by remember { mutableStateOf(false) }
     var networkDiagnosticsRunAt by remember { mutableStateOf<Long?>(null) }
@@ -4349,39 +4722,55 @@ fun DebugSettingsSection(
         )
     }
 
-    if (showMemoryDialog) {
-        val rt = Runtime.getRuntime()
-        val heapUsedMb = (rt.totalMemory() - rt.freeMemory()) / 1_048_576L
-        val heapAllocatedMb = rt.totalMemory() / 1_048_576L
-        val heapMaxMb = rt.maxMemory() / 1_048_576L
-        val heapHeadroomMb = (heapMaxMb - heapUsedMb).coerceAtLeast(0)
-        val heapPercent = if (heapMaxMb > 0) heapUsedMb.toFloat() / heapMaxMb else 0f
-        val heapPercentLabel = if (heapMaxMb > 0) String.format(Locale.US, "%.0f%%", heapPercent * 100f) else "—"
-        val am = context.getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager
-        val mi = android.app.ActivityManager.MemoryInfo().also { am.getMemoryInfo(it) }
-        val availMb = mi.availMem / 1_048_576L
-        val totalSystemMb = mi.totalMem / 1_048_576L
-        val usedSystemMb = (totalSystemMb - availMb).coerceAtLeast(0)
-        val systemPercent = if (totalSystemMb > 0) usedSystemMb.toFloat() / totalSystemMb else 0f
-        val systemPercentLabel = if (totalSystemMb > 0) String.format(Locale.US, "%.0f%%", systemPercent * 100f) else "—"
+    if (showDeviceInfoDialog) {
+        val buildTime = runCatching {
+            java.security.MessageDigest.getInstance("MD5")
+                .digest(BuildConfig.VERSION_NAME.toByteArray())
+                .joinToString("") { "%02x".format(it) }.take(8)
+        }.getOrDefault("-")
+        val installer = runCatching {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                context.packageManager.getInstallSourceInfo(context.packageName).installingPackageName
+            } else {
+                @Suppress("DEPRECATION")
+                context.packageManager.getInstallerPackageName(context.packageName)
+            }
+        }.getOrNull() ?: "-"
+        val abi = Build.SUPPORTED_ABIS.firstOrNull() ?: "-"
+        val kernel = runCatching { System.getProperty("os.version") ?: "-" }.getOrDefault("-")
+
+        // Live memory readout: refresh twice a second while the dialog is open.
+        var mem by remember { mutableStateOf(readDebugMemSnapshot(context)) }
+        LaunchedEffect(Unit) {
+            while (true) {
+                delay(500)
+                mem = readDebugMemSnapshot(context)
+            }
+        }
+        val heapPercentLabel = String.format(Locale.US, "%.0f%%", mem.heapPercent.coerceIn(0f, 1f) * 100f)
+        val systemPercentLabel = String.format(Locale.US, "%.0f%%", mem.systemPercent.coerceIn(0f, 1f) * 100f)
         val heapColor = when {
-            heapPercent >= 0.85f -> MaterialTheme.colorScheme.error
-            heapPercent >= 0.7f -> MaterialTheme.colorScheme.tertiary
+            mem.heapPercent >= 0.85f -> MaterialTheme.colorScheme.error
+            mem.heapPercent >= 0.7f -> MaterialTheme.colorScheme.tertiary
             else -> MaterialTheme.colorScheme.primary
         }
         val systemColor = when {
-            systemPercent >= 0.85f -> MaterialTheme.colorScheme.error
-            systemPercent >= 0.7f -> MaterialTheme.colorScheme.tertiary
+            mem.systemPercent >= 0.85f -> MaterialTheme.colorScheme.error
+            mem.systemPercent >= 0.7f -> MaterialTheme.colorScheme.tertiary
             else -> MaterialTheme.colorScheme.primary
         }
         val trackColor = MaterialTheme.colorScheme.outline.copy(0.2f)
-        val lowMemoryLabel = if (mi.lowMemory) "YES (low)" else "No"
-        val lowMemoryColor = if (mi.lowMemory) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface.copy(0.7f)
+        val lowMemoryLabel = if (mem.lowMemory) "YES (low)" else "No"
+        val lowMemoryColor = if (mem.lowMemory) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface.copy(0.7f)
+
         AlertDialog(
-            onDismissRequest = { showMemoryDialog = false },
-            title = { Text(stringResource(R.string.ui_memory_info), fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace) },
+            onDismissRequest = { showDeviceInfoDialog = false },
+            title = { Text(stringResource(R.string.ui_debug_device_build_info), fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace) },
             text = {
-                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
                     @Composable
                     fun UsageBar(percent: Float, color: Color) {
                         val clamped = percent.coerceIn(0f, 1f)
@@ -4407,6 +4796,39 @@ fun DebugSettingsSection(
                         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.15f))
                     ) {
                         Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            listOf(
+                                "Model" to "${Build.MANUFACTURER} ${Build.MODEL}",
+                                "Android" to "${Build.VERSION.RELEASE} (SDK ${Build.VERSION.SDK_INT})",
+                                "ABI" to abi,
+                                "Kernel" to kernel,
+                                "App version" to BuildConfig.VERSION_NAME,
+                                "Version code" to BuildConfig.VERSION_CODE.toString(),
+                                "Build type" to BuildConfig.BUILD_TYPE,
+                                "Installer" to installer,
+                                "Build fingerprint" to "${BuildConfig.VERSION_NAME}-${BuildConfig.VERSION_CODE}-${buildTime}"
+                            ).forEach { (label, value) ->
+                                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                    Text(label, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace), color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                                    Text(value, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace), fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f, fill = false), textAlign = TextAlign.End)
+                                }
+                            }
+                        }
+                    }
+
+                    Text(
+                        stringResource(R.string.ui_memory_info),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 1.sp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+
+                    Card(
+                        shape = RoundedCornerShape(12.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.6f)),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.15f))
+                    ) {
+                        Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically,
@@ -4417,7 +4839,7 @@ fun DebugSettingsSection(
                                     Column {
                                         Text(stringResource(R.string.ui_jvm_heap), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
                                         Text(
-                                            stringResource(R.string.ui_used_d_mb_of_d_mb_max, heapUsedMb, heapMaxMb),
+                                            stringResource(R.string.ui_used_d_mb_of_d_mb_max, mem.heapUsedMb, mem.heapMaxMb),
                                             style = MaterialTheme.typography.labelSmall,
                                             color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
                                         )
@@ -4436,12 +4858,12 @@ fun DebugSettingsSection(
                                     )
                                 }
                             }
-                            UsageBar(heapPercent, heapColor)
+                            UsageBar(mem.heapPercent, heapColor)
                             listOf(
-                                stringResource(R.string.ui_mem_used) to "${heapUsedMb} MB",
-                                stringResource(R.string.ui_mem_allocated) to "${heapAllocatedMb} MB",
-                                stringResource(R.string.ui_mem_max) to "${heapMaxMb} MB",
-                                stringResource(R.string.ui_mem_headroom) to "${heapHeadroomMb} MB"
+                                stringResource(R.string.ui_mem_used) to "${mem.heapUsedMb} MB",
+                                stringResource(R.string.ui_mem_allocated) to "${mem.heapAllocatedMb} MB",
+                                stringResource(R.string.ui_mem_max) to "${mem.heapMaxMb} MB",
+                                stringResource(R.string.ui_mem_headroom) to "${mem.heapHeadroomMb} MB"
                             ).forEach { (k, v) ->
                                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                                     Text(k, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace))
@@ -4467,7 +4889,7 @@ fun DebugSettingsSection(
                                     Column {
                                         Text(stringResource(R.string.ui_system_ram), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
                                         Text(
-                                            stringResource(R.string.ui_used_d_mb_of_d_mb_total, usedSystemMb, totalSystemMb),
+                                            stringResource(R.string.ui_used_d_mb_of_d_mb_total, mem.usedSystemMb, mem.totalSystemMb),
                                             style = MaterialTheme.typography.labelSmall,
                                             color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
                                         )
@@ -4486,11 +4908,11 @@ fun DebugSettingsSection(
                                     )
                                 }
                             }
-                            UsageBar(systemPercent, systemColor)
+                            UsageBar(mem.systemPercent, systemColor)
                             listOf(
-                                stringResource(R.string.ui_mem_used) to "${usedSystemMb} MB",
-                                stringResource(R.string.ui_mem_available) to "${availMb} MB",
-                                stringResource(R.string.ui_mem_total) to "${totalSystemMb} MB"
+                                stringResource(R.string.ui_mem_used) to "${mem.usedSystemMb} MB",
+                                stringResource(R.string.ui_mem_available) to "${mem.availMb} MB",
+                                stringResource(R.string.ui_mem_total) to "${mem.totalSystemMb} MB"
                             ).forEach { (k, v) ->
                                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                                     Text(k, style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace))
@@ -4510,56 +4932,314 @@ fun DebugSettingsSection(
                     TextButton(onClick = {
                         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         val snapshot = buildString {
-                            append("JVM heap: used ${heapUsedMb} MB, allocated ${heapAllocatedMb} MB, max ${heapMaxMb} MB, headroom ${heapHeadroomMb} MB (${heapPercentLabel})\n")
-                            append("System RAM: used ${usedSystemMb} MB, available ${availMb} MB, total ${totalSystemMb} MB (${systemPercentLabel}), low memory: $lowMemoryLabel")
+                            append("ChemSearch device & build info\n")
+                            append("Model: ${Build.MANUFACTURER} ${Build.MODEL}\n")
+                            append("Android: ${Build.VERSION.RELEASE} (SDK ${Build.VERSION.SDK_INT})\n")
+                            append("ABI: $abi\nKernel: $kernel\n")
+                            append("App: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE}) ${BuildConfig.BUILD_TYPE}\n")
+                            append("Installer: $installer\n")
+                            append("JVM heap: used ${mem.heapUsedMb} MB, allocated ${mem.heapAllocatedMb} MB, max ${mem.heapMaxMb} MB, headroom ${mem.heapHeadroomMb} MB (${heapPercentLabel})\n")
+                            append("System RAM: used ${mem.usedSystemMb} MB, available ${mem.availMb} MB, total ${mem.totalSystemMb} MB (${systemPercentLabel}), low memory: $lowMemoryLabel")
                         }
-                        cm.setPrimaryClip(ClipData.newPlainText(context.getString(R.string.ui_clipboard_memory), snapshot))
-                        Toast.makeText(context, context.getString(R.string.ui_copied_memory_snapshot), Toast.LENGTH_SHORT).show()
+                        cm.setPrimaryClip(ClipData.newPlainText(context.getString(R.string.ui_debug_device_build_info), snapshot))
+                        Toast.makeText(context, context.getString(R.string.ui_copied_to_clipboard), Toast.LENGTH_SHORT).show()
                     }) { Text(stringResource(R.string.ui_copy)) }
-                    TextButton(onClick = { showMemoryDialog = false }) { Text(stringResource(R.string.ui_close)) }
+                    TextButton(onClick = { showDeviceInfoDialog = false }) { Text(stringResource(R.string.ui_close)) }
                 }
             },
             containerColor = MaterialTheme.colorScheme.surface
         )
     }
 
-    if (showWipeConfirm) {
+    if (showCacheDialog) {
+        val gson = remember { Gson() }
+        val cacheRepo = remember { CompoundCacheRepository(context, prefs, gson) }
+        var cacheBusy by remember { mutableStateOf(false) }
+        var cacheClearedAt by remember { mutableStateOf<Long?>(null) }
+        var cacheStats by remember { mutableStateOf<Pair<Int, Long>?>(null) }
+        suspend fun computeStats(): Pair<Int, Long> = withContext(Dispatchers.IO) {
+            val files = cacheRepo.cacheDir.listFiles { f -> f.isFile }.orEmpty()
+            files.size to files.sumOf { it.length() }
+        }
+        LaunchedEffect(cacheClearedAt) { cacheStats = computeStats() }
         AlertDialog(
-            onDismissRequest = { showWipeConfirm = false },
-            title = { Text(stringResource(R.string.ui_wipe_all_preferences), fontWeight = FontWeight.Bold) },
-            text = { Text(stringResource(R.string.ui_this_clears_legacy_preferences_encrypted_key_records_history)) },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        showWipeConfirm = false
-                        prefs.edit().clear().apply()
-                        DebugLog.verbose = false
-                        verboseLogging = false
-                        DebugLog.e("ChemSearch", "SharedPreferences wiped by developer")
-                        onDisableDevMode(false)
-                        Toast.makeText(context, context.getString(R.string.ui_all_preferences_wiped), Toast.LENGTH_LONG).show()
-                    },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                ) { Text(stringResource(R.string.ui_wipe_now)) }
+            onDismissRequest = { if (!cacheBusy) showCacheDialog = false },
+            title = { Text(stringResource(R.string.ui_debug_cache_stats), fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    val (fileCount, totalBytes) = cacheStats ?: (0 to 0L)
+                    Text(
+                        cacheRepo.cachedDirPath().ifBlank { context.cacheDir.resolve("compound_cache").path },
+                        style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
+                    )
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text(stringResource(R.string.ui_debug_cache_files_d, fileCount), style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace))
+                        Text(String.format(Locale.US, "%.1f MB", totalBytes / 1048576.0), style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace), fontWeight = FontWeight.SemiBold)
+                    }
+                    if (fileCount == 0 && !cacheBusy) {
+                        Text(stringResource(R.string.ui_debug_cache_empty), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
+                    }
+                    if (cacheClearedAt != null) {
+                        Text(
+                            stringResource(R.string.ui_last_run_s, DateUtils.getRelativeTimeSpanString(cacheClearedAt!!, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString()),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+                        )
+                    }
+                }
             },
-            dismissButton = { TextButton(onClick = { showWipeConfirm = false }) { Text(stringResource(R.string.ui_cancel)) } },
+            confirmButton = {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    TextButton(
+                        enabled = !cacheBusy && (cacheStats?.first ?: 0) > 0,
+                        onClick = {
+                            cacheBusy = true
+                            scope.launch {
+                                withContext(Dispatchers.IO) { cacheRepo.clearAll() }
+                                DebugLog.i("ChemSearch", "Compound cache cleared from developer tools")
+                                cacheClearedAt = System.currentTimeMillis()
+                                cacheBusy = false
+                                Toast.makeText(context, context.getString(R.string.ui_cache_cleared), Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    ) { Text(stringResource(R.string.ui_clear)) }
+                    TextButton(onClick = {
+                        val stats = cacheStats
+                        val report = buildString {
+                            append("ChemSearch cache\n")
+                            append("Location: ${cacheRepo.cachedDirPath().ifBlank { context.cacheDir.resolve("compound_cache").path }}\n")
+                            append("Files: ${stats?.first ?: 0}\n")
+                            append("Size: ${String.format(Locale.US, "%.1f MB", (stats?.second ?: 0L) / 1048576.0)}\n")
+                        }
+                        val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        cm.setPrimaryClip(ClipData.newPlainText(context.getString(R.string.ui_clipboard_cache), report))
+                        Toast.makeText(context, context.getString(R.string.ui_copied_to_clipboard), Toast.LENGTH_SHORT).show()
+                    }, enabled = cacheStats != null) { Text(stringResource(R.string.ui_copy)) }
+                    TextButton(onClick = { showCacheDialog = false }, enabled = !cacheBusy) { Text(stringResource(R.string.ui_close)) }
+                }
+            },
             containerColor = MaterialTheme.colorScheme.surface
         )
     }
 
-    if (showCrashConfirm) {
+    if (showErrorCatalogDialog) {
+        @Composable
+        fun CatalogRow(kind: SearchErrorKind) {
+            val tint = when (kind) {
+                SearchErrorKind.NOT_FOUND -> MaterialTheme.colorScheme.secondaryContainer
+                SearchErrorKind.THROTTLED,
+                SearchErrorKind.TIMEOUT,
+                SearchErrorKind.BAD_REQUEST -> Color(0xFFFFF3D6)
+                SearchErrorKind.NETWORK,
+                SearchErrorKind.SERVER,
+                SearchErrorKind.OTHER -> MaterialTheme.colorScheme.errorContainer
+            }
+            val content = when (kind) {
+                SearchErrorKind.NOT_FOUND -> MaterialTheme.colorScheme.onSecondaryContainer
+                SearchErrorKind.THROTTLED,
+                SearchErrorKind.TIMEOUT,
+                SearchErrorKind.BAD_REQUEST -> Color(0xFF5B4A12)
+                SearchErrorKind.NETWORK,
+                SearchErrorKind.SERVER,
+                SearchErrorKind.OTHER -> MaterialTheme.colorScheme.onErrorContainer
+            }
+            val message = when (kind) {
+                SearchErrorKind.NOT_FOUND -> stringResource(R.string.ui_error_search_not_found_s, "asprin")
+                SearchErrorKind.THROTTLED -> stringResource(R.string.ui_error_search_throttled)
+                SearchErrorKind.TIMEOUT -> stringResource(R.string.ui_error_search_timeout)
+                SearchErrorKind.BAD_REQUEST -> stringResource(R.string.ui_error_search_bad_request)
+                SearchErrorKind.NETWORK -> stringResource(R.string.ui_error_search_network)
+                SearchErrorKind.SERVER -> stringResource(R.string.ui_error_search_server, "502")
+                SearchErrorKind.OTHER -> stringResource(R.string.ui_error_search_unknown, "detail")
+            }
+            Card(
+                shape = RoundedCornerShape(10.dp),
+                colors = CardDefaults.cardColors(containerColor = tint),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                    Text(kind.name, style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace), fontWeight = FontWeight.Bold, color = content)
+                    Text(message, style = MaterialTheme.typography.bodySmall, color = content)
+                }
+            }
+        }
         AlertDialog(
-            onDismissRequest = { showCrashConfirm = false },
-            title = { Text(stringResource(R.string.ui_force_crash), fontWeight = FontWeight.Bold) },
-            text = { Text(stringResource(R.string.ui_this_will_immediately_crash_the_app_with_an)) },
-            confirmButton = {
-                Button(
-                    onClick = { throw RuntimeException("ChemSearch debug force crash") },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                ) { Text(stringResource(R.string.ui_crash_now)) }
+            onDismissRequest = { showErrorCatalogDialog = false },
+            title = { Text(stringResource(R.string.ui_debug_error_catalog), fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace) },
+            text = {
+                Column(
+                    modifier = Modifier.heightIn(max = 380.dp).verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    SearchErrorKind.entries.forEach { kind -> CatalogRow(kind) }
+                }
             },
-            dismissButton = { TextButton(onClick = { showCrashConfirm = false }) { Text(stringResource(R.string.ui_cancel)) } },
+            confirmButton = {
+                TextButton(onClick = { showErrorCatalogDialog = false }) { Text(stringResource(R.string.ui_close)) }
+            },
             containerColor = MaterialTheme.colorScheme.surface
+        )
+    }
+
+    if (showWipeConfirm) {
+        ChemConfirmDialog(
+            title = stringResource(R.string.ui_wipe_all_preferences),
+            message = stringResource(R.string.ui_this_clears_legacy_preferences_encrypted_key_records_history),
+            confirmLabel = stringResource(R.string.ui_wipe_now),
+            onConfirm = {
+                showWipeConfirm = false
+                prefs.edit().clear().apply()
+                DebugLog.verbose = false
+                verboseLogging = false
+                DebugLog.e("ChemSearch", "SharedPreferences wiped by developer")
+                onDisableDevMode(false)
+                Toast.makeText(context, context.getString(R.string.ui_all_preferences_wiped), Toast.LENGTH_LONG).show()
+            },
+            onDismiss = { showWipeConfirm = false }
+        )
+    }
+
+    if (showOfflineModeDialog) {
+        ChemDialog(
+            title = stringResource(R.string.ui_offline_test_mode),
+            subtitle = stringResource(R.string.ui_offline_test_mode_subtitle),
+            icon = Icons.Default.WifiSlash,
+            tone = ChemDialogTone.WARNING,
+            onDismiss = { showOfflineModeDialog = false },
+            actions = {
+                TextButton(onClick = { showOfflineModeDialog = false }) { Text(stringResource(R.string.ui_close)) }
+            }
+        ) {
+            SettingsToggleRow(
+                icon = Icons.Default.WifiSlash,
+                title = stringResource(R.string.ui_offline_test_mode),
+                subtitle = stringResource(R.string.ui_offline_test_mode_toggle_body),
+                checked = offlineModeEnabled,
+                onToggle = {
+                    offlineModeEnabled = !offlineModeEnabled
+                    OfflineTestMode.setEnabled(prefs, offlineModeEnabled)
+                }
+            )
+
+            Text(
+                stringResource(R.string.ui_offline_test_mode_latency),
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 1.sp,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Slider(
+                    value = offlineLatency.toFloat(),
+                    onValueChange = {
+                        offlineLatency = (it / 100).toLong() * 100
+                        OfflineTestMode.setLatency(prefs, offlineLatency)
+                    },
+                    valueRange = 0f..3000f,
+                    modifier = Modifier.weight(1f)
+                )
+                Text(
+                    "${offlineLatency}ms",
+                    style = MaterialTheme.typography.labelMedium.copy(fontFamily = FontFamily.Monospace),
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.width(64.dp),
+                    textAlign = TextAlign.End
+                )
+            }
+
+            Text(
+                stringResource(R.string.ui_offline_test_mode_error_rate),
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 1.sp,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Slider(
+                    value = offlineErrorRate.toFloat(),
+                    onValueChange = {
+                        offlineErrorRate = (it / 5).toInt() * 5
+                        OfflineTestMode.setErrorRate(prefs, offlineErrorRate)
+                    },
+                    valueRange = 0f..100f,
+                    modifier = Modifier.weight(1f)
+                )
+                Text(
+                    "$offlineErrorRate%",
+                    style = MaterialTheme.typography.labelMedium.copy(fontFamily = FontFamily.Monospace),
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.width(64.dp),
+                    textAlign = TextAlign.End
+                )
+            }
+
+            Text(
+                stringResource(R.string.ui_offline_test_mode_failure),
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 1.sp,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Text(
+                stringResource(R.string.ui_offline_test_mode_failure_body),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+            )
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                OfflineTestMode.SimulatedFailure.entries.forEach { failure ->
+                    val selected = offlineFailure == failure
+                    Surface(
+                        onClick = {
+                            offlineFailure = failure
+                            OfflineTestMode.setSimulatedFailure(prefs, failure)
+                        },
+                        shape = RoundedCornerShape(999.dp),
+                        color = if (selected) MaterialTheme.colorScheme.primary.copy(0.16f)
+                        else MaterialTheme.colorScheme.surfaceVariant.copy(0.5f),
+                        border = BorderStroke(
+                            1.dp,
+                            if (selected) MaterialTheme.colorScheme.primary.copy(0.6f)
+                            else MaterialTheme.colorScheme.outline.copy(0.2f)
+                        )
+                    ) {
+                        Text(
+                            failure.name.replace('_', ' '),
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+                            color = if (selected) MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.onSurface.copy(0.7f)
+                        )
+                    }
+                }
+            }
+
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(0.4f),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    stringResource(R.string.ui_offline_test_mode_footer),
+                    modifier = Modifier.padding(10.dp),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
+                )
+            }
+        }
+    }
+
+    if (showCrashConfirm) {
+        ChemConfirmDialog(
+            title = stringResource(R.string.ui_force_crash),
+            message = stringResource(R.string.ui_this_will_immediately_crash_the_app_with_an),
+            confirmLabel = stringResource(R.string.ui_crash_now),
+            onConfirm = { throw RuntimeException("ChemSearch debug force crash") },
+            onDismiss = { showCrashConfirm = false }
         )
     }
 
@@ -4582,6 +5262,27 @@ fun DebugSettingsSection(
                     letterSpacing = 1.5.sp,
                     color = MaterialTheme.colorScheme.primary
                 )
+                if (OfflineTestMode.enabled) {
+                    Surface(
+                        shape = RoundedCornerShape(999.dp),
+                        color = Color(0xFFF59E0B).copy(0.16f),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF59E0B).copy(0.45f))
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Icon(Icons.Default.WifiSlash, null, tint = Color(0xFFF59E0B), modifier = Modifier.size(11.dp))
+                            Text(
+                                stringResource(R.string.ui_offline_test_mode_badge),
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFFF59E0B)
+                            )
+                        }
+                    }
+                }
             }
             IconButton(onClick = { showInfoDialog = true }, modifier = Modifier.size(24.dp)) {
                 Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.primary.copy(0.6f), modifier = Modifier.size(16.dp))
@@ -4645,6 +5346,26 @@ fun DebugSettingsSection(
                 }
             )
 
+            // Offline Test Mode
+            SettingsToggleRow(
+                icon = Icons.Default.WifiSlash,
+                title = stringResource(R.string.ui_offline_test_mode),
+                subtitle = stringResource(R.string.ui_offline_test_mode_subtitle),
+                checked = offlineModeEnabled,
+                onToggle = {
+                    offlineModeEnabled = !offlineModeEnabled
+                    OfflineTestMode.setEnabled(prefs, offlineModeEnabled)
+                }
+            )
+            SettingsActionRow(
+                icon = Icons.Default.Tune,
+                title = stringResource(R.string.ui_offline_test_mode_configure),
+                subtitle = stringResource(R.string.ui_offline_test_mode_configure_subtitle),
+                actionLabel = stringResource(R.string.ui_open),
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = { showOfflineModeDialog = true }
+            )
+
             if (BuildConfig.GITHUB_UPDATES_ENABLED) {
                 SettingsActionRow(
                     icon = Icons.Default.NotificationsActive,
@@ -4687,14 +5408,34 @@ fun DebugSettingsSection(
                 onClick = { showPrefsDialog = true }
             )
 
-            // Memory info
+            // Device, build & live memory info
             SettingsActionRow(
                 icon = Icons.Default.Memory,
-                title = stringResource(R.string.ui_memory_info),
-                subtitle = stringResource(R.string.ui_subtitle_jvm_system_ram),
+                title = stringResource(R.string.ui_debug_device_build_info),
+                subtitle = stringResource(R.string.ui_debug_device_body),
                 actionLabel = stringResource(R.string.ui_view),
                 actionColor = MaterialTheme.colorScheme.primary,
-                onClick = { showMemoryDialog = true }
+                onClick = { showDeviceInfoDialog = true }
+            )
+
+            // Cache stats + clear
+            SettingsActionRow(
+                icon = Icons.Default.CleaningServices,
+                title = stringResource(R.string.ui_debug_cache_stats),
+                subtitle = cacheRepoShortLabel(prefs, context),
+                actionLabel = stringResource(R.string.ui_open),
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = { showCacheDialog = true }
+            )
+
+            // Error message catalog
+            SettingsActionRow(
+                icon = Icons.Default.Palette,
+                title = stringResource(R.string.ui_debug_error_catalog),
+                subtitle = stringResource(R.string.ui_debug_error_catalog_body),
+                actionLabel = stringResource(R.string.ui_view),
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = { showErrorCatalogDialog = true }
             )
 
             // API endpoints copy

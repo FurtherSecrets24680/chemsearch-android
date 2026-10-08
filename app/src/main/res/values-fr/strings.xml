@@ -101,13 +101,13 @@
     <string name="ui_welcome_tagline" translatable="true">CHIMIE SIMPLIFIÉE</string>
     <string name="ui_welcome_tagline_body" translatable="true">Rechercher des composés, inspecter des structures, enregistrer des résultats utiles et utiliser des outils pratiques de chimie dans une application Android native.</string>
     <string name="ui_welcome_feature_search_title" translatable="true">Recherche composée</string>
-    <string name="ui_welcome_feature_search_body" translatable="true">Rechercher les données PubChem par nom, formule, identifiant de style CAS, ou CID.</string>
+    <string name="ui_welcome_feature_search_body" translatable="true">Consultez les données PubChem par nom, formule, identifiant de type CAS ou CID, avec suggestions automatiques, filtres avancés et recherche par structure dessinée.</string>
     <string name="ui_welcome_feature_structures_title" translatable="true">Structures 2D et 3D</string>
     <string name="ui_welcome_feature_structures_body" translatable="true">Visualisez les images de structures, faites pivoter les modèles 3D et enregistrez les fichiers de structure.</string>
     <string name="ui_welcome_feature_tools_title" translatable="true">Outils de chimie</string>
     <string name="ui_welcome_feature_tools_body" translatable="true">Balance des réactions, calcul de la masse molaire, résolution de la stoichiométrie, et plus encore.</string>
     <string name="ui_welcome_feature_local_title" translatable="true">Workflow local</string>
-    <string name="ui_welcome_feature_local_body" translatable="true">Conserver les favoris, les recherches récentes, les résultats mis en cache et les données de chimie hors ligne.</string>
+    <string name="ui_welcome_feature_local_body" translatable="true">Gardez vos favoris, recherches récentes et données hors ligne ; découvrez le composé du jour et ajoutez des widgets à l\'écran d\'accueil.</string>
     <string name="ui_compare" translatable="true">Comparer</string>
     <string name="ui_save" translatable="true">Enregistrer</string>
     <string name="ui_ok" translatable="true">Ok</string>
@@ -542,6 +542,15 @@
     <string name="ui_e_g_h2o_ca_oh_2_cuso4_5h2o" translatable="true">p. ex. H2O, Ca(OH)2, CuSO4·5H2O</string>
     <string name="ui_insert" translatable="true">Insérer :</string>
     <string name="ui_molar_mass" translatable="true">MASSE MOLAIRE</string>
+    <string name="ui_isomer_invalid_formula" translatable="true">Cela ne ressemble pas à une formule valide</string>
+    <string name="ui_isomer_insight_formula" translatable="true">FORMULE</string>
+    <string name="ui_isomer_insight_atoms" translatable="true">ATOMES</string>
+    <string name="ui_isomer_mass" translatable="true">MASSE</string>
+    <string name="ui_isomer_insight_dbe" translatable="true">Degrés d\'insaturation</string>
+    <string name="ui_isomer_insight_dbe_desc" translatable="true">Les cycles + doubles liaisons comptent pour 1, les triples pour 2. Chaque isomère de cette formule partage cette valeur.</string>
+    <string name="ui_isomer_sort_relevance" translatable="true">Haut</string>
+    <string name="ui_isomer_sort_name" translatable="true">A-Z</string>
+    <string name="ui_retry" translatable="true">Réessayer</string>
     <string name="ui_count" translatable="true">Quantité</string>
     <string name="ui_g_mol" translatable="true">g/mol</string>
     <string name="ui_3f" translatable="true">%.3f</string>
@@ -744,7 +753,7 @@
     <string name="ui_faq_search_what_q" translatable="true">Que puis-je rechercher ?</string>
     <string name="ui_faq_search_what_a" translatable="true">Vous pouvez effectuer une recherche par nom courant, par nom IUPAC, par numéro CAS, par CID PubChem, par formule ou par structure dessinée. Certains modes fonctionnent mieux pour les identifiants exacts que les noms courts.</string>
     <string name="ui_faq_search_fail_q" translatable="true">Pourquoi ma recherche a-t-elle échoué ?</string>
-    <string name="ui_faq_search_fail_a" translatable="true">Essayez une correction orthographique, un CID, un numéro CAS ou un nom plus spécifique. Les noms très larges, les noms non officiels, les structures instables, et les composés absents de PubChem peuvent ne pas renvoyer de correspondance utile.</string>
+    <string name="ui_faq_search_fail_a" translatable="true">Essayez une correction orthographique, un CID, un numéro CAS ou un nom plus précis. Les noms très généraux, non officiels, les structures instables et les composés absents de PubChem peuvent ne donner aucun résultat utile. Lorsqu\'une recherche échoue, le message d\'erreur explique ce qui s\'est passé et est codé par couleur selon le type.</string>
     <string name="ui_faq_did_you_mean_q" translatable="true">Pourquoi entendez-vous par là des suggestions parfois manquantes ?</string>
     <string name="ui_faq_did_you_mean_a" translatable="true">ChemSearch ne montre que les correspondances orthographiques les plus proches. Il masque les résultats d\'auto-complétion de PubChem quand ils ne sont pas liés, donc il peut ne rien montrer au lieu d\'une mauvaise suggestion.</string>
     <string name="ui_faq_normal_vs_isomer_q" translatable="true">Quelle est la différence entre la recherche normale et la recherche isomère?</string>
@@ -777,14 +786,16 @@
     <string name="ui_faq_collect_a" translatable="true">ChemSearch n\'a pas de système de compte. L\'historique, les favoris, les téléchargements et le cache sont stockés sur votre appareil. Les recherches en direct contactent toujours des services externes tels que PubChem, Wikipedia, GitHub, ou le fournisseur IA de votre choix lorsque nécessaire.</string>
     <string name="ui_faq_collect_no_updates_a" translatable="true">ChemSearch n\'a pas de système de compte. L\'historique, les favoris, les téléchargements et le cache sont stockés sur votre appareil. Les recherches en direct restent toujours en contact avec des services externes tels que PubChem, Wikipedia, ou votre fournisseur d’AI choisi si nécessaire.</string>
     <string name="ui_faq_offline_q" translatable="true">Qu\'est-ce qui fonctionne hors ligne ?</string>
-    <string name="ui_faq_offline_a" translatable="true">Les références de la bibliothèque, les calculateurs, les favoris et les composés téléchargés peuvent fonctionner hors ligne. Recherche en temps réel. Les nouvelles descriptions, la recherche de structure, les vérifications de mises à jour et les descriptions d\'AI nécessitent un accès à Internet.</string>
+    <string name="ui_faq_offline_a" translatable="true">Les références intégrées de la bibliothèque, les calculatrices, les favoris, les composés téléchargés, le composé du jour, les widgets d\'écran d\'accueil et le prédicteur de réactions fonctionnent tous hors ligne. La recherche de composés en direct, les descriptions à jour, la recherche de structures, la vérification des mises à jour et les descriptions IA nécessitent un accès à internet.</string>
     <string name="ui_faq_offline_no_updates_a" translatable="true">Les références de la bibliothèque, les calculateurs, les favoris et les composés téléchargés peuvent fonctionner hors ligne. La recherche de composés en direct, les nouvelles descriptions, la recherche de structure et les descriptions d\'IA nécessitent un accès à Internet.</string>
     <string name="ui_faq_cache_vs_downloads_q" translatable="true">Quelle est la différence entre le cache et le téléchargement ?</string>
     <string name="ui_faq_cache_vs_downloads_a" translatable="true">Le cache accélère les recherches répétées et peut être effacé automatiquement. Les téléchargements sont des sauvegardes intentionnelles hors ligne avec des identifiants, des descriptions, des structures, des synonymes, des informations de sécurité et des données de source lorsque disponibles.</string>
     <string name="ui_faq_downloads_stored_q" translatable="true">Où sont stockés les composés téléchargés ?</string>
     <string name="ui_faq_downloads_stored_a" translatable="true">Les composés téléchargés sont stockés dans la base de données de la pièce locale de l\'application sur votre appareil. La désinstallation de l\'application peut les supprimer à moins que vous ne les exportiez ou ne les sauvegardiez en premier.</string>
     <string name="ui_faq_save_q" translatable="true">Comment enregistrer un composé ?</string>
-    <string name="ui_faq_save_a" translatable="true">Utilisez l\'étoile pour les Favoris ou le bouton de téléchargement pour une sauvegarde hors ligne complète. Les favoris sont des signets rapides, les téléchargements sont destinés à la lecture hors ligne.</string>
+    <string name="ui_faq_save_a" translatable="true">Utilisez l\'étoile pour les favoris ou le bouton de téléchargement pour un enregistrement hors ligne complet. Maintenez appuyée une carte de la bibliothèque pour copier la formule, ouvrir dans PubChem ou la retirer, puis exportez toute la bibliothèque en CSV ou JSON depuis l\'écran de la bibliothèque.</string>
+    <string name="ui_faq_export_q" translatable="true">Comment exporter ma bibliothèque ?</string>
+    <string name="ui_faq_export_a" translatable="true">Ouvrez la bibliothèque, ouvrez le menu d\'exportation et choisissez CSV pour les tableurs ou JSON pour une sauvegarde complète réimportable sur un autre appareil. La base de données chimique est fournie avec l\'application et ne nécessite aucune exportation.</string>
     <string name="ui_faq_compare_q" translatable="true">Puis-je comparer les composés enregistrés ?</string>
     <string name="ui_faq_compare_a" translatable="true">Oui. Sélectionnez deux combinés ou plus dans les Favoris, Téléchargements ou entrées de la base de données chimique prises en charge, puis utilisez le bouton de comparaison flottante.</string>
     <string name="ui_faq_database_q" translatable="true">Qu\'est-ce que la base de données sur les produits chimiques?</string>
@@ -821,6 +832,8 @@
     <string name="ui_search_history" translatable="true">Rechercher dans l\'historique</string>
     <string name="ui_autosuggestions" translatable="true">Auto-suggestions</string>
     <string name="ui_compact_mode" translatable="true">Mode compact</string>
+    <string name="ui_cards" translatable="true">Cartes</string>
+    <string name="ui_subtitle_cards" translatable="true">Afficher le contenu dans des cartes arrondies; désactiver pour une page plate</string>
     <string name="ui_reduce_motion" translatable="true">Réduire le mouvement</string>
     <string name="ui_high_contrast_outlines" translatable="true">Contours de contraste élevé</string>
     <string name="ui_default_structure_view" translatable="true">Vue structure par défaut</string>
@@ -1246,7 +1259,7 @@
     <string name="ui_info_elemental_analysis_what" translatable="true">Qu\'est-ce que c\'est?</string>
     <string name="ui_info_elemental_analysis_what_body" translatable="true">Montre le pourcentage de chaque élément par masse dans le composé. Calculé à partir des poids atomiques et de la formule moléculaire.</string>
     <string name="ui_info_elemental_analysis_example" translatable="true">Exemple</string>
-    <string name="ui_info_elemental_analysis_example_body" translatable="true">L\'eau (H2O) est ~11% d\'hydrogène et ~89% d\'oxygène par masse, puisque les atomes d\'oxygène sont beaucoup plus lourds que les atomes d\'hydrogène.</string>
+    <string name="ui_info_elemental_analysis_example_body" formatted="false" translatable="true">L\'eau (H2O) est ~11% d\'hydrogène et ~89% d\'oxygène par masse, puisque les atomes d\'oxygène sont beaucoup plus lourds que les atomes d\'hydrogène.</string>
     <string name="ui_info_elemental_analysis_why" translatable="true">Pourquoi cela compte-t-il</string>
     <string name="ui_info_elemental_analysis_why_body" translatable="true">Utile dans la chimie analytique pour vérifier l\'identité des composés et dans la science de la nutrition pour comprendre la composition des nutriments.</string>
     <string name="ui_info_what_is_ghs" translatable="true">Qu\'est-ce que le GHS?</string>
@@ -1626,5 +1639,137 @@
     <string name="ui_recent_group_previous_30_days" translatable="true">30 derniers jours</string>
     <string name="ui_recent_group_yesterday" translatable="true">Hier</string>
     <string name="ui_db_section_details" translatable="true">Détails</string>
+    <string name="ui_reaction_predictor">Prédicteur de réactions</string>
+    <string name="ui_reaction_predictor_subtitle">Prédit les produits à partir de réactifs à l\'aide de la base de données chimique et des règles de réaction</string>
+    <string name="ui_reactant_n">Réactif %1$d</string>
+    <string name="ui_add_reactant">Ajouter un réactif</string>
+    <string name="ui_predict_reaction">Prédire les produits</string>
+    <string name="ui_error_enter_two_reactants">Entrez deux réactifs.</string>
+    <string name="ui_error_no_prediction_available">Aucune règle connue ne correspond à ces réactifs. Essayez une paire courante comme un acide avec une base, un métal ou un carbonate.</string>
+    <string name="ui_pred_rule_neutralization">Règle de neutralisation</string>
+    <string name="ui_pred_rule_acid_carbonate">Règle acide + carbonate</string>
+    <string name="ui_pred_rule_metal_acid">Règle métal + acide</string>
+    <string name="ui_pred_rule_single_displacement">Règle de série d\'activité</string>
+    <string name="ui_pred_rule_combustion">Règle de combustion</string>
+    <string name="ui_pred_rule_synthesis">Règle de synthèse</string>
+    <string name="ui_pred_note_neutralization">eau formée</string>
+    <string name="ui_pred_note_effervescence">effervescence</string>
+    <string name="ui_pred_note_hydrogen_gas">gaz hydrogène</string>
+    <string name="ui_pred_note_metal_deposited">métal déposé</string>
+    <string name="ui_pred_rule_ammonium_base">Règle sel d\'ammonium + base</string>
+    <string name="ui_pred_rule_acid_oxide">Règle acide + oxyde métallique</string>
+    <string name="ui_pred_rule_acid_sulfite">Règle acide + sulfite</string>
+    <string name="ui_pred_rule_acid_sulfide">Règle acide + sulfure</string>
+    <string name="ui_pred_rule_metal_water">Règle métal + eau froide</string>
+    <string name="ui_pred_rule_metal_steam">Règle métal + vapeur</string>
+    <string name="ui_pred_note_ammonia_gas">gaz ammoniac</string>
+    <string name="ui_pred_note_pungent_gas">gaz SO2 irritant</string>
+    <string name="ui_pred_note_rotten_egg">odeur d\'œuf pourri</string>
+    <string name="ui_rp_what_it_does_desc">Entrez deux réactifs pour voir les produits prédits, une équation équilibrée et la règle ou l\'entrée de base de données derrière la prédiction.</string>
+    <string name="ui_rp_best_inputs_desc">Les paires inorganiques courantes fonctionnent mieux : acides avec bases, métaux ou carbonates ; métaux actifs dans des solutions de sels ; hydrocarbures avec O2 ; et deux éléments formant un composé binaire connu.</string>
+    <string name="ui_rp_limits_desc">Le prédicteur ne couvre que les règles courantes. La chimie organique, les réactions redox avec conditions spéciales et les réactions nécessitant un catalyseur ou de la chaleur peuvent manquer. Vérifiez une référence avant de vous fier à une prédiction.</string>
+    <string name="ui_language_bengali">বাংলা</string>
+    <string name="ui_copy_summary">Copier le résumé</string>
+    <string name="ui_copied_summary">Résumé copié</string>
+    <string name="ui_consumption_label">%1$s%% consommé</string>
+    <string name="ui_atom_economy_label">Économie atomique : %1$s%%</string>
+    <string name="ui_widget_name_placeholder" translatable="true">Ouvrir ChemSearch…</string>
+    <string name="ui_widget_random_refresh" translatable="true">Nouveau composé aléatoire</string>
+    <string name="ui_widget_todays_pick" translatable="true">Choix du jour</string>
+    <string name="ui_widget_random_tap_refresh" translatable="true">Touchez Actualiser pour un autre</string>
+    <string name="ui_widget_refresh" translatable="true">Actualiser</string>
+    <string name="ui_section_what_to_search" translatable="true">Quoi rechercher</string>
+    <string name="ui_section_narrow_by" translatable="true">Affiner par</string>
+    <string name="ui_section_properties" translatable="true">Propriétés</string>
+    <string name="ui_section_results" translatable="true">Résultats</string>
+    <string name="ui_name_contains" translatable="true">Le nom contient</string>
+    <string name="ui_name_contains_hint" translatable="true">ex. acide ou benz</string>
+    <string name="ui_filters_active_count" translatable="true">%1$d actifs</string>
+    <string name="ui_filter_name_contains_s" translatable="true">nom : %1$s</string>
+    <string name="ui_results_limit_n" translatable="true">Afficher %1$d</string>
+    <string name="ui_widget_daily_desc" translatable="true">Composé du jour - une nouvelle substance chaque jour</string>
+    <string name="ui_widget_random_desc" translatable="true">Composé aléatoire - touchez Actualiser pour relancer</string>
+    <string name="ui_compare_subtitle" translatable="true">Récupérez les composés et comparez les propriétés côte à côte</string>
+    <string name="ui_clear_results" translatable="true">Effacer les résultats</string>
+    <string name="ui_comparing_n_compounds" translatable="true">Comparaison de %1$d composés</string>
+    <string name="ui_copied_short" translatable="true">Copié</string>
+    <string name="ui_copy_row_values" translatable="true">Copier toutes les valeurs de cette ligne</string>
+    <string name="ui_structure_search_summary" translatable="true">Mode %1$s · %2$d %% de similarité · %3$d résultats</string>
+    <string name="ui_structure_search_add_mode_chip" translatable="true">Ajouter le mode %1$s</string>
+    <string name="ui_structure_search_import_hint" translatable="true">Collez des SMILES comme CCO ou CC(=O)O, InChI ou un fichier MOL V2000</string>
+    <string name="ui_faq_widget_daily_q" translatable="true">Quelle est la différence entre les deux widgets ?</string>
+    <string name="ui_faq_widget_daily_a" translatable="true">Le widget Composé du jour tire sa sélection de la date du calendrier : il affiche donc le même composé toute la journée et change à minuit. Le widget Composé aléatoire choisit à la demande — appuyez sur son bouton d\'actualisation pour en obtenir un nouveau à tout moment.</string>
+    <string name="ui_faq_reaction_predictor_q" translatable="true">Comment fonctionne le Prédicteur de Réactions ?</string>
+    <string name="ui_faq_reaction_predictor_a" translatable="true">Il confronte vos réactifs sélectionnés à un ensemble de règles hors ligne construit à partir de la base de données chimique intégrée et propose les produits probables, les types de réaction et les observations. Il couvre les réactions d\'étude courantes — vérifiez toujours les cas inhabituels avec un manuel.</string>
+    <string name="ui_faq_database_size_q" translatable="true">Quelle est la taille de la base de données chimique intégrée ?</string>
+    <string name="ui_faq_database_size_a" translatable="true">Elle regroupe 575 substances, 108 ions, 71 groupes fonctionnels et 149 réactions, le tout disponible hors ligne. Les 118 éléments du tableau périodique se trouvent dans le tableau périodique, les deux références ne se dupliquent donc jamais.</string>
+    <string name="ui_faq_languages_q" translatable="true">Quelles langues ChemSearch prend-il en charge ?</string>
+    <string name="ui_faq_languages_a" translatable="true">L\'interface est entièrement traduite en 15 langues : bengali, danois, allemand, grec, espagnol, finnois, français, italien, japonais, néerlandais, norvégien, polonais, portugais, russe et suédois. Changez à tout moment dans Paramètres > Langue.</string>
+    <string name="ui_whats_new_section_features" translatable="true">Nouveautés</string>
+    <string name="ui_whats_new_section_improvements" translatable="true">Améliorations</string>
+    <string name="ui_section_whats_new" translatable="true">Quoi de neuf</string>
+    <string name="ui_whats_new_bullet_reaction" translatable="true">Prédicteur de réactions : ajout d\'un moteur de règles hors ligne basé sur la base de données chimique intégrée. Saisissez jusqu\'à trois réactifs et obtenez les produits prédits, les types de réaction, les observations et les niveaux de confiance.</string>
+    <string name="ui_whats_new_bullet_widgets" translatable="true">Widgets d\'écran d\'accueil : ajout des widgets Composé du jour et Composé aléatoire. Le widget quotidien change à minuit, tandis que l\'aléatoire possède son propre bouton d\'actualisation.</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">Base de données chimique : étendue de 331 à 575 substances, dont des acides aminés, vitamines, médicaments, esters, organométalliques, silicates, alcaloïdes et plus. Les 118 éléments résident désormais dans le Tableau périodique au lieu d\'être dupliqués dans la base.</string>
+    <string name="ui_whats_new_bullet_search" translatable="true">Recherche avancée : ajout d\'un sélecteur de limite de résultats, d\'un filtre « le nom contient » et d\'un compteur de filtres actifs avec effacement global en un geste.</string>
+    <string name="ui_whats_new_bullet_tools" translatable="true">Outils : la grille s\'adapte désormais de 2 colonnes sur les téléphones étroits à 5 sur les grands écrans et tablettes. Les catégories d\'outils utilisent des couleurs d\'accent distinctes et les lignes conservent des cartes de hauteur égale.</string>
+    <string name="ui_whats_new_bullet_structure" translatable="true">Recherche de structure : ajout d\'un résumé de configuration en un coup d\'œil, d\'un curseur de similarité, d\'un statut actif plus clair, d\'indications sur les formats d\'import et d\'un badge de formule en direct.</string>
+    <string name="ui_whats_new_bullet_polish" translatable="true">Erreurs de recherche : ajout de messages spécifiques codés par couleur pour la limitation de débit, les délais dépassés, les requêtes invalides, les pannes réseau, les erreurs serveur et les résultats vides.</string>
+    <string name="ui_whats_new_bullet_home" translatable="true">Explorer : ajout d\'actions rapides pour Recherche de structure, Recherche d\'isomères, Tableau périodique et Base de données chimique.</string>
+    <string name="ui_whats_new_bullet_library" translatable="true">Actions de bibliothèque : appui long sur un composé enregistré pour copier sa formule, l\'ouvrir dans PubChem ou le supprimer sans ouvrir la fiche.</string>
+    <string name="ui_whats_new_bullet_shortcuts" translatable="true">Raccourcis du lanceur : appui long sur l\'icône de l\'application pour accéder directement à Recherche, Bibliothèque, Outils ou Paramètres.</string>
+    <string name="ui_whats_new_bullet_daily" translatable="true">Composé du jour : ajout d\'une carte sur l\'écran d\'accueil montrant le même composé quotidien que le widget, avec sa formule et ses usages typiques.</string>
+    <string name="ui_whats_new_bullet_csv" translatable="true">Export de bibliothèque : ajout de l\'export CSV à côté de la sauvegarde JSON existante et de la prise en charge de l\'import.</string>
+    <string name="ui_whats_new_bullet_compare" translatable="true">Comparer des composés : ajout de la copie des lignes de propriétés en un geste, de puces de composés, d\'une action d\'effacement des résultats et de la prise en charge de six composés au plus.</string>
+    <string name="ui_whats_new_bullet_periodic" translatable="true">Tableau périodique : ajout de filtres de catégories interactifs, de tuiles d\'éléments plus lumineuses, de cartes de chaleur de tendances en dégradé, de légendes min/max et d\'une bande cliquable des cinq premiers éléments.</string>
+    <string name="ui_whats_new_bullet_stoich" translatable="true">Stœchiométrie : ajout de l\'économie atomique, de la consommation et des restes par réactif, d\'une conversion d\'unités améliorée et de résumés d\'analyse copiables.</string>
+    <string name="ui_whats_new_bullet_display" translatable="true">Affichage : ajout d\'un réglage de l\'unité de température pour toute l\'application (K, °C ou °F).</string>
+    <string name="ui_whats_new_bullet_haptics" translatable="true">Retour haptique : ajout d\'un retour haptique aux interactions prises en charge.</string>
+    <string name="ui_whats_new_bullet_offline_mode" translatable="true">Outils de développement : ajout d\'un mode de test hors ligne avec des résultats déterministes, une latence réglable, des erreurs simulées, des types d\'échec forcés et une bannière hors ligne à l\'écran. Ajout aussi de l\'inspection du cache, des détails de l\'appareil et de la version, et d\'un catalogue de messages d\'erreur.</string>
+    <string name="ui_whats_new_bullet_dialogs" translatable="true">Interface : normalisation des boîtes de dialogue FAQ, aide et confirmation, avec en-têtes d\'icônes teintées, boutons de fermeture et actions destructives codées par couleur.</string>
+    <string name="ui_whats_new_bullet_cards" translatable="true">Interface : normalisation des cartes, des états de sélection et des actions destructives dans toute l\'application. Ajout d\'un réglage Cartes pour basculer entre les dispositions à cartes et plus plates.</string>
+    <string name="ui_whats_new_bullet_collapsible" translatable="true">À propos : la carte Quoi de neuf est désormais repliable et affiche les points forts de la version en cours.</string>
+    <string name="ui_whats_new_bullet_languages" translatable="true">Nouvelle langue : ajout du bengali et mise à jour des chaînes localisées. Les sélecteurs de langue affichent désormais chaque langue sous son nom d\'origine.</string>
+    <string name="ui_error_search_not_found_s" translatable="true">Aucune correspondance trouvée pour « %1$s » dans PubChem. Essayez un autre nom, un numéro CAS, ou vérifiez l\'orthographe.</string>
+    <string name="ui_error_search_throttled" translatable="true">PubChem limite les requêtes en ce moment. Attendez quelques secondes et réessayez.</string>
+    <string name="ui_error_search_timeout" translatable="true">PubChem a mis trop de temps à répondre. Réessayez — les requêtes très complexes peuvent dépasser le délai.</string>
+    <string name="ui_error_search_bad_request" translatable="true">PubChem a rejeté la requête comme invalide. Vérifiez le format de saisie (nom, CAS ou formule).</string>
+    <string name="ui_error_search_bad_request_detail" translatable="true">PubChem a rejeté la requête : %1$s</string>
+    <string name="ui_error_search_network" translatable="true">Problème de réseau — PubChem est injoignable. Vérifiez votre connexion internet et réessayez.</string>
+    <string name="ui_error_search_server" translatable="true">Erreur du serveur PubChem (HTTP %1$s). Le service est peut-être temporairement indisponible — réessayez plus tard.</string>
+    <string name="ui_error_search_unknown" translatable="true">Erreur inattendue : %1$s</string>
+    <string name="ui_debug_device_build_info" translatable="true">Infos sur l\'appareil et la version</string>
+    <string name="ui_debug_device_body" translatable="true">Modèle, système d\'exploitation, ABI, noyau, programme d\'installation, version et utilisation de la mémoire en direct</string>
+    <string name="ui_debug_cache_stats" translatable="true">Inspecteur du cache de composés</string>
+    <string name="ui_debug_cache_body" translatable="true">Fichiers en cache, taille et effacement manuel</string>
+    <string name="ui_debug_cache_files_d" translatable="true">Fichiers en cache : %1$d</string>
+    <string name="ui_debug_cache_empty" translatable="true">Aucun composé en cache — recherchez et ouvrez un composé pour remplir le cache.</string>
+    <string name="ui_debug_error_catalog" translatable="true">Catalogue des messages d\'erreur</string>
+    <string name="ui_debug_error_catalog_body" translatable="true">Aperçu des erreurs de recherche avec leur code couleur</string>
+    <string name="ui_cache_cleared" translatable="true">Cache effacé</string>
+    <string name="ui_clipboard_cache" translatable="true">Rapport du cache de composés</string>
+    <string name="ui_about_whats_new_s" translatable="true">Nouveautés de la v%1$s</string>
+    <string name="ui_trend_top_elements" translatable="true">Top 5 des éléments</string>
+    <string name="ui_compound_of_the_day" translatable="true">COMPOSÉ DU JOUR</string>
+    <string name="ui_temperature_unit" translatable="true">Unité de température</string>
+    <string name="ui_subtitle_temperature_unit" translatable="true">Utilisée pour les points de fusion et d\'ébullition dans les détails d\'éléments et les tendances</string>
+    <string name="ui_copy_formula" translatable="true">Copier la formule</string>
+    <string name="ui_export_library_csv" translatable="true">Exporter la bibliothèque en CSV</string>
+    <string name="ui_error_no_browser" translatable="true">Aucun navigateur trouvé</string>
+    <string name="ui_explore_chemsearch" translatable="true">Explorer ChemSearch</string>
+    <string name="ui_periodic_table_quick_action_subtitle" translatable="true">Parcourez les 118 éléments et leurs propriétés</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">Plus de 900 substances, ions, groupes et réactions</string>
+    <string name="ui_offline_test_mode" translatable="true">Mode test hors ligne</string>
+    <string name="ui_offline_test_mode_subtitle" translatable="true">Affiche des données fictives sans véritables appels réseau</string>
+    <string name="ui_offline_test_mode_toggle_body" translatable="true">Quand il est activé, la recherche, les consultations et les appels de structure et d\'IA renvoient des enregistrements de test locaux au lieu de contacter le réseau</string>
+    <string name="ui_offline_test_mode_configure" translatable="true">Configurer le mode test</string>
+    <string name="ui_offline_test_mode_configure_subtitle" translatable="true">Latence, taux d\'erreur et type d\'échec simulé</string>
+    <string name="ui_offline_test_mode_latency" translatable="true">LATENCE SIMULÉE</string>
+    <string name="ui_offline_test_mode_error_rate" translatable="true">TAUX D\'ERREUR ALÉATOIRE</string>
+    <string name="ui_offline_test_mode_failure" translatable="true">ÉCHEC FORCÉ</string>
+    <string name="ui_offline_test_mode_failure_body" translatable="true">Force chaque appel fictif à échouer avec ce type d\'erreur, afin d\'inspecter chaque message codé par couleur</string>
+    <string name="ui_offline_test_mode_footer" translatable="true">Les résultats sont déterministes : la même recherche produit toujours le même composé de test, donc les états de l\'interface sont reproductibles. Rien ne quitte l\'appareil tant que ce mode est actif.</string>
+    <string name="ui_offline_test_mode_badge" translatable="true">HORS LIGNE</string>
+    <string name="ui_offline_test_mode_active_banner" translatable="true">Le mode test hors ligne est actif : tous les résultats de cet écran sont des données fictives simulées</string>
+    <string name="ui_offline_test_mode_active_note" translatable="true">Tous les résultats sont simulés</string>
 </resources>
-

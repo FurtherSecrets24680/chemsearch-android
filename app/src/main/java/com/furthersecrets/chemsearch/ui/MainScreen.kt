@@ -31,13 +31,16 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -47,13 +50,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.furthersecrets.chemsearch.ChemLaunchContract
 import com.furthersecrets.chemsearch.ChemViewModel
 import androidx.activity.compose.BackHandler
 import com.furthersecrets.chemsearch.data.AiProvider
 import com.furthersecrets.chemsearch.data.AppColorScheme
 import com.furthersecrets.chemsearch.data.AppLanguage
+import com.furthersecrets.chemsearch.data.OfflineTestMode
 import com.furthersecrets.chemsearch.data.ChemUiState
 import com.furthersecrets.chemsearch.data.DescSource
+import com.furthersecrets.chemsearch.data.ChemicalDatabase
 import kotlinx.coroutines.launch
 
 enum class AppTab(val route: String) {
@@ -76,6 +82,14 @@ internal const val IsomerSearchRoute = "isomer_search"
 
 internal fun isStandalonePageRoute(route: String?): Boolean =
     route == StructureSearchRoute || route == AboutRoute || route == IsomerSearchRoute
+
+/** A pending deep-link destination handed over from [com.furthersecrets.chemsearch.MainActivity]. */
+data class ChemLaunchRequest(
+    val tab: String?,
+    val toolId: Int? = null,
+    val query: String? = null,
+    val cid: Long? = null
+)
 
 internal data class MainNavigationItem(
     val tab: AppTab,
@@ -327,6 +341,87 @@ private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainTabExitTransit
     ) + fadeOut(tween(ChemMotionFast))
 }
 
+/**
+ * In-app "Compound of the day" card on the Search screen. Uses the exact same
+ * date-driven picker as the home-screen widget, so both show the same compound.
+ */
+@Composable
+private fun CompoundOfTheDayBanner(
+    compound: com.furthersecrets.chemsearch.widget.CompoundOfTheDay?,
+    onOpen: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    if (compound == null) return
+    val compact = LocalCompactMode.current
+    Surface(
+        onClick = onOpen,
+        shape = RoundedCornerShape(if (compact) 16.dp else 18.dp),
+        color = MaterialTheme.colorScheme.primary.copy(0.08f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.2f)),
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = if (compact) 13.dp else 16.dp, vertical = if (compact) 11.dp else 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(if (compact) 10.dp else 12.dp)
+        ) {
+            ChemIcon(
+                ChemAppIcons.Star,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(if (compact) 22.dp else 26.dp)
+            )
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+                Text(
+                    stringResource(R.string.ui_compound_of_the_day),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 1.sp
+                )
+                Text(
+                    compound.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                if (compound.formula.isNotBlank()) {
+                    Text(
+                        toSubscriptFormula(compound.formula),
+                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = FontFamily.Monospace,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.6f),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+                if (compound.uses.isNotBlank()) {
+                    Text(
+                        compound.uses,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+            Icon(
+                Icons.Default.ChevronRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary.copy(0.6f),
+                modifier = Modifier.size(20.dp)
+            )
+        }
+    }
+}
+
 @Composable
 private fun HomeStarterSuggestions(
     suggestions: List<String>,
@@ -372,40 +467,97 @@ private fun HomeStarterSuggestions(
 }
 
 @Composable
+private fun HomeExploreHeading(modifier: Modifier = Modifier) {
+    val compact = LocalCompactMode.current
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(width = 3.dp, height = if (compact) 12.dp else 14.dp)
+                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(2.dp))
+        )
+        Text(
+            stringResource(R.string.ui_explore_chemsearch),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
 private fun HomeSearchQuickActions(
     onStructureSearch: () -> Unit,
     onIsomerSearch: () -> Unit,
+    onPeriodicTable: () -> Unit,
+    onChemicalDatabase: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val compact = LocalCompactMode.current
     val metrics = homeQuickActionLayoutMetrics(compact)
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        HomeSearchQuickActionButton(
-            title = stringResource(R.string.ui_structure_search_2),
-            description = stringResource(R.string.ui_draw_molecule_and_search),
-            onClick = onStructureSearch,
-            modifier = Modifier.weight(1f)
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            StructureSearchIcon(
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(if (metrics.iconBoxSizeDp <= 32) 18.dp else 20.dp)
-            )
+            HomeSearchQuickActionButton(
+                title = stringResource(R.string.ui_structure_search_2),
+                description = stringResource(R.string.ui_draw_molecule_and_search),
+                accent = MaterialTheme.colorScheme.primary,
+                onClick = onStructureSearch,
+                modifier = Modifier.weight(1f)
+            ) {
+                StructureSearchIcon(
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(if (metrics.iconBoxSizeDp <= 32) 18.dp else 20.dp)
+                )
+            }
+            HomeSearchQuickActionButton(
+                title = stringResource(R.string.ui_isomer_search),
+                description = stringResource(R.string.ui_find_compounds_same_formula),
+                accent = Color(0xFF56B6C2),
+                onClick = onIsomerSearch,
+                modifier = Modifier.weight(1f)
+            ) {
+                Icon(
+                    Icons.Default.Atom,
+                    contentDescription = null,
+                    tint = Color(0xFF56B6C2),
+                    modifier = Modifier.size(if (metrics.iconBoxSizeDp <= 32) 18.dp else 20.dp)
+                )
+            }
         }
-        HomeSearchQuickActionButton(
-            title = stringResource(R.string.ui_isomer_search),
-            description = stringResource(R.string.ui_find_compounds_same_formula),
-            onClick = onIsomerSearch,
-            modifier = Modifier.weight(1f)
-        ) {
-            Icon(
-                Icons.Default.Atom,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(if (metrics.iconBoxSizeDp <= 32) 18.dp else 20.dp)
-            )
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            HomeSearchQuickActionButton(
+                title = stringResource(R.string.ui_periodic_table),
+                description = stringResource(R.string.ui_periodic_table_quick_action_subtitle),
+                accent = Color(0xFF61AFEF),
+                onClick = onPeriodicTable,
+                modifier = Modifier.weight(1f)
+            ) {
+                ChemIcon(
+                    ChemAppIcons.Table,
+                    contentDescription = null,
+                    tint = Color(0xFF61AFEF),
+                    modifier = Modifier.size(if (metrics.iconBoxSizeDp <= 32) 18.dp else 20.dp)
+                )
+            }
+            HomeSearchQuickActionButton(
+                title = stringResource(R.string.ui_chemical_database),
+                description = stringResource(R.string.ui_chemical_database_quick_action_subtitle),
+                accent = Color(0xFF98C379),
+                onClick = onChemicalDatabase,
+                modifier = Modifier.weight(1f)
+            ) {
+                ChemIcon(
+                    ChemAppIcons.Database,
+                    contentDescription = null,
+                    tint = Color(0xFF98C379),
+                    modifier = Modifier.size(if (metrics.iconBoxSizeDp <= 32) 18.dp else 20.dp)
+                )
+            }
         }
     }
 }
@@ -414,6 +566,7 @@ private fun HomeSearchQuickActions(
 private fun HomeSearchQuickActionButton(
     title: String,
     description: String,
+    accent: Color,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     icon: @Composable () -> Unit
@@ -425,7 +578,7 @@ private fun HomeSearchQuickActionButton(
         modifier = modifier.heightIn(min = metrics.cardMinHeightDp.dp),
         shape = RoundedCornerShape(metrics.cornerRadiusDp.dp),
         color = MaterialTheme.colorScheme.surfaceVariant.copy(0.34f),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.18f))
+        border = BorderStroke(1.dp, accent.copy(0.22f))
     ) {
         Row(
             modifier = Modifier
@@ -440,7 +593,7 @@ private fun HomeSearchQuickActionButton(
             Box(
                 modifier = Modifier
                     .size(metrics.iconBoxSizeDp.dp)
-                    .background(MaterialTheme.colorScheme.primary.copy(0.1f), RoundedCornerShape(12.dp)),
+                    .background(accent.copy(0.12f), RoundedCornerShape(12.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 icon()
@@ -472,7 +625,11 @@ private fun HomeSearchQuickActionButton(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(vm: ChemViewModel = viewModel()) {
+fun MainScreen(
+    vm: ChemViewModel = viewModel(),
+    launchRequest: ChemLaunchRequest? = null,
+    onLaunchRequestConsumed: () -> Unit = {}
+) {
     val state by vm.uiState.collectAsStateWithLifecycle()
     val structureSearchState by vm.structureSearchState.collectAsStateWithLifecycle()
     val advancedSearchState by vm.advancedSearchState.collectAsStateWithLifecycle()
@@ -490,7 +647,9 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val cacheSizeLimit by vm.cacheSizeLimit.collectAsStateWithLifecycle()
     val cacheRetention by vm.cacheRetention.collectAsStateWithLifecycle()
     val reduceMotion by vm.reduceMotion.collectAsStateWithLifecycle()
+    val temperatureUnit by vm.temperatureUnit.collectAsStateWithLifecycle()
     val highContrastOutlines by vm.highContrastOutlines.collectAsStateWithLifecycle()
+    val cardsEnabled by vm.cardsEnabled.collectAsStateWithLifecycle()
     val aiKeyStatus by vm.aiKeyStatus.collectAsStateWithLifecycle()
     val aiModelCatalogs by vm.aiModelCatalogs.collectAsStateWithLifecycle()
     val cacheSizeBytes by vm.cacheSizeBytes.collectAsStateWithLifecycle()
@@ -522,6 +681,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     var showSettings by remember { mutableStateOf(false) }
     var showFavorites by remember { mutableStateOf(false) }
     var showAdvancedSearch by remember { mutableStateOf(false) }
+    var offlineBannerDismissed by rememberSaveable { mutableStateOf(false) }
 
     fun showUndoSnackbar(message: String, onUndo: () -> Unit) {
         val undoLabel = context.getString(R.string.ui_undo)
@@ -640,6 +800,7 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
     val selectedTab = AppTab.fromRoute(currentRoute)
+    val haptics = rememberChemHaptics()
     val showBottomNavigation = currentRoute == null || currentRoute in mainTabOrder
     fun navigateToTab(tab: AppTab) {
         navController.navigate(tab.route) {
@@ -676,6 +837,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             formulaDisplayStyle = formulaDisplayStyle,
             reduceMotion = reduceMotion,
             highContrastOutlines = highContrastOutlines,
+            cardsEnabled = cardsEnabled,
+            temperatureUnit = temperatureUnit,
             aiProvider = state.aiProvider,
             aiKeyStatus = aiKeyStatus,
             aiModelCatalogs = aiModelCatalogs,
@@ -692,6 +855,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
             onSetFormulaDisplayStyle = { vm.setFormulaDisplayStyle(it) },
             onToggleReduceMotion = { vm.setReduceMotion(!reduceMotion) },
             onToggleHighContrastOutlines = { vm.setHighContrastOutlines(!highContrastOutlines) },
+            onToggleCardsEnabled = { vm.setCardsEnabled(!cardsEnabled) },
+            onSetTemperatureUnit = { vm.setTemperatureUnit(it) },
             onSetAiProvider = { vm.setAiProvider(it) },
             onSetAiModel = { provider, model -> vm.setAiModel(provider, model) },
             onRefreshAiModels = { provider -> vm.refreshAiModels(provider) },
@@ -741,6 +906,34 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     var jumpToToolVersion by remember { mutableStateOf(0) }
     var comparePrefillCompounds by remember { mutableStateOf<List<String>>(emptyList()) }
     var comparePrefillVersion by remember { mutableStateOf(0) }
+    var libraryInitialTab by remember { mutableStateOf<LibraryTab?>(null) }
+    var libraryTabVersion by remember { mutableStateOf(0) }
+
+    // Deep links from app shortcuts and the home-screen widgets.
+    LaunchedEffect(launchRequest) {
+        val request = launchRequest ?: return@LaunchedEffect
+        onLaunchRequestConsumed()
+        when (request.tab) {
+            ChemLaunchContract.TAB_TOOLS -> {
+                request.toolId?.let { jumpToTool = it; jumpToToolVersion++ }
+                navigateToTab(AppTab.TOOLS)
+            }
+            ChemLaunchContract.TAB_LIBRARY -> navigateToTab(AppTab.LIBRARY)
+            ChemLaunchContract.TAB_SETTINGS -> navigateToTab(AppTab.SETTINGS)
+            else -> {
+                navigateToTab(AppTab.SEARCH)
+                val cid = request.cid
+                if (cid != null) {
+                    vm.searchByCid(cid)
+                } else {
+                    request.query?.takeIf { it.isNotBlank() }?.let { text ->
+                        vm.onQueryChange(text)
+                        vm.search()
+                    }
+                }
+            }
+        }
+    }
 
     fun openCompareTool(prefillCompounds: List<String> = emptyList()) {
         comparePrefillCompounds = prefillCompounds
@@ -761,20 +954,12 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
     }
 
     if (showExitDialog) {
-        AlertDialog(
-            onDismissRequest = { showExitDialog = false },
-            title = { Text(stringResource(R.string.ui_exit_chemsearch), fontWeight = FontWeight.Bold) },
-            text = { Text(stringResource(R.string.ui_are_you_sure_you_want_to_exit)) },
-            confirmButton = {
-                Button(
-                    onClick = { (context as? Activity)?.finish() },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                ) { Text(stringResource(R.string.ui_exit)) }
-            },
-            dismissButton = {
-                TextButton(onClick = { showExitDialog = false }) { Text(stringResource(R.string.ui_cancel)) }
-            },
-            containerColor = MaterialTheme.colorScheme.surface
+        ChemConfirmDialog(
+            title = stringResource(R.string.ui_exit_chemsearch),
+            message = stringResource(R.string.ui_are_you_sure_you_want_to_exit),
+            confirmLabel = stringResource(R.string.ui_exit),
+            onConfirm = { (context as? Activity)?.finish() },
+            onDismiss = { showExitDialog = false }
         )
     }
 
@@ -786,10 +971,48 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
 
     CompositionLocalProvider(
         LocalCompactMode provides compactMode,
-        LocalReduceMotion provides reduceMotion
+        LocalReduceMotion provides reduceMotion,
+        LocalTemperatureUnit provides temperatureUnit
     ) {
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbar) },
+        snackbarHost = {
+            SnackbarHost(snackbar) { data ->
+                // Color-code feedback by severity: calm teal for "nothing found",
+                // amber for retryable request problems, red for hard failures.
+                val kind = state.errorKind
+                val (container, content) = when (kind) {
+                    com.furthersecrets.chemsearch.data.SearchErrorKind.NOT_FOUND ->
+                        MaterialTheme.colorScheme.secondaryContainer to MaterialTheme.colorScheme.onSecondaryContainer
+                    com.furthersecrets.chemsearch.data.SearchErrorKind.THROTTLED,
+                    com.furthersecrets.chemsearch.data.SearchErrorKind.TIMEOUT,
+                    com.furthersecrets.chemsearch.data.SearchErrorKind.BAD_REQUEST ->
+                        Color(0xFFFFF3D6) to Color(0xFF5B4A12)
+                    com.furthersecrets.chemsearch.data.SearchErrorKind.NETWORK,
+                    com.furthersecrets.chemsearch.data.SearchErrorKind.SERVER,
+                    com.furthersecrets.chemsearch.data.SearchErrorKind.OTHER,
+                    null ->
+                        MaterialTheme.colorScheme.errorContainer to MaterialTheme.colorScheme.onErrorContainer
+                }
+                Snackbar(
+                    containerColor = container,
+                    contentColor = content,
+                    actionContentColor = content,
+                    dismissActionContentColor = content,
+                    shape = RoundedCornerShape(14.dp)
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            data.visuals.message,
+                            color = content,
+                            modifier = Modifier.weight(1f)
+                        )
+                        IconButton(onClick = { data.dismiss() }) {
+                            Icon(Icons.Default.Close, contentDescription = null, tint = content)
+                        }
+                    }
+                }
+            }
+        },
         containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             if (showBottomNavigation) {
@@ -801,7 +1024,10 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                         val isSelected = selectedTab == item.tab
                         NavigationBarItem(
                             selected = isSelected,
-                            onClick = { navigateToTab(item.tab) },
+                            onClick = {
+                                haptics.tick()
+                                navigateToTab(item.tab)
+                            },
                             icon = {
                                 AnimatedStateIcon(
                                     selected = isSelected,
@@ -873,6 +1099,47 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     onToggleTheme = { vm.toggleTheme() }
                                 )
                             }
+                            if (OfflineTestMode.enabled && !offlineBannerDismissed) {
+                                item {
+                                    Surface(
+                                        modifier = Modifier.fillMaxWidth().padding(horizontal = pageHorizontalPadding),
+                                        shape = RoundedCornerShape(14.dp),
+                                        color = Color(0xFFF59E0B).copy(alpha = 0.12f),
+                                        border = BorderStroke(1.dp, Color(0xFFF59E0B).copy(alpha = 0.4f))
+                                    ) {
+                                        Row(
+                                            modifier = Modifier.padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(9.dp)
+                                        ) {
+                                            Icon(
+                                                Icons.Default.WifiSlash,
+                                                contentDescription = null,
+                                                tint = Color(0xFFF59E0B),
+                                                modifier = Modifier.size(16.dp)
+                                            )
+                                            Text(
+                                                stringResource(R.string.ui_offline_test_mode_active_banner),
+                                                style = MaterialTheme.typography.labelSmall,
+                                                fontWeight = FontWeight.SemiBold,
+                                                color = Color(0xFFF59E0B),
+                                                modifier = Modifier.weight(1f)
+                                            )
+                                            IconButton(
+                                                onClick = { offlineBannerDismissed = true },
+                                                modifier = Modifier.size(24.dp)
+                                            ) {
+                                                Icon(
+                                                    Icons.Default.Close,
+                                                    contentDescription = stringResource(R.string.ui_close),
+                                                    tint = Color(0xFFF59E0B),
+                                                    modifier = Modifier.size(14.dp)
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                             item {
                                 SearchBar(
                                     query = query,
@@ -908,11 +1175,22 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
 
                             if (!state.hasResult && !state.isLoading && query.isBlank()) {
                                 item {
+                                    val dailyCompound = remember {
+                                        com.furthersecrets.chemsearch.widget.CompoundOfTheDayPicker
+                                            .pick(ChemicalDatabase.load(context), com.furthersecrets.chemsearch.widget.CompoundOfTheDayPicker.dayIndex())
+                                    }
+                                    CompoundOfTheDayBanner(
+                                        compound = dailyCompound,
+                                        onOpen = { dailyCompound?.let { vm.search(it.name) } }
+                                    )
+                                }
+                                item {
                                     HomeStarterSuggestions(
                                         suggestions = homeStarterSuggestions,
                                         onSelect = { vm.search(it) }
                                     )
                                 }
+                                item { HomeExploreHeading() }
                                 item {
                                     HomeSearchQuickActions(
                                         onStructureSearch = {
@@ -924,6 +1202,20 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                             showSuggestions = false
                                             focusManager.clearFocus()
                                             navController.navigate(IsomerSearchRoute)
+                                        },
+                                        onPeriodicTable = {
+                                            showSuggestions = false
+                                            focusManager.clearFocus()
+                                            libraryInitialTab = LibraryTab.PERIODIC_TABLE
+                                            libraryTabVersion++
+                                            navigateToTab(AppTab.LIBRARY)
+                                        },
+                                        onChemicalDatabase = {
+                                            showSuggestions = false
+                                            focusManager.clearFocus()
+                                            libraryInitialTab = LibraryTab.DATABASE
+                                            libraryTabVersion++
+                                            navigateToTab(AppTab.LIBRARY)
                                         }
                                     )
                                 }
@@ -968,7 +1260,10 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                     CompoundHeader(
                                         state,
                                         isFavorite,
-                                        onToggleFavorite = { vm.toggleFavorite() },
+                                        onToggleFavorite = {
+                haptics.confirm()
+                vm.toggleFavorite()
+            },
                                         isDownloaded = isDownloaded,
                                         isSavingOffline = isSavingOffline,
                                         offlineDownloadProgress = offlineDownloadProgress,
@@ -1111,11 +1406,13 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                     )
                 }
                 composable(AppTab.LIBRARY.route) {
-                    LibraryInline(
-                        favorites = favorites,
-                        downloads = downloads,
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(
+                    key(libraryTabVersion) {
+                        LibraryInline(
+                            favorites = favorites,
+                            downloads = downloads,
+                            modifier = Modifier.fillMaxSize(),
+                            initialSection = libraryInitialTab,
+                            contentPadding = PaddingValues(
                             start = pageHorizontalPadding,
                             end = pageHorizontalPadding,
                             top = pageTopPadding,
@@ -1134,10 +1431,12 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                             openCompareTool(compounds)
                         },
                         onBuildLibraryBackupJson = { vm.buildLibraryBackupJson() },
+                        onBuildLibraryCsv = { vm.buildLibraryCsv() },
                         onImportLibraryBackup = { rawJson, replace, onResult ->
                             vm.importLibraryBackup(rawJson, replace, onResult)
                         }
-                    )
+                        )
+                    }
                 }
                 composable(AppTab.RECENT.route) {
                     LazyColumn(
@@ -1178,6 +1477,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 cacheRetention = cacheRetention,
                                 reduceMotion = reduceMotion,
                                 highContrastOutlines = highContrastOutlines,
+                                cardsEnabled = cardsEnabled,
+                                temperatureUnit = temperatureUnit,
                                 aiProvider = state.aiProvider,
                                 aiKeyStatus = aiKeyStatus,
                                 aiModelCatalogs = aiModelCatalogs,
@@ -1197,6 +1498,8 @@ fun MainScreen(vm: ChemViewModel = viewModel()) {
                                 onSetCacheRetention = { vm.setCacheRetention(it) },
                                 onToggleReduceMotion = { vm.setReduceMotion(!reduceMotion) },
                                 onToggleHighContrastOutlines = { vm.setHighContrastOutlines(!highContrastOutlines) },
+                                onToggleCardsEnabled = { vm.setCardsEnabled(!cardsEnabled) },
+                                onSetTemperatureUnit = { vm.setTemperatureUnit(it) },
                                 onSetAiProvider = { vm.setAiProvider(it) },
                                 onSetAiModel = { provider, model -> vm.setAiModel(provider, model) },
                                 onRefreshAiModels = { provider -> vm.refreshAiModels(provider) },

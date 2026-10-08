@@ -1,0 +1,25 @@
+New Features
+- Reaction Predictor: Added an offline rule engine backed by the bundled chemical database. Enter up to three reactants and get predicted products, reaction types, observations, and confidence levels.
+- Home-screen widgets: Added Compound of the Day and Random Compound widgets. The daily widget changes at midnight, while the random widget has its own refresh button.
+- Launcher shortcuts: Long-press the app icon to jump directly to Search, Library, Tools, or Settings.
+- Chemical database: Expanded from 331 to 575 substances, including amino acids, vitamins, drugs, esters, organometallics, silicates, alkaloids, and more. The 118 elements now live in the Periodic Table instead of being duplicated in the database.
+- Compound of the Day: Added a home-screen card showing the same daily compound as the widget, including its formula and typical uses.
+- Explore: Added quick actions for Structure Search, Isomer Search, Periodic Table, and Chemical Database.
+- Library export: Added CSV export alongside the existing JSON backup and import support.
+- Library actions: Long-press a saved compound to copy its formula, open it in PubChem, or remove it without opening the record.
+
+Improvements
+- New Language: Added Bengali and updated the localized strings used by the new features. Language pickers now show each language using its native name.
+- Advanced Search: Added a result-limit picker, name-contains filter, and active-filter count with one-tap clear-all.
+- Search errors: Added specific, color-coded messages for rate limiting, timeouts, bad requests, network failures, server errors, and empty results.
+- Tools: Reworked the grid to adapt from 2 columns on narrow phones to 5 on wide screens and tablets. Tool categories now use distinct accent colors and grid rows keep equal-height cards.
+- Compare Compounds: Added one-tap copying of property rows, compound chips, a clear-results action, and support for up to six compounds.
+- Structure Search: Added an at-a-glance configuration summary, similarity slider, clearer active-mode status, import-format hints, and a live formula badge.
+- Isomer Search: Added formula insights, degrees of unsaturation, result sorting, loading placeholders, and retry-aware error states.
+- Periodic Table: Added interactive category filters, brighter element tiles, gradient trend heatmaps, min/max legends, and a clickable top-five elements strip.
+- Stoichiometry: Added atom economy, per-reagent consumption and leftover amounts, improved unit conversion, and copyable analysis summaries.
+- Display: Added an app-wide temperature unit setting for K, °C, or °F.
+- Haptics: Added haptic feedback to supported interactions.
+- Interface: Standardized cards, dialogs, selection states, icon headers, and destructive actions across the app. Added a Cards setting for switching between card-based and flatter layouts.
+- About: Made the What's New section collapsible and added current-release highlights.
+- Developer tools: Added Offline Test Mode with deterministic test results, adjustable latency, simulated errors, forced failure types, and an on-screen offline banner. Also added cache inspection, device and build details, and an error-message catalog.

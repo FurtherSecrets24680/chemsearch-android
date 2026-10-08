@@ -62,6 +62,8 @@ import com.furthersecrets.chemsearch.data.AiProvider
 import com.furthersecrets.chemsearch.data.BalancedReactionResult
 import com.furthersecrets.chemsearch.data.CompoundProperty
 import com.furthersecrets.chemsearch.data.DescSource
+import com.furthersecrets.chemsearch.data.StoichiometryEngine
+import com.furthersecrets.chemsearch.data.StoichiometryEngine.StoichUnit
 import com.furthersecrets.chemsearch.data.GeminiContent
 import com.furthersecrets.chemsearch.data.GeminiPart
 import com.furthersecrets.chemsearch.data.GeminiRequest
@@ -272,7 +274,8 @@ fun ToolsScreen(
                             CategoryPill(
                                 label = stringResource(category.labelRes),
                                 selected = selectedCategory == category,
-                                onClick = { selectedCategory = category }
+                                onClick = { selectedCategory = category },
+                                accent = toolCategoryAccent(category)
                             )
                         }
                     }
@@ -293,37 +296,54 @@ fun ToolsScreen(
             } else {
                 if (toolViewMode == ToolViewMode.GRID) {
                     val cardGap = if (compact) 8.dp else 10.dp
-                    visibleTools.chunked(2).forEachIndexed { rowIndex, rowTools ->
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(cardGap)
-                        ) {
-                            rowTools.forEachIndexed { columnIndex, tool ->
-                                val index = rowIndex * 2 + columnIndex
-                                key(tool.id) {
-                                    ReorderableToolItem(
-                                        index = index,
-                                        itemCount = visibleTools.size,
-                                        columns = 2,
-                                        enabled = isReordering,
-                                        horizontalGap = cardGap,
-                                        verticalGap = if (compact) 8.dp else 12.dp,
-                                        onMove = { from, to -> moveTool(from, to) },
-                                        modifier = Modifier.weight(1f)
-                                    ) {
-                                        ToolGridCard(
-                                            icon = tool.icon,
-                                            title = stringResource(tool.titleRes),
-                                            subtitle = stringResource(tool.subtitleRes),
-                                            onClick = { selectedTool = tool.id },
-                                            enableSelect = !isReordering,
-                                            showDragHandle = isReordering,
-                                            modifier = Modifier.fillMaxWidth()
-                                        )
+                    BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+                        val gridColumns = when {
+                            maxWidth < 350.dp -> 2
+                            maxWidth < 600.dp -> 3
+                            maxWidth < 840.dp -> 4
+                            else -> 5
+                        }
+                        Column(verticalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 12.dp)) {
+                            visibleTools.chunked(gridColumns).forEachIndexed { rowIndex, rowTools ->
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(IntrinsicSize.Min),
+                                    horizontalArrangement = Arrangement.spacedBy(cardGap)
+                                ) {
+                                    rowTools.forEachIndexed { columnIndex, tool ->
+                                        val index = rowIndex * gridColumns + columnIndex
+                                        key(tool.id) {
+                                            ReorderableToolItem(
+                                                index = index,
+                                                itemCount = visibleTools.size,
+                                                columns = gridColumns,
+                                                enabled = isReordering,
+                                                horizontalGap = cardGap,
+                                                verticalGap = if (compact) 8.dp else 12.dp,
+                                                onMove = { from, to -> moveTool(from, to) },
+                                                modifier = Modifier
+                                                    .weight(1f)
+                                                    .fillMaxHeight()
+                                            ) {
+                                                ToolGridCard(
+                                                    icon = tool.icon,
+                                                    title = stringResource(tool.titleRes),
+                                                    subtitle = stringResource(tool.subtitleRes),
+                                                    accent = toolCategoryAccent(tool.category),
+                                                    onClick = { selectedTool = tool.id },
+                                                    enableSelect = !isReordering,
+                                                    showDragHandle = isReordering,
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .fillMaxHeight()
+                                                )
+                                            }
+                                        }
                                     }
+                                    if (rowTools.size == 1) Spacer(Modifier.weight(1f))
                                 }
                             }
-                            if (rowTools.size == 1) Spacer(Modifier.weight(1f))
                         }
                     }
                 } else {
@@ -343,6 +363,7 @@ fun ToolsScreen(
                                     title = stringResource(tool.titleRes),
                                     subtitle = stringResource(tool.subtitleRes),
                                     categoryLabel = stringResource(tool.category.labelRes),
+                                    accent = toolCategoryAccent(tool.category),
                                     onClick = { selectedTool = tool.id },
                                     enableSelect = !isReordering,
                                     showDragHandle = isReordering
@@ -394,6 +415,7 @@ fun ToolsScreen(
                 14 -> PhPohCalculatorTool()
                 15 -> PrecipitatePredictorTool()
                 16 -> EmpiricalFormulaFinderTool()
+                17 -> ReactionPredictorTool()
             }
         }
     }
@@ -557,48 +579,41 @@ private fun ToolGridCard(
     icon: ChemIconSpec,
     title: String,
     subtitle: String,
+    accent: Color?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enableSelect: Boolean = true,
     showDragHandle: Boolean = false
 ) {
     val compact = LocalCompactMode.current
-    Card(
+    val accentColor = accent ?: MaterialTheme.colorScheme.primary
+    ChemCardSurface(
         onClick = { if (enableSelect) onClick() },
         modifier = modifier
             .fillMaxWidth()
-            .aspectRatio(if (compact) 0.92f else 0.95f),
-        shape = RoundedCornerShape(if (compact) 16.dp else 18.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            .heightIn(min = if (compact) 132.dp else 148.dp),
+        accent = accent,
+        showAccentEdge = accent != null
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
+                .fillMaxHeight()
                 .padding(if (compact) 13.dp else 15.dp)
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .padding(end = if (showDragHandle) 18.dp else 0.dp),
-                verticalArrangement = Arrangement.SpaceBetween,
+                verticalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp),
                 horizontalAlignment = Alignment.Start
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(if (compact) 42.dp else 48.dp)
-                        .background(
-                            MaterialTheme.colorScheme.primary.copy(0.1f),
-                            RoundedCornerShape(if (compact) 11.dp else 12.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    ChemIcon(
-                        icon,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(if (compact) 22.dp else 25.dp)
-                    )
-                }
+                ChemIconBadge(
+                    icon = icon,
+                    accent = accentColor,
+                    badgeSize = if (compact) 42.dp else 48.dp,
+                    iconSize = if (compact) 22.dp else 25.dp
+                )
                 Column(verticalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 5.dp)) {
                     Text(
                         title,
@@ -632,12 +647,23 @@ private fun ToolGridCard(
     }
 }
 
+/** Accent color for a tool category; null for ALL (falls back to theme primary). */
+@Composable
+internal fun toolCategoryAccent(category: ToolCategory): Color? = when (category) {
+    ToolCategory.ALL -> null
+    ToolCategory.VISUALIZE -> Color(0xFF61AFEF)
+    ToolCategory.CALCULATORS -> Color(0xFF56B6C2)
+    ToolCategory.REACTIONS -> Color(0xFFE5C07B)
+    ToolCategory.STOICHIOMETRY -> Color(0xFF98C379)
+}
+
 @Composable
 private fun ToolCard(
     icon: ChemIconSpec,
     title: String,
     subtitle: String,
     categoryLabel: String,
+    accent: Color?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enableSelect: Boolean = true,
@@ -649,35 +675,24 @@ private fun ToolCard(
     onMoveDown: () -> Unit = {}
 ) {
     val compact = LocalCompactMode.current
-    Card(
+    val accentColor = accent ?: MaterialTheme.colorScheme.primary
+    ChemCardSurface(
         onClick = { if (enableSelect) onClick() },
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(if (compact) 14.dp else 16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
+        accent = accent,
+        showAccentEdge = accent != null
     ) {
         Row(
             modifier = Modifier.padding(if (compact) 12.dp else 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(if (compact) 10.dp else 14.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .size(if (compact) 44.dp else 52.dp)
-                    .background(
-                        MaterialTheme.colorScheme.primary.copy(0.1f),
-                        RoundedCornerShape(if (compact) 10.dp else 12.dp)
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                ChemIcon(
-                    icon,
-                    null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(if (compact) 22.dp else 26.dp)
-                )
-            }
+            ChemIconBadge(
+                icon = icon,
+                accent = accentColor,
+                badgeSize = if (compact) 44.dp else 52.dp,
+                iconSize = if (compact) 22.dp else 26.dp
+            )
 
             Column(
                 modifier = Modifier.weight(1f),
@@ -688,7 +703,7 @@ private fun ToolCard(
                     style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.SemiBold
                 )
-                ToolCategoryIndicatorPill(categoryLabel)
+                ToolCategoryIndicatorPill(categoryLabel, accent)
                 Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.5f))
             }
 
@@ -742,10 +757,11 @@ private fun ToolCard(
 }
 
 @Composable
-private fun CategoryPill(label: String, selected: Boolean, onClick: () -> Unit) {
+private fun CategoryPill(label: String, selected: Boolean, onClick: () -> Unit, accent: Color? = null) {
     val compact = LocalCompactMode.current
-    val background = if (selected) MaterialTheme.colorScheme.primary.copy(0.12f) else MaterialTheme.colorScheme.surfaceVariant
-    val border = if (selected) MaterialTheme.colorScheme.primary.copy(0.35f) else MaterialTheme.colorScheme.outline.copy(0.2f)
+    val pillColor = if (selected) (accent ?: MaterialTheme.colorScheme.primary) else MaterialTheme.colorScheme.onSurface.copy(0.55f)
+    val background = if (selected) pillColor.copy(0.12f) else MaterialTheme.colorScheme.surfaceVariant
+    val border = if (selected) pillColor.copy(0.35f) else MaterialTheme.colorScheme.outline.copy(0.2f)
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(999.dp),
@@ -757,25 +773,26 @@ private fun CategoryPill(label: String, selected: Boolean, onClick: () -> Unit) 
             modifier = Modifier.padding(horizontal = if (compact) 10.dp else 12.dp, vertical = if (compact) 5.dp else 6.dp),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
-            color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.7f)
+            color = pillColor
         )
     }
 }
 
 @Composable
-private fun ToolCategoryIndicatorPill(label: String) {
+private fun ToolCategoryIndicatorPill(label: String, accent: Color? = null) {
     val compact = LocalCompactMode.current
+    val pillColor = accent ?: MaterialTheme.colorScheme.primary
     Surface(
         shape = RoundedCornerShape(999.dp),
-        color = MaterialTheme.colorScheme.primary.copy(0.12f),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.25f))
+        color = pillColor.copy(0.12f),
+        border = BorderStroke(1.dp, pillColor.copy(0.25f))
     ) {
         Text(
             label,
             modifier = Modifier.padding(horizontal = if (compact) 7.dp else 8.dp, vertical = if (compact) 2.dp else 3.dp),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.primary
+            color = pillColor
         )
     }
 }
@@ -839,8 +856,8 @@ fun SdfViewerTool(isDark: Boolean) {
         if (sdfContent == null) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.5f))
+                shape = chemCardShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surfaceVariant.copy(0.5f)))
             ) {
                 Column(
                     modifier = Modifier
@@ -876,8 +893,8 @@ fun SdfViewerTool(isDark: Boolean) {
         } else {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                shape = chemCardShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surface))
             ) {
                 Row(
                     modifier = Modifier.padding(12.dp),
@@ -894,8 +911,8 @@ fun SdfViewerTool(isDark: Boolean) {
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                shape = chemCardShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surface))
             ) {
                 Box(modifier = Modifier.fillMaxWidth().height(360.dp)) {
                     Viewer3D(cid = -1L, sdfData = sdfContent!!, isDark = isDark)
@@ -905,8 +922,8 @@ fun SdfViewerTool(isDark: Boolean) {
 
         if (error != null) {
             Card(
-                shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer.copy(0.5f))
+                shape = chemCardShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.errorContainer.copy(0.5f)))
             ) {
                 Text(error!!, modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
             }
@@ -1025,11 +1042,11 @@ fun MolarMassCalculator() {
         result?.let { calc ->
             if (calc.errorRes != null) {
                 Card(
-                    shape = RoundedCornerShape(12.dp),
+                    shape = chemCardShape(12.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer.copy(
+                        containerColor = chemCardColor(MaterialTheme.colorScheme.errorContainer.copy(
                             0.4f
-                        )
+                        ))
                     )
                 ) {
                     Text(
@@ -1041,8 +1058,8 @@ fun MolarMassCalculator() {
                 }
             } else {
                 Card(
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                    shape = chemCardShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surface))
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp),
@@ -1244,13 +1261,13 @@ fun OxidationStateFinder() {
 
         result?.let { res ->
             if (res.errorRes != null) {
-                Card(shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer.copy(0.4f))) {
+                Card(shape = chemCardShape(12.dp), colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.errorContainer.copy(0.4f)))) {
                     Text(stringResource(res.errorRes, *res.errorArgs.toTypedArray()), modifier = Modifier.padding(14.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                 }
             } else {
                 Card(
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                    shape = chemCardShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surface))
                 ) {
                     Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
@@ -1498,15 +1515,15 @@ fun SmilesVisualizer(isDark: Boolean) {
         }
 
         if (error != null) {
-            Card(shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer.copy(0.4f))) {
+            Card(shape = chemCardShape(12.dp), colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.errorContainer.copy(0.4f)))) {
                 Text(error!!, modifier = Modifier.padding(14.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
             }
         }
 
         if (cidResult != null) {
             Card(
-                shape = RoundedCornerShape(14.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                shape = chemCardShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surface))
             ) {
                 Row(
                     modifier = Modifier.padding(12.dp),
@@ -1527,8 +1544,8 @@ fun SmilesVisualizer(isDark: Boolean) {
             }
 
             Card(
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                shape = chemCardShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surface))
             ) {
                 Column {
                     Row(
@@ -1813,8 +1830,13 @@ fun ReactionBalancer() {
             }
         }
 
+        val haptics = rememberChemHaptics()
         Button(
-            onClick = { focusManager.clearFocus(); result = balanceReaction(input.text.replace("⟶", "->").replace("→", "->")) },
+            onClick = {
+                haptics.action()
+                focusManager.clearFocus()
+                result = balanceReaction(input.text.replace("⟶", "->").replace("→", "->"))
+            },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
             enabled = input.text.isNotBlank()
@@ -1826,13 +1848,13 @@ fun ReactionBalancer() {
 
         result?.let { res ->
             if (res.errorRes != null) {
-                Card(shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer.copy(0.4f))) {
+                Card(shape = chemCardShape(12.dp), colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.errorContainer.copy(0.4f)))) {
                     Text(stringResource(res.errorRes, *res.errorArgs.toTypedArray()), modifier = Modifier.padding(14.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                 }
             } else {
                 Card(
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                    shape = chemCardShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surface))
                 ) {
                     Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
 
@@ -2240,6 +2262,22 @@ fun CompareCompoundsTool(
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
     val compact = LocalCompactMode.current
+    val clipboard = remember { context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager }
+    var copiedLabel by remember { mutableStateOf<Int?>(null) }
+
+    fun copyCell(label: String, value: String) {
+        clipboard.setPrimaryClip(
+            android.content.ClipData.newPlainText(label, value)
+        )
+        android.widget.Toast.makeText(context, R.string.ui_copied_to_clipboard, android.widget.Toast.LENGTH_SHORT).show()
+    }
+
+    LaunchedEffect(copiedLabel) {
+        if (copiedLabel != null) {
+            kotlinx.coroutines.delay(1600)
+            copiedLabel = null
+        }
+    }
 
     fun runCompare(fields: List<TextFieldValue> = compoundFields) {
         val queries = fields
@@ -2312,9 +2350,23 @@ fun CompareCompoundsTool(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(stringResource(R.string.ui_compare_compounds), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-            IconButton(onClick = { runCompare() }, enabled = !isLoading, modifier = Modifier.size(34.dp)) {
-                Icon(Icons.AutoMirrored.Filled.CompareArrows, contentDescription = stringResource(R.string.ui_compare), tint = MaterialTheme.colorScheme.primary)
+            Column(modifier = Modifier.weight(1f)) {
+                Text(stringResource(R.string.ui_compare_compounds), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text(
+                    stringResource(R.string.ui_compare_subtitle),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
+                )
+            }
+            if (results.isNotEmpty() && !isLoading) {
+                TextButton(onClick = {
+                    results = emptyList()
+                    error = null
+                }) {
+                    Icon(Icons.Default.Close, contentDescription = null, modifier = Modifier.size(14.dp))
+                    Spacer(Modifier.width(4.dp))
+                    Text(stringResource(R.string.ui_clear_results))
+                }
             }
         }
 
@@ -2413,12 +2465,43 @@ fun CompareCompoundsTool(
         }
 
         if (results.isNotEmpty()) {
+            Row(
+                modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                AssistChip(
+                    onClick = {},
+                    colors = chemAssistChipColors(),
+                    border = chemAssistChipBorder(),
+                    label = {
+                        Text(
+                            stringResource(R.string.ui_comparing_n_compounds, results.size),
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1
+                        )
+                    }
+                )
+                results.forEach { compound ->
+                    AssistChip(
+                        onClick = { onSearchCompound(compound.cid.toString()) },
+                        colors = chemAssistChipColors(),
+                        border = chemAssistChipBorder(),
+                        label = { Text(compound.name, maxLines = 1, overflow = TextOverflow.Ellipsis) }
+                    )
+                }
+            }
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 results.forEach { compound ->
                     CompareCompoundCard(compound = compound, onOpen = { onSearchCompound(compound.cid.toString()) })
                 }
             }
-            CompareRows(results)
+            CompareRows(
+                results = results,
+                copiedLabel = copiedLabel,
+                onCopied = { copiedLabel = it },
+                onCopyCell = ::copyCell
+            )
         }
     }
 }
@@ -2434,9 +2517,9 @@ private fun CompareCompoundCard(
     val compact = LocalCompactMode.current
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.14f))
+        shape = chemCardShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surface)),
+        border = chemCardBorder(MaterialTheme.colorScheme.outline.copy(0.14f))
     ) {
         Row(
             modifier = Modifier.padding(if (compact) 10.dp else 12.dp),
@@ -2489,7 +2572,12 @@ private fun CompareCompoundCard(
 }
 
 @Composable
-private fun CompareRows(results: List<CompareCompound>) {
+private fun CompareRows(
+    results: List<CompareCompound>,
+    copiedLabel: Int?,
+    onCopied: (Int?) -> Unit,
+    onCopyCell: (String, String) -> Unit
+) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(stringResource(R.string.ui_comparison),
             style = MaterialTheme.typography.labelSmall,
@@ -2498,28 +2586,84 @@ private fun CompareRows(results: List<CompareCompound>) {
             color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
         )
         CompareSectionLabel(R.string.ui_core)
-        CompareInfoRow(R.string.ui_formula, results) { toSubscriptFormula(it.formula.ifBlank { "—" }) }
-        CompareInfoRow(R.string.ui_molar_mass_label, results) {
+        CompareInfoRow(
+            R.string.ui_formula, results,
+            highlightRes = R.string.ui_formula, copiedLabel = copiedLabel, onCopied = onCopied,
+            onCopyCell = onCopyCell
+        ) { toSubscriptFormula(it.formula.ifBlank { "—" }) }
+        CompareInfoRow(
+            R.string.ui_molar_mass_label, results,
+            highlightRes = R.string.ui_molar_mass_label, copiedLabel = copiedLabel, onCopied = onCopied,
+            onCopyCell = onCopyCell
+        ) {
             it.molecularWeight.takeIf { value -> value.isNotBlank() }?.let { value -> "$value g/mol" } ?: "—"
         }
-        CompareInfoRow(R.string.ui_compare_iupac_name, results, monospace = true) { it.iupacName.ifBlank { "—" } }
+        CompareInfoRow(
+            R.string.ui_compare_iupac_name, results, monospace = true,
+            highlightRes = R.string.ui_compare_iupac_name, copiedLabel = copiedLabel, onCopied = onCopied,
+            onCopyCell = onCopyCell
+        ) { it.iupacName.ifBlank { "—" } }
 
         CompareSectionLabel(R.string.ui_identifiers)
-        CompareInfoRow(R.string.ui_info_cid, results, monospace = true) { it.cid.toString() }
-        CompareInfoRow(R.string.ui_cas, results, monospace = true) { it.casNumber ?: "—" }
-        CompareInfoRow(R.string.ui_info_smiles, results, monospace = true) { it.smiles.ifBlank { "—" } }
-        CompareInfoRow(R.string.ui_connectivity_smiles, results, monospace = true) { it.connectivitySmiles.ifBlank { "—" } }
-        CompareInfoRow(R.string.ui_inchikey_label, results, monospace = true) { it.inchiKey.ifBlank { "—" } }
-        CompareInfoRow(R.string.ui_inchi_label, results, monospace = true) { it.inchi.ifBlank { "—" } }
+        CompareInfoRow(
+            R.string.ui_info_cid, results, monospace = true,
+            highlightRes = R.string.ui_info_cid, copiedLabel = copiedLabel, onCopied = onCopied,
+            onCopyCell = onCopyCell
+        ) { it.cid.toString() }
+        CompareInfoRow(
+            R.string.ui_cas, results, monospace = true,
+            highlightRes = R.string.ui_cas, copiedLabel = copiedLabel, onCopied = onCopied,
+            onCopyCell = onCopyCell
+        ) { it.casNumber ?: "—" }
+        CompareInfoRow(
+            R.string.ui_info_smiles, results, monospace = true,
+            highlightRes = R.string.ui_info_smiles, copiedLabel = copiedLabel, onCopied = onCopied,
+            onCopyCell = onCopyCell
+        ) { it.smiles.ifBlank { "—" } }
+        CompareInfoRow(
+            R.string.ui_connectivity_smiles, results, monospace = true,
+            highlightRes = R.string.ui_connectivity_smiles, copiedLabel = copiedLabel, onCopied = onCopied,
+            onCopyCell = onCopyCell
+        ) { it.connectivitySmiles.ifBlank { "—" } }
+        CompareInfoRow(
+            R.string.ui_inchikey_label, results, monospace = true,
+            highlightRes = R.string.ui_inchikey_label, copiedLabel = copiedLabel, onCopied = onCopied,
+            onCopyCell = onCopyCell
+        ) { it.inchiKey.ifBlank { "—" } }
+        CompareInfoRow(
+            R.string.ui_inchi_label, results, monospace = true,
+            highlightRes = R.string.ui_inchi_label, copiedLabel = copiedLabel, onCopied = onCopied,
+            onCopyCell = onCopyCell
+        ) { it.inchi.ifBlank { "—" } }
 
         CompareSectionLabel(R.string.ui_structure)
-        CompareInfoRow(R.string.ui_charge, results) { it.charge?.toString() ?: "—" }
-        CompareInfoRow(R.string.ui_covalent_units, results) { it.covalentUnitCount?.toString() ?: "—" }
-        CompareInfoRow(R.string.ui_atom_count, results) { it.atomCount?.toString() ?: "—" }
-        CompareInfoRow(R.string.ui_bond_count, results) { it.bondCount?.toString() ?: "—" }
+        CompareInfoRow(
+            R.string.ui_charge, results,
+            highlightRes = R.string.ui_charge, copiedLabel = copiedLabel, onCopied = onCopied,
+            onCopyCell = onCopyCell
+        ) { it.charge?.toString() ?: "—" }
+        CompareInfoRow(
+            R.string.ui_covalent_units, results,
+            highlightRes = R.string.ui_covalent_units, copiedLabel = copiedLabel, onCopied = onCopied,
+            onCopyCell = onCopyCell
+        ) { it.covalentUnitCount?.toString() ?: "—" }
+        CompareInfoRow(
+            R.string.ui_atom_count, results,
+            highlightRes = R.string.ui_atom_count, copiedLabel = copiedLabel, onCopied = onCopied,
+            onCopyCell = onCopyCell
+        ) { it.atomCount?.toString() ?: "—" }
+        CompareInfoRow(
+            R.string.ui_bond_count, results,
+            highlightRes = R.string.ui_bond_count, copiedLabel = copiedLabel, onCopied = onCopied,
+            onCopyCell = onCopyCell
+        ) { it.bondCount?.toString() ?: "—" }
 
         CompareSectionLabel(R.string.ui_description_safety)
-        CompareInfoRow(R.string.ui_safety, results) {
+        CompareInfoRow(
+            R.string.ui_safety, results,
+            highlightRes = R.string.ui_safety, copiedLabel = copiedLabel, onCopied = onCopied,
+            onCopyCell = onCopyCell
+        ) {
             it.ghsData?.signalWord ?: it.ghsData?.hazardStatements?.firstOrNull() ?: "—"
         }
         val sourceLabelRes = results.firstOrNull()?.descriptionSource?.compareLabelRes()
@@ -2547,15 +2691,63 @@ private fun CompareInfoRow(
     labelRes: Int,
     compounds: List<CompareCompound>,
     monospace: Boolean = false,
+    highlightRes: Int = labelRes,
+    copiedLabel: Int? = null,
+    onCopied: (Int?) -> Unit = {},
+    onCopyCell: (String, String) -> Unit = { _, _ -> },
     valueFor: (CompareCompound) -> String
 ) {
+    val isCopied = copiedLabel == highlightRes
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        Text(
-            stringResource(labelRes),
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface.copy(0.62f)
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                stringResource(labelRes),
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Bold,
+                color = if (isCopied) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.62f)
+            )
+            if (compounds.any { valueFor(it).isNotBlank() && valueFor(it) != "—" }) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (isCopied) {
+                        Icon(
+                            Icons.Default.Check,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(13.dp)
+                        )
+                        Spacer(Modifier.width(3.dp))
+                        Text(
+                            stringResource(R.string.ui_copied_short),
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    IconButton(
+                        onClick = {
+                            val text = compounds.mapNotNull { compound ->
+                                valueFor(compound).takeIf { it.isNotBlank() && it != "—" }
+                                    ?.let { "${compound.name}: $it" }
+                            }.joinToString(separator = "\n")
+                            if (text.isNotBlank()) onCopyCell(labelRes.toString(), text)
+                            onCopied(highlightRes)
+                        },
+                        modifier = Modifier.size(26.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.ContentCopy,
+                            contentDescription = stringResource(R.string.ui_copy_row_values),
+                            tint = MaterialTheme.colorScheme.onSurface.copy(0.5f),
+                            modifier = Modifier.size(14.dp)
+                        )
+                    }
+                }
+            }
+        }
         compounds.forEach { compound ->
             ExpandableCompareValueCard(
                 compoundName = compound.name,
@@ -2827,8 +3019,8 @@ private fun FormulaExplanationCard(
     explanation: String
 ) {
     Card(
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.4f))
+        shape = chemCardShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surfaceVariant.copy(0.4f)))
     ) {
         Column(
             modifier = Modifier.padding(12.dp),
@@ -3381,17 +3573,6 @@ private enum class StoichiometryMode {
     SCALING
 }
 
-private enum class StoichUnit(val label: String) {
-    GRAMS("g"),
-    KILOGRAMS("kg"),
-    MOLES("mol"),
-    MILLIMOLES("mmol"),
-    LITERS_GAS("L gas"),
-    MILLILITERS_GAS("mL gas"),
-    MOLARITY("M (mol/L)"),
-    PARTICLES("particles x10^23")
-}
-
 private data class StoichReactantInput(
     val formula: String,
     val coeff: Int,
@@ -3412,6 +3593,48 @@ private fun parsePositiveNumber(raw: String): Double? {
     val cleaned = raw.trim().replace(",", "")
     val value = cleaned.toDoubleOrNull() ?: return null
     return if (value > 0) value else null
+}
+
+/** Converts an amount expressed in `unit` to moles (no purity applied). Returns null when the unit needs data that is missing. */
+private fun stoichAmountToMoles(amount: Double, unit: StoichUnit, molarMass: Double?, molarVolume: Double): Double? =
+    StoichiometryEngine.amountToMoles(amount, unit, molarMass, molarVolume)
+
+/** Converts moles into an amount in `unit`. Returns null when the unit needs data that is missing. */
+private fun stoichMolesToAmount(moles: Double, unit: StoichUnit, molarMass: Double?, molarVolume: Double): Double? =
+    StoichiometryEngine.molesToAmount(moles, unit, molarMass, molarVolume)
+
+/**
+ * Re-picks the unit for one of the stoichiometry amount fields, converting the
+ * existing quantity so the user does not have to retype it. Switching to or
+ * from molarity keeps the value only when the other field allows computing
+ * moles; otherwise the fields are left untouched for manual entry.
+ */
+private fun convertStoichFields(
+    amount: String,
+    molarity: String,
+    volume: String,
+    from: StoichUnit,
+    to: StoichUnit,
+    molarMass: Double?,
+    molarVolume: Double
+): Triple<String, String, String> {
+    if (from == to) return Triple(amount, molarity, volume)
+    if (from == StoichUnit.MOLARITY) {
+        val m = parsePositiveNumber(molarity)
+        val v = parsePositiveNumber(volume)
+        if (m == null || v == null) return Triple(amount, molarity, volume)
+        val moles = m * (v / 1000.0)
+        val converted = stoichMolesToAmount(moles, to, molarMass, molarVolume)
+            ?: return Triple(amount, molarity, volume)
+        return Triple(StoichiometryEngine.formatConversion(converted), "", "")
+    }
+    if (to == StoichUnit.MOLARITY) return Triple(amount, molarity, volume)
+    val value = parsePositiveNumber(amount) ?: return Triple(amount, molarity, volume)
+    val moles = stoichAmountToMoles(value, from, molarMass, molarVolume)
+        ?: return Triple(amount, molarity, volume)
+    val converted = stoichMolesToAmount(moles, to, molarMass, molarVolume)
+        ?: return Triple(amount, molarity, volume)
+    return Triple(StoichiometryEngine.formatConversion(converted), molarity, volume)
 }
 
 private fun ratioToString(numerator: Int, denominator: Int): String {
@@ -3477,6 +3700,38 @@ private fun computeMolesForInput(
     return StoichMoleInfo(moles, null, purityApplied = purity != null)
 }
 
+/** Builds a plain-text summary of the limiting-reagent analysis for sharing/copying. */
+private fun buildStoichSummaryText(
+    equation: String,
+    result: BalancerResult,
+    analysis: StoichiometryEngine.Analysis,
+    molarMasses: Map<String, Double?>
+): String = buildString {
+    if (equation.isNotBlank()) {
+        appendLine("Equation: $equation")
+    }
+    appendLine("Limiting reagent: ${analysis.limitingFormula} (${formatNumber(analysis.limitingMoles)} mol")
+    analysis.limitingGrams?.let { append(" = ${formatNumber(it, 3)} g") }
+    appendLine(")")
+    appendLine("Reaction extent: ${formatNumber(analysis.extent)} mol")
+    analysis.atomEconomyPercent?.let { appendLine("Atom economy: ${formatNumber(it, 1)}%") }
+    appendLine()
+    appendLine("Reactants:")
+    analysis.reactants.forEach { r ->
+        appendLine(
+            "  ${r.formula}: ${formatNumber(r.availableMoles, 3)} mol available, " +
+                "${formatNumber(r.consumedMoles, 3)} consumed (${formatNumber(r.consumedFraction * 100.0, 1)}%), " +
+                "${formatNumber(r.leftoverMoles, 3)} left"
+        )
+    }
+    appendLine()
+    appendLine("Theoretical products:")
+    analysis.products.forEach { p ->
+        val grams = p.grams?.let { " = ${formatNumber(it, 3)} g" } ?: ""
+        appendLine("  ${p.formula}: ${formatNumber(p.moles, 3)} mol$grams")
+    }
+}
+
 @Composable
 private fun StoichUnitDropdown(
     unit: StoichUnit,
@@ -3532,7 +3787,12 @@ private fun StoichiometryCalculator(
     var actualUnit by remember { mutableStateOf(StoichUnit.GRAMS) }
     var actualMolarity by remember { mutableStateOf("") }
     var actualVolume by remember { mutableStateOf("") }
+    var examplePrefill by remember { mutableStateOf<Map<String, String>?>(null) }
     val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
+    val haptics = rememberChemHaptics()
+    val clipboard = remember { context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager }
+    val summaryLabel = stringResource(R.string.ui_stoichiometry_summary)
     val showReactantInputs = mode != StoichiometryMode.SCALING
     val showSummary = mode == StoichiometryMode.LIMITING || mode == StoichiometryMode.YIELD
     val showYield = mode == StoichiometryMode.YIELD
@@ -3544,6 +3804,15 @@ private fun StoichiometryCalculator(
         "N2 + H2 ⟶ NH3",
         "CaCO3 ⟶ CaO + CO2",
         "Fe2O3 + CO ⟶ Fe + CO2"
+    )
+
+    // Ready-to-tap example amounts so students can see a full analysis instantly.
+    val exampleAmounts: Map<String, Map<String, String>> = mapOf(
+        "H2 + O2 ⟶ H2O" to mapOf("H2" to "4.0", "O2" to "1.0"),
+        "C3H8 + O2 ⟶ CO2 + H2O" to mapOf("C3H8" to "11.0", "O2" to "40.0"),
+        "N2 + H2 ⟶ NH3" to mapOf("N2" to "2.8", "H2" to "9.0"),
+        "CaCO3 ⟶ CaO + CO2" to mapOf("CaCO3" to "25.0"),
+        "Fe2O3 + CO ⟶ Fe + CO2" to mapOf("Fe2O3" to "16.0", "CO" to "8.4")
     )
 
     var showInfo by remember { mutableStateOf(false) }
@@ -3568,10 +3837,18 @@ private fun StoichiometryCalculator(
             reactantInputs.clear()
         } else {
             val existing = reactantInputs.associateBy { it.formula }
+            val prefill = examplePrefill
             reactantInputs.clear()
             result?.reactants?.forEach { (formula, coeff) ->
                 val prev = existing[formula]
-                reactantInputs.add(prev?.copy(coeff = coeff) ?: StoichReactantInput(formula = formula, coeff = coeff))
+                val prefilledAmount = prefill?.get(formula)
+                reactantInputs.add(
+                    when {
+                        prev != null -> prev.copy(coeff = coeff)
+                        prefilledAmount != null -> StoichReactantInput(formula = formula, coeff = coeff, amount = prefilledAmount)
+                        else -> StoichReactantInput(formula = formula, coeff = coeff)
+                    }
+                )
             }
             val productCount = result?.products?.size ?: 0
             if (selectedProductIndex >= productCount) selectedProductIndex = 0
@@ -3710,13 +3987,13 @@ private fun StoichiometryCalculator(
 
         result?.let { res ->
             if (res.errorRes != null) {
-                Card(shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer.copy(0.4f))) {
+                Card(shape = chemCardShape(12.dp), colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.errorContainer.copy(0.4f)))) {
                     Text(stringResource(res.errorRes, *res.errorArgs.toTypedArray()), modifier = Modifier.padding(14.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                 }
             } else {
                 Card(
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                    shape = chemCardShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surface))
                 ) {
                     Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         Text(stringResource(R.string.ui_balanced_equation), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
@@ -3788,8 +4065,8 @@ private fun StoichiometryCalculator(
                         val molarMass = molarMassMap[input.formula]
                         val info = reactantMoles.getOrNull(index)?.second
                         Card(
-                            shape = RoundedCornerShape(16.dp),
-                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                            shape = chemCardShape(16.dp),
+                            colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surface))
                         ) {
                             Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                                 Row(
@@ -3836,7 +4113,16 @@ private fun StoichiometryCalculator(
                                     StoichUnitDropdown(
                                         unit = input.unit,
                                         onUnitChange = { newUnit ->
-                                            reactantInputs[index] = input.copy(unit = newUnit)
+                                            val (newAmount, newMolarity, newVolume) = convertStoichFields(
+                                                input.amount, input.molarity, input.volume,
+                                                input.unit, newUnit, molarMass, molarVolume
+                                            )
+                                            reactantInputs[index] = input.copy(
+                                                unit = newUnit,
+                                                amount = newAmount,
+                                                molarity = newMolarity,
+                                                volume = newVolume
+                                            )
                                         }
                                     )
                                 }
@@ -3904,32 +4190,44 @@ private fun StoichiometryCalculator(
                 }
 
                 val allReactantsReady = reactantMoles.isNotEmpty() && reactantMoles.all { it.second.moles != null && it.second.error == null }
-                val limitingData = if (allReactantsReady) {
-                    val minEntry = reactantMoles.minBy { (input, info) -> info.moles!! / input.coeff }
-                    val extent = minEntry.second.moles!! / minEntry.first.coeff
-                    Triple(minEntry, extent, minEntry.first.coeff)
+                val limitingAnalysis = if (allReactantsReady) {
+                    StoichiometryEngine.analyze(
+                        reactants = res.reactants,
+                        products = res.products,
+                        reactantAmounts = reactantMoles.associate { (input, info) ->
+                            input.formula to StoichiometryEngine.SpeciesAmount(
+                                moles = info.moles!!,
+                                grams = molarMassMap[input.formula]?.let { it * info.moles }
+                            )
+                        },
+                        molarMasses = molarMassMap
+                    )
                 } else {
                     null
+                }
+                // Backwards-compatible view over the engine result for the yield/scaling sections.
+                val limitingData = limitingAnalysis?.let { analysis ->
+                    val limitingInput = reactantInputs.first { it.formula == analysis.limitingFormula }
+                    val limitingInfo = reactantMoles.first { (input, _) -> input.formula == analysis.limitingFormula }.second
+                    Triple(limitingInput to limitingInfo, analysis.extent, reactantInputs.first { it.formula == analysis.limitingFormula }.coeff)
                 }
 
                 if (showSummary) {
                     Card(
-                        shape = RoundedCornerShape(16.dp),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                        shape = chemCardShape(16.dp),
+                        colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surface))
                     ) {
                         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                             Text(stringResource(R.string.ui_stoichiometry_summary), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
 
-                            if (limitingData == null) {
+                            if (limitingAnalysis == null) {
                                 Text(stringResource(R.string.ui_enter_valid_amounts_for_all_reactants_to_determine),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
                                 )
                             } else {
-                                val (limitingEntry, extent, limitingCoeff) = limitingData
-                                val limitingFormula = limitingEntry.first.formula
-                                val limitingMoles = limitingEntry.second.moles ?: 0.0
-                                val limitingMass = molarMassMap[limitingFormula]?.let { it * limitingMoles }
+                                val analysis = limitingAnalysis
+                                val limitingFormula = analysis.limitingFormula
 
                                 Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                                     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -3937,14 +4235,67 @@ private fun StoichiometryCalculator(
                                         Text(toSubscriptFormula(limitingFormula), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, fontFamily = FontFamily.Monospace)
                                     }
                                     Column(horizontalAlignment = Alignment.End) {
-                                        Text("${formatNumber(limitingMoles)} mol", style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
-                                        if (limitingMass != null) {
-                                            Text("${formatNumber(limitingMass, 3)} g", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
+                                        Text("${formatNumber(analysis.limitingMoles)} mol", style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
+                                        if (analysis.limitingGrams != null) {
+                                            Text("${formatNumber(analysis.limitingGrams, 3)} g", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
                                         }
                                     }
                                 }
 
-                                Text(stringResource(R.string.ui_reaction_extent, formatNumber(extent)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.65f))
+                                Text(stringResource(R.string.ui_reaction_extent, formatNumber(analysis.extent)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(0.65f))
+
+                                if (analysis.atomEconomyPercent != null) {
+                                    Text(
+                                        stringResource(R.string.ui_atom_economy_label, formatNumber(analysis.atomEconomyPercent, 1)),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        fontWeight = FontWeight.SemiBold,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+
+                                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
+                                Text(stringResource(R.string.ui_reactant_amounts), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
+
+                                analysis.reactants.forEach { consumed ->
+                                    Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                                if (consumed.isLimiting) {
+                                                    Surface(shape = RoundedCornerShape(5.dp), color = MaterialTheme.colorScheme.primary.copy(0.15f)) {
+                                                        Text(
+                                                            stringResource(R.string.ui_limiting_reagent_label),
+                                                            modifier = Modifier.padding(horizontal = 5.dp, vertical = 1.dp),
+                                                            style = MaterialTheme.typography.labelSmall,
+                                                            color = MaterialTheme.colorScheme.primary
+                                                        )
+                                                    }
+                                                }
+                                                Text(toSubscriptFormula(consumed.formula), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
+                                            }
+                                            Text(
+                                                stringResource(R.string.ui_consumption_label, formatNumber(consumed.consumedFraction * 100.0, 1)),
+                                                style = MaterialTheme.typography.bodySmall,
+                                                fontFamily = FontFamily.Monospace,
+                                                color = if (consumed.isLimiting) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                                            )
+                                        }
+                                        LinearProgressIndicator(
+                                            progress = { consumed.consumedFraction.toFloat() },
+                                            modifier = Modifier.fillMaxWidth().height(5.dp).clip(RoundedCornerShape(3.dp)),
+                                            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                                            color = if (consumed.isLimiting) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
+                                        )
+                                        Text(
+                                            "${formatNumber(consumed.consumedMoles, 3)} → ${formatNumber(consumed.leftoverMoles, 3)} mol" +
+                                                (consumed.leftoverGrams?.let { "  (${formatNumber(it, 2)} g left)" } ?: ""),
+                                            style = MaterialTheme.typography.labelSmall,
+                                            fontFamily = FontFamily.Monospace,
+                                            color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
+                                        )
+                                    }
+                                }
+
+                                val limitingCoeff = res.reactants.first { it.first == analysis.limitingFormula }.second
 
                                 HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
                                 Text(stringResource(R.string.ui_mole_ratios_relative_to_limiting_reagent), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
@@ -3960,7 +4311,7 @@ private fun StoichiometryCalculator(
                                 Text(stringResource(R.string.ui_theoretical_yield), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
 
                                 res.products.forEach { (formula, coeff) ->
-                                    val moles = extent * coeff
+                                    val moles = analysis.extent * coeff
                                     val mass = molarMassMap[formula]?.let { it * moles }
                                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                                         Text(toSubscriptFormula(formula), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
@@ -3976,24 +4327,27 @@ private fun StoichiometryCalculator(
                                 }
 
                                 HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.15f))
-                                Text(stringResource(R.string.ui_excess_reactants), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
-
-                                reactantMoles.forEach { (input, info) ->
-                                    val available = info.moles ?: return@forEach
-                                    val used = extent * input.coeff
-                                    val leftover = (available - used).coerceAtLeast(0.0)
-                                    val leftoverMass = molarMassMap[input.formula]?.let { it * leftover }
-                                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                        Text(toSubscriptFormula(input.formula), style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
-                                        Column(horizontalAlignment = Alignment.End) {
-                                            Text("${formatNumber(leftover)} mol", style = MaterialTheme.typography.bodySmall, fontFamily = FontFamily.Monospace)
-                                            Text(
-                                                leftoverMass?.let { "${formatNumber(it, 3)} g" } ?: "g N/A",
-                                                style = MaterialTheme.typography.bodySmall,
-                                                color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                                TextButton(
+                                    onClick = {
+                                        haptics.action()
+                                        clipboard.setPrimaryClip(
+                                            android.content.ClipData.newPlainText(
+                                                summaryLabel,
+                                                buildStoichSummaryText(equation.text, res, analysis, molarMassMap)
                                             )
-                                        }
-                                    }
+                                        )
+                                        android.widget.Toast.makeText(
+                                            context,
+                                            context.getString(R.string.ui_copied_summary),
+                                            android.widget.Toast.LENGTH_SHORT
+                                        ).show()
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentPadding = PaddingValues(horizontal = 8.dp)
+                                ) {
+                                    Icon(Icons.Default.ContentCopy, null, modifier = Modifier.size(15.dp))
+                                    Spacer(Modifier.width(6.dp))
+                                    Text(stringResource(R.string.ui_copy_summary), style = MaterialTheme.typography.labelMedium)
                                 }
                             }
                         }
@@ -4008,8 +4362,8 @@ private fun StoichiometryCalculator(
                         else -> R.string.ui_scaling_section
                     }
                     Card(
-                        shape = RoundedCornerShape(16.dp),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                        shape = chemCardShape(16.dp),
+                        colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surface))
                     ) {
                         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                             Text(stringResource(sectionTitleRes), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp, color = MaterialTheme.colorScheme.onSurface.copy(0.45f))
@@ -4062,7 +4416,17 @@ private fun StoichiometryCalculator(
                                     )
                                     StoichUnitDropdown(
                                         unit = actualUnit,
-                                        onUnitChange = { actualUnit = it }
+                                        onUnitChange = { newUnit ->
+                                            val (newAmount, newMolarity, newVolume) = convertStoichFields(
+                                                actualAmount, actualMolarity, actualVolume,
+                                                actualUnit, newUnit,
+                                                molarMassMap[selectedProduct.first], molarVolume
+                                            )
+                                            actualAmount = newAmount
+                                            actualMolarity = newMolarity
+                                            actualVolume = newVolume
+                                            actualUnit = newUnit
+                                        }
                                     )
                                 }
 
@@ -4134,7 +4498,17 @@ private fun StoichiometryCalculator(
                                     )
                                     StoichUnitDropdown(
                                         unit = desiredUnit,
-                                        onUnitChange = { desiredUnit = it }
+                                        onUnitChange = { newUnit ->
+                                            val (newAmount, newMolarity, newVolume) = convertStoichFields(
+                                                desiredAmount, desiredMolarity, desiredVolume,
+                                                desiredUnit, newUnit,
+                                                molarMassMap[selectedProduct.first], molarVolume
+                                            )
+                                            desiredAmount = newAmount
+                                            desiredMolarity = newMolarity
+                                            desiredVolume = newVolume
+                                            desiredUnit = newUnit
+                                        }
                                     )
                                 }
 
@@ -4195,7 +4569,13 @@ private fun StoichiometryCalculator(
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             examples.forEach { ex ->
                 Surface(
-                    onClick = { equation = fieldValueAtEnd(ex); result = null },
+                    onClick = {
+                        equation = fieldValueAtEnd(ex)
+                        result = null
+                        // Prefill balanced reactant amounts from the example so the
+                        // summary fills in as soon as the user taps Balance.
+                        examplePrefill = exampleAmounts[ex]
+                    },
                     shape = RoundedCornerShape(10.dp),
                     color = if (equation.text == ex) MaterialTheme.colorScheme.primary.copy(0.1f) else MaterialTheme.colorScheme.surfaceVariant.copy(0.5f),
                     border = if (equation.text == ex) BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.4f)) else null

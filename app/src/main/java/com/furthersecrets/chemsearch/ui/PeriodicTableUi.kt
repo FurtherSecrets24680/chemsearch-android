@@ -46,6 +46,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -66,6 +67,8 @@ import com.furthersecrets.chemsearch.data.ElementCategory
 import com.furthersecrets.chemsearch.data.PeriodicElement
 import com.furthersecrets.chemsearch.data.PeriodicTableElements
 import com.furthersecrets.chemsearch.data.PeriodicTrendMetric
+import com.furthersecrets.chemsearch.data.TemperatureUnit
+import com.furthersecrets.chemsearch.data.formatTemperatureFromKelvin
 import com.furthersecrets.chemsearch.data.PeriodicTrendPoint
 import com.furthersecrets.chemsearch.data.periodicTrendPoints
 import com.furthersecrets.chemsearch.data.periodicTrendSummary
@@ -89,6 +92,7 @@ fun PeriodicTableLibraryScreen(
     var selectedElement by remember { mutableStateOf<PeriodicElement?>(null) }
     var fullDetailElement by remember { mutableStateOf<PeriodicElement?>(null) }
     var showTrends by remember { mutableStateOf(false) }
+    var categoryFilter by remember { mutableStateOf<ElementCategory?>(null) }
     val normalizedQuery = query.trim().lowercase(Locale.US)
     val matchingElements = remember(normalizedQuery) {
         if (normalizedQuery.isBlank()) {
@@ -115,6 +119,7 @@ fun PeriodicTableLibraryScreen(
     selectedElement?.let { element ->
         ElementDetailDialog(
             element = element,
+            temperatureUnit = LocalTemperatureUnit.current,
             onDismiss = { selectedElement = null },
             onOpenDetails = {
                 selectedElement = null
@@ -149,8 +154,16 @@ fun PeriodicTableLibraryScreen(
             if (showTrends) {
                 PeriodicTrendsPanel(onElementClick = { selectedElement = it })
             } else {
-                PeriodicTableGrid(onElementClick = { selectedElement = it })
-                PeriodicLegend()
+                PeriodicTableGrid(
+                    filterCategory = categoryFilter,
+                    onElementClick = { selectedElement = it }
+                )
+                PeriodicLegend(
+                    selectedCategory = categoryFilter,
+                    onSelectCategory = { selected ->
+                        categoryFilter = if (categoryFilter == selected) null else selected
+                    }
+                )
             }
         } else {
             Text(
@@ -169,7 +182,10 @@ fun PeriodicTableLibraryScreen(
 }
 
 @Composable
-private fun PeriodicTableGrid(onElementClick: (PeriodicElement) -> Unit) {
+private fun PeriodicTableGrid(
+    filterCategory: ElementCategory?,
+    onElementClick: (PeriodicElement) -> Unit
+) {
     val horizontalScroll = rememberScrollState()
     val tileSize = 56.dp
     val rowLabelWidth = 82.dp
@@ -208,6 +224,7 @@ private fun PeriodicTableGrid(onElementClick: (PeriodicElement) -> Unit) {
                     } else {
                         PeriodicElementTile(
                             element = element,
+                            dimmed = filterCategory != null && element.category != filterCategory,
                             modifier = Modifier.size(tileSize),
                             onClick = { onElementClick(element) }
                         )
@@ -280,9 +297,10 @@ private fun PeriodicTrendsPanel(
     onElementClick: (PeriodicElement) -> Unit
 ) {
     var selectedMetric by remember { mutableStateOf(PeriodicTrendMetric.ELECTRONEGATIVITY) }
+    val unit = LocalTemperatureUnit.current
     val points = remember(selectedMetric) { periodicTrendPoints(PeriodicTableElements, selectedMetric) }
     val pointsBySymbol = remember(points) { points.associateBy { it.element.symbol } }
-    val summary = remember(selectedMetric) { periodicTrendSummary(PeriodicTableElements, selectedMetric) }
+    val summary = remember(selectedMetric, unit) { periodicTrendSummary(PeriodicTableElements, selectedMetric, unit) }
 
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(stringResource(R.string.ui_compare_listed_element_properties_across_the_whole_table),
@@ -302,11 +320,118 @@ private fun PeriodicTrendsPanel(
             }
         }
         PeriodicTrendSummaryCard(summary = summary)
+        PeriodicTrendScaleLegend(metric = selectedMetric, points = points)
+        PeriodicTopElementsStrip(metric = selectedMetric, points = points, onElementClick = onElementClick)
         PeriodicTrendHeatmap(
             metric = selectedMetric,
             pointsBySymbol = pointsBySymbol,
             onElementClick = onElementClick
         )
+    }
+}
+
+/** Cool-to-warm scale used by the trends heatmap and its legend. */
+private val TrendScaleLow = Color(0xFF5C7CFA)
+private val TrendScaleHigh = Color(0xFFF76707)
+
+/** Gradient color-scale bar with the actual min/max holders labelled underneath. */
+@Composable
+private fun PeriodicTrendScaleLegend(
+    metric: PeriodicTrendMetric,
+    points: List<PeriodicTrendPoint>
+) {
+    if (points.isEmpty()) return
+    val unit = LocalTemperatureUnit.current
+    val minPoint = points.minBy { it.value }
+    val maxPoint = points.maxBy { it.value }
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp), modifier = Modifier.fillMaxWidth()) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(8.dp)
+                .background(
+                    androidx.compose.ui.graphics.Brush.horizontalGradient(listOf(TrendScaleLow, TrendScaleHigh)),
+                    RoundedCornerShape(6.dp)
+                )
+        )
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(
+                "\u25B2 ${minPoint.element.symbol} ${minPoint.valueLabel.formatTrendValue(metric, unit)}",
+                style = MaterialTheme.typography.labelSmall,
+                color = TrendScaleLow,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                "${maxPoint.element.symbol} ${maxPoint.valueLabel.formatTrendValue(metric, unit)} \u25BC",
+                style = MaterialTheme.typography.labelSmall,
+                color = TrendScaleHigh,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+/** Appends the unit suffix, converting kelvin values when the metric is a temperature. */
+private fun String.formatTrendValue(metric: PeriodicTrendMetric, unit: TemperatureUnit): String =
+    if (metric == PeriodicTrendMetric.MELTING_POINT || metric == PeriodicTrendMetric.BOILING_POINT) {
+        toDoubleOrNull()?.let { unit.formatTemperatureFromKelvin(it) } ?: this
+    } else {
+        "$this${metric.unitLabel()}"
+    }
+
+/** The five highest-scoring elements for the active metric, tap to open. */
+@Composable
+private fun PeriodicTopElementsStrip(
+    metric: PeriodicTrendMetric,
+    points: List<PeriodicTrendPoint>,
+    onElementClick: (PeriodicElement) -> Unit
+) {
+    if (points.isEmpty()) return
+    val unit = LocalTemperatureUnit.current
+    val top = points.sortedByDescending { it.value }.take(5)
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.fillMaxWidth()) {
+        Text(
+            stringResource(R.string.ui_trend_top_elements),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
+            fontWeight = FontWeight.SemiBold
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            top.forEachIndexed { index, point ->
+                Surface(
+                    onClick = { onElementClick(point.element) },
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.surface,
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.18f))
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 7.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Text(
+                            "${index + 1}.",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            point.element.symbol,
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.Black
+                        )
+                        Text(
+                            point.valueLabel.formatTrendValue(metric, unit),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -345,11 +470,7 @@ private fun PeriodicTrendMetricChip(
 private fun PeriodicTrendSummaryCard(
     summary: com.furthersecrets.chemsearch.data.PeriodicTrendSummary
 ) {
-    Surface(
-        shape = RoundedCornerShape(16.dp),
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.16f))
-    ) {
+    ChemCardSurfaceStatic(accent = MaterialTheme.colorScheme.primary) {
         Column(
             modifier = Modifier.fillMaxWidth().padding(14.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -484,9 +605,11 @@ private fun PeriodicTrendTile(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
-    val baseColor = MaterialTheme.colorScheme.primary
-    val fillAlpha = point?.let { 0.08f + (it.normalized * 0.34f) } ?: 0.04f
-    val borderAlpha = point?.let { 0.18f + (it.normalized * 0.42f) } ?: 0.12f
+    val unit = LocalTemperatureUnit.current
+    val baseColor = point?.let { androidx.compose.ui.graphics.lerp(TrendScaleLow, TrendScaleHigh, it.normalized) }
+        ?: MaterialTheme.colorScheme.primary
+    val fillAlpha = point?.let { 0.14f + (it.normalized * 0.36f) } ?: 0.04f
+    val borderAlpha = point?.let { 0.24f + (it.normalized * 0.46f) } ?: 0.12f
     Surface(
         onClick = onClick,
         modifier = modifier,
@@ -521,7 +644,7 @@ private fun PeriodicTrendTile(
                 maxLines = 1
             )
             Text(
-                point?.let { "${it.valueLabel}${metric.unitLabel()}" } ?: stringResource(R.string.ui_na),
+                point?.let { it.valueLabel.formatTrendValue(metric, unit) } ?: stringResource(R.string.ui_na),
                 style = MaterialTheme.typography.labelSmall.copy(fontSize = 7.sp),
                 color = MaterialTheme.colorScheme.onSurface.copy(if (point == null) 0.34f else 0.58f),
                 maxLines = 1,
@@ -556,17 +679,19 @@ private fun PeriodicRowLabel(row: Int, modifier: Modifier = Modifier) {
 private fun PeriodicElementTile(
     element: PeriodicElement,
     modifier: Modifier = Modifier,
+    dimmed: Boolean = false,
     onClick: () -> Unit
 ) {
     val color = periodicCategoryColor(element.category)
     val isLightTheme = MaterialTheme.colorScheme.background.luminance() > 0.5f
     val contentColor = if (isLightTheme) color.darkenForLightMode() else color
+    val dimFactor = if (dimmed) 0.28f else 1f
     Surface(
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier.alpha(dimFactor),
         shape = RoundedCornerShape(10.dp),
-        color = color.copy(alpha = if (isLightTheme) 0.18f else 0.1f),
-        border = BorderStroke(1.25.dp, contentColor.copy(alpha = if (isLightTheme) 0.88f else 0.72f))
+        color = color.copy(alpha = (if (isLightTheme) 0.3f else 0.18f) * dimFactor),
+        border = BorderStroke(1.25.dp, contentColor.copy(alpha = (if (isLightTheme) 0.95f else 0.85f) * dimFactor))
     ) {
         Column(
             modifier = Modifier.padding(4.dp),
@@ -617,11 +742,9 @@ private fun PeriodicElementListCard(
     val color = periodicCategoryColor(element.category)
     val isLightTheme = MaterialTheme.colorScheme.background.luminance() > 0.5f
     val contentColor = if (isLightTheme) color.darkenForLightMode() else color
-    Card(
+    ChemCardSurface(
         onClick = onClick,
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, contentColor.copy(alpha = if (isLightTheme) 0.42f else 0.26f))
+        accent = contentColor
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(12.dp),
@@ -659,6 +782,7 @@ private fun PeriodicElementListCard(
 @Composable
 private fun ElementDetailDialog(
     element: PeriodicElement,
+    temperatureUnit: TemperatureUnit = TemperatureUnit.KELVIN,
     onDismiss: () -> Unit,
     onOpenDetails: () -> Unit
 ) {
@@ -718,8 +842,12 @@ private fun ElementDetailDialog(
                         ElementFactItem(R.string.ui_atomic_mass, withUnit(element.atomicWeightLabel, "u")),
                         ElementFactItem(R.string.ui_group_period, stringResource(R.string.ui_group_period_s, element.group, element.period)),
                         ElementFactItem(R.string.ui_standard_state, element.standardState),
+                        ElementFactItem(R.string.ui_melting_point, formatTemperatureValue(element.meltingPoint, temperatureUnit)),
+                        ElementFactItem(R.string.ui_boiling_point, formatTemperatureValue(element.boilingPoint, temperatureUnit)),
                         ElementFactItem(R.string.ui_electron_configuration, toElectronConfigurationDisplay(element.electronConfiguration, stringResource(R.string.ui_not_listed))),
-                        ElementFactItem(R.string.ui_oxidation_states_label, element.commonOxidationStates)
+                        ElementFactItem(R.string.ui_oxidation_states_label, element.commonOxidationStates),
+                        ElementFactItem(R.string.ui_melting_point, formatTemperatureValue(element.meltingPoint, temperatureUnit)),
+                        ElementFactItem(R.string.ui_boiling_point, formatTemperatureValue(element.boilingPoint, temperatureUnit))
                     )
                 )
             }
@@ -797,11 +925,7 @@ private fun ElementHeroCard(
     descriptionState: ElementDescriptionState
 ) {
     val uriHandler = LocalUriHandler.current
-    Card(
-        shape = RoundedCornerShape(22.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, color.copy(alpha = 0.26f))
-    ) {
+    ChemCardSurfaceStatic(accent = color) {
         Column(
             modifier = Modifier.fillMaxWidth().padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
@@ -1090,7 +1214,8 @@ private fun ElectronShellDiagram(shells: List<Int>, color: Color) {
 
 @Composable
 private fun ElementPhysicalPropertiesCard(element: PeriodicElement, color: Color) {
-    val facts = remember(element) { elementPhysicalPropertyFacts(element) }
+    val unit = LocalTemperatureUnit.current
+    val facts = remember(element, unit) { elementPhysicalPropertyFacts(element, unit) }
     if (facts.isEmpty()) return
 
     DetailCard(titleRes = R.string.ui_physical_properties, accent = color) {
@@ -1202,11 +1327,7 @@ private fun ElementSourceCard(element: PeriodicElement, descriptionState: Elemen
             )
         }
     }
-    Card(
-        shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.18f))
-    ) {
+    ChemCardSurfaceStatic {
         Column(
             modifier = Modifier.fillMaxWidth().padding(14.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp)
@@ -1284,11 +1405,7 @@ private fun DetailCard(
     accent: Color,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    Card(
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, accent.copy(alpha = 0.22f))
-    ) {
+    ChemCardSurfaceStatic(accent = accent) {
         Column(
             modifier = Modifier.fillMaxWidth().padding(14.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -1317,24 +1434,23 @@ private fun CardInfoIcon(info: PeriodicDetailCardInfo?) {
     var showInfo by remember { mutableStateOf(false) }
 
     if (showInfo) {
-        AlertDialog(
-            onDismissRequest = { showInfo = false },
-            title = { Text(stringResource(info.titleRes)) },
-            containerColor = MaterialTheme.colorScheme.surface,
-            titleContentColor = MaterialTheme.colorScheme.onSurface,
-            textContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.74f),
-            tonalElevation = 0.dp,
-            text = {
-                Text(
-                    stringResource(info.descriptionRes)
-                )
-            },
-            confirmButton = {
+        ChemDialog(
+            title = stringResource(info.titleRes),
+            onDismiss = { showInfo = false },
+            tone = ChemDialogTone.NEUTRAL,
+            icon = Icons.Default.Info,
+            actions = {
                 TextButton(onClick = { showInfo = false }) {
                     Text(stringResource(R.string.ui_ok))
                 }
             }
-        )
+        ) {
+            Text(
+                stringResource(info.descriptionRes),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.74f)
+            )
+        }
     }
 
     IconButton(
@@ -1414,18 +1530,28 @@ private val periodicDetailCardInfos = listOf(
 internal fun periodicDetailCardInfo(titleRes: Int): PeriodicDetailCardInfo? =
     periodicDetailCardInfos[titleRes]
 
-internal fun elementPhysicalPropertyFacts(element: PeriodicElement): List<ElementFactItem> = buildList {
+internal fun elementPhysicalPropertyFacts(
+    element: PeriodicElement,
+    temperatureUnit: TemperatureUnit = TemperatureUnit.KELVIN
+): List<ElementFactItem> = buildList {
     add(ElementFactItem(R.string.ui_electronegativity, element.electronegativity))
     add(ElementFactItem(R.string.ui_atomic_radius, withUnit(element.atomicRadius, "pm")))
     add(ElementFactItem(R.string.ui_ionization_energy, withUnit(element.ionizationEnergy, "eV")))
     add(ElementFactItem(R.string.ui_electron_affinity, withUnit(element.electronAffinity, "eV")))
-    add(ElementFactItem(R.string.ui_melting_point, withUnit(element.meltingPoint, "K")))
-    add(ElementFactItem(R.string.ui_boiling_point, withUnit(element.boilingPoint, "K")))
+    add(ElementFactItem(R.string.ui_melting_point, formatTemperatureValue(element.meltingPoint, temperatureUnit)))
+    add(ElementFactItem(R.string.ui_boiling_point, formatTemperatureValue(element.boilingPoint, temperatureUnit)))
     add(ElementFactItem(R.string.ui_density, withUnit(element.density, "g/cm3")))
     element.extraProperties?.let { extra ->
         add(ElementFactItem(R.string.ui_molar_heat, withUnit(extra.molarHeat, "J/(mol·K)")))
     }
 }.filterNot { it.value.isMissingValue() }
+
+/** Formats a raw kelvin temperature string in the preferred unit; passes non-numeric text through. */
+private fun formatTemperatureValue(raw: String, unit: TemperatureUnit): String {
+    if (raw.isMissingValue()) return raw
+    val kelvin = raw.trim().toDoubleOrNull() ?: return raw
+    return unit.formatTemperatureFromKelvin(kelvin)
+}
 
 private sealed interface ElementDescriptionState {
     data object Loading : ElementDescriptionState
@@ -1680,7 +1806,10 @@ private fun PeriodicDetailDivider() {
 }
 
 @Composable
-private fun PeriodicLegend() {
+private fun PeriodicLegend(
+    selectedCategory: ElementCategory?,
+    onSelectCategory: (ElementCategory) -> Unit
+) {
     val categories = ElementCategory.entries.filterNot { it == ElementCategory.UNKNOWN }
     Row(
         modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
@@ -1688,17 +1817,24 @@ private fun PeriodicLegend() {
     ) {
         categories.forEach { category ->
             val color = periodicCategoryColor(category)
+            val selected = selectedCategory == category
+            val anySelected = selectedCategory != null
             Surface(
+                onClick = { onSelectCategory(category) },
                 shape = RoundedCornerShape(999.dp),
-                color = color.copy(alpha = 0.1f),
-                border = BorderStroke(1.dp, color.copy(alpha = 0.35f))
+                color = if (selected) color.copy(alpha = 0.24f) else color.copy(alpha = 0.1f),
+                border = BorderStroke(
+                    if (selected) 1.5.dp else 1.dp,
+                    color.copy(alpha = if (selected) 0.75f else 0.35f)
+                ),
+                modifier = Modifier.alpha(if (anySelected && !selected) 0.55f else 1f)
             ) {
                 Text(
                     stringResource(category.labelRes),
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
                     style = MaterialTheme.typography.labelSmall,
                     color = color,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = if (selected) FontWeight.Bold else FontWeight.SemiBold,
                     maxLines = 1
                 )
             }

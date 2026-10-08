@@ -17,8 +17,21 @@ data class AdvancedSearchFilters(
     val charge: Int? = null,
     val requireThreeD: Boolean = false,
     val requireGhs: Boolean = false,
-    val maxRecords: Int = 20
-)
+    val maxRecords: Int = 20,
+    val nameFilter: String = ""
+) {
+    /** Count of filters that narrow the search beyond the query itself. */
+    val activeFilterCount: Int
+        get() = listOf(
+            includeElements.isNotEmpty(),
+            excludeElements.isNotEmpty(),
+            minMolecularWeight != null,
+            maxMolecularWeight != null,
+            charge != null,
+            requireThreeD,
+            requireGhs
+        ).count { it }
+}
 
 data class AdvancedSearchResultItem(
     val cid: Long,
@@ -27,7 +40,8 @@ data class AdvancedSearchResultItem(
     val molecularWeight: String,
     val charge: Int? = null,
     val hasThreeD: Boolean? = null,
-    val hasGhs: Boolean? = null
+    val hasGhs: Boolean? = null,
+    val iupacName: String = ""
 )
 
 data class AdvancedSearchUiState(
@@ -64,6 +78,15 @@ fun advancedSearchMatchesFilters(
     if (filters.charge != null && property.charge != filters.charge) return false
     if (filters.requireThreeD && hasThreeD != true) return false
     if (filters.requireGhs && hasGhs != true) return false
+    // Name-text narrowing: when non-blank it must appear in the title or
+    // IUPAC name (case-insensitive). Applied to every result regardless of
+    // which resolver produced the candidate CIDs.
+    val nameFilter = filters.nameFilter.trim()
+    if (nameFilter.isNotEmpty()) {
+        val needle = nameFilter.lowercase(java.util.Locale.US)
+        val haystack = (property.title.orEmpty() + " " + property.iupacName.orEmpty()).lowercase(java.util.Locale.US)
+        if (needle !in haystack) return false
+    }
     return true
 }
 

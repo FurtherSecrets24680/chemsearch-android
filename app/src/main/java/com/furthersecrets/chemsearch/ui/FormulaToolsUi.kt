@@ -22,10 +22,13 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.furthersecrets.chemsearch.data.ChemicalDatabase
 import com.furthersecrets.chemsearch.data.EmpiricalFormulaCalculationResult
 import com.furthersecrets.chemsearch.data.FormulaCompositionComponent
 import com.furthersecrets.chemsearch.data.FormulaCompositionMode
 import com.furthersecrets.chemsearch.data.PrecipitationPredictionResult
+import com.furthersecrets.chemsearch.data.ReactionPredictionResult
+import com.furthersecrets.chemsearch.data.ReactionPredictor
 import com.furthersecrets.chemsearch.data.SolubilityState
 import com.furthersecrets.chemsearch.data.calculateEmpiricalFormulaFromComposition
 import com.furthersecrets.chemsearch.data.calculateEmpiricalFormulaFromMolecularFormula
@@ -290,7 +293,11 @@ fun PrecipitatePredictorTool() {
             }
         }
 
-        Button(onClick = { predict() }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp)) {
+        val haptics = rememberChemHaptics()
+        Button(onClick = {
+            haptics.action()
+            predict()
+        }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp)) {
             Icon(Icons.Default.Science, null, modifier = Modifier.size(18.dp))
             Spacer(Modifier.width(8.dp))
             Text(stringResource(R.string.ui_predict_precipitate))
@@ -310,7 +317,7 @@ private fun EmpiricalFormulaResultCard(result: EmpiricalFormulaCalculationResult
         ToolErrorCard(stringResource(result.errorRes, *result.errorArgs.toTypedArray()))
         return
     }
-    Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
+    ChemCardSurfaceStatic(accent = MaterialTheme.colorScheme.primary) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 FormulaMetricCard(stringResource(R.string.ui_empirical), toSubscriptFormula(result.empiricalFormula), Modifier.weight(1f))
@@ -353,7 +360,7 @@ private fun PrecipitationResultCard(result: PrecipitationPredictionResult) {
         ToolErrorCard(stringResource(result.errorRes, *result.errorArgs.toTypedArray()))
         return
     }
-    Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
+    ChemCardSurfaceStatic(accent = MaterialTheme.colorScheme.primary) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Surface(
                 shape = RoundedCornerShape(12.dp),
@@ -414,7 +421,11 @@ private fun ToolTitleRow(title: String, onInfo: () -> Unit) {
 
 @Composable
 private fun ToolErrorCard(message: String) {
-    Card(shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer.copy(0.42f))) {
+    Card(
+        shape = chemCardShape(ChemCardStyle.radius(compact = true)),
+        colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.errorContainer.copy(0.42f))),
+        border = chemCardBorder(MaterialTheme.colorScheme.error.copy(alpha = 0.28f))
+    ) {
         Text(message, modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
     }
 }
@@ -461,8 +472,9 @@ private fun FormulaExplanationCard(
     explanation: String
 ) {
     Card(
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.4f))
+        shape = chemCardShape(ChemCardStyle.radius(compact = true)),
+        colors = CardDefaults.cardColors(containerColor = chemCardColor(MaterialTheme.colorScheme.surfaceVariant.copy(0.4f))),
+        border = chemCardBorder(ChemCardStyle.outlineColor())
     ) {
         Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(stringResource(R.string.ui_formula), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(0.6f))
@@ -477,3 +489,201 @@ private fun textFieldAtEnd(text: String): TextFieldValue =
 
 private fun toolNumber(value: Double, decimals: Int = 4): String =
     "%.${decimals}f".format(value)
+
+@Composable
+fun ReactionPredictorTool() {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    var reactants by remember { mutableStateOf(listOf(TextFieldValue(""), TextFieldValue(""))) }
+    var result by remember { mutableStateOf<ReactionPredictionResult?>(null) }
+    var showInfo by remember { mutableStateOf(false) }
+    val focusManager = androidx.compose.ui.platform.LocalFocusManager.current
+    val dbReactions = remember { ChemicalDatabase.load(context) }
+
+    fun predict() {
+        focusManager.clearFocus()
+        result = ReactionPredictor.predict(reactants.map { it.text }, dbReactions)
+    }
+
+    if (showInfo) {
+        InfoDialog(
+            titleRes = R.string.ui_reaction_predictor,
+            entries = listOf(
+                R.string.ui_what_it_does to R.string.ui_rp_what_it_does_desc,
+                R.string.ui_best_inputs to R.string.ui_rp_best_inputs_desc,
+                R.string.ui_limits to R.string.ui_rp_limits_desc
+            ),
+            onDismiss = { showInfo = false }
+        )
+    }
+
+    Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        ToolTitleRow(title = stringResource(R.string.ui_reaction_predictor), onInfo = { showInfo = true })
+        Text(stringResource(R.string.ui_reaction_predictor_subtitle),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.58f)
+        )
+
+        reactants.forEachIndexed { index, field ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    value = field,
+                    onValueChange = { value -> reactants = reactants.toMutableList().also { it[index] = value } },
+                    label = { Text(stringResource(R.string.ui_reactant_n, index + 1)) },
+                    placeholder = { Text("HCl", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(12.dp),
+                    singleLine = true,
+                    visualTransformation = FormulaSubscriptTransformation,
+                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.None, imeAction = if (index == reactants.lastIndex) ImeAction.Done else ImeAction.Next),
+                    keyboardActions = KeyboardActions(onDone = { predict() })
+                )
+                IconButton(
+                    onClick = { if (reactants.size > 2) reactants = reactants.filterIndexed { i, _ -> i != index } },
+                    enabled = reactants.size > 2,
+                    modifier = Modifier.size(36.dp)
+                ) {
+                    Icon(Icons.Default.Close, contentDescription = stringResource(R.string.ui_remove_row), modifier = Modifier.size(18.dp))
+                }
+            }
+        }
+        if (reactants.size < 4) {
+            TextButton(onClick = { reactants = reactants + TextFieldValue("") }, contentPadding = PaddingValues(horizontal = 0.dp)) {
+                Icon(Icons.Default.Add, null, modifier = Modifier.size(16.dp))
+                Spacer(Modifier.width(6.dp))
+                Text(stringResource(R.string.ui_add_reactant))
+            }
+        }
+
+        val haptics = rememberChemHaptics()
+        Button(onClick = {
+            haptics.action()
+            predict()
+        }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp)) {
+            Icon(Icons.Default.AutoFixHigh, null, modifier = Modifier.size(18.dp))
+            Spacer(Modifier.width(8.dp))
+            Text(stringResource(R.string.ui_predict_reaction))
+        }
+
+        result?.let { ReactionPredictionResultCard(it) }
+
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            listOf(
+                Pair("Neutralization", listOf("HCl", "NaOH")),
+                Pair("Acid + carbonate", listOf("HCl", "CaCO3")),
+                Pair("Metal + acid", listOf("Zn", "H2SO4")),
+                Pair("Displacement", listOf("Fe", "CuSO4")),
+                Pair("Combustion", listOf("CH4", "O2")),
+                Pair("Metal + water", listOf("Ca", "H2O")),
+                Pair("Acid + oxide", listOf("CuO", "H2SO4")),
+                Pair("Ammonia release", listOf("NH4Cl", "NaOH"))
+            ).forEach { (label, example) ->
+                AssistChip(
+                    onClick = {
+                        reactants = example.map { TextFieldValue(it, TextRange(it.length)) } +
+                            List((2 - example.size).coerceAtLeast(0)) { TextFieldValue("") }
+                        result = null
+                        focusManager.clearFocus()
+                    },
+                    colors = chemAssistChipColors(),
+                    border = chemAssistChipBorder(),
+                    label = { Text(label) },
+                    leadingIcon = { Icon(Icons.Default.Science, null, modifier = Modifier.size(14.dp)) }
+                )
+            }
+        }
+
+        FormulaExplanationCard(
+            latexFormula = "A + B ⟶ products",
+            explanation = stringResource(R.string.ui_rp_what_it_does_desc)
+        )
+    }
+}
+
+@Composable
+private fun ReactionPredictionResultCard(result: ReactionPredictionResult) {
+    if (result.errorRes != null) {
+        ToolErrorCard(stringResource(result.errorRes, *result.errorArgs.toTypedArray()))
+        return
+    }
+    ChemCardSurfaceStatic(accent = MaterialTheme.colorScheme.primary) {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = when (result.confidence) {
+                    ReactionPredictor.Confidence.DATABASE -> MaterialTheme.colorScheme.primary.copy(0.12f)
+                    ReactionPredictor.Confidence.RULE -> Color(0xFF22C55E).copy(0.12f)
+                    ReactionPredictor.Confidence.LOW -> Color(0xFFF59E0B).copy(0.12f)
+                },
+                border = BorderStroke(
+                    1.dp,
+                    when (result.confidence) {
+                        ReactionPredictor.Confidence.DATABASE -> MaterialTheme.colorScheme.primary.copy(0.32f)
+                        ReactionPredictor.Confidence.RULE -> Color(0xFF22C55E).copy(0.32f)
+                        ReactionPredictor.Confidence.LOW -> Color(0xFFF59E0B).copy(0.32f)
+                    }
+                )
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        result.matchedDbEntryTitle
+                            ?: (result.ruleLabelRes?.let { stringResource(it) } ?: ""),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+
+            FormulaDisplayLine(stringResource(R.string.ui_balanced_equation), result.balancedEquation)
+
+            result.conditions?.let {
+                Text(
+                    stringResource(R.string.ui_db_section_typical_conditions) + ": " + it,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.66f)
+                )
+            }
+            result.observation?.let {
+                Text(
+                    stringResource(R.string.ui_db_section_observation) + ": " + it,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.66f)
+                )
+            }
+
+            if (result.products.isNotEmpty()) {
+                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.12f))
+                Text(stringResource(R.string.ui_products),
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 0.8.sp,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+                )
+                result.products.forEach { product ->
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = MaterialTheme.colorScheme.surfaceVariant.copy(0.34f),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.12f))
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(toSubscriptFormula(product.formula), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace)
+                            product.noteRes?.let {
+                                Text(stringResource(it), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

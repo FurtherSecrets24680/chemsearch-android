@@ -65,6 +65,7 @@ object ChemAppIcons {
     val Trend = PhosphorIcons.Bold.ChartLineUp.asChemIcon()
     val SlidersHorizontal = PhosphorIcons.Bold.SlidersHorizontal.asChemIcon()
     val Star = PhosphorIcons.Fill.Star.asChemIcon()
+    val Table = PhosphorIcons.Bold.Table.asChemIcon()
     val TestTubes = PhosphorIcons.Bold.TestTube.asChemIcon()
     val Wind = PhosphorIcons.Bold.Wind.asChemIcon()
     val Wrench = PhosphorIcons.Bold.Wrench.asChemIcon()
@@ -87,10 +88,12 @@ object Icons {
         val Cached = PhosphorIcons.Bold.ArrowsClockwise
         val Calculate = PhosphorIcons.Bold.Calculator
         val Cancel = PhosphorIcons.Bold.XCircle
+        val Cards = PhosphorIcons.Bold.SquaresFour
         val Check = PhosphorIcons.Bold.Check
         val CheckCircle = PhosphorIcons.Bold.CheckCircle
         val ChevronRight = PhosphorIcons.Bold.CaretRight
         val Clear = PhosphorIcons.Bold.X
+        val CleaningServices = PhosphorIcons.Bold.Broom
         val Close = PhosphorIcons.Bold.X
         val Code = PhosphorIcons.Bold.Code
         val ContentCopy = PhosphorIcons.Bold.Copy
@@ -130,6 +133,7 @@ object Icons {
         val SearchOff = PhosphorIcons.Bold.MagnifyingGlassMinus
         val Settings = PhosphorIcons.Bold.GearSix
         val Share = PhosphorIcons.Bold.ShareNetwork
+        val Smartphone = PhosphorIcons.Bold.DeviceMobile
         val SmartToy = PhosphorIcons.Bold.Robot
         val Star = PhosphorIcons.Fill.Star
         val StarBorder = PhosphorIcons.Regular.Star
@@ -141,7 +145,10 @@ object Icons {
         val ViewInAr = PhosphorIcons.Bold.CubeFocus
         val Visibility = PhosphorIcons.Bold.Eye
         val VisibilityOff = PhosphorIcons.Bold.EyeSlash
-        val Warning = PhosphorIcons.Bold.Warning
+        val WifiHigh = PhosphorIcons.Bold.WifiHigh
+    val WifiSlash = PhosphorIcons.Bold.WifiSlash
+    val Warning = PhosphorIcons.Bold.Warning
+    val Copy = PhosphorIcons.Bold.Copy
         val WaterDrop = PhosphorIcons.Bold.Drop
         val WavingHand = PhosphorIcons.Bold.HandWaving
     }

@@ -4,7 +4,6 @@ import com.furthersecrets.chemsearch.R
 import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,24 +15,26 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -46,10 +47,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.furthersecrets.chemsearch.data.AdvancedSearchFilters
+import com.adamglin.PhosphorIcons
+import com.adamglin.phosphoricons.Bold
+import com.adamglin.phosphoricons.bold.Funnel
 import com.furthersecrets.chemsearch.data.AdvancedSearchResultItem
 import com.furthersecrets.chemsearch.data.AdvancedSearchType
 import com.furthersecrets.chemsearch.data.AdvancedSearchUiState
@@ -71,12 +77,15 @@ fun AdvancedSearchDialog(
     var selectedType by remember(initialQuery) { mutableStateOf(advancedSearchTypeForQuery(initialQuery)) }
     var includeText by remember { mutableStateOf("") }
     var excludeText by remember { mutableStateOf("") }
+    var nameFilterText by remember { mutableStateOf("") }
     var minWeight by remember { mutableStateOf("") }
     var maxWeight by remember { mutableStateOf("") }
     var chargeText by remember { mutableStateOf("") }
     var requireThreeD by remember { mutableStateOf(false) }
     var requireGhs by remember { mutableStateOf(false) }
+    var resultsLimit by remember { mutableStateOf(20) }
     var typeExpanded by remember { mutableStateOf(false) }
+    var limitExpanded by remember { mutableStateOf(false) }
 
     fun buildFilters(): AdvancedSearchFilters =
         AdvancedSearchFilters(
@@ -88,85 +97,121 @@ fun AdvancedSearchDialog(
             maxMolecularWeight = maxWeight.toDoubleOrNull(),
             charge = chargeText.toIntOrNull(),
             requireThreeD = requireThreeD,
-            requireGhs = requireGhs
+            requireGhs = requireGhs,
+            maxRecords = resultsLimit,
+            nameFilter = nameFilterText
         )
 
-    LaunchedEffect(query, selectedType, includeText, excludeText, minWeight, maxWeight, chargeText, requireThreeD, requireGhs) {
+    LaunchedEffect(query, selectedType, includeText, excludeText, nameFilterText, minWeight, maxWeight, chargeText, requireThreeD, requireGhs, resultsLimit) {
         onUpdateFilters(buildFilters())
     }
 
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+    ChemDialog(
+        title = stringResource(R.string.ui_advanced_search),
+        onDismiss = onDismiss,
+        tone = ChemDialogTone.INFO,
+        icon = PhosphorIcons.Bold.Funnel,
+        actions = {
+            TextButton(
+                onClick = {
+                    includeText = ""
+                    excludeText = ""
+                    nameFilterText = ""
+                    minWeight = ""
+                    maxWeight = ""
+                    chargeText = ""
+                    requireThreeD = false
+                    requireGhs = false
+                    resultsLimit = 20
+                },
+                contentPadding = PaddingValues(horizontal = 8.dp),
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.primary
+                )
             ) {
-                Column {
-                    Text(stringResource(R.string.ui_advanced_search), fontWeight = FontWeight.Bold)
-                    val filters = buildFilters()
-                    val summaryParts = buildList {
-                        if (filters.includeElements.isNotEmpty()) add(stringResource(R.string.ui_filter_includes_s, filters.includeElements.sortedBy { elementBySymbol(it)?.atomicNumber ?: Int.MAX_VALUE }.joinToString(", ")))
-                        if (filters.excludeElements.isNotEmpty()) add(stringResource(R.string.ui_filter_excludes_s, filters.excludeElements.sortedBy { elementBySymbol(it)?.atomicNumber ?: Int.MAX_VALUE }.joinToString(", ")))
-                        filters.minMolecularWeight?.let { add(stringResource(R.string.ui_filter_mw_ge_s, it.cleanNumber())) }
-                        filters.maxMolecularWeight?.let { add(stringResource(R.string.ui_filter_mw_le_s, it.cleanNumber())) }
-                        filters.charge?.let { add(stringResource(R.string.ui_filter_charge_s, if (it > 0) "+$it" else it.toString())) }
-                        if (filters.requireThreeD) add(stringResource(R.string.ui_filter_has_3d))
-                        if (filters.requireGhs) add(stringResource(R.string.ui_filter_has_ghs))
-                    }
+                Text(stringResource(R.string.ui_clear_all), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+            }
+            Button(
+                onClick = { onSearch(buildFilters()) },
+                shape = RoundedCornerShape(12.dp),
+                enabled = !state.isLoading
+            ) {
+                if (state.isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(16.dp),
+                        strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(R.string.ui_searching))
+                } else {
+                    ChemIcon(
+                        ChemAppIcons.Search,
+                        contentDescription = null,
+                        modifier = Modifier.size(17.dp),
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(R.string.ui_search), fontWeight = FontWeight.Bold)
+                }
+            }
+        }
+    ) {
+            Column(
+                modifier = Modifier
+                    .heightIn(max = 620.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // Active-filter summary line
+                if (state.filters.activeFilterCount > 0) {
                     Text(
-                        summaryParts.joinToString(" | ").ifBlank { stringResource(R.string.ui_filter_no_filters) },
+                        filterSummaryText(state.filters),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.SemiBold,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
-                IconButton(onClick = onDismiss) {
-                    Icon(Icons.Default.Close, contentDescription = stringResource(R.string.ui_close))
-                }
-            }
-        },
-        text = {
-            Column(
-                modifier = Modifier
-                    .heightIn(max = 560.dp)
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+
+                // ---- Section: what to search -------------------------------
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    AdvancedSectionLabel(stringResource(R.string.ui_section_what_to_search))
                     OutlinedTextField(
                         value = query,
                         onValueChange = {
                             query = it
                             selectedType = advancedSearchTypeForQuery(it)
                         },
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.fillMaxWidth(),
                         label = { Text(stringResource(R.string.ui_query)) },
                         singleLine = true,
                         shape = RoundedCornerShape(14.dp),
-                        colors = advancedSearchTextFieldColors()
+                        colors = advancedSearchTextFieldColors(),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                        keyboardActions = KeyboardActions(onSearch = { onSearch(buildFilters()) })
                     )
                     Box {
                         Surface(
                             onClick = { typeExpanded = true },
                             shape = RoundedCornerShape(12.dp),
                             color = MaterialTheme.colorScheme.primary.copy(0.1f),
-                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.22f))
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.22f)),
+                            modifier = Modifier.fillMaxWidth()
                         ) {
                             Row(
-                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 11.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 11.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
                                     advancedSearchTypeLabel(selectedType),
                                     style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.primary
+                                    color = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.weight(1f)
                                 )
-                                Icon(Icons.Default.ArrowDropDown, contentDescription = null, modifier = Modifier.size(16.dp))
+                                Icon(Icons.Default.ArrowDropDown, contentDescription = null, modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
                             }
                         }
                         SettingsDropdownMenu(
@@ -175,7 +220,17 @@ fun AdvancedSearchDialog(
                         ) {
                             AdvancedSearchType.entries.forEach { type ->
                                 DropdownMenuItem(
-                                    text = { Text(advancedSearchTypeLabel(type)) },
+                                    text = {
+                                        Text(
+                                            advancedSearchTypeLabel(type),
+                                            fontWeight = if (type == selectedType) FontWeight.Bold else FontWeight.Normal
+                                        )
+                                    },
+                                    trailingIcon = if (type == selectedType) {
+                                        {
+                                            Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.size(15.dp))
+                                        }
+                                    } else null,
                                     onClick = {
                                         selectedType = type
                                         typeExpanded = false
@@ -186,90 +241,107 @@ fun AdvancedSearchDialog(
                     }
                 }
 
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(
-                        value = includeText,
-                        onValueChange = { includeText = it },
-                        modifier = Modifier.weight(1f),
-                        label = { Text(stringResource(R.string.ui_include)) },
-                        placeholder = { AdvancedSearchPlaceholder("C, O, Fe") },
-                        singleLine = true,
-                        shape = RoundedCornerShape(14.dp),
-                        colors = advancedSearchTextFieldColors()
-                    )
-                    OutlinedTextField(
-                        value = excludeText,
-                        onValueChange = { excludeText = it },
-                        modifier = Modifier.weight(1f),
-                        label = { Text(stringResource(R.string.ui_exclude)) },
-                        placeholder = { AdvancedSearchPlaceholder("Cl, Br") },
-                        singleLine = true,
-                        shape = RoundedCornerShape(14.dp),
-                        colors = advancedSearchTextFieldColors()
-                    )
-                }
+                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.14f))
 
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(
-                        value = minWeight,
-                        onValueChange = { minWeight = it.filter { ch -> ch.isDigit() || ch == '.' } },
-                        modifier = Modifier.weight(1f),
-                        label = { AdvancedSearchFieldLabel(stringResource(R.string.ui_min_weight)) },
-                        singleLine = true,
-                        shape = RoundedCornerShape(14.dp),
-                        colors = advancedSearchTextFieldColors()
-                    )
-                    OutlinedTextField(
-                        value = maxWeight,
-                        onValueChange = { maxWeight = it.filter { ch -> ch.isDigit() || ch == '.' } },
-                        modifier = Modifier.weight(1f),
-                        label = { AdvancedSearchFieldLabel(stringResource(R.string.ui_max_weight)) },
-                        singleLine = true,
-                        shape = RoundedCornerShape(14.dp),
-                        colors = advancedSearchTextFieldColors()
-                    )
-                    OutlinedTextField(
-                        value = chargeText,
-                        onValueChange = { chargeText = it.filter { ch -> ch.isDigit() || ch == '-' || ch == '+' }.take(3) },
-                        modifier = Modifier.width(104.dp),
-                        label = { AdvancedSearchFieldLabel(stringResource(R.string.ui_charge)) },
-                        singleLine = true,
-                        shape = RoundedCornerShape(14.dp),
-                        colors = advancedSearchTextFieldColors()
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    AdvancedToggleChip(stringResource(R.string.ui_has_3d), requireThreeD) { requireThreeD = !requireThreeD }
-                    AdvancedToggleChip(stringResource(R.string.ui_has_ghs), requireGhs) { requireGhs = !requireGhs }
-                }
-
-                Button(
-                    onClick = { onSearch(buildFilters()) },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(14.dp),
-                    enabled = !state.isLoading
-                ) {
-                    if (state.isLoading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(16.dp),
-                            strokeWidth = 2.dp,
-                            color = MaterialTheme.colorScheme.onPrimary
+                // ---- Section: narrow by content -----------------------------
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    AdvancedSectionLabel(stringResource(R.string.ui_section_narrow_by))
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        OutlinedTextField(
+                            value = includeText,
+                            onValueChange = { includeText = it },
+                            modifier = Modifier.weight(1f),
+                            label = { Text(stringResource(R.string.ui_include)) },
+                            placeholder = { AdvancedSearchPlaceholder("C, O, Fe") },
+                            singleLine = true,
+                            shape = RoundedCornerShape(14.dp),
+                            colors = advancedSearchTextFieldColors()
                         )
-                        Spacer(Modifier.width(8.dp))
-                        Text(stringResource(R.string.ui_searching))
-                    } else {
-                        ChemIcon(
-                            ChemAppIcons.Search,
-                            contentDescription = null,
-                            modifier = Modifier.size(17.dp),
-                            tint = MaterialTheme.colorScheme.onPrimary
+                        OutlinedTextField(
+                            value = excludeText,
+                            onValueChange = { excludeText = it },
+                            modifier = Modifier.weight(1f),
+                            label = { Text(stringResource(R.string.ui_exclude)) },
+                            placeholder = { AdvancedSearchPlaceholder("Cl, Br") },
+                            singleLine = true,
+                            shape = RoundedCornerShape(14.dp),
+                            colors = advancedSearchTextFieldColors()
                         )
-                        Spacer(Modifier.width(8.dp))
-                        Text(stringResource(R.string.ui_search), fontWeight = FontWeight.Bold)
+                    }
+                    OutlinedTextField(
+                        value = nameFilterText,
+                        onValueChange = { nameFilterText = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text(stringResource(R.string.ui_name_contains)) },
+                        placeholder = { AdvancedSearchPlaceholder(stringResource(R.string.ui_name_contains_hint)) },
+                        singleLine = true,
+                        shape = RoundedCornerShape(14.dp),
+                        colors = advancedSearchTextFieldColors()
+                    )
+                }
+
+                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.14f))
+
+                // ---- Section: properties ------------------------------------
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    AdvancedSectionLabel(stringResource(R.string.ui_section_properties))
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        OutlinedTextField(
+                            value = minWeight,
+                            onValueChange = { minWeight = it.filter { ch -> ch.isDigit() || ch == '.' } },
+                            modifier = Modifier.weight(1f),
+                            label = { AdvancedSearchFieldLabel(stringResource(R.string.ui_min_weight)) },
+                            singleLine = true,
+                            shape = RoundedCornerShape(14.dp),
+                            colors = advancedSearchTextFieldColors()
+                        )
+                        OutlinedTextField(
+                            value = maxWeight,
+                            onValueChange = { maxWeight = it.filter { ch -> ch.isDigit() || ch == '.' } },
+                            modifier = Modifier.weight(1f),
+                            label = { AdvancedSearchFieldLabel(stringResource(R.string.ui_max_weight)) },
+                            singleLine = true,
+                            shape = RoundedCornerShape(14.dp),
+                            colors = advancedSearchTextFieldColors()
+                        )
+                        OutlinedTextField(
+                            value = chargeText,
+                            onValueChange = { chargeText = it.filter { ch -> ch.isDigit() || ch == '-' || ch == '+' }.take(3) },
+                            modifier = Modifier.width(104.dp),
+                            label = { AdvancedSearchFieldLabel(stringResource(R.string.ui_charge)) },
+                            singleLine = true,
+                            shape = RoundedCornerShape(14.dp),
+                            colors = advancedSearchTextFieldColors()
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        AdvancedToggleChip(stringResource(R.string.ui_has_3d), requireThreeD) { requireThreeD = !requireThreeD }
+                        AdvancedToggleChip(stringResource(R.string.ui_has_ghs), requireGhs) { requireGhs = !requireGhs }
+                    }
+                }
+
+                HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.14f))
+
+                // ---- Section: how many results ------------------------------
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    AdvancedSectionLabel(stringResource(R.string.ui_section_results))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        listOf(10, 20, 50).forEach { limit ->
+                            AdvancedToggleChip(
+                                label = stringResource(R.string.ui_results_limit_n, limit),
+                                checked = resultsLimit == limit
+                            ) {
+                                resultsLimit = limit
+                            }
+                        }
+                        Spacer(Modifier.weight(1f))
                     }
                 }
 
@@ -289,16 +361,35 @@ fun AdvancedSearchDialog(
                         color = MaterialTheme.colorScheme.onSurface.copy(0.5f)
                     )
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        state.results.take(8).forEach { item ->
+                        state.results.forEach { item ->
                             AdvancedSearchResultCard(item = item, onOpen = { onOpenResult(item.cid) })
                         }
                     }
                 }
             }
-        },
-        confirmButton = {},
-        dismissButton = {},
-        containerColor = MaterialTheme.colorScheme.surface
+        }
+    }
+
+@Composable
+private fun filterSummaryText(filters: AdvancedSearchFilters): String = buildList {
+    if (filters.includeElements.isNotEmpty()) add(stringResource(R.string.ui_filter_includes_s, filters.includeElements.sortedBy { elementBySymbol(it)?.atomicNumber ?: Int.MAX_VALUE }.joinToString(", ")))
+    if (filters.excludeElements.isNotEmpty()) add(stringResource(R.string.ui_filter_excludes_s, filters.excludeElements.sortedBy { elementBySymbol(it)?.atomicNumber ?: Int.MAX_VALUE }.joinToString(", ")))
+    filters.minMolecularWeight?.let { add(stringResource(R.string.ui_filter_mw_ge_s, it.cleanNumber())) }
+    filters.maxMolecularWeight?.let { add(stringResource(R.string.ui_filter_mw_le_s, it.cleanNumber())) }
+    filters.charge?.let { add(stringResource(R.string.ui_filter_charge_s, if (it > 0) "+$it" else it.toString())) }
+    if (filters.nameFilter.isNotBlank()) add(stringResource(R.string.ui_filter_name_contains_s, filters.nameFilter.trim()))
+    if (filters.requireThreeD) add(stringResource(R.string.ui_filter_has_3d))
+    if (filters.requireGhs) add(stringResource(R.string.ui_filter_has_ghs))
+}.joinToString(" | ")
+
+@Composable
+private fun AdvancedSectionLabel(text: String) {
+    Text(
+        text.uppercase(Locale.US),
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.primary,
+        fontWeight = FontWeight.Bold,
+        letterSpacing = 0.8.sp
     )
 }
 
@@ -352,12 +443,7 @@ private fun AdvancedSearchResultCard(
     item: AdvancedSearchResultItem,
     onOpen: () -> Unit
 ) {
-    Card(
-        onClick = onOpen,
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.42f)),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.14f))
-    ) {
+    ChemCardSurface(onClick = onOpen) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(10.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -399,6 +485,15 @@ private fun AdvancedSearchResultCard(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
+                if (item.iupacName.isNotBlank() && !item.iupacName.equals(item.title, ignoreCase = true)) {
+                    Text(
+                        item.iupacName,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.42f),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
             Icon(Icons.Default.ChevronRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurface.copy(0.35f))
         }

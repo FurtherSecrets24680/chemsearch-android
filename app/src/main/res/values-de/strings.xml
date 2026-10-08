@@ -101,13 +101,13 @@
     <string name="ui_welcome_tagline" translatable="true">CHEMIE VEREINFACHT</string>
     <string name="ui_welcome_tagline_body" translatable="true">Suchen Sie Verbindungen, prüfen Sie Strukturen, speichern Sie nützliche Ergebnisse und verwenden Sie praktische Chemiewerkzeuge in einer eigenen Android-App.</string>
     <string name="ui_welcome_feature_search_title" translatable="true">Zusammengesetzte Suche</string>
-    <string name="ui_welcome_feature_search_body" translatable="true">Suchen Sie PubChem Daten nach Namen, Formeln, CAS-Stil Identifikator oder CID.</string>
+    <string name="ui_welcome_feature_search_body" translatable="true">Schlage PubChem-Daten nach Name, Formel, CAS-artigem Bezeichner oder CID nach, mit Auto-Vorschlägen, erweiterten Filtern und gezeichneter Struktursuche.</string>
     <string name="ui_welcome_feature_structures_title" translatable="true">2D und 3D Strukturen</string>
     <string name="ui_welcome_feature_structures_body" translatable="true">Strukturbilder anzeigen, 3D-Modelle drehen und Strukturdateien speichern.</string>
     <string name="ui_welcome_feature_tools_title" translatable="true">Chemiewerkzeuge</string>
     <string name="ui_welcome_feature_tools_body" translatable="true">Balancieren Sie Reaktionen, berechnen Sie die Molarmasse, lösen Sie die Stoichiometrie und vieles mehr.</string>
     <string name="ui_welcome_feature_local_title" translatable="true">Lokaler Workflow</string>
-    <string name="ui_welcome_feature_local_body" translatable="true">Behalte Favoriten, aktuelle Suchen, zwischengespeicherte Ergebnisse und Offline-Chemiedaten.</string>
+    <string name="ui_welcome_feature_local_body" translatable="true">Behalte Favoriten, letzte Suchanfragen und Offline-Daten; triff die Verbindung des Tages und füge Startbildschirm-Widgets hinzu.</string>
     <string name="ui_compare" translatable="true">Vergleichen</string>
     <string name="ui_save" translatable="true">Speichern</string>
     <string name="ui_ok" translatable="true">Ok</string>
@@ -542,6 +542,15 @@
     <string name="ui_e_g_h2o_ca_oh_2_cuso4_5h2o" translatable="true">z. B. H2O, Ca(OH)2, CuSO4·5H2O</string>
     <string name="ui_insert" translatable="true">Einfügen:</string>
     <string name="ui_molar_mass" translatable="true">MOLARE MASSE</string>
+    <string name="ui_isomer_invalid_formula" translatable="true">Das sieht nicht nach einer gültigen Formel aus</string>
+    <string name="ui_isomer_insight_formula" translatable="true">FORMEL</string>
+    <string name="ui_isomer_insight_atoms" translatable="true">ATOMS</string>
+    <string name="ui_isomer_mass" translatable="true">MASSE</string>
+    <string name="ui_isomer_insight_dbe" translatable="true">Grade der Ungesättigtheit</string>
+    <string name="ui_isomer_insight_dbe_desc" translatable="true">Ringe + Doppelbindungen zählen 1, Dreifachbindungen 2. Jedes Isomer dieser Formel teilt diesen Wert.</string>
+    <string name="ui_isomer_sort_relevance" translatable="true">Top</string>
+    <string name="ui_isomer_sort_name" translatable="true">A-Z</string>
+    <string name="ui_retry" translatable="true">Erneut versuchen</string>
     <string name="ui_count" translatable="true">Anzahl</string>
     <string name="ui_g_mol" translatable="true">g/mol</string>
     <string name="ui_3f" translatable="true">%.3f</string>
@@ -744,7 +753,7 @@
     <string name="ui_faq_search_what_q" translatable="true">Wonach kann ich suchen?</string>
     <string name="ui_faq_search_what_a" translatable="true">Sie können nach gemeinsamem Namen, IUPAC-Namen, CAS-Nummer, PubChem CID, Formeln oder gezeichnet Struktur suchen. Einige Modi funktionieren besser für exakte Bezeichner als für kurze Namen.</string>
     <string name="ui_faq_search_fail_q" translatable="true">Warum ist meine Suche gescheitert?</string>
-    <string name="ui_faq_search_fail_a" translatable="true">Versuchen Sie eine Rechtschreibkorrektur, CID, CAS Nummer oder einen spezifischeren Namen. Sehr breite Namen, inoffizielle Namen, instabile Strukturen und Verbindungen ohne PubChem werden möglicherweise kein nützliches Spiel zurückgeben.</string>
+    <string name="ui_faq_search_fail_a" translatable="true">Versuche eine Rechtschreibkorrektur, CID, CAS-Nummer oder einen genaueren Namen. Sehr breite Namen, inoffizielle Namen, instabile Strukturen und in PubChem fehlende Verbindungen liefern möglicherweise kein nützliches Ergebnis. Schlägt eine Suche fehl, erklärt die Fehlermeldung, was schiefgelaufen ist, und ist nach Typ farbcodiert.</string>
     <string name="ui_faq_did_you_mean_q" translatable="true">Warum haben Sie gemeint, dass Vorschläge manchmal fehlten?</string>
     <string name="ui_faq_did_you_mean_a" translatable="true">ChemSearch zeigt nur enge Rechtschreibspiele an. Es versteckt lose Ergebnisse der Autovervollständigung von PubChem, wenn sie nicht miteinander in Beziehung stehen, so dass es nichts statt eines schlechten Vorschlags zeigen kann.</string>
     <string name="ui_faq_normal_vs_isomer_q" translatable="true">Was ist der Unterschied zwischen normaler Suche und Isomersuche?</string>
@@ -777,14 +786,16 @@
     <string name="ui_faq_collect_a" translatable="true">ChemSearch hat kein Kontensystem. Suchverlauf, Favoriten, Downloads und Cache werden auf Ihrem Gerät gespeichert. Live-Suchanfragen kontaktieren noch immer externe Dienste wie PubChem, Wikipedia, GitHub Updates, oder Ihren gewählten KI Provider, wenn nötig.</string>
     <string name="ui_faq_collect_no_updates_a" translatable="true">ChemSearch hat kein Kontensystem. Suchverlauf, Favoriten, Downloads und Cache werden auf Ihrem Gerät gespeichert. Bei Bedarf wenden Sie sich noch an externe Dienste wie PubChem, Wikipedia oder Ihren gewählten KI-Anbieter.</string>
     <string name="ui_faq_offline_q" translatable="true">Was funktioniert offline?</string>
-    <string name="ui_faq_offline_a" translatable="true">Die integrierten Bibliotheksreferenzen, Taschenrechner, Favoriten und heruntergeladene Verbindungen können offline funktionieren. Live-Verbindungssuche, frische Beschreibungen, Struktursuche, Update-Checks und KI-Beschreibungen benötigen Internetzugang.</string>
+    <string name="ui_faq_offline_a" translatable="true">Die integrierten Bibliotheksreferenzen, Rechner, Favoriten, heruntergeladenen Verbindungen, die Verbindung des Tages, Startbildschirm-Widgets und die Reaktionsvorhersage funktionieren alle offline. Live-Verbindungssuche, aktuelle Beschreibungen, Struktursuche, Update-Prüfungen und KI-Beschreibungen benötigen Internetzugang.</string>
     <string name="ui_faq_offline_no_updates_a" translatable="true">Die integrierten Bibliotheksreferenzen, Taschenrechner, Favoriten und heruntergeladene Verbindungen können offline funktionieren. Live-Verbindungssuche, frische Beschreibungen, Struktursuche und KI-Beschreibungen benötigen Internetzugang.</string>
     <string name="ui_faq_cache_vs_downloads_q" translatable="true">Was ist der Unterschied zwischen Cache und Downloads?</string>
     <string name="ui_faq_cache_vs_downloads_a" translatable="true">Cache beschleunigt Wiederholungen und kann automatisch gelöscht werden. Downloads sind vorsätzliche Offline-Verbindungen mit Identifikatoren, Beschreibungen, Strukturen, Synonymen, Sicherheitsinformationen und Quelldaten wenn verfügbar.</string>
     <string name="ui_faq_downloads_stored_q" translatable="true">Wo werden heruntergeladene Verbindungen gespeichert?</string>
     <string name="ui_faq_downloads_stored_a" translatable="true">Heruntergeladene Verbindungen werden in der lokalen Raum-Datenbank der App auf Ihrem Gerät gespeichert. Die Deinstallation der App kann sie entfernen, es sei denn, Sie exportieren oder sichern sie zuerst.</string>
     <string name="ui_faq_save_q" translatable="true">Wie kann ich eine Verbindung speichern?</string>
-    <string name="ui_faq_save_a" translatable="true">Benutzen Sie den Stern für Favoriten oder den Download-Button für eine vollständige Offline-Speicherung. Favoriten sind schnelle Lesezeichen; Downloads sind zum Offline-Lesen gedacht.</string>
+    <string name="ui_faq_save_a" translatable="true">Verwende den Stern für Favoriten oder die Download-Schaltfläche für eine vollständige Offline-Speicherung. Halte eine Bibliothekskarte gedrückt, um die Formel zu kopieren, in PubChem zu öffnen oder sie zu entfernen, und exportiere die gesamte Bibliothek über den Bibliotheksbildschirm als CSV oder JSON.</string>
+    <string name="ui_faq_export_q" translatable="true">Wie exportiere ich meine Bibliothek?</string>
+    <string name="ui_faq_export_a" translatable="true">Öffne die Bibliothek, öffne das Exportmenü und wähle CSV für Tabellen oder JSON für ein vollständiges Backup, das du auf einem anderen Gerät wieder importieren kannst. Die chemische Datenbank ist in der App enthalten und muss nicht exportiert werden.</string>
     <string name="ui_faq_compare_q" translatable="true">Kann ich gespeicherte Verbindungen vergleichen?</string>
     <string name="ui_faq_compare_a" translatable="true">Ja. Wählen Sie zwei oder mehr Verbindungen in Favoriten, Downloads oder unterstützten Chemiedatenbank-Einträgen aus und verwenden Sie dann die Schaltfläche \"Vergleichen\".</string>
     <string name="ui_faq_database_q" translatable="true">Was ist die Chemische Datenbank?</string>
@@ -821,6 +832,8 @@
     <string name="ui_search_history" translatable="true">Suchverlauf</string>
     <string name="ui_autosuggestions" translatable="true">Autovorschläge</string>
     <string name="ui_compact_mode" translatable="true">Kompaktmodus</string>
+    <string name="ui_cards" translatable="true">Karten</string>
+    <string name="ui_subtitle_cards" translatable="true">Inhalte in abgerundeten Karten zeigen; ausschalten für eine flache Seite</string>
     <string name="ui_reduce_motion" translatable="true">Bewegung reduzieren</string>
     <string name="ui_high_contrast_outlines" translatable="true">Hohe Kontrastumrisse</string>
     <string name="ui_default_structure_view" translatable="true">Standard Strukturansicht</string>
@@ -1246,7 +1259,7 @@
     <string name="ui_info_elemental_analysis_what" translatable="true">Was ist das?</string>
     <string name="ui_info_elemental_analysis_what_body" translatable="true">Zeigt den Prozentsatz jedes Elements nach Masse in der Verbindung. Berechnet aus atomaren Gewichten und der molekularen Formel.</string>
     <string name="ui_info_elemental_analysis_example" translatable="true">Beispiel</string>
-    <string name="ui_info_elemental_analysis_example_body" translatable="true">Wasser (H2O) ist ~11% Wasserstoff und ~89% Sauerstoff durch Masse, da Sauerstoffatome viel schwerer sind als Wasserstoffatome .</string>
+    <string name="ui_info_elemental_analysis_example_body" formatted="false" translatable="true">Wasser (H2O) ist ~11% Wasserstoff und ~89% Sauerstoff durch Masse, da Sauerstoffatome viel schwerer sind als Wasserstoffatome .</string>
     <string name="ui_info_elemental_analysis_why" translatable="true">Warum es wichtig ist</string>
     <string name="ui_info_elemental_analysis_why_body" translatable="true">Nützlich in der analytischen Chemie zur Verifizierung der zusammengesetzten Verbindungen und in der Ernährungswissenschaft, um die Zusammensetzung der Nährstoffe zu verstehen.</string>
     <string name="ui_info_what_is_ghs" translatable="true">Was ist GHS?</string>
@@ -1626,5 +1639,137 @@
     <string name="ui_recent_group_previous_30_days" translatable="true">Letzte 30 Tage</string>
     <string name="ui_recent_group_yesterday" translatable="true">Gestern</string>
     <string name="ui_db_section_details" translatable="true">Details</string>
+    <string name="ui_reaction_predictor">Reaktionsprognose</string>
+    <string name="ui_reaction_predictor_subtitle">Sagt Produkte aus Reaktanten mithilfe der chemischen Datenbank und Reaktionsregeln voraus</string>
+    <string name="ui_reactant_n">Reaktant %1$d</string>
+    <string name="ui_add_reactant">Reaktant hinzufügen</string>
+    <string name="ui_predict_reaction">Produkte vorhersagen</string>
+    <string name="ui_error_enter_two_reactants">Gib zwei Reaktanten ein.</string>
+    <string name="ui_error_no_prediction_available">Keine bekannte Regel passt zu diesen Reaktanten. Versuche ein übliches Paar wie eine Säure mit einer Base, einem Metall oder einem Carbonat.</string>
+    <string name="ui_pred_rule_neutralization">Neutralisationsregel</string>
+    <string name="ui_pred_rule_acid_carbonate">Säure + Carbonat-Regel</string>
+    <string name="ui_pred_rule_metal_acid">Metall + Säure-Regel</string>
+    <string name="ui_pred_rule_single_displacement">Aktivitätsreihe-Regel</string>
+    <string name="ui_pred_rule_combustion">Verbrennungsregel</string>
+    <string name="ui_pred_rule_synthesis">Syntheseregel</string>
+    <string name="ui_pred_note_neutralization">Wasser entsteht</string>
+    <string name="ui_pred_note_effervescence">Aufschäumen</string>
+    <string name="ui_pred_note_hydrogen_gas">Wasserstoffgas</string>
+    <string name="ui_pred_note_metal_deposited">Metall abgeschieden</string>
+    <string name="ui_pred_rule_ammonium_base">Ammoniumsalz + Base-Regel</string>
+    <string name="ui_pred_rule_acid_oxide">Säure + Metalloxid-Regel</string>
+    <string name="ui_pred_rule_acid_sulfite">Säure + Sulfit-Regel</string>
+    <string name="ui_pred_rule_acid_sulfide">Säure + Sulfid-Regel</string>
+    <string name="ui_pred_rule_metal_water">Metall + kaltes Wasser-Regel</string>
+    <string name="ui_pred_rule_metal_steam">Metall + Dampf-Regel</string>
+    <string name="ui_pred_note_ammonia_gas">Ammoniakgas</string>
+    <string name="ui_pred_note_pungent_gas">stechendes SO2-Gas</string>
+    <string name="ui_pred_note_rotten_egg">Geruch nach faulen Eiern</string>
+    <string name="ui_rp_what_it_does_desc">Gib zwei Reaktanten ein, um die vorhergesagten Produkte, eine ausgewogene Gleichung und die Regel oder den Datenbankeintrag hinter der Vorhersage zu sehen.</string>
+    <string name="ui_rp_best_inputs_desc">Übliche anorganische Paare funktionieren am besten: Säuren mit Basen, Metallen oder Carbonaten; aktive Metalle in Salzlösungen; Kohlenwasserstoffe mit O2; und zwei Elemente, die eine bekannte binäre Verbindung bilden.</string>
+    <string name="ui_rp_limits_desc">Die Prognose deckt nur übliche Regeln ab. Organische Chemie, Redox mit besonderen Bedingungen und Reaktionen mit Katalysator oder Wärme können fehlen. Prüfe eine Referenz, bevor du dich auf eine Vorhersage verlässt.</string>
+    <string name="ui_language_bengali">বাংলা</string>
+    <string name="ui_copy_summary">Zusammenfassung kopieren</string>
+    <string name="ui_copied_summary">Zusammenfassung kopiert</string>
+    <string name="ui_consumption_label">%1$s%% verbraucht</string>
+    <string name="ui_atom_economy_label">Atomökonomie: %1$s%%</string>
+    <string name="ui_widget_name_placeholder" translatable="true">ChemSearch öffnen…</string>
+    <string name="ui_widget_random_refresh" translatable="true">Neues zufälliges Molekül</string>
+    <string name="ui_widget_todays_pick" translatable="true">Heutige Auswahl</string>
+    <string name="ui_widget_random_tap_refresh" translatable="true">Tippe auf Aktualisieren für einen anderen</string>
+    <string name="ui_widget_refresh" translatable="true">Aktualisieren</string>
+    <string name="ui_section_what_to_search" translatable="true">Was suchen</string>
+    <string name="ui_section_narrow_by" translatable="true">Eingrenzen nach</string>
+    <string name="ui_section_properties" translatable="true">Eigenschaften</string>
+    <string name="ui_section_results" translatable="true">Ergebnisse</string>
+    <string name="ui_name_contains" translatable="true">Name enthält</string>
+    <string name="ui_name_contains_hint" translatable="true">z. B. Säure oder Benz</string>
+    <string name="ui_filters_active_count" translatable="true">%1$d aktiv</string>
+    <string name="ui_filter_name_contains_s" translatable="true">Name: %1$s</string>
+    <string name="ui_results_limit_n" translatable="true">%1$d anzeigen</string>
+    <string name="ui_widget_daily_desc" translatable="true">Stoff des Tages - täglich eine neue Substanz</string>
+    <string name="ui_widget_random_desc" translatable="true">Zufälliger Stoff - zum Neuwurf aktualisieren tippen</string>
+    <string name="ui_compare_subtitle" translatable="true">Verbindungen abrufen und Eigenschaften nebeneinander vergleichen</string>
+    <string name="ui_clear_results" translatable="true">Ergebnisse löschen</string>
+    <string name="ui_comparing_n_compounds" translatable="true">%1$d Verbindungen werden verglichen</string>
+    <string name="ui_copied_short" translatable="true">Kopiert</string>
+    <string name="ui_copy_row_values" translatable="true">Alle Werte dieser Zeile kopieren</string>
+    <string name="ui_structure_search_summary" translatable="true">%1$s-Modus · %2$d%% Ähnlichkeit · %3$d Ergebnisse</string>
+    <string name="ui_structure_search_add_mode_chip" translatable="true">%1$s-Modus hinzufügen</string>
+    <string name="ui_structure_search_import_hint" translatable="true">SMILES wie CCO oder CC(=O)O, InChI oder eine V2000-MOL-Datei einfügen</string>
+    <string name="ui_faq_widget_daily_q" translatable="true">Was ist der Unterschied zwischen den beiden Widgets?</string>
+    <string name="ui_faq_widget_daily_a" translatable="true">Das Widget „Verbindung des Tages“ leitet seine Auswahl aus dem Kalenderdatum ab und zeigt so den ganzen Tag dieselbe Verbindung, die sich um Mitternacht ändert. Das Widget „Zufällige Verbindung“ wählt auf Abruf — drücke jederzeit seine Aktualisierungsschaltfläche für eine neue.</string>
+    <string name="ui_faq_reaction_predictor_q" translatable="true">Wie funktioniert die Reaktionsvorhersage?</string>
+    <string name="ui_faq_reaction_predictor_a" translatable="true">Sie gleicht deine ausgewählten Reaktanten mit einem Offline-Regelsatz ab, der aus der mitgelieferten chemischen Datenbank aufgebaut ist, und schlägt wahrscheinliche Produkte, Reaktionstypen und Beobachtungen vor. Sie deckt übliche Schulreaktionen ab — prüfe ungewöhnliche Fälle immer mit einem Lehrbuch.</string>
+    <string name="ui_faq_database_size_q" translatable="true">Wie groß ist die integrierte chemische Datenbank?</string>
+    <string name="ui_faq_database_size_a" translatable="true">Sie bündelt 575 Stoffe, 108 Ionen, 71 funktionelle Gruppen und 149 Reaktionen, alle offline verfügbar. Die 118 Periodensystem-Elemente liegen im Periodensystem, sodass sich die beiden Referenzen nie duplizieren.</string>
+    <string name="ui_faq_languages_q" translatable="true">Welche Sprachen unterstützt ChemSearch?</string>
+    <string name="ui_faq_languages_a" translatable="true">Die Oberfläche ist vollständig in 15 Sprachen übersetzt: Bengalisch, Dänisch, Deutsch, Griechisch, Spanisch, Finnisch, Französisch, Italienisch, Japanisch, Niederländisch, Norwegisch, Polnisch, Portugiesisch, Russisch und Schwedisch. Ändere sie jederzeit unter Einstellungen > Sprache.</string>
+    <string name="ui_whats_new_section_features" translatable="true">Neue Funktionen</string>
+    <string name="ui_whats_new_section_improvements" translatable="true">Verbesserungen</string>
+    <string name="ui_section_whats_new" translatable="true">Neuigkeiten</string>
+    <string name="ui_whats_new_bullet_reaction" translatable="true">Reaktionsvorhersage: Eine Offline-Regel-Engine auf Basis der mitgelieferten chemischen Datenbank hinzugefügt. Bis zu drei Reaktanten eingeben und vorhergesagte Produkte, Reaktionstypen, Beobachtungen und Zuverlässigkeitsgrade erhalten.</string>
+    <string name="ui_whats_new_bullet_widgets" translatable="true">Startbildschirm-Widgets: Widgets für Verbindung des Tages und Zufällige Verbindung hinzugefügt. Das Tages-Widget wechselt um Mitternacht, das Zufalls-Widget hat seine eigene Aktualisierungsschaltfläche.</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">Chemische Datenbank: Von 331 auf 575 Stoffe erweitert, darunter Aminosäuren, Vitamine, Arzneimittel, Ester, Organometalle, Silicate, Alkaloide und mehr. Die 118 Elemente stehen jetzt im Periodensystem, statt in der Datenbank dupliziert zu werden.</string>
+    <string name="ui_whats_new_bullet_search" translatable="true">Erweiterte Suche: Auswahlergebnislimit, Name-enthält-Filter und Zähler aktiver Filter mit Ein-Tipp-Alles-löschen hinzugefügt.</string>
+    <string name="ui_whats_new_bullet_tools" translatable="true">Werkzeuge: Das Raster passt sich jetzt von 2 Spalten auf schmalen Telefonen bis zu 5 Spalten auf breiten Bildschirmen und Tablets an. Werkzeugkategorien verwenden eigene Akzentfarben, und Rasterzeilen behalten gleich hohe Karten.</string>
+    <string name="ui_whats_new_bullet_structure" translatable="true">Struktursuche: Konfigurationsübersicht auf einen Blick, Ähnlichkeitsregler, klarere Aktiv-Statusanzeige, Hinweise zu Importformaten und ein Live-Formel-Badge hinzugefügt.</string>
+    <string name="ui_whats_new_bullet_polish" translatable="true">Suchfehler: Spezifische, farbcodierte Meldungen für Ratenbegrenzung, Timeouts, ungültige Anfragen, Netzwerkfehler, Serverfehler und leere Ergebnisse hinzugefügt.</string>
+    <string name="ui_whats_new_bullet_home" translatable="true">Explore: Schnellaktionen für Struktursuche, Isomerensuche, Periodensystem und Chemische Datenbank hinzugefügt.</string>
+    <string name="ui_whats_new_bullet_library" translatable="true">Bibliotheksaktionen: Gespeicherte Verbindung lange drücken, um die Formel zu kopieren, sie in PubChem zu öffnen oder den Eintrag zu entfernen, ohne ihn zu öffnen.</string>
+    <string name="ui_whats_new_bullet_shortcuts" translatable="true">Launcher-Shortcuts: App-Symbol lange drücken, um direkt zu Suche, Bibliothek, Werkzeuge oder Einstellungen zu springen.</string>
+    <string name="ui_whats_new_bullet_daily" translatable="true">Verbindung des Tages: Startbildschirm-Karte hinzugefügt, die dieselbe Tagesverbindung wie das Widget zeigt, inklusive Formel und typischen Verwendungen.</string>
+    <string name="ui_whats_new_bullet_csv" translatable="true">Bibliotheksexport: CSV-Export neben der vorhandenen JSON-Sicherung und Importunterstützung hinzugefügt.</string>
+    <string name="ui_whats_new_bullet_compare" translatable="true">Verbindungen vergleichen: Ein-Tipp-Kopieren von Eigenschaftszeilen, Verbindungs-Chips, einer Aktion zum Löschen der Ergebnisse und Unterstützung für bis zu sechs Verbindungen hinzugefügt.</string>
+    <string name="ui_whats_new_bullet_periodic" translatable="true">Periodensystem: Interaktive Kategorifilter, hellere Elementkacheln, Gradient-Trend-Heatmaps, Min/Max-Legenden und eine anklickbare Top-5-Elementleiste hinzugefügt.</string>
+    <string name="ui_whats_new_bullet_stoich" translatable="true">Stöchiometrie: Atomökonomie, Verbrauch und Restmengen pro Reagenz, verbesserte Einheitenumrechnung und kopierbare Analyse-Zusammenfassungen hinzugefügt.</string>
+    <string name="ui_whats_new_bullet_display" translatable="true">Anzeige: App-weite Einstellung für die Temperatureinheit (K, °C oder °F) hinzugefügt.</string>
+    <string name="ui_whats_new_bullet_haptics" translatable="true">Haptik: Haptisches Feedback für unterstützte Interaktionen hinzugefügt.</string>
+    <string name="ui_whats_new_bullet_offline_mode" translatable="true">Entwicklertools: Offline-Testmodus mit deterministischen Testergebnissen, einstellbarer Latenz, simulierten Fehlern, erzwungenen Fehlerarten und einem Offline-Banner auf dem Bildschirm hinzugefügt. Außerdem Cache-Inspektion, Geräte- und Build-Details sowie ein Fehlermeldungs-Katalog hinzugefügt.</string>
+    <string name="ui_whats_new_bullet_dialogs" translatable="true">Oberfläche: Dialoge über FAQ-, Hilfe- und Bestätigungs-Popups hinweg standardisiert, mit getönten Symbolköpfen, Schließen-Schaltflächen und farbcodierten destruktiven Aktionen.</string>
+    <string name="ui_whats_new_bullet_cards" translatable="true">Oberfläche: Karten, Auswahlzustände und destruktive Aktionen in der gesamten App standardisiert. Eine Karten-Einstellung zum Umschalten zwischen Karten- und flacheren Layouts hinzugefügt.</string>
+    <string name="ui_whats_new_bullet_collapsible" translatable="true">Über: Die Was-ist-neu-Karte lässt sich jetzt zusammenklappen und zeigt die Highlights der aktuellen Version.</string>
+    <string name="ui_whats_new_bullet_languages" translatable="true">Neue Sprache: Bengalisch hinzugefügt und die lokalisierten Zeichenketten aktualisiert. Sprachauswahlen zeigen jetzt jede Sprache mit ihrem eigentlichen Namen.</string>
+    <string name="ui_error_search_not_found_s" translatable="true">Keine Übereinstimmung für „%1$s“ in PubChem gefunden. Versuche einen anderen Namen, eine CAS-Nummer oder prüfe die Schreibweise.</string>
+    <string name="ui_error_search_throttled" translatable="true">PubChem begrenzt gerade Anfragen. Warte ein paar Sekunden und versuche es erneut.</string>
+    <string name="ui_error_search_timeout" translatable="true">PubChem hat zu lange zum Antworten gebraucht. Versuche es erneut — sehr komplexe Abfragen können das Zeitlimit überschreiten.</string>
+    <string name="ui_error_search_bad_request" translatable="true">PubChem hat die Abfrage als ungültig abgelehnt. Prüfe das Eingabeformat (Name, CAS oder Formel).</string>
+    <string name="ui_error_search_bad_request_detail" translatable="true">PubChem hat die Abfrage abgelehnt: %1$s</string>
+    <string name="ui_error_search_network" translatable="true">Netzwerkproblem — PubChem ist nicht erreichbar. Prüfe deine Internetverbindung und versuche es erneut.</string>
+    <string name="ui_error_search_server" translatable="true">PubChem-Serverfehler (HTTP %1$s). Der Dienst ist eventuell vorübergehend nicht verfügbar — versuche es später erneut.</string>
+    <string name="ui_error_search_unknown" translatable="true">Unerwarteter Fehler: %1$s</string>
+    <string name="ui_debug_device_build_info" translatable="true">Geräte- und Build-Info</string>
+    <string name="ui_debug_device_body" translatable="true">Modell, OS, ABI, Kernel, Installer, Version und Live-Speichernutzung</string>
+    <string name="ui_debug_cache_stats" translatable="true">Verbindungs-Cache-Inspektor</string>
+    <string name="ui_debug_cache_body" translatable="true">Zwischengespeicherte Dateien, Größe und manuelles Leeren</string>
+    <string name="ui_debug_cache_files_d" translatable="true">Dateien im Cache: %1$d</string>
+    <string name="ui_debug_cache_empty" translatable="true">Keine zwischengespeicherten Verbindungen — suche und öffne eine Verbindung, um den Cache zu füllen.</string>
+    <string name="ui_debug_error_catalog" translatable="true">Katalog der Fehlermeldungen</string>
+    <string name="ui_debug_error_catalog_body" translatable="true">Suchfehler mit Farbcodierung in der Vorschau</string>
+    <string name="ui_cache_cleared" translatable="true">Cache geleert</string>
+    <string name="ui_clipboard_cache" translatable="true">Verbindungs-Cache-Bericht</string>
+    <string name="ui_about_whats_new_s" translatable="true">Neu in v%1$s</string>
+    <string name="ui_trend_top_elements" translatable="true">Top-5-Elemente</string>
+    <string name="ui_compound_of_the_day" translatable="true">VERBINDUNG DES TAGES</string>
+    <string name="ui_temperature_unit" translatable="true">Temperatureinheit</string>
+    <string name="ui_subtitle_temperature_unit" translatable="true">Für Schmelz- und Siedepunkte in Elementdetails und Trends</string>
+    <string name="ui_copy_formula" translatable="true">Formel kopieren</string>
+    <string name="ui_export_library_csv" translatable="true">Bibliothek als CSV exportieren</string>
+    <string name="ui_error_no_browser" translatable="true">Kein Browser gefunden</string>
+    <string name="ui_explore_chemsearch" translatable="true">ChemSearch erkunden</string>
+    <string name="ui_periodic_table_quick_action_subtitle" translatable="true">Alle 118 Elemente und ihre Eigenschaften ansehen</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">900+ Stoffe, Ionen, Gruppen und Reaktionen</string>
+    <string name="ui_offline_test_mode" translatable="true">Offline-Testmodus</string>
+    <string name="ui_offline_test_mode_subtitle" translatable="true">Dummy-Daten ohne echte Netzwerkaufrufe anzeigen</string>
+    <string name="ui_offline_test_mode_toggle_body" translatable="true">Bei aktivem Modus liefern Suche, Nachschlagen, Struktur- und KI-Aufrufe lokale Testdatenstätze statt das Netzwerk zu kontaktieren</string>
+    <string name="ui_offline_test_mode_configure" translatable="true">Testmodus konfigurieren</string>
+    <string name="ui_offline_test_mode_configure_subtitle" translatable="true">Latenz, Fehlerrate und simulierter Fehlertyp</string>
+    <string name="ui_offline_test_mode_latency" translatable="true">SIMULIERTE LATENZ</string>
+    <string name="ui_offline_test_mode_error_rate" translatable="true">ZUFÄLLIGE FEHLERRATE</string>
+    <string name="ui_offline_test_mode_failure" translatable="true">ERZWUNGENER FEHLER</string>
+    <string name="ui_offline_test_mode_failure_body" translatable="true">Zwingt jeden Dummy-Aufruf, mit diesem Fehlertyp zu scheitern, damit jede farbcodierte Meldung geprüft werden kann</string>
+    <string name="ui_offline_test_mode_footer" translatable="true">Die Ergebnisse sind deterministisch: Dieselbe Abfrage liefert immer dieselbe Testverbindung, sodass UI-Zustände reproduzierbar sind. Während dieser Modus aktiv ist, verlässt nichts das Gerät.</string>
+    <string name="ui_offline_test_mode_badge" translatable="true">OFFLINE</string>
+    <string name="ui_offline_test_mode_active_banner" translatable="true">Offline-Testmodus ist aktiv: Alle Ergebnisse auf diesem Bildschirm sind simulierte Dummy-Daten</string>
+    <string name="ui_offline_test_mode_active_note" translatable="true">Alle Ergebnisse sind simuliert</string>
 </resources>
-

@@ -80,14 +80,14 @@ fun predictPrecipitation(firstFormula: String, secondFormula: String): Precipita
     )
 }
 
-private data class CommonIon(
+internal data class CommonIon(
     val formula: String,
     val charge: Int,
     val name: String,
     val counts: Map<String, Int> = parseFormulaElementCounts(formula)
 )
 
-private data class IonicCompoundMatch(
+internal data class IonicCompoundMatch(
     val formula: String,
     val cation: CommonIon,
     val anion: CommonIon,
@@ -146,7 +146,7 @@ private val halideExceptions = setOf("Ag", "Pb", "Hg2")
 private val sulfateExceptions = setOf("Ba", "Pb", "Sr", "Ca", "Ag", "Hg2")
 private val mostlyInsolubleAnions = setOf("CO3", "PO4", "S", "SO3", "CrO4", "C2O4", "O")
 
-private fun identifyCommonIonicCompound(rawFormula: String): IonicCompoundMatch? {
+internal fun identifyCommonIonicCompound(rawFormula: String): IonicCompoundMatch? {
     val formula = rawFormula.trim()
     val counts = runCatching { parseFormulaElementCounts(formula) }.getOrNull() ?: return null
     for (cation in commonCations) {
@@ -160,7 +160,7 @@ private fun identifyCommonIonicCompound(rawFormula: String): IonicCompoundMatch?
     return null
 }
 
-private fun buildIonicCompound(cation: CommonIon, anion: CommonIon): IonicCompoundMatch {
+internal fun buildIonicCompound(cation: CommonIon, anion: CommonIon): IonicCompoundMatch {
     val chargeGcd = gcd(abs(cation.charge), abs(anion.charge)).coerceAtLeast(1)
     val cationCount = abs(anion.charge) / chargeGcd
     val anionCount = abs(cation.charge) / chargeGcd

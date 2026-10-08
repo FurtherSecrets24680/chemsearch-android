@@ -190,6 +190,7 @@ data class GitHubAsset(
 data class ChemUiState(
     val isLoading: Boolean = false,
     val error: String? = null,
+    val errorKind: SearchErrorKind? = null,
     val cid: Long? = null,
     val name: String = "",
     val formula: String = "",
@@ -242,6 +243,7 @@ data class ChemUiState(
     val isLoadingIsomers: Boolean = false,
     val isLoadingMoreIsomers: Boolean = false,
     val isomerError: String? = null,
+    val isomerErrorKind: com.furthersecrets.chemsearch.data.SearchErrorKind? = null,
     val isLoadingSynonyms: Boolean = false,
 
 )
@@ -326,23 +328,30 @@ enum class AiProvider(
 enum class MolTab { TWO_D, THREE_D }
 enum class SdfSource { PUBCHEM, GENERATED }
 enum class AppColorScheme { BLUE, VIOLET, EMERALD, ROSE, AMBER }
-enum class AppLanguage(val preferenceKey: String, val localeTag: String?, val displayNameRes: Int) {
-    SYSTEM("system", null, R.string.ui_language_system_default),
-    ENGLISH("en", "en", R.string.ui_language_english),
-    DANISH("da", "da", R.string.ui_language_danish),
-    GERMAN("de", "de", R.string.ui_language_german),
-    GREEK("el", "el", R.string.ui_language_greek),
-    SPANISH("es", "es", R.string.ui_language_spanish),
-    FINNISH("fi", "fi", R.string.ui_language_finnish),
-    FRENCH("fr", "fr", R.string.ui_language_french),
-    ITALIAN("it", "it", R.string.ui_language_italian),
-    JAPANESE("ja", "ja", R.string.ui_language_japanese),
-    DUTCH("nl", "nl", R.string.ui_language_dutch),
-    NORWEGIAN("no", "no", R.string.ui_language_norwegian),
-    POLISH("pl", "pl", R.string.ui_language_polish),
-    PORTUGUESE("pt", "pt", R.string.ui_language_portuguese),
-    RUSSIAN("ru", "ru", R.string.ui_language_russian),
-    SWEDISH("sv", "sv", R.string.ui_language_swedish);
+enum class AppLanguage(
+    val preferenceKey: String,
+    val localeTag: String?,
+    val displayNameRes: Int,
+    /** Name in its own language, always shown in pickers regardless of the app locale. */
+    val nativeName: String
+) {
+    SYSTEM("system", null, R.string.ui_language_system_default, ""),
+    ENGLISH("en", "en", R.string.ui_language_english, "English"),
+    BENGALI("bn", "bn", R.string.ui_language_bengali, "বাংলা"),
+    DANISH("da", "da", R.string.ui_language_danish, "Dansk"),
+    GERMAN("de", "de", R.string.ui_language_german, "Deutsch"),
+    GREEK("el", "el", R.string.ui_language_greek, "Ελληνικά"),
+    SPANISH("es", "es", R.string.ui_language_spanish, "Español"),
+    FINNISH("fi", "fi", R.string.ui_language_finnish, "Suomi"),
+    FRENCH("fr", "fr", R.string.ui_language_french, "Français"),
+    ITALIAN("it", "it", R.string.ui_language_italian, "Italiano"),
+    JAPANESE("ja", "ja", R.string.ui_language_japanese, "日本語"),
+    DUTCH("nl", "nl", R.string.ui_language_dutch, "Nederlands"),
+    NORWEGIAN("no", "no", R.string.ui_language_norwegian, "Norsk"),
+    POLISH("pl", "pl", R.string.ui_language_polish, "Polski"),
+    PORTUGUESE("pt", "pt", R.string.ui_language_portuguese, "Português"),
+    RUSSIAN("ru", "ru", R.string.ui_language_russian, "Русский"),
+    SWEDISH("sv", "sv", R.string.ui_language_swedish, "Svenska");
 
     companion object {
         fun fromPreferenceKey(key: String?): AppLanguage =
@@ -378,6 +387,40 @@ data class ElementData(
 )
 
 // Favorites
+
+/**
+ * Preferred temperature unit for melting/boiling points and trend values,
+ * which are stored in kelvin.
+ */
+enum class TemperatureUnit(val suffix: String) {
+    KELVIN("K"),
+    CELSIUS("\u00B0C"),
+    FAHRENHEIT("\u00B0F");
+}
+
+fun TemperatureUnit.convertFromKelvin(value: Double): Double = when (this) {
+    TemperatureUnit.KELVIN -> value
+    TemperatureUnit.CELSIUS -> value - 273.15
+    TemperatureUnit.FAHRENHEIT -> (value - 273.15) * 9.0 / 5.0 + 32.0
+}
+
+/** Formats a kelvin value string (e.g. "933.47") in this unit; passes unparseable text through. */
+fun TemperatureUnit.formatTemperature(raw: String): String {
+    val kelvin = raw.trim().toDoubleOrNull() ?: return raw
+    return formatTemperatureFromKelvin(kelvin)
+}
+
+/** Formats a kelvin double in this unit with a sensible precision for the magnitude. */
+fun TemperatureUnit.formatTemperatureFromKelvin(kelvin: Double): String {
+    val converted = convertFromKelvin(kelvin)
+    val magnitude = kotlin.math.abs(converted)
+    val formatted = when {
+        magnitude >= 100 -> String.format(java.util.Locale.US, "%.0f", converted)
+        magnitude >= 10 -> String.format(java.util.Locale.US, "%.1f", converted)
+        else -> String.format(java.util.Locale.US, "%.2f", converted)
+    }
+    return "$formatted $suffix"
+}
 
 data class FavoriteCompound(
     val cid: Long,

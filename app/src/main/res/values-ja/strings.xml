@@ -101,13 +101,13 @@
     <string name="ui_welcome_tagline" translatable="true">化学をシンプルに</string>
     <string name="ui_welcome_tagline_body" translatable="true">化合物を検索し、構造を検査し、有用な結果を保存し、実用的な化学ツールを1つのネイティブAndroidアプリで使用します。</string>
     <string name="ui_welcome_feature_search_title" translatable="true">複合検索</string>
-    <string name="ui_welcome_feature_search_body" translatable="true">名前、数式、CAS形式の識別子、または CID でPubChem データを検索します。</string>
+    <string name="ui_welcome_feature_search_body" translatable="true">名前、化学式、CAS形式の識別子、CIDでPubChemデータを検索。自動補完、詳細フィルター、描いた構造からの検索に対応。</string>
     <string name="ui_welcome_feature_structures_title" translatable="true">2D と 3D 構造</string>
     <string name="ui_welcome_feature_structures_body" translatable="true">構造画像の表示、3Dモデルの回転、および構造ファイルの保存。</string>
     <string name="ui_welcome_feature_tools_title" translatable="true">化学ツール</string>
     <string name="ui_welcome_feature_tools_body" translatable="true">バランス反応、モル質量の計算、ストイチオメトリーの解析など。</string>
     <string name="ui_welcome_feature_local_title" translatable="true">ローカルワークフロー</string>
-    <string name="ui_welcome_feature_local_body" translatable="true">お気に入り、最近の検索、キャッシュされた結果、およびオフラインの化学データを保持します。</string>
+    <string name="ui_welcome_feature_local_body" translatable="true">お気に入り、最近の検索、オフラインデータを保持。今日の化合物に触れ、ホーム画面ウィジェットを追加できます。</string>
     <string name="ui_compare" translatable="true">比較</string>
     <string name="ui_save" translatable="true">保存</string>
     <string name="ui_ok" translatable="true">OK</string>
@@ -542,6 +542,15 @@
     <string name="ui_e_g_h2o_ca_oh_2_cuso4_5h2o" translatable="true">例：H2O、Ca(OH)2、CuSO4·5H2O</string>
     <string name="ui_insert" translatable="true">挿入：</string>
     <string name="ui_molar_mass" translatable="true">モル質量</string>
+    <string name="ui_isomer_invalid_formula" translatable="true">有効な化学式ではないようです</string>
+    <string name="ui_isomer_insight_formula" translatable="true">化学式</string>
+    <string name="ui_isomer_insight_atoms" translatable="true">原子</string>
+    <string name="ui_isomer_mass" translatable="true">質量</string>
+    <string name="ui_isomer_insight_dbe" translatable="true">不飽和度</string>
+    <string name="ui_isomer_insight_dbe_desc" translatable="true">環＋二重結合は1、三重結合は2として数えます。この式のすべての異性体はこの値を共有します。</string>
+    <string name="ui_isomer_sort_relevance" translatable="true">上位</string>
+    <string name="ui_isomer_sort_name" translatable="true">A-Z</string>
+    <string name="ui_retry" translatable="true">再試行</string>
     <string name="ui_count" translatable="true">数</string>
     <string name="ui_g_mol" translatable="true">g/mol</string>
     <string name="ui_3f" translatable="true">%.3f</string>
@@ -744,7 +753,7 @@
     <string name="ui_faq_search_what_q" translatable="true">何を検索できますか?</string>
     <string name="ui_faq_search_what_a" translatable="true">一般名、IUPAC名、CAS番号、PubChem CID、数式、または描画構造で検索できます。 いくつかのモードは、短い名前よりも正確な識別子に適しています。</string>
     <string name="ui_faq_search_fail_q" translatable="true">検索に失敗したのはなぜですか？</string>
-    <string name="ui_faq_search_fail_a" translatable="true">スペルの補正、CID、CAS番号、またはより特定の名前を試してみてください。 PubChemに欠けている非常に広い名前、非公式名、不安定な構造物、および化合物は有用な一致を返さないかもしれません。</string>
+    <string name="ui_faq_search_fail_a" translatable="true">スペル修正、CID、CAS番号、より具体的な名前を試してください。非常に広い名前、非公式な名前、不安定な構造、PubChemに存在しない化合物は有用な一致を返さないことがあります。検索が失敗した場合、エラーメッセージが何が起きたかを説明し、種類ごとに色分けされています。</string>
     <string name="ui_faq_did_you_mean_q" translatable="true">なぜあなたは提案が時々欠けていることを意味しますか?</string>
     <string name="ui_faq_did_you_mean_a" translatable="true">ChemSearchは近似スペル一致のみを表示します。 無関係に見えると、PubChem の自動補完結果は表示されないため、悪い提案ではなく何も表示されない可能性があります。</string>
     <string name="ui_faq_normal_vs_isomer_q" translatable="true">ノーマル検索とアイソマー検索の違いは何ですか?</string>
@@ -777,14 +786,16 @@
     <string name="ui_faq_collect_a" translatable="true">ChemSearchにはアカウントシステムがありません。検索履歴、お気に入り、ダウンロード、キャッシュはデバイスに保存されます。オンライン時には、必要に応じてPubChem、Wikipedia、GitHubアップデート、選択したAIプロバイダなどの外部サービスに接続されています。</string>
     <string name="ui_faq_collect_no_updates_a" translatable="true">ChemSearchにはアカウントシステムがありません。検索履歴、お気に入り、ダウンロード、キャッシュはデバイスに保存されます。オンライン検索は、PubChem、Wikipedia、選択したAIプロバイダなどの外部サービスに必要に応じて引き続き接続されます。</string>
     <string name="ui_faq_offline_q" translatable="true">何がオフラインで動作しますか?</string>
-    <string name="ui_faq_offline_a" translatable="true">内蔵のライブラリリファレンス、電卓、お気に入り、およびダウンロードされたコンパウンドはオフラインで動作することができます。 ライブ化合物ルックアップ、新鮮な説明、構造検索、更新チェック、およびAI説明はインターネットアクセスを必要とします。</string>
+    <string name="ui_faq_offline_a" translatable="true">内蔵ライブラリの参照、計算ツール、お気に入り、ダウンロードした化合物、今日の化合物、ホーム画面ウィジェット、反応予測はすべてオフラインで動作します。実際の化合物検索、最新の説明、構造検索、アップデートの確認、AI説明にはインターネット接続が必要です。</string>
     <string name="ui_faq_offline_no_updates_a" translatable="true">組み込みのライブラリリファレンス、電卓、お気に入り、ダウンロードした化合物はオフラインで動作することができます。ライブコンパウンドルックアップ、新しい説明、構造検索、およびAIの説明はインターネットアクセスを必要とします。</string>
     <string name="ui_faq_cache_vs_downloads_q" translatable="true">キャッシュとダウンロードの違いは何ですか?</string>
     <string name="ui_faq_cache_vs_downloads_a" translatable="true">キャッシュはリピート検索を高速化し、自動的に消去される可能性があります。 ダウンロードは意図的なオフライン化合物で、利用可能な場合は識別子、説明、構造、同義語、安全情報、およびソースデータを保存します。</string>
     <string name="ui_faq_downloads_stored_q" translatable="true">ダウンロードされた化合物はどこに保管されますか?</string>
     <string name="ui_faq_downloads_stored_a" translatable="true">ダウンロードした化合物は、お使いのデバイスのアプリのローカルルームデータベースに保存されます。 アプリをアンインストールすると、最初にエクスポートまたはバックアップしない限り、それらを削除できます。</string>
     <string name="ui_faq_save_q" translatable="true">コンパウンドを保存するにはどうすればいいですか?</string>
-    <string name="ui_faq_save_a" translatable="true">お気に入りのためのスターまたは完全なオフラインの保存のためのダウンロードボタンを使用します. お気に入りはクイックブックマークです; ダウンロードは、オフラインで読むためのものです.</string>
+    <string name="ui_faq_save_a" translatable="true">お気に入りには星を、完全なオフライン保存にはダウンロードボタンを使用します。ライブラリのカードを長押しすると数式のコピー、PubChemで開く、削除ができ、ライブラリ画面からライブラリ全体をCSVまたはJSONとしてエクスポートできます。</string>
+    <string name="ui_faq_export_q" translatable="true">ライブラリをエクスポートするには？</string>
+    <string name="ui_faq_export_a" translatable="true">ライブラリを開き、エクスポートメニューから、表計算用のCSV、または別のデバイスで再インポートできる完全バックアップ用のJSONを選択します。化学データベースはアプリに同梱されており、エクスポートは不要です。</string>
     <string name="ui_faq_compare_q" translatable="true">保存した化合物を比較することはできますか?</string>
     <string name="ui_faq_compare_a" translatable="true">はい。お気に入り、ダウンロード、またはサポートされているChemical Databaseエントリから2つ以上の化合物を選択し、「比較」ボタンを使用します。</string>
     <string name="ui_faq_database_q" translatable="true">化学データベースとは?</string>
@@ -821,6 +832,8 @@
     <string name="ui_search_history" translatable="true">履歴を検索</string>
     <string name="ui_autosuggestions" translatable="true">自動提案</string>
     <string name="ui_compact_mode" translatable="true">コンパクトモード</string>
+    <string name="ui_cards" translatable="true">カード</string>
+    <string name="ui_subtitle_cards" translatable="true">コンテンツを角丸カードで表示します。オフにするとフラットなページになります</string>
     <string name="ui_reduce_motion" translatable="true">動きを減らす</string>
     <string name="ui_high_contrast_outlines" translatable="true">高コントラストの輪郭線</string>
     <string name="ui_default_structure_view" translatable="true">デフォルトのストラクチャビュー</string>
@@ -1246,7 +1259,7 @@
     <string name="ui_info_elemental_analysis_what" translatable="true">これは何ですか？</string>
     <string name="ui_info_elemental_analysis_what_body" translatable="true">化合物内の各要素の質量別パーセンテージを表示します。原子量と分子式から計算されます。</string>
     <string name="ui_info_elemental_analysis_example" translatable="true">例</string>
-    <string name="ui_info_elemental_analysis_example_body" translatable="true">水(H2O)は、水素原子よりもはるかに重い酸素であるため、水素が約11%、質量で約89%の酸素である。</string>
+    <string name="ui_info_elemental_analysis_example_body" formatted="false" translatable="true">水(H2O)は、水素原子よりもはるかに重い酸素であるため、水素が約11%、質量で約89%の酸素である。</string>
     <string name="ui_info_elemental_analysis_why" translatable="true">なぜそれが重要なのか</string>
     <string name="ui_info_elemental_analysis_why_body" translatable="true">分析化学に役立ち、化合物の同一性を検証し、栄養科学に役立ちます。</string>
     <string name="ui_info_what_is_ghs" translatable="true">GHSとは?</string>
@@ -1626,5 +1639,137 @@
     <string name="ui_recent_group_previous_30_days" translatable="true">過去30日間</string>
     <string name="ui_recent_group_yesterday" translatable="true">昨日</string>
     <string name="ui_db_section_details" translatable="true">詳細</string>
+    <string name="ui_reaction_predictor">反応予測</string>
+    <string name="ui_reaction_predictor_subtitle">化学データベースと反応ルールを使って反応物から生成物を予測します</string>
+    <string name="ui_reactant_n">反応物 %1$d</string>
+    <string name="ui_add_reactant">反応物を追加</string>
+    <string name="ui_predict_reaction">生成物を予測</string>
+    <string name="ui_error_enter_two_reactants">反応物を2つ入力してください。</string>
+    <string name="ui_error_no_prediction_available">これらの反応物に一致する既知のルールはありません。酸と塩基、金属、炭酸塩などの一般的な組み合わせを試してください。</string>
+    <string name="ui_pred_rule_neutralization">中和ルール</string>
+    <string name="ui_pred_rule_acid_carbonate">酸+炭酸塩ルール</string>
+    <string name="ui_pred_rule_metal_acid">金属+酸ルール</string>
+    <string name="ui_pred_rule_single_displacement">イオン化傾向ルール</string>
+    <string name="ui_pred_rule_combustion">燃焼ルール</string>
+    <string name="ui_pred_rule_synthesis">合成ルール</string>
+    <string name="ui_pred_note_neutralization">水の生成</string>
+    <string name="ui_pred_note_effervescence">発泡</string>
+    <string name="ui_pred_note_hydrogen_gas">水素ガス</string>
+    <string name="ui_pred_note_metal_deposited">金属の析出</string>
+    <string name="ui_pred_rule_ammonium_base">アンモニウム塩+塩基ルール</string>
+    <string name="ui_pred_rule_acid_oxide">酸+金属酸化物ルール</string>
+    <string name="ui_pred_rule_acid_sulfite">酸+亜硫酸塩ルール</string>
+    <string name="ui_pred_rule_acid_sulfide">酸+硫化物ルール</string>
+    <string name="ui_pred_rule_metal_water">金属+冷水ルール</string>
+    <string name="ui_pred_rule_metal_steam">金属+水蒸気ルール</string>
+    <string name="ui_pred_note_ammonia_gas">アンモニアガス</string>
+    <string name="ui_pred_note_pungent_gas">刺激臭のあるSO2ガス</string>
+    <string name="ui_pred_note_rotten_egg">腐った卵の臭い</string>
+    <string name="ui_rp_what_it_does_desc">反応物を2つ入力すると、予測された生成物、平衡した化学反応式、そして予測の根拠となるルールやデータベースの項目が表示されます。</string>
+    <string name="ui_rp_best_inputs_desc">一般的な無機の組み合わせが最もよく機能します:塩基、金属、炭酸塩と酸;塩類溶液中の活性金属;O2と炭化水素;既知の二元化合物を作る2つの元素。</string>
+    <string name="ui_rp_limits_desc">予測は一般的なルールのみを対象とします。有機化学、特殊条件でのレドックス、触媒や熱を必要とする反応は含まれない場合があります。予測を信頼する前に参考資料を確認してください。</string>
+    <string name="ui_language_bengali">বাংলা</string>
+    <string name="ui_copy_summary">概要をコピー</string>
+    <string name="ui_copied_summary">概要をコピーしました</string>
+    <string name="ui_consumption_label">%1$s%%消費</string>
+    <string name="ui_atom_economy_label">原子経済: %1$s%%</string>
+    <string name="ui_widget_name_placeholder" translatable="true">ChemSearchを開く…</string>
+    <string name="ui_widget_random_refresh" translatable="true">新しいランダムな化合物</string>
+    <string name="ui_widget_todays_pick" translatable="true">今日の一枚</string>
+    <string name="ui_widget_random_tap_refresh" translatable="true">他の化合物は更新をタップ</string>
+    <string name="ui_widget_refresh" translatable="true">更新</string>
+    <string name="ui_section_what_to_search" translatable="true">検索する対象</string>
+    <string name="ui_section_narrow_by" translatable="true">絞り込み</string>
+    <string name="ui_section_properties" translatable="true">特性</string>
+    <string name="ui_section_results" translatable="true">結果</string>
+    <string name="ui_name_contains" translatable="true">名前に含まれる</string>
+    <string name="ui_name_contains_hint" translatable="true">例: acid や benz</string>
+    <string name="ui_filters_active_count" translatable="true">%1$d個使用中</string>
+    <string name="ui_filter_name_contains_s" translatable="true">名前: %1$s</string>
+    <string name="ui_results_limit_n" translatable="true">%1$d件表示</string>
+    <string name="ui_widget_daily_desc" translatable="true">今日の化合物 - 毎日新しい物質</string>
+    <string name="ui_widget_random_desc" translatable="true">ランダムな化合物 - 更新をタップして再抽選</string>
+    <string name="ui_compare_subtitle" translatable="true">化合物を取得して性質を並べて比較します</string>
+    <string name="ui_clear_results" translatable="true">結果をクリア</string>
+    <string name="ui_comparing_n_compounds" translatable="true">%1$d 個の化合物を比較中</string>
+    <string name="ui_copied_short" translatable="true">コピーしました</string>
+    <string name="ui_copy_row_values" translatable="true">この行のすべての値をコピー</string>
+    <string name="ui_structure_search_summary" translatable="true">%1$s モード · 類似度 %2$d%% · %3$d 件</string>
+    <string name="ui_structure_search_add_mode_chip" translatable="true">%1$s モードを追加</string>
+    <string name="ui_structure_search_import_hint" translatable="true">CCO や CC(=O)O などの SMILES、InChI、V2000 MOL ファイルを貼り付け</string>
+    <string name="ui_faq_widget_daily_q" translatable="true">2 つのウィジェットの違いは何ですか？</string>
+    <string name="ui_faq_widget_daily_a" translatable="true">「今日の化合物」ウィジェットはカレンダーの日付から選択を導き出すため、一日中同じ化合物を表示し、深夜に切り替わります。「ランダムな化合物」ウィジェットはオンデマンドで選択し、更新ボタンを押せばいつでも新しいものに変えられます。</string>
+    <string name="ui_faq_reaction_predictor_q" translatable="true">反応予測はどのように機能しますか？</string>
+    <string name="ui_faq_reaction_predictor_a" translatable="true">選択した反応物を内蔵の化学データベースから構築されたオフラインのルールセットと照合し、生成物・反応タイプ・観察結果の候補を提案します。一般的な学習反応をカバーします。特殊なケースは必ず教科書で確認してください。</string>
+    <string name="ui_faq_database_size_q" translatable="true">内蔵の化学データベースの規模は？</string>
+    <string name="ui_faq_database_size_a" translatable="true">575 物質・108 イオン・71 官能基・149 反応を収録し、すべてオフラインで利用できます。周期表の 118 元素は周期表側に収録されており、2 つのリファレンスが重複することはありません。</string>
+    <string name="ui_faq_languages_q" translatable="true">ChemSearch はどの言語に対応していますか？</string>
+    <string name="ui_faq_languages_a" translatable="true">インターフェースはベンガル語・デンマーク語・ドイツ語・ギリシャ語・スペイン語・フィンランド語・フランス語・イタリア語・日本語・オランダ語・ノルウェー語・ポーランド語・ポルトガル語・ロシア語・スウェーデン語の 15 言語に完全翻訳されています。設定 > 言語からいつでも変更できます。</string>
+    <string name="ui_whats_new_section_features" translatable="true">新機能</string>
+    <string name="ui_whats_new_section_improvements" translatable="true">改善</string>
+    <string name="ui_section_whats_new" translatable="true">新着情報</string>
+    <string name="ui_whats_new_bullet_reaction" translatable="true">反応予測：内蔵の化学データベースに基づくオフラインのルールエンジンを追加。反応物を最大3つ入力すると、予測生成物、反応タイプ、観察結果、信頼度が表示されます。</string>
+    <string name="ui_whats_new_bullet_widgets" translatable="true">ホーム画面ウィジェット：「今日の化合物」と「ランダム化合物」ウィジェットを追加。今日のウィジェットは午前0時に切り替わり、ランダムウィジェットには独自の更新ボタンがあります。</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">化学データベース：331から575物質に拡張。アミノ酸、ビタミン、医薬品、エステル、有機金属化合物、ケイ酸塩、アルカロイドなどを収録。118元素はデータベース内で重複する代わりに周期表に掲載されます。</string>
+    <string name="ui_whats_new_bullet_search" translatable="true">詳細検索：結果件数の上限選択、名前フィルター、アクティブフィルター数の表示（ワンタップですべて解除）を追加。</string>
+    <string name="ui_whats_new_bullet_tools" translatable="true">ツール：グリッドを再設計し、狭い画面では2列から広い画面やタブレットでは5列に対応。ツールカテゴリーに個別のアクセントカラーを適用し、行のカードは同じ高さを保ちます。</string>
+    <string name="ui_whats_new_bullet_structure" translatable="true">構造検索：設定のひと目でわかるサマリー、類似度スライダー、より明確なアクティブ状態、インポート形式のヒント、ライブの化学式バッジを追加。</string>
+    <string name="ui_whats_new_bullet_polish" translatable="true">検索エラー：レート制限、タイムアウト、不正なリクエスト、ネットワーク障害、サーバーエラー、結果なしに対応した具体的で色分けされたメッセージを追加。</string>
+    <string name="ui_whats_new_bullet_home" translatable="true">Explore：構造検索、異性体検索、周期表、化学データベースへのクイックアクションを追加。</string>
+    <string name="ui_whats_new_bullet_library" translatable="true">ライブラリ操作：保存した化合物を長押しすると、記録を開かずに化学式のコピー、PubChemで開く、削除ができます。</string>
+    <string name="ui_whats_new_bullet_shortcuts" translatable="true">ランチャーショートカット：アプリアイコンを長押しすると、検索・ライブラリ・ツール・設定に直接ジャンプできます。</string>
+    <string name="ui_whats_new_bullet_daily" translatable="true">今日の化合物：ウィジェットと同じ今日の化合物を表示するホーム画面カードを追加。化学式と主な用途付き。</string>
+    <string name="ui_whats_new_bullet_csv" translatable="true">ライブラリエクスポート：既存のJSONバックアップとインポートに加えて、CSVエクスポートを追加。</string>
+    <string name="ui_whats_new_bullet_compare" translatable="true">化合物比較：プロパティ行のワンタップコピー、化合物チップ、結果クリア操作、最大6化合物までの対応を追加。</string>
+    <string name="ui_whats_new_bullet_periodic" translatable="true">周期表：インタラクティブなカテゴリーフィルター、より明るい元素タイル、グラデーション傾向ヒートマップ、最小/最大の凡例、タップできる上位5元素ストリップを追加。</string>
+    <string name="ui_whats_new_bullet_stoich" translatable="true">化学量論：原子経済、試薬ごとの消費量と残量、単位変換の改善、コピー可能な分析サマリーを追加。</string>
+    <string name="ui_whats_new_bullet_display" translatable="true">表示：アプリ全体の温度単位設定（K、°C、°F）を追加。</string>
+    <string name="ui_whats_new_bullet_haptics" translatable="true">触覚フィードバック：対応する操作に触覚フィードバックを追加。</string>
+    <string name="ui_whats_new_bullet_offline_mode" translatable="true">開発者ツール：決定的なテスト結果、調整可能な遅延、シミュレートされたエラー、強制失敗タイプ、画面上のオフラインバナーを備えたオフラインテストモードを追加。キャッシュ検査、デバイスとビルド情報、エラーメッセージカタログも追加しました。</string>
+    <string name="ui_whats_new_bullet_dialogs" translatable="true">インターフェース：FAQ、ヘルプ、確認ポップアップのダイアログを統一し、色付きアイコンヘッダー、閉じるボタン、色分けされた危険な操作を導入。</string>
+    <string name="ui_whats_new_bullet_cards" translatable="true">インターフェース：アプリ全体でカード、選択状態、危険な操作を統一。カードベースとフラットなレイアウトを切り替える「カード」設定を追加。</string>
+    <string name="ui_whats_new_bullet_collapsible" translatable="true">概要：「新着情報」カードは折りたたみ可能になり、現在のリリースのハイライトを表示します。</string>
+    <string name="ui_whats_new_bullet_languages" translatable="true">新しい言語：ベンガル語を追加し、ローカライズされた文字列を更新。言語選択では各言語をその言語での名称で表示します。</string>
+    <string name="ui_error_search_not_found_s" translatable="true">「%1$s」に一致するものが PubChem で見つかりません。別の名前や CAS 番号を試すか、綴りを確認してください。</string>
+    <string name="ui_error_search_throttled" translatable="true">PubChem が現在リクエストを制限しています。数秒待ってから再試行してください。</string>
+    <string name="ui_error_search_timeout" translatable="true">PubChem の応答に時間がかかりすぎました。再試行してください — 非常に複雑なクエリはタイムアウトすることがあります。</string>
+    <string name="ui_error_search_bad_request" translatable="true">PubChem がクエリを無効として拒否しました。入力形式（名前・CAS・式）を確認してください。</string>
+    <string name="ui_error_search_bad_request_detail" translatable="true">PubChem がクエリを拒否しました: %1$s</string>
+    <string name="ui_error_search_network" translatable="true">ネットワークの問題 — PubChem に接続できません。インターネット接続を確認して再試行してください。</string>
+    <string name="ui_error_search_server" translatable="true">PubChem サーバーエラー (HTTP %1$s)。サービスが一時的に停止している可能性があります — 後でもう一度お試しください。</string>
+    <string name="ui_error_search_unknown" translatable="true">予期しないエラー: %1$s</string>
+    <string name="ui_debug_device_build_info" translatable="true">デバイスとビルド情報</string>
+    <string name="ui_debug_device_body" translatable="true">モデル、OS、ABI、カーネル、インストーラー、バージョン、およびライブメモリ使用量</string>
+    <string name="ui_debug_cache_stats" translatable="true">化合物キャッシュの検査</string>
+    <string name="ui_debug_cache_body" translatable="true">キャッシュされたファイル、サイズ、手動クリア</string>
+    <string name="ui_debug_cache_files_d" translatable="true">キャッシュ済みファイル： %1$d</string>
+    <string name="ui_debug_cache_empty" translatable="true">キャッシュされた化合物はありません — 検索して化合物を開くとキャッシュに保存されます。</string>
+    <string name="ui_debug_error_catalog" translatable="true">エラーメッセージカタログ</string>
+    <string name="ui_debug_error_catalog_body" translatable="true">検索エラーを色分け付きでプレビュー</string>
+    <string name="ui_cache_cleared" translatable="true">キャッシュを消去しました</string>
+    <string name="ui_clipboard_cache" translatable="true">化合物キャッシュレポート</string>
+    <string name="ui_about_whats_new_s" translatable="true">v%1$s の新着情報</string>
+    <string name="ui_trend_top_elements" translatable="true">上位5つの元素</string>
+    <string name="ui_compound_of_the_day" translatable="true">本日の化合物</string>
+    <string name="ui_temperature_unit" translatable="true">温度の単位</string>
+    <string name="ui_subtitle_temperature_unit" translatable="true">元素の詳細やトレンドの融点・沸点に使用されます</string>
+    <string name="ui_copy_formula" translatable="true">化学式をコピー</string>
+    <string name="ui_export_library_csv" translatable="true">ライブラリをCSVでエクスポート</string>
+    <string name="ui_error_no_browser" translatable="true">ブラウザが見つかりません</string>
+    <string name="ui_explore_chemsearch" translatable="true">ChemSearch を探索</string>
+    <string name="ui_periodic_table_quick_action_subtitle" translatable="true">全 118 元素とその性質を閲覧</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">900 以上の物質・イオン・基・反応を収録</string>
+    <string name="ui_offline_test_mode" translatable="true">オフラインテストモード</string>
+    <string name="ui_offline_test_mode_subtitle" translatable="true">実際の通信なしでダミーデータを表示</string>
+    <string name="ui_offline_test_mode_toggle_body" translatable="true">有効にすると、検索・取得・構造・AI呼び出しはネットワークに代わりローカルなテストレコードを返します</string>
+    <string name="ui_offline_test_mode_configure" translatable="true">テストモードの設定</string>
+    <string name="ui_offline_test_mode_configure_subtitle" translatable="true">遅延、エラー率、擬似されるエラーの種類</string>
+    <string name="ui_offline_test_mode_latency" translatable="true">擬似遅延</string>
+    <string name="ui_offline_test_mode_error_rate" translatable="true">ランダムエラー率</string>
+    <string name="ui_offline_test_mode_failure" translatable="true">强制的なエラー</string>
+    <string name="ui_offline_test_mode_failure_body" translatable="true">すべてのダミー呼び出しをこのエラー種別で失敗させ、色分けされた各メッセージを確認できるようにします</string>
+    <string name="ui_offline_test_mode_footer" translatable="true">結果は決定論的です: 同じ検索は常に同じテスト化合物を返すため、UIの状態を再現できます。このモード中は端末から何も送信されません。</string>
+    <string name="ui_offline_test_mode_badge" translatable="true">オフライン</string>
+    <string name="ui_offline_test_mode_active_banner" translatable="true">オフラインテストモードが有効: この画面のすべての結果は擬似ダミーデータです</string>
+    <string name="ui_offline_test_mode_active_note" translatable="true">すべての結果は擬似</string>
 </resources>
-

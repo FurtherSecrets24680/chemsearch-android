@@ -32,6 +32,7 @@ class AppSettingsSnapshotTest {
             cacheRetentionName = "AUTO_CLEAR_1_DAY",
             reduceMotion = true,
             highContrastOutlines = true,
+            cardsEnabled = true,
         languageKey = null
         )
 
@@ -51,6 +52,7 @@ class AppSettingsSnapshotTest {
         assertEquals(CacheRetention.AUTO_CLEAR_1_DAY, snapshot.cacheRetention)
         assertTrue(snapshot.reduceMotion)
         assertTrue(snapshot.highContrastOutlines)
+        assertTrue(snapshot.cardsEnabled)
     }
 
     @Test
@@ -72,6 +74,7 @@ class AppSettingsSnapshotTest {
             cacheRetentionName = "BAD_RETENTION",
             reduceMotion = null,
             highContrastOutlines = null,
+            cardsEnabled = null,
         languageKey = null
         )
 
@@ -91,6 +94,7 @@ class AppSettingsSnapshotTest {
         assertEquals(CacheRetention.MANUAL, snapshot.cacheRetention)
         assertFalse(snapshot.reduceMotion)
         assertFalse(snapshot.highContrastOutlines)
+        assertTrue(snapshot.cardsEnabled)
     }
 
     @Test
@@ -112,6 +116,7 @@ class AppSettingsSnapshotTest {
             cacheRetentionName = null,
             reduceMotion = null,
             highContrastOutlines = null,
+            cardsEnabled = null,
         languageKey = null
         )
         val removedChargeMode = AppSettingsSnapshot.fromRawValues(
@@ -131,6 +136,7 @@ class AppSettingsSnapshotTest {
             cacheRetentionName = null,
             reduceMotion = null,
             highContrastOutlines = null,
+            cardsEnabled = null,
         languageKey = null
         )
 

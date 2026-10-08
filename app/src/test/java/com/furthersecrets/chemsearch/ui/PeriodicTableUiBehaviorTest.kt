@@ -126,12 +126,12 @@ class PeriodicTableUiBehaviorTest {
     fun electronConfigurationCanSwitchBetweenShortAndFullForms() {
         val holmium = PeriodicTableElements.element("Ho")
 
-        assertEquals("[Xe]6s² 4f¹¹", electronConfigurationText(holmium, showFull = false))
+        assertEquals("[Xe]6s² 4f¹¹", electronConfigurationText(holmium, showFull = false, notListedLabel = "Not listed"))
         assertEquals(
             "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹¹",
-            electronConfigurationText(holmium, showFull = true)
+            electronConfigurationText(holmium, showFull = true, notListedLabel = "Not listed")
         )
-        assertFalse(electronConfigurationText(holmium, showFull = true).contains("[Xe]"))
+        assertFalse(electronConfigurationText(holmium, showFull = true, notListedLabel = "Not listed").contains("[Xe]"))
     }
 
     @Test

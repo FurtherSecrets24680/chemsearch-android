@@ -28,7 +28,10 @@ internal enum class ToolCategory(val labelRes: Int) {
     VISUALIZE(R.string.ui_tool_category_visualize),
     CALCULATORS(R.string.ui_tool_category_calculators),
     REACTIONS(R.string.ui_tool_category_reactions),
-    STOICHIOMETRY(R.string.ui_tool_category_stoichiometry)
+    STOICHIOMETRY(R.string.ui_tool_category_stoichiometry);
+
+    /** Whether cards in this category get their own accent color. */
+    val hasAccent: Boolean get() = this != ALL
 }
 
 internal enum class ToolViewMode { LIST, GRID }
@@ -76,6 +79,13 @@ internal val DEFAULT_TOOLS = listOf(
         icon = ChemAppIcons.TestTubes,
         titleRes = R.string.ui_precipitate_predictor,
         subtitleRes = R.string.ui_precipitate_predictor_subtitle,
+        category = ToolCategory.REACTIONS
+    ),
+    ToolDefinition(
+        id = 17,
+        icon = ChemAppIcons.Dna,
+        titleRes = R.string.ui_reaction_predictor,
+        subtitleRes = R.string.ui_reaction_predictor_subtitle,
         category = ToolCategory.REACTIONS
     ),
     ToolDefinition(

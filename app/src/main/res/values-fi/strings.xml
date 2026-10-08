@@ -101,13 +101,13 @@
     <string name="ui_welcome_tagline" translatable="true">KEMIA YKSINKERTAISTETTUA</string>
     <string name="ui_welcome_tagline_body" translatable="true">Hae yhdisteitä, tarkasta rakenteita, tallenna hyödyllisiä tuloksia ja käytä käytännöllisiä kemia-työkaluja yhdessä kotoperäisessä Android-sovelluksessa.</string>
     <string name="ui_welcome_feature_search_title" translatable="true">Yhdistelmän haku</string>
-    <string name="ui_welcome_feature_search_body" translatable="true">Hae PubChem tiedot nimen, kaavan, CAS-tyylin tunnisteen tai CID:n mukaan.</string>
+    <string name="ui_welcome_feature_search_body" translatable="true">Hae PubChem-tietoja nimen, kaavan, CAS-tyylisen tunnisteen tai CID:n perusteella automaattisten ehdotusten, tarkennettujen suodattimien ja piirretyn rakenteen haulla.</string>
     <string name="ui_welcome_feature_structures_title" translatable="true">2D- ja 3D-rakenteet</string>
     <string name="ui_welcome_feature_structures_body" translatable="true">Näytä rakennekuvat, kierrä 3D-malleja ja tallenna rakennetiedostoja.</string>
     <string name="ui_welcome_feature_tools_title" translatable="true">Kemialliset työkalut</string>
     <string name="ui_welcome_feature_tools_body" translatable="true">Saldo reaktiot, laskea moolimassa, ratkaista stoikiometria ja enemmän.</string>
     <string name="ui_welcome_feature_local_title" translatable="true">Paikallinen työnkulku</string>
-    <string name="ui_welcome_feature_local_body" translatable="true">Säilytä suosikit, viimeaikaiset haut, välimuistissa saadut tulokset ja offline-kemian tiedot.</string>
+    <string name="ui_welcome_feature_local_body" translatable="true">Säilytä suosikit, viimeisimmät haut ja offline-tiedot; tutustu päivän yhdisteeseen ja lisää kotinäytön widgeteitä.</string>
     <string name="ui_compare" translatable="true">Vertaa</string>
     <string name="ui_save" translatable="true">Tallenna</string>
     <string name="ui_ok" translatable="true">Ok</string>
@@ -542,6 +542,15 @@
     <string name="ui_e_g_h2o_ca_oh_2_cuso4_5h2o" translatable="true">esim. H2O, Ca(OH)2, CuSO4·5H2O</string>
     <string name="ui_insert" translatable="true">Lisää:</string>
     <string name="ui_molar_mass" translatable="true">MOOLIMASSA</string>
+    <string name="ui_isomer_invalid_formula" translatable="true">Tämä ei näytä kelvolliselta kaavalta</string>
+    <string name="ui_isomer_insight_formula" translatable="true">KAAVA</string>
+    <string name="ui_isomer_insight_atoms" translatable="true">ATOMIT</string>
+    <string name="ui_isomer_mass" translatable="true">MASSA</string>
+    <string name="ui_isomer_insight_dbe" translatable="true">Tyydyttymattömyysasteet</string>
+    <string name="ui_isomer_insight_dbe_desc" translatable="true">Renkaat + kaksoissidokset lasketaan 1:ksi, kolmoissidokset 2:ksi. Jokainen tämän kaavan isomeeri jakaa tämän arvon.</string>
+    <string name="ui_isomer_sort_relevance" translatable="true">Ylin</string>
+    <string name="ui_isomer_sort_name" translatable="true">A-Ö</string>
+    <string name="ui_retry" translatable="true">Yritä uudelleen</string>
     <string name="ui_count" translatable="true">Lukumäärä</string>
     <string name="ui_g_mol" translatable="true">g/mol</string>
     <string name="ui_3f" translatable="true">%.3f</string>
@@ -744,7 +753,7 @@
     <string name="ui_faq_search_what_q" translatable="true">Mitä voin etsiä?</string>
     <string name="ui_faq_search_what_a" translatable="true">Voit etsiä yhteisellä nimellä, IUPAC-nimellä, CAS-numerolla, PubChem CID:llä, kaavalla tai piirretyllä rakenteella. Jotkin tilat toimivat paremmin tarkkojen tunnisteiden kuin lyhyiden nimien.</string>
     <string name="ui_faq_search_fail_q" translatable="true">Miksi haun epäonnistui?</string>
-    <string name="ui_faq_search_fail_a" translatable="true">Kokeile oikeinkirjoituksen korjausta, CID, CAS-numeroa tai tarkempaa nimeä. Hyvin laajat nimet, epäviralliset nimet, epävakaat rakenteet ja yhdisteet, jotka eivät ole peräisin PubChemiltä, eivät välttämättä palauta hyödyllistä ottelua.</string>
+    <string name="ui_faq_search_fail_a" translatable="true">Kokeile oikeinkirjoituksen korjausta, CID:tä, CAS-numeroa tai tarkempaa nimeä. Erittäin laajat nimet, epäviralliset nimet, epävakaat rakenteet ja PubChemistä puuttuvat yhdisteet eivät välttämättä anna hyödyllistä osumaa. Kun haku epäonnistuu, virheilmoitus selittää, mitä meni pieleen, ja on värikoodattu tyypin mukaan.</string>
     <string name="ui_faq_did_you_mean_q" translatable="true">Miksi tarkoittikin, että ehdotuksia joskus puuttuu?</string>
     <string name="ui_faq_did_you_mean_a" translatable="true">ChemSearch näyttää vain lähellä oikeinkirjoitus ottelut. Se piilottaa löysät PubChem autocomplete tulokset, kun ne näyttävät liittymättömiä, joten se voi näyttää mitään sen sijaan huono ehdotus.</string>
     <string name="ui_faq_normal_vs_isomer_q" translatable="true">Mikä on ero normaalin haun ja isomeerien haun välillä?</string>
@@ -777,14 +786,16 @@
     <string name="ui_faq_collect_a" translatable="true">ChemSearch ei ole tilijärjestelmää. Etsi historia, suosikkeja, lataukset ja välimuisti tallennetaan laitteeseen. Live-haut ottavat yhteyttä ulkoisiin palveluihin, kuten PubChemiin, Wikipediaan, GitHub-päivityksiin tai valittuun tekoälyn tarjoajaasi tarvittaessa.</string>
     <string name="ui_faq_collect_no_updates_a" translatable="true">ChemSearch ei ole tilijärjestelmää. Etsi historia, suosikkeja, lataukset ja välimuisti tallennetaan laitteeseen. Live-haut ottavat tarvittaessa yhteyttä ulkoisiin palveluihin, kuten PubChemiin, Wikipediaan tai valittuun tekoälyn toimittajaasi.</string>
     <string name="ui_faq_offline_q" translatable="true">Mikä toimii offline-tilassa?</string>
-    <string name="ui_faq_offline_a" translatable="true">Sisäänrakennettu Kirjasto viitteet, laskimet, suosikit ja ladattu yhdisteet voivat toimia offline-tilassa. Live-yhdiste haku, tuoreet kuvaukset, rakennehaku, päivitystarkastukset ja tekoälyn kuvaukset tarvitsevat internetyhteyttä.</string>
+    <string name="ui_faq_offline_a" translatable="true">Sisäänrakennetut kirjastoviitteet, laskurit, suosikit, ladatut yhdisteet, päivän yhdiste, kotinäytön widgetit ja reaktioennustin toimivat kaikki offline-tilassa. Live-yhdistehaku, tuoreet kuvaukset, rakennehaku, päivitystarkistukset ja tekoälykuvaukset vaativat internetyhteyden.</string>
     <string name="ui_faq_offline_no_updates_a" translatable="true">Sisäänrakennetun kirjaston viitteet, laskimet, suosikit, ja ladatut yhdisteet voivat toimia offline-tilassa. Live-yhdiste haku, tuoreet kuvaukset, rakennehaku ja tekoälyn kuvaukset tarvitsevat internetyhteyttä.</string>
     <string name="ui_faq_cache_vs_downloads_q" translatable="true">Mikä ero on välimuistin ja latausten välillä?</string>
     <string name="ui_faq_cache_vs_downloads_a" translatable="true">Välimuisti nopeuttaa hakuja ja se voidaan tyhjentää automaattisesti. Lataukset ovat tarkoituksellisia offline-yhdistettä, joka tallentaa tunnisteita, kuvauksia, rakenteita, synonyymejä, turvallisuustietoja ja lähdetietoja, jos saatavilla.</string>
     <string name="ui_faq_downloads_stored_q" translatable="true">Mihin ladatut yhdisteet tallennetaan?</string>
     <string name="ui_faq_downloads_stored_a" translatable="true">Ladattuja yhdisteitä tallennetaan laitteellesi sovelluksen paikalliseen huonetietokantaan. Sovelluksen poistaminen voi poistaa ne, ellet vie niitä ensin.</string>
     <string name="ui_faq_save_q" translatable="true">Miten voin tallentaa yhdisteen?</string>
-    <string name="ui_faq_save_a" translatable="true">Käytä tähtiä suosikeille tai latauspainiketta saadaksesi täyden offline-tallennuksen. Suosikit ovat nopeita kirjanmerkkejä; Lataukset on tarkoitettu offline-käyttöön.</string>
+    <string name="ui_faq_save_a" translatable="true">Käytä tähteä suosikkeihin tai latauspainiketta täydelliseen offline-tallennukseen. Paina kirjastokorttia pitkään kopioidaksesi kaavan, avataksesi PubChemissä tai poistaaksesi sen, ja vie koko kirjasto CSV- tai JSON-muodossa kirjastonäkymästä.</string>
+    <string name="ui_faq_export_q" translatable="true">Miten vien kirjaston ulos?</string>
+    <string name="ui_faq_export_a" translatable="true">Avaa kirjasto, avaa vientivalikko ja valitse CSV taulukkolaskentaan tai JSON täydelliseksi varmuuskopioksi, jonka voit tuoda toiselle laitteelle. Kemiallinen tietokanta tulee sovelluksen mukana eikä sitä tarvitse viedä ulos.</string>
     <string name="ui_faq_compare_q" translatable="true">Voinko verrata tallennettuja yhdisteitä?</string>
     <string name="ui_faq_compare_a" translatable="true">Kyllä. Valitse kaksi tai useampia yhdisteitä Suosikit, Lataukset tai tuetut Chemical Database merkinnät, ja käytä kelluva Vertaa painiketta.</string>
     <string name="ui_faq_database_q" translatable="true">Mikä on kemiallinen tietokanta?</string>
@@ -821,6 +832,8 @@
     <string name="ui_search_history" translatable="true">Hae Historiasta</string>
     <string name="ui_autosuggestions" translatable="true">Automaattiset Ehdotukset</string>
     <string name="ui_compact_mode" translatable="true">Kompakti tila</string>
+    <string name="ui_cards" translatable="true">Kortit</string>
+    <string name="ui_subtitle_cards" translatable="true">Näytä sisältö pyöristetyissä korteissa; pois käytöstä saadaan tasainen sivu</string>
     <string name="ui_reduce_motion" translatable="true">Vähennä liikettä</string>
     <string name="ui_high_contrast_outlines" translatable="true">Korkea kontrasti ääriviivat</string>
     <string name="ui_default_structure_view" translatable="true">Rakenteiden oletusnäkymä</string>
@@ -1246,7 +1259,7 @@
     <string name="ui_info_elemental_analysis_what" translatable="true">Mikä tämä on?</string>
     <string name="ui_info_elemental_analysis_what_body" translatable="true">Näyttää kunkin elementin prosenttiosuuden yhdisteen massasta. Laskettu atomipainoista ja molekyylikaavasta.</string>
     <string name="ui_info_elemental_analysis_example" translatable="true">Esimerkki</string>
-    <string name="ui_info_elemental_analysis_example_body" translatable="true">Vesi (H2O) on noin 11 % vetyä ja noin 89 % happea massalla, koska happiatomit ovat paljon raskaampia kuin vetyatomit.</string>
+    <string name="ui_info_elemental_analysis_example_body" formatted="false" translatable="true">Vesi (H2O) on noin 11 % vetyä ja noin 89 % happea massalla, koska happiatomit ovat paljon raskaampia kuin vetyatomit.</string>
     <string name="ui_info_elemental_analysis_why" translatable="true">Miksi sillä on merkitystä</string>
     <string name="ui_info_elemental_analysis_why_body" translatable="true">Hyödyllistä analyyttisessä kemiassa yhdisteen identiteetin todentamiseksi ja ravitsemustieteessä ravinteiden koostumuksen ymmärtämiseksi.</string>
     <string name="ui_info_what_is_ghs" translatable="true">Mitä GHS?</string>
@@ -1626,5 +1639,137 @@
     <string name="ui_recent_group_previous_30_days" translatable="true">Viimeiset 30 päivää</string>
     <string name="ui_recent_group_yesterday" translatable="true">Eilen</string>
     <string name="ui_db_section_details" translatable="true">Tiedot</string>
+    <string name="ui_reaction_predictor">Reaktioennustin</string>
+    <string name="ui_reaction_predictor_subtitle">Ennusta tuotteet reaktanteista käyttäen kemian tietokantaa ja reaktiosääntöjä</string>
+    <string name="ui_reactant_n">Reaktantti %1$d</string>
+    <string name="ui_add_reactant">Lisää reaktantti</string>
+    <string name="ui_predict_reaction">Ennusta tuotteet</string>
+    <string name="ui_error_enter_two_reactants">Syötä kaksi reaktanttia.</string>
+    <string name="ui_error_no_prediction_available">Mikään tunnettu sääntö ei vastaa näitä reaktantteja. Kokeile yleistä paria kuten happo ja emäs, metalli tai karbonaatti.</string>
+    <string name="ui_pred_rule_neutralization">Neutraloitumissääntö</string>
+    <string name="ui_pred_rule_acid_carbonate">Happo + karbonaatti -sääntö</string>
+    <string name="ui_pred_rule_metal_acid">Metalli + happo -sääntö</string>
+    <string name="ui_pred_rule_single_displacement">Aktiivisuussarjasääntö</string>
+    <string name="ui_pred_rule_combustion">Palamissääntö</string>
+    <string name="ui_pred_rule_synthesis">Synteesisääntö</string>
+    <string name="ui_pred_note_neutralization">vettä muodostui</string>
+    <string name="ui_pred_note_effervescence">kupliminen</string>
+    <string name="ui_pred_note_hydrogen_gas">vetykaasu</string>
+    <string name="ui_pred_note_metal_deposited">metalli saostui</string>
+    <string name="ui_pred_rule_ammonium_base">Ammoniumsuola + emäs -sääntö</string>
+    <string name="ui_pred_rule_acid_oxide">Happo + metallioksidi -sääntö</string>
+    <string name="ui_pred_rule_acid_sulfite">Happo + sulfiitti -sääntö</string>
+    <string name="ui_pred_rule_acid_sulfide">Happo + sulfidi -sääntö</string>
+    <string name="ui_pred_rule_metal_water">Metalli + kylmä vesi -sääntö</string>
+    <string name="ui_pred_rule_metal_steam">Metalli + höyry -sääntö</string>
+    <string name="ui_pred_note_ammonia_gas">ammoniakkikaasu</string>
+    <string name="ui_pred_note_pungent_gas">pistävä SO2-kaasu</string>
+    <string name="ui_pred_note_rotten_egg">mädän munan haju</string>
+    <string name="ui_rp_what_it_does_desc">Syötä kaksi reaktanttia nähdäksesi ennustetut tuotteet, tasapainotetun yhtälön ja ennusteen taustalla olevan säännön tai tietokantamerkinnän.</string>
+    <string name="ui_rp_best_inputs_desc">Yleiset epäorgaaniset parit toimivat parhaiten: hapot emästen, metallien tai karbonaattien kanssa; aktiiviset metallit suolaliuoksissa; hiilivedyt O2:n kanssa; ja kaksi alkuainetta, jotka muodostavat tunnetun binääriyhdisteen.</string>
+    <string name="ui_rp_limits_desc">Ennustin kattaa vain yleiset säännöt. Orgaaninen kemia, redox erikoisolosuhteissa ja reaktiot, jotka vaativat katalysaattoria tai lämpöä, voivat puuttua. Tarkista lähde ennen kuin luotat ennusteeseen.</string>
+    <string name="ui_language_bengali">বাংলা</string>
+    <string name="ui_copy_summary">Kopioi yhteenveto</string>
+    <string name="ui_copied_summary">Yhteenveto kopioitu</string>
+    <string name="ui_consumption_label">%1$s%% kulunut</string>
+    <string name="ui_atom_economy_label">Atomitalous: %1$s%%</string>
+    <string name="ui_widget_name_placeholder" translatable="true">Avaa ChemSearch…</string>
+    <string name="ui_widget_random_refresh" translatable="true">Uusi satunnainen yhdiste</string>
+    <string name="ui_widget_todays_pick" translatable="true">Päivän valinta</string>
+    <string name="ui_widget_random_tap_refresh" translatable="true">Napauta päivittääksesi toisen</string>
+    <string name="ui_widget_refresh" translatable="true">Päivitä</string>
+    <string name="ui_section_what_to_search" translatable="true">Mitä etsitään</string>
+    <string name="ui_section_narrow_by" translatable="true">Rajaa</string>
+    <string name="ui_section_properties" translatable="true">Ominaisuudet</string>
+    <string name="ui_section_results" translatable="true">Tulokset</string>
+    <string name="ui_name_contains" translatable="true">Nimi sisältää</string>
+    <string name="ui_name_contains_hint" translatable="true">esim. happo tai benz</string>
+    <string name="ui_filters_active_count" translatable="true">%1$d käytössä</string>
+    <string name="ui_filter_name_contains_s" translatable="true">nimi: %1$s</string>
+    <string name="ui_results_limit_n" translatable="true">Näytä %1$d</string>
+    <string name="ui_widget_daily_desc" translatable="true">Päivän yhdiste - uusi aine joka päivä</string>
+    <string name="ui_widget_random_desc" translatable="true">Satunnainen yhdiste - napauta päivitä uudelleen</string>
+    <string name="ui_compare_subtitle" translatable="true">Hae yhdisteet ja vertaa ominaisuuksia rinnakkain</string>
+    <string name="ui_clear_results" translatable="true">Tyhjennä tulokset</string>
+    <string name="ui_comparing_n_compounds" translatable="true">Vertaaan %1$d yhdistettä</string>
+    <string name="ui_copied_short" translatable="true">Kopioitu</string>
+    <string name="ui_copy_row_values" translatable="true">Kopioi kaikki tämän rivin arvot</string>
+    <string name="ui_structure_search_summary" translatable="true">%1$s-tila · %2$d %% samankaltaisuutta · %3$d tulosta</string>
+    <string name="ui_structure_search_add_mode_chip" translatable="true">Lisää %1$s-tila</string>
+    <string name="ui_structure_search_import_hint" translatable="true">Liitä SMILES-muotoiset merkkijonot kuten CCO tai CC(=O)O, InChI tai V2000 MOL -tiedosto</string>
+    <string name="ui_faq_widget_daily_q" translatable="true">Mitä eroa on kahdella widgetillä?</string>
+    <string name="ui_faq_widget_daily_a" translatable="true">Päivän yhdiste -widget johtaa valintansa kalenteripäivästä, joten se näyttää saman yhdisteen koko päivän ja vaihtuu keskiyöllä. Satunnainen yhdiste -widget valitsee tarpeen mukaan — paina sen päivityspainiketta saadaksesi uuden milloin tahansa.</string>
+    <string name="ui_faq_reaction_predictor_q" translatable="true">Miten reaktioennustin toimii?</string>
+    <string name="ui_faq_reaction_predictor_a" translatable="true">Se sovittaa valitsemasi lähtöaineet mukana tulevan kemian tietokannan pohjalta rakennettuun offline-sääntöjoukkoon ja ehdottaa todennäköisiä tuotteita, reaktiotyyppejä ja havaintoja. Se kattaa yleiset opiskelureaktiot — tarkista aina epätavalliset tapaukset oppikirjasta.</string>
+    <string name="ui_faq_database_size_q" translatable="true">Kuinka suuri sisäänrakennettu kemiangentietokanta on?</string>
+    <string name="ui_faq_database_size_a" translatable="true">Se sisältää 575 ainetta, 108 ionia, 71 funktionaalista ryhmää ja 149 reaktiota, kaikki käytettävissä offline-tilassa. Jakson taulukon 118 alkuainetta asuvat jaksollisessa järjestelmässä, joten kaksi lähdettä ei koskaan kahdenna toisiaan.</string>
+    <string name="ui_faq_languages_q" translatable="true">Mitä kieliä ChemSearch tukee?</string>
+    <string name="ui_faq_languages_a" translatable="true">Käyttöliittymä on täysin käännetty 15 kielelle: bengali, tanska, saksa, kreikka, espanja, suomi, ranska, italia, japani, hollanti, norja, puola, portugali, venäjä ja ruotsi. Vaihda kieltä milloin tahansa kohdasta Asetukset > Kieli.</string>
+    <string name="ui_whats_new_section_features" translatable="true">Uudet ominaisuudet</string>
+    <string name="ui_whats_new_section_improvements" translatable="true">Parannukset</string>
+    <string name="ui_section_whats_new" translatable="true">Uutta</string>
+    <string name="ui_whats_new_bullet_reaction" translatable="true">Reaktioennuste: Lisätty offline-sääntömoottori, joka perustuu pakettiin kuuluvaan kemikaalitietokantaan. Syötä enintään kolme reaktanttia ja saat ennustetut tuotteet, reaktietyypit, havainnot ja luotettavuustasot.</string>
+    <string name="ui_whats_new_bullet_widgets" translatable="true">Kotinäytön widgetit: Lisätty Päivän yhdiste- ja Satunnainen yhdiste -widgetit. Päivittäinen vaihtuu keskiyöllä, ja satunnaisessa on oma päivityspainike.</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">Kemikaalitietokanta: Laajennettu 331:stä 575 aineeseen, mukaan lukien aminohapot, vitamiinit, lääkkeet, esterit, organometallit, silikaatit, alkaloidit ja muu. 118 alkuainetta ovat nyt jaksollisessa järjestelmässä sen sijaan että ne monistettaisiin tietokantaan.</string>
+    <string name="ui_whats_new_bullet_search" translatable="true">Tarkennettu haku: Lisätty tulosrajan valitsin, nimen sisältösuodatin ja aktiivisten suodattimien lukumäärä, jotka voi tyhjentää yhdellä napautuksella.</string>
+    <string name="ui_whats_new_bullet_tools" translatable="true">Työkalut: Ruudukko uusittiin mukautumaan 2 sarakkeesta kapeissa puhelimissa 5 sarakkeeseen leveillä näytöillä ja tableteilla. Työkaluluokat käyttävät nyt omia aksenttivärejään, ja ruudukon rivit pitävät kortit samankorkuisina.</string>
+    <string name="ui_whats_new_bullet_structure" translatable="true">Rakennehaku: Lisätty asetusten yleiskatsaus yhdellä silmäyksellä, samankaltaisuuden liukusäädin, selkeämpi aktiivisen tilan ilmaisin, tuontimuotojen vihjeet ja reaaliaikainen kaavamerkki.</string>
+    <string name="ui_whats_new_bullet_polish" translatable="true">Hakuvirheet: Lisätty tarkkoja, värikoortuneita viestejä nopeusrajoitukselle, aikakatkaisuille, virheellisille pyynnöille, verkkovirheille, palvelinvirheille ja tyhjille tuloksille.</string>
+    <string name="ui_whats_new_bullet_home" translatable="true">Tutki: Lisätty pikatoiminnot Rakennehaku, Isomeerihaku, Jaksollinen järjestelmä ja Kemikaalitietokanta.</string>
+    <string name="ui_whats_new_bullet_library" translatable="true">Kirjastotoiminnot: Paina pitkään tallennettua yhdistettä kopioidaksesi kaavan, avataksesi sen PubChemissä tai poistaaksesi avaamatta tietuetta.</string>
+    <string name="ui_whats_new_bullet_shortcuts" translatable="true">Käynnistimen pikakuvakkeet: Paina sovelluksen kuvaketta pitkään siirtyäksesi suoraan Hakuun, Kirjastoon, Työkaluihin tai Asetuksiin.</string>
+    <string name="ui_whats_new_bullet_daily" translatable="true">Päivän yhdiste: Lisätty kotinäytön kortti, joka näyttää saman päivän yhdisteen kuin widget, mukaan lukien kaava ja tyypilliset käyttötarkoitukset.</string>
+    <string name="ui_whats_new_bullet_csv" translatable="true">Kirjaston vienti: Lisätty CSV-vienti olemassa olevan JSON-varmuuskopion ja tuonnin rinnalle.</string>
+    <string name="ui_whats_new_bullet_compare" translatable="true">Yhdisteiden vertailu: Lisätty ominaisuusrivien kopiointi yhdellä napautuksella, yhdistesirut, tulosten tyhjennys ja tuki jopa kuudelle yhdisteelle.</string>
+    <string name="ui_whats_new_bullet_periodic" translatable="true">Jaksollinen järjestelmä: Lisätty vuorovaikutteiset luokkasuodattimet, kirkkaammat alkuainelaatat, liukuväriset trendilämpökartat, min/max-legendat ja napautettava viiden parhaan alkuaineen kaista.</string>
+    <string name="ui_whats_new_bullet_stoich" translatable="true">Stökiometria: Lisätty atomitalous, reaktanttikohtainen kulutus ja jäämät, parannettu yksikkömuunnos ja kopioitavat analyysien yhteenvedot.</string>
+    <string name="ui_whats_new_bullet_display" translatable="true">Näyttö: Lisätty koko sovelluksen kattava lämpötilayksikön asetus (K, °C tai °F).</string>
+    <string name="ui_whats_new_bullet_haptics" translatable="true">Haptiikka: Lisätty haptinen palaute tuettuihin vuorovaikutuksiin.</string>
+    <string name="ui_whats_new_bullet_offline_mode" translatable="true">Kehittäjätyökalut: Lisätty offline-testitila deterministisillä testituloksilla, säädettävällä viiveellä, simuloiduilla virheillä, pakotetuilla virhetyypeillä ja näytöllä näkyvällä offline-bannerilla. Lisäksi lisätty välimuistin tarkastus, laitteen ja koosteen tiedot sekä virheilmoitusten luettelo.</string>
+    <string name="ui_whats_new_bullet_dialogs" translatable="true">Käyttöliittymä: Vakiinnutettiin valintaikkunat UKK-, ohje- ja vahvistusponnahdusikkunoissa värjätyillä kuvakeotsikoilla, sulkemispainikkeilla ja värikoodatuilla tuhoavilla toiminnoilla.</string>
+    <string name="ui_whats_new_bullet_cards" translatable="true">Käyttöliittymä: Vakiinnutettiin kortit, valintatilat ja tuhoavat toiminnot koko sovelluksessa. Lisätty Kortit-asetus korttipohjaisten ja litteämpien asetteluiden välillä vaihtamiseen.</string>
+    <string name="ui_whats_new_bullet_collapsible" translatable="true">Tietoja: What\'s New -kortin voi nyt tiivistää, ja se näyttää nykyisen julkaisun kohokohdat.</string>
+    <string name="ui_whats_new_bullet_languages" translatable="true">Uusi kieli: Lisätty bengali ja päivitetty lokalisoidut merkkijonot. Kielenvalitsimet näyttävät nyt jokaisen kielen sen omalla nimellä.</string>
+    <string name="ui_error_search_not_found_s" translatable="true">Haulla “%1$s” ei löytynyt osumia PubChemista. Kokeile toista nimeä, CAS-numeroa tai tarkista oikeinkirjoitus.</string>
+    <string name="ui_error_search_throttled" translatable="true">PubChem rajoittaa pyyntöjä juuri nyt. Odota muutama sekunti ja yritä uudelleen.</string>
+    <string name="ui_error_search_timeout" translatable="true">PubChem vastasi liian hitaasti. Yritä uudelleen — hyvin monimutkaiset kyselyt voivat ylittää aikarajan.</string>
+    <string name="ui_error_search_bad_request" translatable="true">PubChem hylkäsi kyselyn virheellisenä. Tarkista syötemuoto (nimi, CAS tai kaava).</string>
+    <string name="ui_error_search_bad_request_detail" translatable="true">PubChem hylkäsi kyselyn: %1$s</string>
+    <string name="ui_error_search_network" translatable="true">Verkko-ongelma — PubChemiin ei saada yhteyttä. Tarkista internetyhteytesi ja yritä uudelleen.</string>
+    <string name="ui_error_search_server" translatable="true">PubChemin palvelinvirhe (HTTP %1$s). Palvelu voi olla tilapäisesti poissa — yritä myöhemmin uudelleen.</string>
+    <string name="ui_error_search_unknown" translatable="true">Odottamaton virhe: %1$s</string>
+    <string name="ui_debug_device_build_info" translatable="true">Laite- ja koostetiedot</string>
+    <string name="ui_debug_device_body" translatable="true">Malli, käyttöjärjestelmä, ABI, ydin, asentaja, versio ja reaaliaikainen muistin käyttö</string>
+    <string name="ui_debug_cache_stats" translatable="true">Yhdistevälimuistin tarkastin</string>
+    <string name="ui_debug_cache_body" translatable="true">Välimuistissa olevat tiedostot, koko ja manuaalinen tyhjennys</string>
+    <string name="ui_debug_cache_files_d" translatable="true">Tiedostoja välimuistissa: %1$d</string>
+    <string name="ui_debug_cache_empty" translatable="true">Ei välimuistissa olevia yhdisteitä — hae ja avaa yhdiste täyttääksesi välimuistin.</string>
+    <string name="ui_debug_error_catalog" translatable="true">Virheviestiluettelo</string>
+    <string name="ui_debug_error_catalog_body" translatable="true">Esikatsele hakuvirheitä värikoodauksineen</string>
+    <string name="ui_cache_cleared" translatable="true">Välimuisti tyhjennetty</string>
+    <string name="ui_clipboard_cache" translatable="true">Yhdistevälimuistin raportti</string>
+    <string name="ui_about_whats_new_s" translatable="true">Uutta versiossa %1$s</string>
+    <string name="ui_trend_top_elements" translatable="true">Top 5 alkuainetta</string>
+    <string name="ui_compound_of_the_day" translatable="true">PÄIVÄN YHDISTE</string>
+    <string name="ui_temperature_unit" translatable="true">Lämpötilayksikkö</string>
+    <string name="ui_subtitle_temperature_unit" translatable="true">Käytetään sulamis- ja kiehumispisteille alkuainetiedoissa ja trendeissä</string>
+    <string name="ui_copy_formula" translatable="true">Kopioi kaava</string>
+    <string name="ui_export_library_csv" translatable="true">Vie kirjasto CSV-muodossa</string>
+    <string name="ui_error_no_browser" translatable="true">Selainta ei löytynyt</string>
+    <string name="ui_explore_chemsearch" translatable="true">Tutustu ChemSearchiin</string>
+    <string name="ui_periodic_table_quick_action_subtitle" translatable="true">Selaa kaikkia 118 alkuainetta ja niiden ominaisuuksia</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">Yli 900 ainetta, ionia, ryhmää ja reaktiota</string>
+    <string name="ui_offline_test_mode" translatable="true">Offline-testitila</string>
+    <string name="ui_offline_test_mode_subtitle" translatable="true">Näytä testidata ilman todellisia verkkopyyntöjä</string>
+    <string name="ui_offline_test_mode_toggle_body" translatable="true">Kun käytössä, haku, kyselyt, rakenne- ja tekoälykutsut palauttavat paikallisia testitietueita verkon sijaan</string>
+    <string name="ui_offline_test_mode_configure" translatable="true">Mukauta testitilaa</string>
+    <string name="ui_offline_test_mode_configure_subtitle" translatable="true">Viive, virheaste ja simulointivirhetyyppi</string>
+    <string name="ui_offline_test_mode_latency" translatable="true">SIMULOITU VIIVE</string>
+    <string name="ui_offline_test_mode_error_rate" translatable="true">SATUNNAINEN VIRHEASTE</string>
+    <string name="ui_offline_test_mode_failure" translatable="true">PAKOTETTU VIRHE</string>
+    <string name="ui_offline_test_mode_failure_body" translatable="true">Pakottaa jokaisen testikutsun epäonnistumaan tällä virhetyypillä, jotta jokaista värikoodattua viestiä voi tarkastella</string>
+    <string name="ui_offline_test_mode_footer" translatable="true">Tulokset ovat deterministisiä: sama haku tuottaa aina saman testiyhdisteen, joten käyttöliittymän tilat ovat toistettavissa. Mitään ei lähetetä laitteesta tämän tilan ollessa käytössä.</string>
+    <string name="ui_offline_test_mode_badge" translatable="true">OFFLINE</string>
+    <string name="ui_offline_test_mode_active_banner" translatable="true">Offline-testitila on käytössä: kaikki tämän näytön tulokset ovat simuloitua testidataa</string>
+    <string name="ui_offline_test_mode_active_note" translatable="true">Kaikki tulokset on simuloitu</string>
 </resources>
-

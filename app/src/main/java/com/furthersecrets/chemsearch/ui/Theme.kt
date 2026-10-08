@@ -3,6 +3,7 @@ package com.furthersecrets.chemsearch.ui
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import com.furthersecrets.chemsearch.data.AppColorScheme
@@ -149,17 +150,20 @@ fun ChemSearchTheme(
     colorScheme: AppColorScheme = AppColorScheme.BLUE,
     oledDarkTheme: Boolean = false,
     highContrastOutlines: Boolean = false,
+    cardsEnabled: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    MaterialTheme(
-        colorScheme = chemSearchColorScheme(
-            darkTheme = darkTheme,
-            colorScheme = colorScheme,
-            oledDarkTheme = oledDarkTheme,
-            highContrastOutlines = highContrastOutlines
-        ),
-        content = content
-    )
+    CompositionLocalProvider(LocalCardsEnabled provides cardsEnabled) {
+        MaterialTheme(
+            colorScheme = chemSearchColorScheme(
+                darkTheme = darkTheme,
+                colorScheme = colorScheme,
+                oledDarkTheme = oledDarkTheme,
+                highContrastOutlines = highContrastOutlines
+            ),
+            content = content
+        )
+    }
 }
 
 internal fun chemSearchColorScheme(
