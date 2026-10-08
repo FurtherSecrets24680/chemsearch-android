@@ -1,4 +1,4 @@
-ChemSearch is a chemistry reference app for Android. Search compounds, inspect structures, save useful results for offline use, browse chemistry references, and use practical chemistry tools in one place.
+ChemSearch is a chemistry reference app for Android. Search compounds, inspect structures, save useful results for offline use, browse chemistry references, and use practical chemistry tools all in one place.
 
 SEARCH
 
