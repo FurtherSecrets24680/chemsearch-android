@@ -1,126 +1,57 @@
-ChemSearch is a chemistry reference app for Android. Search compounds, inspect structures, save useful results for offline use, browse chemistry references, and use practical chemistry tools all in one place.
+ChemSearch is an open-source chemistry reference and utility app for Android. Search compounds, inspect structures, browse offline references, and use practical chemistry tools all in one place.
 
 SEARCH
+Search PubChem by name, CAS number, formula, CID, or structure. Includes autosuggestions, spelling matches, caching, and specific error diagnostics.
+Advanced Search filters by elements (included/excluded), molecular weight, charge, 3D data, GHS hazards, and name text. Result pages provide identifiers, structures, safety data, synonyms, and summaries with tap-to-copy actions.
 
-Search by compound name, CAS number, molecular formula, PubChem CID, or drawn structure. You can also pick a random compound from PubChem. Autosuggestions help while you type, repeated searches can load from the cache, and close spelling matches are suggested when a query looks wrong.
-
-Search errors now explain what went wrong instead of showing the same generic message every time. Rate limiting, timeouts, invalid requests, network problems, server errors, and empty results are clearly identified.
-
-Advanced Search lets you narrow results by query type, included or excluded elements, molecular weight, charge, 3D availability, and GHS data. You can also limit the number of results and filter by text in the compound name or IUPAC name.
-
-Result pages show the information most people need first, including formulas, identifiers, structures, safety information, synonyms, and descriptions from PubChem, Wikipedia, or an optional AI provider. Identifiers and other useful values can be copied with a tap.
-
-STRUCTURE SEARCH
-
-Draw a chemical structure and search PubChem for exact, similar, substructure, or superstructure matches.
-
-The editor includes common atoms, element selection, bond types, templates, charges, undo and redo, cleanup, duplicate, import, export, and sharing. Search settings show the current matching mode, similarity level, and result limit. You can import SMILES, InChI, or MOL files.
-
-ISOMER SEARCH
-
-Search for compounds that share the same molecular formula and browse the matching structures. The search also gives useful formula information such as molar mass, atom count, and degrees of unsaturation.
-
-Results can be sorted by relevance or name. Isotopes can be included when available, and compounds can be selected for comparison.
+STRUCTURE & ISOMER SEARCH
+• Structure Search: Draw molecules with atoms, bonds, charges, and templates. Search PubChem for exact, substructure, superstructure, or similarity matches. Import/export SMILES, InChI, and MOL files.
+• Isomer Search: Search compounds by molecular formula. View molar mass, atom counts, and degrees of unsaturation. Sort by relevance or name.
 
 PERIODIC TABLE
-
-Browse all 118 elements with search, category filters, quick details, and full element pages.
-
-Element pages include summaries, images, electron-shell diagrams, physical properties, and spectral-line images. Trend views cover electronegativity, atomic radius, ionization energy, density, melting point, and boiling point. Trends are shown as an easy-to-read heatmap with the highest and lowest elements plus the top five elements for the selected property. Melting and boiling points can be displayed in kelvin, Celsius, or Fahrenheit.
+Browse all 118 elements with category filters, shell diagrams, physical properties, and spectra. Interactive heatmaps display trends for electronegativity, atomic radius, ionization energy, density, melting point, and boiling point (in K, °C, or °F) with top-five rankings.
 
 CHEMICAL DATABASE
-
-ChemSearch includes a built-in offline Chemical Database with 575 substances, 108 ions, 71 functional groups, and 149 reactions.
-
-It covers acids, salts, oxides, ores, polymers, amino acids, vitamins, alkaloids, drugs, esters, organometallics, silicates, and more. Entries can be searched by name, alias, or formula and browsed by type.
+Offline database with 575 substances, 108 ions, 71 functional groups, and 149 reactions. Covers acids, salts, oxides, ores, polymers, amino acids, vitamins, alkaloids, drugs, esters, organometallics, and silicates. Search by name, alias, or formula.
 
 CHEMISTRY TOOLS
+Includes 15 tools for calculations and reference:
+• Molar Mass Calculator
+• Empirical Formula Finder
+• Oxidation State Finder
+• pH / pOH Calculator
+• Reaction Balancer
+• Precipitate Predictor
+• Reaction Predictor (predicts products, equations, and observations offline)
+• Limiting Reagent
+• Percent Yield
+• Reaction Scaling
+• Dilution Calculator
+• Ideal Gas Law
+• SMILES Visualizer
+• 3D Molecule Viewer
+• Compare Compounds (compare up to 6 substances)
+Stoichiometry tools calculate reagent consumption, leftovers, and atom economy.
 
-The app includes 15 tools for common chemistry calculations and reference tasks:
+LIBRARY & RECENT SEARCHES
+Save compounds as Favorites or Downloads (Basic, Structures, or Complete) for offline use. Long-press to copy formulas, open in PubChem, or delete. Export and backup library data via CSV or JSON. Search history supports pinning, sorting, and grouping.
 
-- Molar Mass Calculator
-- Empirical Formula Finder
-- Oxidation State Finder
-- pH / pOH Calculator
-- Reaction Balancer
-- Precipitate Predictor
-- Reaction Predictor
-- Limiting Reagent
-- Percent Yield
-- Reaction Scaling
-- Dilution Calculator
-- Ideal Gas Law
-- SMILES Visualizer
-- 3D Molecule Viewer
-- Compare Compounds
+HOME SCREEN & WIDGETS
+• Compound of the Day: Daily compound card with formula and typical uses.
+• Widgets: Compound of the Day and Random Compound (with refresh button).
+• Shortcuts: App-launcher shortcuts to Search, Library, Tools, and Settings.
+• Explore: Quick access to Structure Search, Isomer Search, Periodic Table, and Database.
 
-The stoichiometry tools can show limiting reagent, theoretical products, reagent consumption, leftovers, and atom economy. Compare Compounds lets you compare up to six compounds side by side and copy individual properties.
-
-REACTION PREDICTOR
-
-Enter reactants to get likely products, a balanced equation, the reaction type, and expected observations.
-
-The predictor works offline and covers common study reactions such as neutralization, acid and carbonate reactions, metal and acid reactions, single displacement, combustion, metal and water reactions, acid and metal oxide reactions, sulfite and sulfide reactions, and ammonium salt reactions.
-
-It is designed for common chemistry study cases. Unusual reactions and reactions that depend on special conditions may not be covered.
-
-LIBRARY
-
-Save compounds as Favorites or Downloads for quick access and offline use.
-
-Downloads can include compound details, identifiers, descriptions, synonyms, safety information, 2D structures, and 3D data when available. Choose Basic, Structures, or Complete download quality depending on what you need.
-
-Long-press a saved compound to copy its formula, open it in PubChem, or remove it. Saved compounds can be selected for comparison. The library can be exported as CSV for spreadsheets or JSON for backup and import.
-
-HOME SCREEN
-
-The home screen includes a Compound of the Day card with its formula and typical uses. The card changes each day and opens the full compound record.
-
-An Explore section gives quick access to Structure Search, Isomer Search, Periodic Table, and Chemical Database.
-
-Two home-screen widgets are available:
-
-- Compound of the Day: Shows a different compound each day and changes at midnight.
-- Random Compound: Shows a random compound and lets you refresh it whenever you want.
-
-The app icon also provides shortcuts to Search, Library, Tools, and Settings.
-
-RECENT SEARCHES
-
-Keep search history organized by time. Pin important searches, sort by newest or oldest, browse grouped history, remove individual entries, or clear the list.
-
-DESCRIPTIONS
-
-Descriptions can come from PubChem, Wikipedia, or an optional AI provider.
-
-Supported AI providers include Google Gemini, Groq Cloud, OpenAI, OpenRouter, and Mistral AI. You can choose a model for each provider and configure your own API key. AI features are optional.
-
-DISPLAY AND SETTINGS
-
-Choose light or dark theme, AMOLED true-black, and five color schemes: Blue, Violet, Emerald, Rose, and Amber.
-
-Other settings include compact mode, reduced motion, high-contrast outlines, autosuggestions, default description source, default structure tab, formula display style, AI provider settings, offline download quality, cache settings, CSV library export, haptic feedback, and temperature units.
-
-You can also choose whether the app uses rounded cards or a flatter layout.
+DISPLAY & OPTIONAL AI
+• Themes: Light, Dark, AMOLED true-black, 5 color accents, and card or flat layouts.
+• Optional AI: Fetch compound summaries via Google Gemini, Groq, OpenAI, OpenRouter, or Mistral AI using your own API key.
+• Preferences: Configurable temperature units (K, °C, °F), haptics, and cache controls.
 
 LOCALIZATION
+Available in 16 languages: Bengali, Danish, German, Greek, English, Spanish, Finnish, French, Italian, Japanese, Dutch, Norwegian, Polish, Portuguese, Russian, and Swedish.
 
-ChemSearch is available in 16 languages: Bengali, Danish, German, Greek, Spanish, Finnish, French, Italian, Japanese, Dutch, Norwegian, Polish, Portuguese, Russian, Swedish, and English.
-
-The app can be switched to another language from Settings at any time.
-
-DATA AND PRIVACY
-
-Chemistry information comes from public sources including PubChem, Wikipedia, Wikimedia Commons, and other chemistry databases and references used by the app.
-
-There is no account system, analytics, tracking, or app-owned backend. Search history, favorites, downloads, settings, and cache data stay on your device.
-
-Live searches use the relevant external service. Structure searches send the drawn structure to PubChem. Optional AI requests go directly to the provider you choose.
-
-API keys are stored securely on the device. Settings backups may include saved AI keys, so keep exported settings files private.
-
-LICENSE
-
-ChemSearch is free and open source under the MIT License.
-
-Safety and chemistry information are provided for reference and study. For real laboratory work, use the official SDS and applicable lab procedures.
+DATA, PRIVACY & LICENSE
+• Free and open source under the MIT License.
+• No account, analytics, tracking, or app backend. Data stays on your device.
+• Network access is only used for external queries (PubChem, Wikipedia, or configured AI).
+• For study and reference only; consult official SDS for laboratory work.
