@@ -1,0 +1,11 @@
+F-Droid listing and screenshot fixes; no functional changes in this release.
+
+Highlights from v1.15.0:
+• Offline Reaction Predictor
+• Compound of the Day & home-screen widgets
+• Expanded database with 575 substances
+• Bengali localization and launcher shortcuts
+• CSV library export
+• Improved Search, Periodic Table heatmaps and Stoichiometry
+
+Full v1.15.0 release notes: https://github.com/FurtherSecrets24680/chemsearch-android/releases/tag/1.15.0
