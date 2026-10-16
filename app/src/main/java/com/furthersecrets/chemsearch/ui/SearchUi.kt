@@ -2026,6 +2026,118 @@ fun AdvancedPropertiesSection(properties: List<AdvancedPropertyRow>, isLoading: 
     }
 }
 
+@Composable
+fun SpectralSection(records: List<CompoundSpectrumRecord>, isLoading: Boolean) {
+    if (records.isEmpty() && !isLoading) return
+    var showInfo by remember { mutableStateOf(false) }
+    var expanded by remember(records) { mutableStateOf(false) }
+    val compact = LocalCompactMode.current
+    if (showInfo) {
+        InfoDialog(
+            titleRes = R.string.ui_spectral_information,
+            entries = spectralInfoEntries(),
+            onDismiss = { showInfo = false }
+        )
+    }
+    SearchCard(modifier = Modifier.fillMaxWidth(), spacing = if (compact) 8.dp else 10.dp) {
+        CardSectionHeader(stringResource(R.string.ui_spectral_information)) { showInfo = true }
+        if (records.isEmpty()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                CircularProgressIndicator(modifier = Modifier.size(14.dp), strokeWidth = 2.dp)
+                Text(stringResource(R.string.ui_loading_pubchem_spectra),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.50f)
+                )
+            }
+        } else {
+            val visibleRecords = if (expanded) records else records.take(SPECTRAL_COLLAPSED_RECORDS)
+            Column(verticalArrangement = Arrangement.spacedBy(if (compact) 7.dp else 9.dp)) {
+                visibleRecords.forEach { record ->
+                    SpectrumRecordBlock(record = record, compact = compact, expanded = expanded)
+                }
+            }
+            if (records.size > SPECTRAL_COLLAPSED_RECORDS) {
+                TextButton(
+                    onClick = { expanded = !expanded },
+                    contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
+                ) {
+                    Text(
+                        if (expanded) stringResource(R.string.ui_show_less)
+                        else stringResource(R.string.ui_show_more_count, records.size - SPECTRAL_COLLAPSED_RECORDS),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+            }
+            Text(stringResource(R.string.ui_source_pubchem_spectra),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.42f)
+            )
+        }
+    }
+}
+
+private const val SPECTRAL_COLLAPSED_RECORDS = 4
+
+@Composable
+private fun SpectrumRecordBlock(record: CompoundSpectrumRecord, compact: Boolean, expanded: Boolean) {
+    val shape = RoundedCornerShape(if (compact) 10.dp else 12.dp)
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = shape,
+        color = MaterialTheme.colorScheme.primary.copy(0.05f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(0.14f))
+    ) {
+        Column(
+            modifier = Modifier.padding(
+                horizontal = if (compact) 8.dp else 10.dp,
+                vertical = if (compact) 7.dp else 9.dp
+            ),
+            verticalArrangement = Arrangement.spacedBy(if (compact) 3.dp else 4.dp)
+        ) {
+            Text(
+                record.technique,
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+            val shownFields = if (expanded) record.fields else record.fields.take(SPECTRAL_COLLAPSED_FIELDS)
+            shownFields.forEach { field ->
+                val labelColor = MaterialTheme.colorScheme.onSurface.copy(0.62f)
+                val valueColor = MaterialTheme.colorScheme.onSurface.copy(0.86f)
+                val text = buildAnnotatedString {
+                    if (field.label.isNotBlank()) {
+                        withStyle(SpanStyle(fontWeight = FontWeight.SemiBold, color = labelColor)) {
+                            append(field.label)
+                        }
+                        append(":  ")
+                    }
+                    append(field.value)
+                }
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.bodySmall,
+                    lineHeight = if (compact) 16.sp else 18.sp,
+                    color = valueColor,
+                    maxLines = if (expanded) Int.MAX_VALUE else 2,
+                    overflow = if (expanded) TextOverflow.Visible else TextOverflow.Ellipsis
+                )
+            }
+        }
+    }
+}
+
+private const val SPECTRAL_COLLAPSED_FIELDS = 5
+
+internal fun spectralInfoEntries(): List<Pair<Int, Int>> = listOf(
+    R.string.ui_info_what_this_shows to R.string.ui_info_spectral_what_body,
+    R.string.ui_info_why_hidden_by_default to R.string.ui_info_spectral_why_body
+)
+
 internal fun advancedPropertiesInfoEntries(): List<Pair<Int, Int>> = listOf(
     R.string.ui_info_what_this_shows to R.string.ui_info_advanced_properties_what_body,
     R.string.ui_info_why_hidden_by_default to R.string.ui_info_advanced_properties_why_hidden_body,

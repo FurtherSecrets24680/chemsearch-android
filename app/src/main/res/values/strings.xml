@@ -1774,34 +1774,20 @@
     <string name="ui_faq_reaction_predictor_q" translatable="true">How does the Reaction Predictor work?</string>
     <string name="ui_faq_reaction_predictor_a" translatable="true">It matches your selected reactants against an offline rule set built from the bundled chemical database and suggests likely products, reaction types, and observations. It covers common study reactions — always verify unusual cases with a textbook.</string>
     <string name="ui_faq_database_size_q" translatable="true">How big is the built-in Chemical Database?</string>
-    <string name="ui_faq_database_size_a" translatable="true">It bundles 575 substances, 108 ions, 71 functional groups, and 149 reactions, all available offline. The 118 periodic-table elements live in the periodic table instead, so the two references never duplicate each other.</string>
+    <string name="ui_faq_database_size_a" translatable="true">It bundles 1532 substances, 211 ions, 122 functional groups, and 326 reactions, all available offline. The 118 periodic-table elements live in the periodic table instead, so the two references never duplicate each other.</string>
     <string name="ui_faq_languages_q" translatable="true">Which languages does ChemSearch support?</string>
     <string name="ui_faq_languages_a" translatable="true">The interface ships fully translated in 15 languages: Bengali, Danish, German, Greek, Spanish, Finnish, French, Italian, Japanese, Dutch, Norwegian, Polish, Portuguese, Russian, and Swedish. Change it anytime in Settings > Language.</string>
     <string name="ui_whats_new_section_features" translatable="true">New Features</string>
-    <string name="ui_whats_new_section_improvements" translatable="true">Improvements</string>
     <string name="ui_section_whats_new" translatable="true">What\'s new</string>
-    <string name="ui_whats_new_bullet_reaction" translatable="true">Reaction Predictor: Added an offline rule engine backed by the bundled chemical database. Enter up to three reactants and get predicted products, reaction types, observations, and confidence levels.</string>
-    <string name="ui_whats_new_bullet_widgets" translatable="true">Home-screen widgets: Added Compound of the Day and Random Compound widgets. The daily widget changes at midnight, while the random widget has its own refresh button.</string>
-    <string name="ui_whats_new_bullet_database" translatable="true">Chemical database: Expanded from 331 to 575 substances, including amino acids, vitamins, drugs, esters, organometallics, silicates, alkaloids, and more. The 118 elements now live in the Periodic Table instead of being duplicated in the database.</string>
-    <string name="ui_whats_new_bullet_search" translatable="true">Advanced Search: Added a result-limit picker, name-contains filter, and active-filter count with one-tap clear-all.</string>
-    <string name="ui_whats_new_bullet_tools" translatable="true">Tools: Reworked the grid to adapt from 2 columns on narrow phones to 5 on wide screens and tablets. Tool categories now use distinct accent colors and grid rows keep equal-height cards.</string>
-    <string name="ui_whats_new_bullet_structure" translatable="true">Structure Search: Added an at-a-glance configuration summary, similarity slider, clearer active-mode status, import-format hints, and a live formula badge.</string>
-    <string name="ui_whats_new_bullet_polish" translatable="true">Search errors: Added specific, color-coded messages for rate limiting, timeouts, bad requests, network failures, server errors, and empty results.</string>
-    <string name="ui_whats_new_bullet_home" translatable="true">Explore: Added quick actions for Structure Search, Isomer Search, Periodic Table, and Chemical Database.</string>
-    <string name="ui_whats_new_bullet_library" translatable="true">Library actions: Long-press a saved compound to copy its formula, open it in PubChem, or remove it without opening the record.</string>
-    <string name="ui_whats_new_bullet_shortcuts" translatable="true">Launcher shortcuts: Long-press the app icon to jump directly to Search, Library, Tools, or Settings.</string>
-    <string name="ui_whats_new_bullet_daily" translatable="true">Compound of the Day: Added a home-screen card showing the same daily compound as the widget, including its formula and typical uses.</string>
-    <string name="ui_whats_new_bullet_csv" translatable="true">Library export: Added CSV export alongside the existing JSON backup and import support.</string>
-    <string name="ui_whats_new_bullet_compare" translatable="true">Compare Compounds: Added one-tap copying of property rows, compound chips, a clear-results action, and support for up to six compounds.</string>
-    <string name="ui_whats_new_bullet_periodic" translatable="true">Periodic Table: Added interactive category filters, brighter element tiles, gradient trend heatmaps, min/max legends, and a clickable top-five elements strip.</string>
-    <string name="ui_whats_new_bullet_stoich" translatable="true">Stoichiometry: Added atom economy, per-reagent consumption and leftover amounts, improved unit conversion, and copyable analysis summaries.</string>
-    <string name="ui_whats_new_bullet_display" translatable="true">Display: Added an app-wide temperature unit setting for K, °C, or °F.</string>
-    <string name="ui_whats_new_bullet_haptics" translatable="true">Haptics: Added haptic feedback to supported interactions.</string>
-    <string name="ui_whats_new_bullet_offline_mode" translatable="true">Developer tools: Added Offline Test Mode with deterministic test results, adjustable latency, simulated errors, forced failure types, and an on-screen offline banner. Also added cache inspection, device and build details, and an error-message catalog.</string>
-    <string name="ui_whats_new_bullet_dialogs" translatable="true">Interface: Standardized dialogs across FAQ, help, and confirmation popups, with tinted icon headers, close buttons, and color-coded destructive actions.</string>
-    <string name="ui_whats_new_bullet_cards" translatable="true">Interface: Standardized cards, selection states, and destructive actions across the app. Added a Cards setting for switching between card-based and flatter layouts.</string>
-    <string name="ui_whats_new_bullet_collapsible" translatable="true">About: The What\'s New card is now collapsible and shows the current-release highlights.</string>
-    <string name="ui_whats_new_bullet_languages" translatable="true">New Language: Added Bengali and updated the localized strings. Language pickers now show each language using its native name.</string>
+    <string name="ui_whats_new_intro_database" translatable="true">Compound spectra added and the chemical reference database greatly expanded</string>
+    <string name="ui_whats_new_bullet_spectral" translatable="true">Spectral data: Compounds now show published NMR, IR, mass, UV and Raman spectra from PubChem.</string>
+    <string name="ui_whats_new_bullet_database_group" translatable="true">Expanded chemical database</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">Substances: Expanded from 575 to 1532 entries, covering acids, salts, oxides, ores, polymers, biomolecules, drugs, dyes and more. Search by name, alias or formula, fully offline.</string>
+    <string name="ui_whats_new_bullet_ions" translatable="true">Ions: Expanded from 108 to 211 entries, including common cations and anions.</string>
+    <string name="ui_whats_new_bullet_functional_groups" translatable="true">Functional groups: Expanded from 71 to 122 entries for quick organic chemistry reference.</string>
+    <string name="ui_whats_new_bullet_reactions" translatable="true">Reactions: Expanded from 149 to 326 entries, giving the offline Reaction Predictor wider coverage.</string>
+    <string name="ui_whats_new_section_changes" translatable="true">Changes</string>
+    <string name="ui_whats_new_bullet_cards_default" translatable="true">Cards mode: Off by default now for a flatter, denser layout. Turn it back on in Settings.</string>
     <string name="ui_error_search_not_found_s" translatable="true">No match found for “%1$s” in PubChem. Try a different name, a CAS number, or check the spelling.</string>
     <string name="ui_error_search_throttled" translatable="true">PubChem is rate-limiting requests right now. Wait a few seconds and try again.</string>
     <string name="ui_error_search_timeout" translatable="true">PubChem took too long to respond. Try again — very complex queries can time out.</string>
@@ -1843,5 +1829,10 @@
     <string name="ui_error_no_browser" translatable="true">No browser found</string>
     <string name="ui_explore_chemsearch" translatable="true">Explore ChemSearch</string>
     <string name="ui_periodic_table_quick_action_subtitle" translatable="true">Browse all 118 elements and their properties</string>
-    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">900+ substances, ions, groups and reactions</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">Explore an offline chemical database.</string>
+    <string name="ui_spectral_information" translatable="true">Spectral Information</string>
+    <string name="ui_loading_pubchem_spectra" translatable="true">Loading PubChem spectra...</string>
+    <string name="ui_source_pubchem_spectra" translatable="true">Source: PubChem spectral collections</string>
+    <string name="ui_info_spectral_what_body" translatable="true">Experimental spectra published in PubChem, grouped by technique (NMR, MS, IR, UV, Raman). Values come from the original source, so instruments, solvents, and units differ between records.</string>
+    <string name="ui_info_spectral_why_body" translatable="true">Not every substance has published spectra. When PubChem has none, this section stays hidden; the substance page on PubChem still lists everything available.</string>
 </resources>

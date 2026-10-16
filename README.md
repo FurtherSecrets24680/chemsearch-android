@@ -58,10 +58,11 @@ It is aimed at students, teachers and anyone who wants chemistry data and common
 - **Structure Search:** Draw a structure and search PubChem by exact, similar, substructure or superstructure matching.
 - **Isomer Search:** Search by molecular formula and inspect isomer structures, formula details, mass, atom count, degrees of unsaturation and sorted results.
 - **Compound Results:** View formulas, identifiers, 2D structures, 3D models, descriptions, synonyms and GHS data when available.
+- **Spectral Information:** Open published NMR, IR, mass, UV and Raman spectra for a compound from its result page.
 - **Offline Library:** Save compounds with their available data and export your library as CSV or JSON.
 - **Compound Comparison:** Compare up to six compounds and copy values from individual rows.
 - **Periodic Table:** Browse all 118 elements, filter by category, inspect trends and open element details.
-- **Chemical Database:** Browse 575 substances, 108 ions, 71 functional groups and 149 reactions without an internet connection.
+- **Chemical Database:** Browse 1532 substances, 211 ions, 122 functional groups and 326 reactions without an internet connection.
 - **Reaction Predictor:** Use an offline rule set to predict common reaction products, observations, conditions and reaction types.
 - **Home Screen:** Get a daily compound, use the random compound widget and open Search, Library, Tools or Settings from launcher shortcuts.
 - **Display Options:** Use light or dark themes, AMOLED mode, five color schemes, compact mode, reduced motion, high-contrast outlines, temperature units, cards mode and haptic feedback.
@@ -347,10 +348,10 @@ The trend view uses a blue-to-orange heatmap, a min/max legend and a top-five st
 
 The bundled Chemical Database is available offline and contains:
 
-- 575 substances
-- 108 ions
-- 71 functional groups
-- 149 reactions
+- 1532 substances
+- 211 ions
+- 122 functional groups
+- 326 reactions
 
 The substance collection includes acids, salts, organic families, polymers, alloys, drugs, dyes, biomolecules and other common chemistry references.
 

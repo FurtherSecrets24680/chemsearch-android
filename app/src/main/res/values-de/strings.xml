@@ -1702,34 +1702,20 @@
     <string name="ui_faq_reaction_predictor_q" translatable="true">Wie funktioniert die Reaktionsvorhersage?</string>
     <string name="ui_faq_reaction_predictor_a" translatable="true">Sie gleicht deine ausgewählten Reaktanten mit einem Offline-Regelsatz ab, der aus der mitgelieferten chemischen Datenbank aufgebaut ist, und schlägt wahrscheinliche Produkte, Reaktionstypen und Beobachtungen vor. Sie deckt übliche Schulreaktionen ab — prüfe ungewöhnliche Fälle immer mit einem Lehrbuch.</string>
     <string name="ui_faq_database_size_q" translatable="true">Wie groß ist die integrierte chemische Datenbank?</string>
-    <string name="ui_faq_database_size_a" translatable="true">Sie bündelt 575 Stoffe, 108 Ionen, 71 funktionelle Gruppen und 149 Reaktionen, alle offline verfügbar. Die 118 Periodensystem-Elemente liegen im Periodensystem, sodass sich die beiden Referenzen nie duplizieren.</string>
+    <string name="ui_faq_database_size_a" translatable="true">Sie bündelt 1532 Stoffe, 211 Ionen, 122 funktionelle Gruppen und 326 Reaktionen, alle offline verfügbar. Die 118 Periodensystem-Elemente liegen im Periodensystem, sodass sich die beiden Referenzen nie duplizieren.</string>
     <string name="ui_faq_languages_q" translatable="true">Welche Sprachen unterstützt ChemSearch?</string>
     <string name="ui_faq_languages_a" translatable="true">Die Oberfläche ist vollständig in 15 Sprachen übersetzt: Bengalisch, Dänisch, Deutsch, Griechisch, Spanisch, Finnisch, Französisch, Italienisch, Japanisch, Niederländisch, Norwegisch, Polnisch, Portugiesisch, Russisch und Schwedisch. Ändere sie jederzeit unter Einstellungen > Sprache.</string>
     <string name="ui_whats_new_section_features" translatable="true">Neue Funktionen</string>
-    <string name="ui_whats_new_section_improvements" translatable="true">Verbesserungen</string>
     <string name="ui_section_whats_new" translatable="true">Neuigkeiten</string>
-    <string name="ui_whats_new_bullet_reaction" translatable="true">Reaktionsvorhersage: Eine Offline-Regel-Engine auf Basis der mitgelieferten chemischen Datenbank hinzugefügt. Bis zu drei Reaktanten eingeben und vorhergesagte Produkte, Reaktionstypen, Beobachtungen und Zuverlässigkeitsgrade erhalten.</string>
-    <string name="ui_whats_new_bullet_widgets" translatable="true">Startbildschirm-Widgets: Widgets für Verbindung des Tages und Zufällige Verbindung hinzugefügt. Das Tages-Widget wechselt um Mitternacht, das Zufalls-Widget hat seine eigene Aktualisierungsschaltfläche.</string>
-    <string name="ui_whats_new_bullet_database" translatable="true">Chemische Datenbank: Von 331 auf 575 Stoffe erweitert, darunter Aminosäuren, Vitamine, Arzneimittel, Ester, Organometalle, Silicate, Alkaloide und mehr. Die 118 Elemente stehen jetzt im Periodensystem, statt in der Datenbank dupliziert zu werden.</string>
-    <string name="ui_whats_new_bullet_search" translatable="true">Erweiterte Suche: Auswahlergebnislimit, Name-enthält-Filter und Zähler aktiver Filter mit Ein-Tipp-Alles-löschen hinzugefügt.</string>
-    <string name="ui_whats_new_bullet_tools" translatable="true">Werkzeuge: Das Raster passt sich jetzt von 2 Spalten auf schmalen Telefonen bis zu 5 Spalten auf breiten Bildschirmen und Tablets an. Werkzeugkategorien verwenden eigene Akzentfarben, und Rasterzeilen behalten gleich hohe Karten.</string>
-    <string name="ui_whats_new_bullet_structure" translatable="true">Struktursuche: Konfigurationsübersicht auf einen Blick, Ähnlichkeitsregler, klarere Aktiv-Statusanzeige, Hinweise zu Importformaten und ein Live-Formel-Badge hinzugefügt.</string>
-    <string name="ui_whats_new_bullet_polish" translatable="true">Suchfehler: Spezifische, farbcodierte Meldungen für Ratenbegrenzung, Timeouts, ungültige Anfragen, Netzwerkfehler, Serverfehler und leere Ergebnisse hinzugefügt.</string>
-    <string name="ui_whats_new_bullet_home" translatable="true">Explore: Schnellaktionen für Struktursuche, Isomerensuche, Periodensystem und Chemische Datenbank hinzugefügt.</string>
-    <string name="ui_whats_new_bullet_library" translatable="true">Bibliotheksaktionen: Gespeicherte Verbindung lange drücken, um die Formel zu kopieren, sie in PubChem zu öffnen oder den Eintrag zu entfernen, ohne ihn zu öffnen.</string>
-    <string name="ui_whats_new_bullet_shortcuts" translatable="true">Launcher-Shortcuts: App-Symbol lange drücken, um direkt zu Suche, Bibliothek, Werkzeuge oder Einstellungen zu springen.</string>
-    <string name="ui_whats_new_bullet_daily" translatable="true">Verbindung des Tages: Startbildschirm-Karte hinzugefügt, die dieselbe Tagesverbindung wie das Widget zeigt, inklusive Formel und typischen Verwendungen.</string>
-    <string name="ui_whats_new_bullet_csv" translatable="true">Bibliotheksexport: CSV-Export neben der vorhandenen JSON-Sicherung und Importunterstützung hinzugefügt.</string>
-    <string name="ui_whats_new_bullet_compare" translatable="true">Verbindungen vergleichen: Ein-Tipp-Kopieren von Eigenschaftszeilen, Verbindungs-Chips, einer Aktion zum Löschen der Ergebnisse und Unterstützung für bis zu sechs Verbindungen hinzugefügt.</string>
-    <string name="ui_whats_new_bullet_periodic" translatable="true">Periodensystem: Interaktive Kategorifilter, hellere Elementkacheln, Gradient-Trend-Heatmaps, Min/Max-Legenden und eine anklickbare Top-5-Elementleiste hinzugefügt.</string>
-    <string name="ui_whats_new_bullet_stoich" translatable="true">Stöchiometrie: Atomökonomie, Verbrauch und Restmengen pro Reagenz, verbesserte Einheitenumrechnung und kopierbare Analyse-Zusammenfassungen hinzugefügt.</string>
-    <string name="ui_whats_new_bullet_display" translatable="true">Anzeige: App-weite Einstellung für die Temperatureinheit (K, °C oder °F) hinzugefügt.</string>
-    <string name="ui_whats_new_bullet_haptics" translatable="true">Haptik: Haptisches Feedback für unterstützte Interaktionen hinzugefügt.</string>
-    <string name="ui_whats_new_bullet_offline_mode" translatable="true">Entwicklertools: Offline-Testmodus mit deterministischen Testergebnissen, einstellbarer Latenz, simulierten Fehlern, erzwungenen Fehlerarten und einem Offline-Banner auf dem Bildschirm hinzugefügt. Außerdem Cache-Inspektion, Geräte- und Build-Details sowie ein Fehlermeldungs-Katalog hinzugefügt.</string>
-    <string name="ui_whats_new_bullet_dialogs" translatable="true">Oberfläche: Dialoge über FAQ-, Hilfe- und Bestätigungs-Popups hinweg standardisiert, mit getönten Symbolköpfen, Schließen-Schaltflächen und farbcodierten destruktiven Aktionen.</string>
-    <string name="ui_whats_new_bullet_cards" translatable="true">Oberfläche: Karten, Auswahlzustände und destruktive Aktionen in der gesamten App standardisiert. Eine Karten-Einstellung zum Umschalten zwischen Karten- und flacheren Layouts hinzugefügt.</string>
-    <string name="ui_whats_new_bullet_collapsible" translatable="true">Über: Die Was-ist-neu-Karte lässt sich jetzt zusammenklappen und zeigt die Highlights der aktuellen Version.</string>
-    <string name="ui_whats_new_bullet_languages" translatable="true">Neue Sprache: Bengalisch hinzugefügt und die lokalisierten Zeichenketten aktualisiert. Sprachauswahlen zeigen jetzt jede Sprache mit ihrem eigentlichen Namen.</string>
+    <string name="ui_whats_new_intro_database" translatable="true">Verbindungsspektren hinzugefügt und die chemische Nachschlagedatenbank deutlich erweitert</string>
+    <string name="ui_whats_new_bullet_spectral" translatable="true">Spektraldaten: Verbindungen zeigen jetzt veröffentlichte NMR-, IR-, Massen-, UV- und Raman-Spektren aus PubChem.</string>
+    <string name="ui_whats_new_bullet_database_group" translatable="true">Erweiterte chemische Nachschlagedatenbank</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">Substanzen: Von 575 auf 1532 Einträge erweitert, darunter Säuren, Salze, Oxide, Erze, Polymere, Biomoleküle, Arzneimittel, Farbstoffe und mehr. Suche nach Name, Alias oder Formel, vollständig offline.</string>
+    <string name="ui_whats_new_bullet_ions" translatable="true">Ionen: Von 108 auf 211 Einträge erweitert, darunter gängige Kationen und Anionen.</string>
+    <string name="ui_whats_new_bullet_functional_groups" translatable="true">Funktionelle Gruppen: Von 71 auf 122 Einträge erweitert für schnelles Nachschlagen in der organischen Chemie.</string>
+    <string name="ui_whats_new_bullet_reactions" translatable="true">Reaktionen: Von 149 auf 326 Einträge erweitert, wodurch der Offline-Reaktionsvorhersager eine breitere Abdeckung erhält.</string>
+    <string name="ui_whats_new_section_changes" translatable="true">Änderungen</string>
+    <string name="ui_whats_new_bullet_cards_default" translatable="true">Kartenmodus: jetzt standardmäßig aus für ein flacheres, dichteres Layout. In den Einstellungen wieder einschaltbar.</string>
     <string name="ui_error_search_not_found_s" translatable="true">Keine Übereinstimmung für „%1$s“ in PubChem gefunden. Versuche einen anderen Namen, eine CAS-Nummer oder prüfe die Schreibweise.</string>
     <string name="ui_error_search_throttled" translatable="true">PubChem begrenzt gerade Anfragen. Warte ein paar Sekunden und versuche es erneut.</string>
     <string name="ui_error_search_timeout" translatable="true">PubChem hat zu lange zum Antworten gebraucht. Versuche es erneut — sehr komplexe Abfragen können das Zeitlimit überschreiten.</string>
@@ -1758,7 +1744,7 @@
     <string name="ui_error_no_browser" translatable="true">Kein Browser gefunden</string>
     <string name="ui_explore_chemsearch" translatable="true">ChemSearch erkunden</string>
     <string name="ui_periodic_table_quick_action_subtitle" translatable="true">Alle 118 Elemente und ihre Eigenschaften ansehen</string>
-    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">900+ Stoffe, Ionen, Gruppen und Reaktionen</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">Erkunde eine Offline-Chemiedatenbank</string>
     <string name="ui_offline_test_mode" translatable="true">Offline-Testmodus</string>
     <string name="ui_offline_test_mode_subtitle" translatable="true">Dummy-Daten ohne echte Netzwerkaufrufe anzeigen</string>
     <string name="ui_offline_test_mode_toggle_body" translatable="true">Bei aktivem Modus liefern Suche, Nachschlagen, Struktur- und KI-Aufrufe lokale Testdatenstätze statt das Netzwerk zu kontaktieren</string>
@@ -1772,4 +1758,9 @@
     <string name="ui_offline_test_mode_badge" translatable="true">OFFLINE</string>
     <string name="ui_offline_test_mode_active_banner" translatable="true">Offline-Testmodus ist aktiv: Alle Ergebnisse auf diesem Bildschirm sind simulierte Dummy-Daten</string>
     <string name="ui_offline_test_mode_active_note" translatable="true">Alle Ergebnisse sind simuliert</string>
+    <string name="ui_spectral_information" translatable="true">Spektralinformationen</string>
+    <string name="ui_loading_pubchem_spectra" translatable="true">PubChem-Spektren werden geladen...</string>
+    <string name="ui_source_pubchem_spectra" translatable="true">Quelle: PubChem-Spektralsammlungen</string>
+    <string name="ui_info_spectral_what_body" translatable="true">In PubChem veröffentlichte experimentelle Spektren, nach Technik gruppiert (NMR, MS, IR, UV, Raman). Die Werte stammen aus der Originalquelle, daher variieren Instrumente, Lösungsmittel und Einheiten zwischen den Einträgen.</string>
+    <string name="ui_info_spectral_why_body" translatable="true">Nicht jeder Stoff hat veröffentlichte Spektren. Wenn PubChem keine hat, bleibt dieser Abschnitt ausgeblendet; die PubChem-Seite des Stoffs listet weiterhin alles Verfügbare auf.</string>
 </resources>

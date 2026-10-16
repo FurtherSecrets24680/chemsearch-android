@@ -1702,34 +1702,20 @@
     <string name="ui_faq_reaction_predictor_q" translatable="true">Πώς λειτουργεί ο Προβλεπτής Αντιδράσεων;</string>
     <string name="ui_faq_reaction_predictor_a" translatable="true">Ταιριάζει τα επιλεγμένα αντιδραστήρια με ένα σύνολο κανόνων εκτός σύνδεσης βασισμένο στη συμβεβλημένη χημική βάση δεδομένων και προτείνει πιθανά προϊόντα, τύπους αντιδράσεων και παρατηρήσεις. Καλύπτει συνηθισμένες αντιδράσεις διδασκαλίας — επαληθεύστε πάντα τις ασυνήθιστες περιπτώσεις με εγχειρίδιο.</string>
     <string name="ui_faq_database_size_q" translatable="true">Πόσο μεγάλη είναι η ενσωματωμένη χημική βάση δεδομένων;</string>
-    <string name="ui_faq_database_size_a" translatable="true">Περιλαμβάνει 575 ουσίες, 108 ιόντα, 71 λειτουργικές ομάδες και 149 αντιδράσεις, όλα διαθέσιμα εκτός σύνδεσης. Τα 118 στοιχεία του περιοδικού πίνακα βρίσκονται στον περιοδικό πίνακα, οπότε οι δύο πηγές δεν διπλασιάζονται ποτέ.</string>
+    <string name="ui_faq_database_size_a" translatable="true">Περιλαμβάνει 1532 ουσίες, 211 ιόντα, 122 λειτουργικές ομάδες και 326 αντιδράσεις, όλα διαθέσιμα εκτός σύνδεσης. Τα 118 στοιχεία του περιοδικού πίνακα βρίσκονται στον περιοδικό πίνακα, οπότε οι δύο πηγές δεν διπλασιάζονται ποτέ.</string>
     <string name="ui_faq_languages_q" translatable="true">Ποιες γλώσσες υποστηρίζει το ChemSearch;</string>
     <string name="ui_faq_languages_a" translatable="true">Η διεπαφή είναι πλήρως μεταφρασμένη σε 15 γλώσσες: βεγγαλικά, δανικά, γερμανικά, ελληνικά, ισπανικά, φινλανδικά, γαλλικά, ιταλικά, ιαπωνικά, ολλανδικά, νορβηγικά, πολωνικά, πορτογαλικά, ρωσικά και σουηδικά. Αλλάξτε όποτε θέλετε στις Ρυθμίσεις > Γλώσσα.</string>
     <string name="ui_whats_new_section_features" translatable="true">Νέες λειτουργίες</string>
-    <string name="ui_whats_new_section_improvements" translatable="true">Βελτιώσεις</string>
     <string name="ui_section_whats_new" translatable="true">Τι νέο υπάρχει</string>
-    <string name="ui_whats_new_bullet_reaction" translatable="true">Πρόβλεψη αντιδράσεων: Προστέθηκε μια μηχανή κανόνων εκτός σύνδεσης βασισμένη στη συνοδευτική χημική βάση δεδομένων. Εισάγετε έως τρία αντιδραστήρια και λάβετε προβλεπόμενα προϊόντα, τύπους αντιδράσεων, παρατηρήσεις και επίπεδα αξιοπιστίας.</string>
-    <string name="ui_whats_new_bullet_widgets" translatable="true">Γραφικά στοιχεία αρχικής οθόνης: Προστέθηκαν στοιχεία για την Ένωση της Ημέρας και Τυχαία Ένωση. Το καθημερινό αλλάζει τα μεσάνυχτα, ενώ το τυχαίο έχει το δικό του κουμπί ανανέωσης.</string>
-    <string name="ui_whats_new_bullet_database" translatable="true">Χημική βάση δεδομένων: Επεκτάθηκε από 331 σε 575 ουσίες, συμπεριλαμβανομένων αμινοξέων, βιταμινών, φαρμάκων, εστέρων, οργανομεταλλικών, πυριτικών, αλκαλοειδών και άλλων. Τα 118 στοιχεία βρίσκονται πλέον στον Περιοδικό Πίνακα αντί να αντιγράφονται στη βάση δεδομένων.</string>
-    <string name="ui_whats_new_bullet_search" translatable="true">Προχωρημένη αναζήτηση: Προστέθηκε επιλογέας ορίου αποτελεσμάτων, φίλτρο «το όνομα περιέχει» και μετρητής ενεργών φίλτρων με καθαρισμό όλων με ένα πάτημα.</string>
-    <string name="ui_whats_new_bullet_tools" translatable="true">Εργαλεία: Το πλέγμα αναδιαμορφώθηκε ώστε να προσαρμόζεται από 2 στήλες σε στενές συσκευές έως 5 σε ευρείες οθόνες και tablet. Οι κατηγορίες εργαλείων χρησιμοποιούν ξεχωριστά χρώματα έμφασης και οι γραμμές διατηρούν κάρτες ίδιου ύψους.</string>
-    <string name="ui_whats_new_bullet_structure" translatable="true">Αναζήτηση δομής: Προστέθηκε σύνοψη ρυθμίσεων με μια ματιά, ρυθμιστής ομοιότητας, σαφέστερη ένδειξη ενεργής λειτουργίας, υποδείξεις μορφών εισαγωγής και ζωντανό σήμα τύπου.</string>
-    <string name="ui_whats_new_bullet_polish" translatable="true">Σφάλματα αναζήτησης: Προστέθηκαν συγκεκριμένα, χρωματικά κωδικοποιημένα μηνύματα για περιορισμό ρυθμού, λήξεις χρόνου, εσφαλμένα αιτήματα, σφάλματα δικτύου, σφάλματα διακομιστή και κενά αποτελέσματα.</string>
-    <string name="ui_whats_new_bullet_home" translatable="true">Εξερεύνηση: Προστέθηκαν γρήγορες ενέργειες για Αναζήτηση δομής, Αναζήτηση ισομερών, Περιοδικό Πίνακα και Χημική βάση δεδομένων.</string>
-    <string name="ui_whats_new_bullet_library" translatable="true">Ενέργειες βιβλιοθήκης: Παρατεταμένο πάτημα σε αποθηκευμένη ένωση για αντιγραφή του τύπου, άνοιγμα στο PubChem ή αφαίρεση χωρίς να ανοίξει η καταχώρηση.</string>
-    <string name="ui_whats_new_bullet_shortcuts" translatable="true">Συντομεύσεις εκκίνησης: Πατήστε παρατεταμένα το εικονίδιο της εφαρμογής για να μεταβείτε απευθείας σε Αναζήτηση, Βιβλιοθήκη, Εργαλεία ή Ρυθμίσεις.</string>
-    <string name="ui_whats_new_bullet_daily" translatable="true">Ένωση της Ημέρας: Προστέθηκε κάρτα αρχικής οθόνης που δείχνει την ίδια καθημερινή ένωση με το γραφικό στοιχείο, με τον τύπο και τις τυπικές χρήσεις.</string>
-    <string name="ui_whats_new_bullet_csv" translatable="true">Εξαγωγή βιβλιοθήκης: Προστέθηκε εξαγωγή CSV δίπλα στην υπάρχουσα δημιουργία αντιγράφων JSON και υποστήριξη εισαγωγής.</string>
-    <string name="ui_whats_new_bullet_compare" translatable="true">Σύγκριση ενώσεων: Προστέθηκε αντιγραφή γραμμών ιδιοτήτων με ένα πάτημα, τσιπ ενώσεων, ενέργεια καθαρισμού αποτελεσμάτων και υποστήριξη έως έξι ενώσεων.</string>
-    <string name="ui_whats_new_bullet_periodic" translatable="true">Περιοδικός Πίνακας: Προστέθηκαν διαδραστικά φίλτρα κατηγοριών, φωτεινότερα πλακίδια στοιχείων, χάρτες θερμότητας τάσεων με διαβάθμιση, υπομνήματα ελάχιστου/μέγιστου και μια λωρίδα με τα πέντε κορυφαία στοιχεία.</string>
-    <string name="ui_whats_new_bullet_stoich" translatable="true">Στοιχειομετρία: Προστέθηκε ατομική απόδοση, κατανάλωση και περίσσεια ανά αντιδραστήριο, βελτιωμένη μετατροπή μονάδων και αντιγράψιμες περιλήψεις ανάλυσης.</string>
-    <string name="ui_whats_new_bullet_display" translatable="true">Οθόνη: Προστέθηκε ρύθμιση μονάδας θερμοκρασίας για όλη την εφαρμογή (K, °C ή °F).</string>
-    <string name="ui_whats_new_bullet_haptics" translatable="true">Απτική ανατροφοδότηση: Προστέθηκε απτική ανατροφοδότηση στις υποστηριζόμενες αλληλεπιδράσεις.</string>
-    <string name="ui_whats_new_bullet_offline_mode" translatable="true">Εργαλεία προγραμματιστή: Προστέθηκε λειτουργία δοκιμής εκτός σύνδεσης με ντετερμινιστικά αποτελέσματα, ρυθμιζόμενη καθυστέρηση, προσομοιωμένα σφάλματα, εξαναγκασμένους τύπους σφαλμάτων και banner εκτός σύνδεσης στην οθόνη. Επίσης προστέθηκαν επιθεώρηση κρυφής μνήμης, λεπτομέρειες συσκευής και έκδοσης και κατάλογος μηνυμάτων σφαλμάτων.</string>
-    <string name="ui_whats_new_bullet_dialogs" translatable="true">Διεπαφή: Τυποποιήθηκαν τα παράθυρα διαλόγου σε FAQ, βοήθεια και αναδυόμενα επιβεβαίωσης, με χρωματιστές κεφαλίδες εικονιδίων, κουμπιά κλεισίματος και χρωματικά κωδικοποιημένες καταστροφικές ενέργειες.</string>
-    <string name="ui_whats_new_bullet_cards" translatable="true">Διεπαφή: Τυποποιήθηκαν οι κάρτες, οι καταστάσεις επιλογής και οι καταστροφικές ενέργειες σε όλη την εφαρμογή. Προστέθηκε ρύθμιση Κάρτες για εναλλαγή ανάμεσα σε κάρτες και πιο επίπεδες διατάξεις.</string>
-    <string name="ui_whats_new_bullet_collapsible" translatable="true">Σχετικά: Η κάρτα «Τι νέο υπάρχει» μπορεί πλέον να συμπτύσσεται και δείχνει τα κύρια σημεία της τρέχουσας έκδοσης.</string>
-    <string name="ui_whats_new_bullet_languages" translatable="true">Νέα γλώσσα: Προστέθηκαν τα βεγγαλικά και ενημερώθηκαν τα μεταφρασμένα κείμενα. Οι επιλογείς γλώσσας δείχνουν πλέον κάθε γλώσσα με το γηγενές όνομά της.</string>
+    <string name="ui_whats_new_intro_database" translatable="true">Προστέθηκαν φάσματα ενώσεων και η βάση δεδομένων χημικής αναφοράς επεκτάθηκε σημαντικά</string>
+    <string name="ui_whats_new_bullet_spectral" translatable="true">Φασματοσκοπικά δεδομένα: Οι ενώσεις εμφανίζουν πλέον δημοσιευμένα φάσματα NMR, IR, μάζας, UV και Raman από το PubChem.</string>
+    <string name="ui_whats_new_bullet_database_group" translatable="true">Διευρυμένη βάση δεδομένων χημικής αναφοράς</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">Ουσίες: Επεκτάθηκε από 575 σε 1532 καταχωρίσεις, καλύπτοντας οξέα, άλατα, οξείδια, μεταλλεύματα, πολυμερή, βιομόρια, φάρμακα, βαφές και άλλα. Αναζήτηση με όνομα, ψευδώνυμο ή τύπο, πλήρως εκτός σύνδεσης.</string>
+    <string name="ui_whats_new_bullet_ions" translatable="true">Ιόντα: Επεκτάθηκε από 108 σε 211 καταχωρίσεις, συμπεριλαμβανομένων κοινών κατιόντων και ανιόντων.</string>
+    <string name="ui_whats_new_bullet_functional_groups" translatable="true">Χαρακτηριστικές ομάδες: Επεκτάθηκε από 71 σε 122 καταχωρίσεις για γρήγορη αναφορά στην οργανική χημεία.</string>
+    <string name="ui_whats_new_bullet_reactions" translatable="true">Αντιδράσεις: Επεκτάθηκε από 149 σε 326 καταχωρίσεις, δίνοντας στον προβλεπτή αντιδράσεων εκτός σύνδεσης ευρύτερη κάλυψη.</string>
+    <string name="ui_whats_new_section_changes" translatable="true">Αλλαγές</string>
+    <string name="ui_whats_new_bullet_cards_default" translatable="true">Λειτουργία καρτών: πλέον ανενεργή εξ ορισμού για πιο επίπεδη και πυκνή διάταξη. Ενεργοποιήστε την ξανά στις Ρυθμίσεις.</string>
     <string name="ui_error_search_not_found_s" translatable="true">Δεν βρέθηκε αντιστοιχία για το “%1$s” στο PubChem. Δοκιμάστε άλλο όνομα, αριθμό CAS ή ελέγξτε την ορθογραφία.</string>
     <string name="ui_error_search_throttled" translatable="true">Το PubChem περιορίζει τα αιτήματα αυτή τη στιγμή. Περιμένετε μερικά δευτερόλεπτα και δοκιμάστε ξανά.</string>
     <string name="ui_error_search_timeout" translatable="true">Το PubChem άργησε πολύ να απαντήσει. Δοκιμάστε ξανά — οι πολύ σύνθετες ερωτήσεις μπορεί να λήξουν.</string>
@@ -1758,7 +1744,7 @@
     <string name="ui_error_no_browser" translatable="true">Δεν βρέθηκε πρόγραμμα περιήγησης</string>
     <string name="ui_explore_chemsearch" translatable="true">Εξερευνήστε το ChemSearch</string>
     <string name="ui_periodic_table_quick_action_subtitle" translatable="true">Περιηγηθείτε και στα 118 στοιχεία και τις ιδιότητές τους</string>
-    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">900+ ουσίες, ιόντα, ομάδες και αντιδράσεις</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">Εξερευνήστε μια χημική βάση δεδομένων εκτός σύνδεσης</string>
     <string name="ui_offline_test_mode" translatable="true">Λειτουργία δοκιμής χωρίς σύνδεση</string>
     <string name="ui_offline_test_mode_subtitle" translatable="true">Εμφάνιση εικονικών δεδομένων χωρίς πραγματικές κλήσεις δικτύου</string>
     <string name="ui_offline_test_mode_toggle_body" translatable="true">Όταν είναι ενεργή, η αναζήτηση, οι αναζητήσεις, οι κλήσεις δομής και ΕΝ επιστρέφουν τοπικές εγγραφές δοκιμής αντί να επικοινωνούν με το δίκτυο</string>
@@ -1772,4 +1758,9 @@
     <string name="ui_offline_test_mode_badge" translatable="true">ΧΩΡΙΣ ΣΥΝΔΕΣΗ</string>
     <string name="ui_offline_test_mode_active_banner" translatable="true">Η λειτουργία δοκιμής χωρίς σύνδεση είναι ενεργή: Όλα τα αποτελέσματα ειναι προσομοιωμένα δεδομένα</string>
     <string name="ui_offline_test_mode_active_note" translatable="true">Όλοι οι αποτελέσματες είναι προσομοιωμένοι</string>
+    <string name="ui_spectral_information" translatable="true">Φασματοσκοπικές πληροφορίες</string>
+    <string name="ui_loading_pubchem_spectra" translatable="true">Φόρτωση φασμάτων PubChem...</string>
+    <string name="ui_source_pubchem_spectra" translatable="true">Πηγή: συλλογές φασμάτων PubChem</string>
+    <string name="ui_info_spectral_what_body" translatable="true">Πειραματικά φάσματα που δημοσιεύονται στο PubChem, ομαδοποιημένα κατά τεχνική (NMR, MS, IR, UV, Raman). Οι τιμές προέρχονται από την αρχική πηγή, επομένως τα όργανα, οι διαλύτες και οι μονάδες διαφέρουν μεταξύ των εγγραφών.</string>
+    <string name="ui_info_spectral_why_body" translatable="true">Δεν έχουν όλες οι ουσίες δημοσιευμένα φάσματα. Όταν το PubChem δεν έχει κανένα, αυτή η ενότητα παραμένει κρυφή· η σελίδα της ουσίας στο PubChem εξακολουθεί να παραθέτει ό,τι είναι διαθέσιμο.</string>
 </resources>

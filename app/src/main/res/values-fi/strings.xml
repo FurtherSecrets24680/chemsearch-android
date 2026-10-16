@@ -1702,34 +1702,20 @@
     <string name="ui_faq_reaction_predictor_q" translatable="true">Miten reaktioennustin toimii?</string>
     <string name="ui_faq_reaction_predictor_a" translatable="true">Se sovittaa valitsemasi lähtöaineet mukana tulevan kemian tietokannan pohjalta rakennettuun offline-sääntöjoukkoon ja ehdottaa todennäköisiä tuotteita, reaktiotyyppejä ja havaintoja. Se kattaa yleiset opiskelureaktiot — tarkista aina epätavalliset tapaukset oppikirjasta.</string>
     <string name="ui_faq_database_size_q" translatable="true">Kuinka suuri sisäänrakennettu kemiangentietokanta on?</string>
-    <string name="ui_faq_database_size_a" translatable="true">Se sisältää 575 ainetta, 108 ionia, 71 funktionaalista ryhmää ja 149 reaktiota, kaikki käytettävissä offline-tilassa. Jakson taulukon 118 alkuainetta asuvat jaksollisessa järjestelmässä, joten kaksi lähdettä ei koskaan kahdenna toisiaan.</string>
+    <string name="ui_faq_database_size_a" translatable="true">Se sisältää 1532 ainetta, 211 ionia, 122 funktionaalista ryhmää ja 326 reaktiota, kaikki käytettävissä offline-tilassa. Jakson taulukon 118 alkuainetta asuvat jaksollisessa järjestelmässä, joten kaksi lähdettä ei koskaan kahdenna toisiaan.</string>
     <string name="ui_faq_languages_q" translatable="true">Mitä kieliä ChemSearch tukee?</string>
     <string name="ui_faq_languages_a" translatable="true">Käyttöliittymä on täysin käännetty 15 kielelle: bengali, tanska, saksa, kreikka, espanja, suomi, ranska, italia, japani, hollanti, norja, puola, portugali, venäjä ja ruotsi. Vaihda kieltä milloin tahansa kohdasta Asetukset > Kieli.</string>
     <string name="ui_whats_new_section_features" translatable="true">Uudet ominaisuudet</string>
-    <string name="ui_whats_new_section_improvements" translatable="true">Parannukset</string>
     <string name="ui_section_whats_new" translatable="true">Uutta</string>
-    <string name="ui_whats_new_bullet_reaction" translatable="true">Reaktioennuste: Lisätty offline-sääntömoottori, joka perustuu pakettiin kuuluvaan kemikaalitietokantaan. Syötä enintään kolme reaktanttia ja saat ennustetut tuotteet, reaktietyypit, havainnot ja luotettavuustasot.</string>
-    <string name="ui_whats_new_bullet_widgets" translatable="true">Kotinäytön widgetit: Lisätty Päivän yhdiste- ja Satunnainen yhdiste -widgetit. Päivittäinen vaihtuu keskiyöllä, ja satunnaisessa on oma päivityspainike.</string>
-    <string name="ui_whats_new_bullet_database" translatable="true">Kemikaalitietokanta: Laajennettu 331:stä 575 aineeseen, mukaan lukien aminohapot, vitamiinit, lääkkeet, esterit, organometallit, silikaatit, alkaloidit ja muu. 118 alkuainetta ovat nyt jaksollisessa järjestelmässä sen sijaan että ne monistettaisiin tietokantaan.</string>
-    <string name="ui_whats_new_bullet_search" translatable="true">Tarkennettu haku: Lisätty tulosrajan valitsin, nimen sisältösuodatin ja aktiivisten suodattimien lukumäärä, jotka voi tyhjentää yhdellä napautuksella.</string>
-    <string name="ui_whats_new_bullet_tools" translatable="true">Työkalut: Ruudukko uusittiin mukautumaan 2 sarakkeesta kapeissa puhelimissa 5 sarakkeeseen leveillä näytöillä ja tableteilla. Työkaluluokat käyttävät nyt omia aksenttivärejään, ja ruudukon rivit pitävät kortit samankorkuisina.</string>
-    <string name="ui_whats_new_bullet_structure" translatable="true">Rakennehaku: Lisätty asetusten yleiskatsaus yhdellä silmäyksellä, samankaltaisuuden liukusäädin, selkeämpi aktiivisen tilan ilmaisin, tuontimuotojen vihjeet ja reaaliaikainen kaavamerkki.</string>
-    <string name="ui_whats_new_bullet_polish" translatable="true">Hakuvirheet: Lisätty tarkkoja, värikoortuneita viestejä nopeusrajoitukselle, aikakatkaisuille, virheellisille pyynnöille, verkkovirheille, palvelinvirheille ja tyhjille tuloksille.</string>
-    <string name="ui_whats_new_bullet_home" translatable="true">Tutki: Lisätty pikatoiminnot Rakennehaku, Isomeerihaku, Jaksollinen järjestelmä ja Kemikaalitietokanta.</string>
-    <string name="ui_whats_new_bullet_library" translatable="true">Kirjastotoiminnot: Paina pitkään tallennettua yhdistettä kopioidaksesi kaavan, avataksesi sen PubChemissä tai poistaaksesi avaamatta tietuetta.</string>
-    <string name="ui_whats_new_bullet_shortcuts" translatable="true">Käynnistimen pikakuvakkeet: Paina sovelluksen kuvaketta pitkään siirtyäksesi suoraan Hakuun, Kirjastoon, Työkaluihin tai Asetuksiin.</string>
-    <string name="ui_whats_new_bullet_daily" translatable="true">Päivän yhdiste: Lisätty kotinäytön kortti, joka näyttää saman päivän yhdisteen kuin widget, mukaan lukien kaava ja tyypilliset käyttötarkoitukset.</string>
-    <string name="ui_whats_new_bullet_csv" translatable="true">Kirjaston vienti: Lisätty CSV-vienti olemassa olevan JSON-varmuuskopion ja tuonnin rinnalle.</string>
-    <string name="ui_whats_new_bullet_compare" translatable="true">Yhdisteiden vertailu: Lisätty ominaisuusrivien kopiointi yhdellä napautuksella, yhdistesirut, tulosten tyhjennys ja tuki jopa kuudelle yhdisteelle.</string>
-    <string name="ui_whats_new_bullet_periodic" translatable="true">Jaksollinen järjestelmä: Lisätty vuorovaikutteiset luokkasuodattimet, kirkkaammat alkuainelaatat, liukuväriset trendilämpökartat, min/max-legendat ja napautettava viiden parhaan alkuaineen kaista.</string>
-    <string name="ui_whats_new_bullet_stoich" translatable="true">Stökiometria: Lisätty atomitalous, reaktanttikohtainen kulutus ja jäämät, parannettu yksikkömuunnos ja kopioitavat analyysien yhteenvedot.</string>
-    <string name="ui_whats_new_bullet_display" translatable="true">Näyttö: Lisätty koko sovelluksen kattava lämpötilayksikön asetus (K, °C tai °F).</string>
-    <string name="ui_whats_new_bullet_haptics" translatable="true">Haptiikka: Lisätty haptinen palaute tuettuihin vuorovaikutuksiin.</string>
-    <string name="ui_whats_new_bullet_offline_mode" translatable="true">Kehittäjätyökalut: Lisätty offline-testitila deterministisillä testituloksilla, säädettävällä viiveellä, simuloiduilla virheillä, pakotetuilla virhetyypeillä ja näytöllä näkyvällä offline-bannerilla. Lisäksi lisätty välimuistin tarkastus, laitteen ja koosteen tiedot sekä virheilmoitusten luettelo.</string>
-    <string name="ui_whats_new_bullet_dialogs" translatable="true">Käyttöliittymä: Vakiinnutettiin valintaikkunat UKK-, ohje- ja vahvistusponnahdusikkunoissa värjätyillä kuvakeotsikoilla, sulkemispainikkeilla ja värikoodatuilla tuhoavilla toiminnoilla.</string>
-    <string name="ui_whats_new_bullet_cards" translatable="true">Käyttöliittymä: Vakiinnutettiin kortit, valintatilat ja tuhoavat toiminnot koko sovelluksessa. Lisätty Kortit-asetus korttipohjaisten ja litteämpien asetteluiden välillä vaihtamiseen.</string>
-    <string name="ui_whats_new_bullet_collapsible" translatable="true">Tietoja: What\'s New -kortin voi nyt tiivistää, ja se näyttää nykyisen julkaisun kohokohdat.</string>
-    <string name="ui_whats_new_bullet_languages" translatable="true">Uusi kieli: Lisätty bengali ja päivitetty lokalisoidut merkkijonot. Kielenvalitsimet näyttävät nyt jokaisen kielen sen omalla nimellä.</string>
+    <string name="ui_whats_new_intro_database" translatable="true">Yhdisteiden spektrit lisätty ja kemian viitetietokantaa laajennettu merkittävästi</string>
+    <string name="ui_whats_new_bullet_spectral" translatable="true">Spektritiedot: Yhdisteet näyttävät nyt julkaistuja NMR-, IR-, massa-, UV- ja Raman-spektrejä PubChemistä.</string>
+    <string name="ui_whats_new_bullet_database_group" translatable="true">Laajennettu kemian viitetietokanta</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">Aineet: Laajennettu 575:stä 1532 merkintään, kattaen hapot, suolat, oksidit, malmit, polymeerit, biomolekyylit, lääkkeet, väriaineet ja muuta. Hae nimen, aliaksen tai kaavan mukaan, täysin offline.</string>
+    <string name="ui_whats_new_bullet_ions" translatable="true">Ionit: Laajennettu 108:sta 211 merkintään, mukaan lukien yleiset kationit ja anionit.</string>
+    <string name="ui_whats_new_bullet_functional_groups" translatable="true">Funktionaaliset ryhmät: Laajennettu 71:stä 122 merkintään orgaanisen kemian pikaista viitettä varten.</string>
+    <string name="ui_whats_new_bullet_reactions" translatable="true">Reaktiot: Laajennettu 149:stä 326 merkintään, mikä antaa offline-reaktioennustimelle laajemman kattavuuden.</string>
+    <string name="ui_whats_new_section_changes" translatable="true">Muutokset</string>
+    <string name="ui_whats_new_bullet_cards_default" translatable="true">Korttitila: nyt oletuksena pois päältä, jolloin asettelu on litteämpi ja tiiviimpi. Voit ottaa sen uudelleen käyttöön Asetuksissa.</string>
     <string name="ui_error_search_not_found_s" translatable="true">Haulla “%1$s” ei löytynyt osumia PubChemista. Kokeile toista nimeä, CAS-numeroa tai tarkista oikeinkirjoitus.</string>
     <string name="ui_error_search_throttled" translatable="true">PubChem rajoittaa pyyntöjä juuri nyt. Odota muutama sekunti ja yritä uudelleen.</string>
     <string name="ui_error_search_timeout" translatable="true">PubChem vastasi liian hitaasti. Yritä uudelleen — hyvin monimutkaiset kyselyt voivat ylittää aikarajan.</string>
@@ -1758,7 +1744,7 @@
     <string name="ui_error_no_browser" translatable="true">Selainta ei löytynyt</string>
     <string name="ui_explore_chemsearch" translatable="true">Tutustu ChemSearchiin</string>
     <string name="ui_periodic_table_quick_action_subtitle" translatable="true">Selaa kaikkia 118 alkuainetta ja niiden ominaisuuksia</string>
-    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">Yli 900 ainetta, ionia, ryhmää ja reaktiota</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">Tutustu offline-kemiatietokantaan</string>
     <string name="ui_offline_test_mode" translatable="true">Offline-testitila</string>
     <string name="ui_offline_test_mode_subtitle" translatable="true">Näytä testidata ilman todellisia verkkopyyntöjä</string>
     <string name="ui_offline_test_mode_toggle_body" translatable="true">Kun käytössä, haku, kyselyt, rakenne- ja tekoälykutsut palauttavat paikallisia testitietueita verkon sijaan</string>
@@ -1772,4 +1758,9 @@
     <string name="ui_offline_test_mode_badge" translatable="true">OFFLINE</string>
     <string name="ui_offline_test_mode_active_banner" translatable="true">Offline-testitila on käytössä: kaikki tämän näytön tulokset ovat simuloitua testidataa</string>
     <string name="ui_offline_test_mode_active_note" translatable="true">Kaikki tulokset on simuloitu</string>
+    <string name="ui_spectral_information" translatable="true">Spektritiedot</string>
+    <string name="ui_loading_pubchem_spectra" translatable="true">Ladataan PubChemin spektrejä...</string>
+    <string name="ui_source_pubchem_spectra" translatable="true">Lähde: PubChemin spektrikokoelmat</string>
+    <string name="ui_info_spectral_what_body" translatable="true">PubChemissä julkaistuja kokeellisia spektrejä, ryhmiteltynä tekniikan mukaan (NMR, MS, IR, UV, Raman). Arvot tulevat alkuperäisestä lähteestä, joten laitteet, liuottimet ja yksiköt vaihtelevat merkintöjen välillä.</string>
+    <string name="ui_info_spectral_why_body" translatable="true">Kaikilla aineilla ei ole julkaistuja spektrejä. Kun PubChemissä ei ole niitä, tämä osio pysyy piilossa; aineen PubChem-sivu luettelee silti kaiken saatavilla olevan.</string>
 </resources>

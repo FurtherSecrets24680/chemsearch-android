@@ -32,7 +32,9 @@
       "notes": "Halide anion.",
       "tags": [
         "halide"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "chloride",
@@ -48,7 +50,9 @@
       "notes": "Common halide; tested with silver nitrate.",
       "tags": [
         "halide"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "fluoride",
@@ -64,7 +68,9 @@
       "notes": "Halide anion.",
       "tags": [
         "halide"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Hydride",
@@ -98,7 +104,9 @@
       "notes": "Can be oxidized to iodine.",
       "tags": [
         "halide"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Nitride",
@@ -132,7 +140,9 @@
       "notes": "Basic oxide ion in metal oxides.",
       "tags": [
         "oxygen"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Phosphide",
@@ -191,7 +201,7 @@
         "sulfide"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "aluminum",
@@ -207,7 +217,9 @@
       "notes": "Small highly charged cation.",
       "tags": [
         "metal"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "barium",
@@ -223,7 +235,9 @@
       "notes": "Forms insoluble sulfate.",
       "tags": [
         "alkaline earth"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "cadmium-ii",
@@ -243,7 +257,7 @@
         "pollution"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "calcium",
@@ -259,7 +273,9 @@
       "notes": "Important in bones, limestone, and water hardness.",
       "tags": [
         "alkaline earth"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Cesium ion",
@@ -299,7 +315,7 @@
         "pollution"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Cobalt(II)",
@@ -375,7 +391,9 @@
       "notes": "Often blue/green in aqueous compounds.",
       "tags": [
         "transition metal"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Gold(III)",
@@ -409,7 +427,9 @@
       "notes": "Often represented as H3O+ in aqueous solution.",
       "tags": [
         "acid"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "iron-ii",
@@ -425,7 +445,9 @@
       "notes": "Can oxidize to Fe3+.",
       "tags": [
         "transition metal"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "iron-iii",
@@ -441,7 +463,9 @@
       "notes": "Forms rust-colored compounds.",
       "tags": [
         "transition metal"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "lead-ii",
@@ -462,7 +486,7 @@
         "monoatomic cation"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Lead(IV)",
@@ -497,7 +521,9 @@
       "notes": "Group 1 metal cation.",
       "tags": [
         "alkali metal"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "magnesium",
@@ -513,7 +539,9 @@
       "notes": "Alkaline earth metal cation.",
       "tags": [
         "alkaline earth"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "manganese-ii",
@@ -533,7 +561,7 @@
         "alloy"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Manganese(III)",
@@ -549,7 +577,7 @@
       ],
       "id": "manganese-iii",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "mercury-ii",
@@ -570,7 +598,7 @@
         "pollution"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "nickel-ii",
@@ -590,7 +618,7 @@
         "alloy"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Platinum(II)",
@@ -624,7 +652,9 @@
       "notes": "Common soluble alkali metal cation.",
       "tags": [
         "alkali metal"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Rubidium ion",
@@ -658,7 +688,9 @@
       "notes": "Forms insoluble silver halides.",
       "tags": [
         "transition metal"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "sodium",
@@ -674,7 +706,9 @@
       "notes": "Common soluble alkali metal cation.",
       "tags": [
         "alkali metal"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Strontium ion",
@@ -712,7 +746,7 @@
         "alloy"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Tin(IV)",
@@ -765,7 +799,9 @@
       "notes": "Usually colorless salts.",
       "tags": [
         "transition metal"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "acetate",
@@ -780,7 +816,9 @@
       "notes": "Conjugate base of acetic acid.",
       "tags": [
         "organic"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "aluminate",
@@ -799,7 +837,7 @@
         "aluminium"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Arsenate",
@@ -888,7 +926,7 @@
       ],
       "id": "bicarbonate",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": "",
+      "sourceUrl": "https://chem.libretexts.org/",
       "otherNames": [
         "Hydrogen carbonate"
       ]
@@ -946,7 +984,7 @@
         "fertilizer"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "carbonate",
@@ -962,7 +1000,9 @@
       "notes": "Reacts with acids to release CO2.",
       "tags": [
         "carbon"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "chlorate",
@@ -977,7 +1017,9 @@
       "notes": "Oxidizing chlorine oxyanion.",
       "tags": [
         "oxidizer"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Chlorite",
@@ -1010,7 +1052,9 @@
       "notes": "Yellow chromium(VI) oxyanion.",
       "tags": [
         "oxidizer"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Citrate",
@@ -1027,7 +1071,7 @@
       ],
       "id": "citrate",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Cyanate",
@@ -1043,7 +1087,7 @@
       ],
       "id": "cyanate",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "cyanide",
@@ -1059,7 +1103,9 @@
       "notes": "Highly toxic; strong ligand.",
       "tags": [
         "toxic"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "dichromate",
@@ -1074,7 +1120,9 @@
       "notes": "Orange oxidizing ion; chromium(VI) hazard.",
       "tags": [
         "oxidizer"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "dihydrogen-phosphate",
@@ -1089,7 +1137,9 @@
       "notes": "Part of phosphate buffer systems.",
       "tags": [
         "phosphorus"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Ferricyanide",
@@ -1175,7 +1225,9 @@
       "notes": "Part of phosphate buffer systems.",
       "tags": [
         "phosphorus"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Hydrogen sulfate",
@@ -1233,7 +1285,9 @@
       "notes": "Defines bases in many aqueous reactions.",
       "tags": [
         "base"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "hypochlorite",
@@ -1247,7 +1301,9 @@
       "notes": "Bleach active ion; oxidizing.",
       "tags": [
         "oxidizer"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Iodate",
@@ -1305,7 +1361,7 @@
         "surfactant"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Malate",
@@ -1375,7 +1431,9 @@
       "notes": "Most nitrate salts are soluble.",
       "tags": [
         "nitrogen"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "nitrite",
@@ -1395,7 +1453,7 @@
         "polyatomic anion"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "oxalate",
@@ -1409,7 +1467,9 @@
       "notes": "Forms insoluble calcium oxalate.",
       "tags": [
         "organic"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Ozonide",
@@ -1499,7 +1559,9 @@
       "notes": "Strong purple oxidizing ion.",
       "tags": [
         "oxidizer"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Peroxide",
@@ -1553,7 +1615,9 @@
       "notes": "Important in minerals, DNA, and ATP.",
       "tags": [
         "phosphorus"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "silicate",
@@ -1572,7 +1636,7 @@
         "glass"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "stearate",
@@ -1596,7 +1660,7 @@
         "polyatomic anion"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "sulfate",
@@ -1612,7 +1676,9 @@
       "notes": "Barium sulfate is very insoluble.",
       "tags": [
         "sulfur"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "sulfite",
@@ -1627,7 +1693,9 @@
       "notes": "Can act as reducing agent.",
       "tags": [
         "sulfur"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Superoxide",
@@ -1734,7 +1802,9 @@
       "notes": "Used in iodine titration and dechlorination.",
       "tags": [
         "sulfur"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Tungstate",
@@ -1767,7 +1837,9 @@
       "notes": "Conjugate acid of ammonia.",
       "tags": [
         "nitrogen"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Hexaamminecobalt(III)",
@@ -1798,7 +1870,9 @@
       "notes": "More realistic form of protonated water.",
       "tags": [
         "acid"
-      ]
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Mercury(I)",
@@ -1861,8 +1935,22 @@
       "id": "phosphonium",
       "name": "Phosphonium",
       "formula": "PH4+",
+      "otherNames": [],
       "type": "Polyatomic cation",
-      "charge": "+1"
+      "charge": "+1",
+      "commonCompounds": [
+        "PH4I",
+        "PH4Br",
+        "tetrakis(hydroxymethyl)phosphonium sulfate"
+      ],
+      "notes": "The phosphorus analogue of ammonium and the parent of tetraorganophosphonium cations used in phase-transfer catalysis.",
+      "tags": [
+        "cation",
+        "phosphorus",
+        "polyatomic"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Tetramethylammonium",
@@ -1900,6 +1988,2068 @@
         "oxo cation"
       ],
       "id": "uranyl",
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "beryllium-ion",
+      "name": "Beryllium ion",
+      "formula": "Be2+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "BeO",
+        "BeCl2",
+        "beryl (Be3Al2Si6O18)"
+      ],
+      "notes": "Small, highly polarizing cation; beryllium compounds are toxic.",
+      "tags": [
+        "cation",
+        "alkaline earth",
+        "toxic"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "titanium-iii",
+      "name": "Titanium(III)",
+      "formula": "Ti3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "TiCl3",
+        "Ti2O3"
+      ],
+      "notes": "A reducing violet ion used in Ziegler-Natta catalysts.",
+      "tags": [
+        "cation",
+        "transition metal",
+        "reducing agent"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "titanium-iv",
+      "name": "Titanium(IV)",
+      "formula": "Ti4+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+4",
+      "commonCompounds": [
+        "TiO2",
+        "TiCl4",
+        "BaTiO3"
+      ],
+      "notes": "Forms the white pigment titanium dioxide.",
+      "tags": [
+        "cation",
+        "transition metal"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "vanadium-ii",
+      "name": "Vanadium(II)",
+      "formula": "V2+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "VCl2",
+        "VO"
+      ],
+      "notes": "A strong reducing lavender ion.",
+      "tags": [
+        "cation",
+        "transition metal",
+        "reducing agent"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "vanadium-iii",
+      "name": "Vanadium(III)",
+      "formula": "V3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "VCl3",
+        "V2O3"
+      ],
+      "notes": "A green ion in the vanadium redox series.",
+      "tags": [
+        "cation",
+        "transition metal"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "vanadium-iv",
+      "name": "Vanadium(IV)",
+      "formula": "V4+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+4",
+      "commonCompounds": [
+        "VO2",
+        "VOSO4"
+      ],
+      "notes": "Usually exists as the blue vanadyl ion VO2+.",
+      "tags": [
+        "cation",
+        "transition metal"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "chromium-ii",
+      "name": "Chromium(II)",
+      "formula": "Cr2+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "CrCl2",
+        "CrO"
+      ],
+      "notes": "A blue, easily oxidized reducing ion.",
+      "tags": [
+        "cation",
+        "transition metal",
+        "reducing agent"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "manganese-iv",
+      "name": "Manganese(IV)",
+      "formula": "Mn4+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+4",
+      "commonCompounds": [
+        "MnO2"
+      ],
+      "notes": "Found in manganese dioxide, a common oxidant.",
+      "tags": [
+        "cation",
+        "transition metal",
+        "oxidizing agent"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "molybdenum-vi",
+      "name": "Molybdenum(VI)",
+      "formula": "Mo6+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+6",
+      "commonCompounds": [
+        "MoO3",
+        "Na2MoO4"
+      ],
+      "notes": "Exists as molybdate in water; an essential trace element.",
+      "tags": [
+        "cation",
+        "transition metal"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "tungsten-vi",
+      "name": "Tungsten(VI)",
+      "formula": "W6+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+6",
+      "commonCompounds": [
+        "WO3",
+        "Na2WO4",
+        "WC"
+      ],
+      "notes": "Forms tungstate and tungsten carbide.",
+      "tags": [
+        "cation",
+        "transition metal"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "ruthenium-iii",
+      "name": "Ruthenium(III)",
+      "formula": "Ru3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "RuCl3",
+        "RuO2"
+      ],
+      "notes": "Used in catalysis and dye-sensitized solar cells.",
+      "tags": [
+        "cation",
+        "transition metal",
+        "catalyst"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "rhodium-iii",
+      "name": "Rhodium(III)",
+      "formula": "Rh3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "RhCl3",
+        "Rh2O3"
+      ],
+      "notes": "The usual state of catalytic rhodium complexes.",
+      "tags": [
+        "cation",
+        "transition metal",
+        "catalyst"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "palladium-ii",
+      "name": "Palladium(II)",
+      "formula": "Pd2+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "PdCl2",
+        "Pd(OAc)2"
+      ],
+      "notes": "Key oxidation state in cross-coupling catalysis.",
+      "tags": [
+        "cation",
+        "transition metal",
+        "catalyst"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "iridium-iii",
+      "name": "Iridium(III)",
+      "formula": "Ir3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "IrCl3",
+        "Ir2O3"
+      ],
+      "notes": "Common in iridium catalysts and OLED emitters.",
+      "tags": [
+        "cation",
+        "transition metal",
+        "catalyst"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "platinum-iv",
+      "name": "Platinum(IV)",
+      "formula": "Pt4+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+4",
+      "commonCompounds": [
+        "PtCl4",
+        "cisplatin precursor"
+      ],
+      "notes": "Found in some anticancer and catalyst compounds.",
+      "tags": [
+        "cation",
+        "transition metal",
+        "medicine"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "gold-i",
+      "name": "Gold(I)",
+      "formula": "Au+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "AuCl",
+        "Au2O"
+      ],
+      "notes": "Forms linear two-coordinate complexes.",
+      "tags": [
+        "cation",
+        "transition metal"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "gallium-iii",
+      "name": "Gallium(III)",
+      "formula": "Ga3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "GaAs",
+        "GaN",
+        "Ga2O3"
+      ],
+      "notes": "Used in semiconductors and the medical tracer gallium-67.",
+      "tags": [
+        "cation",
+        "post-transition metal",
+        "semiconductor"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "indium-iii",
+      "name": "Indium(III)",
+      "formula": "In3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "In2O3",
+        "InP",
+        "ITO"
+      ],
+      "notes": "Used in transparent conductors and semiconductors.",
+      "tags": [
+        "cation",
+        "post-transition metal"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "thallium-i",
+      "name": "Thallium(I)",
+      "formula": "Tl+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "TlCl",
+        "Tl2SO4"
+      ],
+      "notes": "A very toxic ion; historically a poison.",
+      "tags": [
+        "cation",
+        "post-transition metal",
+        "toxic"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "antimony-iii",
+      "name": "Antimony(III)",
+      "formula": "Sb3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "Sb2O3",
+        "SbCl3"
+      ],
+      "notes": "Found in flame retardants and antimony trioxide.",
+      "tags": [
+        "cation",
+        "metalloid"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "bismuth-iii",
+      "name": "Bismuth(III)",
+      "formula": "Bi3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "Bi2O3",
+        "BiOCl",
+        "bismuth subsalicylate"
+      ],
+      "notes": "Relatively non-toxic; used in stomach medicines and pigments.",
+      "tags": [
+        "cation",
+        "post-transition metal",
+        "medicine"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "tellurium-iv",
+      "name": "Tellurium(IV)",
+      "formula": "Te4+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+4",
+      "commonCompounds": [
+        "TeO2",
+        "CdTe"
+      ],
+      "notes": "Found in tellurite and cadmium telluride solar cells.",
+      "tags": [
+        "cation",
+        "metalloid",
+        "semiconductor"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "zirconium-iv",
+      "name": "Zirconium(IV)",
+      "formula": "Zr4+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+4",
+      "commonCompounds": [
+        "ZrO2",
+        "ZrCl4",
+        "zircon (ZrSiO4)"
+      ],
+      "notes": "Used in ceramics and nuclear fuel cladding.",
+      "tags": [
+        "cation",
+        "transition metal",
+        "ceramic"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hafnium-iv",
+      "name": "Hafnium(IV)",
+      "formula": "Hf4+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+4",
+      "commonCompounds": [
+        "HfO2",
+        "HfCl4"
+      ],
+      "notes": "A high-permittivity gate insulator in microelectronics.",
+      "tags": [
+        "cation",
+        "transition metal",
+        "semiconductor"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "niobium-v",
+      "name": "Niobium(V)",
+      "formula": "Nb5+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+5",
+      "commonCompounds": [
+        "Nb2O5",
+        "NbCl5"
+      ],
+      "notes": "Used in superconductors and specialty steels.",
+      "tags": [
+        "cation",
+        "transition metal"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "tantalum-v",
+      "name": "Tantalum(V)",
+      "formula": "Ta5+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+5",
+      "commonCompounds": [
+        "Ta2O5",
+        "TaCl5"
+      ],
+      "notes": "Found in tantalum capacitors and inert implants.",
+      "tags": [
+        "cation",
+        "transition metal"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "yttrium-iii",
+      "name": "Yttrium(III)",
+      "formula": "Y3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "Y2O3",
+        "YBa2Cu3O7",
+        "YAG"
+      ],
+      "notes": "Used in phosphors, lasers, and superconductors.",
+      "tags": [
+        "cation",
+        "transition metal",
+        "phosphor"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "lanthanum-iii",
+      "name": "Lanthanum(III)",
+      "formula": "La3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "La2O3",
+        "LaNi5"
+      ],
+      "notes": "Start of the lanthanide series; used in batteries and optical glass.",
+      "tags": [
+        "cation",
+        "lanthanide"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "cerium-iii",
+      "name": "Cerium(III)",
+      "formula": "Ce3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "CeCl3",
+        "Ce2O3"
+      ],
+      "notes": "The more reduced state of cerium, used in glass and catalysis.",
+      "tags": [
+        "cation",
+        "lanthanide"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "cerium-iv",
+      "name": "Cerium(IV)",
+      "formula": "Ce4+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+4",
+      "commonCompounds": [
+        "CeO2",
+        "ceric ammonium nitrate"
+      ],
+      "notes": "A strong one-electron oxidant; the basis of cerimetry.",
+      "tags": [
+        "cation",
+        "lanthanide",
+        "oxidizing agent"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "neodymium-iii",
+      "name": "Neodymium(III)",
+      "formula": "Nd3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "Nd2O3",
+        "Nd2Fe14B"
+      ],
+      "notes": "Used in powerful neodymium magnets and Nd:YAG lasers.",
+      "tags": [
+        "cation",
+        "lanthanide",
+        "magnet"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "samarium-iii",
+      "name": "Samarium(III)",
+      "formula": "Sm3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "Sm2O3",
+        "SmCo5"
+      ],
+      "notes": "Used in samarium-cobalt magnets.",
+      "tags": [
+        "cation",
+        "lanthanide",
+        "magnet"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "europium-iii",
+      "name": "Europium(III)",
+      "formula": "Eu3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "Eu2O3",
+        "Y2O3:Eu phosphor"
+      ],
+      "notes": "Gives the red glow in older television and lamp phosphors.",
+      "tags": [
+        "cation",
+        "lanthanide",
+        "phosphor"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "gadolinium-iii",
+      "name": "Gadolinium(III)",
+      "formula": "Gd3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "GdCl3",
+        "gadolinium contrast agents"
+      ],
+      "notes": "Strongly paramagnetic; used as an MRI contrast agent.",
+      "tags": [
+        "cation",
+        "lanthanide",
+        "medicine"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "erbium-iii",
+      "name": "Erbium(III)",
+      "formula": "Er3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "Er2O3",
+        "Er-doped fibre"
+      ],
+      "notes": "Amplifies light in fibre-optic cables.",
+      "tags": [
+        "cation",
+        "lanthanide",
+        "optical"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "ytterbium-iii",
+      "name": "Ytterbium(III)",
+      "formula": "Yb3+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+3",
+      "commonCompounds": [
+        "Yb2O3",
+        "Yb:YAG"
+      ],
+      "notes": "Used in lasers and as an NMR shift reagent.",
+      "tags": [
+        "cation",
+        "lanthanide",
+        "optical"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "thorium-iv",
+      "name": "Thorium(IV)",
+      "formula": "Th4+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+4",
+      "commonCompounds": [
+        "ThO2",
+        "ThCl4"
+      ],
+      "notes": "Radioactive; studied as a nuclear fuel.",
+      "tags": [
+        "cation",
+        "actinide",
+        "radioactive"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "uranium-iv",
+      "name": "Uranium(IV)",
+      "formula": "U4+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+4",
+      "commonCompounds": [
+        "UO2",
+        "UF4"
+      ],
+      "notes": "The reduced uranium state in reactor fuel.",
+      "tags": [
+        "cation",
+        "actinide",
+        "radioactive"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "uranium-vi",
+      "name": "Uranium(VI)",
+      "formula": "U6+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+6",
+      "commonCompounds": [
+        "UO2^2+",
+        "UO3"
+      ],
+      "notes": "Exists in water as the uranyl ion.",
+      "tags": [
+        "cation",
+        "actinide",
+        "radioactive"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "plutonium-iv",
+      "name": "Plutonium(IV)",
+      "formula": "Pu4+",
+      "otherNames": [],
+      "type": "Monoatomic cation",
+      "charge": "+4",
+      "commonCompounds": [
+        "PuO2"
+      ],
+      "notes": "A radioactive actinide ion relevant to nuclear chemistry.",
+      "tags": [
+        "cation",
+        "actinide",
+        "radioactive"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "telluride",
+      "name": "Telluride",
+      "formula": "Te^2-",
+      "otherNames": [],
+      "type": "Monoatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "CdTe",
+        "Bi2Te3",
+        "Na2Te"
+      ],
+      "notes": "Tellurium analogue of sulfide and selenide.",
+      "tags": [
+        "anion",
+        "chalcogen"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "astatide",
+      "name": "Astatide",
+      "formula": "At-",
+      "otherNames": [],
+      "type": "Monoatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaAt",
+        "HAt"
+      ],
+      "notes": "The halide of the rare, radioactive element astatine.",
+      "tags": [
+        "anion",
+        "halogen",
+        "radioactive"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "carbide",
+      "name": "Carbide",
+      "formula": "C^4-",
+      "otherNames": [],
+      "type": "Monoatomic anion",
+      "charge": "-4",
+      "commonCompounds": [
+        "CaC2",
+        "Al4C3",
+        "Fe3C"
+      ],
+      "notes": "Found in ionic carbides such as calcium carbide, which gives acetylene.",
+      "tags": [
+        "anion",
+        "carbon"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "antimonide",
+      "name": "Antimonide",
+      "formula": "Sb^3-",
+      "otherNames": [],
+      "type": "Monoatomic anion",
+      "charge": "-3",
+      "commonCompounds": [
+        "GaSb",
+        "InSb",
+        "AlSb"
+      ],
+      "notes": "Used in III-V semiconductor alloys.",
+      "tags": [
+        "anion",
+        "pnictogen",
+        "semiconductor"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "bismuthide",
+      "name": "Bismuthide",
+      "formula": "Bi^3-",
+      "otherNames": [],
+      "type": "Monoatomic anion",
+      "charge": "-3",
+      "commonCompounds": [
+        "Na3Bi",
+        "GaBi"
+      ],
+      "notes": "Bismuth anion in intermetallic compounds.",
+      "tags": [
+        "anion",
+        "pnictogen"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "boride",
+      "name": "Boride",
+      "formula": "B^3-",
+      "otherNames": [],
+      "type": "Monoatomic anion",
+      "charge": "-3",
+      "commonCompounds": [
+        "MgB2",
+        "TiB2",
+        "B4C"
+      ],
+      "notes": "Boron in metal borides, some of which are superconducting or superhard.",
+      "tags": [
+        "anion",
+        "boron",
+        "refractory"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "silicide",
+      "name": "Silicide",
+      "formula": "Si^4-",
+      "otherNames": [],
+      "type": "Monoatomic anion",
+      "charge": "-4",
+      "commonCompounds": [
+        "Mg2Si",
+        "TiSi2",
+        "MoSi2"
+      ],
+      "notes": "Silicon in intermetallic compounds used in electronics.",
+      "tags": [
+        "anion",
+        "silicon",
+        "semiconductor"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "nitrosyl",
+      "name": "Nitrosyl",
+      "formula": "NO+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "NOHSO4",
+        "nitrosonium salts"
+      ],
+      "notes": "The nitrosonium ion; a powerful electrophile and oxidant.",
+      "tags": [
+        "cation",
+        "nitrogen",
+        "reactive"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "vanadyl",
+      "name": "Vanadyl",
+      "formula": "VO^2+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+2",
+      "commonCompounds": [
+        "VOSO4",
+        "VO(acac)2"
+      ],
+      "notes": "The blue vanadium(IV) oxocation, common in solution and catalysis.",
+      "tags": [
+        "cation",
+        "transition metal",
+        "oxocation"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "guanidinium",
+      "name": "Guanidinium",
+      "formula": "C(NH2)3+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "guanidine hydrochloride",
+        "arginine side chain"
+      ],
+      "notes": "A strongly basic, resonance-stabilized cation found in proteins.",
+      "tags": [
+        "cation",
+        "nitrogen",
+        "biochemistry"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "imidazolium",
+      "name": "Imidazolium",
+      "formula": "C3H5N2+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "BMIM salts",
+        "histidine side chain"
+      ],
+      "notes": "The cation of many ionic liquids and of protonated histidine.",
+      "tags": [
+        "cation",
+        "heterocycle",
+        "ionic liquid"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "pyridinium",
+      "name": "Pyridinium",
+      "formula": "C5H6N+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "pyridinium chloride",
+        "NAD+ (nicotinamide ring)"
+      ],
+      "notes": "Protonated pyridine; its ring is the redox centre of NAD.",
+      "tags": [
+        "cation",
+        "heterocycle",
+        "biochemistry"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "anilinium",
+      "name": "Anilinium",
+      "formula": "C6H8N+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "anilinium chloride",
+        "aniline hydrochloride"
+      ],
+      "notes": "The conjugate acid of aniline.",
+      "tags": [
+        "cation",
+        "aromatic",
+        "amine"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "tetraethylammonium",
+      "name": "Tetraethylammonium",
+      "formula": "(C2H5)4N+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "TEABr",
+        "TEACl"
+      ],
+      "notes": "A phase-transfer cation used in synthesis and electrochemistry.",
+      "tags": [
+        "cation",
+        "quaternary ammonium",
+        "reagent"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "tetrabutylammonium",
+      "name": "Tetrabutylammonium",
+      "formula": "(C4H9)4N+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "TBAB",
+        "TBAF",
+        "TBAPF6"
+      ],
+      "notes": "A bulky cation that pairs with reactive anions to make them soluble.",
+      "tags": [
+        "cation",
+        "quaternary ammonium",
+        "reagent",
+        "phase-transfer"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "tetraphenylphosphonium",
+      "name": "Tetraphenylphosphonium",
+      "formula": "(C6H5)4P+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "tetraphenylphosphonium chloride",
+        "TPP bromide"
+      ],
+      "notes": "A large, soft phosphonium cation used as a counter-ion.",
+      "tags": [
+        "cation",
+        "phosphonium"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "trimethylsulfonium",
+      "name": "Trimethylsulfonium",
+      "formula": "(CH3)3S+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "trimethylsulfonium iodide"
+      ],
+      "notes": "A sulfonium cation that acts as a methylating agent.",
+      "tags": [
+        "cation",
+        "sulfonium",
+        "methylating agent"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "choline",
+      "name": "Choline",
+      "formula": "(CH3)3N(CH2CH2OH)+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "acetylcholine",
+        "phosphatidylcholine",
+        "choline chloride"
+      ],
+      "notes": "An essential nutrient and the backbone of the neurotransmitter acetylcholine.",
+      "tags": [
+        "cation",
+        "quaternary ammonium",
+        "biochemistry",
+        "nutrient"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "tropylium",
+      "name": "Tropylium",
+      "formula": "C7H7+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "tropylium bromide",
+        "cycloheptatriene salts"
+      ],
+      "notes": "A cyclic, aromatic carbocation stabilized by Huckel's rule.",
+      "tags": [
+        "cation",
+        "aromatic",
+        "carbocation"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "ferrocenium",
+      "name": "Ferrocenium",
+      "formula": "[Fe(C5H5)2]+",
+      "otherNames": [],
+      "type": "Polyatomic cation",
+      "charge": "+1",
+      "commonCompounds": [
+        "ferrocenium tetrafluoroborate"
+      ],
+      "notes": "The oxidized form of ferrocene; a blue 17-electron metallocene.",
+      "tags": [
+        "cation",
+        "organometallic",
+        "iron"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "amide",
+      "name": "Amide",
+      "formula": "NH2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaNH2",
+        "KNH2"
+      ],
+      "notes": "The amide ion is an extremely strong base used to deprotonate alkynes.",
+      "tags": [
+        "anion",
+        "nitrogen",
+        "strong base"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hydrosulfide",
+      "name": "Hydrosulfide",
+      "formula": "HS-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaHS",
+        "Ca(HS)2"
+      ],
+      "notes": "Formed when hydrogen sulfide is partly neutralized; a weak acid.",
+      "tags": [
+        "anion",
+        "sulfur",
+        "acid-base"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "metabisulfite",
+      "name": "Metabisulfite",
+      "formula": "S2O5^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "Na2S2O5",
+        "K2S2O5"
+      ],
+      "notes": "The disulfite ion; used in wines and as a food preservative.",
+      "tags": [
+        "anion",
+        "sulfur",
+        "food preservative"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "dithionite",
+      "name": "Dithionite",
+      "formula": "S2O4^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "Na2S2O4"
+      ],
+      "notes": "A powerful reducing agent used in vat dyeing and bleaching.",
+      "tags": [
+        "anion",
+        "sulfur",
+        "reducing agent"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "dithionate",
+      "name": "Dithionate",
+      "formula": "S2O6^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "Na2S2O6",
+        "BaS2O6"
+      ],
+      "notes": "Formed by mild oxidation of sulfite; chemically robust.",
+      "tags": [
+        "anion",
+        "sulfur"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "sulfamate",
+      "name": "Sulfamate",
+      "formula": "NH2SO3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "ammonium sulfamate",
+        "sodium sulfamate"
+      ],
+      "notes": "The anion of sulfamic acid, used in nickel plating and weed control.",
+      "tags": [
+        "anion",
+        "sulfur",
+        "nitrogen"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hypoiodite",
+      "name": "Hypoiodite",
+      "formula": "IO-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaIO"
+      ],
+      "notes": "A short-lived iodine(I) species in oxidation reactions.",
+      "tags": [
+        "anion",
+        "halogen",
+        "oxidizing agent"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "orthosilicate",
+      "name": "Orthosilicate",
+      "formula": "SiO4^4-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-4",
+      "commonCompounds": [
+        "Na4SiO4",
+        "ZrSiO4",
+        "forsterite Mg2SiO4"
+      ],
+      "notes": "The fundamental building block of silicate minerals and glasses.",
+      "tags": [
+        "anion",
+        "silicate",
+        "mineral"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "pyrophosphate",
+      "name": "Pyrophosphate",
+      "formula": "P2O7^4-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-4",
+      "commonCompounds": [
+        "Na4P2O7",
+        "calcium pyrophosphate"
+      ],
+      "notes": "Two phosphate units joined by a P-O-P bond; important in biochemistry.",
+      "tags": [
+        "anion",
+        "phosphorus",
+        "biochemistry"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "triphosphate",
+      "name": "Triphosphate",
+      "formula": "P3O10^5-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-5",
+      "commonCompounds": [
+        "Na5P3O10",
+        "ATP"
+      ],
+      "notes": "Three phosphate units in a chain; the core of ATP.",
+      "tags": [
+        "anion",
+        "phosphorus",
+        "biochemistry"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "phosphite",
+      "name": "Phosphite",
+      "formula": "PO3^3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-3",
+      "commonCompounds": [
+        "Na3PO3",
+        "phosphorous acid salts"
+      ],
+      "notes": "The phosphorus(III) analogue of phosphate.",
+      "tags": [
+        "anion",
+        "phosphorus"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hypophosphite",
+      "name": "Hypophosphite",
+      "formula": "H2PO2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaH2PO2",
+        "electroless nickel plating"
+      ],
+      "notes": "A reducing phosphorus(I) ion used in electroless plating.",
+      "tags": [
+        "anion",
+        "phosphorus",
+        "reducing agent"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "vanadate",
+      "name": "Vanadate",
+      "formula": "VO4^3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-3",
+      "commonCompounds": [
+        "Na3VO4",
+        "vanadyl sulfate"
+      ],
+      "notes": "The vanadium(V) oxoanion, an enzyme inhibitor and catalyst.",
+      "tags": [
+        "anion",
+        "vanadium",
+        "enzyme inhibitor"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "zincate",
+      "name": "Zincate",
+      "formula": "ZnO2^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "Na2ZnO2",
+        "sodium zincate"
+      ],
+      "notes": "Formed when zinc dissolves in strong alkali.",
+      "tags": [
+        "anion",
+        "zinc",
+        "amphoteric"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "stannate",
+      "name": "Stannate",
+      "formula": "SnO3^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "Na2SnO3",
+        "stannate plating baths"
+      ],
+      "notes": "The tin(IV) oxoanion used in tin plating and ceramic glazes.",
+      "tags": [
+        "anion",
+        "tin"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "titanate",
+      "name": "Titanate",
+      "formula": "TiO3^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "BaTiO3",
+        "CaTiO3"
+      ],
+      "notes": "The oxoanion in titanate ceramics and barium titanate.",
+      "tags": [
+        "anion",
+        "titanium",
+        "ceramic"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "perrhenate",
+      "name": "Perrhenate",
+      "formula": "ReO4-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaReO4",
+        "ammonium perrhenate"
+      ],
+      "notes": "The stable rhenium(VII) oxoanion, used in catalysis.",
+      "tags": [
+        "anion",
+        "rhenium",
+        "catalyst"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "pertechnetate",
+      "name": "Pertechnetate",
+      "formula": "TcO4-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaTcO4",
+        "^99mTc pertechnetate"
+      ],
+      "notes": "The form of technetium-99m used in medical imaging.",
+      "tags": [
+        "anion",
+        "technetium",
+        "radioactive",
+        "medicine"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "tetrafluoroborate",
+      "name": "Tetrafluoroborate",
+      "formula": "BF4-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaBF4",
+        "HBF4",
+        "ionic liquids"
+      ],
+      "notes": "A weakly coordinating anion used in electrochemistry.",
+      "tags": [
+        "anion",
+        "boron",
+        "fluoride",
+        "ionic liquid"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hexafluorophosphate",
+      "name": "Hexafluorophosphate",
+      "formula": "PF6-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "LiPF6",
+        "KPF6",
+        "ionic liquids"
+      ],
+      "notes": "A non-coordinating electrolyte anion in lithium batteries.",
+      "tags": [
+        "anion",
+        "phosphorus",
+        "fluoride",
+        "electrolyte"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hexafluoroarsenate",
+      "name": "Hexafluoroarsenate",
+      "formula": "AsF6-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "LiAsF6",
+        "AgAsF6"
+      ],
+      "notes": "A weakly coordinating anion, related to hexafluorophosphate.",
+      "tags": [
+        "anion",
+        "arsenic",
+        "fluoride"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hexafluoroantimonate",
+      "name": "Hexafluoroantimonate",
+      "formula": "SbF6-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "NaSbF6",
+        "fluoroantimonic acid"
+      ],
+      "notes": "The very weakly coordinating anion of the superacids.",
+      "tags": [
+        "anion",
+        "antimony",
+        "fluoride",
+        "superacid"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "triflate",
+      "name": "Triflate",
+      "formula": "CF3SO3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "triflic acid",
+        "metal triflates"
+      ],
+      "notes": "A weakly coordinating, stable sulfonate used in catalysis.",
+      "tags": [
+        "anion",
+        "sulfur",
+        "fluoride",
+        "reagent"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "tosylate",
+      "name": "Tosylate",
+      "formula": "CH3C6H4SO3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "tosyl chloride",
+        "tosylates"
+      ],
+      "notes": "A good leaving group and the basis of the tosyl protecting group.",
+      "tags": [
+        "anion",
+        "sulfur",
+        "leaving group"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "mesylate",
+      "name": "Mesylate",
+      "formula": "CH3SO3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "mesyl chloride",
+        "mesylate esters"
+      ],
+      "notes": "A strong leaving group smaller than tosylate.",
+      "tags": [
+        "anion",
+        "sulfur",
+        "leaving group"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "bistriflimide",
+      "name": "Bistriflimide",
+      "formula": "(CF3SO2)2N-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "LiTFSI",
+        "ionic liquids"
+      ],
+      "notes": "A fluorinated, weakly coordinating anion widely used in ionic liquids and batteries.",
+      "tags": [
+        "anion",
+        "fluoride",
+        "ionic liquid",
+        "electrolyte"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "propionate",
+      "name": "Propionate",
+      "formula": "C2H5COO-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "sodium propionate",
+        "calcium propionate"
+      ],
+      "notes": "Salt of propanoic acid; used as a food preservative.",
+      "tags": [
+        "anion",
+        "carboxylate",
+        "food preservative"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "butyrate",
+      "name": "Butyrate",
+      "formula": "C3H7COO-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "sodium butyrate",
+        "butyric acid salts"
+      ],
+      "notes": "A short-chain fatty acid anion important in gut health.",
+      "tags": [
+        "anion",
+        "carboxylate",
+        "biochemistry"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "salicylate",
+      "name": "Salicylate",
+      "formula": "C7H5O3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "sodium salicylate",
+        "aspirin"
+      ],
+      "notes": "The anion of salicylic acid; an anti-inflammatory and aspirin relative.",
+      "tags": [
+        "anion",
+        "carboxylate",
+        "medicine"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "palmitate",
+      "name": "Palmitate",
+      "formula": "CH3(CH2)14COO-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "sodium palmitate",
+        "tripalmitin"
+      ],
+      "notes": "The salt of palmitic acid, a common saturated fatty acid.",
+      "tags": [
+        "anion",
+        "carboxylate",
+        "fatty acid"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "oleate",
+      "name": "Oleate",
+      "formula": "C17H33COO-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "sodium oleate",
+        "triolein"
+      ],
+      "notes": "The salt of oleic acid, a common monounsaturated fatty acid.",
+      "tags": [
+        "anion",
+        "carboxylate",
+        "fatty acid"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "ascorbate",
+      "name": "Ascorbate",
+      "formula": "C6H7O6-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "sodium ascorbate",
+        "vitamin C"
+      ],
+      "notes": "The deprotonated form of vitamin C and a biological antioxidant.",
+      "tags": [
+        "anion",
+        "vitamin",
+        "antioxidant"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "urate",
+      "name": "Urate",
+      "formula": "C5H3N4O3-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "sodium urate",
+        "uric acid salts"
+      ],
+      "notes": "Its buildup causes gout.",
+      "tags": [
+        "anion",
+        "biochemistry",
+        "medicine"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "pyruvate",
+      "name": "Pyruvate",
+      "formula": "CH3COCOO-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "sodium pyruvate",
+        "pyruvic acid"
+      ],
+      "notes": "A key metabolic intermediate at the crossroads of glycolysis and respiration.",
+      "tags": [
+        "anion",
+        "biochemistry",
+        "metabolism"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "succinate",
+      "name": "Succinate",
+      "formula": "C4H4O4^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "sodium succinate",
+        "succinic acid salts"
+      ],
+      "notes": "An intermediate of the citric acid cycle and a food additive.",
+      "tags": [
+        "anion",
+        "carboxylate",
+        "metabolism"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "fumarate",
+      "name": "Fumarate",
+      "formula": "C4H2O4^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "sodium fumarate",
+        "ferrous fumarate"
+      ],
+      "notes": "The trans isomer of the dicarboxylate; a citric-acid-cycle intermediate.",
+      "tags": [
+        "anion",
+        "carboxylate",
+        "metabolism"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "malonate",
+      "name": "Malonate",
+      "formula": "C3H2O4^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "sodium malonate",
+        "diethyl malonate"
+      ],
+      "notes": "The salt of malonic acid, a key building block in synthesis.",
+      "tags": [
+        "anion",
+        "carboxylate",
+        "reagent"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "phthalate",
+      "name": "Phthalate",
+      "formula": "C8H4O4^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "potassium hydrogen phthalate",
+        "phthalate esters"
+      ],
+      "notes": "The benzene dicarboxylate; its esters are plasticizers.",
+      "tags": [
+        "anion",
+        "carboxylate",
+        "plasticizer"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "glutamate",
+      "name": "Glutamate",
+      "formula": "C5H8NO4-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "monosodium glutamate",
+        "glutamic acid salts"
+      ],
+      "notes": "Amino-acid anion and the main excitatory neurotransmitter.",
+      "tags": [
+        "anion",
+        "amino acid",
+        "neurotransmitter",
+        "food additive"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "aspartate",
+      "name": "Aspartate",
+      "formula": "C4H6NO4-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "aspartame",
+        "aspartic acid salts"
+      ],
+      "notes": "Amino-acid anion involved in the urea cycle and neurotransmission.",
+      "tags": [
+        "anion",
+        "amino acid",
+        "metabolism"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "glycinate",
+      "name": "Glycinate",
+      "formula": "C2H4NO2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-1",
+      "commonCompounds": [
+        "glycine",
+        "magnesium glycinate"
+      ],
+      "notes": "The anion of the simplest amino acid, glycine.",
+      "tags": [
+        "anion",
+        "amino acid"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "edta-ion",
+      "name": "EDTA",
+      "formula": "C10H12N2O8^4-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-4",
+      "commonCompounds": [
+        "disodium EDTA",
+        "calcium disodium EDTA"
+      ],
+      "notes": "A tetranegative chelating anion that binds metal ions strongly.",
+      "tags": [
+        "anion",
+        "chelating agent",
+        "reagent"
+      ],
+      "sourceLabel": "General chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "acetylide",
+      "name": "Acetylide",
+      "formula": "C2^2-",
+      "otherNames": [],
+      "type": "Polyatomic anion",
+      "charge": "-2",
+      "commonCompounds": [
+        "CaC2",
+        "sodium acetylide",
+        "copper acetylide"
+      ],
+      "notes": "The carbide ion that reacts with water to give acetylene.",
+      "tags": [
+        "anion",
+        "carbon",
+        "strong base"
+      ],
       "sourceLabel": "General chemistry reference",
       "sourceUrl": "https://chem.libretexts.org/"
     }

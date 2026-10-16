@@ -12,7 +12,9 @@
       "behavior": "Aromatic ring with resonance stabilization.",
       "tags": [
         "aromatic"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "name": "Boronic acid",
@@ -57,7 +59,9 @@
       "behavior": "Reactive acyl transfer group; hydrolyzes to acids.",
       "tags": [
         "carbonyl"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "id": "acid-chloride",
@@ -71,7 +75,9 @@
       "tags": [
         "carbonyl",
         "halogen"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "id": "aldehyde",
@@ -84,7 +90,9 @@
       "behavior": "Reactive carbonyl; easily oxidized to carboxylic acids.",
       "tags": [
         "carbonyl"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "id": "amide",
@@ -98,7 +106,9 @@
       "tags": [
         "carbonyl",
         "nitrogen"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "name": "Carbamate",
@@ -145,7 +155,9 @@
       "tags": [
         "carbonyl",
         "acid-base"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "id": "carboxylic-acid",
@@ -159,7 +171,9 @@
       "tags": [
         "carbonyl",
         "acid"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "id": "ester",
@@ -172,7 +186,9 @@
       "behavior": "Often fruity-smelling; hydrolyzes to acid/alcohol.",
       "tags": [
         "carbonyl"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "id": "ketone",
@@ -185,7 +201,9 @@
       "behavior": "Carbonyl group inside a chain; undergoes nucleophilic addition.",
       "tags": [
         "carbonyl"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "name": "Lactam",
@@ -313,7 +331,9 @@
       "behavior": "Polar carbon-halogen bond; substitution reactions are common.",
       "tags": [
         "halogen"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "name": "Vinyl halide",
@@ -342,7 +362,9 @@
       "behavior": "Mostly nonpolar and relatively unreactive; burns as fuel.",
       "tags": [
         "hydrocarbon"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "id": "alkene",
@@ -355,7 +377,9 @@
       "behavior": "Undergoes addition reactions; decolorizes bromine.",
       "tags": [
         "hydrocarbon"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "id": "alkyne",
@@ -368,7 +392,9 @@
       "behavior": "Linear unsaturated group; undergoes addition reactions.",
       "tags": [
         "hydrocarbon"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "name": "Allene",
@@ -432,7 +458,7 @@
         "hydrocarbon"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "name": "Aryl group",
@@ -462,7 +488,9 @@
       "tags": [
         "nitrogen",
         "base"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "name": "Azide",
@@ -554,7 +582,9 @@
       "behavior": "Carbon-nitrogen double bond; Schiff base family.",
       "tags": [
         "nitrogen"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "name": "Isocyanate",
@@ -599,7 +629,9 @@
       "behavior": "Polar carbon-nitrogen triple bond; can hydrolyze to acids.",
       "tags": [
         "nitrogen"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "name": "Nitro",
@@ -677,7 +709,9 @@
       "behavior": "Hydrogen bonding; oxidation and substitution reactions. The OH is attached to a saturated carbon, not directly to an aromatic ring.",
       "tags": [
         "oxygen"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "name": "Enol",
@@ -723,7 +757,9 @@
       "behavior": "Often relatively unreactive and useful as solvents.",
       "tags": [
         "oxygen"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "name": "Hemiacetal",
@@ -785,7 +821,9 @@
       "tags": [
         "oxygen",
         "aromatic"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "id": "phosphate-ester",
@@ -799,7 +837,9 @@
       "tags": [
         "phosphorus",
         "biology"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "name": "Phosphine",
@@ -911,7 +951,9 @@
       "tags": [
         "sulfur",
         "biology"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "name": "Dithiocarbamate",
@@ -941,7 +983,9 @@
       "behavior": "Sulfur analog of ether; oxidizes to sulfoxides/sulfones.",
       "tags": [
         "sulfur"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "name": "Sulfonamide",
@@ -1050,7 +1094,9 @@
       "behavior": "Polar sulfur-oxygen group; good solvent class.",
       "tags": [
         "sulfur"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     },
     {
       "name": "Thioester",
@@ -1079,7 +1125,857 @@
       "behavior": "Sulfur analog of alcohol; strong odors; forms disulfides.",
       "tags": [
         "sulfur"
-      ]
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "vinyl-group",
+      "name": "Vinyl group",
+      "generalFormula": "-CH=CH2",
+      "structure": "CH2=CH-",
+      "type": "Hydrocarbon substituent",
+      "namingCue": "ethenyl",
+      "example": "Vinyl chloride, C2H3Cl",
+      "behavior": "Reactive alkene substituent; the basis of many vinyl polymers.",
+      "tags": [
+        "substituent",
+        "alkene",
+        "monomer"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "allyl-group",
+      "name": "Allyl group",
+      "generalFormula": "-CH2-CH=CH2",
+      "structure": "CH2=CH-CH2-",
+      "type": "Hydrocarbon substituent",
+      "namingCue": "prop-2-enyl",
+      "example": "Allyl chloride, C3H5Cl",
+      "behavior": "Versatile alkene substituent that reacts with radicals and electrophiles.",
+      "tags": [
+        "substituent",
+        "alkene"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "benzyl-group",
+      "name": "Benzyl group",
+      "generalFormula": "-CH2-C6H5",
+      "structure": "PhCH2-",
+      "type": "Hydrocarbon substituent",
+      "namingCue": "phenylmethyl",
+      "example": "Benzyl alcohol, C7H8O",
+      "behavior": "Benzylic position is stabilized in radicals and easily oxidized.",
+      "tags": [
+        "substituent",
+        "aromatic"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "phenyl-group",
+      "name": "Phenyl group",
+      "generalFormula": "-C6H5",
+      "structure": "Ph-",
+      "type": "Hydrocarbon substituent",
+      "namingCue": "phenyl",
+      "example": "Phenol, C6H5OH",
+      "behavior": "Flat, electron-rich aromatic substituent.",
+      "tags": [
+        "substituent",
+        "aromatic"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "acetyl-group",
+      "name": "Acetyl group",
+      "generalFormula": "CH3-C(=O)-",
+      "structure": "CH3CO-",
+      "type": "Carbonyl substituent",
+      "namingCue": "ethanoyl",
+      "example": "Acetyl chloride, CH3COCl",
+      "behavior": "The two-carbon acyl group added in acetylation reactions.",
+      "tags": [
+        "acyl",
+        "carbonyl"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "formyl-group",
+      "name": "Formyl group",
+      "generalFormula": "H-C(=O)-",
+      "structure": "HCO-",
+      "type": "Carbonyl substituent",
+      "namingCue": "methanoyl",
+      "example": "Formaldehyde, HCHO",
+      "behavior": "The smallest acyl group; attached to a ring it makes an aldehyde.",
+      "tags": [
+        "acyl",
+        "carbonyl"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "benzoyl-group",
+      "name": "Benzoyl group",
+      "generalFormula": "C6H5-C(=O)-",
+      "structure": "PhCO-",
+      "type": "Carbonyl substituent",
+      "namingCue": "benzoyl",
+      "example": "Benzoyl chloride, C7H5ClO",
+      "behavior": "The acyl group derived from benzoic acid.",
+      "tags": [
+        "acyl",
+        "aromatic",
+        "carbonyl"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "methoxy-group",
+      "name": "Methoxy group",
+      "generalFormula": "-O-CH3",
+      "structure": "CH3O-",
+      "type": "Oxygen group",
+      "namingCue": "methoxy",
+      "example": "Anisole, C7H8O",
+      "behavior": "Ether substituent that donates electron density.",
+      "tags": [
+        "ether",
+        "substituent"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "ethoxy-group",
+      "name": "Ethoxy group",
+      "generalFormula": "-O-C2H5",
+      "structure": "C2H5O-",
+      "type": "Oxygen group",
+      "namingCue": "ethoxy",
+      "example": "Ethoxyethane, C4H10O",
+      "behavior": "Two-carbon ether substituent.",
+      "tags": [
+        "ether",
+        "substituent"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "peroxyacid",
+      "name": "Peroxyacid",
+      "generalFormula": "R-C(=O)-O-OH",
+      "structure": "RCO3H",
+      "type": "Carbonyl group",
+      "namingCue": "peroxy...oic acid",
+      "example": "Peracetic acid, CH3CO3H",
+      "behavior": "Oxidizing and bleaching agent that epoxidizes alkenes.",
+      "tags": [
+        "oxidizing agent",
+        "peroxide"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "orthoester",
+      "name": "Orthoester",
+      "generalFormula": "R-C(OR')3",
+      "structure": "R-C(OR)3",
+      "type": "Carbonyl group",
+      "namingCue": "ortho ester",
+      "example": "Triethyl orthoformate, C7H16O3",
+      "behavior": "A protected ester whose three alkoxy groups hide a carbonyl.",
+      "tags": [
+        "protecting group",
+        "ester"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "enol-ether",
+      "name": "Enol ether",
+      "generalFormula": "R-C(OR')=C-R2",
+      "structure": "C=C-OR",
+      "type": "Oxygen group",
+      "namingCue": "enol ether",
+      "example": "Ethyl vinyl ether, C4H8O",
+      "behavior": "Electron-rich alkene that reacts readily in cycloadditions.",
+      "tags": [
+        "alkene",
+        "ether"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "xanthate",
+      "name": "Xanthate",
+      "generalFormula": "R-O-C(=S)-S-",
+      "structure": "ROC(S)S-",
+      "type": "Sulfur group",
+      "namingCue": "xanthate",
+      "example": "Sodium ethyl xanthate, C3H5NaOS2",
+      "behavior": "Used in ore flotation and as a radical chain-transfer agent.",
+      "tags": [
+        "sulfur",
+        "reagent",
+        "flotation"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "enamine",
+      "name": "Enamine",
+      "generalFormula": "R2C=C(R)-NR2",
+      "structure": "C=C-N",
+      "type": "Nitrogen group",
+      "namingCue": "enamine",
+      "example": "Stork enamine of cyclohexanone",
+      "behavior": "Nucleophilic alkene that enables alpha-alkylation (Stork reaction).",
+      "tags": [
+        "nitrogen",
+        "alkene",
+        "nucleophile"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "hydrazine-group",
+      "name": "Hydrazine",
+      "generalFormula": "R2N-NR2",
+      "structure": "R2N-NR2",
+      "type": "Nitrogen group",
+      "namingCue": "hydrazine",
+      "example": "Hydrazine, N2H4",
+      "behavior": "Strong reducing agent; the basis of the Wolff-Kishner reduction.",
+      "tags": [
+        "nitrogen",
+        "reducing agent"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "hydrazide",
+      "name": "Hydrazide",
+      "generalFormula": "R-C(=O)-NH-NH2",
+      "structure": "RCONHNH2",
+      "type": "Nitrogen group",
+      "namingCue": "hydrazide",
+      "example": "Acetohydrazide, C2H6N2O",
+      "behavior": "Acyl hydrazine used to make azides and heterocycles.",
+      "tags": [
+        "nitrogen",
+        "acyl"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "amidine",
+      "name": "Amidine",
+      "generalFormula": "R-C(=NH)-NH2",
+      "structure": "RC(=NH)NH2",
+      "type": "Nitrogen group",
+      "namingCue": "amidine",
+      "example": "Benzamidine, C7H8N2",
+      "behavior": "Strongly basic group that binds the active site of trypsin-like enzymes.",
+      "tags": [
+        "nitrogen",
+        "base"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "imide",
+      "name": "Imide",
+      "generalFormula": "R-C(=O)-NH-C(=O)-R",
+      "structure": "RCONHCOR",
+      "type": "Nitrogen group",
+      "namingCue": "imide",
+      "example": "Phthalimide, C8H5NO2",
+      "behavior": "A nitrogen bearing two acyl groups; the basis of the Gabriel synthesis.",
+      "tags": [
+        "nitrogen",
+        "acyl"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "carbodiimide",
+      "name": "Carbodiimide",
+      "generalFormula": "R-N=C=N-R",
+      "structure": "RN=C=NR",
+      "type": "Nitrogen group",
+      "namingCue": "carbodiimide",
+      "example": "DCC, C13H22N2",
+      "behavior": "Activates carboxylic acids so they couple with amines.",
+      "tags": [
+        "nitrogen",
+        "coupling agent"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "diazo-group",
+      "name": "Diazo compound",
+      "generalFormula": "R2C=N2",
+      "structure": "R2C=N2",
+      "type": "Nitrogen group",
+      "namingCue": "diazo",
+      "example": "Diazomethane, CH2N2",
+      "behavior": "Reactive group that methylates acids and generates carbenes.",
+      "tags": [
+        "nitrogen",
+        "reactive",
+        "methylating agent"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "nitrone",
+      "name": "Nitrone",
+      "generalFormula": "R2C=N(+)(R)-O(-)",
+      "structure": "R2C=N+-O-",
+      "type": "Nitrogen group",
+      "namingCue": "nitrone",
+      "example": "N-tert-butyl nitrone, C7H15NO",
+      "behavior": "A 1,3-dipole in cycloadditions and a spin trap for radicals.",
+      "tags": [
+        "nitrogen",
+        "1,3-dipole"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "azoxy-compound",
+      "name": "Azoxy compound",
+      "generalFormula": "R-N=N(O)-R",
+      "structure": "R-N=N(O)-R",
+      "type": "Nitrogen group",
+      "namingCue": "azoxy",
+      "example": "Azoxybenzene, C12H10N2O",
+      "behavior": "Contains an azo group next to an N-oxide.",
+      "tags": [
+        "nitrogen",
+        "azo"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "cyanohydrin",
+      "name": "Cyanohydrin",
+      "generalFormula": "R2C(OH)-CN",
+      "structure": "R2C(OH)CN",
+      "type": "Nitrogen group",
+      "namingCue": "cyanohydrin",
+      "example": "Acetone cyanohydrin, C4H7NO",
+      "behavior": "Formed from a carbonyl and HCN; hydrolyses to a hydroxy acid.",
+      "tags": [
+        "nitrogen",
+        "nitrile",
+        "alcohol"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "hydroxamic-acid",
+      "name": "Hydroxamic acid",
+      "generalFormula": "R-C(=O)-NH-OH",
+      "structure": "RCONHOH",
+      "type": "Nitrogen group",
+      "namingCue": "hydroxamic acid",
+      "example": "Acetohydroxamic acid, C2H5NO2",
+      "behavior": "Chelates metal ions and gives colour tests with iron(III).",
+      "tags": [
+        "nitrogen",
+        "chelating agent"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "semicarbazide",
+      "name": "Semicarbazide",
+      "generalFormula": "H2N-NH-C(=O)-NH2",
+      "structure": "H2NNHCONH2",
+      "type": "Nitrogen group",
+      "namingCue": "semicarbazide",
+      "example": "Acetone semicarbazone",
+      "behavior": "Forms crystalline semicarbazones that identify aldehydes and ketones.",
+      "tags": [
+        "nitrogen",
+        "analytical"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "quaternary-ammonium",
+      "name": "Quaternary ammonium",
+      "generalFormula": "R4N+",
+      "structure": "R4N+",
+      "type": "Nitrogen group",
+      "namingCue": "tetraalkylammonium",
+      "example": "Choline, C5H14NO+",
+      "behavior": "Permanent cation used in surfactants and phase-transfer catalysis.",
+      "tags": [
+        "nitrogen",
+        "cation",
+        "surfactant"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "nitrile-oxide",
+      "name": "Nitrile oxide",
+      "generalFormula": "R-C#N(+)-O(-)",
+      "structure": "R-C#N+-O-",
+      "type": "Nitrogen group",
+      "namingCue": "nitrile oxide",
+      "example": "Benzonitrile oxide, C7H5NO",
+      "behavior": "A 1,3-dipole that cyclizes with alkenes to give isoxazolines.",
+      "tags": [
+        "nitrogen",
+        "1,3-dipole"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "thioacetal",
+      "name": "Thioacetal",
+      "generalFormula": "R2C(SR')2",
+      "structure": "R2C(SR)2",
+      "type": "Sulfur group",
+      "namingCue": "dithioacetal",
+      "example": "1,3-Dithiane, C4H8S2",
+      "behavior": "A protected carbonyl that also acts as an acyl anion equivalent.",
+      "tags": [
+        "sulfur",
+        "protecting group"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "sulfonium-group",
+      "name": "Sulfonium",
+      "generalFormula": "R3S+",
+      "structure": "R3S+",
+      "type": "Sulfur group",
+      "namingCue": "sulfonium",
+      "example": "Trimethylsulfonium iodide, C3H9IS",
+      "behavior": "Cationic sulfur group; its ylides transfer methylene.",
+      "tags": [
+        "sulfur",
+        "cation"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "sulfoximine",
+      "name": "Sulfoximine",
+      "generalFormula": "R-S(=O)(=NR')-R",
+      "structure": "RS(O)(NR)R",
+      "type": "Sulfur group",
+      "namingCue": "sulfoximine",
+      "example": "Sulfoxaflor, C10H10F3N3OS",
+      "behavior": "Chiral, strongly polar S(VI) group used in pesticides and catalysis.",
+      "tags": [
+        "sulfur",
+        "chiral",
+        "pesticide"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "thioketone",
+      "name": "Thioketone",
+      "generalFormula": "R2C=S",
+      "structure": "R2C=S",
+      "type": "Sulfur group",
+      "namingCue": "thione",
+      "example": "Thiobenzophenone, C13H10S",
+      "behavior": "Sulfur analogue of a ketone; strongly coloured and reactive.",
+      "tags": [
+        "sulfur",
+        "carbonyl"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "thiourea-group",
+      "name": "Thiourea",
+      "generalFormula": "R2N-C(=S)-NR2",
+      "structure": "R2NC(=S)NR2",
+      "type": "Sulfur group",
+      "namingCue": "thiourea",
+      "example": "Thiourea, CH4N2S",
+      "behavior": "Sulfur analogue of urea; a hydrogen-bond organocatalyst.",
+      "tags": [
+        "sulfur",
+        "nitrogen",
+        "catalyst"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "grignard-reagent",
+      "name": "Grignard reagent",
+      "generalFormula": "R-MgX",
+      "structure": "RMgX",
+      "type": "Organometallic group",
+      "namingCue": "alkyl/aryl magnesium halide",
+      "example": "Phenylmagnesium bromide, C6H5BrMg",
+      "behavior": "A nucleophilic carbanion equivalent that adds to carbonyls.",
+      "tags": [
+        "organometallic",
+        "nucleophile",
+        "reagent"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "organolithium",
+      "name": "Organolithium",
+      "generalFormula": "R-Li",
+      "structure": "RLi",
+      "type": "Organometallic group",
+      "namingCue": "organolithium",
+      "example": "n-Butyllithium, C4H9Li",
+      "behavior": "Very strong base and carbon nucleophile; pyrophoric in air.",
+      "tags": [
+        "organometallic",
+        "strong base",
+        "pyrophoric"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "organozinc",
+      "name": "Organozinc",
+      "generalFormula": "R-Zn-X",
+      "structure": "RZnX",
+      "type": "Organometallic group",
+      "namingCue": "organozinc",
+      "example": "Diethylzinc, C4H10Zn",
+      "behavior": "Mild nucleophile used in Simmons-Smith and Negishi couplings.",
+      "tags": [
+        "organometallic",
+        "nucleophile",
+        "catalyst"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "organotin",
+      "name": "Organotin",
+      "generalFormula": "R3Sn-X",
+      "structure": "R3SnX",
+      "type": "Organometallic group",
+      "namingCue": "organotin",
+      "example": "Tributyltin hydride, C12H28Sn",
+      "behavior": "Radical mediator in synthesis; organotins are toxic antifoulants.",
+      "tags": [
+        "organometallic",
+        "radical",
+        "toxic"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "organosilane",
+      "name": "Organosilane",
+      "generalFormula": "R-SiR'3",
+      "structure": "RSiR3",
+      "type": "Silicon group",
+      "namingCue": "organosilane",
+      "example": "Trimethylsilyl chloride, C3H9ClSi",
+      "behavior": "Silyl groups protect alcohols and modify surfaces.",
+      "tags": [
+        "silicon",
+        "protecting group"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "borane-group",
+      "name": "Borane",
+      "generalFormula": "R-BH2",
+      "structure": "R-BH2",
+      "type": "Boron group",
+      "namingCue": "organoborane",
+      "example": "BH3-THF, 9-BBN",
+      "behavior": "Hydroborates alkenes and couples in Suzuki reactions.",
+      "tags": [
+        "boron",
+        "reagent"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "pyrrole-ring",
+      "name": "Pyrrole",
+      "generalFormula": "C4H4NH",
+      "structure": "five-membered N ring",
+      "type": "Heterocyclic group",
+      "namingCue": "1H-pyrrole",
+      "example": "Pyrrole, C4H5N",
+      "behavior": "Electron-rich aromatic heterocycle; core of porphyrins.",
+      "tags": [
+        "heterocycle",
+        "aromatic",
+        "nitrogen"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "furan-ring",
+      "name": "Furan",
+      "generalFormula": "C4H4O",
+      "structure": "five-membered O ring",
+      "type": "Heterocyclic group",
+      "namingCue": "furan",
+      "example": "Furan, C4H4O",
+      "behavior": "Aromatic oxygen heterocycle that acts as a diene in Diels-Alder reactions.",
+      "tags": [
+        "heterocycle",
+        "aromatic",
+        "oxygen"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "thiophene-ring",
+      "name": "Thiophene",
+      "generalFormula": "C4H4S",
+      "structure": "five-membered S ring",
+      "type": "Heterocyclic group",
+      "namingCue": "thiophene",
+      "example": "Thiophene, C4H4S",
+      "behavior": "Sulfur heterocycle found in dyes, drugs, and biotin.",
+      "tags": [
+        "heterocycle",
+        "aromatic",
+        "sulfur"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "imidazole-ring",
+      "name": "Imidazole",
+      "generalFormula": "C3H4N2",
+      "structure": "five-membered 2N ring",
+      "type": "Heterocyclic group",
+      "namingCue": "1,3-diazole",
+      "example": "Imidazole, C3H4N2",
+      "behavior": "Basic heterocycle in enzymes (histidine) and many drugs.",
+      "tags": [
+        "heterocycle",
+        "aromatic",
+        "nitrogen",
+        "medicine"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "pyrazole-ring",
+      "name": "Pyrazole",
+      "generalFormula": "C3H4N2",
+      "structure": "five-membered 2N ring",
+      "type": "Heterocyclic group",
+      "namingCue": "1,2-diazole",
+      "example": "Pyrazole, C3H4N2",
+      "behavior": "Nitrogen heterocycle widely used in pharmaceuticals.",
+      "tags": [
+        "heterocycle",
+        "aromatic",
+        "nitrogen",
+        "medicine"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "oxazole-ring",
+      "name": "Oxazole",
+      "generalFormula": "C3H3NO",
+      "structure": "five-membered O/N ring",
+      "type": "Heterocyclic group",
+      "namingCue": "1,3-oxazole",
+      "example": "Oxazole, C3H3NO",
+      "behavior": "Heterocycle common in natural products and antibiotics.",
+      "tags": [
+        "heterocycle",
+        "aromatic",
+        "oxygen",
+        "nitrogen"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "thiazole-ring",
+      "name": "Thiazole",
+      "generalFormula": "C3H3NS",
+      "structure": "five-membered S/N ring",
+      "type": "Heterocyclic group",
+      "namingCue": "1,3-thiazole",
+      "example": "Thiazole, C3H3NS",
+      "behavior": "Sulfur-nitrogen heterocycle in thiamine and drugs.",
+      "tags": [
+        "heterocycle",
+        "aromatic",
+        "sulfur",
+        "nitrogen"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "pyridine-ring",
+      "name": "Pyridine",
+      "generalFormula": "C5H5N",
+      "structure": "six-membered N ring",
+      "type": "Heterocyclic group",
+      "namingCue": "pyridine",
+      "example": "Pyridine, C5H5N",
+      "behavior": "Basic aromatic heterocycle used as a base and ligand.",
+      "tags": [
+        "heterocycle",
+        "aromatic",
+        "nitrogen",
+        "base"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "pyrimidine-ring",
+      "name": "Pyrimidine",
+      "generalFormula": "C4H4N2",
+      "structure": "six-membered 2N ring",
+      "type": "Heterocyclic group",
+      "namingCue": "1,3-diazine",
+      "example": "Pyrimidine, C4H4N2",
+      "behavior": "The nucleobase ring of cytosine, thymine, and uracil.",
+      "tags": [
+        "heterocycle",
+        "aromatic",
+        "nitrogen",
+        "biochemistry"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "indole-ring",
+      "name": "Indole",
+      "generalFormula": "C8H6NH",
+      "structure": "fused benzene-pyrrole",
+      "type": "Heterocyclic group",
+      "namingCue": "1H-indole",
+      "example": "Indole, C8H7N",
+      "behavior": "Fused heterocycle of the amino acid tryptophan.",
+      "tags": [
+        "heterocycle",
+        "aromatic",
+        "nitrogen",
+        "biochemistry"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "crown-ether",
+      "name": "Crown ether",
+      "generalFormula": "cyclic polyether",
+      "structure": "(-CH2CH2O-)n ring",
+      "type": "Oxygen group",
+      "namingCue": "crown ether",
+      "example": "18-Crown-6, C12H24O6",
+      "behavior": "Binds metal cations inside its ring cavity.",
+      "tags": [
+        "ether",
+        "chelating agent",
+        "supramolecular"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "carbene",
+      "name": "Carbene",
+      "generalFormula": "R2C:",
+      "structure": ":CR2",
+      "type": "Reactive intermediate",
+      "namingCue": "carbene",
+      "example": "Dichlorocarbene, CCl2",
+      "behavior": "Neutral divalent carbon that inserts into bonds and adds to alkenes.",
+      "tags": [
+        "intermediate",
+        "reactive"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
+    },
+    {
+      "id": "nitrene",
+      "name": "Nitrene",
+      "generalFormula": "R-N:",
+      "structure": "R-N:",
+      "type": "Reactive intermediate",
+      "namingCue": "nitrene",
+      "example": "Nitrenes from azides",
+      "behavior": "Electron-deficient nitrogen analogue of a carbene used in C-H amination.",
+      "tags": [
+        "intermediate",
+        "reactive",
+        "nitrogen"
+      ],
+      "sourceLabel": "IUPAC / organic chemistry reference",
+      "sourceUrl": "https://goldbook.iupac.org/"
     }
   ]
 }

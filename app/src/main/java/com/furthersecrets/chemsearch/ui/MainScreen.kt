@@ -1078,6 +1078,7 @@ fun MainScreen(
                     val hasExtraCompoundInfo = state.advancedProperties.isNotEmpty() ||
                         state.classificationTags.isNotEmpty() ||
                         state.useEntries.isNotEmpty() ||
+                        state.spectralRecords.isNotEmpty() ||
                         state.isLoadingPubChemContext
                     var showExtraCompoundInfo by rememberSaveable(state.cid, state.hasResult) { mutableStateOf(false) }
                     Box(modifier = Modifier.fillMaxSize()) {
@@ -1345,6 +1346,14 @@ fun MainScreen(
                                         item {
                                             ClassificationTagsSection(
                                                 tags = state.classificationTags,
+                                                isLoading = state.isLoadingPubChemContext
+                                            )
+                                        }
+                                    }
+                                    if (state.spectralRecords.isNotEmpty() || state.isLoadingPubChemContext) {
+                                        item {
+                                            SpectralSection(
+                                                records = state.spectralRecords,
                                                 isLoading = state.isLoadingPubChemContext
                                             )
                                         }

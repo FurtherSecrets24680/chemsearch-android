@@ -633,7 +633,7 @@ fun SettingsSheet(
     formulaDisplayStyle: FormulaDisplayStyle = FormulaDisplayStyle.CONVENTIONAL,
     reduceMotion: Boolean = false,
     highContrastOutlines: Boolean = false,
-    cardsEnabled: Boolean = true,
+    cardsEnabled: Boolean = false,
     temperatureUnit: TemperatureUnit = TemperatureUnit.KELVIN,
     aiProvider: AiProvider,
     aiKeyStatus: Map<AiProvider, Boolean>,
@@ -1166,37 +1166,20 @@ private fun AboutCard(
     }
 }
 
-/**
- * About-screen "What's new" card: the same 1.15.0 highlights shown on the
- * welcome tour, rendered with the bold-before-colon style.
- */
 @Composable
 private fun AboutWhatsNewSection() {
     val features = listOf(
-        R.string.ui_whats_new_bullet_reaction,
-        R.string.ui_whats_new_bullet_widgets,
-        R.string.ui_whats_new_bullet_shortcuts,
-        R.string.ui_whats_new_bullet_database,
-        R.string.ui_whats_new_bullet_daily,
-        R.string.ui_whats_new_bullet_home,
-        R.string.ui_whats_new_bullet_csv,
-        R.string.ui_whats_new_bullet_library
+        R.string.ui_whats_new_bullet_spectral,
+        R.string.ui_whats_new_bullet_database_group
     )
-    val improvements = listOf(
-        R.string.ui_whats_new_bullet_languages,
-        R.string.ui_whats_new_bullet_search,
-        R.string.ui_whats_new_bullet_tools,
-        R.string.ui_whats_new_bullet_compare,
-        R.string.ui_whats_new_bullet_structure,
-        R.string.ui_whats_new_bullet_polish,
-        R.string.ui_whats_new_bullet_periodic,
-        R.string.ui_whats_new_bullet_stoich,
-        R.string.ui_whats_new_bullet_display,
-        R.string.ui_whats_new_bullet_haptics,
-        R.string.ui_whats_new_bullet_offline_mode,
-        R.string.ui_whats_new_bullet_dialogs,
-        R.string.ui_whats_new_bullet_cards,
-        R.string.ui_whats_new_bullet_collapsible
+    val databaseFeatures = listOf(
+        R.string.ui_whats_new_bullet_database,
+        R.string.ui_whats_new_bullet_ions,
+        R.string.ui_whats_new_bullet_functional_groups,
+        R.string.ui_whats_new_bullet_reactions
+    )
+    val changes = listOf(
+        R.string.ui_whats_new_bullet_cards_default
     )
     var expanded by remember { mutableStateOf(false) }
     Surface(
@@ -1244,8 +1227,16 @@ private fun AboutWhatsNewSection() {
             }
             AnimatedVisibility(visible = expanded) {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    AboutWhatsNewGroup(headerRes = R.string.ui_whats_new_section_features, bullets = features)
-                    AboutWhatsNewGroup(headerRes = R.string.ui_whats_new_section_improvements, bullets = improvements)
+                    AboutWhatsNewGroup(
+                        headerRes = R.string.ui_whats_new_section_features,
+                        bullets = features,
+                        introRes = R.string.ui_whats_new_intro_database,
+                        nestedBullets = databaseFeatures
+                    )
+                    AboutWhatsNewGroup(
+                        headerRes = R.string.ui_whats_new_section_changes,
+                        bullets = changes
+                    )
                 }
             }
         }
@@ -1253,7 +1244,12 @@ private fun AboutWhatsNewSection() {
 }
 
 @Composable
-private fun AboutWhatsNewGroup(headerRes: Int, bullets: List<Int>) {
+private fun AboutWhatsNewGroup(
+    headerRes: Int,
+    bullets: List<Int>,
+    introRes: Int? = null,
+    nestedBullets: List<Int> = emptyList()
+) {
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Text(
             stringResource(headerRes),
@@ -1262,7 +1258,16 @@ private fun AboutWhatsNewGroup(headerRes: Int, bullets: List<Int>) {
             letterSpacing = 1.sp,
             color = MaterialTheme.colorScheme.primary
         )
-        bullets.forEach { bulletRes ->
+        if (introRes != null) {
+            Text(
+                stringResource(introRes),
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f)
+            )
+        }
+        bullets.forEachIndexed { index, bulletRes ->
+            val children = if (index == bullets.lastIndex) nestedBullets else emptyList()
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -1274,16 +1279,53 @@ private fun AboutWhatsNewGroup(headerRes: Int, bullets: List<Int>) {
                         .size(6.dp)
                         .background(MaterialTheme.colorScheme.primary, CircleShape)
                 )
-                AboutWhatsNewBulletText(text = stringResource(bulletRes))
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    AboutWhatsNewBulletText(
+                        text = stringResource(bulletRes),
+                        isGroupHeader = children.isNotEmpty()
+                    )
+                    children.forEach { childRes ->
+                        AboutWhatsNewNestedBullet(text = stringResource(childRes))
+                    }
+                }
             }
         }
     }
 }
 
 @Composable
-private fun AboutWhatsNewBulletText(text: String) {
+private fun AboutWhatsNewNestedBullet(text: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 6.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.Top
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(top = 7.dp)
+                .size(4.dp)
+                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.55f), CircleShape)
+        )
+        AboutWhatsNewBulletText(text = text, isNested = true)
+    }
+}
+
+@Composable
+private fun AboutWhatsNewBulletText(
+    text: String,
+    isGroupHeader: Boolean = false,
+    isNested: Boolean = false
+) {
     val colonIndex = text.indexOfFirst { it == ':' || it == '：' }
-    val styled: AnnotatedString = if (colonIndex > 0) {
+    val styled: AnnotatedString = if (isGroupHeader) {
+        buildAnnotatedString {
+            withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)) {
+                append(text)
+            }
+        }
+    } else if (colonIndex > 0) {
         buildAnnotatedString {
             withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)) {
                 append(text.take(colonIndex))
@@ -1297,7 +1339,7 @@ private fun AboutWhatsNewBulletText(text: String) {
     Text(
         text = styled,
         style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+        color = MaterialTheme.colorScheme.onSurface.copy(alpha = if (isNested) 0.68f else 0.8f)
     )
 }
 
@@ -3776,7 +3818,7 @@ fun SettingsInline(
     cacheRetention: CacheRetention = CacheRetention.MANUAL,
     reduceMotion: Boolean = false,
     highContrastOutlines: Boolean = false,
-    cardsEnabled: Boolean = true,
+    cardsEnabled: Boolean = false,
     temperatureUnit: TemperatureUnit = TemperatureUnit.KELVIN,
     aiProvider: AiProvider,
     aiKeyStatus: Map<AiProvider, Boolean>,

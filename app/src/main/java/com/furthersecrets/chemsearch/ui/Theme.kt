@@ -150,7 +150,7 @@ fun ChemSearchTheme(
     colorScheme: AppColorScheme = AppColorScheme.BLUE,
     oledDarkTheme: Boolean = false,
     highContrastOutlines: Boolean = false,
-    cardsEnabled: Boolean = true,
+    cardsEnabled: Boolean = false,
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(LocalCardsEnabled provides cardsEnabled) {

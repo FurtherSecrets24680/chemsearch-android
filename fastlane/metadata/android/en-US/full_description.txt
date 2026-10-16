@@ -2,7 +2,7 @@ ChemSearch is an open-source chemistry reference and utility app for Android. Se
 
 SEARCH
 Search PubChem by name, CAS number, formula, CID, or structure. Includes autosuggestions, spelling matches, caching, and specific error diagnostics.
-Advanced Search filters by elements (included/excluded), molecular weight, charge, 3D data, GHS hazards, and name text. Result pages provide identifiers, structures, safety data, synonyms, and summaries with tap-to-copy actions.
+Advanced Search filters by elements (included/excluded), molecular weight, charge, 3D data, GHS hazards, and name text. Result pages provide identifiers, structures, safety data, synonyms, and summaries with tap-to-copy actions. Expanding a result also reveals the compound's published spectra (NMR, IR, mass, UV, and Raman) grouped by technique.
 
 STRUCTURE & ISOMER SEARCH
 • Structure Search: Draw molecules with atoms, bonds, charges, and templates. Search PubChem for exact, substructure, superstructure, or similarity matches. Import/export SMILES, InChI, and MOL files.
@@ -12,7 +12,7 @@ PERIODIC TABLE
 Browse all 118 elements with category filters, shell diagrams, physical properties, and spectra. Interactive heatmaps display trends for electronegativity, atomic radius, ionization energy, density, melting point, and boiling point (in K, °C, or °F) with top-five rankings.
 
 CHEMICAL DATABASE
-Offline database with 575 substances, 108 ions, 71 functional groups, and 149 reactions. Covers acids, salts, oxides, ores, polymers, amino acids, vitamins, alkaloids, drugs, esters, organometallics, and silicates. Search by name, alias, or formula.
+Offline database with 1500+ substances, 200+ ions, 10+ functional groups, and 300+ reactions. Covers acids, salts, oxides, ores, polymers, amino acids, vitamins, alkaloids, drugs, esters, organometallics, and silicates. Search by name, alias, or formula.
 
 CHEMISTRY TOOLS
 Includes 15 tools for calculations and reference:
@@ -22,7 +22,7 @@ Includes 15 tools for calculations and reference:
 • pH / pOH Calculator
 • Reaction Balancer
 • Precipitate Predictor
-• Reaction Predictor (predicts products, equations, and observations offline)
+• Reaction Predictor
 • Limiting Reagent
 • Percent Yield
 • Reaction Scaling
@@ -30,7 +30,7 @@ Includes 15 tools for calculations and reference:
 • Ideal Gas Law
 • SMILES Visualizer
 • 3D Molecule Viewer
-• Compare Compounds (compare up to 6 substances)
+• Compare Compounds
 Stoichiometry tools calculate reagent consumption, leftovers, and atom economy.
 
 LIBRARY & RECENT SEARCHES
@@ -48,7 +48,7 @@ DISPLAY & OPTIONAL AI
 • Preferences: Configurable temperature units (K, °C, °F), haptics, and cache controls.
 
 LOCALIZATION
-Available in 16 languages: Bengali, Danish, German, Greek, English, Spanish, Finnish, French, Italian, Japanese, Dutch, Norwegian, Polish, Portuguese, Russian, and Swedish.
+Available in 16 languages: English, Bengali, Danish, German, Greek, Spanish, Finnish, French, Italian, Japanese, Dutch, Norwegian, Polish, Portuguese, Russian, and Swedish.
 
 DATA, PRIVACY & LICENSE
 • Free and open source under the MIT License.

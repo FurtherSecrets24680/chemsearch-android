@@ -1702,34 +1702,20 @@
     <string name="ui_faq_reaction_predictor_q" translatable="true">Hoe werkt de Reactievoorspeller?</string>
     <string name="ui_faq_reaction_predictor_a" translatable="true">Hij matcht je geselecteerde reagentia met een offline regelset die is opgebouwd uit de meegeleverde chemische database en stelt waarschijnlijke producten, reactietypes en waarnemingen voor. Hij dekt gangbare studiereacties — controleer ongewone gevallen altijd met een leerboek.</string>
     <string name="ui_faq_database_size_q" translatable="true">Hoe groot is de ingebouwde chemische database?</string>
-    <string name="ui_faq_database_size_a" translatable="true">Hij bevat 575 stoffen, 108 ionen, 71 functionele groepen en 149 reacties, allemaal offline beschikbaar. De 118 periodiek-systeem-elementen staan in het periodiek systeem, dus de twee referenties dupliceren elkaar nooit.</string>
+    <string name="ui_faq_database_size_a" translatable="true">Hij bevat 1532 stoffen, 211 ionen, 122 functionele groepen en 326 reacties, allemaal offline beschikbaar. De 118 periodiek-systeem-elementen staan in het periodiek systeem, dus de twee referenties dupliceren elkaar nooit.</string>
     <string name="ui_faq_languages_q" translatable="true">Welke talen ondersteunt ChemSearch?</string>
     <string name="ui_faq_languages_a" translatable="true">De interface is volledig vertaald in 15 talen: Bengaals, Deens, Duits, Grieks, Spaans, Fins, Frans, Italiaans, Japans, Nederlands, Noors, Pools, Portugees, Russisch en Zweeds. Wijzig het op elk moment via Instellingen > Taal.</string>
     <string name="ui_whats_new_section_features" translatable="true">Nieuwe functies</string>
-    <string name="ui_whats_new_section_improvements" translatable="true">Verbeteringen</string>
     <string name="ui_section_whats_new" translatable="true">Wat is er nieuw</string>
-    <string name="ui_whats_new_bullet_reaction" translatable="true">Reactievoorspeller: een offline regelmotor toegevoegd, gebaseerd op de meegeleverde chemische database. Voer maximaal drie reagentia in en ontvang voorspelde producten, reactietypes, waarnemingen en betrouwbaarheidsniveaus.</string>
-    <string name="ui_whats_new_bullet_widgets" translatable="true">Startscherm-widgets: widgets voor Verbinding van de dag en Willekeurige verbinding toegevoegd. De dagelijke wisselt om middernacht, de willekeurige heeft zijn eigen vernieuwknop.</string>
-    <string name="ui_whats_new_bullet_database" translatable="true">Chemische database: uitgebreid van 331 naar 575 stoffen, waaronder aminozuren, vitamines, geneesmiddelen, esters, organometaalverbindingen, silicaten, alkaloïden en meer. De 118 elementen staan nu in het Periodiek systeem in plaats van dat ze in de database werden gedupliceerd.</string>
-    <string name="ui_whats_new_bullet_search" translatable="true">Geavanceerd zoeken: keuzeknop voor resultaatlimiet, naam-bevat-filter en teller van actieve filters met alles wissen in één tik toegevoegd.</string>
-    <string name="ui_whats_new_bullet_tools" translatable="true">Tools: het raster past zich nu aan van 2 kolommen op smalle telefoons tot 5 op brede schermen en tablets. Toolcategorieën gebruiken eigen accentkleuren en rasterrijen houden kaarten van gelijke hoogte.</string>
-    <string name="ui_whats_new_bullet_structure" translatable="true">Structuurzoeken: configuratieoverzicht in één oogopslag, gelijkenisschuif, duidelijkere actieve status, hints voor importformaten en een live formulebadge toegevoegd.</string>
-    <string name="ui_whats_new_bullet_polish" translatable="true">Zoekfouten: specifieke, kleurgecodeerde meldingen toegevoegd voor tarieflimieten, time-outs, ongeldige verzoeken, netwerkstoringen, serverfouten en lege resultaten.</string>
-    <string name="ui_whats_new_bullet_home" translatable="true">Verkennen: snelle acties voor Structuurzoeken, Isomeerzoeken, Periodiek systeem en Chemische database toegevoegd.</string>
-    <string name="ui_whats_new_bullet_library" translatable="true">Bibliotheekacties: houd een opgeslagen verbinding ingedrukt om de formule te kopiëren, deze in PubChem te openen of te verwijderen zonder de invoer te openen.</string>
-    <string name="ui_whats_new_bullet_shortcuts" translatable="true">Launcher-snelkoppelingen: houd het app-icoon ingedrukt om direct naar Zoeken, Bibliotheek, Tools of Instellingen te gaan.</string>
-    <string name="ui_whats_new_bullet_daily" translatable="true">Verbinding van de dag: een startschermskaart toegevoegd die dezelfde dagelijkse verbinding toont als de widget, met formule en typische toepassingen.</string>
-    <string name="ui_whats_new_bullet_csv" translatable="true">Bibliotheekexport: CSV-export toegevoegd naast de bestaande JSON-back-up en importondersteuning.</string>
-    <string name="ui_whats_new_bullet_compare" translatable="true">Verbindingen vergelijken: kopiëren van eigenschappenrijen met één tik, verbindingchips, een actie om resultaten te wissen en ondersteuning voor maximaal zes verbindingen toegevoegd.</string>
-    <string name="ui_whats_new_bullet_periodic" translatable="true">Periodiek systeem: interactieve categoriefilters, fellere elementtegels, verloop-trendheatmaps, min/max-legenda\'s en een klikbare strook met de topvijf elementen toegevoegd.</string>
-    <string name="ui_whats_new_bullet_stoich" translatable="true">Stoichiometrie: atoomeconomie, verbruik en restant per reagens, verbeterde eenhedenconversie en kopieerbare analysesamenvattingen toegevoegd.</string>
-    <string name="ui_whats_new_bullet_display" translatable="true">Weergave: app-brede instelling voor de temperatuureenheid (K, °C of °F) toegevoegd.</string>
-    <string name="ui_whats_new_bullet_haptics" translatable="true">Haptiek: haptische feedback toegevoegd aan ondersteunde interacties.</string>
-    <string name="ui_whats_new_bullet_offline_mode" translatable="true">Ontwikkelaarstools: Offline testmodus toegevoegd met deterministische testresultaten, instelbare latentie, gesimuleerde fouten, geforceerde fouttypes en een offline banner op het scherm. Ook cache-inspectie, apparaat- en build-details en een catalogus met foutmeldingen toegevoegd.</string>
-    <string name="ui_whats_new_bullet_dialogs" translatable="true">Interface: dialogen in FAQ-, hulp- en bevestigingspopups gestandaardiseerd, met getinte icoonkoppen, sluitknoppen en kleurgecodeerde destructieve acties.</string>
-    <string name="ui_whats_new_bullet_cards" translatable="true">Interface: kaarten, selectiestaten en destructieve acties in de hele app gestandaardiseerd. Een Kaarten-instelling toegevoegd om tussen kaartgebaseerde en vlakkere lay-outs te wisselen.</string>
-    <string name="ui_whats_new_bullet_collapsible" translatable="true">Over: de Wat-is-er-nieuw-kaart kan nu worden ingeklapt en toont de hoogtepunten van de huidige versie.</string>
-    <string name="ui_whats_new_bullet_languages" translatable="true">Nieuwe taal: Bengaals toegevoegd en de gelokaliseerde teksten bijgewerkt. Taalkiezers tonen elke taal nu onder zijn eigen naam.</string>
+    <string name="ui_whats_new_intro_database" translatable="true">Spectra van verbindingen toegevoegd en de chemische referentiedatabase aanzienlijk uitgebreid</string>
+    <string name="ui_whats_new_bullet_spectral" translatable="true">Spectrale gegevens: Verbindingen tonen nu gepubliceerde NMR-, IR-, massa-, UV- en Ramanspectra van PubChem.</string>
+    <string name="ui_whats_new_bullet_database_group" translatable="true">Uitgebreide chemische referentiedatabase</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">Stoffen: uitgebreid van 575 naar 1532 items, waaronder zuren, zouten, oxiden, ertsen, polymeren, biomoleculen, geneesmiddelen, kleurstoffen en meer. Zoek op naam, alias of formule, volledig offline.</string>
+    <string name="ui_whats_new_bullet_ions" translatable="true">Ionen: uitgebreid van 108 naar 211 items, waaronder veelvoorkomende kationen en anionen.</string>
+    <string name="ui_whats_new_bullet_functional_groups" translatable="true">Functionele groepen: uitgebreid van 71 naar 122 items voor snelle naslag in de organische chemie.</string>
+    <string name="ui_whats_new_bullet_reactions" translatable="true">Reacties: uitgebreid van 149 naar 326 items, waardoor de offline reactievoorspeller een bredere dekking krijgt.</string>
+    <string name="ui_whats_new_section_changes" translatable="true">Wijzigingen</string>
+    <string name="ui_whats_new_bullet_cards_default" translatable="true">Kaartenmodus: nu standaard uit voor een vlakkere, compactere lay-out. Weer aan te zetten in Instellingen.</string>
     <string name="ui_error_search_not_found_s" translatable="true">Geen overeenkomst gevonden voor “%1$s” in PubChem. Probeer een andere naam, een CAS-nummer, of controleer de spelling.</string>
     <string name="ui_error_search_throttled" translatable="true">PubChem beperkt op dit moment verzoeken. Wacht een paar seconden en probeer het opnieuw.</string>
     <string name="ui_error_search_timeout" translatable="true">PubChem deed er te lang over om te reageren. Probeer het opnieuw — zeer complexe zoekopdrachten kunnen de tijdslimiet overschrijden.</string>
@@ -1758,7 +1744,7 @@
     <string name="ui_error_no_browser" translatable="true">Geen browser gevonden</string>
     <string name="ui_explore_chemsearch" translatable="true">ChemSearch verkennen</string>
     <string name="ui_periodic_table_quick_action_subtitle" translatable="true">Bekijk alle 118 elementen en hun eigenschappen</string>
-    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">900+ stoffen, ionen, groepen en reacties</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">Verken een offline chemische database</string>
     <string name="ui_offline_test_mode" translatable="true">Offline-testmodus</string>
     <string name="ui_offline_test_mode_subtitle" translatable="true">Toont dummygegevens zonder echte netwerkoproepen</string>
     <string name="ui_offline_test_mode_toggle_body" translatable="true">Indien ingeschakeld, geven zoeken, opzoeken, structuur- en AI-aanroepen lokale testrecords terug in plaats van het netwerk te benaderen</string>
@@ -1772,4 +1758,9 @@
     <string name="ui_offline_test_mode_badge" translatable="true">OFFLINE</string>
     <string name="ui_offline_test_mode_active_banner" translatable="true">Offline-testmodus is actief: alle resultaten op dit scherm zijn gesimuleerde dummygegevens</string>
     <string name="ui_offline_test_mode_active_note" translatable="true">Alle resultaten zijn gesimuleerd</string>
+    <string name="ui_spectral_information" translatable="true">Spectrale informatie</string>
+    <string name="ui_loading_pubchem_spectra" translatable="true">PubChem-spectra laden...</string>
+    <string name="ui_source_pubchem_spectra" translatable="true">Bron: PubChem-spectraalbibliotheken</string>
+    <string name="ui_info_spectral_what_body" translatable="true">Experimentele spectra gepubliceerd in PubChem, gegroepeerd per techniek (NMR, MS, IR, UV, Raman). De waarden komen uit de originele bron, dus instrumenten, oplosmiddelen en eenheden verschillen per record.</string>
+    <string name="ui_info_spectral_why_body" translatable="true">Niet elke stof heeft gepubliceerde spectra. Als PubChem er geen heeft, blijft dit gedeelte verborgen; de PubChem-pagina van de stof vermeldt nog steeds alles wat beschikbaar is.</string>
 </resources>

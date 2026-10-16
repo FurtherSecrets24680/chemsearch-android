@@ -244,6 +244,30 @@ class OfflineTestIntercept(
             useEntries = listOf(
                 CompoundUseEntry("Simulated Use", "Placeholder therapeutic use for CID $cid."),
                 CompoundUseEntry("Test Note", "Classification tags render as chips; verify wrapping here.")
+            ),
+            spectralRecords = listOf(
+                CompoundSpectrumRecord(
+                    technique = "1H NMR Spectra (simulated)",
+                    fields = listOf(
+                        SpectralField("Spectra ID", "${cid % 9000 + 1000}"),
+                        SpectralField("Frequency", "600 MHz"),
+                        SpectralField("Solvent", "CDCl3"),
+                        SpectralField("Shifts [ppm]:Intensity", "7.35:5.61, 7.68:9.19, 2.33:100.00")
+                    )
+                ),
+                CompoundSpectrumRecord(
+                    technique = "GC-MS (simulated)",
+                    fields = listOf(
+                        SpectralField("Ionization Mode", "Positive"),
+                        SpectralField("Top 5 Peaks", "195.0 1, 120.0 0.81, 92.0 0.42")
+                    )
+                ),
+                CompoundSpectrumRecord(
+                    technique = "IR Spectra (simulated)",
+                    fields = listOf(
+                        SpectralField("", "IR: ${cid % 8000} (simulated spectral collection)")
+                    )
+                )
             )
         )
     }

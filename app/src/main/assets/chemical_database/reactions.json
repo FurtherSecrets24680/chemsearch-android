@@ -13,7 +13,7 @@
       ],
       "id": "carbon-dioxide-forms-carbonic-acid",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Nitrogen dioxide forms mixed acids",
@@ -27,7 +27,7 @@
       ],
       "id": "nitrogen-dioxide-forms-mixed-acids",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Nitrogen dioxide to nitric acid",
@@ -41,7 +41,7 @@
       ],
       "id": "nitrogen-dioxide-to-nitric-acid",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "sulfur-dioxide-hydration",
@@ -56,7 +56,7 @@
         "acid rain"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Sulfur trioxide hydration",
@@ -70,7 +70,7 @@
       ],
       "id": "sulfur-trioxide-hydration",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Calcium bicarbonate with hydrochloric acid",
@@ -84,7 +84,7 @@
       ],
       "id": "calcium-bicarbonate-with-hydrochloric-acid",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Sodium bicarbonate with nitric acid",
@@ -98,7 +98,7 @@
       ],
       "id": "sodium-bicarbonate-with-nitric-acid",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "baking-powder-carbon-dioxide-release",
@@ -113,7 +113,7 @@
         "daily life"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Calcium carbonate with nitric acid",
@@ -127,7 +127,7 @@
       ],
       "id": "calcium-carbonate-with-nitric-acid",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "calcium-carbonate-acid",
@@ -139,7 +139,9 @@
       "notes": "Classic test for carbonate.",
       "tags": [
         "gas evolution"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Sodium carbonate with sulfuric acid",
@@ -153,7 +155,7 @@
       ],
       "id": "sodium-carbonate-with-sulfuric-acid",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "vinegar-baking-soda",
@@ -165,7 +167,9 @@
       "notes": "Useful demo of gas evolution.",
       "tags": [
         "gas evolution"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "bromine-alkene",
@@ -178,7 +182,9 @@
       "tags": [
         "organic",
         "test"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "ethyne-bromination",
@@ -193,7 +199,7 @@
         "addition reaction"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "ethene-hydration-to-ethanol",
@@ -208,7 +214,7 @@
         "alcohol"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "ethyne-hydration-to-ethanal",
@@ -223,7 +229,7 @@
         "aldehyde"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "alkene-hydrogenation",
@@ -235,7 +241,9 @@
       "notes": "Used in hydrogenation of unsaturated compounds.",
       "tags": [
         "organic"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Ammonia in water",
@@ -249,7 +257,7 @@
       ],
       "id": "ammonia-in-water",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "fermentation",
@@ -261,7 +269,9 @@
       "notes": "Used in bread and alcoholic beverages.",
       "tags": [
         "biology"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "cellular-respiration",
@@ -273,7 +283,9 @@
       "notes": "Reverse overall pattern of photosynthesis.",
       "tags": [
         "biology"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "ethanol-to-vinegar",
@@ -288,7 +300,7 @@
         "food preservative"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "photosynthesis",
@@ -300,7 +312,9 @@
       "notes": "Overall simplified equation for oxygenic photosynthesis.",
       "tags": [
         "biology"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "aluminium-hydroxide-calcination",
@@ -315,7 +329,7 @@
         "oxide"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "hydrated-iron-oxide-calcination",
@@ -330,7 +344,7 @@
         "ore processing"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "zinc-carbonate-calcination",
@@ -345,7 +359,7 @@
         "ore processing"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "copper-oxide-carbon-reduction",
@@ -360,7 +374,7 @@
         "metal extraction"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "lead-oxide-carbon-reduction",
@@ -375,7 +389,7 @@
         "metal extraction"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "zinc-oxide-carbon-reduction",
@@ -390,7 +404,7 @@
         "metal extraction"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "iron-iii-oxide-carbon-monoxide-reduction",
@@ -405,7 +419,7 @@
         "blast furnace"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "ammonium-carbamate-formation",
@@ -420,7 +434,7 @@
         "fertilizer"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "ammonium-hydrogen-carbonate-formation",
@@ -435,7 +449,7 @@
         "household chemistry"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "bleaching-powder-formation",
@@ -450,7 +464,7 @@
         "cleaner"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "oleum-formation",
@@ -465,7 +479,7 @@
         "contact process"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "slaking-quicklime",
@@ -480,7 +494,7 @@
         "combination"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "sodium-carbonate-formation-from-naoh",
@@ -495,7 +509,7 @@
         "cleaner"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Carbon combustion",
@@ -509,7 +523,7 @@
       ],
       "id": "carbon-combustion",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "combustion-of-methane",
@@ -524,7 +538,7 @@
         "combustion"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Hydrogen combustion",
@@ -538,7 +552,7 @@
       ],
       "id": "hydrogen-combustion",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Magnesium combustion",
@@ -552,7 +566,7 @@
       ],
       "id": "magnesium-combustion",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "sulfur-combustion",
@@ -568,7 +582,7 @@
         "combustion"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "iodine-starch",
@@ -580,7 +594,9 @@
       "notes": "Sensitive starch indicator test.",
       "tags": [
         "indicator"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "esterification",
@@ -592,7 +608,9 @@
       "notes": "Example: ethyl ethanoate synthesis.",
       "tags": [
         "organic"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "nylon-6-6-formation",
@@ -607,7 +625,7 @@
         "plastic"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "rust-ferric-hydroxide-to-hydrated-oxide",
@@ -622,7 +640,7 @@
         "corrosion"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "rusting-of-iron",
@@ -636,7 +654,7 @@
         "corrosion"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "sodium-ethanoate-decarboxylation",
@@ -651,7 +669,7 @@
         "hydrocarbon"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "copper-carbonate-heat",
@@ -663,7 +681,9 @@
       "notes": "Copper(II) oxide remains.",
       "tags": [
         "thermal"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "hydrogen-peroxide",
@@ -675,7 +695,9 @@
       "notes": "Basis of elephant toothpaste demos.",
       "tags": [
         "catalysis"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "hypochlorous-acid-decomposition",
@@ -690,7 +712,7 @@
         "cleaner"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Phosphorus pentachloride decomposition",
@@ -704,7 +726,7 @@
       ],
       "id": "phosphorus-pentachloride-decomposition",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "ethanol-dehydration-to-ethene",
@@ -719,7 +741,7 @@
         "alcohol"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Ferric hydroxide dehydration to rust",
@@ -733,7 +755,7 @@
       ],
       "id": "ferric-hydroxide-dehydration-to-rust",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "urea-from-ammonium-carbamate",
@@ -748,7 +770,7 @@
         "fertilizer"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "baking-soda-formation",
@@ -763,7 +785,7 @@
         "household chemistry"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "barium-sulfate",
@@ -775,7 +797,9 @@
       "notes": "Common sulfate test.",
       "tags": [
         "precipitation"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "precipitation-agcl",
@@ -787,7 +811,9 @@
       "notes": "Used as a chloride ion test.",
       "tags": [
         "precipitation"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Copper silver galvanic reaction",
@@ -801,7 +827,7 @@
       ],
       "id": "copper-silver-galvanic-reaction",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Daniell cell overall reaction",
@@ -815,7 +841,7 @@
       ],
       "id": "daniell-cell-overall-reaction",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Dry cell overall reaction",
@@ -829,7 +855,7 @@
       ],
       "id": "dry-cell-overall-reaction",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "chlor-alkali-electrolysis",
@@ -844,7 +870,7 @@
         "electrolysis"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "electrolysis-water",
@@ -856,7 +882,9 @@
       "notes": "Gas volume ratio is about 2:1.",
       "tags": [
         "redox"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Molten sodium chloride electrolysis",
@@ -870,7 +898,7 @@
       ],
       "id": "molten-sodium-chloride-electrolysis",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "copper-electrorefining-anode",
@@ -885,7 +913,7 @@
         "electrolysis"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "copper-electrorefining-cathode",
@@ -900,7 +928,7 @@
         "electrolysis"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Nitric oxide formation from air",
@@ -914,7 +942,7 @@
       ],
       "id": "nitric-oxide-formation-from-air",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Ammonium chloride with sodium hydroxide",
@@ -928,7 +956,7 @@
       ],
       "id": "ammonium-chloride-with-sodium-hydroxide",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "calcium-carbide-with-water",
@@ -943,7 +971,7 @@
         "fruit ripening"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "ammonia-from-ammonium-chloride-and-calcium-oxide",
@@ -958,7 +986,7 @@
         "laboratory"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "ammonia-from-ammonium-chloride-and-slaked-lime",
@@ -973,7 +1001,7 @@
         "laboratory"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Calcium chloride hydration",
@@ -987,7 +1015,7 @@
       ],
       "id": "calcium-chloride-hydration",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Copper sulfate hydration",
@@ -1001,7 +1029,7 @@
       ],
       "id": "copper-sulfate-hydration",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Ferrous sulfate hydration",
@@ -1015,7 +1043,7 @@
       ],
       "id": "ferrous-sulfate-hydration",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "oleum-dilution",
@@ -1030,7 +1058,7 @@
         "contact process"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "washing-soda-crystallization",
@@ -1045,7 +1073,7 @@
         "cleaner"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Zinc sulfate hydration",
@@ -1059,7 +1087,7 @@
       ],
       "id": "zinc-sulfate-hydration",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "methane-from-carbon-dioxide",
@@ -1074,7 +1102,7 @@
         "hydrocarbon"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Aluminum chloride hydrolysis",
@@ -1088,7 +1116,7 @@
       ],
       "id": "aluminum-chloride-hydrolysis",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "bleaching-powder-with-water",
@@ -1103,7 +1131,7 @@
         "cleaner"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Chlorine water formation",
@@ -1117,7 +1145,7 @@
       ],
       "id": "chlorine-water-formation",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "saponification",
@@ -1129,7 +1157,9 @@
       "notes": "Used for fats/oils to soap.",
       "tags": [
         "organic"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Silicon tetrachloride hydrolysis",
@@ -1143,7 +1173,7 @@
       ],
       "id": "silicon-tetrachloride-hydrolysis",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "sodium-aluminate-hydrolysis",
@@ -1158,7 +1188,7 @@
         "ore processing"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "sodium-hypochlorite-hydrolysis",
@@ -1173,7 +1203,7 @@
         "bleach"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "urea-hydrolysis-in-soil",
@@ -1189,7 +1219,7 @@
         "agriculture"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Acetic acid ionization",
@@ -1203,7 +1233,7 @@
       ],
       "id": "acetic-acid-ionization",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Hydrochloric acid ionization",
@@ -1217,7 +1247,7 @@
       ],
       "id": "hydrochloric-acid-ionization",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Nitric acid ionization",
@@ -1231,7 +1261,7 @@
       ],
       "id": "nitric-acid-ionization",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Potassium hydroxide ionization",
@@ -1245,7 +1275,7 @@
       ],
       "id": "potassium-hydroxide-ionization",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Sodium hydroxide ionization",
@@ -1259,7 +1289,7 @@
       ],
       "id": "sodium-hydroxide-ionization",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Sulfuric acid ionization",
@@ -1273,7 +1303,7 @@
       ],
       "id": "sulfuric-acid-ionization",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Ammonium cyanate to urea",
@@ -1287,7 +1317,7 @@
       ],
       "id": "ammonium-cyanate-to-urea",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Aluminum hydroxide antacid neutralization",
@@ -1301,7 +1331,7 @@
       ],
       "id": "aluminum-hydroxide-antacid-neutralization",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "ammonium-sulfate-formation",
@@ -1316,7 +1346,7 @@
         "agriculture"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Calcium oxide with hydrochloric acid",
@@ -1330,7 +1360,7 @@
       ],
       "id": "calcium-oxide-with-hydrochloric-acid",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Copper oxide with sulfuric acid",
@@ -1344,7 +1374,7 @@
       ],
       "id": "copper-oxide-with-sulfuric-acid",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "ethanoic-acid-neutralization",
@@ -1359,7 +1389,7 @@
         "neutralization"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "limestone-neutralizes-acidic-soil",
@@ -1375,7 +1405,7 @@
         "neutralization"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Magnesium hydroxide antacid neutralization",
@@ -1389,7 +1419,7 @@
       ],
       "id": "magnesium-hydroxide-antacid-neutralization",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Neutralization net ionic equation",
@@ -1403,7 +1433,7 @@
       ],
       "id": "neutralization-net-ionic-equation",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "sodium-lauryl-sulfate-formation",
@@ -1418,7 +1448,7 @@
         "surfactant"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "neutralization",
@@ -1430,7 +1460,9 @@
       "notes": "Net ionic form is H+ + OH- ⟶ H2O.",
       "tags": [
         "acid-base"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "sulfuric-acid-with-calcium-hydroxide",
@@ -1446,7 +1478,7 @@
         "neutralization"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Sulfuric acid with sodium hydroxide",
@@ -1460,7 +1492,7 @@
       ],
       "id": "sulfuric-acid-with-sodium-hydroxide",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "bauxite-with-sodium-hydroxide",
@@ -1475,7 +1507,7 @@
         "ore processing"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "ethanal-oxidation-to-ethanoic-acid",
@@ -1490,7 +1522,7 @@
         "organic acid"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "ethene-to-ethylene-glycol",
@@ -1505,7 +1537,7 @@
         "oxidation test"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "sulfur-dioxide-oxidation",
@@ -1520,7 +1552,7 @@
         "oxidation"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Daniell cell zinc oxidation",
@@ -1534,7 +1566,7 @@
       ],
       "id": "daniell-cell-zinc-oxidation",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Silver electroplating anode reaction",
@@ -1548,7 +1580,7 @@
       ],
       "id": "silver-electroplating-anode-reaction",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Water electrolysis anode reaction",
@@ -1562,7 +1594,7 @@
       ],
       "id": "water-electrolysis-anode-reaction",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Photosynthesis detailed equation",
@@ -1576,7 +1608,7 @@
       ],
       "id": "photosynthesis-detailed-equation",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "polymerization-ethene",
@@ -1588,7 +1620,9 @@
       "notes": "Simplified repeat-unit equation.",
       "tags": [
         "polymer"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "propene-polymerization",
@@ -1603,7 +1637,7 @@
         "plastic"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "vinyl-chloride-polymerization",
@@ -1618,7 +1652,7 @@
         "plastic"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Aluminum hydroxide precipitation from nitrate",
@@ -1632,7 +1666,7 @@
       ],
       "id": "aluminum-hydroxide-precipitation-from-nitrate",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "limewater-test",
@@ -1644,7 +1678,9 @@
       "notes": "Excess CO2 can redissolve the precipitate.",
       "tags": [
         "gas test"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Copper hydroxide precipitation from nitrate",
@@ -1658,7 +1694,7 @@
       ],
       "id": "copper-hydroxide-precipitation-from-nitrate",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Ferric hydroxide precipitation from nitrate",
@@ -1672,7 +1708,7 @@
       ],
       "id": "ferric-hydroxide-precipitation-from-nitrate",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Ferrous hydroxide precipitation",
@@ -1686,7 +1722,7 @@
       ],
       "id": "ferrous-hydroxide-precipitation",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Lead iodide precipitation",
@@ -1700,7 +1736,7 @@
       ],
       "id": "lead-iodide-precipitation",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Magnesium sulfate hardness removal",
@@ -1714,7 +1750,7 @@
       ],
       "id": "magnesium-sulfate-hardness-removal",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Permanent hardness removal with washing soda",
@@ -1728,7 +1764,7 @@
       ],
       "id": "permanent-hardness-removal-with-washing-soda",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Soap scum formation",
@@ -1742,7 +1778,7 @@
       ],
       "id": "soap-scum-formation",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Zinc hydroxide precipitation from nitrate",
@@ -1756,7 +1792,7 @@
       ],
       "id": "zinc-hydroxide-precipitation-from-nitrate",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "concentrated-sulfuric-acid-with-copper",
@@ -1771,7 +1807,7 @@
         "sulfuric acid"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "thermite",
@@ -1783,7 +1819,9 @@
       "notes": "Highly energetic demonstration.",
       "tags": [
         "redox"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Ferric chloride formation",
@@ -1797,7 +1835,7 @@
       ],
       "id": "ferric-chloride-formation",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Sodium chloride redox synthesis",
@@ -1811,7 +1849,7 @@
       ],
       "id": "sodium-chloride-redox-synthesis",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "silver-mirror",
@@ -1824,7 +1862,9 @@
       "tags": [
         "organic",
         "test"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Daniell cell copper reduction",
@@ -1838,7 +1878,7 @@
       ],
       "id": "daniell-cell-copper-reduction",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Silver electroplating cathode reaction",
@@ -1852,7 +1892,7 @@
       ],
       "id": "silver-electroplating-cathode-reaction",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Water electrolysis cathode reaction",
@@ -1866,7 +1906,7 @@
       ],
       "id": "water-electrolysis-cathode-reaction",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "haber-ammonia-synthesis",
@@ -1881,7 +1921,7 @@
         "reversible synthesis"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Hydrogen iodide reversible synthesis",
@@ -1895,7 +1935,7 @@
       ],
       "id": "hydrogen-iodide-reversible-synthesis",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "cinnabar-roasting",
@@ -1910,7 +1950,7 @@
         "ore processing"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "galena-roasting",
@@ -1926,7 +1966,7 @@
         "ore processing"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "zinc-sulfide-roasting",
@@ -1942,7 +1982,7 @@
         "ore processing"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "mercury-oxide-self-reduction",
@@ -1957,7 +1997,7 @@
         "metal extraction"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "iron-copper-displacement",
@@ -1969,7 +2009,9 @@
       "notes": "Iron is more reactive than copper.",
       "tags": [
         "redox"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Magnesium with sulfuric acid",
@@ -1983,7 +2025,7 @@
       ],
       "id": "magnesium-with-sulfuric-acid",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "sodium-water",
@@ -1995,7 +2037,9 @@
       "notes": "Dangerous demonstration; can ignite.",
       "tags": [
         "alkali metal"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "zinc-acid",
@@ -2008,7 +2052,9 @@
       "tags": [
         "redox",
         "gas"
-      ]
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Zinc with sulfuric acid",
@@ -2022,7 +2068,7 @@
       ],
       "id": "zinc-with-sulfuric-acid",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "slag-formation",
@@ -2038,7 +2084,7 @@
         "metal extraction"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "bromoethane-hydrolysis",
@@ -2053,7 +2099,7 @@
         "haloalkane"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "methane-chlorination",
@@ -2068,7 +2114,7 @@
         "halogenation"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "lauryl-alcohol-sulfation",
@@ -2083,7 +2129,7 @@
         "surfactant"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "name": "Temporary hardness by boiling",
@@ -2097,7 +2143,7 @@
       ],
       "id": "temporary-hardness-by-boiling",
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
     },
     {
       "id": "thermal-decomposition-of-calcium-carbonate",
@@ -2112,7 +2158,2845 @@
         "thermal decomposition"
       ],
       "sourceLabel": "Chemistry reference",
-      "sourceUrl": ""
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "aldol-addition",
+      "name": "Aldol addition",
+      "equation": "2 CH3CHO --dil. NaOH--> CH3CH(OH)CH2CHO",
+      "type": "Condensation",
+      "conditions": "Aldehyde or ketone with an enolizable alpha-hydrogen and base.",
+      "observation": "A beta-hydroxy carbonyl (aldol) forms.",
+      "notes": "The first step of the aldol condensation; reversible.",
+      "tags": [
+        "organic",
+        "carbonyl",
+        "base-catalyzed"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "aldol-condensation",
+      "name": "Aldol condensation",
+      "equation": "2 CH3CHO --NaOH, heat--> CH3CH=CHCHO + H2O",
+      "type": "Condensation",
+      "conditions": "Aldol addition followed by heating.",
+      "observation": "An alpha,beta-unsaturated carbonyl forms with loss of water.",
+      "notes": "A key carbon-carbon bond-forming reaction.",
+      "tags": [
+        "organic",
+        "carbonyl",
+        "condensation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "crossed-aldol",
+      "name": "Crossed aldol condensation",
+      "equation": "ArCHO + CH3COR' --base--> ArCH=CHCOR'",
+      "type": "Condensation",
+      "conditions": "An aromatic aldehyde (no alpha-H) with an enolizable partner.",
+      "observation": "Only the mixed condensation product forms.",
+      "notes": "Using a non-enolizable aldehyde avoids self-condensation.",
+      "tags": [
+        "organic",
+        "carbonyl",
+        "condensation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "claisen-condensation",
+      "name": "Claisen condensation",
+      "equation": "2 CH3COOC2H5 --NaOEt--> CH3COCH2COOC2H5 + C2H5OH",
+      "type": "Condensation",
+      "conditions": "Two esters with sodium alkoxide base.",
+      "observation": "A beta-keto ester forms.",
+      "notes": "The ester analogue of the aldol condensation.",
+      "tags": [
+        "organic",
+        "ester",
+        "condensation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "dieckmann-condensation",
+      "name": "Dieckmann condensation",
+      "equation": "diester --NaOEt--> cyclic beta-keto ester",
+      "type": "Condensation",
+      "conditions": "An intramolecular Claisen condensation of a diester.",
+      "observation": "A five- or six-membered ring beta-keto ester forms.",
+      "notes": "Used to build cyclic ketones.",
+      "tags": [
+        "organic",
+        "ester",
+        "ring formation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "perkin-reaction",
+      "name": "Perkin reaction",
+      "equation": "ArCHO + (CH3CO)2O --CH3COONa--> ArCH=CHCOOH",
+      "type": "Condensation",
+      "conditions": "Aromatic aldehyde, acetic anhydride, sodium acetate.",
+      "observation": "A cinnamic acid derivative forms.",
+      "notes": "Used to prepare unsaturated aromatic acids.",
+      "tags": [
+        "organic",
+        "carbonyl",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "knoevenagel-condensation",
+      "name": "Knoevenagel condensation",
+      "equation": "RCHO + CH2(COOR')2 --amine--> RCH=C(COOR')2 + H2O",
+      "type": "Condensation",
+      "conditions": "Aldehyde or ketone with an active-methylene compound and a weak amine base.",
+      "observation": "An alkene forms.",
+      "notes": "Widely used to make coumarins and other alkenes.",
+      "tags": [
+        "organic",
+        "carbonyl",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "michael-addition",
+      "name": "Michael addition",
+      "equation": "CH2(COOEt)2 + CH2=CH-COCH3 --base--> (EtOOC)2CH-CH2-CH2-COCH3",
+      "type": "Addition",
+      "conditions": "A stabilized carbanion adds to an alpha,beta-unsaturated carbonyl.",
+      "observation": "A 1,4-addition product forms.",
+      "notes": "The nucleophile adds to the beta-carbon.",
+      "tags": [
+        "organic",
+        "conjugate addition",
+        "nucleophile"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "robinson-annulation",
+      "name": "Robinson annulation",
+      "equation": "ketone + MVK --base--> fused bicyclic enone",
+      "type": "Condensation",
+      "conditions": "Michael addition followed by intramolecular aldol condensation.",
+      "observation": "A six-membered ring is fused onto the starting ketone.",
+      "notes": "A classic route to steroid-like skeletons.",
+      "tags": [
+        "organic",
+        "ring formation",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "mannich-reaction",
+      "name": "Mannich reaction",
+      "equation": "ketone + CH2O + R2NH --H+--> beta-amino ketone",
+      "type": "Addition",
+      "conditions": "An enolizable carbonyl, formaldehyde, and a primary or secondary amine.",
+      "observation": "A beta-amino carbonyl (Mannich base) forms.",
+      "notes": "Produces precursors to many drugs and natural products.",
+      "tags": [
+        "organic",
+        "nitrogen",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "stobbe-condensation",
+      "name": "Stobbe condensation",
+      "equation": "ketone/aldehyde + diethyl succinate --t-BuOK--> alkylidenesuccinate",
+      "type": "Condensation",
+      "conditions": "A carbonyl compound with a succinate diester and strong base.",
+      "observation": "An alkylidene succinic half-ester forms.",
+      "notes": "Used to build cyclopentenones.",
+      "tags": [
+        "organic",
+        "ester",
+        "condensation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "cannizzaro-reaction",
+      "name": "Cannizzaro reaction",
+      "equation": "2 HCHO --conc. NaOH--> CH3OH + HCOONa",
+      "type": "Redox",
+      "conditions": "A non-enolizable aldehyde with concentrated strong base.",
+      "observation": "One aldehyde is reduced, the other oxidized (disproportionation).",
+      "notes": "Requires an aldehyde with no alpha-hydrogen.",
+      "tags": [
+        "organic",
+        "redox",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "benzoin-condensation",
+      "name": "Benzoin condensation",
+      "equation": "2 C6H5CHO --NaCN--> C6H5CH(OH)COC6H5",
+      "type": "Condensation",
+      "conditions": "Aromatic aldehyde with cyanide ion catalyst.",
+      "observation": "A benzoin (alpha-hydroxy ketone) forms.",
+      "notes": "Cyanide stabilizes the acyl anion equivalent.",
+      "tags": [
+        "organic",
+        "carbonyl",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "pinacol-coupling",
+      "name": "Pinacol coupling",
+      "equation": "2 R2C=O --Mg/Hg--> R2C(OH)-C(OH)R2",
+      "type": "Reductive coupling",
+      "conditions": "A carbonyl compound with a reducing metal.",
+      "observation": "Two carbonyls couple to give a vicinal diol.",
+      "notes": "Forms pinacols; a reductive C-C bond forming reaction.",
+      "tags": [
+        "organic",
+        "reduction",
+        "coupling"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "mcmurry-reaction",
+      "name": "McMurry reaction",
+      "equation": "2 R2C=O --TiCl3/metal--> R2C=CR2",
+      "type": "Reductive coupling",
+      "conditions": "Low-valent titanium reagent from TiCl3 or TiCl4 with zinc.",
+      "observation": "Two ketones couple to give an alkene.",
+      "notes": "Forms alkenes from carbonyls, often with stereoselectivity.",
+      "tags": [
+        "organic",
+        "coupling",
+        "alkene"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "wittig-reaction",
+      "name": "Wittig reaction",
+      "equation": "R2C=O + Ph3P=CHR' --> R2C=CHR' + Ph3P=O",
+      "type": "Olefination",
+      "conditions": "A phosphorus ylide reacts with an aldehyde or ketone.",
+      "observation": "A C=C bond forms; triphenylphosphine oxide is the by-product.",
+      "notes": "The stereochemistry is controlled by the ylide type.",
+      "tags": [
+        "organic",
+        "olefination",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "horner-wadsworth-emmons",
+      "name": "Horner-Wadsworth-Emmons reaction",
+      "equation": "R2C=O + (EtO)2P(O)CH2CO2Et --base--> R2C=CHCO2Et",
+      "type": "Olefination",
+      "conditions": "A phosphonate carbanion with an aldehyde or ketone.",
+      "observation": "The (E)-alkene usually predominates.",
+      "notes": "A modified Wittig reaction using a phosphonate.",
+      "tags": [
+        "organic",
+        "olefination",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "peterson-olefination",
+      "name": "Peterson olefination",
+      "equation": "R2C=O + R'3Si-CLi --H+ workup--> R2C=CR'",
+      "type": "Olefination",
+      "conditions": "An alpha-silyl carbanion adds to a carbonyl, then acid or base eliminates.",
+      "observation": "A stereochemically defined alkene forms.",
+      "notes": "A silicon-based alternative to the Wittig reaction.",
+      "tags": [
+        "organic",
+        "olefination",
+        "silicon"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "julia-olefination",
+      "name": "Julia olefination",
+      "equation": "sulfone + aldehyde --base--> alkene",
+      "type": "Olefination",
+      "conditions": "A phenyl sulfone carbanion reacts with an aldehyde, then reduction eliminates.",
+      "observation": "A (E)-alkene forms.",
+      "notes": "Efficient for making dienes in complex syntheses.",
+      "tags": [
+        "organic",
+        "olefination",
+        "sulfur"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "clemmensen-reduction",
+      "name": "Clemmensen reduction",
+      "equation": "R2C=O --Zn(Hg)/HCl--> R2CH2",
+      "type": "Reduction",
+      "conditions": "Zinc amalgam and hot concentrated hydrochloric acid.",
+      "observation": "A carbonyl is reduced to a methylene group.",
+      "notes": "Works under acidic conditions; complements Wolff-Kishner.",
+      "tags": [
+        "organic",
+        "reduction",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "wolff-kishner-reduction",
+      "name": "Wolff-Kishner reduction",
+      "equation": "R2C=O --NH2NH2, KOH, heat--> R2CH2 + N2",
+      "type": "Reduction",
+      "conditions": "Hydrazine and strong base at high temperature.",
+      "observation": "A carbonyl is reduced to a methylene group with nitrogen released.",
+      "notes": "Performed under basic conditions; complements Clemmensen.",
+      "tags": [
+        "organic",
+        "reduction",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "baeyer-villiger-oxidation",
+      "name": "Baeyer-Villiger oxidation",
+      "equation": "R-C(=O)-R' --mCPBA--> R-C(=O)-O-R'",
+      "type": "Oxidation",
+      "conditions": "A peroxyacid (mCPBA) or peroxide with a ketone.",
+      "observation": "A ketone is converted into an ester or lactone.",
+      "notes": "The migration order follows the group's migratory aptitude.",
+      "tags": [
+        "organic",
+        "oxidation",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "ozonolysis",
+      "name": "Ozonolysis",
+      "equation": "R2C=CR2 + O3, then Zn/H2O --> 2 carbonyls",
+      "type": "Oxidation",
+      "conditions": "Ozone at low temperature, followed by a reducing workup.",
+      "observation": "The alkene double bond is cleaved to carbonyls.",
+      "notes": "Used to locate double bonds in unknown alkenes.",
+      "tags": [
+        "organic",
+        "oxidation",
+        "alkene cleavage"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "prilezhaev-epoxidation",
+      "name": "Prilezhaev epoxidation",
+      "equation": "alkene + RCO3H --> epoxide + RCOOH",
+      "type": "Oxidation",
+      "conditions": "A peroxyacid such as mCPBA or peracetic acid.",
+      "observation": "An epoxide forms across the double bond.",
+      "notes": "A stereospecific syn addition.",
+      "tags": [
+        "organic",
+        "oxidation",
+        "epoxide"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "sharpless-epoxidation",
+      "name": "Sharpless asymmetric epoxidation",
+      "equation": "allylic alcohol + Ti(OiPr)4, (+)-DET, TBHP --> chiral epoxide",
+      "type": "Oxidation",
+      "conditions": "Titanium tetraisopropoxide, a chiral tartrate, and tert-butyl hydroperoxide.",
+      "observation": "One enantiomer of the epoxide forms in high excess.",
+      "notes": "A landmark in asymmetric catalysis.",
+      "tags": [
+        "organic",
+        "oxidation",
+        "asymmetric",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "syn-dihydroxylation",
+      "name": "Syn dihydroxylation",
+      "equation": "alkene + OsO4, then NaHSO3 --> cis-diol",
+      "type": "Oxidation",
+      "conditions": "Catalytic osmium tetroxide with a co-oxidant such as NMO.",
+      "observation": "A cis-1,2-diol forms.",
+      "notes": "Upjohn and Sharpless variants are used in synthesis.",
+      "tags": [
+        "organic",
+        "oxidation",
+        "diol"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hydroboration-oxidation",
+      "name": "Hydroboration-oxidation",
+      "equation": "alkene + BH3.THF, then H2O2/OH- --> anti-Markovnikov alcohol",
+      "type": "Addition",
+      "conditions": "Borane followed by alkaline hydrogen peroxide.",
+      "observation": "An alcohol forms with anti-Markovnikov regiochemistry and syn addition.",
+      "notes": "A key route to primary alcohols from terminal alkenes.",
+      "tags": [
+        "organic",
+        "addition",
+        "boron"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "oxymercuration-demercuration",
+      "name": "Oxymercuration-demercuration",
+      "equation": "alkene + Hg(OAc)2/H2O, then NaBH4 --> Markovnikov alcohol",
+      "type": "Addition",
+      "conditions": "Mercury(II) acetate in water, then sodium borohydride.",
+      "observation": "A Markovnikov alcohol forms with no rearrangement.",
+      "notes": "Avoids the carbocation rearrangements of acid-catalyzed hydration.",
+      "tags": [
+        "organic",
+        "addition",
+        "mercury"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "markovnikov-addition",
+      "name": "Markovnikov addition of HBr",
+      "equation": "CH3CH=CH2 + HBr --> CH3CHBrCH3",
+      "type": "Addition",
+      "conditions": "Hydrogen halide added to an unsymmetrical alkene.",
+      "observation": "The hydrogen adds to the carbon with more hydrogens.",
+      "notes": "Proceeds through the more stable carbocation.",
+      "tags": [
+        "organic",
+        "addition",
+        "rule"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "anti-markovnikov-addition",
+      "name": "Anti-Markovnikov addition (peroxide effect)",
+      "equation": "CH3CH=CH2 + HBr --peroxides--> CH3CH2CH2Br",
+      "type": "Addition",
+      "conditions": "HBr with peroxides or light present.",
+      "observation": "The bromine adds to the less substituted carbon.",
+      "notes": "A free-radical chain mechanism; only HBr shows it.",
+      "tags": [
+        "organic",
+        "addition",
+        "radical"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "wacker-process",
+      "name": "Wacker process",
+      "equation": "CH2=CH2 + 1/2 O2 --PdCl2/CuCl2--> CH3CHO",
+      "type": "Oxidation",
+      "conditions": "Palladium(II) chloride with copper(II) chloride co-catalyst.",
+      "observation": "Ethylene is oxidized to acetaldehyde.",
+      "notes": "An industrial route to acetaldehyde from ethylene.",
+      "tags": [
+        "industrial",
+        "oxidation",
+        "catalyst"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hydroformylation",
+      "name": "Hydroformylation (oxo process)",
+      "equation": "RCH=CH2 + CO + H2 --Co or Rh--> RCH2CH2CHO + RCH(CH3)CHO",
+      "type": "Addition",
+      "conditions": "Syngas with a cobalt or rhodium catalyst.",
+      "observation": "An aldehyde with one extra carbon forms.",
+      "notes": "A major industrial route to aldehydes and alcohols.",
+      "tags": [
+        "industrial",
+        "catalyst",
+        "carbonyl"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "fischer-esterification",
+      "name": "Fischer esterification",
+      "equation": "RCOOH + R'OH --H2SO4, heat--> RCOOR' + H2O",
+      "type": "Esterification",
+      "conditions": "A carboxylic acid and an alcohol with an acid catalyst.",
+      "observation": "An ester with a pleasant smell forms; the reaction is reversible.",
+      "notes": "Water must be removed to drive the equilibrium.",
+      "tags": [
+        "organic",
+        "ester",
+        "acid-catalyzed"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "transesterification",
+      "name": "Transesterification",
+      "equation": "RCOOR' + R''OH --cat.--> RCOOR'' + R'OH",
+      "type": "Esterification",
+      "conditions": "An ester and an alcohol with an acid or base catalyst.",
+      "observation": "The alkoxy group of the ester is exchanged.",
+      "notes": "Used to make biodiesel from triglycerides.",
+      "tags": [
+        "organic",
+        "ester",
+        "industrial"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "acid-catalyzed-ester-hydrolysis",
+      "name": "Acid-catalyzed ester hydrolysis",
+      "equation": "RCOOR' + H2O --H2SO4--> RCOOH + R'OH",
+      "type": "Hydrolysis",
+      "conditions": "Dilute acid and heat.",
+      "observation": "The ester is cleaved back into acid and alcohol.",
+      "notes": "The reverse of Fischer esterification.",
+      "tags": [
+        "organic",
+        "ester",
+        "hydrolysis"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "amide-coupling-dcc",
+      "name": "Amide coupling with DCC",
+      "equation": "RCOOH + R'NH2 --DCC--> RCONHR'",
+      "type": "Condensation",
+      "conditions": "A carbodiimide such as DCC activates the acid.",
+      "observation": "An amide (peptide) bond forms.",
+      "notes": "The basis of solid-phase peptide synthesis with HOBt.",
+      "tags": [
+        "organic",
+        "peptide",
+        "coupling agent"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "gabriel-synthesis",
+      "name": "Gabriel synthesis",
+      "equation": "phthalimide + KOH + R-X, then H2NNH2 --> RNH2",
+      "type": "Substitution",
+      "conditions": "Potassium phthalimide with an alkyl halide, then hydrazinolysis.",
+      "observation": "A primary amine forms without over-alkylation.",
+      "notes": "Uses the phthalimide anion as a protected nitrogen nucleophile.",
+      "tags": [
+        "organic",
+        "amine",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "strecker-synthesis",
+      "name": "Strecker amino acid synthesis",
+      "equation": "RCHO + NH3 + HCN, then hydrolysis --> RCH(NH2)COOH",
+      "type": "Addition",
+      "conditions": "An aldehyde, ammonia, and hydrogen cyanide, then acid hydrolysis.",
+      "observation": "An alpha-amino acid forms.",
+      "notes": "A classical route to amino acids.",
+      "tags": [
+        "organic",
+        "amino acid",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "acetoacetic-ester-synthesis",
+      "name": "Acetoacetic ester synthesis",
+      "equation": "CH3COCH2COOC2H5 --base, R-X, then H3O+, heat--> CH3COCH2R",
+      "type": "Substitution",
+      "conditions": "Alkylation of ethyl acetoacetate then acidic decarboxylation.",
+      "observation": "A substituted acetone forms.",
+      "notes": "Builds ketones by adding alkyl groups to an active methylene.",
+      "tags": [
+        "organic",
+        "synthesis",
+        "ketone"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "malonic-ester-synthesis",
+      "name": "Malonic ester synthesis",
+      "equation": "CH2(COOC2H5)2 --base, R-X, then H3O+, heat--> RCH2COOH",
+      "type": "Substitution",
+      "conditions": "Alkylation of diethyl malonate then hydrolysis and decarboxylation.",
+      "observation": "A substituted carboxylic acid forms.",
+      "notes": "Builds carboxylic acids via an active methylene.",
+      "tags": [
+        "organic",
+        "synthesis",
+        "acid"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "stork-enamine-alkylation",
+      "name": "Stork enamine alkylation",
+      "equation": "ketone + R2NH --H+--> enamine --R'-X, H3O+--> alpha-alkyl ketone",
+      "type": "Substitution",
+      "conditions": "A secondary amine forms an enamine, which is then alkylated.",
+      "observation": "An alpha-alkylated ketone forms.",
+      "notes": "Regioselective alpha-alkylation of ketones.",
+      "tags": [
+        "organic",
+        "nitrogen",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "friedel-crafts-alkylation",
+      "name": "Friedel-Crafts alkylation",
+      "equation": "C6H6 + RCl --AlCl3--> C6H5R + HCl",
+      "type": "Electrophilic aromatic substitution",
+      "conditions": "An alkyl halide with anhydrous aluminium chloride.",
+      "observation": "An alkyl group replaces an aromatic hydrogen.",
+      "notes": "Carbocation rearrangements and polyalkylation are common.",
+      "tags": [
+        "organic",
+        "aromatic",
+        "catalyst"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "friedel-crafts-acylation",
+      "name": "Friedel-Crafts acylation",
+      "equation": "C6H6 + RCOCl --AlCl3--> C6H5COR + HCl",
+      "type": "Electrophilic aromatic substitution",
+      "conditions": "An acyl chloride with anhydrous aluminium chloride.",
+      "observation": "An aryl ketone forms.",
+      "notes": "No rearrangement and little polyacylation, unlike alkylation.",
+      "tags": [
+        "organic",
+        "aromatic",
+        "catalyst"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "nitration-of-benzene",
+      "name": "Nitration of benzene",
+      "equation": "C6H6 + HNO3 --H2SO4--> C6H5NO2 + H2O",
+      "type": "Electrophilic aromatic substitution",
+      "conditions": "Concentrated nitric and sulfuric acids.",
+      "observation": "Nitrobenzene forms; the mixture is a pale yellow liquid.",
+      "notes": "The nitronium ion NO2+ is the electrophile.",
+      "tags": [
+        "organic",
+        "aromatic",
+        "nitration"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "sulfonation-of-benzene",
+      "name": "Sulfonation of benzene",
+      "equation": "C6H6 + H2SO4 --SO3, heat--> C6H5SO3H + H2O",
+      "type": "Electrophilic aromatic substitution",
+      "conditions": "Fuming sulfuric acid (oleum).",
+      "observation": "Benzenesulfonic acid forms.",
+      "notes": "The sulfonic acid group is a useful water-solubilizing group.",
+      "tags": [
+        "organic",
+        "aromatic",
+        "sulfonation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "halogenation-of-benzene",
+      "name": "Halogenation of benzene",
+      "equation": "C6H6 + Br2 --FeBr3--> C6H5Br + HBr",
+      "type": "Electrophilic aromatic substitution",
+      "conditions": "Bromine or chlorine with an iron or aluminium halide catalyst.",
+      "observation": "A halogenated aromatic forms.",
+      "notes": "A Lewis acid polarizes the halogen into an electrophile.",
+      "tags": [
+        "organic",
+        "aromatic",
+        "halogenation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "reimer-tiemann",
+      "name": "Reimer-Tiemann reaction",
+      "equation": "phenol + CHCl3 --NaOH--> salicylaldehyde",
+      "type": "Substitution",
+      "conditions": "Chloroform and strong base with phenol.",
+      "observation": "A formyl (aldehyde) group enters the ring next to the hydroxyl.",
+      "notes": "Proceeds through dichlorocarbene.",
+      "tags": [
+        "organic",
+        "aromatic",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "kolbe-schmitt-reaction",
+      "name": "Kolbe-Schmitt reaction",
+      "equation": "phenol + CO2 --NaOH, heat--> sodium salicylate",
+      "type": "Carboxylation",
+      "conditions": "Sodium phenoxide heated under carbon dioxide pressure.",
+      "observation": "A carboxyl group enters next to the hydroxyl.",
+      "notes": "The industrial route to salicylic acid and aspirin.",
+      "tags": [
+        "organic",
+        "aromatic",
+        "industrial"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "vilsmeier-haack",
+      "name": "Vilsmeier-Haack reaction",
+      "equation": "Ar-H + DMF/POCl3 --> Ar-CHO",
+      "type": "Formylation",
+      "conditions": "Dimethylformamide and phosphorus oxychloride.",
+      "observation": "An aromatic aldehyde forms.",
+      "notes": "Uses an iminium electrophile for formylation.",
+      "tags": [
+        "organic",
+        "aromatic",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "williamson-ether-synthesis",
+      "name": "Williamson ether synthesis",
+      "equation": "R-O-Na+ + R'-X --> R-O-R' + NaX",
+      "type": "Substitution",
+      "conditions": "A sodium alkoxide with a primary alkyl halide.",
+      "observation": "An ether forms via SN2 substitution.",
+      "notes": "Primary halides avoid the competing elimination.",
+      "tags": [
+        "organic",
+        "ether",
+        "substitution"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "finkelstein-reaction",
+      "name": "Finkelstein reaction",
+      "equation": "R-Cl + NaI --acetone--> R-I + NaCl",
+      "type": "Substitution",
+      "conditions": "An alkyl halide with sodium iodide in acetone.",
+      "observation": "An alkyl iodide forms.",
+      "notes": "Driven by precipitation of the insoluble sodium chloride.",
+      "tags": [
+        "organic",
+        "halogen exchange",
+        "substitution"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hell-volhard-zelinsky",
+      "name": "Hell-Volhard-Zelinsky reaction",
+      "equation": "RCH2COOH + Br2 --PBr3--> RCHBrCOOH",
+      "type": "Substitution",
+      "conditions": "Bromine with a phosphorus catalyst at the alpha-carbon.",
+      "observation": "An alpha-bromo carboxylic acid forms.",
+      "notes": "The route to alpha-amino and alpha-hydroxy acids.",
+      "tags": [
+        "organic",
+        "acid",
+        "halogenation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "wohl-ziegler-bromination",
+      "name": "Wohl-Ziegler bromination",
+      "equation": "alkene + NBS --light/peroxide--> allylic bromide",
+      "type": "Radical substitution",
+      "conditions": "N-bromosuccinimide with light or a radical initiator.",
+      "observation": "Bromination occurs at the allylic position.",
+      "notes": "A selective radical benzylic or allylic halogenation.",
+      "tags": [
+        "organic",
+        "radical",
+        "halogenation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "diels-alder",
+      "name": "Diels-Alder reaction",
+      "equation": "diene + dienophile --> cyclohexene",
+      "type": "Cycloaddition",
+      "conditions": "A conjugated diene and a dienophile, often with heat.",
+      "observation": "A six-membered ring forms in a single step.",
+      "notes": "A suprafacial [4+2] cycloaddition with high stereospecificity.",
+      "tags": [
+        "organic",
+        "cycloaddition",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "retro-diels-alder",
+      "name": "Retro-Diels-Alder reaction",
+      "equation": "cyclohexene --> diene + dienophile",
+      "type": "Cycloaddition",
+      "conditions": "Heat reverses the [4+2] cycloaddition.",
+      "observation": "The ring fragments into a diene and a dienophile.",
+      "notes": "Used in mass spectrometry and protecting-group strategies.",
+      "tags": [
+        "organic",
+        "cycloaddition",
+        "thermal"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "huisgen-cycloaddition",
+      "name": "Huisgen cycloaddition (click chemistry)",
+      "equation": "azide + terminal alkyne --Cu(I)--> 1,2,3-triazole",
+      "type": "Cycloaddition",
+      "conditions": "A copper(I) catalyst joins an azide and a terminal alkyne.",
+      "observation": "A 1,4-disubstituted triazole forms quickly and cleanly.",
+      "notes": "The archetypal click reaction, used in bioconjugation.",
+      "tags": [
+        "organic",
+        "cycloaddition",
+        "click chemistry"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "sn1-reaction",
+      "name": "SN1 substitution",
+      "equation": "(CH3)3C-Br + H2O --> (CH3)3C-OH + HBr",
+      "type": "Nucleophilic substitution",
+      "conditions": "A tertiary alkyl halide in a polar protic solvent.",
+      "observation": "A racemic product forms slowly.",
+      "notes": "Proceeds through a carbocation; first-order in the substrate.",
+      "tags": [
+        "organic",
+        "substitution",
+        "carbocation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "sn2-reaction",
+      "name": "SN2 substitution",
+      "equation": "CH3Br + OH- --> CH3OH + Br-",
+      "type": "Nucleophilic substitution",
+      "conditions": "A primary alkyl halide with a strong nucleophile.",
+      "observation": "The product has inverted configuration.",
+      "notes": "A one-step, concerted backside attack; second-order.",
+      "tags": [
+        "organic",
+        "substitution",
+        "stereochemistry"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "e1-elimination",
+      "name": "E1 elimination",
+      "equation": "(CH3)3C-Br --heat/EtOH--> (CH3)2C=CH2 + HBr",
+      "type": "Elimination",
+      "conditions": "A tertiary substrate in a polar protic solvent with heat.",
+      "observation": "The more substituted alkene usually forms.",
+      "notes": "Shares a carbocation intermediate with SN1.",
+      "tags": [
+        "organic",
+        "elimination",
+        "carbocation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "e2-elimination",
+      "name": "E2 elimination",
+      "equation": "CH3CH2Br + KOH(alc) --> CH2=CH2 + KBr + H2O",
+      "type": "Elimination",
+      "conditions": "A strong bulky base such as potassium tert-butoxide.",
+      "observation": "Concerted anti-periplanar loss of H and X.",
+      "notes": "Follows Zaitsev's rule unless the base is bulky.",
+      "tags": [
+        "organic",
+        "elimination",
+        "base"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "e1cb-elimination",
+      "name": "E1cb elimination",
+      "equation": "beta-hydroxy ketone --OH---> enone + H2O",
+      "type": "Elimination",
+      "conditions": "A substrate with an acidic beta-hydrogen, under base.",
+      "observation": "A carbanion (enolate) forms before the leaving group departs.",
+      "notes": "Common with beta-hydroxy carbonyls and beta-halo acids.",
+      "tags": [
+        "organic",
+        "elimination",
+        "carbanion"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hofmann-elimination",
+      "name": "Hofmann elimination",
+      "equation": "quaternary ammonium hydroxide --heat--> least-substituted alkene",
+      "type": "Elimination",
+      "conditions": "Exhaustive methylation then heating of the quaternary hydroxide.",
+      "observation": "The anti-Zaitsev (Hofmann) alkene predominates.",
+      "notes": "A bulky trimethylammonium leaving group controls regiochemistry.",
+      "tags": [
+        "organic",
+        "elimination",
+        "nitrogen"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "cope-elimination",
+      "name": "Cope elimination",
+      "equation": "amine oxide --heat--> alkene + hydroxylamine",
+      "type": "Elimination",
+      "conditions": "A tertiary amine oxide heated, often without solvent.",
+      "observation": "A syn elimination gives the alkene.",
+      "notes": "A mild, cis-selective elimination.",
+      "tags": [
+        "organic",
+        "elimination",
+        "syn"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "chugaev-elimination",
+      "name": "Chugaev elimination",
+      "equation": "xanthate ester --heat--> alkene",
+      "type": "Elimination",
+      "conditions": "A xanthate ester pyrolysed at about 200 degrees.",
+      "observation": "An alkene forms by syn elimination.",
+      "notes": "A thermal, base-free dehydration of alcohols.",
+      "tags": [
+        "organic",
+        "elimination",
+        "sulfur"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "wurtz-reaction",
+      "name": "Wurtz reaction",
+      "equation": "2 R-X + 2 Na --> R-R + 2 NaX",
+      "type": "Coupling",
+      "conditions": "Two alkyl halides with sodium metal in dry ether.",
+      "observation": "A symmetrical alkane forms.",
+      "notes": "Works best for symmetrical products; side reactions occur.",
+      "tags": [
+        "organic",
+        "coupling",
+        "alkane"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "wurtz-fittig-reaction",
+      "name": "Wurtz-Fittig reaction",
+      "equation": "Ar-X + R-X + 2 Na --> Ar-R + 2 NaX",
+      "type": "Coupling",
+      "conditions": "An aryl halide and an alkyl halide with sodium.",
+      "observation": "An alkylbenzene forms.",
+      "notes": "A way to attach alkyl chains to aromatic rings.",
+      "tags": [
+        "organic",
+        "coupling",
+        "aromatic"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "grignard-with-formaldehyde",
+      "name": "Grignard with formaldehyde",
+      "equation": "RMgX + HCHO, then H3O+ --> RCH2OH",
+      "type": "Addition",
+      "conditions": "A Grignard reagent with formaldehyde.",
+      "observation": "A primary alcohol with one extra carbon forms.",
+      "notes": "A standard way to lengthen a carbon chain by one.",
+      "tags": [
+        "organic",
+        "grignard",
+        "alcohol"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "grignard-with-aldehyde",
+      "name": "Grignard with an aldehyde",
+      "equation": "RMgX + R'CHO, then H3O+ --> secondary alcohol",
+      "type": "Addition",
+      "conditions": "A Grignard reagent with an aldehyde other than formaldehyde.",
+      "observation": "A secondary alcohol forms.",
+      "notes": "The nucleophile adds to the carbonyl carbon.",
+      "tags": [
+        "organic",
+        "grignard",
+        "alcohol"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "grignard-with-ketone",
+      "name": "Grignard with a ketone",
+      "equation": "RMgX + R'2C=O, then H3O+ --> tertiary alcohol",
+      "type": "Addition",
+      "conditions": "A Grignard reagent with a ketone.",
+      "observation": "A tertiary alcohol forms.",
+      "notes": "Two new carbon-carbon bonds to one carbon.",
+      "tags": [
+        "organic",
+        "grignard",
+        "alcohol"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "grignard-with-ester",
+      "name": "Grignard with an ester",
+      "equation": "2 RMgX + R'COOR'', then H3O+ --> tertiary alcohol",
+      "type": "Addition",
+      "conditions": "Excess Grignard reagent with an ester.",
+      "observation": "A tertiary alcohol forms after two additions.",
+      "notes": "Stopping at the ketone stage is difficult.",
+      "tags": [
+        "organic",
+        "grignard",
+        "alcohol"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "grignard-with-carbon-dioxide",
+      "name": "Grignard with carbon dioxide",
+      "equation": "RMgX + CO2, then H3O+ --> RCOOH",
+      "type": "Addition",
+      "conditions": "A Grignard reagent bubbled with dry carbon dioxide.",
+      "observation": "A carboxylic acid with one extra carbon forms.",
+      "notes": "A route to acids from alkyl and aryl halides.",
+      "tags": [
+        "organic",
+        "grignard",
+        "acid"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "sandmeyer-reaction",
+      "name": "Sandmeyer reaction",
+      "equation": "Ar-N2+Cl- --CuCl--> Ar-Cl + N2",
+      "type": "Substitution",
+      "conditions": "A diazonium salt with a copper(I) halide.",
+      "observation": "A nitrogen is replaced by a halogen.",
+      "notes": "Converts aromatic amines into aryl halides.",
+      "tags": [
+        "organic",
+        "aromatic",
+        "diazonium"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "azo-coupling",
+      "name": "Azo coupling",
+      "equation": "Ar-N2+ + Ar'-OH --> Ar-N=N-Ar'-OH",
+      "type": "Coupling",
+      "conditions": "A diazonium salt with a phenol or aromatic amine.",
+      "observation": "An intensely coloured azo dye forms.",
+      "notes": "The basis of many azo dyes and indicators.",
+      "tags": [
+        "organic",
+        "dye",
+        "diazonium"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hofmann-rearrangement",
+      "name": "Hofmann rearrangement",
+      "equation": "RCONH2 + Br2/OH- --> RNH2",
+      "type": "Rearrangement",
+      "conditions": "A primary amide with bromine and strong base.",
+      "observation": "An amine with one fewer carbon forms.",
+      "notes": "Proceeds through an isocyanate intermediate.",
+      "tags": [
+        "organic",
+        "rearrangement",
+        "nitrogen"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "beckmann-rearrangement",
+      "name": "Beckmann rearrangement",
+      "equation": "ketoxime --H2SO4--> substituted amide",
+      "type": "Rearrangement",
+      "conditions": "An oxime treated with acid.",
+      "observation": "A lactam or amide forms.",
+      "notes": "The group anti to the leaving OH migrates; the basis of nylon 6.",
+      "tags": [
+        "organic",
+        "rearrangement",
+        "industrial"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "curtius-rearrangement",
+      "name": "Curtius rearrangement",
+      "equation": "RCO-N3 --heat--> R-NCO --> RNH2",
+      "type": "Rearrangement",
+      "conditions": "An acyl azide heated, then hydrolysed.",
+      "observation": "An amine forms via an isocyanate.",
+      "notes": "Used to make amines and protected amine intermediates.",
+      "tags": [
+        "organic",
+        "rearrangement",
+        "nitrogen"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "schmidt-reaction",
+      "name": "Schmidt reaction",
+      "equation": "RCOOH + HN3 --H2SO4--> RNH2 + CO2",
+      "type": "Rearrangement",
+      "conditions": "Hydrazoic acid with a carboxylic acid and acid.",
+      "observation": "An amine forms with loss of carbon dioxide.",
+      "notes": "Also converts ketones into amides.",
+      "tags": [
+        "organic",
+        "rearrangement",
+        "nitrogen"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "lossen-rearrangement",
+      "name": "Lossen rearrangement",
+      "equation": "RCONH-OH --heat--> RNH2",
+      "type": "Rearrangement",
+      "conditions": "An O-acyl hydroxamic acid heated, often with base.",
+      "observation": "An isocyanate and then an amine form.",
+      "notes": "A rearrangement related to Hofmann and Curtius.",
+      "tags": [
+        "organic",
+        "rearrangement",
+        "nitrogen"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "barton-reaction",
+      "name": "Barton reaction",
+      "equation": "nitrite ester --light--> delta-nitroso alcohol",
+      "type": "Photochemical",
+      "conditions": "Irradiation of an alcohol nitrite ester.",
+      "observation": "A remote C-H bond is functionalized.",
+      "notes": "The basis of radical C-H activation.",
+      "tags": [
+        "organic",
+        "radical",
+        "photochemical"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "barton-mccombie-deoxygenation",
+      "name": "Barton-McCombie deoxygenation",
+      "equation": "alcohol --> xanthate --Bu3SnH--> deoxy compound",
+      "type": "Reduction",
+      "conditions": "Conversion to a xanthate then radical reduction with tributyltin hydride.",
+      "observation": "The hydroxyl group is replaced by hydrogen.",
+      "notes": "A mild radical method to remove oxygen.",
+      "tags": [
+        "organic",
+        "radical",
+        "deoxygenation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hofmann-loffler-freytag",
+      "name": "Hofmann-Loffler-Freytag reaction",
+      "equation": "N-haloamine --light--> delta-halo amine",
+      "type": "Photochemical",
+      "conditions": "Irradiation of an N-haloamine under acid.",
+      "observation": "A remote C-H bond is halogenated.",
+      "notes": "An early example of intramolecular radical C-H functionalization.",
+      "tags": [
+        "organic",
+        "radical",
+        "photochemical"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "wohl-degradation",
+      "name": "Wohl degradation",
+      "equation": "aldose --NH2OH, then (CH3CO)2O--> aldose with one less carbon",
+      "type": "Degradation",
+      "conditions": "Oxime formation then acetylation and dehydration.",
+      "observation": "The carbon chain shortens by one.",
+      "notes": "Used in carbohydrate structure determination.",
+      "tags": [
+        "organic",
+        "carbohydrate",
+        "degradation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "kiliani-fischer",
+      "name": "Kiliani-Fischer synthesis",
+      "equation": "aldose + HCN, then hydrolysis/reduction --> two epimeric aldoses",
+      "type": "Addition",
+      "conditions": "Cyanohydrin formation then reduction.",
+      "observation": "The chain lengthens by one carbon, giving two epimers.",
+      "notes": "Used to extend sugars; complements Wohl degradation.",
+      "tags": [
+        "organic",
+        "carbohydrate",
+        "synthesis"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "ruff-fenton-degradation",
+      "name": "Ruff-Fenton degradation",
+      "equation": "aldose --Fe3+/H2O2--> aldose with one less carbon",
+      "type": "Degradation",
+      "conditions": "Oxidation with iron(III) and hydrogen peroxide.",
+      "observation": "The sugar shortens by one carbon.",
+      "notes": "An alternative to the Wohl degradation.",
+      "tags": [
+        "organic",
+        "carbohydrate",
+        "degradation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "baylis-hillman",
+      "name": "Baylis-Hillman reaction",
+      "equation": "activated alkene + aldehyde --DABCO--> allylic alcohol",
+      "type": "Addition",
+      "conditions": "An electron-poor alkene with an aldehyde and DABCO catalyst.",
+      "observation": "An alpha-methylene beta-hydroxy carbonyl forms.",
+      "notes": "An atom-economical C-C bond-forming reaction.",
+      "tags": [
+        "organic",
+        "catalyst",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "suzuki-coupling",
+      "name": "Suzuki coupling",
+      "equation": "Ar-B(OH)2 + Ar'-X --Pd(0), base--> Ar-Ar'",
+      "type": "Cross-coupling",
+      "conditions": "An aryl boronic acid and an aryl halide with a palladium catalyst and base.",
+      "observation": "A biaryl bond forms.",
+      "notes": "Tolerant of many functional groups; widely used in industry.",
+      "tags": [
+        "organic",
+        "coupling",
+        "catalyst",
+        "boron"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "heck-reaction",
+      "name": "Heck reaction",
+      "equation": "Ar-X + CH2=CHR --Pd(0), base--> Ar-CH=CHR",
+      "type": "Cross-coupling",
+      "conditions": "An aryl halide and an alkene with palladium and base.",
+      "observation": "An arylated alkene forms, usually the trans isomer.",
+      "notes": "Awarded the 2010 Nobel Prize in Chemistry.",
+      "tags": [
+        "organic",
+        "coupling",
+        "catalyst"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "sonogashira-coupling",
+      "name": "Sonogashira coupling",
+      "equation": "Ar-X + HC#CR --Pd/Cu, base--> Ar-C#CR",
+      "type": "Cross-coupling",
+      "conditions": "An aryl halide and a terminal alkyne with palladium and copper.",
+      "observation": "An aryl alkyne forms.",
+      "notes": "Used to build conjugated and molecular-wire compounds.",
+      "tags": [
+        "organic",
+        "coupling",
+        "catalyst",
+        "alkyne"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "stille-coupling",
+      "name": "Stille coupling",
+      "equation": "R-SnBu3 + R'-X --Pd(0)--> R-R'",
+      "type": "Cross-coupling",
+      "conditions": "An organotin reagent and an organic halide with palladium.",
+      "observation": "A new carbon-carbon bond forms.",
+      "notes": "Very tolerant of functional groups but the tin reagents are toxic.",
+      "tags": [
+        "organic",
+        "coupling",
+        "catalyst",
+        "tin"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "negishi-coupling",
+      "name": "Negishi coupling",
+      "equation": "R-ZnX + R'-X --Pd or Ni--> R-R'",
+      "type": "Cross-coupling",
+      "conditions": "An organozinc reagent and an organic halide with palladium or nickel.",
+      "observation": "A carbon-carbon bond forms cleanly.",
+      "notes": "The organozinc reagent is mild and functional-group tolerant.",
+      "tags": [
+        "organic",
+        "coupling",
+        "catalyst",
+        "zinc"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "kumada-coupling",
+      "name": "Kumada coupling",
+      "equation": "R-MgX + R'-X --Ni or Pd--> R-R'",
+      "type": "Cross-coupling",
+      "conditions": "A Grignard reagent and an organic halide with nickel or palladium.",
+      "observation": "A carbon-carbon bond forms.",
+      "notes": "An early cross-coupling using cheap magnesium reagents.",
+      "tags": [
+        "organic",
+        "coupling",
+        "catalyst",
+        "magnesium"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "buchwald-hartwig",
+      "name": "Buchwald-Hartwig amination",
+      "equation": "Ar-X + R2NH --Pd, ligand, base--> Ar-NR2",
+      "type": "Cross-coupling",
+      "conditions": "An aryl halide and an amine with palladium and a bulky phosphine ligand.",
+      "observation": "An aryl amine forms.",
+      "notes": "A practical way to build C-N bonds.",
+      "tags": [
+        "organic",
+        "coupling",
+        "nitrogen",
+        "catalyst"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "ullmann-reaction",
+      "name": "Ullmann reaction",
+      "equation": "2 Ar-I --Cu, heat--> Ar-Ar",
+      "type": "Coupling",
+      "conditions": "An aryl halide with copper at high temperature.",
+      "observation": "A biaryl forms.",
+      "notes": "Historically important for making biaryls and diarylamines.",
+      "tags": [
+        "organic",
+        "coupling",
+        "copper"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "ring-closing-metathesis",
+      "name": "Ring-closing metathesis",
+      "equation": "diene --Grubbs cat.--> cyclic alkene + CH2=CH2",
+      "type": "Metathesis",
+      "conditions": "A diene with a ruthenium or molybdenum carbene catalyst.",
+      "observation": "A ring closes with loss of ethylene.",
+      "notes": "Used to build medium and large rings.",
+      "tags": [
+        "organic",
+        "metathesis",
+        "catalyst",
+        "ring formation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "cross-metathesis",
+      "name": "Cross metathesis",
+      "equation": "RCH=CH2 + R'CH=CH2 --cat.--> RCH=CHR' + CH2=CH2",
+      "type": "Metathesis",
+      "conditions": "Two alkenes with a ruthenium carbene catalyst.",
+      "observation": "The alkene fragments exchange partners.",
+      "notes": "Awarded the 2005 Nobel Prize; part of olefin metathesis.",
+      "tags": [
+        "organic",
+        "metathesis",
+        "catalyst",
+        "alkene"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "fischer-indole-synthesis",
+      "name": "Fischer indole synthesis",
+      "equation": "arylhydrazone --acid--> indole",
+      "type": "Heterocycle synthesis",
+      "conditions": "A phenylhydrazone heated with acid.",
+      "observation": "An indole ring forms.",
+      "notes": "A classic route to the indole alkaloid skeleton.",
+      "tags": [
+        "organic",
+        "heterocycle",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "skraup-synthesis",
+      "name": "Skraup synthesis",
+      "equation": "aniline + glycerol + H2SO4 --> quinoline",
+      "type": "Heterocycle synthesis",
+      "conditions": "Aniline with glycerol, sulfuric acid, and an oxidizing agent.",
+      "observation": "A quinoline ring forms.",
+      "notes": "A classical route to quinolines.",
+      "tags": [
+        "organic",
+        "heterocycle",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "paal-knorr-synthesis",
+      "name": "Paal-Knorr synthesis",
+      "equation": "1,4-diketone + NH3 --> pyrrole (+ 2 H2O)",
+      "type": "Heterocycle synthesis",
+      "conditions": "A 1,4-dicarbonyl with ammonia or a primary amine.",
+      "observation": "A pyrrole (or furan, or thiophene) ring forms.",
+      "notes": "One of the most direct routes to these heterocycles.",
+      "tags": [
+        "organic",
+        "heterocycle",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hantzsch-pyridine-synthesis",
+      "name": "Hantzsch pyridine synthesis",
+      "equation": "2 beta-keto ester + aldehyde + NH3 --> 1,4-dihydropyridine",
+      "type": "Heterocycle synthesis",
+      "conditions": "Two beta-keto esters, an aldehyde, and ammonia.",
+      "observation": "A dihydropyridine forms, oxidizable to a pyridine.",
+      "notes": "The route to nifedipine-type calcium channel blockers.",
+      "tags": [
+        "organic",
+        "heterocycle",
+        "medicine"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "biginelli-reaction",
+      "name": "Biginelli reaction",
+      "equation": "urea + aldehyde + beta-keto ester --> dihydropyrimidinone",
+      "type": "Heterocycle synthesis",
+      "conditions": "An acid-catalysed three-component condensation.",
+      "observation": "A dihydropyrimidinone forms in one pot.",
+      "notes": "A multicomponent reaction valued in medicinal chemistry.",
+      "tags": [
+        "organic",
+        "heterocycle",
+        "multicomponent"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "bischler-napieralski",
+      "name": "Bischler-Napieralski reaction",
+      "equation": "N-acyl arylethylamine --POCl3--> dihydroisoquinoline",
+      "type": "Heterocycle synthesis",
+      "conditions": "An amide cyclized with phosphorus oxychloride.",
+      "observation": "A dihydroisoquinoline forms.",
+      "notes": "Used to build isoquinoline alkaloids.",
+      "tags": [
+        "organic",
+        "heterocycle",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "pomeranz-fritsch",
+      "name": "Pomeranz-Fritsch reaction",
+      "equation": "benzaldehyde + aminoacetal --acid--> isoquinoline",
+      "type": "Heterocycle synthesis",
+      "conditions": "An acid-catalysed cyclization of an aminoacetal.",
+      "observation": "An isoquinoline forms.",
+      "notes": "A route to isoquinoline alkaloids.",
+      "tags": [
+        "organic",
+        "heterocycle",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "doebner-miller",
+      "name": "Doebner-Miller reaction",
+      "equation": "aniline + alpha,beta-unsaturated carbonyl --acid--> quinoline",
+      "type": "Heterocycle synthesis",
+      "conditions": "An aniline condensed with crotonaldehyde under acid.",
+      "observation": "A substituted quinoline forms.",
+      "notes": "A variant of the Skraup synthesis.",
+      "tags": [
+        "organic",
+        "heterocycle",
+        "named reaction"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "chichibabin-reaction",
+      "name": "Chichibabin reaction",
+      "equation": "pyridine + NaNH2 --> 2-aminopyridine",
+      "type": "Substitution",
+      "conditions": "Sodium amide with pyridine at high temperature.",
+      "observation": "An amino group enters the 2-position.",
+      "notes": "A nucleophilic aromatic substitution on an electron-poor ring.",
+      "tags": [
+        "organic",
+        "heterocycle",
+        "amination"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "ziegler-natta-polymerization",
+      "name": "Ziegler-Natta polymerization",
+      "equation": "n CH2=CH2 --TiCl4/AlR3--> (-CH2-CH2-)n",
+      "type": "Polymerization",
+      "conditions": "A titanium catalyst with an organoaluminium co-catalyst.",
+      "observation": "A highly linear, stereoregular polymer forms.",
+      "notes": "Made polypropylene and high-density polyethylene possible.",
+      "tags": [
+        "polymer",
+        "catalyst",
+        "industrial"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "radical-polymerization",
+      "name": "Free-radical polymerization",
+      "equation": "n CH2=CHX --initiator--> (-CH2-CHX-)n",
+      "type": "Polymerization",
+      "conditions": "An initiator such as a peroxide, AIBN, or light.",
+      "observation": "A high-molecular-weight polymer forms through chain growth.",
+      "notes": "The most widely used industrial polymerization method.",
+      "tags": [
+        "polymer",
+        "radical",
+        "industrial"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "cationic-polymerization",
+      "name": "Cationic polymerization",
+      "equation": "n CH2=C(CH3)2 --BF3/H2O--> polyisobutylene",
+      "type": "Polymerization",
+      "conditions": "A strong acid such as BF3 with a trace of water.",
+      "observation": "Electron-rich alkenes polymerize through carbocations.",
+      "notes": "Used for butyl rubber and poly(vinyl ethers).",
+      "tags": [
+        "polymer",
+        "cation",
+        "industrial"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "ring-opening-polymerization",
+      "name": "Ring-opening polymerization",
+      "equation": "n caprolactam --> nylon 6",
+      "type": "Polymerization",
+      "conditions": "A cyclic monomer opened by an initiator or heat.",
+      "observation": "A linear polymer forms.",
+      "notes": "Used for nylon 6, polylactide, and polyethers.",
+      "tags": [
+        "polymer",
+        "ring formation",
+        "industrial"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "romp",
+      "name": "Ring-opening metathesis polymerization",
+      "equation": "n norbornene --Grubbs cat.--> polynorbornene",
+      "type": "Polymerization",
+      "conditions": "A cyclic olefin with a ruthenium carbene catalyst.",
+      "observation": "A high-molecular-weight unsaturated polymer forms.",
+      "notes": "ROMP is used for specialty elastomers.",
+      "tags": [
+        "polymer",
+        "metathesis",
+        "catalyst"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "emulsion-polymerization",
+      "name": "Emulsion polymerization",
+      "equation": "n CH2=CHCl --persulfate, surfactant, H2O--> PVC latex",
+      "type": "Polymerization",
+      "conditions": "Monomer dispersed in water with a surfactant and initiator.",
+      "observation": "A latex of polymer particles forms.",
+      "notes": "Used for PVC, paints, and adhesives.",
+      "tags": [
+        "polymer",
+        "industrial",
+        "latex"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "copolymerization",
+      "name": "Copolymerization",
+      "equation": "n CH2=CH2 + n CH2=CHCH3 --> alternating/random copolymer",
+      "type": "Polymerization",
+      "conditions": "Two or more different monomers polymerized together.",
+      "observation": "A copolymer with combined properties forms.",
+      "notes": "Used for SBR rubber, ABS plastic, and many others.",
+      "tags": [
+        "polymer",
+        "industrial"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "vulcanization",
+      "name": "Vulcanization",
+      "equation": "polyisoprene + S8, heat --> cross-linked rubber",
+      "type": "Polymer modification",
+      "conditions": "Sulfur and heat, often with accelerators.",
+      "observation": "Rubber becomes harder and more elastic.",
+      "notes": "Discovered by Goodyear; sulfur cross-links the chains.",
+      "tags": [
+        "polymer",
+        "industrial",
+        "cross-linking"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "nylon-66-synthesis",
+      "name": "Nylon-6,6 synthesis",
+      "equation": "H2N(CH2)6NH2 + ClOC(CH2)4COCl --> nylon-6,6 + HCl",
+      "type": "Condensation polymerization",
+      "conditions": "Hexamethylenediamine with adipoyl chloride at an interface.",
+      "observation": "A tough polymer film forms at the interface.",
+      "notes": "A classic interfacial polycondensation demonstration.",
+      "tags": [
+        "polymer",
+        "condensation",
+        "industrial"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "polyurethane-synthesis",
+      "name": "Polyurethane synthesis",
+      "equation": "diisocyanate + diol --> polyurethane",
+      "type": "Polycondensation",
+      "conditions": "A diisocyanate reacts with a polyol.",
+      "observation": "A foam or elastomer forms.",
+      "notes": "Used for foams, coatings, and adhesives.",
+      "tags": [
+        "polymer",
+        "industrial"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "pet-synthesis",
+      "name": "PET synthesis",
+      "equation": "ethylene glycol + terephthalic acid --heat--> PET + H2O",
+      "type": "Polycondensation",
+      "conditions": "A diol and a diacid with heat and a catalyst.",
+      "observation": "A clear, strong polyester forms.",
+      "notes": "The basis of drinks bottles and polyester fibre.",
+      "tags": [
+        "polymer",
+        "industrial",
+        "polyester"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "bakelite-synthesis",
+      "name": "Bakelite formation",
+      "equation": "phenol + formaldehyde --acid/base--> cross-linked resin",
+      "type": "Polycondensation",
+      "conditions": "Phenol and formaldehyde condensed under heat and pressure.",
+      "observation": "A hard, heat-resistant thermoset forms.",
+      "notes": "The first fully synthetic plastic.",
+      "tags": [
+        "polymer",
+        "industrial",
+        "thermoset"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "silicone-synthesis",
+      "name": "Silicone synthesis",
+      "equation": "dimethyldichlorosilane + H2O --> silicone polymer",
+      "type": "Polycondensation",
+      "conditions": "Hydrolysis of diorganodichlorosilanes then condensation.",
+      "observation": "A flexible siloxane polymer forms.",
+      "notes": "Used for sealants, oils, and implants.",
+      "tags": [
+        "polymer",
+        "silicon",
+        "industrial"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "aspirin-synthesis",
+      "name": "Aspirin synthesis",
+      "equation": "salicylic acid + (CH3CO)2O --H2SO4--> aspirin + CH3COOH",
+      "type": "Esterification",
+      "conditions": "Salicylic acid acetylated with acetic anhydride.",
+      "observation": "Acetylsalicylic acid crystallizes out.",
+      "notes": "A standard undergraduate acetylation experiment.",
+      "tags": [
+        "organic",
+        "ester",
+        "medicine"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "paracetamol-synthesis",
+      "name": "Paracetamol synthesis",
+      "equation": "4-aminophenol + (CH3CO)2O --> paracetamol + CH3COOH",
+      "type": "Acetylation",
+      "conditions": "4-Aminophenol acetylated with acetic anhydride.",
+      "observation": "Paracetamol (acetaminophen) forms.",
+      "notes": "Demonstrates amide and phenol acetylation selectivity.",
+      "tags": [
+        "organic",
+        "medicine",
+        "acetylation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "ibuprofen-synthesis",
+      "name": "Ibuprofen synthesis",
+      "equation": "isobutylbenzene --acylation, reduction, CO, H2O--> ibuprofen",
+      "type": "Industrial synthesis",
+      "conditions": "A green three-step catalytic route from isobutylbenzene.",
+      "observation": "Racemic ibuprofen forms in high atom economy.",
+      "notes": "Awarded the Presidential Green Chemistry Challenge.",
+      "tags": [
+        "organic",
+        "medicine",
+        "green chemistry"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "flame-test",
+      "name": "Flame test",
+      "equation": "M+ --flame--> characteristic flame colour",
+      "type": "Qualitative test",
+      "conditions": "A clean wire dipped in a salt and held in a flame.",
+      "observation": "Sodium is golden yellow, potassium lilac, calcium brick red, copper green.",
+      "notes": "Used to identify metal cations.",
+      "tags": [
+        "analytical",
+        "cation",
+        "qualitative"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "borax-bead-test",
+      "name": "Borax bead test",
+      "equation": "borax --heat--> NaBO2 + B2O3; oxide + B2O3 --> coloured bead",
+      "type": "Qualitative test",
+      "conditions": "A borax bead fused with a metal salt in a flame.",
+      "observation": "Transition-metal beads take characteristic colours.",
+      "notes": "Identifies coloured metal ions.",
+      "tags": [
+        "analytical",
+        "qualitative"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "brown-ring-test",
+      "name": "Brown ring test",
+      "equation": "FeSO4 + NO3- + H2SO4 --> [Fe(H2O)5NO]SO4 (brown ring)",
+      "type": "Qualitative test",
+      "conditions": "Nitrate solution layered over iron(II) sulfate with sulfuric acid.",
+      "observation": "A brown ring of the nitroso complex forms at the interface.",
+      "notes": "Confirms the nitrate ion.",
+      "tags": [
+        "analytical",
+        "anion",
+        "qualitative"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "chromyl-chloride-test",
+      "name": "Chromyl chloride test",
+      "equation": "Cl- + K2Cr2O7 + H2SO4 --> CrO2Cl2 (red vapour)",
+      "type": "Qualitative test",
+      "conditions": "A chloride heated with dichromate and concentrated sulfuric acid.",
+      "observation": "Red-orange chromyl chloride vapour forms.",
+      "notes": "Confirms chloride in inorganic salts.",
+      "tags": [
+        "analytical",
+        "halide",
+        "qualitative"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "nessler-test",
+      "name": "Nessler's test",
+      "equation": "NH3 + 2 K2[HgI4] + KOH --> brown precipitate",
+      "type": "Qualitative test",
+      "conditions": "Ammonia or ammonium salt treated with Nessler's reagent.",
+      "observation": "A brown colour or precipitate shows ammonia.",
+      "notes": "A sensitive test for ammonium ions.",
+      "tags": [
+        "analytical",
+        "nitrogen",
+        "qualitative"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "lassaigne-test",
+      "name": "Lassaigne's test",
+      "equation": "organic + Na, heat --> NaCN, Na2S, NaX (fused extract)",
+      "type": "Qualitative test",
+      "conditions": "An organic compound fused with sodium metal, then extracted with water.",
+      "observation": "The extract gives tests for N, S, and halogens.",
+      "notes": "A preliminary test for elements in organic compounds.",
+      "tags": [
+        "analytical",
+        "organic",
+        "qualitative"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "charcoal-cavity-test",
+      "name": "Charcoal cavity test",
+      "equation": "metal salt + Na2CO3 --blowpipe, charcoal--> metal bead",
+      "type": "Qualitative test",
+      "conditions": "A salt with sodium carbonate blown onto charcoal.",
+      "observation": "A metal bead or coloured residue forms.",
+      "notes": "A classical dry test for metal cations.",
+      "tags": [
+        "analytical",
+        "cation",
+        "qualitative"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "cobalt-nitrate-test",
+      "name": "Cobalt nitrate test",
+      "equation": "Zn2+ + Co(NO3)2 --charcoal--> Rinmann's green (CoZnO2)",
+      "type": "Qualitative test",
+      "conditions": "A zinc salt with cobalt nitrate on charcoal.",
+      "observation": "A green residue of cobalt zincate forms.",
+      "notes": "Confirms zinc.",
+      "tags": [
+        "analytical",
+        "cation",
+        "qualitative"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "baeyer-test",
+      "name": "Baeyer's test",
+      "equation": "alkene + cold dil. KMnO4 --> colourless + MnO2",
+      "type": "Qualitative test",
+      "conditions": "An alkene treated with cold, dilute alkaline permanganate.",
+      "observation": "The purple colour is discharged.",
+      "notes": "Confirms unsaturation (a positive test decolourises the reagent).",
+      "tags": [
+        "analytical",
+        "organic",
+        "alkene"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "iodoform-test",
+      "name": "Iodoform (haloform) test",
+      "equation": "CH3CO-R + I2/NaOH --> CHI3 (yellow)",
+      "type": "Qualitative test",
+      "conditions": "A methyl ketone or ethanol heated with iodine and alkali.",
+      "observation": "Yellow crystals of iodoform with a characteristic smell form.",
+      "notes": "Detects a CH3CO group or a CH3CH(OH) group.",
+      "tags": [
+        "analytical",
+        "organic",
+        "carbonyl"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "lucas-test",
+      "name": "Lucas test",
+      "equation": "alcohol + ZnCl2/HCl --> cloudy alkyl chloride",
+      "type": "Qualitative test",
+      "conditions": "An alcohol with Lucas reagent (zinc chloride in concentrated HCl).",
+      "observation": "Tertiary alcohols turn cloudy at once, secondary slowly, primary not at room temperature.",
+      "notes": "Distinguishes primary, secondary, and tertiary alcohols.",
+      "tags": [
+        "analytical",
+        "organic",
+        "alcohol"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "dnp-test",
+      "name": "2,4-DNP test",
+      "equation": "R2C=O + 2,4-dinitrophenylhydrazine --> orange precipitate",
+      "type": "Qualitative test",
+      "conditions": "A carbonyl compound with Brady's reagent.",
+      "observation": "An orange or red 2,4-dinitrophenylhydrazone precipitates.",
+      "notes": "Confirms an aldehyde or ketone and gives a sharp melting point.",
+      "tags": [
+        "analytical",
+        "organic",
+        "carbonyl"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "fehling-test",
+      "name": "Fehling's test",
+      "equation": "RCHO + 2 Cu2+ + 5 OH- --> Cu2O (red) + RCOO-",
+      "type": "Qualitative test",
+      "conditions": "An aldehyde heated with Fehling's solution.",
+      "observation": "A red precipitate of copper(I) oxide forms.",
+      "notes": "Ketones give no reaction; used to tell aldehydes from ketones.",
+      "tags": [
+        "analytical",
+        "organic",
+        "aldehyde"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "benedict-test",
+      "name": "Benedict's test",
+      "equation": "reducing sugar + Cu2+ --> Cu2O (red)",
+      "type": "Qualitative test",
+      "conditions": "A reducing sugar heated with Benedict's solution.",
+      "observation": "A red, orange, or green precipitate forms.",
+      "notes": "Detects reducing sugars in urine and food.",
+      "tags": [
+        "analytical",
+        "carbohydrate",
+        "medicine"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "molisch-test",
+      "name": "Molisch's test",
+      "equation": "carbohydrate + alpha-naphthol + H2SO4 --> purple ring",
+      "type": "Qualitative test",
+      "conditions": "A carbohydrate with alpha-naphthol and concentrated sulfuric acid.",
+      "observation": "A violet ring forms at the interface.",
+      "notes": "A general test for carbohydrates.",
+      "tags": [
+        "analytical",
+        "carbohydrate",
+        "qualitative"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "biuret-test",
+      "name": "Biuret test",
+      "equation": "peptide + Cu2+ in alkali --> violet complex",
+      "type": "Qualitative test",
+      "conditions": "A protein with copper(II) sulfate and sodium hydroxide.",
+      "observation": "A violet colour shows peptide bonds.",
+      "notes": "A general test for proteins.",
+      "tags": [
+        "analytical",
+        "protein",
+        "biochemistry"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "xanthoproteic-test",
+      "name": "Xanthoproteic test",
+      "equation": "aromatic protein + conc. HNO3 --> yellow nitro-protein",
+      "type": "Qualitative test",
+      "conditions": "A protein with concentrated nitric acid, then ammonia.",
+      "observation": "A yellow colour deepens to orange with ammonia.",
+      "notes": "Detects aromatic amino-acid residues.",
+      "tags": [
+        "analytical",
+        "protein",
+        "biochemistry"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "millon-test",
+      "name": "Millon's test",
+      "equation": "phenolic protein + Hg2+ --> red complex",
+      "type": "Qualitative test",
+      "conditions": "A protein with Millon's reagent (mercury in nitric acid).",
+      "observation": "A white precipitate turns red on heating.",
+      "notes": "Detects the phenolic group of tyrosine.",
+      "tags": [
+        "analytical",
+        "protein",
+        "biochemistry"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "ninhydrin-test",
+      "name": "Ninhydrin test",
+      "equation": "amino acid + ninhydrin --> Ruhemann's purple",
+      "type": "Qualitative test",
+      "conditions": "An amino acid or protein spotted with ninhydrin and heated.",
+      "observation": "A blue-violet colour forms (yellow with proline).",
+      "notes": "Used to visualise amino acids on chromatography paper.",
+      "tags": [
+        "analytical",
+        "amino acid",
+        "biochemistry"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "seliwanoff-test",
+      "name": "Seliwanoff's test",
+      "equation": "ketose + resorcinol/HCl --> cherry-red colour",
+      "type": "Qualitative test",
+      "conditions": "A sugar heated with Seliwanoff's reagent.",
+      "observation": "Ketohexoses give a cherry-red colour faster than aldoses.",
+      "notes": "Distinguishes ketoses from aldoses.",
+      "tags": [
+        "analytical",
+        "carbohydrate",
+        "qualitative"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "osazone-formation",
+      "name": "Osazone formation",
+      "equation": "reducing sugar + phenylhydrazine --> osazone crystals",
+      "type": "Qualitative test",
+      "conditions": "A reducing sugar with phenylhydrazine heated in acid.",
+      "observation": "Characteristic yellow crystals with sharp melting points form.",
+      "notes": "Used to identify sugars.",
+      "tags": [
+        "analytical",
+        "carbohydrate",
+        "qualitative"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "kjeldahl-digestion",
+      "name": "Kjeldahl digestion",
+      "equation": "protein + H2SO4, catalyst --> (NH4)2SO4",
+      "type": "Analytical method",
+      "conditions": "A sample digested with sulfuric acid and a catalyst.",
+      "observation": "Nitrogen is converted into ammonium sulfate.",
+      "notes": "The basis of protein nitrogen determination.",
+      "tags": [
+        "analytical",
+        "nitrogen",
+        "protein"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "dumas-method",
+      "name": "Dumas method",
+      "equation": "nitrogenous sample + CuO, heat --> N2 gas measured",
+      "type": "Analytical method",
+      "conditions": "A sample burned with copper(II) oxide and the nitrogen gas collected.",
+      "observation": "The volume of nitrogen gives the nitrogen content.",
+      "notes": "An alternative to the Kjeldahl method.",
+      "tags": [
+        "analytical",
+        "nitrogen",
+        "quantitative"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "combustion-analysis",
+      "name": "Combustion analysis",
+      "equation": "CxHyOz + O2 --> CO2 + H2O (weighed)",
+      "type": "Analytical method",
+      "conditions": "A sample burned in excess oxygen and the gases absorbed and weighed.",
+      "observation": "Masses of CO2 and H2O give the empirical formula.",
+      "notes": "The classical Liebig method for organic formula determination.",
+      "tags": [
+        "analytical",
+        "organic",
+        "quantitative"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "silver-nitrate-halide-test",
+      "name": "Silver nitrate halide test",
+      "equation": "Ag+ + X- --> AgX (precipitate)",
+      "type": "Qualitative test",
+      "conditions": "Silver nitrate added to a halide solution.",
+      "observation": "AgCl is white, AgBr cream, and AgI yellow.",
+      "notes": "Distinguishes chloride, bromide, and iodide.",
+      "tags": [
+        "analytical",
+        "halide",
+        "qualitative"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "barium-chloride-sulfate-test",
+      "name": "Barium chloride sulfate test",
+      "equation": "Ba2+ + SO4^2- --> BaSO4 (white)",
+      "type": "Qualitative test",
+      "conditions": "Barium chloride added to a solution acidified with HCl.",
+      "observation": "A white precipitate insoluble in acid forms.",
+      "notes": "Confirms the sulfate ion.",
+      "tags": [
+        "analytical",
+        "anion",
+        "qualitative"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "limewater-co2-test",
+      "name": "Limewater test for carbon dioxide",
+      "equation": "CO2 + Ca(OH)2 --> CaCO3 (white) + H2O",
+      "type": "Qualitative test",
+      "conditions": "A gas bubbled through limewater.",
+      "observation": "The limewater turns milky.",
+      "notes": "Confirms carbon dioxide; the cloudiness clears with excess CO2.",
+      "tags": [
+        "analytical",
+        "gas",
+        "qualitative"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "iodometric-titration",
+      "name": "Iodometric titration",
+      "equation": "I2 + 2 S2O3^2- --> 2 I- + S4O6^2-",
+      "type": "Titration",
+      "conditions": "Iodine titrated with standard sodium thiosulfate, starch indicator.",
+      "observation": "The blue starch colour disappears at the endpoint.",
+      "notes": "Used to measure oxidising agents indirectly.",
+      "tags": [
+        "analytical",
+        "redox",
+        "titration"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "permanganate-titration",
+      "name": "Permanganate titration",
+      "equation": "2 MnO4- + 5 C2O4^2- + 16 H+ --> 2 Mn2+ + 10 CO2 + 8 H2O",
+      "type": "Titration",
+      "conditions": "Potassium permanganate added to an acidified reductant.",
+      "observation": "The purple colour persists at the endpoint (self-indicating).",
+      "notes": "A standard redox titration.",
+      "tags": [
+        "analytical",
+        "redox",
+        "titration"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "dichromate-titration",
+      "name": "Dichromate titration",
+      "equation": "Cr2O7^2- + 14 H+ + 6 e- --> 2 Cr3+ + 7 H2O",
+      "type": "Titration",
+      "conditions": "Potassium dichromate with a redox indicator such as diphenylamine.",
+      "observation": "A colour change marks the endpoint.",
+      "notes": "Dichromate is a primary standard.",
+      "tags": [
+        "analytical",
+        "redox",
+        "titration"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "complexometric-titration",
+      "name": "Complexometric titration",
+      "equation": "M2+ + EDTA^4- --> [M-EDTA]^2-",
+      "type": "Titration",
+      "conditions": "A metal solution titrated with EDTA and a metal indicator such as Eriochrome Black T.",
+      "observation": "The indicator changes colour at the endpoint.",
+      "notes": "Used to determine water hardness and metal ions.",
+      "tags": [
+        "analytical",
+        "chelation",
+        "titration"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "acid-base-titration",
+      "name": "Acid-base titration",
+      "equation": "H+ + OH- --> H2O",
+      "type": "Titration",
+      "conditions": "An acid titrated with a base (or vice versa) to an indicator endpoint.",
+      "observation": "The indicator changes colour at the equivalence point.",
+      "notes": "The basis of volumetric analysis.",
+      "tags": [
+        "analytical",
+        "acid-base",
+        "titration"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "haber-process",
+      "name": "Haber-Bosch process",
+      "equation": "N2 + 3 H2 --Fe, 450 C, 200 atm--> 2 NH3",
+      "type": "Industrial synthesis",
+      "conditions": "Iron catalyst with promoters at high pressure and moderate temperature.",
+      "observation": "Ammonia forms in a yield limited by equilibrium.",
+      "notes": "Feeds the world's fertiliser supply.",
+      "tags": [
+        "industrial",
+        "catalyst",
+        "fertilizer"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "ostwald-process",
+      "name": "Ostwald process",
+      "equation": "4 NH3 + 5 O2 --Pt/Rh--> 4 NO + 6 H2O",
+      "type": "Industrial oxidation",
+      "conditions": "Ammonia oxidised over a platinum-rhodium gauze at about 800 degrees.",
+      "observation": "Nitric oxide forms, then nitric acid.",
+      "notes": "The industrial route to nitric acid.",
+      "tags": [
+        "industrial",
+        "catalyst",
+        "oxidation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "contact-process",
+      "name": "Contact process",
+      "equation": "2 SO2 + O2 --V2O5--> 2 SO3; SO3 + H2O --> H2SO4",
+      "type": "Industrial synthesis",
+      "conditions": "Sulfur dioxide oxidised over vanadium(V) oxide at about 450 degrees.",
+      "observation": "Sulfur trioxide forms, absorbed to give sulfuric acid.",
+      "notes": "The main industrial route to sulfuric acid.",
+      "tags": [
+        "industrial",
+        "catalyst",
+        "acid"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "birkeland-eyde-process",
+      "name": "Birkeland-Eyde process",
+      "equation": "N2 + O2 --electric arc--> 2 NO",
+      "type": "Industrial synthesis",
+      "conditions": "Air passed through an electric arc above 3000 degrees.",
+      "observation": "Nitric oxide forms from nitrogen and oxygen.",
+      "notes": "An early, energy-intensive nitrogen fixation method.",
+      "tags": [
+        "industrial",
+        "nitrogen",
+        "historical"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "fischer-tropsch-process",
+      "name": "Fischer-Tropsch process",
+      "equation": "n CO + 2n H2 --Fe or Co--> (-CH2-)n + n H2O",
+      "type": "Industrial synthesis",
+      "conditions": "Syngas over an iron or cobalt catalyst at moderate temperature and pressure.",
+      "observation": "Liquid hydrocarbon fuels form.",
+      "notes": "Converts coal or gas into liquid fuels.",
+      "tags": [
+        "industrial",
+        "catalyst",
+        "fuel"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "bergius-process",
+      "name": "Bergius process",
+      "equation": "coal + H2 --Fe, high T, high P--> liquid hydrocarbons",
+      "type": "Industrial hydrogenation",
+      "conditions": "Coal hydrogenated at high temperature and pressure.",
+      "observation": "Liquid synthetic fuel forms.",
+      "notes": "An early coal liquefaction method.",
+      "tags": [
+        "industrial",
+        "hydrogenation",
+        "fuel"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "kraft-process",
+      "name": "Kraft process",
+      "equation": "wood + NaOH/Na2S, heat --> cellulose pulp + lignin",
+      "type": "Industrial process",
+      "conditions": "Wood chips cooked in alkaline sodium hydroxide and sulfide liquor.",
+      "observation": "Cellulose pulp separates from lignin.",
+      "notes": "The dominant chemical pulping method.",
+      "tags": [
+        "industrial",
+        "cellulose",
+        "paper"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "claus-process",
+      "name": "Claus process",
+      "equation": "2 H2S + SO2 --> 3 S + 2 H2O",
+      "type": "Industrial process",
+      "conditions": "Hydrogen sulfide partly burned to sulfur dioxide, then reacted over a catalyst.",
+      "observation": "Elemental sulfur is recovered.",
+      "notes": "Recovers sulfur from oil and gas refining.",
+      "tags": [
+        "industrial",
+        "sulfur",
+        "catalyst"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "solvay-process",
+      "name": "Solvay process",
+      "equation": "NaCl + NH3 + CO2 + H2O --> NaHCO3 + NH4Cl",
+      "type": "Industrial process",
+      "conditions": "Ammonia and carbon dioxide passed into brine.",
+      "observation": "Sodium bicarbonate precipitates; heating gives sodium carbonate.",
+      "notes": "The major route to soda ash.",
+      "tags": [
+        "industrial",
+        "alkali",
+        "historical"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "chlor-alkali-process",
+      "name": "Chlor-alkali process",
+      "equation": "2 NaCl + 2 H2O --electrolysis--> 2 NaOH + Cl2 + H2",
+      "type": "Electrolysis",
+      "conditions": "Electrolysis of brine in a membrane cell.",
+      "observation": "Chlorine, hydrogen, and sodium hydroxide form together.",
+      "notes": "One of the largest electrochemical industries.",
+      "tags": [
+        "industrial",
+        "electrolysis",
+        "chlorine"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "hall-heroult-process",
+      "name": "Hall-Heroult process",
+      "equation": "2 Al2O3 + 3 C --> 4 Al + 3 CO2",
+      "type": "Electrolysis",
+      "conditions": "Alumina dissolved in molten cryolite, electrolysed with carbon anodes.",
+      "observation": "Molten aluminium collects at the cathode.",
+      "notes": "The only large-scale route to aluminium metal.",
+      "tags": [
+        "industrial",
+        "electrolysis",
+        "metal"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "bessemer-process",
+      "name": "Bessemer process",
+      "equation": "C (in molten iron) + O2 --> CO2",
+      "type": "Industrial process",
+      "conditions": "Air blown through molten pig iron in a converter.",
+      "observation": "Carbon and impurities burn off, leaving steel.",
+      "notes": "The first cheap mass production of steel.",
+      "tags": [
+        "industrial",
+        "metal",
+        "historical"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "blast-furnace",
+      "name": "Blast furnace ironmaking",
+      "equation": "Fe2O3 + 3 CO --> 2 Fe + 3 CO2",
+      "type": "Industrial process",
+      "conditions": "Iron ore, coke, and limestone heated with hot air.",
+      "observation": "Molten iron and slag are tapped separately.",
+      "notes": "The main route from ore to pig iron.",
+      "tags": [
+        "industrial",
+        "metal",
+        "ore processing"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "steam-reforming",
+      "name": "Steam reforming",
+      "equation": "CH4 + H2O --Ni, heat--> CO + 3 H2",
+      "type": "Industrial synthesis",
+      "conditions": "Methane and steam over a nickel catalyst.",
+      "observation": "Syngas (CO + H2) forms.",
+      "notes": "The main industrial source of hydrogen.",
+      "tags": [
+        "industrial",
+        "hydrogen",
+        "catalyst"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "catalytic-cracking",
+      "name": "Catalytic cracking",
+      "equation": "long-chain alkane --zeolite, heat--> shorter alkenes + alkanes",
+      "type": "Industrial process",
+      "conditions": "Heavy petroleum fractions over a zeolite catalyst.",
+      "observation": "Smaller, more valuable hydrocarbons and alkenes form.",
+      "notes": "Supplies petrol and petrochemical feedstocks.",
+      "tags": [
+        "industrial",
+        "petrochemical",
+        "catalyst"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "catalytic-reforming",
+      "name": "Catalytic reforming",
+      "equation": "alkane --Pt, heat--> branched alkane + aromatics + H2",
+      "type": "Industrial process",
+      "conditions": "Naphtha over a platinum catalyst with hydrogen.",
+      "observation": "Higher-octane branched and aromatic hydrocarbons form.",
+      "notes": "Improves petrol quality.",
+      "tags": [
+        "industrial",
+        "petrochemical",
+        "catalyst"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "water-gas-shift",
+      "name": "Water-gas shift reaction",
+      "equation": "CO + H2O --catalyst--> CO2 + H2",
+      "type": "Industrial process",
+      "conditions": "Carbon monoxide and steam over an iron or copper catalyst.",
+      "observation": "More hydrogen is produced.",
+      "notes": "Adjusts the H2/CO ratio of syngas.",
+      "tags": [
+        "industrial",
+        "hydrogen",
+        "equilibrium"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "fermentation-of-glucose",
+      "name": "Fermentation of glucose",
+      "equation": "C6H12O6 --zymase--> 2 C2H5OH + 2 CO2",
+      "type": "Biochemical",
+      "conditions": "Glucose with yeast enzymes, anaerobically.",
+      "observation": "Ethanol and carbon dioxide form.",
+      "notes": "The basis of brewing and baking.",
+      "tags": [
+        "biochemistry",
+        "fermentation",
+        "ethanol"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "glycolysis",
+      "name": "Glycolysis",
+      "equation": "glucose + 2 NAD+ + 2 ADP --> 2 pyruvate + 2 NADH + 2 ATP",
+      "type": "Biochemical",
+      "conditions": "Enzymes in the cytoplasm, without oxygen.",
+      "observation": "Glucose is split and a little ATP is made.",
+      "notes": "The first stage of cellular respiration.",
+      "tags": [
+        "biochemistry",
+        "metabolism",
+        "energy"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "photosynthesis-light-reactions",
+      "name": "Light reactions of photosynthesis",
+      "equation": "2 H2O + 2 NADP+ + light --> O2 + 2 NADPH + 2 H+",
+      "type": "Biochemical",
+      "conditions": "Chlorophyll in the thylakoid membrane absorbs light.",
+      "observation": "Water is split, oxygen is released, and NADPH and ATP form.",
+      "notes": "Provides energy for carbon fixation.",
+      "tags": [
+        "biochemistry",
+        "photosynthesis",
+        "energy"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "calvin-cycle",
+      "name": "Calvin cycle",
+      "equation": "3 CO2 + 9 ATP + 6 NADPH --> glyceraldehyde-3-phosphate",
+      "type": "Biochemical",
+      "conditions": "Enzymes in the chloroplast stroma, using ATP and NADPH.",
+      "observation": "Carbon dioxide is fixed into a three-carbon sugar.",
+      "notes": "The light-independent stage of photosynthesis.",
+      "tags": [
+        "biochemistry",
+        "photosynthesis",
+        "carbon fixation"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "krebs-cycle",
+      "name": "Citric acid (Krebs) cycle",
+      "equation": "acetyl-CoA + 3 NAD+ + FAD + GDP --> 2 CO2 + 3 NADH + FADH2 + GTP",
+      "type": "Biochemical",
+      "conditions": "Enzymes in the mitochondrial matrix.",
+      "observation": "Acetyl groups are fully oxidised to carbon dioxide.",
+      "notes": "The central hub of aerobic metabolism.",
+      "tags": [
+        "biochemistry",
+        "metabolism",
+        "energy"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "urea-cycle",
+      "name": "Urea cycle",
+      "equation": "2 NH3 + CO2 + 3 ATP --> urea + H2O",
+      "type": "Biochemical",
+      "conditions": "Enzymes in the liver mitochondria and cytosol.",
+      "observation": "Toxic ammonia is converted into urea for excretion.",
+      "notes": "Removes nitrogen waste in mammals.",
+      "tags": [
+        "biochemistry",
+        "metabolism",
+        "nitrogen"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "beta-oxidation",
+      "name": "Beta-oxidation",
+      "equation": "fatty acyl-CoA + FAD + NAD+ + CoA --> acetyl-CoA + FADH2 + NADH",
+      "type": "Biochemical",
+      "conditions": "Enzymes in the mitochondrial matrix.",
+      "observation": "Fatty acids are shortened two carbons at a time.",
+      "notes": "Releases energy from fats.",
+      "tags": [
+        "biochemistry",
+        "metabolism",
+        "lipid"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
+    },
+    {
+      "id": "anaerobic-digestion",
+      "name": "Anaerobic digestion",
+      "equation": "organic matter --microbes--> CH4 + CO2 + digestate",
+      "type": "Biochemical",
+      "conditions": "Microbes break down waste without oxygen.",
+      "observation": "Biogas (mostly methane) forms.",
+      "notes": "Used to treat waste and produce renewable gas.",
+      "tags": [
+        "biochemistry",
+        "biogas",
+        "renewable"
+      ],
+      "sourceLabel": "Chemistry reference",
+      "sourceUrl": "https://chem.libretexts.org/"
     }
   ]
 }

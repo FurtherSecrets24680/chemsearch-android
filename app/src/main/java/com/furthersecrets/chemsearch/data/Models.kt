@@ -234,6 +234,8 @@ data class ChemUiState(
     val advancedProperties: List<AdvancedPropertyRow> = emptyList(),
     val classificationTags: List<String> = emptyList(),
     val useEntries: List<CompoundUseEntry> = emptyList(),
+    val spectralRecords: List<CompoundSpectrumRecord> = emptyList(),
+    val spectralLoaded: Boolean = false,
     val isLoadingPubChemContext: Boolean = false,
     val isomerMode: Boolean = false,
     val isomerQuery: String = "",
@@ -258,9 +260,20 @@ data class CompoundUseEntry(
     val text: String
 )
 
+data class CompoundSpectrumRecord(
+    val technique: String,
+    val fields: List<SpectralField> = emptyList()
+)
+
+data class SpectralField(
+    val label: String,
+    val value: String
+)
+
 data class PubChemCompoundContext(
     val classificationTags: List<String> = emptyList(),
-    val useEntries: List<CompoundUseEntry> = emptyList()
+    val useEntries: List<CompoundUseEntry> = emptyList(),
+    val spectralRecords: List<CompoundSpectrumRecord> = emptyList()
 )
 
 data class PubChemSectionText(

@@ -1653,34 +1653,20 @@
     <string name="ui_faq_reaction_predictor_q" translatable="true">বিক্রিয়া পূর্বানুমান কীভাবে কাজ করে?</string>
     <string name="ui_faq_reaction_predictor_a" translatable="true">এটি আপনার নির্বাচিত বিকারকগুলিকে অন্তর্ভুক্ত রাসায়নিক ডেটাবেস থেকে তৈরি একটি অফলাইন নিয়ম-সেটের সাথে মেলায় এবং সম্ভাব্য পণ্য, বিক্রিয়ার ধরন ও পর্যবেক্ষণের পরামর্শ দেয়। এটি সাধারণ পাঠ্যক্রমের বিক্রিয়াগুলি কভার করে — অস্বাভাবিক ক্ষেত্রে পাঠ্যবই দিয়ে যাচাই করুন।</string>
     <string name="ui_faq_database_size_q" translatable="true">অন্তর্ভুক্ত রাসায়নিক ডেটাবেসটি কত বড়?</string>
-    <string name="ui_faq_database_size_a" translatable="true">এতে ৫৭৫টি পদার্থ, ১০৮টি আয়ন, ৭১টি ক্রিয়ামূলক গোষ্ঠী এবং ১৪৯টি বিক্রিয়া রয়েছে, সবই অফলাইনে উপলব্ধ। ১১৮টি পর্যায়-সারণি মৌল পর্যায় সারণিতে থাকে, তাই দুটি রেফারেন্স কখনো একে অপরের নকল করে না।</string>
+    <string name="ui_faq_database_size_a" translatable="true">এতে ১৫৩২টি পদার্থ, ২১১টি আয়ন, ১২২টি ক্রিয়ামূলক গোষ্ঠী এবং ৩২৬টি বিক্রিয়া রয়েছে, সবই অফলাইনে উপলব্ধ। ১১৮টি পর্যায়-সারণি মৌল পর্যায় সারণিতে থাকে, তাই দুটি রেফারেন্স কখনো একে অপরের নকল করে না।</string>
     <string name="ui_faq_languages_q" translatable="true">ChemSearch কোন ভাষাগুলি সমর্থন করে?</string>
     <string name="ui_faq_languages_a" translatable="true">ইন্টারফেসটি ১৫টি ভাষায় সম্পূর্ণ অনূদিত: বাংলা, ড্যানিশ, জার্মান, গ্রিক, স্প্যানিশ, ফিনিশ, ফরাসি, ইতালিয়ান, জাপানি, ডাচ, নরওয়েজিয়ান, পোলিশ, পর্তুগিজ, রাশিয়ান এবং সুইডিশ। সেটিংস > ভাষা থেকে যেকোনো সময় পরিবর্তন করুন।</string>
     <string name="ui_whats_new_section_features" translatable="true">নতুন ফিচার</string>
-    <string name="ui_whats_new_section_improvements" translatable="true">উন্নতি</string>
     <string name="ui_section_whats_new" translatable="true">নতুন কী আছে</string>
-    <string name="ui_whats_new_bullet_reaction" translatable="true">বিক্রিয়া পূর্বাভাস: অন্তর্ভুক্ত রাসায়নিক ডাটাবেসের উপর ভিত্তি করে একটি অফলাইন নিয়ম-ইঞ্জিন যোগ করা হয়েছে। সর্বোচ্চ তিনটি বিক্রিয়ক দিন এবং পূর্বাভাসকৃত পণ্য, বিক্রিয়ার ধরন, পর্যবেক্ষণ ও আত্মবিশ্বাসের স্তর পান।</string>
-    <string name="ui_whats_new_bullet_widgets" translatable="true">হোম-স্ক্রিন উইজেট: আজকের যৌগ এবং এলোমেলো যৌগ উইজেট যোগ করা হয়েছে। দৈনিকটি মধ্যরাতে পরিবর্তন হয়, আর এলোমেলোটির নিজস্ব রিফ্রেশ বোতাম আছে।</string>
-    <string name="ui_whats_new_bullet_database" translatable="true">রাসায়নিক ডাটাবেস: ৩৩১ থেকে ৫৭৫ পদার্থে সম্প্রসারিত, যার মধ্যে অ্যামিনো অ্যাসিড, ভিটামিন, ওষুধ, এস্টার, জৈব-ধাতব যৌগ, সিলিকেট, অ্যালকালয়েড ও আরও অনেক কিছু। ১১৮টি মৌল এখন ডাটাবেসে নকল হওয়ার বদলে পর্যায় সারণিতে থাকে।</string>
-    <string name="ui_whats_new_bullet_search" translatable="true">অ্যাডভান্সড সার্চ: ফলাফল-সীমা নির্বাচক, নামে-থাকা ফিল্টার এবং এক ট্যাপে সব মুছুন সহ সক্রিয়-ফিল্টার গণনা যোগ করা হয়েছে।</string>
-    <string name="ui_whats_new_bullet_tools" translatable="true">টুলস: গ্রিড পুনর্নির্মিত হয়েছে যাতে সরু ফোনে ২ কলাম থেকে প্রশস্ত স্ক্রিন ও ট্যাবলেটে ৫ কলামে মানিয়ে যায়। টুল বিভাগগুলি এখন নিজস্ব অ্যাকসেন্ট রঙ ব্যবহার করে, এবং গ্রিডের সারিগুলি সমান-উচ্চতার কার্ড রাখে।</string>
-    <string name="ui_whats_new_bullet_structure" translatable="true">স্ট্রাকচার সার্চ: এক নজরে কনফিগ সারসংক্ষেপ, সাদৃশ্য স্লাইডার, স্পষ্টতর সক্রিয় অবস্থা, ইমপোর্ট ফরম্যাটের ইঙ্গিত এবং লাইভ সূত্র ব্যাজ যোগ করা হয়েছে।</string>
-    <string name="ui_whats_new_bullet_polish" translatable="true">সার্চ ত্রুটি: হার-সীমা, টাইমআউট, ভুল অনুরোধ, নেটওয়ার্ক ব্যর্থতা, সার্ভার ত্রুটি ও খালি ফলাফলের জন্য নির্দিষ্ট, রঙ-কোডেড বার্তা যোগ করা হয়েছে।</string>
-    <string name="ui_whats_new_bullet_home" translatable="true">এক্সপ্লোর: স্ট্রাকচার সার্চ, আইসোমার সার্চ, পর্যায় সারণি ও কেমিক্যাল ডাটাবেসের জন্য কুইক অ্যাকশন যোগ করা হয়েছে।</string>
-    <string name="ui_whats_new_bullet_library" translatable="true">লাইব্রেরি অ্যাকশন: সংরক্ষিত যৌগে লং-প্রেস করে সূত্র কপি, PubChem-এ খোলা বা রেকর্ড না খুলেই মুছে ফেলা।</string>
-    <string name="ui_whats_new_bullet_shortcuts" translatable="true">লঞ্চার শর্টকাট: সরাসরি সার্চ, লাইব্রেরি, টুলস বা সেটিংসে যেতে অ্যাপ আইকন চেপে ধরুন।</string>
-    <string name="ui_whats_new_bullet_daily" translatable="true">আজকের যৌগ: উইজেটের মতোই দৈনিক যৌগ দেখানো হোম-স্ক্রিন কার্ড যোগ করা হয়েছে, সূত্র ও সাধারণ ব্যবহারসহ।</string>
-    <string name="ui_whats_new_bullet_csv" translatable="true">লাইব্রেরি এক্সপোর্ট: বিদ্যমান JSON ব্যাকআপ ও ইমপোর্ট সমর্থনের পাশাপাশি CSV এক্সপোর্ট যোগ করা হয়েছে।</string>
-    <string name="ui_whats_new_bullet_compare" translatable="true">যৌগ তুলনা: এক ট্যাপে প্রপার্টি সারি কপি, যৌগ চিপ, ফলাফল-মুছুন অ্যাকশন এবং সর্বোচ্চ ছয়টি যৌগের সমর্থন যোগ করা হয়েছে।</string>
-    <string name="ui_whats_new_bullet_periodic" translatable="true">পর্যায় সারণি: ইন্টারঅ্যাকটিভ বিভাগ ফিল্টার, উজ্জ্বল মৌল টাইল, গ্রেডিয়েন্ট ট্রেন্ড হিটম্যাপ, মিন/ম্যাক্স লিজেন্ড এবং ক্লিকযোগ্য সেরা-৫ মৌল স্ট্রিপ যোগ করা হয়েছে।</string>
-    <string name="ui_whats_new_bullet_stoich" translatable="true">স্টয়েকিওমেট্রি: অ্যাটম-ইকোনমি, প্রতি-বিক্রিয়ক খরচ ও অবশিষ্ট পরিমাণ, উন্নত একক রূপান্তর এবং কপি করা যায় এমন বিশ্লেষণ সারসংক্ষেপ যোগ করা হয়েছে।</string>
-    <string name="ui_whats_new_bullet_display" translatable="true">ডিসপ্লে: অ্যাপ-ব্যাপী তাপমাত্রা একক সেটিং (K, °C, বা °F) যোগ করা হয়েছে।</string>
-    <string name="ui_whats_new_bullet_haptics" translatable="true">হ্যাপটিক্স: সমর্থিত ইন্টারঅ্যাকশনে হ্যাপটিক ফিডব্যাক যোগ করা হয়েছে।</string>
-    <string name="ui_whats_new_bullet_offline_mode" translatable="true">ডেভেলপার টুলস: নির্ধারিত টেস্ট ফলাফল, সমন্বয়যোগ্য বিলম্ব, সিমুলেটেড ত্রুটি, নির্দিষ্ট ব্যর্থতার ধরন ও স্ক্রিনে অফলাইন ব্যানারসহ অফলাইন টেস্ট মোড যোগ করা হয়েছে। ক্যাশ পরিদর্শন, ডিভাইস ও বিল্ড বিবরণ এবং ত্রুটি-বার্তা ক্যাটালগও যোগ হয়েছে।</string>
-    <string name="ui_whats_new_bullet_dialogs" translatable="true">ইন্টারফেস: FAQ, সহায়তা ও নিশ্চিতকরণ পপআপে ডায়ালগ প্রমিত করা হয়েছে, রঙিন আইকন হেডার, বন্ধ বোতাম ও রঙ-কোডেড ক্ষতিকর অ্যাকশনসহ।</string>
-    <string name="ui_whats_new_bullet_cards" translatable="true">ইন্টারফেস: পুরো অ্যাপে কার্ড, নির্বাচন অবস্থা ও ক্ষতিকর অ্যাকশন প্রমিত করা হয়েছে। কার্ড-ভিত্তিক ও বেশি সমতল লেআউটের মধ্যে বদলানোর জন্য একটি কার্ড সেটিং যোগ করা হয়েছে।</string>
-    <string name="ui_whats_new_bullet_collapsible" translatable="true">About: What\'s New কার্ড এখন ভাঁজ করা যায় এবং বর্তমান রিলিজের মূল বৈশিষ্ট্যগুলি দেখায়।</string>
-    <string name="ui_whats_new_bullet_languages" translatable="true">নতুন ভাষা: বাংলা যোগ করা হয়েছে এবং স্থানীয়কৃত স্ট্রিং আপডেট করা হয়েছে। ভাষা নির্বাচক এখন প্রতিটি ভাষা তার নিজস্ব নামে দেখায়।</string>
+    <string name="ui_whats_new_intro_database" translatable="true">পদার্থের বর্ণালি যোগ করা হয়েছে এবং রাসায়নিক তথ্যসূত্র ডাটাবেস উল্লেখযোগ্যভাবে সম্প্রসারিত</string>
+    <string name="ui_whats_new_bullet_spectral" translatable="true">বর্ণালি তথ্য: পদার্থগুলি এখন PubChem থেকে প্রকাশিত NMR, IR, ভর, UV ও রামান বর্ণালি দেখায়।</string>
+    <string name="ui_whats_new_bullet_database_group" translatable="true">সম্প্রসারিত রাসায়নিক তথ্যসূত্র ডাটাবেস</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">পদার্থ: ৫৭৫ থেকে ১৫৩২টি এন্ট্রিতে সম্প্রসারিত, যার মধ্যে অ্যাসিড, লবণ, অক্সাইড, আকরিক, পলিমার, জৈব অণু, ওষুধ, রং এবং আরও অনেক কিছু রয়েছে। নাম, উপনাম বা সংকেত দিয়ে সম্পূর্ণ অফলাইনে খুঁজুন।</string>
+    <string name="ui_whats_new_bullet_ions" translatable="true">আয়ন: ১০৮ থেকে ২১১টি এন্ট্রিতে সম্প্রসারিত, যার মধ্যে সাধারণ ক্যাটায়ন ও অ্যানায়ন রয়েছে।</string>
+    <string name="ui_whats_new_bullet_functional_groups" translatable="true">ক্রিয়ামূলক মূলক: ৭১ থেকে ১২২টি এন্ট্রিতে সম্প্রসারিত, জৈব রসায়নের দ্রুত তথ্যসূত্রের জন্য।</string>
+    <string name="ui_whats_new_bullet_reactions" translatable="true">বিক্রিয়া: ১৪৯ থেকে ৩২৬টি এন্ট্রিতে সম্প্রসারিত, যা অফলাইন বিক্রিয়া পূর্বাভাসকে আরও বিস্তৃত কভারেজ দেয়।</string>
+    <string name="ui_whats_new_section_changes" translatable="true">পরিবর্তনসমূহ</string>
+    <string name="ui_whats_new_bullet_cards_default" translatable="true">কার্ড মোড: এখন ডিফল্টভাবে বন্ধ, ফলে লেআউট আরও সমতল ও ঘন। সেটিংসে আবার চালু করা যায়।</string>
     <string name="ui_error_search_not_found_s" translatable="true">“%1$s”-এর জন্য PubChem-এ কোনো মিল পাওয়া যায়নি। অন্য নাম, একটি CAS নম্বর দিন বা বানান যাচাই করুন।</string>
     <string name="ui_error_search_throttled" translatable="true">PubChem এই মুহূর্তে অনুরোধ সীমিত করছে। কয়েক সেকেন্ড অপেক্ষা করে আবার চেষ্টা করুন।</string>
     <string name="ui_error_search_timeout" translatable="true">PubChem উত্তর দিতে বেশি সময় নিচ্ছে। আবার চেষ্টা করুন — খুব জটিল কোয়েরি সময় শেষ হতে পারে।</string>
@@ -1709,7 +1695,7 @@
     <string name="ui_error_no_browser" translatable="true">কোনো ব্রাউজার পাওয়া যায়নি</string>
     <string name="ui_explore_chemsearch" translatable="true">ChemSearch ঘুরে দেখুন</string>
     <string name="ui_periodic_table_quick_action_subtitle" translatable="true">১১৮টি মৌল ও তাদের ধর্ম ব্রাউজ করুন</string>
-    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">৯০০+ পদার্থ, আয়ন, মূলক ও বিক্রিয়া</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">একটি অফলাইন রাসায়নিক ডাটাবেস ঘুরে দেখুন</string>
     <string name="ui_offline_test_mode" translatable="true">অফলাইন টেস্ট মোড</string>
     <string name="ui_offline_test_mode_subtitle" translatable="true">কোনো প্রকৃত নেটওয়ার্ক কল ছাড়াই ডামি ডেটা দেখান</string>
     <string name="ui_offline_test_mode_toggle_body" translatable="true">চালু থাকলে অনুসন্ধান, লুকআপ, স্ট্রাকচার ও এআই কল নেটওয়ার্কে না গিয়ে স্থানীয় টেস্ট রেকর্ড দেখায়</string>
@@ -1723,4 +1709,9 @@
     <string name="ui_offline_test_mode_badge" translatable="true">অফলাইন</string>
     <string name="ui_offline_test_mode_active_banner" translatable="true">অফলাইন টেস্ট মোড সক্রিয়: এই স্ক্রিনের প্রতিটি ফলাফল অনুকৃত ডামি ডেটা</string>
     <string name="ui_offline_test_mode_active_note" translatable="true">সব ফলাফল অনুকৃত</string>
+    <string name="ui_spectral_information" translatable="true">বর্ণালি তথ্য</string>
+    <string name="ui_loading_pubchem_spectra" translatable="true">PubChem বর্ণালি লোড হচ্ছে...</string>
+    <string name="ui_source_pubchem_spectra" translatable="true">উৎস: PubChem বর্ণালি সংগ্রহ</string>
+    <string name="ui_info_spectral_what_body" translatable="true">PubChem-এ প্রকাশিত পরীক্ষামূলক বর্ণালি, কৌশল অনুযায়ী সাজানো (NMR, MS, IR, UV, Raman)। মানগুলি মূল উৎস থেকে আসে, তাই যন্ত্র, দ্রাবক ও একক রেকর্ডভেদে ভিন্ন হয়।</string>
+    <string name="ui_info_spectral_why_body" translatable="true">সব পদার্থের প্রকাশিত বর্ণালি থাকে না। PubChem-এ না থাকলে এই বিভাগটি লুকানো থাকে; পদার্থটির PubChem পৃষ্ঠায় সবকিছু এখনও পাওয়া যায়।</string>
 </resources>

@@ -1702,34 +1702,20 @@
     <string name="ui_faq_reaction_predictor_q" translatable="true">反応予測はどのように機能しますか？</string>
     <string name="ui_faq_reaction_predictor_a" translatable="true">選択した反応物を内蔵の化学データベースから構築されたオフラインのルールセットと照合し、生成物・反応タイプ・観察結果の候補を提案します。一般的な学習反応をカバーします。特殊なケースは必ず教科書で確認してください。</string>
     <string name="ui_faq_database_size_q" translatable="true">内蔵の化学データベースの規模は？</string>
-    <string name="ui_faq_database_size_a" translatable="true">575 物質・108 イオン・71 官能基・149 反応を収録し、すべてオフラインで利用できます。周期表の 118 元素は周期表側に収録されており、2 つのリファレンスが重複することはありません。</string>
+    <string name="ui_faq_database_size_a" translatable="true">1532 物質・211 イオン・122 官能基・326 反応を収録し、すべてオフラインで利用できます。周期表の 118 元素は周期表側に収録されており、2 つのリファレンスが重複することはありません。</string>
     <string name="ui_faq_languages_q" translatable="true">ChemSearch はどの言語に対応していますか？</string>
     <string name="ui_faq_languages_a" translatable="true">インターフェースはベンガル語・デンマーク語・ドイツ語・ギリシャ語・スペイン語・フィンランド語・フランス語・イタリア語・日本語・オランダ語・ノルウェー語・ポーランド語・ポルトガル語・ロシア語・スウェーデン語の 15 言語に完全翻訳されています。設定 > 言語からいつでも変更できます。</string>
     <string name="ui_whats_new_section_features" translatable="true">新機能</string>
-    <string name="ui_whats_new_section_improvements" translatable="true">改善</string>
     <string name="ui_section_whats_new" translatable="true">新着情報</string>
-    <string name="ui_whats_new_bullet_reaction" translatable="true">反応予測：内蔵の化学データベースに基づくオフラインのルールエンジンを追加。反応物を最大3つ入力すると、予測生成物、反応タイプ、観察結果、信頼度が表示されます。</string>
-    <string name="ui_whats_new_bullet_widgets" translatable="true">ホーム画面ウィジェット：「今日の化合物」と「ランダム化合物」ウィジェットを追加。今日のウィジェットは午前0時に切り替わり、ランダムウィジェットには独自の更新ボタンがあります。</string>
-    <string name="ui_whats_new_bullet_database" translatable="true">化学データベース：331から575物質に拡張。アミノ酸、ビタミン、医薬品、エステル、有機金属化合物、ケイ酸塩、アルカロイドなどを収録。118元素はデータベース内で重複する代わりに周期表に掲載されます。</string>
-    <string name="ui_whats_new_bullet_search" translatable="true">詳細検索：結果件数の上限選択、名前フィルター、アクティブフィルター数の表示（ワンタップですべて解除）を追加。</string>
-    <string name="ui_whats_new_bullet_tools" translatable="true">ツール：グリッドを再設計し、狭い画面では2列から広い画面やタブレットでは5列に対応。ツールカテゴリーに個別のアクセントカラーを適用し、行のカードは同じ高さを保ちます。</string>
-    <string name="ui_whats_new_bullet_structure" translatable="true">構造検索：設定のひと目でわかるサマリー、類似度スライダー、より明確なアクティブ状態、インポート形式のヒント、ライブの化学式バッジを追加。</string>
-    <string name="ui_whats_new_bullet_polish" translatable="true">検索エラー：レート制限、タイムアウト、不正なリクエスト、ネットワーク障害、サーバーエラー、結果なしに対応した具体的で色分けされたメッセージを追加。</string>
-    <string name="ui_whats_new_bullet_home" translatable="true">Explore：構造検索、異性体検索、周期表、化学データベースへのクイックアクションを追加。</string>
-    <string name="ui_whats_new_bullet_library" translatable="true">ライブラリ操作：保存した化合物を長押しすると、記録を開かずに化学式のコピー、PubChemで開く、削除ができます。</string>
-    <string name="ui_whats_new_bullet_shortcuts" translatable="true">ランチャーショートカット：アプリアイコンを長押しすると、検索・ライブラリ・ツール・設定に直接ジャンプできます。</string>
-    <string name="ui_whats_new_bullet_daily" translatable="true">今日の化合物：ウィジェットと同じ今日の化合物を表示するホーム画面カードを追加。化学式と主な用途付き。</string>
-    <string name="ui_whats_new_bullet_csv" translatable="true">ライブラリエクスポート：既存のJSONバックアップとインポートに加えて、CSVエクスポートを追加。</string>
-    <string name="ui_whats_new_bullet_compare" translatable="true">化合物比較：プロパティ行のワンタップコピー、化合物チップ、結果クリア操作、最大6化合物までの対応を追加。</string>
-    <string name="ui_whats_new_bullet_periodic" translatable="true">周期表：インタラクティブなカテゴリーフィルター、より明るい元素タイル、グラデーション傾向ヒートマップ、最小/最大の凡例、タップできる上位5元素ストリップを追加。</string>
-    <string name="ui_whats_new_bullet_stoich" translatable="true">化学量論：原子経済、試薬ごとの消費量と残量、単位変換の改善、コピー可能な分析サマリーを追加。</string>
-    <string name="ui_whats_new_bullet_display" translatable="true">表示：アプリ全体の温度単位設定（K、°C、°F）を追加。</string>
-    <string name="ui_whats_new_bullet_haptics" translatable="true">触覚フィードバック：対応する操作に触覚フィードバックを追加。</string>
-    <string name="ui_whats_new_bullet_offline_mode" translatable="true">開発者ツール：決定的なテスト結果、調整可能な遅延、シミュレートされたエラー、強制失敗タイプ、画面上のオフラインバナーを備えたオフラインテストモードを追加。キャッシュ検査、デバイスとビルド情報、エラーメッセージカタログも追加しました。</string>
-    <string name="ui_whats_new_bullet_dialogs" translatable="true">インターフェース：FAQ、ヘルプ、確認ポップアップのダイアログを統一し、色付きアイコンヘッダー、閉じるボタン、色分けされた危険な操作を導入。</string>
-    <string name="ui_whats_new_bullet_cards" translatable="true">インターフェース：アプリ全体でカード、選択状態、危険な操作を統一。カードベースとフラットなレイアウトを切り替える「カード」設定を追加。</string>
-    <string name="ui_whats_new_bullet_collapsible" translatable="true">概要：「新着情報」カードは折りたたみ可能になり、現在のリリースのハイライトを表示します。</string>
-    <string name="ui_whats_new_bullet_languages" translatable="true">新しい言語：ベンガル語を追加し、ローカライズされた文字列を更新。言語選択では各言語をその言語での名称で表示します。</string>
+    <string name="ui_whats_new_intro_database" translatable="true">化合物のスペクトルを追加し、化学リファレンスデータベースを大幅に拡充</string>
+    <string name="ui_whats_new_bullet_spectral" translatable="true">スペクトルデータ: 化合物で PubChem の公開 NMR・IR・質量・UV・ラマンスペクトルを表示するようになりました。</string>
+    <string name="ui_whats_new_bullet_database_group" translatable="true">拡充された化学データベース</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">材料：575から1532件に拡張。酸、塩、酸化物、鉱石、ポリマー、生体分子、医薬品、染料などを収録。名前、別名、化学式でオフライン検索できます。</string>
+    <string name="ui_whats_new_bullet_ions" translatable="true">イオン：108から211件に拡張。一般的な陽イオンと陰イオンを収録。</string>
+    <string name="ui_whats_new_bullet_functional_groups" translatable="true">官能基：71から122件に拡張。有機化学のクイックリファレンスに。</string>
+    <string name="ui_whats_new_bullet_reactions" translatable="true">反応：149から326件に拡張。オフライン反応予測のカバー範囲が広がりました。</string>
+    <string name="ui_whats_new_section_changes" translatable="true">変更</string>
+    <string name="ui_whats_new_bullet_cards_default" translatable="true">カードモード: 既定でオフになり、よりフラットで密度の高いレイアウトになります。設定で再度オンにできます。</string>
     <string name="ui_error_search_not_found_s" translatable="true">「%1$s」に一致するものが PubChem で見つかりません。別の名前や CAS 番号を試すか、綴りを確認してください。</string>
     <string name="ui_error_search_throttled" translatable="true">PubChem が現在リクエストを制限しています。数秒待ってから再試行してください。</string>
     <string name="ui_error_search_timeout" translatable="true">PubChem の応答に時間がかかりすぎました。再試行してください — 非常に複雑なクエリはタイムアウトすることがあります。</string>
@@ -1758,7 +1744,7 @@
     <string name="ui_error_no_browser" translatable="true">ブラウザが見つかりません</string>
     <string name="ui_explore_chemsearch" translatable="true">ChemSearch を探索</string>
     <string name="ui_periodic_table_quick_action_subtitle" translatable="true">全 118 元素とその性質を閲覧</string>
-    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">900 以上の物質・イオン・基・反応を収録</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">オフラインの化学データベースを見てみましょう</string>
     <string name="ui_offline_test_mode" translatable="true">オフラインテストモード</string>
     <string name="ui_offline_test_mode_subtitle" translatable="true">実際の通信なしでダミーデータを表示</string>
     <string name="ui_offline_test_mode_toggle_body" translatable="true">有効にすると、検索・取得・構造・AI呼び出しはネットワークに代わりローカルなテストレコードを返します</string>
@@ -1772,4 +1758,9 @@
     <string name="ui_offline_test_mode_badge" translatable="true">オフライン</string>
     <string name="ui_offline_test_mode_active_banner" translatable="true">オフラインテストモードが有効: この画面のすべての結果は擬似ダミーデータです</string>
     <string name="ui_offline_test_mode_active_note" translatable="true">すべての結果は擬似</string>
+    <string name="ui_spectral_information" translatable="true">スペクトル情報</string>
+    <string name="ui_loading_pubchem_spectra" translatable="true">PubChem スペクトルを読み込み中...</string>
+    <string name="ui_source_pubchem_spectra" translatable="true">出典: PubChem スペクトルコレクション</string>
+    <string name="ui_info_spectral_what_body" translatable="true">PubChem に公開されている実験スペクトルを手法別にまとめたもの(NMR、MS、IR、UV、ラマン)。値は原著から引用しているため、装置・溶媒・単位は記録ごとに異なります。</string>
+    <string name="ui_info_spectral_why_body" translatable="true">すべての物質に公開スペクトルがあるわけではありません。PubChem にない場合、このセクションは非表示のままですが、物質の PubChem ページで利用可能な情報をすべて確認できます。</string>
 </resources>

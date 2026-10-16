@@ -267,30 +267,17 @@ private fun WelcomeStage(
 @Composable
 private fun WelcomeWhatsNewStage() {
     val featureBullets = listOf(
-        R.string.ui_whats_new_bullet_reaction,
-        R.string.ui_whats_new_bullet_widgets,
-        R.string.ui_whats_new_bullet_shortcuts,
-        R.string.ui_whats_new_bullet_database,
-        R.string.ui_whats_new_bullet_daily,
-        R.string.ui_whats_new_bullet_home,
-        R.string.ui_whats_new_bullet_csv,
-        R.string.ui_whats_new_bullet_library
+        R.string.ui_whats_new_bullet_spectral,
+        R.string.ui_whats_new_bullet_database_group
     )
-    val improvementBullets = listOf(
-        R.string.ui_whats_new_bullet_languages,
-        R.string.ui_whats_new_bullet_search,
-        R.string.ui_whats_new_bullet_tools,
-        R.string.ui_whats_new_bullet_compare,
-        R.string.ui_whats_new_bullet_structure,
-        R.string.ui_whats_new_bullet_polish,
-        R.string.ui_whats_new_bullet_periodic,
-        R.string.ui_whats_new_bullet_stoich,
-        R.string.ui_whats_new_bullet_display,
-        R.string.ui_whats_new_bullet_haptics,
-        R.string.ui_whats_new_bullet_offline_mode,
-        R.string.ui_whats_new_bullet_dialogs,
-        R.string.ui_whats_new_bullet_cards,
-        R.string.ui_whats_new_bullet_collapsible
+    val databaseBullets = listOf(
+        R.string.ui_whats_new_bullet_database,
+        R.string.ui_whats_new_bullet_ions,
+        R.string.ui_whats_new_bullet_functional_groups,
+        R.string.ui_whats_new_bullet_reactions
+    )
+    val changeBullets = listOf(
+        R.string.ui_whats_new_bullet_cards_default
     )
     Column(verticalArrangement = Arrangement.spacedBy(14.dp), modifier = Modifier.fillMaxWidth()) {
         Column(
@@ -316,11 +303,13 @@ private fun WelcomeWhatsNewStage() {
         }
         WelcomeWhatsNewSection(
             headerRes = R.string.ui_whats_new_section_features,
-            bullets = featureBullets
+            bullets = featureBullets,
+            introRes = R.string.ui_whats_new_intro_database,
+            nestedBullets = databaseBullets
         )
         WelcomeWhatsNewSection(
-            headerRes = R.string.ui_whats_new_section_improvements,
-            bullets = improvementBullets
+            headerRes = R.string.ui_whats_new_section_changes,
+            bullets = changeBullets
         )
     }
 }
@@ -328,7 +317,9 @@ private fun WelcomeWhatsNewStage() {
 @Composable
 private fun WelcomeWhatsNewSection(
     headerRes: Int,
-    bullets: List<Int>
+    bullets: List<Int>,
+    introRes: Int? = null,
+    nestedBullets: List<Int> = emptyList()
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(9.dp), modifier = Modifier.fillMaxWidth()) {
         Text(
@@ -338,8 +329,21 @@ private fun WelcomeWhatsNewSection(
             letterSpacing = 1.2.sp,
             color = MaterialTheme.colorScheme.primary
         )
-        bullets.forEach { bulletRes ->
-            WelcomeWhatsNewBullet(text = stringResource(bulletRes))
+        if (introRes != null) {
+            Text(
+                text = stringResource(introRes),
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.85f)
+            )
+        }
+        bullets.forEachIndexed { index, bulletRes ->
+            val children = if (index == bullets.lastIndex) nestedBullets else emptyList()
+            WelcomeWhatsNewBullet(
+                text = stringResource(bulletRes),
+                isGroupHeader = children.isNotEmpty(),
+                nestedRes = children
+            )
         }
     }
 }
@@ -350,9 +354,19 @@ private fun WelcomeWhatsNewSection(
  * changelog style "Feature: Description".
  */
 @Composable
-private fun WelcomeWhatsNewBullet(text: String) {
+private fun WelcomeWhatsNewBullet(
+    text: String,
+    isGroupHeader: Boolean = false,
+    nestedRes: List<Int> = emptyList()
+) {
     val colonIndex = text.indexOfFirst { it == ':' || it == '：' }
-    val styled: AnnotatedString = if (colonIndex > 0) {
+    val styled: AnnotatedString = if (isGroupHeader) {
+        buildAnnotatedString {
+            withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)) {
+                append(text)
+            }
+        }
+    } else if (colonIndex > 0) {
         buildAnnotatedString {
             withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)) {
                 append(text.take(colonIndex))
@@ -374,10 +388,38 @@ private fun WelcomeWhatsNewBullet(text: String) {
                 .size(7.dp)
                 .background(MaterialTheme.colorScheme.primary, CircleShape)
         )
+        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Text(
+                text = styled,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.82f)
+            )
+            nestedRes.forEach { nestedItemRes ->
+                WelcomeWhatsNewNestedBullet(text = stringResource(nestedItemRes))
+            }
+        }
+    }
+}
+
+@Composable
+private fun WelcomeWhatsNewNestedBullet(text: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalAlignment = Alignment.Top
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(top = 7.dp)
+                .size(5.dp)
+                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.55f), CircleShape)
+        )
         Text(
-            text = styled,
+            text = text,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.82f)
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.68f)
         )
     }
 }

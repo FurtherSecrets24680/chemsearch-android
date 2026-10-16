@@ -1702,34 +1702,20 @@
     <string name="ui_faq_reaction_predictor_q" translatable="true">Как работает Предсказатель реакций?</string>
     <string name="ui_faq_reaction_predictor_a" translatable="true">Он сопоставляет выбранные реагенты с автономным набором правил, построенным на основе встроенной химической базы данных, и предлагает вероятные продукты, типы реакций и наблюдения. Он охватывает обычные учебные реакции — необычные случаи всегда проверяйте по учебнику.</string>
     <string name="ui_faq_database_size_q" translatable="true">Насколько велика встроенная химическая база данных?</string>
-    <string name="ui_faq_database_size_a" translatable="true">Она включает 575 веществ, 108 ионов, 71 функциональную группу и 149 реакций, всё доступно офлайн. 118 элементов периодической таблицы находятся в самой таблице, поэтому эти два справочника никогда не дублируют друг друга.</string>
+    <string name="ui_faq_database_size_a" translatable="true">Она включает 1532 веществ, 211 ионов, 122 функциональную группу и 326 реакций, всё доступно офлайн. 118 элементов периодической таблицы находятся в самой таблице, поэтому эти два справочника никогда не дублируют друг друга.</string>
     <string name="ui_faq_languages_q" translatable="true">Какие языки поддерживает ChemSearch?</string>
     <string name="ui_faq_languages_a" translatable="true">Интерфейс полностью переведён на 15 языков: бенгальский, датский, немецкий, греческий, испанский, финский, французский, итальянский, японский, нидерландский, норвежский, польский, португальский, русский и шведский. Изменить можно в любой момент в Настройки > Язык.</string>
     <string name="ui_whats_new_section_features" translatable="true">Новые функции</string>
-    <string name="ui_whats_new_section_improvements" translatable="true">Улучшения</string>
     <string name="ui_section_whats_new" translatable="true">Что нового</string>
-    <string name="ui_whats_new_bullet_reaction" translatable="true">Предсказатель реакций: добавлен автономный механизм правил на основе встроенной химической базы данных. Введите до трёх реагентов и получите предсказанные продукты, типы реакций, наблюдения и уровни достоверности.</string>
-    <string name="ui_whats_new_bullet_widgets" translatable="true">Виджеты на главном экране: добавлены виджеты «Соединение дня» и «Случайное соединение». Дневной меняется в полночь, у случайного есть собственная кнопка обновления.</string>
-    <string name="ui_whats_new_bullet_database" translatable="true">Химическая база данных: расширена с 331 до 575 веществ, включая аминокислоты, витамины, лекарства, сложные эфиры, металлоорганические соединения, силикаты, алкалоиды и другое. 118 элементов теперь находятся в Периодической таблице, а не дублируются в базе данных.</string>
-    <string name="ui_whats_new_bullet_search" translatable="true">Расширенный поиск: добавлены выбор лимита результатов, фильтр по части названия и счётчик активных фильтров с очисткой всех одним касанием.</string>
-    <string name="ui_whats_new_bullet_tools" translatable="true">Инструменты: сетка переработана и адаптируется от 2 колонок на узких телефонах до 5 на широких экранах и планшетах. Категории инструментов получили собственные акцентные цвета, а строки сетки сохраняют одинаковую высоту карточек.</string>
-    <string name="ui_whats_new_bullet_structure" translatable="true">Поиск по структуре: добавлены сводка настроек с одного взгляда, ползунок сходства, более ясный индикатор активного режима, подсказки по форматам импорта и живой значок формулы.</string>
-    <string name="ui_whats_new_bullet_polish" translatable="true">Ошибки поиска: добавлены конкретные, выделенные цветом сообщения об ограничении частоты запросов, тайм-аутах, неверных запросах, сбоях сети, ошибках сервера и пустых результатах.</string>
-    <string name="ui_whats_new_bullet_home" translatable="true">Обзор: добавлены быстрые действия для поиска по структуре, поиска изомеров, Периодической таблицы и химической базы данных.</string>
-    <string name="ui_whats_new_bullet_library" translatable="true">Действия библиотеки: долгое нажатие на сохранённое соединение позволяет скопировать формулу, открыть его в PubChem или удалить, не открывая запись.</string>
-    <string name="ui_whats_new_bullet_shortcuts" translatable="true">Ярлыки лаунчера: удерживайте значок приложения, чтобы сразу перейти в Поиск, Библиотеку, Инструменты или Настройки.</string>
-    <string name="ui_whats_new_bullet_daily" translatable="true">Соединение дня: добавлена карточка на главном экране, показывающая то же ежедневное соединение, что и виджет, с формулой и типичным применением.</string>
-    <string name="ui_whats_new_bullet_csv" translatable="true">Экспорт библиотеки: добавлен экспорт в CSV в дополнение к существующей резервной копии JSON и поддержке импорта.</string>
-    <string name="ui_whats_new_bullet_compare" translatable="true">Сравнение соединений: добавлены копирование строк свойств одним касанием, плашки соединений, действие очистки результатов и поддержка до шести соединений.</string>
-    <string name="ui_whats_new_bullet_periodic" translatable="true">Периодическая таблица: добавлены интерактивные фильтры категорий, более яркие плитки элементов, градиентные карты трендов, обозначения минимума/максимума и нажимаемая полоса пяти ведущих элементов.</string>
-    <string name="ui_whats_new_bullet_stoich" translatable="true">Стехиометрия: добавлены атомная экономия, расход и остатки по реагентам, улучшенное преобразование единиц и копируемые сводные данные анализа.</string>
-    <string name="ui_whats_new_bullet_display" translatable="true">Экран: добавлена общая для приложения настройка единицы температуры (K, °C или °F).</string>
-    <string name="ui_whats_new_bullet_haptics" translatable="true">Вибрация: добавлена тактильная отдача в поддерживаемых взаимодействиях.</string>
-    <string name="ui_whats_new_bullet_offline_mode" translatable="true">Инструменты разработчика: добавлен офлайн-тестовый режим с детерминированными результатами, регулируемой задержкой, имитируемыми ошибками, принудительными типами сбоев и баннером на экране. Также добавлены просмотр кэша, сведения об устройстве и сборке и каталог сообщений об ошибках.</string>
-    <string name="ui_whats_new_bullet_dialogs" translatable="true">Интерфейс: стандартизированы диалоги FAQ, справки и подтверждения с тонированными заголовками значков, кнопками закрытия и выделенными цветом опасными действиями.</string>
-    <string name="ui_whats_new_bullet_cards" translatable="true">Интерфейс: стандартизированы карточки, состояния выбора и опасные действия во всём приложении. Добавлена настройка «Карточки» для переключения между карточным и более плоским оформлением.</string>
-    <string name="ui_whats_new_bullet_collapsible" translatable="true">О приложении: карточку «Что нового» теперь можно свернуть, и она показывает основные изменения текущего выпуска.</string>
-    <string name="ui_whats_new_bullet_languages" translatable="true">Новый язык: добавлен бенгальский и обновлены переводы строк. Селекторы языка показывают каждый язык под его собственным названием.</string>
+    <string name="ui_whats_new_intro_database" translatable="true">Добавлены спектры соединений и значительно расширена справочная химическая база данных</string>
+    <string name="ui_whats_new_bullet_spectral" translatable="true">Спектральные данные: для соединений теперь отображаются опубликованные спектры ЯМР, ИК, масс-, УФ- и рамановские спектры из PubChem.</string>
+    <string name="ui_whats_new_bullet_database_group" translatable="true">Расширенная справочная химическая база данных</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">Вещества: расширено с 575 до 1532 записей, включая кислоты, соли, оксиды, руды, полимеры, биомолекулы, лекарства, красители и другое. Поиск по названию, синониму или формуле, полностью офлайн.</string>
+    <string name="ui_whats_new_bullet_ions" translatable="true">Ионы: расширено с 108 до 211 записей, включая распространённые катионы и анионы.</string>
+    <string name="ui_whats_new_bullet_functional_groups" translatable="true">Функциональные группы: расширено с 71 до 122 записей для быстрой справки по органической химии.</string>
+    <string name="ui_whats_new_bullet_reactions" translatable="true">Реакции: расширено с 149 до 326 записей, что даёт офлайн-предсказателю реакций более широкий охват.</string>
+    <string name="ui_whats_new_section_changes" translatable="true">Изменения</string>
+    <string name="ui_whats_new_bullet_cards_default" translatable="true">Режим карточек: теперь отключён по умолчанию — более плоский и плотный макет. Включается в настройках.</string>
     <string name="ui_error_search_not_found_s" translatable="true">Совпадения для “%1$s” в PubChem не найдено. Попробуйте другое название, номер CAS или проверьте написание.</string>
     <string name="ui_error_search_throttled" translatable="true">PubChem сейчас ограничивает количество запросов. Подождите несколько секунд и попробуйте снова.</string>
     <string name="ui_error_search_timeout" translatable="true">PubChem отвечал слишком долго. Попробуйте снова — очень сложные запросы могут превысить лимит времени.</string>
@@ -1758,7 +1744,7 @@
     <string name="ui_error_no_browser" translatable="true">Браузер не найден</string>
     <string name="ui_explore_chemsearch" translatable="true">Обзор ChemSearch</string>
     <string name="ui_periodic_table_quick_action_subtitle" translatable="true">Просмотр всех 118 элементов и их свойств</string>
-    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">Более 900 веществ, ионов, групп и реакций</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">Изучите химическую базу данных офлайн</string>
     <string name="ui_offline_test_mode" translatable="true">Автономный тестовый режим</string>
     <string name="ui_offline_test_mode_subtitle" translatable="true">Показывает фиктивные данные без реальных сетевых запросов</string>
     <string name="ui_offline_test_mode_toggle_body" translatable="true">При включении поиск, запросы, вызовы структуры и ИИ возвращают локальные тестовые записи вместо обращения к сети</string>
@@ -1772,4 +1758,9 @@
     <string name="ui_offline_test_mode_badge" translatable="true">БЕЗ СЕТИ</string>
     <string name="ui_offline_test_mode_active_banner" translatable="true">Автономный тестовый режим активен: все результаты на этом экране — имитированные фиктивные данные</string>
     <string name="ui_offline_test_mode_active_note" translatable="true">Все результаты имитированы</string>
+    <string name="ui_spectral_information" translatable="true">Спектральная информация</string>
+    <string name="ui_loading_pubchem_spectra" translatable="true">Загрузка спектров PubChem...</string>
+    <string name="ui_source_pubchem_spectra" translatable="true">Источник: коллекции спектров PubChem</string>
+    <string name="ui_info_spectral_what_body" translatable="true">Экспериментальные спектры, опубликованные в PubChem, сгруппированные по методу (NMR, MS, IR, UV, Raman). Значения взяты из первоисточника, поэтому приборы, растворители и единицы измерения различаются между записями.</string>
+    <string name="ui_info_spectral_why_body" translatable="true">Не у всех веществ есть опубликованные спектры. Если в PubChem их нет, этот раздел остаётся скрытым; на странице вещества в PubChem по-прежнему перечислено всё доступное.</string>
 </resources>

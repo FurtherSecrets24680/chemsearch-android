@@ -1702,34 +1702,20 @@
     <string name="ui_faq_reaction_predictor_q" translatable="true">Hur fungerar reaktionsförutsägaren?</string>
     <string name="ui_faq_reaction_predictor_a" translatable="true">Den matchar dina valda reaktanter mot en regeluppsättning utan nätanslutning byggd från den medföljande kemidatabasen och föreslår sannolika produkter, reaktionstyper och observationer. Den täcker vanliga skolreaktioner — kontrollera alltid ovanliga fall med en lärobok.</string>
     <string name="ui_faq_database_size_q" translatable="true">Hur stor är den inbyggda kemidatabasen?</string>
-    <string name="ui_faq_database_size_a" translatable="true">Den innehåller 575 ämnen, 108 joner, 71 funktionella grupper och 149 reaktioner, alla tillgängliga offline. Periodiska systemets 118 grundämnen finns i det periodiska systemet, så de två referenserna duplicerar aldrig varandra.</string>
+    <string name="ui_faq_database_size_a" translatable="true">Den innehåller 1532 ämnen, 211 joner, 122 funktionella grupper och 326 reaktioner, alla tillgängliga offline. Periodiska systemets 118 grundämnen finns i det periodiska systemet, så de två referenserna duplicerar aldrig varandra.</string>
     <string name="ui_faq_languages_q" translatable="true">Vilka språk stöder ChemSearch?</string>
     <string name="ui_faq_languages_a" translatable="true">Gränssnittet är fullständigt översatt till 15 språk: bengali, danska, tyska, grekiska, spanska, finska, franska, italienska, japanska, nederländska, norska, polska, portugisiska, ryska och svenska. Byt när som helst under Inställningar > Språk.</string>
     <string name="ui_whats_new_section_features" translatable="true">Nyheter</string>
-    <string name="ui_whats_new_section_improvements" translatable="true">Förbättringar</string>
     <string name="ui_section_whats_new" translatable="true">Nyheter</string>
-    <string name="ui_whats_new_bullet_reaction" translatable="true">Reaktionsförutsägelse: lagt till en offline-regelmotor byggd på den medföljande kemiska databasen. Ange upp till tre reaktanter och få förutsagda produkter, reaktionstyper, observationer och konfidensnivåer.</string>
-    <string name="ui_whats_new_bullet_widgets" translatable="true">Hemskärmswidgeter: lagt till Dagens förening- och Slumpmässig förening-widgeter. Den dagliga byter vid midnatt, medan den slumpmässiga har en egen uppdateringsknapp.</string>
-    <string name="ui_whats_new_bullet_database" translatable="true">Kemisk databas: utökad från 331 till 575 ämnen, bland annat aminosyror, vitaminer, läkemedel, estrar, organometaller, silikater, alkaloider och mer. De 118 grundämnena finns nu i periodiska systemet i stället för att dupliceras i databasen.</string>
-    <string name="ui_whats_new_bullet_search" translatable="true">Avancerad sökning: lagt till väljare för resultatgräns, namn-innehåller-filter och räknare för aktiva filter med rensa alla i ett tryck.</string>
-    <string name="ui_whats_new_bullet_tools" translatable="true">Verktyg: rutnätet är omarbetat och anpassar sig från 2 kolumner på smala telefoner till 5 på breda skärmar och surfplattor. Verktygskategorier använder egna accentfärger, och raderna behåller kort med samma höjd.</string>
-    <string name="ui_whats_new_bullet_structure" translatable="true">Struktursökning: lagt till konfigurationssammanfattning på ett ögonkast, likhetsreglage, tydligare aktiv status, tips om importformat och ett levande formelmärke.</string>
-    <string name="ui_whats_new_bullet_polish" translatable="true">Sökfel: lagt till specifika, färgkodade meddelanden för hastighetsbegränsning, tidsgränser, felaktiga begäranden, nätverksfel, serverfel och tomma resultat.</string>
-    <string name="ui_whats_new_bullet_home" translatable="true">Utforska: lagt till snabbåtgärder för Struktursökning, Isomersökning, Periodiska systemet och Kemisk databas.</string>
-    <string name="ui_whats_new_bullet_library" translatable="true">Biblioteksåtgärder: tryck länge på ett sparat ämne för att kopiera formeln, öppna det i PubChem eller ta bort det, utan att öppna posten.</string>
-    <string name="ui_whats_new_bullet_shortcuts" translatable="true">Startprogramsgenvägar: tryck länge på appikonen för att gå direkt till Sökning, Bibliotek, Verktyg eller Inställningar.</string>
-    <string name="ui_whats_new_bullet_daily" translatable="true">Dagens förening: lagt till ett hemskärmkort som visar samma dagliga förening som widgeten, med formel och typiska användningsområden.</string>
-    <string name="ui_whats_new_bullet_csv" translatable="true">Biblioteksexport: lagt till CSV-export vid sidan av den befintliga JSON-säkerhetskopian och importstödet.</string>
-    <string name="ui_whats_new_bullet_compare" translatable="true">Jämför föreningar: lagt till kopiering av egenskapsrader i ett tryck, föreningchips, en åtgärd för att rensa resultat och stöd för upp till sex föreningar.</string>
-    <string name="ui_whats_new_bullet_periodic" translatable="true">Periodiska systemet: lagt till interaktiva kategorifilter, ljusare grundämnesteglar, gradienttrender som värmekartor, min/max-förklaringar och en klickbar top-fem-grundämnesremsa.</string>
-    <string name="ui_whats_new_bullet_stoich" translatable="true">Stökiometri: lagt till atomekonomi, förbrukning och restmängder per reagens, förbättrad enhetskonvertering och kopierbara analysesammanfattningar.</string>
-    <string name="ui_whats_new_bullet_display" translatable="true">Visning: lagt till en appövergripande inställning för temperaturenhet (K, °C eller °F).</string>
-    <string name="ui_whats_new_bullet_haptics" translatable="true">Haptik: lagt till haptisk återkoppling i stödda interaktioner.</string>
-    <string name="ui_whats_new_bullet_offline_mode" translatable="true">Utvecklarverktyg: lagt till ett offline-testläge med deterministiska testresultat, justerbar latens, simulerade fel, tvingade feltyper och en offline-banner på skärmen. Även lagt till cache-inspektion, enhets- och bygginformation och en katalog med felmeddelanden.</string>
-    <string name="ui_whats_new_bullet_dialogs" translatable="true">Gränssnitt: standardiserat dialoger i FAQ-, hjälp- och bekräftelsepopups, med tonade ikonhuvuden, stängningsknappar och färgkodade destruktiva åtgärder.</string>
-    <string name="ui_whats_new_bullet_cards" translatable="true">Gränssnitt: standardiserat kort, markeringslägen och destruktiva åtgärder i hela appen. Lagt till en Kort-inställning för att växla mellan kortbaserade och planare layouter.</string>
-    <string name="ui_whats_new_bullet_collapsible" translatable="true">Om: Nyheter-kortet kan nu fällas ihop och visar höjdpunkterna från den aktuella utgåvan.</string>
-    <string name="ui_whats_new_bullet_languages" translatable="true">Nytt språk: lagt till bengali och uppdaterat de lokaliserade texterna. Språkväljare visar nu varje språk med sitt inhemska namn.</string>
+    <string name="ui_whats_new_intro_database" translatable="true">Spektra för föreningar tillagda och den kemiska referensdatabasen utökad avsevärt</string>
+    <string name="ui_whats_new_bullet_spectral" translatable="true">Spektraldata: Föreningar visar nu publicerade NMR-, IR-, massa-, UV- och Ramanspektra från PubChem.</string>
+    <string name="ui_whats_new_bullet_database_group" translatable="true">Utökad kemisk referensdatabas</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">Ämnen: utökad från 575 till 1532 poster, med syror, salter, oxider, malmer, polymerer, biomolekyler, läkemedel, färgämnen och mer. Sök på namn, alias eller formel, helt offline.</string>
+    <string name="ui_whats_new_bullet_ions" translatable="true">Joner: utökad från 108 till 211 poster, inklusive vanliga katjoner och anjoner.</string>
+    <string name="ui_whats_new_bullet_functional_groups" translatable="true">Funktionella grupper: utökad från 71 till 122 poster för snabb referens i organisk kemi.</string>
+    <string name="ui_whats_new_bullet_reactions" translatable="true">Reaktioner: utökad från 149 till 326 poster, vilket ger den offline-reaktionsprediktorn bredare täckning.</string>
+    <string name="ui_whats_new_section_changes" translatable="true">Ändringar</string>
+    <string name="ui_whats_new_bullet_cards_default" translatable="true">Kortläge: nu avstängt som standard för en plattare, tätare layout. Slå på det igen i Inställningar.</string>
     <string name="ui_error_search_not_found_s" translatable="true">Ingen träff hittades för “%1$s” i PubChem. Prova ett annat namn, ett CAS-nummer, eller kontrollera stavningen.</string>
     <string name="ui_error_search_throttled" translatable="true">PubChem begränsar förfrågningar just nu. Vänta några sekunder och försök igen.</string>
     <string name="ui_error_search_timeout" translatable="true">PubChem tog för lång tid på sig att svara. Försök igen — mycket komplexa frågor kan överskrida tidsgränsen.</string>
@@ -1758,7 +1744,7 @@
     <string name="ui_error_no_browser" translatable="true">Ingen webbläsare hittades</string>
     <string name="ui_explore_chemsearch" translatable="true">Utforska ChemSearch</string>
     <string name="ui_periodic_table_quick_action_subtitle" translatable="true">Bläddra bland alla 118 grundämnen och deras egenskaper</string>
-    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">900+ ämnen, joner, grupper och reaktioner</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">Utforska en offline kemisk databas</string>
     <string name="ui_offline_test_mode" translatable="true">Offline-testläge</string>
     <string name="ui_offline_test_mode_subtitle" translatable="true">Visar dummydata utan riktiga nätverksanrop</string>
     <string name="ui_offline_test_mode_toggle_body" translatable="true">När den är på returnerar sökning, uppslag, struktur- och AI-anrop lokala testposter istället för att kontakta nätverket</string>
@@ -1772,4 +1758,9 @@
     <string name="ui_offline_test_mode_badge" translatable="true">OFFLINE</string>
     <string name="ui_offline_test_mode_active_banner" translatable="true">Offline-testläget är aktivt: alla resultat på denna skärm är simulerade dummydata</string>
     <string name="ui_offline_test_mode_active_note" translatable="true">Alla resultat är simulerade</string>
+    <string name="ui_spectral_information" translatable="true">Spektral information</string>
+    <string name="ui_loading_pubchem_spectra" translatable="true">Laddar PubChems spektra...</string>
+    <string name="ui_source_pubchem_spectra" translatable="true">Källa: PubChems spektramsamlingar</string>
+    <string name="ui_info_spectral_what_body" translatable="true">Experimentella spektra publicerade i PubChem, grupperade efter teknik (NMR, MS, IR, UV, Raman). Värdena kommer från den ursprungliga källan, så instrument, lösningsmedel och enheter varierar mellan posterna.</string>
+    <string name="ui_info_spectral_why_body" translatable="true">Alla ämnen har inte publicerade spektra. När PubChem inte har några förblir det här avsnittet dolt; ämnets PubChem-sida visar fortfarande allt som finns tillgängligt.</string>
 </resources>

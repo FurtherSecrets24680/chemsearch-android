@@ -1,0 +1,14 @@
+Compound spectra added and the offline database expanded substantially.
+
+New Features
+• Spectral data: Now shown spectral data (NMR, IR, mass, UV and Raman) for compounds
+• Expanded chemical database
+    • Substances: 575 → 1532
+    • Ions: 108 → 211
+    • Functional groups: 71 → 122
+    • Reactions: 149 → 326
+
+Changes
+• Cards mode off by default (re-enable it in Settings)
+
+Full changelog: https://github.com/FurtherSecrets24680/chemsearch-android/releases/tag/1.16.0

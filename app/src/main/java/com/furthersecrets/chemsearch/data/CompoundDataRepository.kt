@@ -107,10 +107,16 @@ class CompoundDataRepository(
                         .getOrDefault(emptyList())
                 }
             }
+            val spectralDeferred = async {
+                runCatching {
+                    buildPubChemSpectralRecords(ApiClient.pubChemView.getSection(cid, SPECTRAL_SECTION_HEADING))
+                }.getOrDefault(emptyList())
+            }
 
             PubChemCompoundContext(
                 classificationTags = buildPubChemClassificationTags(classificationDeferred.awaitAll().flatten()),
-                useEntries = buildPubChemUseEntries(useDeferred.awaitAll().flatten())
+                useEntries = buildPubChemUseEntries(useDeferred.awaitAll().flatten()),
+                spectralRecords = spectralDeferred.await()
             )
         }
     }

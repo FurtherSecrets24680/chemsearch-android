@@ -201,6 +201,68 @@ fun compoundUseBulletLines(entries: List<CompoundUseEntry>): List<String> =
         .distinctBy { it.lowercase(Locale.US) }
         .map { "• $it" }
 
+const val SPECTRAL_SECTION_HEADING = "Spectral Information"
+
+fun buildPubChemSpectralRecords(
+    json: JsonObject?,
+    maxRecordsPerTechnique: Int = 2,
+    maxFieldsPerRecord: Int = 6
+): List<CompoundSpectrumRecord> {
+    val record = json?.getAsJsonObject("Record") ?: return emptyList()
+    val rootSections = record.getAsJsonArray("Section") ?: return emptyList()
+    val out = mutableListOf<CompoundSpectrumRecord>()
+
+    fun collect(section: JsonObject, heading: String) {
+        val informations = section.getAsJsonArray("Information")
+        if (informations != null && informations.size() > 0 && heading.isNotBlank()) {
+            val grouped = LinkedHashMap<String, MutableList<SpectralField>>()
+            var autoKey = 0
+            informations.forEach { element ->
+                val info = runCatching { element.asJsonObject }.getOrNull() ?: return@forEach
+                val rawLabel = info.get("Name")?.asString?.trim().orEmpty()
+                val label = if (rawLabel.equals(heading, ignoreCase = true)) "" else rawLabel
+                if (label.lowercase(Locale.US) in SPECTRAL_NOISE_FIELDS) return@forEach
+                val value = info.getAsJsonObject("Value") ?: return@forEach
+                val texts = value.getAsJsonArray("StringWithMarkup")
+                    ?.mapNotNull { item ->
+                        runCatching { item.asJsonObject.get("String")?.asString }.getOrNull()?.trim()
+                    }
+                    ?.filter { it.isNotEmpty() }
+                    .orEmpty()
+                if (texts.isEmpty()) return@forEach
+                val key = info.get("ReferenceNumber")?.asInt?.toString() ?: "auto-${autoKey++}"
+                grouped.getOrPut(key) { mutableListOf() }
+                    .add(SpectralField(label, texts.joinToString(", ")))
+            }
+            grouped.values
+                .filter { it.isNotEmpty() }
+                .take(maxRecordsPerTechnique)
+                .forEach { fields ->
+                    out.add(
+                        CompoundSpectrumRecord(
+                            technique = heading,
+                            fields = fields.take(maxFieldsPerRecord)
+                        )
+                    )
+                }
+        }
+
+        section.getAsJsonArray("Section")?.forEach { child ->
+            val obj = runCatching { child.asJsonObject }.getOrNull() ?: return@forEach
+            collect(obj, obj.get("TOCHeading")?.asString?.trim().orEmpty())
+        }
+    }
+
+    rootSections.forEach { element ->
+        val obj = runCatching { element.asJsonObject }.getOrNull() ?: return@forEach
+        collect(obj, obj.get("TOCHeading")?.asString?.trim().orEmpty())
+    }
+
+    return out
+}
+
+private val SPECTRAL_NOISE_FIELDS = setOf("copyright", "thumbnail", "license", "license url")
+
 private fun useEntryLabel(row: PubChemSectionText): String {
     val heading = row.heading.trim()
     val name = row.name?.trim().orEmpty()

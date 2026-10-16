@@ -90,7 +90,7 @@ data class AppSettingsSnapshot(
                     ?: CacheRetention.MANUAL,
                 reduceMotion = reduceMotion ?: false,
                 highContrastOutlines = highContrastOutlines ?: false,
-                cardsEnabled = cardsEnabled ?: true,
+                cardsEnabled = cardsEnabled ?: false,
                 language = AppLanguage.fromPreferenceKey(languageKey),
                 temperatureUnit = TemperatureUnit.entries.firstOrNull { it.name == temperatureUnitName }
                     ?: TemperatureUnit.KELVIN
@@ -166,7 +166,7 @@ class AppSettingsStore(private val context: Context) {
                 ?: CacheRetention.MANUAL.name
             preferences[Keys.REDUCE_MOTION] = prefs.getBoolean("reduce_motion", false)
             preferences[Keys.HIGH_CONTRAST_OUTLINES] = prefs.getBoolean("high_contrast_outlines", false)
-            preferences[Keys.CARDS_ENABLED] = prefs.getBoolean("cards_enabled", true)
+            preferences[Keys.CARDS_ENABLED] = prefs.getBoolean("cards_enabled", false)
             preferences[Keys.LANGUAGE] = prefs.getString("language", null) ?: AppLanguage.SYSTEM.preferenceKey
             preferences[Keys.TEMPERATURE_UNIT] = prefs.getString("temperature_unit", null) ?: TemperatureUnit.KELVIN.name
             preferences[Keys.MIGRATED] = true

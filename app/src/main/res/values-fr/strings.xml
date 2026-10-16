@@ -1702,34 +1702,20 @@
     <string name="ui_faq_reaction_predictor_q" translatable="true">Comment fonctionne le Prédicteur de Réactions ?</string>
     <string name="ui_faq_reaction_predictor_a" translatable="true">Il confronte vos réactifs sélectionnés à un ensemble de règles hors ligne construit à partir de la base de données chimique intégrée et propose les produits probables, les types de réaction et les observations. Il couvre les réactions d\'étude courantes — vérifiez toujours les cas inhabituels avec un manuel.</string>
     <string name="ui_faq_database_size_q" translatable="true">Quelle est la taille de la base de données chimique intégrée ?</string>
-    <string name="ui_faq_database_size_a" translatable="true">Elle regroupe 575 substances, 108 ions, 71 groupes fonctionnels et 149 réactions, le tout disponible hors ligne. Les 118 éléments du tableau périodique se trouvent dans le tableau périodique, les deux références ne se dupliquent donc jamais.</string>
+    <string name="ui_faq_database_size_a" translatable="true">Elle regroupe 1532 substances, 211 ions, 122 groupes fonctionnels et 326 réactions, le tout disponible hors ligne. Les 118 éléments du tableau périodique se trouvent dans le tableau périodique, les deux références ne se dupliquent donc jamais.</string>
     <string name="ui_faq_languages_q" translatable="true">Quelles langues ChemSearch prend-il en charge ?</string>
     <string name="ui_faq_languages_a" translatable="true">L\'interface est entièrement traduite en 15 langues : bengali, danois, allemand, grec, espagnol, finnois, français, italien, japonais, néerlandais, norvégien, polonais, portugais, russe et suédois. Changez à tout moment dans Paramètres > Langue.</string>
     <string name="ui_whats_new_section_features" translatable="true">Nouveautés</string>
-    <string name="ui_whats_new_section_improvements" translatable="true">Améliorations</string>
     <string name="ui_section_whats_new" translatable="true">Quoi de neuf</string>
-    <string name="ui_whats_new_bullet_reaction" translatable="true">Prédicteur de réactions : ajout d\'un moteur de règles hors ligne basé sur la base de données chimique intégrée. Saisissez jusqu\'à trois réactifs et obtenez les produits prédits, les types de réaction, les observations et les niveaux de confiance.</string>
-    <string name="ui_whats_new_bullet_widgets" translatable="true">Widgets d\'écran d\'accueil : ajout des widgets Composé du jour et Composé aléatoire. Le widget quotidien change à minuit, tandis que l\'aléatoire possède son propre bouton d\'actualisation.</string>
-    <string name="ui_whats_new_bullet_database" translatable="true">Base de données chimique : étendue de 331 à 575 substances, dont des acides aminés, vitamines, médicaments, esters, organométalliques, silicates, alcaloïdes et plus. Les 118 éléments résident désormais dans le Tableau périodique au lieu d\'être dupliqués dans la base.</string>
-    <string name="ui_whats_new_bullet_search" translatable="true">Recherche avancée : ajout d\'un sélecteur de limite de résultats, d\'un filtre « le nom contient » et d\'un compteur de filtres actifs avec effacement global en un geste.</string>
-    <string name="ui_whats_new_bullet_tools" translatable="true">Outils : la grille s\'adapte désormais de 2 colonnes sur les téléphones étroits à 5 sur les grands écrans et tablettes. Les catégories d\'outils utilisent des couleurs d\'accent distinctes et les lignes conservent des cartes de hauteur égale.</string>
-    <string name="ui_whats_new_bullet_structure" translatable="true">Recherche de structure : ajout d\'un résumé de configuration en un coup d\'œil, d\'un curseur de similarité, d\'un statut actif plus clair, d\'indications sur les formats d\'import et d\'un badge de formule en direct.</string>
-    <string name="ui_whats_new_bullet_polish" translatable="true">Erreurs de recherche : ajout de messages spécifiques codés par couleur pour la limitation de débit, les délais dépassés, les requêtes invalides, les pannes réseau, les erreurs serveur et les résultats vides.</string>
-    <string name="ui_whats_new_bullet_home" translatable="true">Explorer : ajout d\'actions rapides pour Recherche de structure, Recherche d\'isomères, Tableau périodique et Base de données chimique.</string>
-    <string name="ui_whats_new_bullet_library" translatable="true">Actions de bibliothèque : appui long sur un composé enregistré pour copier sa formule, l\'ouvrir dans PubChem ou le supprimer sans ouvrir la fiche.</string>
-    <string name="ui_whats_new_bullet_shortcuts" translatable="true">Raccourcis du lanceur : appui long sur l\'icône de l\'application pour accéder directement à Recherche, Bibliothèque, Outils ou Paramètres.</string>
-    <string name="ui_whats_new_bullet_daily" translatable="true">Composé du jour : ajout d\'une carte sur l\'écran d\'accueil montrant le même composé quotidien que le widget, avec sa formule et ses usages typiques.</string>
-    <string name="ui_whats_new_bullet_csv" translatable="true">Export de bibliothèque : ajout de l\'export CSV à côté de la sauvegarde JSON existante et de la prise en charge de l\'import.</string>
-    <string name="ui_whats_new_bullet_compare" translatable="true">Comparer des composés : ajout de la copie des lignes de propriétés en un geste, de puces de composés, d\'une action d\'effacement des résultats et de la prise en charge de six composés au plus.</string>
-    <string name="ui_whats_new_bullet_periodic" translatable="true">Tableau périodique : ajout de filtres de catégories interactifs, de tuiles d\'éléments plus lumineuses, de cartes de chaleur de tendances en dégradé, de légendes min/max et d\'une bande cliquable des cinq premiers éléments.</string>
-    <string name="ui_whats_new_bullet_stoich" translatable="true">Stœchiométrie : ajout de l\'économie atomique, de la consommation et des restes par réactif, d\'une conversion d\'unités améliorée et de résumés d\'analyse copiables.</string>
-    <string name="ui_whats_new_bullet_display" translatable="true">Affichage : ajout d\'un réglage de l\'unité de température pour toute l\'application (K, °C ou °F).</string>
-    <string name="ui_whats_new_bullet_haptics" translatable="true">Retour haptique : ajout d\'un retour haptique aux interactions prises en charge.</string>
-    <string name="ui_whats_new_bullet_offline_mode" translatable="true">Outils de développement : ajout d\'un mode de test hors ligne avec des résultats déterministes, une latence réglable, des erreurs simulées, des types d\'échec forcés et une bannière hors ligne à l\'écran. Ajout aussi de l\'inspection du cache, des détails de l\'appareil et de la version, et d\'un catalogue de messages d\'erreur.</string>
-    <string name="ui_whats_new_bullet_dialogs" translatable="true">Interface : normalisation des boîtes de dialogue FAQ, aide et confirmation, avec en-têtes d\'icônes teintées, boutons de fermeture et actions destructives codées par couleur.</string>
-    <string name="ui_whats_new_bullet_cards" translatable="true">Interface : normalisation des cartes, des états de sélection et des actions destructives dans toute l\'application. Ajout d\'un réglage Cartes pour basculer entre les dispositions à cartes et plus plates.</string>
-    <string name="ui_whats_new_bullet_collapsible" translatable="true">À propos : la carte Quoi de neuf est désormais repliable et affiche les points forts de la version en cours.</string>
-    <string name="ui_whats_new_bullet_languages" translatable="true">Nouvelle langue : ajout du bengali et mise à jour des chaînes localisées. Les sélecteurs de langue affichent désormais chaque langue sous son nom d\'origine.</string>
+    <string name="ui_whats_new_intro_database" translatable="true">Spectres de composés ajoutés et base de données chimique de référence considérablement enrichie</string>
+    <string name="ui_whats_new_bullet_spectral" translatable="true">Données spectrales : Les composés affichent désormais les spectres publiés RMN, IR, de masse, UV et Raman de PubChem.</string>
+    <string name="ui_whats_new_bullet_database_group" translatable="true">Base de données chimique élargie</string>
+    <string name="ui_whats_new_bullet_database" translatable="true">Substances : étendue de 575 à 1532 entrées, couvrant acides, sels, oxydes, minerais, polymères, biomolécules, médicaments, colorants et plus. Recherche par nom, alias ou formule, entièrement hors ligne.</string>
+    <string name="ui_whats_new_bullet_ions" translatable="true">Ions : étendue de 108 à 211 entrées, y compris les cations et anions courants.</string>
+    <string name="ui_whats_new_bullet_functional_groups" translatable="true">Groupes fonctionnels : étendue de 71 à 122 entrées pour une référence rapide en chimie organique.</string>
+    <string name="ui_whats_new_bullet_reactions" translatable="true">Réactions : étendue de 149 à 326 entrées, offrant au prédicteur de réactions hors ligne une couverture plus large.</string>
+    <string name="ui_whats_new_section_changes" translatable="true">Changements</string>
+    <string name="ui_whats_new_bullet_cards_default" translatable="true">Mode cartes : désormais désactivé par défaut pour une mise en page plus plate et plus dense. Réactivable dans les Paramètres.</string>
     <string name="ui_error_search_not_found_s" translatable="true">Aucune correspondance trouvée pour « %1$s » dans PubChem. Essayez un autre nom, un numéro CAS, ou vérifiez l\'orthographe.</string>
     <string name="ui_error_search_throttled" translatable="true">PubChem limite les requêtes en ce moment. Attendez quelques secondes et réessayez.</string>
     <string name="ui_error_search_timeout" translatable="true">PubChem a mis trop de temps à répondre. Réessayez — les requêtes très complexes peuvent dépasser le délai.</string>
@@ -1758,7 +1744,7 @@
     <string name="ui_error_no_browser" translatable="true">Aucun navigateur trouvé</string>
     <string name="ui_explore_chemsearch" translatable="true">Explorer ChemSearch</string>
     <string name="ui_periodic_table_quick_action_subtitle" translatable="true">Parcourez les 118 éléments et leurs propriétés</string>
-    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">Plus de 900 substances, ions, groupes et réactions</string>
+    <string name="ui_chemical_database_quick_action_subtitle" translatable="true">Explorez une base de données chimique hors ligne</string>
     <string name="ui_offline_test_mode" translatable="true">Mode test hors ligne</string>
     <string name="ui_offline_test_mode_subtitle" translatable="true">Affiche des données fictives sans véritables appels réseau</string>
     <string name="ui_offline_test_mode_toggle_body" translatable="true">Quand il est activé, la recherche, les consultations et les appels de structure et d\'IA renvoient des enregistrements de test locaux au lieu de contacter le réseau</string>
@@ -1772,4 +1758,9 @@
     <string name="ui_offline_test_mode_badge" translatable="true">HORS LIGNE</string>
     <string name="ui_offline_test_mode_active_banner" translatable="true">Le mode test hors ligne est actif : tous les résultats de cet écran sont des données fictives simulées</string>
     <string name="ui_offline_test_mode_active_note" translatable="true">Tous les résultats sont simulés</string>
+    <string name="ui_spectral_information" translatable="true">Informations spectrales</string>
+    <string name="ui_loading_pubchem_spectra" translatable="true">Chargement des spectres PubChem...</string>
+    <string name="ui_source_pubchem_spectra" translatable="true">Source : collections spectrales PubChem</string>
+    <string name="ui_info_spectral_what_body" translatable="true">Spectres expérimentaux publiés dans PubChem, regroupés par technique (NMR, MS, IR, UV, Raman). Les valeurs proviennent de la source d\'origine, donc les instruments, solvants et unités varient d\'un enregistrement à l\'autre.</string>
+    <string name="ui_info_spectral_why_body" translatable="true">Toutes les substances n\'ont pas de spectres publiés. Lorsque PubChem n\'en a aucun, cette section reste masquée ; la page PubChem de la substance répertorie toujours tout ce qui est disponible.</string>
 </resources>

@@ -721,6 +721,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     advancedProperties = emptyList(),
                     classificationTags = emptyList(),
                     useEntries = emptyList(),
+                    spectralRecords = emptyList(),
+                    spectralLoaded = false,
                     isLoadingPubChemContext = false,
                     aiDescriptionBasis = emptyList(),
                     isLoadingSafety = false
@@ -1330,10 +1332,15 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         } else {
             latest.advancedProperties
         }
-        val pubChemContext = if (quality == OfflineDownloadQuality.COMPLETE && latest.classificationTags.isEmpty() && latest.useEntries.isEmpty()) {
+        val shouldFetchPubChemContext = quality == OfflineDownloadQuality.COMPLETE && (
+            latest.classificationTags.isEmpty() ||
+                latest.useEntries.isEmpty() ||
+                !latest.spectralLoaded
+            )
+        val pubChemContext = if (shouldFetchPubChemContext) {
             dataRepository.fetchPubChemCompoundContext(cid)
         } else {
-            PubChemCompoundContext(latest.classificationTags, latest.useEntries)
+            PubChemCompoundContext(latest.classificationTags, latest.useEntries, latest.spectralRecords)
         }
         onProgress(0.68f)
         val sdfResult = if (quality != OfflineDownloadQuality.BASIC) dataRepository.fetchSdfForOffline(latest) else null
@@ -1356,8 +1363,10 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
             wikiDescription = wikiDescription,
             ghsData = ghsData,
             advancedProperties = advancedProperties,
-            classificationTags = pubChemContext.classificationTags,
-            useEntries = pubChemContext.useEntries,
+            classificationTags = pubChemContext.classificationTags.ifEmpty { latest.classificationTags },
+            useEntries = pubChemContext.useEntries.ifEmpty { latest.useEntries },
+            spectralRecords = pubChemContext.spectralRecords.ifEmpty { latest.spectralRecords },
+            spectralLoaded = if (shouldFetchPubChemContext) true else latest.spectralLoaded,
             sdfData = sdfResult?.sdf ?: latest.sdfData,
             sdfSource = sdfResult?.source ?: latest.sdfSource,
             sdfMessage = sdfResult?.message ?: latest.sdfMessage,
@@ -1415,7 +1424,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
         val current = _uiState.value.takeIf { it.cid == cid } ?: return
         val needsProperties = current.advancedProperties.isEmpty()
         val needsContext = force || (current.classificationTags.isEmpty() && current.useEntries.isEmpty())
-        if (!needsProperties && !needsContext) return
+        val needsSpectra = force || !current.spectralLoaded
+        if (!needsProperties && !needsContext && !needsSpectra) return
 
         _uiState.update { state ->
             if (state.cid == cid) state.copy(isLoadingPubChemContext = true) else state
@@ -1429,26 +1439,28 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     dataRepository.fetchAdvancedProperties(cid)
                 }
             } else current.advancedProperties
-            val context = if (needsContext) {
+            val context = if (needsContext || needsSpectra) {
                 if (OfflineTestMode.enabled) {
                     runCatching { offlineIntercept.fetchPubChemCompoundContext(cid) }
-                        .getOrDefault(PubChemCompoundContext(emptyList(), emptyList()))
+                        .getOrDefault(PubChemCompoundContext())
                 } else {
                     dataRepository.fetchPubChemCompoundContext(cid)
                 }
-            } else PubChemCompoundContext(current.classificationTags, current.useEntries)
+            } else PubChemCompoundContext(current.classificationTags, current.useEntries, current.spectralRecords)
             val latest = _uiState.value.takeIf { it.cid == cid } ?: return@launch
             val updated = latest.copy(
                 advancedProperties = advancedProperties.ifEmpty { latest.advancedProperties },
                 classificationTags = context.classificationTags.ifEmpty { latest.classificationTags },
                 useEntries = context.useEntries.ifEmpty { latest.useEntries },
+                spectralRecords = context.spectralRecords.ifEmpty { latest.spectralRecords },
+                spectralLoaded = true,
                 isLoadingPubChemContext = false
             )
             _uiState.value = updated
             writeCache(updated)
             DebugLog.d(
                 "ChemSearch",
-                "PubChem context loaded for CID $cid: properties=${updated.advancedProperties.size}, classes=${updated.classificationTags.size}, uses=${updated.useEntries.size}"
+                "PubChem context loaded for CID $cid: properties=${updated.advancedProperties.size}, classes=${updated.classificationTags.size}, uses=${updated.useEntries.size}, spectra=${updated.spectralRecords.size}"
             )
         }
     }
@@ -1865,6 +1877,8 @@ class ChemViewModel(application: Application) : AndroidViewModel(application) {
                     advancedProperties = emptyList(),
                     classificationTags = emptyList(),
                     useEntries = emptyList(),
+                    spectralRecords = emptyList(),
+                    spectralLoaded = false,
                     isLoadingPubChemContext = false,
                     aiDescriptionBasis = emptyList()
                 )

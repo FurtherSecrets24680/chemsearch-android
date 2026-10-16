@@ -74,7 +74,7 @@ class SettingsManager(
     private val _highContrastOutlines = MutableStateFlow(prefs.getBoolean("high_contrast_outlines", false))
     val highContrastOutlines: StateFlow<Boolean> = _highContrastOutlines.asStateFlow()
 
-    private val _cardsEnabled = MutableStateFlow(prefs.getBoolean("cards_enabled", true))
+    private val _cardsEnabled = MutableStateFlow(prefs.getBoolean("cards_enabled", false))
     val cardsEnabled: StateFlow<Boolean> = _cardsEnabled.asStateFlow()
 
     private val _appLanguage = MutableStateFlow(
@@ -235,7 +235,7 @@ class SettingsManager(
         _cacheRetention.value = settingsRepository.savedCacheRetention()
         _reduceMotion.value = prefs.getBoolean("reduce_motion", false)
         _highContrastOutlines.value = prefs.getBoolean("high_contrast_outlines", false)
-        _cardsEnabled.value = prefs.getBoolean("cards_enabled", true)
+        _cardsEnabled.value = prefs.getBoolean("cards_enabled", false)
         _appLanguage.value = AppLanguage.fromPreferenceKey(
             prefs.getString("language", AppLanguage.SYSTEM.preferenceKey)
         )
