@@ -43,7 +43,7 @@
 
 ---
 
-## <img src="https://api.iconify.design/ph:info.svg?color=%233b82f6" width="22" height="22" alt=""/> About
+## About
 
 ChemSearch is an Android chemistry reference and study app. Search for a compound, check its formula and identifiers, view 2D or 3D structures, read safety data, save results for offline use or use one of the built-in chemistry tools.
 
@@ -51,7 +51,7 @@ It also includes a Periodic Table, a local Chemical Database, Isomer Search, Str
 
 It is aimed at students, teachers and anyone who wants chemistry data and common calculations in one app. It is not a replacement for an SDS, lab rules or other official safety guidance.
 
-## <img src="https://api.iconify.design/ph:list-checks.svg?color=%233b82f6" width="22" height="22" alt=""/> Highlights
+## Highlights
 
 - **Compound Search:** Search by name, CAS number, formula, PubChem CID or drawn structure. You can also open a random PubChem compound.
 - **Advanced Search:** Filter by query type, included or excluded elements, molecular weight, charge, 3D data, GHS data, result count and name text.
@@ -68,7 +68,7 @@ It is aimed at students, teachers and anyone who wants chemistry data and common
 - **Display Options:** Use light or dark themes, AMOLED mode, five color schemes, compact mode, reduced motion, high-contrast outlines, temperature units, cards mode and haptic feedback.
 - **Localization:** Choose from 16 language options, with each language shown by its native name in the language picker.
 
-## <img src="https://api.iconify.design/ph:translate.svg?color=%233b82f6" width="22" height="22" alt=""/> Localization
+## Localization
 
 ChemSearch has 16 language options:
 
@@ -91,7 +91,7 @@ ChemSearch has 16 language options:
 
 Translations cover the app UI, including tools, dialogs, widgets and other added strings. Language selection is available in **Settings > Language**. The translations are maintained with help from [Crowdin](https://crowdin.com/).
 
-## <img src="https://api.iconify.design/ph:android-logo.svg?color=%233b82f6" width="22" height="22" alt=""/> Download for Android
+## Download for Android
 
 - Download the latest stable APK from [GitHub Releases](https://github.com/FurtherSecrets24680/chemsearch-android/releases) or [F-Droid](https://f-droid.org/packages/com.furthersecrets.chemsearch/).
   - Runs on Android 8.0 Oreo and newer.
@@ -108,7 +108,7 @@ Translations cover the app UI, including tools, dialogs, widgets and other added
 > [!NOTE]
 > A debug APK may not install over an existing release APK if the signing keys do not match. In that case, uninstall the existing build first, then install the new one.
 
-## <img src="https://api.iconify.design/ph:image-square.svg?color=%233b82f6" width="22" height="22" alt=""/> Screenshots
+## Screenshots
 
 Click a section to view screenshots.
 
@@ -117,11 +117,11 @@ Click a section to view screenshots.
 
 | Home | 2D Result | Identifiers |
 | :---: | :---: | :---: |
-| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="220" alt="ChemSearch home screen with Compound of the Day and Explore cards in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="220" alt="Caffeine result with 2D structure in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="220" alt="Caffeine identifiers and synonyms in dark blue theme"/> |
+| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="220" alt="ChemSearch home screen with Compound of the Day and Explore cards in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="220" alt="Caffeine result with 2D structure in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/03.png" width="220" alt="Caffeine identifiers and synonyms in dark blue theme"/> |
 
 | Description and GHS | 3D Result |
 | :---: | :---: |
-| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="220" alt="Caffeine description and GHS safety pictograms in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="220" alt="Caffeine result with 3D molecule viewer in dark blue theme"/> |
+| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/04.png" width="220" alt="Caffeine description and GHS safety pictograms in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/05.png" width="220" alt="Caffeine result with 3D molecule viewer in dark blue theme"/> |
 
 </details>
 
@@ -130,7 +130,7 @@ Click a section to view screenshots.
 
 | Periodic Table | Chemical Database |
 | :---: | :---: |
-| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="220" alt="Periodic table in Library in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="220" alt="Chemical Database in Library in dark blue theme"/> |
+| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/06.png" width="220" alt="Periodic table in Library in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/07.png" width="220" alt="Chemical Database in Library in dark blue theme"/> |
 
 </details>
 
@@ -139,7 +139,7 @@ Click a section to view screenshots.
 
 | Structure Search | Isomer Search |
 | :---: | :---: |
-| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/8.png" width="220" alt="Native structure search editor in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/9.png" width="220" alt="Isomer search results for glucose in dark blue theme"/> |
+| <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/08.png" width="220" alt="Native structure search editor in dark blue theme"/> | <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/09.png" width="220" alt="Isomer search results for glucose in dark blue theme"/> |
 
 </details>
 
@@ -173,7 +173,7 @@ Click a section to view screenshots.
 
 </details>
 
-## <img src="https://api.iconify.design/ph:magnifying-glass.svg?color=%233b82f6" width="22" height="22" alt=""/> Compound Search
+## Compound Search
 
 ChemSearch can look up compounds using:
 
@@ -234,7 +234,7 @@ Formula display supports two styles:
 - **Conventional:** Common ordering such as `NaCl`, `H2SO4` and `NH4+`
 - **Hill:** Hill-system ordering such as `ClNa` or `H4N+` when that is the source formula
 
-## <img src="https://api.iconify.design/ph:hexagon.svg?color=%233b82f6" width="22" height="22" alt=""/> Structure Search
+## Structure Search
 
 Structure Search uses a native drawing page. Build a molecule from atoms, bonds, templates and charges, choose a matching mode, then open the results in the normal compound page.
 
@@ -252,7 +252,7 @@ The editor includes:
 - A live formula badge for the current sketch
 - Matching results in a pop-up dialog
 
-## <img src="https://api.iconify.design/ph:shuffle.svg?color=%233b82f6" width="22" height="22" alt=""/> Isomer Search
+## Isomer Search
 
 Isomer Search finds compounds that share a molecular formula.
 
@@ -269,7 +269,7 @@ Search results can be sorted by relevance or name. When isotope results are pres
 
 Each result shows the structure and compound information, supports selection for comparison and includes a quick copy action. Failed searches use the same typed error handling as normal Search and can be retried.
 
-## <img src="https://api.iconify.design/ph:cube.svg?color=%233b82f6" width="22" height="22" alt=""/> Structures
+## Structures
 
 ChemSearch loads structure data from PubChem when it is available.
 
@@ -282,7 +282,7 @@ ChemSearch loads structure data from PubChem when it is available.
 
 Some atoms, metal compounds, ionic solids and crystal-like materials do not have a useful standalone molecular model. In those cases, ChemSearch explains the missing model or labels a fallback as an estimate.
 
-## <img src="https://api.iconify.design/ph:text-align-left.svg?color=%233b82f6" width="22" height="22" alt=""/> Descriptions
+## Descriptions
 
 Descriptions can come from:
 
@@ -296,7 +296,7 @@ ChemSearch can refresh provider model lists and lets you choose a model for each
 
 When AI descriptions are enabled, the request can include compound details such as formula, identifiers, safety data and source context. API keys are stored locally with Android Keystore.
 
-## <img src="https://api.iconify.design/ph:books.svg?color=%233b82f6" width="22" height="22" alt=""/> Library
+## Library
 
 The Library contains saved compounds and reference data:
 
@@ -378,7 +378,7 @@ Downloads are stored in the local app database. The save action shows progress w
 
 Library import and export can move favorites and downloads between installs or devices. Library export supports both CSV and JSON.
 
-## <img src="https://api.iconify.design/ph:grid-four.svg?color=%233b82f6" width="22" height="22" alt=""/> Home-Screen Widgets and Shortcuts
+## Home-Screen Widgets and Shortcuts
 
 ChemSearch has two home-screen widgets.
 
@@ -396,7 +396,7 @@ Long-press the app icon to access shortcuts for:
 - Tools
 - Settings
 
-## <img src="https://api.iconify.design/ph:clock-counter-clockwise.svg?color=%233b82f6" width="22" height="22" alt=""/> Recent Searches
+## Recent Searches
 
 The Recent screen keeps search history organized by time.
 
@@ -406,7 +406,7 @@ The Recent screen keeps search history organized by time.
 - Remove individual entries
 - Clear all recent searches
 
-## <img src="https://api.iconify.design/ph:wrench.svg?color=%233b82f6" width="22" height="22" alt=""/> Tools
+## Tools
 
 ChemSearch includes 15 tools:
 
@@ -451,7 +451,7 @@ Examples include:
 
 The result can include predicted products, a balanced equation, observations, conditions and a confidence level.
 
-## <img src="https://api.iconify.design/ph:gear-six.svg?color=%233b82f6" width="22" height="22" alt=""/> Display and Settings
+## Display and Settings
 
 ChemSearch includes settings for appearance, search behavior, storage, language, AI providers and app updates.
 
@@ -492,7 +492,7 @@ GitHub builds can check for new releases, notify you about updates, download the
 
 The About screen includes app links, credits, license information, privacy notes, project sources and a collapsible What's New section for the current version.
 
-## <img src="https://api.iconify.design/ph:bug.svg?color=%233b82f6" width="22" height="22" alt=""/> Developer Options
+## Developer Options
 
 Developer options are unlocked by tapping the build number five times in the About card.
 
@@ -539,7 +539,7 @@ Developer options also include:
 
 These tools are useful for testing error states, checking local storage or collecting device information for a bug report.
 
-## <img src="https://api.iconify.design/ph:stack.svg?color=%233b82f6" width="22" height="22" alt=""/> Built With
+## Built With
 
 - [Kotlin](https://kotlinlang.org/)
 - [Jetpack Compose](https://developer.android.com/compose)
@@ -557,7 +557,7 @@ These tools are useful for testing error states, checking local storage or colle
 - [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html)
 - [Icons8](https://icons8.com/) for the Wikipedia logo used in element details
 
-## <img src="https://api.iconify.design/ph:database.svg?color=%233b82f6" width="22" height="22" alt=""/> Data Sources
+## Data Sources
 
 - [PubChem PUG REST](https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest) for lookup, structure search, properties, synonyms, descriptions, images, isomers and SDF files
 - [PubChem PUG View](https://pubchem.ncbi.nlm.nih.gov/docs/pug-view) for GHS safety data
@@ -573,7 +573,7 @@ These tools are useful for testing error states, checking local storage or colle
 - IUPAC, LibreTexts, PubChem and other chemistry references used for labels or source links in the local database
 - Optional AI provider APIs: Gemini, Groq, OpenAI, OpenRouter and Mistral
 
-## <img src="https://api.iconify.design/ph:warning-circle.svg?color=%233b82f6" width="22" height="22" alt=""/> Accuracy and Limits
+## Accuracy and Limits
 
 ChemSearch is a study and reference tool. It is not a replacement for official safety documentation or a full chemistry reference.
 
@@ -585,7 +585,7 @@ ChemSearch is a study and reference tool. It is not a replacement for official s
 - The Reaction Predictor covers common rule-based cases. It does not attempt to predict every chemical reaction, especially reactions that depend on special conditions, catalysts, complex mechanisms or unusual substrates.
 - GHS information is provided for quick reference. Use the official SDS and applicable safety procedures for real handling decisions.
 
-## <img src="https://api.iconify.design/ph:folders.svg?color=%233b82f6" width="22" height="22" alt=""/> Project Structure
+## Project Structure
 
 ```text
 .
@@ -639,7 +639,7 @@ Useful areas:
 - `fastlane/metadata/android/en-US/images/phoneScreenshots/` contains README screenshots
 - `version.properties` contains the app version name and version code
 
-## <img src="https://api.iconify.design/ph:terminal-window.svg?color=%233b82f6" width="22" height="22" alt=""/> Build From Source
+## Build From Source
 
 Requirements:
 
@@ -683,7 +683,7 @@ Build the F-Droid variant locally:
 .\gradlew.bat :app:assembleFdroidRelease
 ```
 
-## <img src="https://api.iconify.design/ph:key.svg?color=%233b82f6" width="22" height="22" alt=""/> Signed Release Builds
+## Signed Release Builds
 
 For signed release builds, copy `keystore.properties.example` to `keystore.properties` and keep the keystore in the project-relative path shown in that example file.
 
@@ -711,7 +711,7 @@ app/build/outputs/apk/github/release/app-github-release.apk
 
 Release builds use Android's shrinker and resource shrinking to keep the APK smaller.
 
-## <img src="https://api.iconify.design/ph:shield-check.svg?color=%233b82f6" width="22" height="22" alt=""/> Privacy
+## Privacy
 
 - No analytics
 - No tracking
@@ -723,7 +723,7 @@ Release builds use Android's shrinker and resource shrinking to keep the APK sma
 - Settings export can include saved AI API keys in the JSON backup. Keep exported settings files private.
 - Search history, favorites, downloads, settings and cache data stay on the device
 
-## <img src="https://api.iconify.design/ph:scroll.svg?color=%233b82f6" width="22" height="22" alt=""/> License
+## License
 
 MIT License. See [LICENSE](LICENSE) for details.
 

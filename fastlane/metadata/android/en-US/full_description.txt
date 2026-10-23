@@ -12,7 +12,7 @@ PERIODIC TABLE
 Browse all 118 elements with category filters, shell diagrams, physical properties, and spectra. Interactive heatmaps display trends for electronegativity, atomic radius, ionization energy, density, melting point, and boiling point (in K, °C, or °F) with top-five rankings.
 
 CHEMICAL DATABASE
-Offline database with 1500+ substances, 200+ ions, 10+ functional groups, and 300+ reactions. Covers acids, salts, oxides, ores, polymers, amino acids, vitamins, alkaloids, drugs, esters, organometallics, and silicates. Search by name, alias, or formula.
+Offline database with 1500+ substances, 200+ ions, 120+ functional groups, and 300+ reactions. Covers acids, salts, oxides, ores, polymers, amino acids, vitamins, alkaloids, drugs, esters, organometallics, and silicates. Search by name, alias, or formula.
 
 CHEMISTRY TOOLS
 Includes 15 tools for calculations and reference:
