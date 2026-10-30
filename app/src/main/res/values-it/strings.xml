@@ -144,7 +144,7 @@
     <string name="ui_s_copied" translatable="true">%1$s copiato</string>
     <string name="ui_back_to_database" translatable="true">Torna al database</string>
     <string name="ui_search_in_chemsearch" translatable="true">Cerca in ChemSearch</string>
-    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Cerca sostanze, reazioni, gruppi, ioni...</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Cerca nel database...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Formula molecolare</string>
     <string name="ui_empirical" translatable="true">Empirica</string>
@@ -478,7 +478,30 @@
     <string name="ui_debug_api_endpoints_body" translatable="true">Copia URL di base per PubChem, NCI/CADD, Wikipedia, GitHub rilascia, e supportati fornitori di IA negli appunti per il test manuale.</string>
     <string name="ui_debug_wipe_prefs_body" translatable="true">Chiama prefs.edit().clear(). Rimuove i valori delle preferenze legacy, i record di chiavi crittografati, la cronologia, i preferiti e i flag di debug. Le impostazioni di DataStore, i download di Room e i file di cache delle app non vengono eliminati da questa azione; si consiglia di riavviare.</string>
     <string name="ui_debug_force_crash" translatable="true">Forza crash</string>
-    <string name="ui_debug_force_crash_body" translatable="true">Lancia deliberatamente un runtimeException. Usato per verificare che il crash reporting / Logcat stia funzionando correttamente. C\'è un passo di conferma prima di sparare.</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Genera intenzionalmente una RuntimeException non gestita. Un rapporto di crash dettagliato viene salvato prima che il processo termini, quindi è il modo più rapido per verificare la registrazione dei crash. Prima dell’attivazione è richiesta una conferma.</string>
+    <string name="ui_crash_history" translatable="true">Cronologia crash</string>
+    <string name="ui_crash_history_body" translatable="true">I rapporti di crash vengono salvati automaticamente prima che un’eccezione non gestita termini l’app. Ogni rapporto include la traccia dello stack completa, la catena delle cause, gli stack di tutti i thread attivi, i dettagli del dispositivo e della build, lo stato della memoria, i limiti del processo e i log recenti dell’app.</string>
+    <string name="ui_crash_no_reports" translatable="true">Nessun crash registrato</string>
+    <string name="ui_crash_empty_help" translatable="true">Non ci sono ancora rapporti di crash. Se l’app si arresta, la prossima volta che la apri troverai qui un rapporto. Puoi anche usare «Crash ora» qui sotto per verificare la registrazione.</string>
+    <string name="ui_crash_copy_all" translatable="true">Copia tutto</string>
+    <string name="ui_crash_delete_all_title" translatable="true">Eliminare tutti i rapporti di crash?</string>
+    <string name="ui_crash_delete_all_body" translatable="true">Tutti i rapporti di crash salvati verranno eliminati definitivamente. Questa operazione non può essere annullata.</string>
+    <string name="ui_delete_all" translatable="true">Elimina tutto</string>
+    <string name="ui_crash_report_detail" translatable="true">Rapporto di crash</string>
+    <string name="ui_crash_read_failed" translatable="true">Impossibile leggere questo rapporto di crash.</string>
+    <string name="ui_crash_share" translatable="true">Condividi</string>
+    <string name="ui_crash_share_failed" translatable="true">Impossibile condividere il rapporto di crash</string>
+    <string name="ui_crash_share_subject" translatable="true">Rapporto di crash di ChemSearch</string>
+    <string name="ui_crash_share_chooser" translatable="true">Condividi rapporto di crash</string>
+    <string name="ui_crash_copied" translatable="true">Rapporto di crash copiato</string>
+    <string name="ui_crash_copied_all" translatable="true">Tutti i rapporti di crash copiati</string>
+    <string name="ui_crash_copy_failed" translatable="true">Il rapporto di crash è troppo grande per essere copiato. Usa Condividi.</string>
+    <string name="ui_crash_deleted" translatable="true">Rapporto di crash eliminato</string>
+    <string name="ui_crash_all_deleted" translatable="true">Tutti i rapporti di crash eliminati</string>
+    <string name="ui_crash_delete_one_title" translatable="true">Eliminare questo rapporto di crash?</string>
+    <string name="ui_crash_delete_one_body" translatable="true">Il rapporto di crash selezionato verrà eliminato definitivamente. Questa operazione non può essere annullata.</string>
+    <string name="ui_debug_crash_history_body" translatable="true">Sfoglia tutti i rapporti di crash salvati con la traccia dello stack completa, la catena delle cause, tutti i dump dei thread, i dettagli del dispositivo e della build, lo stato della memoria e i log recenti. Copia singoli rapporti, copiali tutti, condividili come file o eliminali.</string>
+    <string name="ui_clipboard_crash_report" translatable="true">Rapporto di crash</string>
     <string name="ui_debug_hide_body" translatable="true">Imposta dev_mode=false e nasconde questa sezione. Tocca il numero di build 5 volte sullo schermo Informazioni per sbloccarlo di nuovo.</string>
     <string name="ui_remove_key" translatable="true">Rimuovi chiave</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">I valori sensibili sono mascherati e non vengono mai copiati da questa vista.</string>
@@ -1645,6 +1668,13 @@
     <string name="ui_add_reactant">Aggiungi reagente</string>
     <string name="ui_predict_reaction">Predici i prodotti</string>
     <string name="ui_error_enter_two_reactants">Inserisci due reagenti.</string>
+    <string name="ui_error_enter_reactant" translatable="true">Inserisci almeno un reagente.</string>
+    <string name="ui_pred_rule_decomposition" translatable="true">Regola di decomposizione</string>
+    <string name="ui_pred_note_oxygen_gas" translatable="true">ossigeno gassoso</string>
+    <string name="ui_rp_decomposition_hint" translatable="true">Lascia vuoto il secondo reagente per prevedere la decomposizione di un composto.</string>
+    <string name="ui_confidence_database" translatable="true">Corrispondenza nel database</string>
+    <string name="ui_confidence_rule" translatable="true">Basato su regole</string>
+    <string name="ui_confidence_low" translatable="true">Affidabilità bassa</string>
     <string name="ui_error_no_prediction_available">Nessuna regola nota corrisponde a questi reagenti. Prova una coppia comune come un acido con una base, un metallo o un carbonato.</string>
     <string name="ui_pred_rule_neutralization">Regola di neutralizzazione</string>
     <string name="ui_pred_rule_acid_carbonate">Regola acido + carbonato</string>
@@ -1665,7 +1695,7 @@
     <string name="ui_pred_note_ammonia_gas">gas ammoniaca</string>
     <string name="ui_pred_note_pungent_gas">gas SO2 pungente</string>
     <string name="ui_pred_note_rotten_egg">odore di uova marce</string>
-    <string name="ui_rp_what_it_does_desc">Inserisci due reagenti per vedere i prodotti previsti, un\'equazione bilanciata e la regola o la voce del database alla base della previsione.</string>
+    <string name="ui_rp_what_it_does_desc">Inserisci uno o due reagenti per vedere i prodotti previsti, un\'equazione bilanciata e la regola o la voce del database alla base della previsione.</string>
     <string name="ui_rp_best_inputs_desc">Le coppie inorganiche comuni funzionano meglio: acidi con basi, metalli o carbonati; metalli attivi in soluzioni saline; idrocarburi con O2; e due elementi che formano un composto binario noto.</string>
     <string name="ui_rp_limits_desc">Il predittore copre solo regole comuni. Chimica organica, redox con condizioni speciali e reazioni che richiedono catalizzatore o calore potrebbero mancare. Verifica su un riferimento prima di fidarti di una previsione.</string>
     <string name="ui_language_bengali">বাংলা</string>
@@ -1763,4 +1793,8 @@
     <string name="ui_source_pubchem_spectra" translatable="true">Fonte: collezioni spettrali PubChem</string>
     <string name="ui_info_spectral_what_body" translatable="true">Spettri sperimentali pubblicati in PubChem, raggruppati per tecnica (NMR, MS, IR, UV, Raman). I valori provengono dalla fonte originale, quindi strumenti, solventi e unità variano tra i record.</string>
     <string name="ui_info_spectral_why_body" translatable="true">Non tutte le sostanze hanno spettri pubblicati. Quando PubChem non ne ha, questa sezione resta nascosta; la pagina PubChem della sostanza elenca comunque tutto ciò che è disponibile.</string>
+    <plurals name="ui_crash_reports_count">
+        <item quantity="one">%1$d rapporto di crash</item>
+        <item quantity="other">%1$d rapporti di crash</item>
+    </plurals>
 </resources>

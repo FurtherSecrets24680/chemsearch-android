@@ -3,9 +3,16 @@ package com.furthersecrets.chemsearch
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
+import com.furthersecrets.chemsearch.data.CrashLogRepository
+import com.furthersecrets.chemsearch.ui.DebugLog
 import java.util.Locale
 
 class ChemSearchApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        CrashLogRepository(this).install { DebugLog.snapshot() }
+    }
+
     override fun attachBaseContext(base: Context) {
         val languageKey = base
             .getSharedPreferences("chemsearch_prefs", Context.MODE_PRIVATE)

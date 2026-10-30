@@ -144,7 +144,7 @@
     <string name="ui_s_copied" translatable="true">%1$s をコピーしました</string>
     <string name="ui_back_to_database" translatable="true">データベースに戻る</string>
     <string name="ui_search_in_chemsearch" translatable="true">ChemSearch 内を検索</string>
-    <string name="ui_search_substances_reactions_groups_ions" translatable="true">物質、反応、官能基、イオンを検索...</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">データベースを検索...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">分子式</string>
     <string name="ui_empirical" translatable="true">経験的</string>
@@ -478,7 +478,30 @@
     <string name="ui_debug_api_endpoints_body" translatable="true">PubChem、NCI/CADD、Wikipedia、GitHubリリース、および手動テストのためにクリップボードにAIプロバイダをサポートしています。</string>
     <string name="ui_debug_wipe_prefs_body" translatable="true">prefs.edit().clear() を呼び出します。従来の設定値、暗号化されたキーレコード、履歴、お気に入り、およびデバッグフラグを削除します。DataStore設定、Roomダウンロード、アプリキャッシュファイルはこの操作で削除されません。再起動をお勧めします。</string>
     <string name="ui_debug_force_crash" translatable="true">強制的にクラッシュ</string>
-    <string name="ui_debug_force_crash_body" translatable="true">故意に処理されていないRuntimeExceptionをスローします。クラッシュレポート/Logcatが正常に動作していることを確認するために使用します。起動する前に確認のステップがあります。</string>
+    <string name="ui_debug_force_crash_body" translatable="true">意図的に未処理の RuntimeException をスローします。プロセス終了前に詳細なクラッシュレポートが保存されるため、クラッシュ記録を確認する最も簡単な方法です。実行前に確認画面が表示されます。</string>
+    <string name="ui_crash_history" translatable="true">クラッシュ履歴</string>
+    <string name="ui_crash_history_body" translatable="true">未処理の例外でアプリが終了する前に、クラッシュレポートが自動で保存されます。各レポートには、完全なスタックトレース、原因の連鎖、すべての実行中スレッドのスタック、デバイスとビルドの詳細、メモリ状態、プロセスの制限、最近のアプリログが含まれます。</string>
+    <string name="ui_crash_no_reports" translatable="true">クラッシュは記録されていません</string>
+    <string name="ui_crash_empty_help" translatable="true">クラッシュレポートはまだありません。アプリがクラッシュすると、次回起動時にここへレポートが表示されます。下の「今すぐクラッシュ」で記録をテストすることもできます。</string>
+    <string name="ui_crash_copy_all" translatable="true">すべてコピー</string>
+    <string name="ui_crash_delete_all_title" translatable="true">すべてのクラッシュレポートを削除しますか？</string>
+    <string name="ui_crash_delete_all_body" translatable="true">保存されているすべてのクラッシュレポートが完全に削除されます。この操作は元に戻せません。</string>
+    <string name="ui_delete_all" translatable="true">すべて削除</string>
+    <string name="ui_crash_report_detail" translatable="true">クラッシュレポート</string>
+    <string name="ui_crash_read_failed" translatable="true">このクラッシュレポートを読み取れませんでした。</string>
+    <string name="ui_crash_share" translatable="true">共有</string>
+    <string name="ui_crash_share_failed" translatable="true">クラッシュレポートを共有できませんでした</string>
+    <string name="ui_crash_share_subject" translatable="true">ChemSearch クラッシュレポート</string>
+    <string name="ui_crash_share_chooser" translatable="true">クラッシュレポートを共有</string>
+    <string name="ui_crash_copied" translatable="true">クラッシュレポートをコピーしました</string>
+    <string name="ui_crash_copied_all" translatable="true">すべてのクラッシュレポートをコピーしました</string>
+    <string name="ui_crash_copy_failed" translatable="true">クラッシュレポートが大きすぎてコピーできません。「共有」を使用してください。</string>
+    <string name="ui_crash_deleted" translatable="true">クラッシュレポートを削除しました</string>
+    <string name="ui_crash_all_deleted" translatable="true">すべてのクラッシュレポートを削除しました</string>
+    <string name="ui_crash_delete_one_title" translatable="true">このクラッシュレポートを削除しますか？</string>
+    <string name="ui_crash_delete_one_body" translatable="true">選択したクラッシュレポートが完全に削除されます。この操作は元に戻せません。</string>
+    <string name="ui_debug_crash_history_body" translatable="true">保存されているすべてのクラッシュレポートを、完全なスタックトレース、原因の連鎖、すべてのスレッドダンプ、デバイス/ビルドの詳細、メモリ状態、最近のログとともに確認できます。個別のレポートをコピーしたり、すべてをコピーしたり、ファイルとして共有したり、削除したりできます。</string>
+    <string name="ui_clipboard_crash_report" translatable="true">クラッシュレポート</string>
     <string name="ui_debug_hide_body" translatable="true">dev_mode=falseを設定し、このセクションを非表示にします。About 画面でビルド番号を 5 回タップして再度ロックを解除します。</string>
     <string name="ui_remove_key" translatable="true">キーを削除</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">機密情報はマスクされ、この画面からコピーされることはありません。</string>
@@ -1645,6 +1668,13 @@
     <string name="ui_add_reactant">反応物を追加</string>
     <string name="ui_predict_reaction">生成物を予測</string>
     <string name="ui_error_enter_two_reactants">反応物を2つ入力してください。</string>
+    <string name="ui_error_enter_reactant" translatable="true">反応物を1つ以上入力してください。</string>
+    <string name="ui_pred_rule_decomposition" translatable="true">分解ルール</string>
+    <string name="ui_pred_note_oxygen_gas" translatable="true">酸素ガス</string>
+    <string name="ui_rp_decomposition_hint" translatable="true">2つ目の反応物を空欄にすると、1つの化合物の分解を予測します。</string>
+    <string name="ui_confidence_database" translatable="true">データベース一致</string>
+    <string name="ui_confidence_rule" translatable="true">ルールベース</string>
+    <string name="ui_confidence_low" translatable="true">信頼度: 低</string>
     <string name="ui_error_no_prediction_available">これらの反応物に一致する既知のルールはありません。酸と塩基、金属、炭酸塩などの一般的な組み合わせを試してください。</string>
     <string name="ui_pred_rule_neutralization">中和ルール</string>
     <string name="ui_pred_rule_acid_carbonate">酸+炭酸塩ルール</string>
@@ -1665,7 +1695,7 @@
     <string name="ui_pred_note_ammonia_gas">アンモニアガス</string>
     <string name="ui_pred_note_pungent_gas">刺激臭のあるSO2ガス</string>
     <string name="ui_pred_note_rotten_egg">腐った卵の臭い</string>
-    <string name="ui_rp_what_it_does_desc">反応物を2つ入力すると、予測された生成物、平衡した化学反応式、そして予測の根拠となるルールやデータベースの項目が表示されます。</string>
+    <string name="ui_rp_what_it_does_desc">反応物を1つまたは2つ入力すると、予測される生成物、平衡化学式、および予測の根拠となるルールやデータベース項目が表示されます。</string>
     <string name="ui_rp_best_inputs_desc">一般的な無機の組み合わせが最もよく機能します:塩基、金属、炭酸塩と酸;塩類溶液中の活性金属;O2と炭化水素;既知の二元化合物を作る2つの元素。</string>
     <string name="ui_rp_limits_desc">予測は一般的なルールのみを対象とします。有機化学、特殊条件でのレドックス、触媒や熱を必要とする反応は含まれない場合があります。予測を信頼する前に参考資料を確認してください。</string>
     <string name="ui_language_bengali">বাংলা</string>
@@ -1763,4 +1793,7 @@
     <string name="ui_source_pubchem_spectra" translatable="true">出典: PubChem スペクトルコレクション</string>
     <string name="ui_info_spectral_what_body" translatable="true">PubChem に公開されている実験スペクトルを手法別にまとめたもの(NMR、MS、IR、UV、ラマン)。値は原著から引用しているため、装置・溶媒・単位は記録ごとに異なります。</string>
     <string name="ui_info_spectral_why_body" translatable="true">すべての物質に公開スペクトルがあるわけではありません。PubChem にない場合、このセクションは非表示のままですが、物質の PubChem ページで利用可能な情報をすべて確認できます。</string>
+    <plurals name="ui_crash_reports_count">
+        <item quantity="other">%1$d 件のクラッシュレポート</item>
+    </plurals>
 </resources>

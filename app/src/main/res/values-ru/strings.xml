@@ -144,7 +144,7 @@
     <string name="ui_s_copied" translatable="true">Скопировано: %1$s</string>
     <string name="ui_back_to_database" translatable="true">Назад к базе данных</string>
     <string name="ui_search_in_chemsearch" translatable="true">Поиск в ChemSearch</string>
-    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Поиск веществ, реакций, групп и ионов...</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Поиск по базе...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Молекулярная формула</string>
     <string name="ui_empirical" translatable="true">Эмпирический</string>
@@ -478,7 +478,30 @@
     <string name="ui_debug_api_endpoints_body" translatable="true">Копирует базовые URL-адреса для PubChem, NCI/CADD, Wikipedia, GitHub и поддерживаемые поставщики AI в буфер обмена для ручного тестирования.</string>
     <string name="ui_debug_wipe_prefs_body" translatable="true">Вызывает prefs.edit().clear(). Удаляет значения старых настроек, зашифрованные записи ключей, историю, избранное и флаги отладки. Настройки DataStore, загрузки Room и файлы кэша приложения не удаляются этим действием; рекомендуется перезагрузка.</string>
     <string name="ui_debug_force_crash" translatable="true">Принудительный сбой</string>
-    <string name="ui_debug_force_crash_body" translatable="true">Намеренно выбрасывает необработанное исключение RuntimeException. Используется для проверки корректной работы отчетов о сбоях. Перед запуском есть шаг подтверждения.</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Намеренно выбрасывает необработанное исключение RuntimeException. Подробный отчёт о сбое сохраняется до завершения процесса, поэтому это самый быстрый способ проверить запись сбоев. Перед запуском требуется подтверждение.</string>
+    <string name="ui_crash_history" translatable="true">История сбоев</string>
+    <string name="ui_crash_history_body" translatable="true">Отчёты о сбоях сохраняются автоматически до того, как необработанное исключение завершит работу приложения. Каждый отчёт содержит полную трассировку стека, цепочку причин, стеки всех активных потоков, сведения об устройстве и сборке, состояние памяти, ограничения процесса и последние журналы приложения.</string>
+    <string name="ui_crash_no_reports" translatable="true">Сбои не зарегистрированы</string>
+    <string name="ui_crash_empty_help" translatable="true">Отчётов о сбоях пока нет. Если приложение аварийно завершится, отчёт появится здесь при следующем запуске. Также можно использовать «Вызвать сбой» ниже, чтобы проверить запись.</string>
+    <string name="ui_crash_copy_all" translatable="true">Копировать все</string>
+    <string name="ui_crash_delete_all_title" translatable="true">Удалить все отчёты о сбоях?</string>
+    <string name="ui_crash_delete_all_body" translatable="true">Все сохранённые отчёты о сбоях будут удалены безвозвратно. Это действие нельзя отменить.</string>
+    <string name="ui_delete_all" translatable="true">Удалить все</string>
+    <string name="ui_crash_report_detail" translatable="true">Отчёт о сбое</string>
+    <string name="ui_crash_read_failed" translatable="true">Не удалось прочитать этот отчёт о сбое.</string>
+    <string name="ui_crash_share" translatable="true">Поделиться</string>
+    <string name="ui_crash_share_failed" translatable="true">Не удалось поделиться отчётом о сбое</string>
+    <string name="ui_crash_share_subject" translatable="true">Отчёт о сбое ChemSearch</string>
+    <string name="ui_crash_share_chooser" translatable="true">Поделиться отчётом о сбое</string>
+    <string name="ui_crash_copied" translatable="true">Отчёт о сбое скопирован</string>
+    <string name="ui_crash_copied_all" translatable="true">Все отчёты о сбоях скопированы</string>
+    <string name="ui_crash_copy_failed" translatable="true">Отчёт о сбое слишком большой для копирования. Используйте «Поделиться».</string>
+    <string name="ui_crash_deleted" translatable="true">Отчёт о сбое удалён</string>
+    <string name="ui_crash_all_deleted" translatable="true">Все отчёты о сбоях удалены</string>
+    <string name="ui_crash_delete_one_title" translatable="true">Удалить этот отчёт о сбое?</string>
+    <string name="ui_crash_delete_one_body" translatable="true">Выбранный отчёт о сбое будет удалён безвозвратно. Это действие нельзя отменить.</string>
+    <string name="ui_debug_crash_history_body" translatable="true">Просматривайте все сохранённые отчёты о сбоях с полной трассировкой стека, цепочкой причин, дампами всех потоков, сведениями об устройстве и сборке, состоянием памяти и последними журналами. Копируйте отдельные отчёты, копируйте все, делитесь ими как файлом или удаляйте их.</string>
+    <string name="ui_clipboard_crash_report" translatable="true">Отчёт о сбое</string>
     <string name="ui_debug_hide_body" translatable="true">Устанавливает dev_mode=false и скрывает этот раздел. Коснитесь номера сборки 5 раз на экране \"О программе\", чтобы снова разблокировать его.</string>
     <string name="ui_remove_key" translatable="true">Удалить ключ</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Конфиденциальные значения скрыты и никогда не копируются из этого окна.</string>
@@ -1645,6 +1668,13 @@
     <string name="ui_add_reactant">Добавить реагент</string>
     <string name="ui_predict_reaction">Предсказать продукты</string>
     <string name="ui_error_enter_two_reactants">Введите два реагента.</string>
+    <string name="ui_error_enter_reactant" translatable="true">Введите хотя бы один реагент.</string>
+    <string name="ui_pred_rule_decomposition" translatable="true">Правило разложения</string>
+    <string name="ui_pred_note_oxygen_gas" translatable="true">газообразный кислород</string>
+    <string name="ui_rp_decomposition_hint" translatable="true">Оставьте второй реагент пустым, чтобы предсказать разложение одного соединения.</string>
+    <string name="ui_confidence_database" translatable="true">Совпадение с базой</string>
+    <string name="ui_confidence_rule" translatable="true">По правилу</string>
+    <string name="ui_confidence_low" translatable="true">Низкая уверенность</string>
     <string name="ui_error_no_prediction_available">Ни одно известное правило не подходит к этим реагентам. Попробуйте типичную пару: кислота с основанием, металлом или карбонатом.</string>
     <string name="ui_pred_rule_neutralization">Правило нейтрализации</string>
     <string name="ui_pred_rule_acid_carbonate">Правило кислота + карбонат</string>
@@ -1665,7 +1695,7 @@
     <string name="ui_pred_note_ammonia_gas">газ аммиак</string>
     <string name="ui_pred_note_pungent_gas">едкий газ SO2</string>
     <string name="ui_pred_note_rotten_egg">запах тухлых яиц</string>
-    <string name="ui_rp_what_it_does_desc">Введите два реагента, чтобы увидеть предсказанные продукты, сбалансированное уравнение и правило или запись базы данных, лежащие в основе предсказания.</string>
+    <string name="ui_rp_what_it_does_desc">Введите один или два реагента, чтобы увидеть предсказанные продукты, уравненное уравнение и правило или запись в базе, на которых основан прогноз.</string>
     <string name="ui_rp_best_inputs_desc">Лучше всего работают типичные неорганические пары: кислоты с основаниями, металлами или карбонатами; активные металлы в растворах солей; углеводороды с O2; и два элемента, образующие известное бинарное соединение.</string>
     <string name="ui_rp_limits_desc">Предсказатель охватывает только типичные правила. Органическая химия, окислительно-восстановительные реакции в особых условиях и реакции с катализатором или нагревом могут отсутствовать. Проверьте справочник, прежде чем полагаться на предсказание.</string>
     <string name="ui_language_bengali">বাংলা</string>
@@ -1763,4 +1793,10 @@
     <string name="ui_source_pubchem_spectra" translatable="true">Источник: коллекции спектров PubChem</string>
     <string name="ui_info_spectral_what_body" translatable="true">Экспериментальные спектры, опубликованные в PubChem, сгруппированные по методу (NMR, MS, IR, UV, Raman). Значения взяты из первоисточника, поэтому приборы, растворители и единицы измерения различаются между записями.</string>
     <string name="ui_info_spectral_why_body" translatable="true">Не у всех веществ есть опубликованные спектры. Если в PubChem их нет, этот раздел остаётся скрытым; на странице вещества в PubChem по-прежнему перечислено всё доступное.</string>
+    <plurals name="ui_crash_reports_count">
+        <item quantity="one">%1$d отчёт о сбое</item>
+        <item quantity="few">%1$d отчёта о сбое</item>
+        <item quantity="many">%1$d отчётов о сбое</item>
+        <item quantity="other">%1$d отчёта о сбое</item>
+    </plurals>
 </resources>

@@ -144,7 +144,7 @@
     <string name="ui_s_copied" translatable="true">%1$s kopieret</string>
     <string name="ui_back_to_database" translatable="true">Tilbage til databasen</string>
     <string name="ui_search_in_chemsearch" translatable="true">Søg i ChemSearch</string>
-    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Søg efter stoffer, reaktioner, grupper, ioner...</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Søg i databasen...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Molekylformel</string>
     <string name="ui_empirical" translatable="true">Empirisk</string>
@@ -478,7 +478,30 @@
     <string name="ui_debug_api_endpoints_body" translatable="true">Kopierer base URL\'er for PubChem, NCI/CADD, Wikipedia, GitHub udgivelser, og understøttede AI udbydere til din udklipsholder til manuel test.</string>
     <string name="ui_debug_wipe_prefs_body" translatable="true">Kalder prefs.edit().clear(). Fjerner ældre præferenceværdier, krypterede nøgleposter, historie, favoritter og debug-flag. DataStore-indstillinger, Room-downloads og app-cachefiler slettes ikke af denne handling; genstart anbefales.</string>
     <string name="ui_debug_force_crash" translatable="true">Gennemtving nedbrud</string>
-    <string name="ui_debug_force_crash_body" translatable="true">Giver en uhåndteret RuntimeException. Bruges til at verificere at fejlrapportering / Logcat virker korrekt. Der er et bekræftelsestrin før den skyder.</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Kaster med vilje en uhåndteret RuntimeException. En detaljeret crashrapport gemmes, før processen afsluttes, så dette er den hurtigste måde at kontrollere crashrapportering. Der er et bekræftelsestrin, før den udløses.</string>
+    <string name="ui_crash_history" translatable="true">Crashhistorik</string>
+    <string name="ui_crash_history_body" translatable="true">Crashrapporter skrives automatisk, før en uhåndteret undtagelse afslutter appen. Hver rapport indeholder den fulde staksporing, årsagskæden, staksporinger for alle aktive tråde, enheds- og buildoplysninger, hukommelsestilstand, procesgrænser og de seneste applogfiler.</string>
+    <string name="ui_crash_no_reports" translatable="true">Ingen crashes registreret</string>
+    <string name="ui_crash_empty_help" translatable="true">Der er ingen crashrapporter endnu. Hvis appen går ned, vises en rapport her, næste gang du åbner den. Du kan også bruge “Gå ned nu” nedenfor til at teste registreringen.</string>
+    <string name="ui_crash_copy_all" translatable="true">Kopiér alle</string>
+    <string name="ui_crash_delete_all_title" translatable="true">Slet alle crashrapporter?</string>
+    <string name="ui_crash_delete_all_body" translatable="true">Alle gemte crashrapporter slettes permanent. Dette kan ikke fortrydes.</string>
+    <string name="ui_delete_all" translatable="true">Slet alle</string>
+    <string name="ui_crash_report_detail" translatable="true">Crashrapport</string>
+    <string name="ui_crash_read_failed" translatable="true">Denne crashrapport kunne ikke læses.</string>
+    <string name="ui_crash_share" translatable="true">Del</string>
+    <string name="ui_crash_share_failed" translatable="true">Crashrapporten kunne ikke deles</string>
+    <string name="ui_crash_share_subject" translatable="true">ChemSearch-crashrapport</string>
+    <string name="ui_crash_share_chooser" translatable="true">Del crashrapport</string>
+    <string name="ui_crash_copied" translatable="true">Crashrapport kopieret</string>
+    <string name="ui_crash_copied_all" translatable="true">Alle crashrapporter kopieret</string>
+    <string name="ui_crash_copy_failed" translatable="true">Crashrapporten er for stor til at kopiere. Brug Del i stedet.</string>
+    <string name="ui_crash_deleted" translatable="true">Crashrapport slettet</string>
+    <string name="ui_crash_all_deleted" translatable="true">Alle crashrapporter slettet</string>
+    <string name="ui_crash_delete_one_title" translatable="true">Slet denne crashrapport?</string>
+    <string name="ui_crash_delete_one_body" translatable="true">Den valgte crashrapport slettes permanent. Dette kan ikke fortrydes.</string>
+    <string name="ui_debug_crash_history_body" translatable="true">Gennemse alle gemte crashrapporter med fuld staksporing, årsagskæde, alle trådumps, enheds-/buildoplysninger, hukommelsestilstand og seneste logfiler. Kopiér enkelte rapporter, kopiér alle, del som fil, eller slet dem.</string>
+    <string name="ui_clipboard_crash_report" translatable="true">Crashrapport</string>
     <string name="ui_debug_hide_body" translatable="true">Sætter dev_mode=false og skjuler denne sektion. Tryk på build nummer 5 gange på Om skærmen for at låse den op igen.</string>
     <string name="ui_remove_key" translatable="true">Fjern nøgle</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Følsomme værdier maskeres og kopieres aldrig fra denne visning.</string>
@@ -1645,6 +1668,13 @@
     <string name="ui_add_reactant">Tilføj reaktant</string>
     <string name="ui_predict_reaction">Forudsig produkter</string>
     <string name="ui_error_enter_two_reactants">Indtast to reaktanter.</string>
+    <string name="ui_error_enter_reactant" translatable="true">Indtast mindst én reaktant.</string>
+    <string name="ui_pred_rule_decomposition" translatable="true">Nedbrydningsregel</string>
+    <string name="ui_pred_note_oxygen_gas" translatable="true">iltgas</string>
+    <string name="ui_rp_decomposition_hint" translatable="true">Lad den anden reaktant være tom for at forudsige nedbrydningen af en forbindelse.</string>
+    <string name="ui_confidence_database" translatable="true">Databasematch</string>
+    <string name="ui_confidence_rule" translatable="true">Regelbaseret</string>
+    <string name="ui_confidence_low" translatable="true">Lav sikkerhed</string>
     <string name="ui_error_no_prediction_available">Ingen kendt regel passer til disse reaktanter. Prøv et almindeligt par som en syre med en base, et metal eller et karbonat.</string>
     <string name="ui_pred_rule_neutralization">Neutralisationsregel</string>
     <string name="ui_pred_rule_acid_carbonate">Syre + karbonat-regel</string>
@@ -1665,7 +1695,7 @@
     <string name="ui_pred_note_ammonia_gas">ammoniakgas</string>
     <string name="ui_pred_note_pungent_gas">stinkende SO2-gas</string>
     <string name="ui_pred_note_rotten_egg">lugt af rådne æg</string>
-    <string name="ui_rp_what_it_does_desc">Indtast to reaktanter for at se de forudsagte produkter, en balanceret ligning og den regel eller databasepost, der ligger bag forudsigelsen.</string>
+    <string name="ui_rp_what_it_does_desc">Indtast en eller to reaktanter for at se de forudsagte produkter, en afstemt ligning og reglen eller databaseposten bag forudsigelsen.</string>
     <string name="ui_rp_best_inputs_desc">Almindelige uorganiske par fungerer bedst: syrer med baser, metaller eller karbonater; aktive metaller i saltopløsninger; kulbrinter med O2; og to grundstoffer, der danner en kendt binær forbindelse.</string>
     <string name="ui_rp_limits_desc">Forudsigelsen dækker kun almindelige regler. Organisk kemi, redox med særlige betingelser og reaktioner, der kræver katalysator eller varme, kan mangle. Tjek en reference, før du stoler på en forudsigelse.</string>
     <string name="ui_language_bengali">বাংলা</string>
@@ -1763,4 +1793,8 @@
     <string name="ui_source_pubchem_spectra" translatable="true">Kilde: PubChems spektralsamlinger</string>
     <string name="ui_info_spectral_what_body" translatable="true">Eksperimentelle spektre offentliggjort i PubChem, grupperet efter teknik (NMR, MS, IR, UV, Raman). Værdierne kommer fra den oprindelige kilde, så instrumenter, opløsningsmidler og enheder varierer mellem poster.</string>
     <string name="ui_info_spectral_why_body" translatable="true">Ikke alle stoffer har offentliggjorte spektre. Når PubChem ikke har nogen, forbliver dette afsnit skjult; stoffets PubChem-side viser stadig alt, hvad der er tilgængeligt.</string>
+    <plurals name="ui_crash_reports_count">
+        <item quantity="one">%1$d crashrapport</item>
+        <item quantity="other">%1$d crashrapporter</item>
+    </plurals>
 </resources>

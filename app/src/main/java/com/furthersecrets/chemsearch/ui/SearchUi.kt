@@ -842,6 +842,9 @@ private fun InlineFormulaLayout(
 
 // Compound header
 
+private val FavoriteAccentColor = Color(0xFFFFC107)
+private val DownloadAccentColor = Color(0xFF4CAF50)
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CompoundHeader(
@@ -1038,76 +1041,69 @@ fun CompoundHeader(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val haptics = rememberChemHaptics()
-                Surface(
-                    onClick = {
-                        haptics.confirm()
-                        onToggleFavorite()
-                    },
-                    shape = RoundedCornerShape(if (compact) 12.dp else 14.dp),
-                    color = MaterialTheme.colorScheme.primary.copy(if (isFavorite) 0.16f else 0.08f),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(if (isFavorite) 0.35f else 0.16f)),
-                    modifier = Modifier.size(if (compact) 42.dp else 48.dp)
+                Box(
+                    modifier = Modifier
+                        .size(if (compact) 42.dp else 48.dp)
+                        .clip(CircleShape)
+                        .clickable {
+                            haptics.confirm()
+                            onToggleFavorite()
+                        },
+                    contentAlignment = Alignment.Center
                 ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        AnimatedStateIcon(
-                            selected = isFavorite,
-                            selectedIcon = Icons.Default.Star,
-                            unselectedIcon = Icons.Default.StarBorder,
-                            selectedDescription = stringResource(R.string.ui_remove_favorite),
-                            unselectedDescription = stringResource(R.string.ui_add_favorite),
-                            tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.45f),
-                            modifier = Modifier.size(if (compact) 22.dp else 24.dp)
-                        )
-                    }
+                    AnimatedStateIcon(
+                        selected = isFavorite,
+                        selectedIcon = Icons.Default.Star,
+                        unselectedIcon = Icons.Default.StarBorder,
+                        selectedDescription = stringResource(R.string.ui_remove_favorite),
+                        unselectedDescription = stringResource(R.string.ui_add_favorite),
+                        tint = if (isFavorite) FavoriteAccentColor else MaterialTheme.colorScheme.onSurface.copy(0.45f),
+                        modifier = Modifier.size(if (compact) 30.dp else 34.dp)
+                    )
                 }
-                Surface(
-                    onClick = {
-                        if (!isSavingOffline) {
+                Box(
+                    modifier = Modifier
+                        .size(if (compact) 42.dp else 48.dp)
+                        .clip(CircleShape)
+                        .clickable(enabled = !isSavingOffline) {
                             onDownloadOffline()
                             Toast.makeText(context, context.getString(R.string.ui_saving_offline_copy), Toast.LENGTH_SHORT).show()
-                        }
-                    },
-                    enabled = !isSavingOffline,
-                    shape = RoundedCornerShape(if (compact) 12.dp else 14.dp),
-                    color = MaterialTheme.colorScheme.primary.copy(if (isDownloaded) 0.16f else 0.08f),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(if (isDownloaded) 0.35f else 0.16f)),
-                    modifier = Modifier.size(if (compact) 42.dp else 48.dp)
+                        },
+                    contentAlignment = Alignment.Center
                 ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        if (isSavingOffline) {
-                            val progress = offlineDownloadProgress?.coerceIn(0f, 1f)
-                            if (progress != null) {
-                                CircularProgressIndicator(
-                                    progress = { progress },
-                                    modifier = Modifier.size(if (compact) 30.dp else 34.dp),
-                                    strokeWidth = 3.dp,
-                                    color = MaterialTheme.colorScheme.primary,
-                                    trackColor = MaterialTheme.colorScheme.outline.copy(0.18f)
-                                )
-                            } else {
-                                CircularProgressIndicator(
-                                    modifier = Modifier.size(if (compact) 17.dp else 19.dp),
-                                    strokeWidth = 2.dp,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            }
-                            Icon(
-                                Icons.Default.Download,
-                                contentDescription = stringResource(R.string.ui_downloading_for_offline_use),
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(if (compact) 14.dp else 16.dp)
+                    if (isSavingOffline) {
+                        val progress = offlineDownloadProgress?.coerceIn(0f, 1f)
+                        if (progress != null) {
+                            CircularProgressIndicator(
+                                progress = { progress },
+                                modifier = Modifier.size(if (compact) 34.dp else 38.dp),
+                                strokeWidth = 3.dp,
+                                color = DownloadAccentColor,
+                                trackColor = MaterialTheme.colorScheme.outline.copy(0.18f)
                             )
                         } else {
-                            AnimatedStateIcon(
-                                selected = isDownloaded,
-                                selectedIcon = Icons.Default.DownloadDone,
-                                unselectedIcon = Icons.Default.Download,
-                                selectedDescription = stringResource(R.string.ui_update_offline_download),
-                                unselectedDescription = stringResource(R.string.ui_download_for_offline_use),
-                                tint = if (isDownloaded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(0.45f),
-                                modifier = Modifier.size(if (compact) 21.dp else 23.dp)
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(if (compact) 20.dp else 22.dp),
+                                strokeWidth = 2.dp,
+                                color = DownloadAccentColor
                             )
                         }
+                        Icon(
+                            Icons.Default.Download,
+                            contentDescription = stringResource(R.string.ui_downloading_for_offline_use),
+                            tint = DownloadAccentColor,
+                            modifier = Modifier.size(if (compact) 16.dp else 18.dp)
+                        )
+                    } else {
+                        AnimatedStateIcon(
+                            selected = isDownloaded,
+                            selectedIcon = Icons.Default.DownloadDone,
+                            unselectedIcon = Icons.Default.Download,
+                            selectedDescription = stringResource(R.string.ui_update_offline_download),
+                            unselectedDescription = stringResource(R.string.ui_download_for_offline_use),
+                            tint = if (isDownloaded) DownloadAccentColor else MaterialTheme.colorScheme.onSurface.copy(0.45f),
+                            modifier = Modifier.size(if (compact) 29.dp else 33.dp)
+                        )
                     }
                 }
             }
@@ -2281,6 +2277,46 @@ fun IdentifierRow(label: String, value: String, context: Context, mono: Boolean 
 
 // Elemental analysis (Percentage Composition)
 
+private val CpKElementColors = mapOf(
+    "H" to Color(0xFFF1F5F9),
+    "C" to Color(0xFF94A3B8),
+    "N" to Color(0xFF3B82F6),
+    "O" to Color(0xFFEF4444),
+    "F" to Color(0xFF22C55E),
+    "Cl" to Color(0xFF34D399),
+    "Br" to Color(0xFFB45309),
+    "I" to Color(0xFFA855F7),
+    "S" to Color(0xFFEAB308),
+    "P" to Color(0xFFF97316),
+    "B" to Color(0xFFFB7185),
+    "Si" to Color(0xFFD6B27A),
+    "Li" to Color(0xFFC084FC),
+    "Na" to Color(0xFF818CF8),
+    "K" to Color(0xFFA78BFA),
+    "Mg" to Color(0xFF4ADE80),
+    "Ca" to Color(0xFF86EFAC),
+    "Al" to Color(0xFFBFA6A6),
+    "Fe" to Color(0xFFE06633),
+    "Cu" to Color(0xFFC88033),
+    "Zn" to Color(0xFF7D80B0),
+    "Ti" to Color(0xFFBFC2C7),
+    "Mn" to Color(0xFF9C7AC7),
+    "Cr" to Color(0xFF8A99C7),
+    "Ni" to Color(0xFF50D050),
+    "Co" to Color(0xFFF090A0),
+    "Ag" to Color(0xFFC0C0C0),
+    "Au" to Color(0xFFFFD123),
+    "Pb" to Color(0xFF575961),
+    "Hg" to Color(0xFFB8B8D0),
+    "Sn" to Color(0xFF668080),
+    "As" to Color(0xFFBD80E3),
+    "Se" to Color(0xFFFFA100),
+    "Ba" to Color(0xFF00C900),
+    "Sr" to Color(0xFF00FF00)
+)
+
+private fun cpkElementColor(symbol: String): Color? = CpKElementColors[symbol]
+
 @Composable
 fun ElementalSection(data: List<ElementData>) {
     val compact = LocalCompactMode.current
@@ -2299,6 +2335,7 @@ fun ElementalSection(data: List<ElementData>) {
         }
         CardSectionHeader(stringResource(R.string.ui_elemental_analysis)) { showInfo = true }
         data.forEach { el ->
+            val elementColor = cpkElementColor(el.element) ?: MaterialTheme.colorScheme.primary
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)
@@ -2306,14 +2343,14 @@ fun ElementalSection(data: List<ElementData>) {
                 Box(
                     modifier = Modifier
                         .size(if (compact) 24.dp else 28.dp)
-                        .background(MaterialTheme.colorScheme.primary.copy(0.1f), RoundedCornerShape(6.dp)),
+                        .background(elementColor.copy(0.16f), RoundedCornerShape(6.dp)),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         el.element,
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = elementColor,
                         fontSize = 11.sp
                     )
                 }
@@ -2332,8 +2369,8 @@ fun ElementalSection(data: List<ElementData>) {
                             .background(
                                 Brush.horizontalGradient(
                                     listOf(
-                                        MaterialTheme.colorScheme.primary,
-                                        MaterialTheme.colorScheme.primary.copy(0.6f)
+                                        elementColor.copy(0.7f),
+                                        elementColor
                                     )
                                 )
                             )
@@ -2345,7 +2382,7 @@ fun ElementalSection(data: List<ElementData>) {
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = FontFamily.Monospace,
                     modifier = Modifier.width(if (compact) 40.dp else 44.dp),
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                    color = elementColor.copy(0.9f),
                     textAlign = TextAlign.End,
                     maxLines = 1,
                     softWrap = false
@@ -2486,7 +2523,8 @@ fun DescriptionSection(
         SectionLabel(stringResource(R.string.ui_description))
         Surface(
             shape = RoundedCornerShape(50),
-            color = MaterialTheme.colorScheme.outline.copy(0.1f),
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(0.45f),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.10f)),
             modifier = Modifier.fillMaxWidth()
         ) {
             Row(modifier = Modifier.padding(if (compact) 3.dp else 4.dp)) {
@@ -2505,86 +2543,108 @@ fun DescriptionSection(
                         onClick = onClick,
                         shape = RoundedCornerShape(50),
                         color = if (active) MaterialTheme.colorScheme.primary else Color.Transparent,
+                        contentColor = if (active) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface.copy(0.55f),
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
                             label,
-                            modifier = Modifier.padding(vertical = if (compact) 6.dp else 7.dp),
-                            color = if (active) Color.White else MaterialTheme.colorScheme.onSurface.copy(0.55f),
+                            modifier = Modifier.padding(vertical = if (compact) 7.dp else 8.dp),
+                            color = if (active) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface.copy(0.55f),
                             style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.SemiBold,
-                            textAlign = TextAlign.Center
+                            fontWeight = if (active) FontWeight.Bold else FontWeight.SemiBold,
+                            textAlign = TextAlign.Center,
+                            maxLines = 1
                         )
                     }
                 }
             }
         }
 
-        if (state.isLoadingDesc) {
-            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
-            }
-        } else {
-            val text = when (state.descSource) {
-                DescSource.PUBCHEM -> state.pubDescription ?: stringResource(R.string.ui_pubchem_desc_not_available)
-                DescSource.WIKI    -> state.wikiDescription ?: stringResource(R.string.ui_wiki_desc_not_available)
-                DescSource.AI      -> state.aiDescription   ?: stringResource(R.string.ui_ai_desc_not_available)
-            }
-            Text(
-                text,
-                style = MaterialTheme.typography.bodyMedium,
-                lineHeight = if (compact) 20.sp else 22.sp,
-                color = MaterialTheme.colorScheme.onSurface.copy(0.85f),
-                maxLines = if (expanded) Int.MAX_VALUE else 5,
-                overflow = if (expanded) TextOverflow.Visible else TextOverflow.Ellipsis
-            )
-            if (text.length > 260) {
-                TextButton(
-                    onClick = { expanded = !expanded },
-                    contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
-                ) {
-                    Text(
-                        if (expanded) stringResource(R.string.ui_read_less) else stringResource(R.string.ui_read_more),
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Spacer(Modifier.width(4.dp))
-                    Icon(
-                        if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-            }
-            if (state.descSource == DescSource.AI && state.aiDescription != null) {
-                if (state.aiDescriptionBasis.isNotEmpty()) {
-                    Text(
-                        stringResource(R.string.ui_based_on, state.aiDescriptionBasis.joinToString(", ")),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(0.48f),
-                        lineHeight = if (compact) 15.sp else 16.sp
-                    )
-                }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    TextButton(onClick = onRegenerate, contentPadding = PaddingValues(0.dp)) {
-                        Icon(Icons.Default.Refresh, null, modifier = Modifier.size(if (compact) 13.dp else 14.dp))
-                        Spacer(Modifier.width(4.dp))
-                        Text(stringResource(R.string.ui_regenerate), style = MaterialTheme.typography.labelMedium)
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(if (compact) 12.dp else 14.dp),
+            color = MaterialTheme.colorScheme.surfaceVariant.copy(0.28f),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.10f))
+        ) {
+            Column(
+                modifier = Modifier.padding(if (compact) 10.dp else 12.dp),
+                verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp)
+            ) {
+                if (state.isLoadingDesc) {
+                    Box(Modifier.fillMaxWidth().padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
                     }
-                    Spacer(Modifier.weight(1f))
-                    Surface(
-                        shape = RoundedCornerShape(6.dp),
-                        color = MaterialTheme.colorScheme.primary.copy(0.08f)
-                    ) {
-                        Text(
-                            stringResource(R.string.ui_via, state.aiProvider.shortName),
-                            modifier = Modifier.padding(
-                                horizontal = if (compact) 6.dp else 8.dp,
-                                vertical = if (compact) 2.dp else 3.dp
-                            ),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.primary.copy(0.8f)
-                        )
+                } else {
+                    val text = when (state.descSource) {
+                        DescSource.PUBCHEM -> state.pubDescription ?: stringResource(R.string.ui_pubchem_desc_not_available)
+                        DescSource.WIKI    -> state.wikiDescription ?: stringResource(R.string.ui_wiki_desc_not_available)
+                        DescSource.AI      -> state.aiDescription   ?: stringResource(R.string.ui_ai_desc_not_available)
+                    }
+                    Text(
+                        text,
+                        style = MaterialTheme.typography.bodyMedium,
+                        lineHeight = if (compact) 21.sp else 23.sp,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.88f),
+                        maxLines = if (expanded) Int.MAX_VALUE else 5,
+                        overflow = if (expanded) TextOverflow.Visible else TextOverflow.Ellipsis
+                    )
+                    if (text.length > 260) {
+                        Surface(
+                            onClick = { expanded = !expanded },
+                            shape = RoundedCornerShape(50),
+                            color = MaterialTheme.colorScheme.primary.copy(0.10f)
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                Text(
+                                    if (expanded) stringResource(R.string.ui_read_less) else stringResource(R.string.ui_read_more),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                Icon(
+                                    if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(15.dp)
+                                )
+                            }
+                        }
+                    }
+                    if (state.descSource == DescSource.AI && state.aiDescription != null) {
+                        if (state.aiDescriptionBasis.isNotEmpty()) {
+                            Text(
+                                stringResource(R.string.ui_based_on, state.aiDescriptionBasis.joinToString(", ")),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurface.copy(0.48f),
+                                lineHeight = if (compact) 15.sp else 16.sp
+                            )
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            TextButton(onClick = onRegenerate, contentPadding = PaddingValues(0.dp)) {
+                                Icon(Icons.Default.Refresh, null, modifier = Modifier.size(if (compact) 13.dp else 14.dp))
+                                Spacer(Modifier.width(4.dp))
+                                Text(stringResource(R.string.ui_regenerate), style = MaterialTheme.typography.labelMedium)
+                            }
+                            Spacer(Modifier.weight(1f))
+                            Surface(
+                                shape = RoundedCornerShape(50),
+                                color = MaterialTheme.colorScheme.primary.copy(0.10f)
+                            ) {
+                                Text(
+                                    stringResource(R.string.ui_via, state.aiProvider.shortName),
+                                    modifier = Modifier.padding(
+                                        horizontal = if (compact) 8.dp else 9.dp,
+                                        vertical = if (compact) 3.dp else 4.dp
+                                    ),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.primary.copy(0.85f)
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -3003,6 +3063,9 @@ fun SafetySection(ghsData: GhsData?, isLoading: Boolean) {
                                         )
                                     }
                                 }
+                            }
+                            repeat(4 - rowCodes.size) {
+                                Spacer(Modifier.weight(1f))
                             }
                         }
                     }

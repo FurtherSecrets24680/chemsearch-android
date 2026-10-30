@@ -144,7 +144,7 @@
     <string name="ui_s_copied" translatable="true">%1$s copiado</string>
     <string name="ui_back_to_database" translatable="true">Voltar à base de dados</string>
     <string name="ui_search_in_chemsearch" translatable="true">Buscar no ChemSearch</string>
-    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Pesquisar substâncias, reações, grupos, iões...</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Pesquisar na base...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Fórmula molecular</string>
     <string name="ui_empirical" translatable="true">empírico</string>
@@ -478,7 +478,30 @@
     <string name="ui_debug_api_endpoints_body" translatable="true">Copia URLs base para PubChem, NCI/CADD, Wikipedia, lançamentos GitHub e provedores de AI suportados na sua área de transferência para testes manuais.</string>
     <string name="ui_debug_wipe_prefs_body" translatable="true">Chama prefs.edit().clear(). Remove valores de preferências legadas, registos de chaves encriptados, histórico, favoritos e sinalizadores de depuração. As definições do DataStore, os downloads do Room e os ficheiros de cache da aplicação não são eliminados por esta ação; é recomendado reiniciar.</string>
     <string name="ui_debug_force_crash" translatable="true">Forçar falha</string>
-    <string name="ui_debug_force_crash_body" translatable="true">Deliberadamente lança uma Exceção de Runtime não tratada. Usada para verificar se o relatório de falhas / Logcat está funcionando corretamente. Há uma etapa de confirmação antes que ele atire.</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Lança deliberadamente uma RuntimeException não tratada. Um relatório de falha detalhado é salvo antes que o processo termine, por isso esta é a maneira mais rápida de verificar o registro de falhas. Há uma etapa de confirmação antes de ser disparado.</string>
+    <string name="ui_crash_history" translatable="true">Histórico de falhas</string>
+    <string name="ui_crash_history_body" translatable="true">Os relatórios de falhas são gravados automaticamente antes que uma exceção não tratada encerre o aplicativo. Cada relatório inclui o rastreamento de pilha completo, a cadeia de causas, as pilhas de todas as threads ativas, detalhes do dispositivo e da compilação, estado da memória, limites do processo e os registros recentes do aplicativo.</string>
+    <string name="ui_crash_no_reports" translatable="true">Nenhuma falha registrada</string>
+    <string name="ui_crash_empty_help" translatable="true">Ainda não há relatórios de falhas. Se o aplicativo falhar, um relatório aparecerá aqui na próxima vez que você abri-lo. Você também pode usar “Falhar agora” abaixo para testar a captura.</string>
+    <string name="ui_crash_copy_all" translatable="true">Copiar tudo</string>
+    <string name="ui_crash_delete_all_title" translatable="true">Excluir todos os relatórios de falhas?</string>
+    <string name="ui_crash_delete_all_body" translatable="true">Todos os relatórios de falhas salvos serão excluídos permanentemente. Esta ação não pode ser desfeita.</string>
+    <string name="ui_delete_all" translatable="true">Excluir tudo</string>
+    <string name="ui_crash_report_detail" translatable="true">Relatório de falha</string>
+    <string name="ui_crash_read_failed" translatable="true">Não foi possível ler este relatório de falha.</string>
+    <string name="ui_crash_share" translatable="true">Compartilhar</string>
+    <string name="ui_crash_share_failed" translatable="true">Não foi possível compartilhar o relatório de falha</string>
+    <string name="ui_crash_share_subject" translatable="true">Relatório de falha do ChemSearch</string>
+    <string name="ui_crash_share_chooser" translatable="true">Compartilhar relatório de falha</string>
+    <string name="ui_crash_copied" translatable="true">Relatório de falha copiado</string>
+    <string name="ui_crash_copied_all" translatable="true">Todos os relatórios de falhas copiados</string>
+    <string name="ui_crash_copy_failed" translatable="true">O relatório de falha é grande demais para copiar. Use Compartilhar.</string>
+    <string name="ui_crash_deleted" translatable="true">Relatório de falha excluído</string>
+    <string name="ui_crash_all_deleted" translatable="true">Todos os relatórios de falhas excluídos</string>
+    <string name="ui_crash_delete_one_title" translatable="true">Excluir este relatório de falha?</string>
+    <string name="ui_crash_delete_one_body" translatable="true">O relatório de falha selecionado será excluído permanentemente. Esta ação não pode ser desfeita.</string>
+    <string name="ui_debug_crash_history_body" translatable="true">Navegue por todos os relatórios de falhas salvos com o rastreamento de pilha completo, a cadeia de causas, todos os despejos de threads, detalhes do dispositivo/compilação, estado da memória e registros recentes. Copie relatórios individuais, copie todos, compartilhe como arquivo ou exclua-os.</string>
+    <string name="ui_clipboard_crash_report" translatable="true">Relatório de falha</string>
     <string name="ui_debug_hide_body" translatable="true">Define dev_mode=false e oculta esta seção. Toque no número de compilação 5 vezes na tela Sobre para desbloqueá-lo novamente.</string>
     <string name="ui_remove_key" translatable="true">Remover chave</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Os valores sensíveis são mascarados e nunca são copiados desta vista.</string>
@@ -1645,6 +1668,13 @@
     <string name="ui_add_reactant">Adicionar reagente</string>
     <string name="ui_predict_reaction">Prever produtos</string>
     <string name="ui_error_enter_two_reactants">Introduza dois reagentes.</string>
+    <string name="ui_error_enter_reactant" translatable="true">Introduza pelo menos um reagente.</string>
+    <string name="ui_pred_rule_decomposition" translatable="true">Regra de decomposição</string>
+    <string name="ui_pred_note_oxygen_gas" translatable="true">oxigénio gasoso</string>
+    <string name="ui_rp_decomposition_hint" translatable="true">Deixe o segundo reagente vazio para prever a decomposição de um composto.</string>
+    <string name="ui_confidence_database" translatable="true">Correspondência na base</string>
+    <string name="ui_confidence_rule" translatable="true">Baseado em regras</string>
+    <string name="ui_confidence_low" translatable="true">Confiança baixa</string>
     <string name="ui_error_no_prediction_available">Nenhuma regra conhecida corresponde a estes reagentes. Experimente um par comum como um ácido com uma base, um metal ou um carbonato.</string>
     <string name="ui_pred_rule_neutralization">Regra de neutralização</string>
     <string name="ui_pred_rule_acid_carbonate">Regra ácido + carbonato</string>
@@ -1665,7 +1695,7 @@
     <string name="ui_pred_note_ammonia_gas">gás amônia</string>
     <string name="ui_pred_note_pungent_gas">gás SO2 irritante</string>
     <string name="ui_pred_note_rotten_egg">cheiro de ovo podre</string>
-    <string name="ui_rp_what_it_does_desc">Introduza dois reagentes para ver os produtos previstos, uma equação balanceada e a regra ou entrada da base de dados por trás da previsão.</string>
+    <string name="ui_rp_what_it_does_desc">Introduza um ou dois reagentes para ver os produtos previstos, uma equação acertada e a regra ou entrada da base que sustenta a previsão.</string>
     <string name="ui_rp_best_inputs_desc">Pares inorgânicos comuns funcionam melhor: ácidos com bases, metais ou carbonatos; metais ativos em soluções de sais; hidrocarbonetos com O2; e dois elementos que formam um composto binário conhecido.</string>
     <string name="ui_rp_limits_desc">O preditor cobre apenas regras comuns. Química orgânica, redox com condições especiais e reações que exigem catalisador ou calor podem estar ausentes. Consulte uma referência antes de confiar em uma previsão.</string>
     <string name="ui_language_bengali">বাংলা</string>
@@ -1763,4 +1793,8 @@
     <string name="ui_source_pubchem_spectra" translatable="true">Fonte: coleções espectrais do PubChem</string>
     <string name="ui_info_spectral_what_body" translatable="true">Espectros experimentais publicados no PubChem, agrupados por técnica (NMR, MS, IR, UV, Raman). Os valores vêm da fonte original, portanto instrumentos, solventes e unidades variam entre registros.</string>
     <string name="ui_info_spectral_why_body" translatable="true">Nem toda substância tem espectros publicados. Quando o PubChem não tem nenhum, esta seção permanece oculta; a página da substância no PubChem ainda lista tudo o que está disponível.</string>
+    <plurals name="ui_crash_reports_count">
+        <item quantity="one">%1$d relatório de falha</item>
+        <item quantity="other">%1$d relatórios de falhas</item>
+    </plurals>
 </resources>

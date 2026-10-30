@@ -144,7 +144,7 @@
     <string name="ui_s_copied" translatable="true">Αντιγράφηκε το %1$s</string>
     <string name="ui_back_to_database" translatable="true">Πίσω στη Βάση Δεδομένων</string>
     <string name="ui_search_in_chemsearch" translatable="true">Αναζήτηση στο ChemSearch</string>
-    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Αναζήτηση ουσιών, αντιδράσεων, ομάδων, ιόντων...</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Αναζήτηση στη βάση...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Μοριακός τύπος</string>
     <string name="ui_empirical" translatable="true">Εμπειρική</string>
@@ -478,7 +478,30 @@
     <string name="ui_debug_api_endpoints_body" translatable="true">Αντιγράφει τις βασικές διευθύνσεις URL για εκδόσεις PubChem, NCI/CADD, Wikipedia, GitHub και τους υποστηριζόμενους παρόχους AI στο πρόχειρο σας για χειροκίνητη δοκιμή.</string>
     <string name="ui_debug_wipe_prefs_body" translatable="true">Καλεί prefs.edit().clear(). Καταργεί τιμές προτίμησης παλαιού τύπου, κρυπτογραφημένες εγγραφές κλειδιών, ιστορικό, αγαπημένα και σημαίες αποσφαλμάτωσης. Οι ρυθμίσεις DataStore, οι λήψεις δωματίων και τα αρχεία cache εφαρμογών δεν διαγράφονται από αυτήν την ενέργεια. Συνιστάται επανεκκίνηση.</string>
     <string name="ui_debug_force_crash" translatable="true">Αναγκαστική κατάρρευση</string>
-    <string name="ui_debug_force_crash_body" translatable="true">Εσκεμμένα ρίχνει μια ανεπεξέργαστη εξαίρεση RuntimeException. Χρησιμοποιείται για να επιβεβαιώσει ότι η αναφορά κατάρρευσης / Logcat λειτουργεί σωστά. Υπάρχει ένα βήμα επιβεβαίωσης πριν από την εκτέλεση.</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Προκαλεί σκόπιμα μια μη διαχειρισμένη RuntimeException. Μια λεπτομερής αναφορά κατάρρευσης αποθηκεύεται πριν τερματιστεί η διεργασία, επομένως αυτός είναι ο γρηγορότερος τρόπος για να επαληθεύσετε την καταγραφή καταρρεύσεων. Υπάρχει ένα βήμα επιβεβαίωσης πριν από την εκτέλεση.</string>
+    <string name="ui_crash_history" translatable="true">Ιστορικό καταρρεύσεων</string>
+    <string name="ui_crash_history_body" translatable="true">Οι αναφορές κατάρρευσης γράφονται αυτόματα πριν από τον τερματισμό της εφαρμογής λόγω μη διαχειρισμένης εξαίρεσης. Κάθε αναφορά περιλαμβάνει το πλήρες ίχνος στοίβας, την αλυσίδα αιτίων, τα ίχνη όλων των ενεργών νημάτων, στοιχεία συσκευής και έκδοσης, κατάσταση μνήμης, όρια διεργασίας και τα πρόσφατα αρχεία καταγραφής της εφαρμογής.</string>
+    <string name="ui_crash_no_reports" translatable="true">Δεν καταγράφηκαν καταρρεύσεις</string>
+    <string name="ui_crash_empty_help" translatable="true">Δεν υπάρχουν ακόμη αναφορές κατάρρευσης. Αν η εφαρμογή καταρρεύσει, την επόμενη φορά που θα την ανοίξετε θα εμφανιστεί εδώ μια αναφορά. Μπορείτε επίσης να χρησιμοποιήσετε την επιλογή «Κατάρρευση τώρα» παρακάτω για να δοκιμάσετε την καταγραφή.</string>
+    <string name="ui_crash_copy_all" translatable="true">Αντιγραφή όλων</string>
+    <string name="ui_crash_delete_all_title" translatable="true">Διαγραφή όλων των αναφορών κατάρρευσης;</string>
+    <string name="ui_crash_delete_all_body" translatable="true">Όλες οι αποθηκευμένες αναφορές κατάρρευσης θα διαγραφούν οριστικά. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.</string>
+    <string name="ui_delete_all" translatable="true">Διαγραφή όλων</string>
+    <string name="ui_crash_report_detail" translatable="true">Αναφορά κατάρρευσης</string>
+    <string name="ui_crash_read_failed" translatable="true">Δεν ήταν δυνατή η ανάγνωση αυτής της αναφοράς κατάρρευσης.</string>
+    <string name="ui_crash_share" translatable="true">Κοινή χρήση</string>
+    <string name="ui_crash_share_failed" translatable="true">Δεν ήταν δυνατή η κοινή χρήση της αναφοράς κατάρρευσης</string>
+    <string name="ui_crash_share_subject" translatable="true">Αναφορά κατάρρευσης ChemSearch</string>
+    <string name="ui_crash_share_chooser" translatable="true">Κοινή χρήση αναφοράς κατάρρευσης</string>
+    <string name="ui_crash_copied" translatable="true">Η αναφορά κατάρρευσης αντιγράφηκε</string>
+    <string name="ui_crash_copied_all" translatable="true">Όλες οι αναφορές κατάρρευσης αντιγράφηκαν</string>
+    <string name="ui_crash_copy_failed" translatable="true">Η αναφορά κατάρρευσης είναι πολύ μεγάλη για αντιγραφή. Χρησιμοποιήστε την Κοινή χρήση.</string>
+    <string name="ui_crash_deleted" translatable="true">Η αναφορά κατάρρευσης διαγράφηκε</string>
+    <string name="ui_crash_all_deleted" translatable="true">Όλες οι αναφορές κατάρρευσης διαγράφηκαν</string>
+    <string name="ui_crash_delete_one_title" translatable="true">Διαγραφή αυτής της αναφοράς κατάρρευσης;</string>
+    <string name="ui_crash_delete_one_body" translatable="true">Η επιλεγμένη αναφορά κατάρρευσης θα διαγραφεί οριστικά. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.</string>
+    <string name="ui_debug_crash_history_body" translatable="true">Περιηγηθείτε σε όλες τις αποθηκευμένες αναφορές κατάρρευσης με πλήρες ίχνος στοίβας, αλυσίδα αιτίων, αποτυπώματα όλων των νημάτων, στοιχεία συσκευής/έκδοσης, κατάσταση μνήμης και πρόσφατα αρχεία καταγραφής. Αντιγράψτε μεμονωμένες αναφορές, αντιγράψτε όλες, μοιραστείτε τις ως αρχείο ή διαγράψτε τις.</string>
+    <string name="ui_clipboard_crash_report" translatable="true">Αναφορά κατάρρευσης</string>
     <string name="ui_debug_hide_body" translatable="true">Ορίζει την dev_mode=false και αποκρύπτει αυτή την ενότητα. Πατήστε τον αριθμό της έκδοσης 5 φορές στην οθόνη για να την ξεκλειδώσετε ξανά.</string>
     <string name="ui_remove_key" translatable="true">Αφαίρεση κλειδιού</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Οι ευαίσθητες τιμές αποκρύπτονται και δεν αντιγράφονται ποτέ από αυτήν την προβολή.</string>
@@ -1645,6 +1668,13 @@
     <string name="ui_add_reactant">Προσθήκη αντιδραστηρίου</string>
     <string name="ui_predict_reaction">Πρόβλεψη προϊόντων</string>
     <string name="ui_error_enter_two_reactants">Εισάγετε δύο αντιδραστήρια.</string>
+    <string name="ui_error_enter_reactant" translatable="true">Εισαγάγετε τουλάχιστον ένα αντιδρόν.</string>
+    <string name="ui_pred_rule_decomposition" translatable="true">Κανόνας αποσύνθεσης</string>
+    <string name="ui_pred_note_oxygen_gas" translatable="true">αέριο οξυγόνο</string>
+    <string name="ui_rp_decomposition_hint" translatable="true">Αφήστε το δεύτερο αντιδρόν κενό για να προβλεφθεί η αποσύνθεση μιας ένωσης.</string>
+    <string name="ui_confidence_database" translatable="true">Αντιστοίχιση βάσης</string>
+    <string name="ui_confidence_rule" translatable="true">Βάσει κανόνα</string>
+    <string name="ui_confidence_low" translatable="true">Χαμηλή βεβαιότητα</string>
     <string name="ui_error_no_prediction_available">Κανένας γνωστός κανόνας δεν ταιριάζει με αυτά τα αντιδραστήρια. Δοκιμάστε ένα συνηθισμένο ζεύγος όπως οξύ με βάση, μέταλλο ή ανθρακικό.</string>
     <string name="ui_pred_rule_neutralization">Κανόνας εξουδετέρωσης</string>
     <string name="ui_pred_rule_acid_carbonate">Κανόνας οξύ + ανθρακικό</string>
@@ -1665,7 +1695,7 @@
     <string name="ui_pred_note_ammonia_gas">αέριο αμμωνία</string>
     <string name="ui_pred_note_pungent_gas">ερεθιστικό αέριο SO2</string>
     <string name="ui_pred_note_rotten_egg">μυρωδιά σάπιων αυγών</string>
-    <string name="ui_rp_what_it_does_desc">Εισάγετε δύο αντιδραστήρια για να δείτε τα προβλεπόμενα προϊόντα, μια ισορροπημένη εξίσωση και τον κανόνα ή την καταχώρηση βάσης πίσω από την πρόβλεψη.</string>
+    <string name="ui_rp_what_it_does_desc">Εισαγάγετε ένα ή δύο αντιδρώντα για να δείτε τα προβλεπόμενα προϊόντα, μια εξισορροπημένη εξίσωση και τον κανόνα ή την καταχώριση της βάσης πίσω από την πρόβλεψη.</string>
     <string name="ui_rp_best_inputs_desc">Τα συνηθισμένα ανόργανα ζεύγη λειτουργούν καλύτερα: οξέα με βάσεις, μέταλλα ή ανθρακικά· ενεργά μέταλλα σε διαλύματα αλάτων· υδρογονάνθρακες με O2· και δύο στοιχεία που σχηματίζουν γνωστή δυαδική ένωση.</string>
     <string name="ui_rp_limits_desc">Η πρόβλεψη καλύπτει μόνο συνηθισμένους κανόνες. Η οργανική χημεία, το redox με ειδικές συνθήκες και οι αντιδράσεις που χρειάζονται καταλύτη ή θερμότητα μπορεί να λείπουν. Ελέγξτε μια πηγή πριν βασιστείτε σε μια πρόβλεψη.</string>
     <string name="ui_language_bengali">বাংলা</string>
@@ -1763,4 +1793,8 @@
     <string name="ui_source_pubchem_spectra" translatable="true">Πηγή: συλλογές φασμάτων PubChem</string>
     <string name="ui_info_spectral_what_body" translatable="true">Πειραματικά φάσματα που δημοσιεύονται στο PubChem, ομαδοποιημένα κατά τεχνική (NMR, MS, IR, UV, Raman). Οι τιμές προέρχονται από την αρχική πηγή, επομένως τα όργανα, οι διαλύτες και οι μονάδες διαφέρουν μεταξύ των εγγραφών.</string>
     <string name="ui_info_spectral_why_body" translatable="true">Δεν έχουν όλες οι ουσίες δημοσιευμένα φάσματα. Όταν το PubChem δεν έχει κανένα, αυτή η ενότητα παραμένει κρυφή· η σελίδα της ουσίας στο PubChem εξακολουθεί να παραθέτει ό,τι είναι διαθέσιμο.</string>
+    <plurals name="ui_crash_reports_count">
+        <item quantity="one">%1$d αναφορά κατάρρευσης</item>
+        <item quantity="other">%1$d αναφορές κατάρρευσης</item>
+    </plurals>
 </resources>

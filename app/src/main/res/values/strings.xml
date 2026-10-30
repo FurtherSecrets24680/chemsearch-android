@@ -146,7 +146,7 @@
     <string name="ui_s_copied" translatable="true">%1$s copied</string>
     <string name="ui_back_to_database" translatable="true">Back to Database</string>
     <string name="ui_search_in_chemsearch" translatable="true">Search in ChemSearch</string>
-    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Search substances, reactions, groups, ions...</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Search database...</string>
 
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Molecular formula</string>
@@ -493,7 +493,30 @@
     <string name="ui_debug_api_endpoints_body" translatable="true">Copies base URLs for PubChem, NCI/CADD, Wikipedia, GitHub releases, and supported AI providers to your clipboard for manual testing.</string>
     <string name="ui_debug_wipe_prefs_body" translatable="true">Calls prefs.edit().clear(). Removes legacy preference values, encrypted key records, history, favorites, and debug flags. DataStore settings, Room downloads, and app cache files are not deleted by this action; restart recommended.</string>
     <string name="ui_debug_force_crash" translatable="true">Force crash</string>
-    <string name="ui_debug_force_crash_body" translatable="true">Deliberately throws an unhandled RuntimeException. Used to verify that crash reporting / Logcat is working correctly. There is a confirmation step before it fires.</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Deliberately throws an unhandled RuntimeException. A detailed crash report is saved before the process exits, so this is the quickest way to verify crash reporting. There is a confirmation step before it fires.</string>
+    <string name="ui_crash_history" translatable="true">Crash history</string>
+    <string name="ui_crash_history_body" translatable="true">Crash reports are written automatically before an uncaught exception terminates the app. Each report includes the full stack trace, cause chain, all live thread stacks, device and build details, memory state, process limits, and recent app logs.</string>
+    <string name="ui_crash_no_reports" translatable="true">No crashes recorded</string>
+    <string name="ui_crash_empty_help" translatable="true">No crash reports yet. If the app crashes, a report will appear here the next time you open it. You can also use Force crash below to test capture.</string>
+    <string name="ui_crash_copy_all" translatable="true">Copy all</string>
+    <string name="ui_crash_delete_all_title" translatable="true">Delete all crash reports?</string>
+    <string name="ui_crash_delete_all_body" translatable="true">Every saved crash report will be permanently deleted. This cannot be undone.</string>
+    <string name="ui_delete_all" translatable="true">Delete all</string>
+    <string name="ui_crash_report_detail" translatable="true">Crash report</string>
+    <string name="ui_crash_read_failed" translatable="true">This crash report could not be read.</string>
+    <string name="ui_crash_share" translatable="true">Share</string>
+    <string name="ui_crash_share_failed" translatable="true">Could not share crash report</string>
+    <string name="ui_crash_share_subject" translatable="true">ChemSearch crash report</string>
+    <string name="ui_crash_share_chooser" translatable="true">Share crash report</string>
+    <string name="ui_crash_copied" translatable="true">Crash report copied</string>
+    <string name="ui_crash_copied_all" translatable="true">All crash reports copied</string>
+    <string name="ui_crash_copy_failed" translatable="true">Crash report is too large to copy. Use Share instead.</string>
+    <string name="ui_crash_deleted" translatable="true">Crash report deleted</string>
+    <string name="ui_crash_all_deleted" translatable="true">All crash reports deleted</string>
+    <string name="ui_crash_delete_one_title" translatable="true">Delete this crash report?</string>
+    <string name="ui_crash_delete_one_body" translatable="true">The selected crash report will be permanently deleted. This cannot be undone.</string>
+    <string name="ui_debug_crash_history_body" translatable="true">Browse every saved crash report with the full stack trace, cause chain, all thread dumps, device/build details, memory state, and recent logs. Copy individual reports, copy all, share as a file, or delete them.</string>
+    <string name="ui_clipboard_crash_report" translatable="true">Crash report</string>
     <string name="ui_debug_hide_body" translatable="true">Sets dev_mode=false and hides this section. Tap the build number 5 times on the About screen to unlock it again.</string>
     <string name="ui_remove_key" translatable="true">Remove key</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Sensitive values are masked and are never copied from this view.</string>
@@ -1039,6 +1062,10 @@
     <plurals name="ui_lines_captured">
         <item quantity="one">%1$d line captured</item>
         <item quantity="other">%1$d lines captured</item>
+    </plurals>
+    <plurals name="ui_crash_reports_count">
+        <item quantity="one">%1$d crash report</item>
+        <item quantity="other">%1$d crash reports</item>
     </plurals>
     <plurals name="ui_matches_count">
         <item quantity="one">%1$d match</item>
@@ -1722,6 +1749,13 @@
     <string name="ui_add_reactant" translatable="true">Add reactant</string>
     <string name="ui_predict_reaction" translatable="true">Predict products</string>
     <string name="ui_error_enter_two_reactants" translatable="true">Enter two reactants.</string>
+    <string name="ui_error_enter_reactant" translatable="true">Enter at least one reactant.</string>
+    <string name="ui_pred_rule_decomposition" translatable="true">Decomposition rule</string>
+    <string name="ui_pred_note_oxygen_gas" translatable="true">oxygen gas</string>
+    <string name="ui_rp_decomposition_hint" translatable="true">Leave a second reactant empty to predict the decomposition of one compound.</string>
+    <string name="ui_confidence_database" translatable="true">Database match</string>
+    <string name="ui_confidence_rule" translatable="true">Rule-based</string>
+    <string name="ui_confidence_low" translatable="true">Low confidence</string>
     <string name="ui_error_no_prediction_available" translatable="true">No known rule matches these reactants. Try a common pair like an acid with a base, metal, or carbonate.</string>
     <string name="ui_pred_rule_neutralization" translatable="true">Neutralization rule</string>
     <string name="ui_pred_rule_acid_carbonate" translatable="true">Acid + carbonate rule</string>
@@ -1742,7 +1776,7 @@
     <string name="ui_pred_note_ammonia_gas" translatable="true">ammonia gas</string>
     <string name="ui_pred_note_pungent_gas" translatable="true">pungent SO2 gas</string>
     <string name="ui_pred_note_rotten_egg" translatable="true">rotten-egg smell</string>
-    <string name="ui_rp_what_it_does_desc" translatable="true">Enter two reactants to see the predicted products, a balanced equation, and the rule or database entry behind the prediction.</string>
+    <string name="ui_rp_what_it_does_desc" translatable="true">Enter one or two reactants to see the predicted products, a balanced equation, and the rule or database entry behind the prediction.</string>
     <string name="ui_rp_best_inputs_desc" translatable="true">Common inorganic pairs work best: acids with bases, metals, or carbonates; active metals with salt solutions; hydrocarbons with O2; and two elements that form a known binary compound.</string>
     <string name="ui_rp_limits_desc" translatable="true">The predictor covers common rules only. Organic chemistry, redox with special conditions, and reactions needing a catalyst or heat may be missing. Check a reference before relying on a prediction.</string>
     <string name="ui_widget_name_placeholder" translatable="true">Open ChemSearch…</string>

@@ -1,6 +1,12 @@
 package com.furthersecrets.chemsearch.ui
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.foundation.BorderStroke
@@ -40,6 +46,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -1174,6 +1181,21 @@ private fun ElectronShellCard(element: PeriodicElement, color: Color) {
 private fun ElectronShellDiagram(shells: List<Int>, color: Color) {
     val onSurface = MaterialTheme.colorScheme.onSurface
     val surface = MaterialTheme.colorScheme.surface
+    val reduceMotion = LocalReduceMotion.current
+    val shellPhaseState: State<Float> = if (reduceMotion) {
+        remember { mutableStateOf(0f) }
+    } else {
+        rememberInfiniteTransition(label = "electron-shell-rotation").animateFloat(
+            initialValue = 0f,
+            targetValue = 1f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = 48000, easing = LinearEasing),
+                repeatMode = RepeatMode.Restart
+            ),
+            label = "electron-shell-phase"
+        )
+    }
+    val shellPhase by shellPhaseState
     Canvas(
         modifier = Modifier.fillMaxWidth().height(250.dp)
     ) {
@@ -1199,8 +1221,11 @@ private fun ElectronShellDiagram(shells: List<Int>, color: Color) {
                 style = Stroke(width = 1.4.dp.toPx())
             )
             val electronRadius = 3.4.dp.toPx()
+            val shellRevolutions = (shells.size - shellIndex).coerceAtLeast(1).toDouble()
+            val shellDirection = if (shellIndex % 2 == 0) 1.0 else -1.0
+            val rotationRadians = (shellIndex * 23.0 + shellPhase * 360.0 * shellRevolutions * shellDirection) * PI / 180.0
             repeat(electrons.coerceAtLeast(0)) { electronIndex ->
-                val angle = (2.0 * PI * electronIndex / electrons.coerceAtLeast(1)) - (PI / 2.0)
+                val angle = (2.0 * PI * electronIndex / electrons.coerceAtLeast(1)) - (PI / 2.0) + rotationRadians
                 val electronCenter = Offset(
                     x = center.x + cos(angle).toFloat() * radius,
                     y = center.y + sin(angle).toFloat() * radius

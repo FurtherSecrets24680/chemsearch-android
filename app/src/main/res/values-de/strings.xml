@@ -144,7 +144,7 @@
     <string name="ui_s_copied" translatable="true">%1$s kopiert</string>
     <string name="ui_back_to_database" translatable="true">Zurück zur Datenbank</string>
     <string name="ui_search_in_chemsearch" translatable="true">In ChemSearch suchen</string>
-    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Substanzen, Reaktionen, Gruppen, Ionen suchen...</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Datenbank durchsuchen...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Molekularformel</string>
     <string name="ui_empirical" translatable="true">Empirisch</string>
@@ -478,7 +478,30 @@
     <string name="ui_debug_api_endpoints_body" translatable="true">Kopiert Basis-URLs für PubChem, NCI/CADD, Wikipedia, GitHub Releases und unterstützte KI-Anbieter in die Zwischenablage für manuelle Tests.</string>
     <string name="ui_debug_wipe_prefs_body" translatable="true">Ruft prefs.edit().clear() auf. Entfernt alte Präferenzwerte, verschlüsselte Datensätze, Chronik, Favoriten und Debug-Flags. DataStore-Einstellungen, Room-Downloads und App-Cache-Dateien werden durch diese Aktion nicht gelöscht; Neustart empfohlen.</string>
     <string name="ui_debug_force_crash" translatable="true">Absturz erzwingen</string>
-    <string name="ui_debug_force_crash_body" translatable="true">Wirft delikat eine unbehandelte RuntimeException. Wird verwendet, um zu überprüfen, ob Absturzberichte korrekt funktionieren. Es gibt einen Bestätigungsschritt, bevor es losgeht.</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Löst absichtlich eine unbehandelte RuntimeException aus. Vor dem Beenden des Prozesses wird ein detaillierter Absturzbericht gespeichert. Das ist daher der schnellste Weg, die Absturzberichterstattung zu prüfen. Vor dem Auslösen ist eine Bestätigung erforderlich.</string>
+    <string name="ui_crash_history" translatable="true">Absturzverlauf</string>
+    <string name="ui_crash_history_body" translatable="true">Absturzberichte werden automatisch geschrieben, bevor eine unbehandelte Ausnahme die App beendet. Jeder Bericht enthält den vollständigen Stacktrace, die Ursachenkette, die Stacktraces aller laufenden Threads, Geräte- und Build-Details, den Speicherstatus, Prozesslimits und die letzten App-Protokolle.</string>
+    <string name="ui_crash_no_reports" translatable="true">Keine Abstürze aufgezeichnet</string>
+    <string name="ui_crash_empty_help" translatable="true">Noch keine Absturzberichte. Wenn die App abstürzt, erscheint beim nächsten Öffnen ein Bericht hier. Du kannst die Erfassung auch unten mit „Absturz auslösen“ testen.</string>
+    <string name="ui_crash_copy_all" translatable="true">Alle kopieren</string>
+    <string name="ui_crash_delete_all_title" translatable="true">Alle Absturzberichte löschen?</string>
+    <string name="ui_crash_delete_all_body" translatable="true">Alle gespeicherten Absturzberichte werden dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.</string>
+    <string name="ui_delete_all" translatable="true">Alle löschen</string>
+    <string name="ui_crash_report_detail" translatable="true">Absturzbericht</string>
+    <string name="ui_crash_read_failed" translatable="true">Dieser Absturzbericht konnte nicht gelesen werden.</string>
+    <string name="ui_crash_share" translatable="true">Teilen</string>
+    <string name="ui_crash_share_failed" translatable="true">Absturzbericht konnte nicht geteilt werden</string>
+    <string name="ui_crash_share_subject" translatable="true">ChemSearch-Absturzbericht</string>
+    <string name="ui_crash_share_chooser" translatable="true">Absturzbericht teilen</string>
+    <string name="ui_crash_copied" translatable="true">Absturzbericht kopiert</string>
+    <string name="ui_crash_copied_all" translatable="true">Alle Absturzberichte kopiert</string>
+    <string name="ui_crash_copy_failed" translatable="true">Der Absturzbericht ist zu groß zum Kopieren. Verwende stattdessen „Teilen“.</string>
+    <string name="ui_crash_deleted" translatable="true">Absturzbericht gelöscht</string>
+    <string name="ui_crash_all_deleted" translatable="true">Alle Absturzberichte gelöscht</string>
+    <string name="ui_crash_delete_one_title" translatable="true">Diesen Absturzbericht löschen?</string>
+    <string name="ui_crash_delete_one_body" translatable="true">Der ausgewählte Absturzbericht wird dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.</string>
+    <string name="ui_debug_crash_history_body" translatable="true">Durchsuche alle gespeicherten Absturzberichte mit vollständigem Stacktrace, Ursachenkette, allen Thread-Dumps, Geräte-/Build-Details, Speicherstatus und letzten Protokollen. Kopiere einzelne Berichte, kopiere alle, teile sie als Datei oder lösche sie.</string>
+    <string name="ui_clipboard_crash_report" translatable="true">Absturzbericht</string>
     <string name="ui_debug_hide_body" translatable="true">Setzt dev_mode=false und versteckt diesen Abschnitt. Tippe auf die Build-Nummer 5 auf dem Info-Bildschirm, um es wieder zu entsperren.</string>
     <string name="ui_remove_key" translatable="true">Schlüssel entfernen</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Sensible Werte werden maskiert und nie aus dieser Ansicht kopiert.</string>
@@ -1645,6 +1668,13 @@
     <string name="ui_add_reactant">Reaktant hinzufügen</string>
     <string name="ui_predict_reaction">Produkte vorhersagen</string>
     <string name="ui_error_enter_two_reactants">Gib zwei Reaktanten ein.</string>
+    <string name="ui_error_enter_reactant" translatable="true">Geben Sie mindestens einen Reaktanten ein.</string>
+    <string name="ui_pred_rule_decomposition" translatable="true">Zersetzungsregel</string>
+    <string name="ui_pred_note_oxygen_gas" translatable="true">Sauerstoffgas</string>
+    <string name="ui_rp_decomposition_hint" translatable="true">Lassen Sie den zweiten Reaktanten leer, um die Zersetzung einer Verbindung vorherzusagen.</string>
+    <string name="ui_confidence_database" translatable="true">Datenbanktreffer</string>
+    <string name="ui_confidence_rule" translatable="true">Regelbasiert</string>
+    <string name="ui_confidence_low" translatable="true">Geringe Sicherheit</string>
     <string name="ui_error_no_prediction_available">Keine bekannte Regel passt zu diesen Reaktanten. Versuche ein übliches Paar wie eine Säure mit einer Base, einem Metall oder einem Carbonat.</string>
     <string name="ui_pred_rule_neutralization">Neutralisationsregel</string>
     <string name="ui_pred_rule_acid_carbonate">Säure + Carbonat-Regel</string>
@@ -1665,7 +1695,7 @@
     <string name="ui_pred_note_ammonia_gas">Ammoniakgas</string>
     <string name="ui_pred_note_pungent_gas">stechendes SO2-Gas</string>
     <string name="ui_pred_note_rotten_egg">Geruch nach faulen Eiern</string>
-    <string name="ui_rp_what_it_does_desc">Gib zwei Reaktanten ein, um die vorhergesagten Produkte, eine ausgewogene Gleichung und die Regel oder den Datenbankeintrag hinter der Vorhersage zu sehen.</string>
+    <string name="ui_rp_what_it_does_desc">Geben Sie einen oder zwei Reaktanten ein, um die vorhergesagten Produkte, eine ausgeglichene Gleichung und die dahinterstehende Regel oder den Datenbankeintrag zu sehen.</string>
     <string name="ui_rp_best_inputs_desc">Übliche anorganische Paare funktionieren am besten: Säuren mit Basen, Metallen oder Carbonaten; aktive Metalle in Salzlösungen; Kohlenwasserstoffe mit O2; und zwei Elemente, die eine bekannte binäre Verbindung bilden.</string>
     <string name="ui_rp_limits_desc">Die Prognose deckt nur übliche Regeln ab. Organische Chemie, Redox mit besonderen Bedingungen und Reaktionen mit Katalysator oder Wärme können fehlen. Prüfe eine Referenz, bevor du dich auf eine Vorhersage verlässt.</string>
     <string name="ui_language_bengali">বাংলা</string>
@@ -1763,4 +1793,8 @@
     <string name="ui_source_pubchem_spectra" translatable="true">Quelle: PubChem-Spektralsammlungen</string>
     <string name="ui_info_spectral_what_body" translatable="true">In PubChem veröffentlichte experimentelle Spektren, nach Technik gruppiert (NMR, MS, IR, UV, Raman). Die Werte stammen aus der Originalquelle, daher variieren Instrumente, Lösungsmittel und Einheiten zwischen den Einträgen.</string>
     <string name="ui_info_spectral_why_body" translatable="true">Nicht jeder Stoff hat veröffentlichte Spektren. Wenn PubChem keine hat, bleibt dieser Abschnitt ausgeblendet; die PubChem-Seite des Stoffs listet weiterhin alles Verfügbare auf.</string>
+    <plurals name="ui_crash_reports_count">
+        <item quantity="one">%1$d Absturzbericht</item>
+        <item quantity="other">%1$d Absturzberichte</item>
+    </plurals>
 </resources>

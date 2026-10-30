@@ -1,0 +1,10 @@
+Improvements
+• Reaction predictor now handles single-reactant decomposition
+• Refreshed predictor results and description cards
+• Rounder buttons, cleaner substance cards
+• Database scrollbar, A–Z sorting, shorter search hint
+• Elemental analysis bars coloured per element
+• Uniform GHS pictograms, animated electron shells
+• Developer options: detailed, localized crash history with copy/share/delete
+
+Full changelog: https://github.com/FurtherSecrets24680/chemsearch-android/releases/tag/1.16.5

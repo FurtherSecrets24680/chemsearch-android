@@ -7,4 +7,5 @@
 -->
 <full-backup-content>
     <exclude domain="sharedpref" path="chemsearch_prefs.xml" />
+    <exclude domain="file" path="crash_logs/" />
 </full-backup-content>

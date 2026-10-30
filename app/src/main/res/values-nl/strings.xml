@@ -144,7 +144,7 @@
     <string name="ui_s_copied" translatable="true">%1$s gekopieerd</string>
     <string name="ui_back_to_database" translatable="true">Terug naar database</string>
     <string name="ui_search_in_chemsearch" translatable="true">Zoeken in ChemSearch</string>
-    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Zoek stoffen, reacties, groepen, ionen...</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Database doorzoeken...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Moleculaire formule</string>
     <string name="ui_empirical" translatable="true">Empirisch</string>
@@ -478,7 +478,30 @@
     <string name="ui_debug_api_endpoints_body" translatable="true">Kopieert basis-URL\'s voor PubChem, NCI/CADD, Wikipedia, GitHub releases, en ondersteunde AI providers naar je klembord voor handmatige testen.</string>
     <string name="ui_debug_wipe_prefs_body" translatable="true">Roept prefs.edit().clear() aan. Verwijdert oude voorkeurswaarden, versleutelde sleutelrecords, geschiedenis, favorieten en foutopsporingsvlaggen. DataStore-instellingen, Room-downloads en app-cachebestanden worden niet verwijderd door deze actie; herstart wordt aanbevolen.</string>
     <string name="ui_debug_force_crash" translatable="true">Forceer crash</string>
-    <string name="ui_debug_force_crash_body" translatable="true">Met opzet gooit een onafgehandelde RuntimeExceptie. Wordt gebruikt om te verifiëren dat crash rapportage/Logcat correct werkt. Er is een bevestigingsstap voordat het vuurt.</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Gooit met opzet een onafgehandelde RuntimeException. Er wordt een gedetailleerd crashrapport opgeslagen voordat het proces stopt, dus dit is de snelste manier om crashregistratie te controleren. Voor het uitvoeren is een bevestiging nodig.</string>
+    <string name="ui_crash_history" translatable="true">Crashgeschiedenis</string>
+    <string name="ui_crash_history_body" translatable="true">Crashrapporten worden automatisch opgeslagen voordat een onafgehandelde uitzondering de app beëindigt. Elk rapport bevat de volledige stacktracering, de oorzaakketen, de stacks van alle actieve threads, apparaat- en buildgegevens, geheugenstatus, proceslimieten en de recente app-logboeken.</string>
+    <string name="ui_crash_no_reports" translatable="true">Geen crashes geregistreerd</string>
+    <string name="ui_crash_empty_help" translatable="true">Er zijn nog geen crashrapporten. Als de app crasht, verschijnt hier een rapport de volgende keer dat je de app opent. Je kunt ook ‘Nu crashen’ hieronder gebruiken om de registratie te testen.</string>
+    <string name="ui_crash_copy_all" translatable="true">Alles kopiëren</string>
+    <string name="ui_crash_delete_all_title" translatable="true">Alle crashrapporten verwijderen?</string>
+    <string name="ui_crash_delete_all_body" translatable="true">Alle opgeslagen crashrapporten worden permanent verwijderd. Dit kan niet ongedaan worden gemaakt.</string>
+    <string name="ui_delete_all" translatable="true">Alles verwijderen</string>
+    <string name="ui_crash_report_detail" translatable="true">Crashrapport</string>
+    <string name="ui_crash_read_failed" translatable="true">Dit crashrapport kon niet worden gelezen.</string>
+    <string name="ui_crash_share" translatable="true">Delen</string>
+    <string name="ui_crash_share_failed" translatable="true">Crashrapport kon niet worden gedeeld</string>
+    <string name="ui_crash_share_subject" translatable="true">ChemSearch-crashrapport</string>
+    <string name="ui_crash_share_chooser" translatable="true">Crashrapport delen</string>
+    <string name="ui_crash_copied" translatable="true">Crashrapport gekopieerd</string>
+    <string name="ui_crash_copied_all" translatable="true">Alle crashrapporten gekopieerd</string>
+    <string name="ui_crash_copy_failed" translatable="true">Het crashrapport is te groot om te kopiëren. Gebruik in plaats daarvan Delen.</string>
+    <string name="ui_crash_deleted" translatable="true">Crashrapport verwijderd</string>
+    <string name="ui_crash_all_deleted" translatable="true">Alle crashrapporten verwijderd</string>
+    <string name="ui_crash_delete_one_title" translatable="true">Dit crashrapport verwijderen?</string>
+    <string name="ui_crash_delete_one_body" translatable="true">Het geselecteerde crashrapport wordt permanent verwijderd. Dit kan niet ongedaan worden gemaakt.</string>
+    <string name="ui_debug_crash_history_body" translatable="true">Bekijk alle opgeslagen crashrapporten met de volledige stacktracering, oorzaakketen, alle threaddumps, apparaat-/buildgegevens, geheugenstatus en recente logboeken. Kopieer afzonderlijke rapporten, kopieer alles, deel ze als bestand of verwijder ze.</string>
+    <string name="ui_clipboard_crash_report" translatable="true">Crashrapport</string>
     <string name="ui_debug_hide_body" translatable="true">Stelt dev_mode=false in en verbergt dit gedeelte. Tik 5 keer op het buildnummer op het Over-scherm om het opnieuw te ontgrendelen.</string>
     <string name="ui_remove_key" translatable="true">Sleutel verwijderen</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Gevoelige waarden worden gemaskeerd en nooit uit deze weergave gekopieerd.</string>
@@ -1645,6 +1668,13 @@
     <string name="ui_add_reactant">Reactant toevoegen</string>
     <string name="ui_predict_reaction">Producten voorspellen</string>
     <string name="ui_error_enter_two_reactants">Voer twee reactanten in.</string>
+    <string name="ui_error_enter_reactant" translatable="true">Voer ten minste één reactant in.</string>
+    <string name="ui_pred_rule_decomposition" translatable="true">Ontledingsregel</string>
+    <string name="ui_pred_note_oxygen_gas" translatable="true">zuurstofgas</string>
+    <string name="ui_rp_decomposition_hint" translatable="true">Laat de tweede reactant leeg om de ontleding van één verbinding te voorspellen.</string>
+    <string name="ui_confidence_database" translatable="true">Databankovereenkomst</string>
+    <string name="ui_confidence_rule" translatable="true">Op regels gebaseerd</string>
+    <string name="ui_confidence_low" translatable="true">Lage betrouwbaarheid</string>
     <string name="ui_error_no_prediction_available">Geen bekende regel past bij deze reactanten. Probeer een gebruikelijk paar zoals een zuur met een base, een metaal of een carbonaat.</string>
     <string name="ui_pred_rule_neutralization">Neutralisatieregel</string>
     <string name="ui_pred_rule_acid_carbonate">Zuur + carbonaat-regel</string>
@@ -1665,7 +1695,7 @@
     <string name="ui_pred_note_ammonia_gas">ammoniakgas</string>
     <string name="ui_pred_note_pungent_gas">prikkelend SO2-gas</string>
     <string name="ui_pred_note_rotten_egg">geur van rotte eieren</string>
-    <string name="ui_rp_what_it_does_desc">Voer twee reactanten in om de voorspelde producten, een gebalanceerde vergelijking en de regel of database-invoer achter de voorspelling te zien.</string>
+    <string name="ui_rp_what_it_does_desc">Voer één of twee reactanten in om de voorspelde producten, een kloppende vergelijking en de regel of databankvermelding achter de voorspelling te zien.</string>
     <string name="ui_rp_best_inputs_desc">Gewone anorganische paren werken het beste: zuren met basen, metalen of carbonaten; actieve metalen in zoutoplossingen; koolwaterstoffen met O2; en twee elementen die een bekende binaire verbinding vormen.</string>
     <string name="ui_rp_limits_desc">De voorspeller dekt alleen gewone regels. Organische chemie, redox met speciale omstandigheden en reacties die een katalysator of warmte vereisen kunnen ontbreken. Controleer een referentie voordat je op een voorspelling vertrouwt.</string>
     <string name="ui_language_bengali">বাংলা</string>
@@ -1763,4 +1793,8 @@
     <string name="ui_source_pubchem_spectra" translatable="true">Bron: PubChem-spectraalbibliotheken</string>
     <string name="ui_info_spectral_what_body" translatable="true">Experimentele spectra gepubliceerd in PubChem, gegroepeerd per techniek (NMR, MS, IR, UV, Raman). De waarden komen uit de originele bron, dus instrumenten, oplosmiddelen en eenheden verschillen per record.</string>
     <string name="ui_info_spectral_why_body" translatable="true">Niet elke stof heeft gepubliceerde spectra. Als PubChem er geen heeft, blijft dit gedeelte verborgen; de PubChem-pagina van de stof vermeldt nog steeds alles wat beschikbaar is.</string>
+    <plurals name="ui_crash_reports_count">
+        <item quantity="one">%1$d crashrapport</item>
+        <item quantity="other">%1$d crashrapporten</item>
+    </plurals>
 </resources>

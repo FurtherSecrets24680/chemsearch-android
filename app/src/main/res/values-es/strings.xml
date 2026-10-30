@@ -144,7 +144,7 @@
     <string name="ui_s_copied" translatable="true">%1$s copiado</string>
     <string name="ui_back_to_database" translatable="true">Volver a la base de datos</string>
     <string name="ui_search_in_chemsearch" translatable="true">Buscar en ChemSearch</string>
-    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Buscar sustancias, reacciones, grupos, iones...</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Buscar en la base...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Fórmula molecular</string>
     <string name="ui_empirical" translatable="true">Empírica</string>
@@ -478,7 +478,30 @@
     <string name="ui_debug_api_endpoints_body" translatable="true">Copia las URLs base para PubChem, NCI/CADD, Wikipedia, lanzamientos de GitHub y proveedores de AI soportados en tu portapapeles para pruebas manuales.</string>
     <string name="ui_debug_wipe_prefs_body" translatable="true">Llama a prefs.edit().clear(). Elimina valores de preferencias heredados, registros de claves cifradas, historial, favoritos y banderas de depuración. Los ajustes de DataStore, las descargas de la sala y los archivos de caché de la aplicación no se eliminan con esta acción; se recomienda reiniciar.</string>
     <string name="ui_debug_force_crash" translatable="true">Forzar bloqueo</string>
-    <string name="ui_debug_force_crash_body" translatable="true">Entrega un RuntimeException no manejado. Se utiliza para verificar que el reporte de errores / Logcat está funcionando correctamente. Hay un paso de confirmación antes de que se dispare.</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Lanza deliberadamente una RuntimeException no controlada. Se guarda un informe de fallo detallado antes de que el proceso finalice, por lo que es la forma más rápida de verificar el registro de fallos. Hay un paso de confirmación antes de que se active.</string>
+    <string name="ui_crash_history" translatable="true">Historial de fallos</string>
+    <string name="ui_crash_history_body" translatable="true">Los informes de fallos se guardan automáticamente antes de que una excepción no controlada cierre la aplicación. Cada informe incluye el seguimiento de pila completo, la cadena de causas, las pilas de todos los hilos activos, detalles del dispositivo y de la compilación, estado de la memoria, límites del proceso y los registros recientes de la aplicación.</string>
+    <string name="ui_crash_no_reports" translatable="true">No hay fallos registrados</string>
+    <string name="ui_crash_empty_help" translatable="true">Aún no hay informes de fallos. Si la aplicación falla, aparecerá un informe aquí la próxima vez que la abras. También puedes usar «Fallar ahora» abajo para probar la captura.</string>
+    <string name="ui_crash_copy_all" translatable="true">Copiar todo</string>
+    <string name="ui_crash_delete_all_title" translatable="true">¿Eliminar todos los informes de fallos?</string>
+    <string name="ui_crash_delete_all_body" translatable="true">Todos los informes de fallos guardados se eliminarán de forma permanente. Esta acción no se puede deshacer.</string>
+    <string name="ui_delete_all" translatable="true">Eliminar todo</string>
+    <string name="ui_crash_report_detail" translatable="true">Informe de fallo</string>
+    <string name="ui_crash_read_failed" translatable="true">No se pudo leer este informe de fallo.</string>
+    <string name="ui_crash_share" translatable="true">Compartir</string>
+    <string name="ui_crash_share_failed" translatable="true">No se pudo compartir el informe de fallo</string>
+    <string name="ui_crash_share_subject" translatable="true">Informe de fallo de ChemSearch</string>
+    <string name="ui_crash_share_chooser" translatable="true">Compartir informe de fallo</string>
+    <string name="ui_crash_copied" translatable="true">Informe de fallo copiado</string>
+    <string name="ui_crash_copied_all" translatable="true">Todos los informes de fallos copiados</string>
+    <string name="ui_crash_copy_failed" translatable="true">El informe de fallo es demasiado grande para copiarlo. Usa Compartir en su lugar.</string>
+    <string name="ui_crash_deleted" translatable="true">Informe de fallo eliminado</string>
+    <string name="ui_crash_all_deleted" translatable="true">Todos los informes de fallos eliminados</string>
+    <string name="ui_crash_delete_one_title" translatable="true">¿Eliminar este informe de fallo?</string>
+    <string name="ui_crash_delete_one_body" translatable="true">El informe de fallo seleccionado se eliminará de forma permanente. Esta acción no se puede deshacer.</string>
+    <string name="ui_debug_crash_history_body" translatable="true">Consulta todos los informes de fallos guardados con el seguimiento de pila completo, la cadena de causas, todos los volcados de hilos, detalles del dispositivo y la compilación, estado de la memoria y registros recientes. Copia informes individuales, cópialos todos, compártelos como archivo o elimínalos.</string>
+    <string name="ui_clipboard_crash_report" translatable="true">Informe de fallo</string>
     <string name="ui_debug_hide_body" translatable="true">Establece dev_mode=false y oculta esta sección. Pulsa el número de construcción 5 veces en la pantalla Acerca para desbloquearlo de nuevo.</string>
     <string name="ui_remove_key" translatable="true">Eliminar clave</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Los valores confidenciales están enmascarados y nunca se copian desde esta vista.</string>
@@ -1645,6 +1668,13 @@
     <string name="ui_add_reactant">Añadir reactivo</string>
     <string name="ui_predict_reaction">Predecir productos</string>
     <string name="ui_error_enter_two_reactants">Introduce dos reactivos.</string>
+    <string name="ui_error_enter_reactant" translatable="true">Introduce al menos un reactivo.</string>
+    <string name="ui_pred_rule_decomposition" translatable="true">Regla de descomposición</string>
+    <string name="ui_pred_note_oxygen_gas" translatable="true">gas oxígeno</string>
+    <string name="ui_rp_decomposition_hint" translatable="true">Deja el segundo reactivo vacío para predecir la descomposición de un compuesto.</string>
+    <string name="ui_confidence_database" translatable="true">Coincidencia en la base</string>
+    <string name="ui_confidence_rule" translatable="true">Basado en reglas</string>
+    <string name="ui_confidence_low" translatable="true">Confianza baja</string>
     <string name="ui_error_no_prediction_available">Ninguna regla conocida coincide con estos reactivos. Prueba con un par común como un ácido con una base, un metal o un carbonato.</string>
     <string name="ui_pred_rule_neutralization">Regla de neutralización</string>
     <string name="ui_pred_rule_acid_carbonate">Regla ácido + carbonato</string>
@@ -1665,7 +1695,7 @@
     <string name="ui_pred_note_ammonia_gas">gas amoníaco</string>
     <string name="ui_pred_note_pungent_gas">gas SO2 irritante</string>
     <string name="ui_pred_note_rotten_egg">olor a huevo podrido</string>
-    <string name="ui_rp_what_it_does_desc">Introduce dos reactivos para ver los productos previstos, una ecuación balanceada y la regla o entrada de la base de datos detrás de la predicción.</string>
+    <string name="ui_rp_what_it_does_desc">Introduce uno o dos reactivos para ver los productos previstos, una ecuación ajustada y la regla o entrada de la base que respalda la predicción.</string>
     <string name="ui_rp_best_inputs_desc">Los pares inorgánicos comunes funcionan mejor: ácidos con bases, metales o carbonatos; metales activos en disoluciones de sales; hidrocarburos con O2; y dos elementos que forman un compuesto binario conocido.</string>
     <string name="ui_rp_limits_desc">El predictor cubre solo reglas comunes. La química orgánica, la redox con condiciones especiales y las reacciones que requieren catalizador o calor pueden faltar. Consulta una referencia antes de confiar en una predicción.</string>
     <string name="ui_language_bengali">বাংলা</string>
@@ -1763,4 +1793,8 @@
     <string name="ui_source_pubchem_spectra" translatable="true">Fuente: colecciones espectrales de PubChem</string>
     <string name="ui_info_spectral_what_body" translatable="true">Espectros experimentales publicados en PubChem, agrupados por técnica (NMR, MS, IR, UV, Raman). Los valores provienen de la fuente original, por lo que los instrumentos, disolventes y unidades varían entre registros.</string>
     <string name="ui_info_spectral_why_body" translatable="true">No todas las sustancias tienen espectros publicados. Cuando PubChem no tiene ninguno, esta sección permanece oculta; la página de la sustancia en PubChem sigue mostrando todo lo disponible.</string>
+    <plurals name="ui_crash_reports_count">
+        <item quantity="one">%1$d informe de fallo</item>
+        <item quantity="other">%1$d informes de fallos</item>
+    </plurals>
 </resources>

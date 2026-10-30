@@ -144,7 +144,7 @@
     <string name="ui_s_copied" translatable="true">%1$s kopierad</string>
     <string name="ui_back_to_database" translatable="true">Tillbaka till databasen</string>
     <string name="ui_search_in_chemsearch" translatable="true">Sök i ChemSearch</string>
-    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Sök ämnen, reaktioner, grupper, joner...</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Sök i databasen...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Molekylformel</string>
     <string name="ui_empirical" translatable="true">Empirisk</string>
@@ -478,7 +478,30 @@
     <string name="ui_debug_api_endpoints_body" translatable="true">Kopierar bas-URL:er för PubChem, NCI/CADD, Wikipedia, GitHub släpper och stöds AI-leverantörer till ditt urklipp för manuell testning.</string>
     <string name="ui_debug_wipe_prefs_body" translatable="true">Anropar prefs.edit().clear(). Tar bort äldre preferensvärden, krypterade nyckelposter, historik, favoriter och felsökningsflaggor. DataStore-inställningar, Room-nedladdningar och app-cachefiler tas inte bort av denna åtgärd; omstart rekommenderas.</string>
     <string name="ui_debug_force_crash" translatable="true">Tvinga krasch</string>
-    <string name="ui_debug_force_crash_body" translatable="true">Avsiktligt kastar en ohanterlig RuntimeException. Används för att verifiera att kraschrapportering / Logcat fungerar korrekt. Det finns ett bekräftelsemsteg innan den brinner.</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Kastar avsiktligt ett ohanterat undantag av typen RuntimeException. En detaljerad kraschrapport sparas innan processen avslutas, så detta är det snabbaste sättet att verifiera kraschrapporteringen. Det finns ett bekräftelsesteg innan den utlöses.</string>
+    <string name="ui_crash_history" translatable="true">Kraschhistorik</string>
+    <string name="ui_crash_history_body" translatable="true">Kraschrapporter skrivs automatiskt innan ett ohanterat undantag avslutar appen. Varje rapport innehåller full stackspårning, orsakskedjan, stackspårningar för alla aktiva trådar, enhets- och bygginformation, minnesstatus, processgränser och de senaste apploggarna.</string>
+    <string name="ui_crash_no_reports" translatable="true">Inga krascher registrerade</string>
+    <string name="ui_crash_empty_help" translatable="true">Det finns inga kraschrapporter ännu. Om appen kraschar visas en rapport här nästa gång du öppnar den. Du kan också använda ”Krascha nu” nedan för att testa registreringen.</string>
+    <string name="ui_crash_copy_all" translatable="true">Kopiera alla</string>
+    <string name="ui_crash_delete_all_title" translatable="true">Ta bort alla kraschrapporter?</string>
+    <string name="ui_crash_delete_all_body" translatable="true">Alla sparade kraschrapporter tas bort permanent. Detta kan inte ångras.</string>
+    <string name="ui_delete_all" translatable="true">Ta bort alla</string>
+    <string name="ui_crash_report_detail" translatable="true">Kraschrapport</string>
+    <string name="ui_crash_read_failed" translatable="true">Den här kraschrapporten kunde inte läsas.</string>
+    <string name="ui_crash_share" translatable="true">Dela</string>
+    <string name="ui_crash_share_failed" translatable="true">Det gick inte att dela kraschrapporten</string>
+    <string name="ui_crash_share_subject" translatable="true">Kraschrapport för ChemSearch</string>
+    <string name="ui_crash_share_chooser" translatable="true">Dela kraschrapport</string>
+    <string name="ui_crash_copied" translatable="true">Kraschrapport kopierad</string>
+    <string name="ui_crash_copied_all" translatable="true">Alla kraschrapporter kopierade</string>
+    <string name="ui_crash_copy_failed" translatable="true">Kraschrapporten är för stor för att kopieras. Använd Dela i stället.</string>
+    <string name="ui_crash_deleted" translatable="true">Kraschrapport borttagen</string>
+    <string name="ui_crash_all_deleted" translatable="true">Alla kraschrapporter borttagna</string>
+    <string name="ui_crash_delete_one_title" translatable="true">Ta bort den här kraschrapporten?</string>
+    <string name="ui_crash_delete_one_body" translatable="true">Den valda kraschrapporten tas bort permanent. Detta kan inte ångras.</string>
+    <string name="ui_debug_crash_history_body" translatable="true">Bläddra bland alla sparade kraschrapporter med full stackspårning, orsakskedja, alla trådutskrifter, enhets-/bygginformation, minnesstatus och senaste loggar. Kopiera enskilda rapporter, kopiera alla, dela som fil eller ta bort dem.</string>
+    <string name="ui_clipboard_crash_report" translatable="true">Kraschrapport</string>
     <string name="ui_debug_hide_body" translatable="true">Sätter dev_mode=false och döljer detta avsnitt. Tryck på byggnummer 5 gånger på Om-skärmen för att låsa upp det igen.</string>
     <string name="ui_remove_key" translatable="true">Ta bort nyckel</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Känsliga värden maskeras och kopieras aldrig från den här vyn.</string>
@@ -1645,6 +1668,13 @@
     <string name="ui_add_reactant">Lägg till reaktant</string>
     <string name="ui_predict_reaction">Förutsäg produkter</string>
     <string name="ui_error_enter_two_reactants">Ange två reaktanter.</string>
+    <string name="ui_error_enter_reactant" translatable="true">Ange minst en reaktant.</string>
+    <string name="ui_pred_rule_decomposition" translatable="true">Nedbrytningsregel</string>
+    <string name="ui_pred_note_oxygen_gas" translatable="true">syrgas</string>
+    <string name="ui_rp_decomposition_hint" translatable="true">Lämna den andra reaktanten tom för att förutse nedbrytningen av en förening.</string>
+    <string name="ui_confidence_database" translatable="true">Databasmatchning</string>
+    <string name="ui_confidence_rule" translatable="true">Regelbaserad</string>
+    <string name="ui_confidence_low" translatable="true">Låg säkerhet</string>
     <string name="ui_error_no_prediction_available">Ingen känd regel passar dessa reaktanter. Prova ett vanligt par som en syra med en bas, en metall eller ett karbonat.</string>
     <string name="ui_pred_rule_neutralization">Neutralisationsregel</string>
     <string name="ui_pred_rule_acid_carbonate">Syra + karbonat-regel</string>
@@ -1665,7 +1695,7 @@
     <string name="ui_pred_note_ammonia_gas">ammoniakgas</string>
     <string name="ui_pred_note_pungent_gas">stickande SO2-gas</string>
     <string name="ui_pred_note_rotten_egg">lukt av ruttna ägg</string>
-    <string name="ui_rp_what_it_does_desc">Ange två reaktanter för att se de förutsagta produkterna, en balanserad ekvation och regeln eller databasposten bakom förutsägelsen.</string>
+    <string name="ui_rp_what_it_does_desc">Ange en eller två reaktanter för att se de förutsagda produkterna, en balanserad ekvation och regeln eller databasposten bakom förutsägelsen.</string>
     <string name="ui_rp_best_inputs_desc">Vanliga oorganiska par fungerar bäst: syror med baser, metaller eller karbonater; aktiva metaller i saltlösningar; kolväten med O2; och två grundämnen som bildar en känd binär förening.</string>
     <string name="ui_rp_limits_desc">Förutsägaren täcker endast vanliga regler. Organisk kemi, redox med speciella förhållanden och reaktioner som kräver katalysator eller värme kan saknas. Kontrollera en referens innan du litar på en förutsägelse.</string>
     <string name="ui_language_bengali">বাংলা</string>
@@ -1763,4 +1793,8 @@
     <string name="ui_source_pubchem_spectra" translatable="true">Källa: PubChems spektramsamlingar</string>
     <string name="ui_info_spectral_what_body" translatable="true">Experimentella spektra publicerade i PubChem, grupperade efter teknik (NMR, MS, IR, UV, Raman). Värdena kommer från den ursprungliga källan, så instrument, lösningsmedel och enheter varierar mellan posterna.</string>
     <string name="ui_info_spectral_why_body" translatable="true">Alla ämnen har inte publicerade spektra. När PubChem inte har några förblir det här avsnittet dolt; ämnets PubChem-sida visar fortfarande allt som finns tillgängligt.</string>
+    <plurals name="ui_crash_reports_count">
+        <item quantity="one">%1$d kraschrapport</item>
+        <item quantity="other">%1$d kraschrapporter</item>
+    </plurals>
 </resources>

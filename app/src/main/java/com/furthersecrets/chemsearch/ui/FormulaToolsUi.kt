@@ -3,6 +3,7 @@ package com.furthersecrets.chemsearch.ui
 import com.furthersecrets.chemsearch.R
 import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -523,49 +524,88 @@ fun ReactionPredictorTool() {
             color = MaterialTheme.colorScheme.onSurface.copy(0.58f)
         )
 
-        reactants.forEachIndexed { index, field ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
+        ChemCardSurfaceStatic(accent = MaterialTheme.colorScheme.primary) {
+            Column(
+                modifier = Modifier.padding(14.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                OutlinedTextField(
-                    value = field,
-                    onValueChange = { value -> reactants = reactants.toMutableList().also { it[index] = value } },
-                    label = { Text(stringResource(R.string.ui_reactant_n, index + 1)) },
-                    placeholder = { Text("HCl", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(12.dp),
-                    singleLine = true,
-                    visualTransformation = FormulaSubscriptTransformation,
-                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.None, imeAction = if (index == reactants.lastIndex) ImeAction.Done else ImeAction.Next),
-                    keyboardActions = KeyboardActions(onDone = { predict() })
+                Text(
+                    stringResource(R.string.ui_reactants),
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 0.8.sp,
+                    color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
                 )
-                IconButton(
-                    onClick = { if (reactants.size > 2) reactants = reactants.filterIndexed { i, _ -> i != index } },
-                    enabled = reactants.size > 2,
-                    modifier = Modifier.size(36.dp)
-                ) {
-                    Icon(Icons.Default.Close, contentDescription = stringResource(R.string.ui_remove_row), modifier = Modifier.size(18.dp))
+                reactants.forEachIndexed { index, field ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        OutlinedTextField(
+                            value = field,
+                            onValueChange = { value -> reactants = reactants.toMutableList().also { it[index] = value } },
+                            label = { Text(stringResource(R.string.ui_reactant_n, index + 1)) },
+                            placeholder = { Text(if (index == 0) "HCl" else "CaCO3", color = MaterialTheme.colorScheme.onSurface.copy(0.4f)) },
+                            modifier = Modifier.weight(1f),
+                            shape = RoundedCornerShape(12.dp),
+                            singleLine = true,
+                            visualTransformation = FormulaSubscriptTransformation,
+                            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.None, imeAction = if (index == reactants.lastIndex) ImeAction.Done else ImeAction.Next),
+                            keyboardActions = KeyboardActions(onDone = { predict() })
+                        )
+                        if (reactants.size > 1) {
+                            IconButton(
+                                onClick = {
+                                    reactants = reactants.filterIndexed { i, _ -> i != index }
+                                    result = null
+                                },
+                                modifier = Modifier.size(34.dp)
+                            ) {
+                                Icon(Icons.Default.Close, contentDescription = stringResource(R.string.ui_remove_row), modifier = Modifier.size(16.dp))
+                            }
+                        }
+                    }
                 }
-            }
-        }
-        if (reactants.size < 4) {
-            TextButton(onClick = { reactants = reactants + TextFieldValue("") }, contentPadding = PaddingValues(horizontal = 0.dp)) {
-                Icon(Icons.Default.Add, null, modifier = Modifier.size(16.dp))
-                Spacer(Modifier.width(6.dp))
-                Text(stringResource(R.string.ui_add_reactant))
+                if (reactants.size < 4) {
+                    TextButton(onClick = { reactants = reactants + TextFieldValue("") }, contentPadding = PaddingValues(horizontal = 0.dp)) {
+                        Icon(Icons.Default.Add, null, modifier = Modifier.size(16.dp))
+                        Spacer(Modifier.width(6.dp))
+                        Text(stringResource(R.string.ui_add_reactant))
+                    }
+                }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Icon(
+                        Icons.Default.Info,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary.copy(0.6f),
+                        modifier = Modifier.size(14.dp).padding(top = 1.dp)
+                    )
+                    Text(
+                        stringResource(R.string.ui_rp_decomposition_hint),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.52f),
+                        lineHeight = 15.sp
+                    )
+                }
             }
         }
 
         val haptics = rememberChemHaptics()
-        Button(onClick = {
-            haptics.action()
-            predict()
-        }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp)) {
+        Button(
+            onClick = {
+                haptics.action()
+                predict()
+            },
+            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+            shape = RoundedCornerShape(14.dp)
+        ) {
             Icon(Icons.Default.AutoFixHigh, null, modifier = Modifier.size(18.dp))
             Spacer(Modifier.width(8.dp))
-            Text(stringResource(R.string.ui_predict_reaction))
+            Text(stringResource(R.string.ui_predict_reaction), fontWeight = FontWeight.SemiBold)
         }
 
         result?.let { ReactionPredictionResultCard(it) }
@@ -579,7 +619,8 @@ fun ReactionPredictorTool() {
                 Pair("Combustion", listOf("CH4", "O2")),
                 Pair("Metal + water", listOf("Ca", "H2O")),
                 Pair("Acid + oxide", listOf("CuO", "H2SO4")),
-                Pair("Ammonia release", listOf("NH4Cl", "NaOH"))
+                Pair("Ammonia release", listOf("NH4Cl", "NaOH")),
+                Pair("Decomposition", listOf("CaCO3"))
             ).forEach { (label, example) ->
                 AssistChip(
                     onClick = {
@@ -604,81 +645,163 @@ fun ReactionPredictorTool() {
 }
 
 @Composable
+private fun reactionConfidenceLabel(confidence: ReactionPredictor.Confidence): String = when (confidence) {
+    ReactionPredictor.Confidence.DATABASE -> stringResource(R.string.ui_confidence_database)
+    ReactionPredictor.Confidence.RULE -> stringResource(R.string.ui_confidence_rule)
+    ReactionPredictor.Confidence.LOW -> stringResource(R.string.ui_confidence_low)
+}
+
+@Composable
 private fun ReactionPredictionResultCard(result: ReactionPredictionResult) {
     if (result.errorRes != null) {
         ToolErrorCard(stringResource(result.errorRes, *result.errorArgs.toTypedArray()))
         return
     }
-    ChemCardSurfaceStatic(accent = MaterialTheme.colorScheme.primary) {
+    val accent = when (result.confidence) {
+        ReactionPredictor.Confidence.DATABASE -> MaterialTheme.colorScheme.primary
+        ReactionPredictor.Confidence.RULE -> Color(0xFF22C55E)
+        ReactionPredictor.Confidence.LOW -> Color(0xFFF59E0B)
+    }
+    val title = result.matchedDbEntryTitle
+        ?: result.ruleLabelRes?.let { stringResource(it) }
+        ?: ""
+
+    ChemCardSurfaceStatic(accent = accent) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Surface(
-                shape = RoundedCornerShape(12.dp),
-                color = when (result.confidence) {
-                    ReactionPredictor.Confidence.DATABASE -> MaterialTheme.colorScheme.primary.copy(0.12f)
-                    ReactionPredictor.Confidence.RULE -> Color(0xFF22C55E).copy(0.12f)
-                    ReactionPredictor.Confidence.LOW -> Color(0xFFF59E0B).copy(0.12f)
-                },
-                border = BorderStroke(
-                    1.dp,
-                    when (result.confidence) {
-                        ReactionPredictor.Confidence.DATABASE -> MaterialTheme.colorScheme.primary.copy(0.32f)
-                        ReactionPredictor.Confidence.RULE -> Color(0xFF22C55E).copy(0.32f)
-                        ReactionPredictor.Confidence.LOW -> Color(0xFFF59E0B).copy(0.32f)
-                    }
-                )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                Box(
+                    modifier = Modifier
+                        .size(8.dp)
+                        .background(accent, RoundedCornerShape(50))
+                )
+                Text(
+                    title,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f)
+                )
+                Surface(
+                    shape = RoundedCornerShape(50),
+                    color = accent.copy(0.12f),
+                    border = BorderStroke(1.dp, accent.copy(0.32f))
                 ) {
                     Text(
-                        result.matchedDbEntryTitle
-                            ?: (result.ruleLabelRes?.let { stringResource(it) } ?: ""),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold
+                        reactionConfidenceLabel(result.confidence),
+                        modifier = Modifier.padding(horizontal = 9.dp, vertical = 3.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = accent
                     )
                 }
             }
 
-            FormulaDisplayLine(stringResource(R.string.ui_balanced_equation), result.balancedEquation)
-
-            result.conditions?.let {
-                Text(
-                    stringResource(R.string.ui_db_section_typical_conditions) + ": " + it,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.66f)
-                )
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(14.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(0.34f),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.12f))
+            ) {
+                Column(
+                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Text(
+                        stringResource(R.string.ui_balanced_equation).uppercase(),
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 0.8.sp,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+                    )
+                    Text(
+                        toChemicalExpressionDisplay(result.balancedEquation),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = FontFamily.Monospace,
+                        fontWeight = FontWeight.SemiBold,
+                        lineHeight = 22.sp,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
             }
-            result.observation?.let {
-                Text(
-                    stringResource(R.string.ui_db_section_observation) + ": " + it,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.66f)
-                )
+
+            result.conditions?.takeIf { it.isNotBlank() }?.let {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Icon(
+                        Icons.Default.Info,
+                        contentDescription = null,
+                        tint = accent.copy(0.7f),
+                        modifier = Modifier.size(15.dp).padding(top = 2.dp)
+                    )
+                    Text(
+                        stringResource(R.string.ui_db_section_typical_conditions) + ": " + it,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.7f)
+                    )
+                }
+            }
+            result.observation?.takeIf { it.isNotBlank() }?.let {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Icon(
+                        Icons.Default.Biotech,
+                        contentDescription = null,
+                        tint = accent.copy(0.7f),
+                        modifier = Modifier.size(15.dp).padding(top = 2.dp)
+                    )
+                    Text(
+                        it,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(0.7f)
+                    )
+                }
             }
 
             if (result.products.isNotEmpty()) {
                 HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(0.12f))
-                Text(stringResource(R.string.ui_products),
+                Text(
+                    stringResource(R.string.ui_products),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 0.8.sp,
                     color = MaterialTheme.colorScheme.onSurface.copy(0.45f)
                 )
-                result.products.forEach { product ->
-                    Surface(
-                        shape = RoundedCornerShape(12.dp),
-                        color = MaterialTheme.colorScheme.surfaceVariant.copy(0.34f),
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(0.12f))
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    result.products.forEach { product ->
+                        Surface(
+                            shape = RoundedCornerShape(50),
+                            color = accent.copy(0.10f),
+                            border = BorderStroke(1.dp, accent.copy(0.28f))
                         ) {
-                            Text(toSubscriptFormula(product.formula), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace)
-                            product.noteRes?.let {
-                                Text(stringResource(it), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(0.55f))
+                            Row(
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                Text(
+                                    toSubscriptFormula(product.formula),
+                                    style = MaterialTheme.typography.titleSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    fontFamily = FontFamily.Monospace,
+                                    color = accent
+                                )
+                                product.noteRes?.let {
+                                    Text(
+                                        stringResource(it),
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurface.copy(0.55f)
+                                    )
+                                }
                             }
                         }
                     }

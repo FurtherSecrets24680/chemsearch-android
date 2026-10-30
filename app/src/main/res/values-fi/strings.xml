@@ -144,7 +144,7 @@
     <string name="ui_s_copied" translatable="true">%1$s kopioitu</string>
     <string name="ui_back_to_database" translatable="true">Takaisin tietokantaan</string>
     <string name="ui_search_in_chemsearch" translatable="true">Hae ChemSearchista</string>
-    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Hae aineita, reaktioita, ryhmiä, ioneja...</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Hae tietokannasta...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Molekyylikaava</string>
     <string name="ui_empirical" translatable="true">Empiirinen</string>
@@ -478,7 +478,30 @@
     <string name="ui_debug_api_endpoints_body" translatable="true">Kopioi perusosoitteet PubChemille, NCI/CADD:lle, Wikipedialle, GitHubille ja tuki AI-tarjoajia leikepöydälle manuaalista testausta varten.</string>
     <string name="ui_debug_wipe_prefs_body" translatable="true">Kutsuu prefs.edit().clear(). Poistaa vanhat asetusarvot, salatut avainkannat, historian, suosikit ja debug-liput. DataStoren asetukset, Room-lataukset ja sovelluksen välimuistitiedostot eivät poistu tällä toiminnolla; uudelleenkäynnistys suositeltu.</string>
     <string name="ui_debug_force_crash" translatable="true">Pakota kaatuminen</string>
-    <string name="ui_debug_force_crash_body" translatable="true">Tahallaan heittää käsittelemättömän RuntimeException. Käytetään varmistamaan, että kaatumisraportointi / Logcat toimii oikein. Varmennusvaihe on ennen tulipaloita.</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Heittää tarkoituksella käsittelemättömän RuntimeException-poikkeuksen. Yksityiskohtainen kaatumisraportti tallennetaan ennen prosessin päättymistä, joten tämä on nopein tapa varmistaa kaatumisraportointi. Toiminto vaatii vahvistuksen ennen käynnistymistä.</string>
+    <string name="ui_crash_history" translatable="true">Kaatumishistoria</string>
+    <string name="ui_crash_history_body" translatable="true">Kaatumisraportit kirjoitetaan automaattisesti ennen kuin käsittelemätön poikkeus lopettaa sovelluksen. Jokainen raportti sisältää täyden pinon jäljityksen, syyketjun, kaikkien aktiivisten säikeiden pinot, laite- ja koontitiedot, muistin tilan, prosessin rajat ja viimeisimmät sovelluslokit.</string>
+    <string name="ui_crash_no_reports" translatable="true">Ei tallennettuja kaatumisia</string>
+    <string name="ui_crash_empty_help" translatable="true">Kaatumisraportteja ei ole vielä. Jos sovellus kaatuu, raportti näkyy täällä seuraavan kerran, kun avaat sovelluksen. Voit myös testata tallennusta alla olevalla “Kaatuminen nyt” -toiminnolla.</string>
+    <string name="ui_crash_copy_all" translatable="true">Kopioi kaikki</string>
+    <string name="ui_crash_delete_all_title" translatable="true">Poistetaanko kaikki kaatumisraportit?</string>
+    <string name="ui_crash_delete_all_body" translatable="true">Kaikki tallennetut kaatumisraportit poistetaan pysyvästi. Tätä ei voi kumota.</string>
+    <string name="ui_delete_all" translatable="true">Poista kaikki</string>
+    <string name="ui_crash_report_detail" translatable="true">Kaatumisraportti</string>
+    <string name="ui_crash_read_failed" translatable="true">Tätä kaatumisraporttia ei voitu lukea.</string>
+    <string name="ui_crash_share" translatable="true">Jaa</string>
+    <string name="ui_crash_share_failed" translatable="true">Kaatumisraporttia ei voitu jakaa</string>
+    <string name="ui_crash_share_subject" translatable="true">ChemSearchin kaatumisraportti</string>
+    <string name="ui_crash_share_chooser" translatable="true">Jaa kaatumisraportti</string>
+    <string name="ui_crash_copied" translatable="true">Kaatumisraportti kopioitu</string>
+    <string name="ui_crash_copied_all" translatable="true">Kaikki kaatumisraportit kopioitu</string>
+    <string name="ui_crash_copy_failed" translatable="true">Kaatumisraportti on liian suuri kopioitavaksi. Käytä sen sijaan Jaa-toimintoa.</string>
+    <string name="ui_crash_deleted" translatable="true">Kaatumisraportti poistettu</string>
+    <string name="ui_crash_all_deleted" translatable="true">Kaikki kaatumisraportit poistettu</string>
+    <string name="ui_crash_delete_one_title" translatable="true">Poistetaanko tämä kaatumisraportti?</string>
+    <string name="ui_crash_delete_one_body" translatable="true">Valittu kaatumisraportti poistetaan pysyvästi. Tätä ei voi kumota.</string>
+    <string name="ui_debug_crash_history_body" translatable="true">Selaa kaikkia tallennettuja kaatumisraportteja, joissa on täysi pinon jäljitys, syyketju, kaikkien säikeiden vedokset, laite-/koontitiedot, muistin tila ja viimeisimmät lokit. Kopioi yksittäisiä raportteja, kopioi kaikki, jaa tiedostona tai poista ne.</string>
+    <string name="ui_clipboard_crash_report" translatable="true">Kaatumisraportti</string>
     <string name="ui_debug_hide_body" translatable="true">Asettaa dev_mode=false ja piilottaa tämän osan. Napauta käännösnumeroa 5 kertaa Tietoja näytöstä avataksesi sen uudelleen.</string>
     <string name="ui_remove_key" translatable="true">Poista avain</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Arkaluonteiset arvot maskataan eikä niitä koskaan kopioida tästä näkymästä.</string>
@@ -1645,6 +1668,13 @@
     <string name="ui_add_reactant">Lisää reaktantti</string>
     <string name="ui_predict_reaction">Ennusta tuotteet</string>
     <string name="ui_error_enter_two_reactants">Syötä kaksi reaktanttia.</string>
+    <string name="ui_error_enter_reactant" translatable="true">Anna vähintään yksi reagenssi.</string>
+    <string name="ui_pred_rule_decomposition" translatable="true">Hajoamissääntö</string>
+    <string name="ui_pred_note_oxygen_gas" translatable="true">happikaasu</string>
+    <string name="ui_rp_decomposition_hint" translatable="true">Jätä toinen reagenssi tyhjäksi ennustaaksesi yhden yhdisteen hajoamisen.</string>
+    <string name="ui_confidence_database" translatable="true">Tietokantaosuma</string>
+    <string name="ui_confidence_rule" translatable="true">Sääntöpohjainen</string>
+    <string name="ui_confidence_low" translatable="true">Matala varmuus</string>
     <string name="ui_error_no_prediction_available">Mikään tunnettu sääntö ei vastaa näitä reaktantteja. Kokeile yleistä paria kuten happo ja emäs, metalli tai karbonaatti.</string>
     <string name="ui_pred_rule_neutralization">Neutraloitumissääntö</string>
     <string name="ui_pred_rule_acid_carbonate">Happo + karbonaatti -sääntö</string>
@@ -1665,7 +1695,7 @@
     <string name="ui_pred_note_ammonia_gas">ammoniakkikaasu</string>
     <string name="ui_pred_note_pungent_gas">pistävä SO2-kaasu</string>
     <string name="ui_pred_note_rotten_egg">mädän munan haju</string>
-    <string name="ui_rp_what_it_does_desc">Syötä kaksi reaktanttia nähdäksesi ennustetut tuotteet, tasapainotetun yhtälön ja ennusteen taustalla olevan säännön tai tietokantamerkinnän.</string>
+    <string name="ui_rp_what_it_does_desc">Anna yksi tai kaksi reagenssia nähdäksesi ennustetut tuotteet, tasapainotetun yhtälön ja ennusteen taustalla olevan säännön tai tietokantamerkinnän.</string>
     <string name="ui_rp_best_inputs_desc">Yleiset epäorgaaniset parit toimivat parhaiten: hapot emästen, metallien tai karbonaattien kanssa; aktiiviset metallit suolaliuoksissa; hiilivedyt O2:n kanssa; ja kaksi alkuainetta, jotka muodostavat tunnetun binääriyhdisteen.</string>
     <string name="ui_rp_limits_desc">Ennustin kattaa vain yleiset säännöt. Orgaaninen kemia, redox erikoisolosuhteissa ja reaktiot, jotka vaativat katalysaattoria tai lämpöä, voivat puuttua. Tarkista lähde ennen kuin luotat ennusteeseen.</string>
     <string name="ui_language_bengali">বাংলা</string>
@@ -1763,4 +1793,8 @@
     <string name="ui_source_pubchem_spectra" translatable="true">Lähde: PubChemin spektrikokoelmat</string>
     <string name="ui_info_spectral_what_body" translatable="true">PubChemissä julkaistuja kokeellisia spektrejä, ryhmiteltynä tekniikan mukaan (NMR, MS, IR, UV, Raman). Arvot tulevat alkuperäisestä lähteestä, joten laitteet, liuottimet ja yksiköt vaihtelevat merkintöjen välillä.</string>
     <string name="ui_info_spectral_why_body" translatable="true">Kaikilla aineilla ei ole julkaistuja spektrejä. Kun PubChemissä ei ole niitä, tämä osio pysyy piilossa; aineen PubChem-sivu luettelee silti kaiken saatavilla olevan.</string>
+    <plurals name="ui_crash_reports_count">
+        <item quantity="one">%1$d kaatumisraportti</item>
+        <item quantity="other">%1$d kaatumisraporttia</item>
+    </plurals>
 </resources>

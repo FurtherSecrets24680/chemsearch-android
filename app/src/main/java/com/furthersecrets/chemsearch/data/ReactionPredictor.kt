@@ -57,17 +57,20 @@ object ReactionPredictor {
         dbReactions: List<ChemicalDbEntry>
     ): ReactionPredictionResult {
         val cleaned = inputs.map { it.trim() }.filter { it.isNotEmpty() }
-        if (cleaned.size < 2) {
-            return ReactionPredictionResult(errorRes = R.string.ui_error_enter_two_reactants)
+        if (cleaned.isEmpty()) {
+            return ReactionPredictionResult(errorRes = R.string.ui_error_enter_reactant)
         }
 
         // 1. Exact database match: the inputs appear on the reactant side of a curated entry.
         dbMatch(cleaned, dbReactions)?.let { return it }
 
-        // 2. General rule engine (two reactants only).
-        if (cleaned.size == 2) {
-            ruleEngine(cleaned[0], cleaned[1])?.let { return it }
+        // 2. General rule engine.
+        val rule = when (cleaned.size) {
+            1 -> decomposition(cleaned[0])
+            2 -> ruleEngine(cleaned[0], cleaned[1])
+            else -> null
         }
+        rule?.let { return it }
 
         return ReactionPredictionResult(
             reactants = cleaned,
@@ -117,6 +120,139 @@ object ReactionPredictor {
                 ?.rows?.firstOrNull()?.value?.takeIf { it.isNotBlank() }
         )
     }
+
+    // ------------------------------------------------------------------ //
+    // Decomposition (single reactant)
+    // ------------------------------------------------------------------ //
+
+    private val OXIDE_ION = CommonIon("O", -2, "oxide")
+    private val CHLORIDE_ION = CommonIon("Cl", -1, "chloride")
+
+    private val ALKALI_CATIONS = setOf("Na", "K", "Li", "Rb", "Cs")
+    private val HYDROXIDES_THAT_DECOMPOSE = setOf("Mg", "Ca", "Al", "Zn", "Cu", "Fe", "Pb")
+    private val OXIDES_THAT_DECOMPOSE = mapOf(
+        "HGO" to "Hg",
+        "AG2O" to "Ag"
+    )
+
+    private fun decomposition(input: String): ReactionPredictionResult? {
+        val formula = input.trim()
+        if (formula.isEmpty()) return null
+
+        if (formula.equals("H2O2", ignoreCase = true)) {
+            return decompositionResult(
+                formula = formula,
+                productFormulas = listOf("H2O", "O2"),
+                products = listOf(
+                    PredictedProduct("H2O"),
+                    PredictedProduct("O2", noteRes = R.string.ui_pred_note_oxygen_gas)
+                )
+            )
+        }
+
+        bicarbonateCation(formula)?.let { bicarbonateCation ->
+            val carbonate = buildIonicCompound(bicarbonateCation, CommonIon("CO3", -2, "carbonate")).formula
+            return decompositionResult(
+                formula = formula,
+                productFormulas = listOf(carbonate, "H2O", "CO2"),
+                products = listOf(
+                    PredictedProduct(carbonate),
+                    PredictedProduct("H2O"),
+                    PredictedProduct("CO2", noteRes = R.string.ui_pred_note_effervescence)
+                )
+            )
+        }
+
+        val match = identifyCommonIonicCompound(formula)
+        val cation = match?.cation
+        val anion = match?.anion?.formula
+
+        if (cation != null) {
+            when (anion) {
+                "CO3" -> {
+                    if (cation.formula == "H") {
+                        return decompositionResult(
+                            formula = formula,
+                            productFormulas = listOf("H2O", "CO2"),
+                            products = listOf(
+                                PredictedProduct("H2O"),
+                                PredictedProduct("CO2", noteRes = R.string.ui_pred_note_effervescence)
+                            )
+                        )
+                    }
+                    if (cation.formula in ALKALI_CATIONS) return null
+                    val oxide = buildIonicCompound(cation, OXIDE_ION).formula
+                    return decompositionResult(
+                        formula = formula,
+                        productFormulas = listOf(oxide, "CO2"),
+                        products = listOf(
+                            PredictedProduct(oxide),
+                            PredictedProduct("CO2", noteRes = R.string.ui_pred_note_effervescence)
+                        )
+                    )
+                }
+                "SO3" -> {
+                    if (cation.formula != "H") return null
+                    return decompositionResult(
+                        formula = formula,
+                        productFormulas = listOf("H2O", "SO2"),
+                        products = listOf(
+                            PredictedProduct("H2O"),
+                            PredictedProduct("SO2", noteRes = R.string.ui_pred_note_pungent_gas)
+                        )
+                    )
+                }
+                "OH" -> {
+                    if (cation.formula !in HYDROXIDES_THAT_DECOMPOSE) return null
+                    val oxide = buildIonicCompound(cation, OXIDE_ION).formula
+                    return decompositionResult(
+                        formula = formula,
+                        productFormulas = listOf(oxide, "H2O"),
+                        products = listOf(
+                            PredictedProduct(oxide),
+                            PredictedProduct("H2O")
+                        )
+                    )
+                }
+                "ClO3", "ClO4" -> {
+                    val chloride = buildIonicCompound(cation, CHLORIDE_ION).formula
+                    return decompositionResult(
+                        formula = formula,
+                        productFormulas = listOf(chloride, "O2"),
+                        products = listOf(
+                            PredictedProduct(chloride),
+                            PredictedProduct("O2", noteRes = R.string.ui_pred_note_oxygen_gas)
+                        )
+                    )
+                }
+            }
+        }
+
+        OXIDES_THAT_DECOMPOSE[formula.uppercase()]?.let { metal ->
+            return decompositionResult(
+                formula = formula,
+                productFormulas = listOf(metal, "O2"),
+                products = listOf(
+                    PredictedProduct(metal, noteRes = R.string.ui_pred_note_metal_deposited),
+                    PredictedProduct("O2", noteRes = R.string.ui_pred_note_oxygen_gas)
+                )
+            )
+        }
+
+        return null
+    }
+
+    private fun decompositionResult(
+        formula: String,
+        productFormulas: List<String>,
+        products: List<PredictedProduct>
+    ): ReactionPredictionResult = assemble(
+        reactants = listOf(formula),
+        productFormulas = productFormulas,
+        products = products,
+        confidence = Confidence.RULE,
+        ruleLabelRes = R.string.ui_pred_rule_decomposition
+    )
 
     // ------------------------------------------------------------------ //
     // Rule engine

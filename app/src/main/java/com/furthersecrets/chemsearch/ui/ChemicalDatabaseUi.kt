@@ -15,6 +15,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -70,139 +71,158 @@ fun ChemicalDatabaseTool(
     val filteredEntries = remember(query, selectedCategory, selectedType, categoryEntries, typeGroups) {
         val normalizedQuery = query.normalizedSearch()
         val baseEntries = selectedType?.let { typeGroups[it].orEmpty() } ?: categoryEntries
-        if (normalizedQuery.isBlank()) {
+        val matchedEntries = if (normalizedQuery.isBlank()) {
             baseEntries
         } else {
             baseEntries.filter { entry ->
                 entry.searchText.contains(normalizedQuery)
             }
         }
+        if (selectedCategory != null && selectedType == null) {
+            matchedEntries.sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { entry -> entry.title })
+        } else {
+            matchedEntries
+        }
     }
 
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(bottom = if (compact) 8.dp else 12.dp),
-        verticalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 12.dp)
-    ) {
-        if (selectedEntry == null) {
-            item(key = "database-search") {
-                ChemicalDatabaseSearchSection(
-                    query = query,
-                    total = entries.size,
-                    onQueryChange = { query = it },
-                    onSearch = { focusManager.clearFocus() },
-                    onClear = { query = "" }
-                )
-            }
+    val listState = rememberLazyListState()
 
-            when {
-                selectedCategory == null && query.isBlank() -> {
-                    item(key = "database-categories") {
-                        ChemicalDatabaseCategoryCards(
-                            entriesByCategory = entriesByCategory,
-                            onSelect = { category ->
-                                selectedCategory = category
-                                selectedType = null
-                                showCategoryResults = false
-                            }
-                        )
-                    }
+    Box(modifier = modifier.fillMaxSize()) {
+        LazyColumn(
+            state = listState,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(end = 14.dp),
+            contentPadding = PaddingValues(bottom = if (compact) 8.dp else 12.dp),
+            verticalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 12.dp)
+        ) {
+            if (selectedEntry == null) {
+                item(key = "database-search") {
+                    ChemicalDatabaseSearchSection(
+                        query = query,
+                        total = entries.size,
+                        onQueryChange = { query = it },
+                        onSearch = { focusManager.clearFocus() },
+                        onClear = { query = "" }
+                    )
                 }
-                selectedCategory != null && query.isBlank() && !showCategoryResults -> {
-                    item(key = "database-browser-header") {
-                        DatabaseBrowserHeader(
-                            title = stringResource(selectedCategory!!.labelRes),
-                            subtitle = stringResource(R.string.ui_entries_count, categoryEntries.size),
-                            onBack = {
-                                selectedCategory = null
-                                selectedType = null
-                                showCategoryResults = false
-                            }
-                        )
-                    }
-                    item(key = "database-types") {
-                        ChemicalDatabaseTypeCards(
-                            category = selectedCategory!!,
-                            entries = categoryEntries,
-                            typeGroups = typeGroups,
-                            typeOptions = typeOptions,
-                            onSelectAll = {
-                                selectedType = null
-                                showCategoryResults = true
-                            },
-                            onSelectType = { type ->
-                                selectedType = type
-                                showCategoryResults = true
-                            }
-                        )
-                    }
-                }
-                else -> {
-                    item(key = "database-results-header") {
-                        DatabaseBrowserHeader(
-                            title = when {
-                                query.isNotBlank() && selectedCategory != null -> stringResource(R.string.ui_search_s, stringResource(selectedCategory!!.labelRes))
-                                query.isNotBlank() -> stringResource(R.string.ui_search_results)
-                                selectedCategory != null -> selectedType ?: stringResource(R.string.ui_all_s, stringResource(selectedCategory!!.labelRes))
-                                else -> stringResource(R.string.ui_search_results)
-                            },
-                            subtitle = pluralStringResource(R.plurals.ui_matching_entries, filteredEntries.size, filteredEntries.size),
-                            onBack = {
-                                if (selectedCategory != null && query.isBlank()) {
+
+                when {
+                    selectedCategory == null && query.isBlank() -> {
+                        item(key = "database-categories") {
+                            ChemicalDatabaseCategoryCards(
+                                entriesByCategory = entriesByCategory,
+                                onSelect = { category ->
+                                    selectedCategory = category
                                     selectedType = null
                                     showCategoryResults = false
-                                } else {
-                                    query = ""
+                                }
+                            )
+                        }
+                    }
+                    selectedCategory != null && query.isBlank() && !showCategoryResults -> {
+                        item(key = "database-browser-header") {
+                            DatabaseBrowserHeader(
+                                title = stringResource(selectedCategory!!.labelRes),
+                                subtitle = stringResource(R.string.ui_entries_count, categoryEntries.size),
+                                onBack = {
                                     selectedCategory = null
                                     selectedType = null
                                     showCategoryResults = false
                                 }
-                            }
-                        )
-                    }
-                    if (filteredEntries.isEmpty()) {
-                        item(key = "database-empty") {
-                            EmptyDatabaseResults(query = query)
+                            )
                         }
-                    } else {
-                        items(
-                            items = filteredEntries,
-                            key = { entry -> "${entry.category.name}:${entry.id}" },
-                            contentType = { entry -> entry.category }
-                        ) { entry ->
-                            val selectionItem = entry.toComparableLibrarySelectionItem()
-                            DatabaseResultCard(
-                                entry = entry,
-                                onClick = { selectedEntry = entry },
-                                selected = selectionItem?.key?.let { it in selectedLibraryKeys } == true,
-                                onToggleSelection = selectionItem?.let { item -> onToggleLibrarySelection?.let { toggle -> { toggle(item) } } }
+                        item(key = "database-types") {
+                            ChemicalDatabaseTypeCards(
+                                category = selectedCategory!!,
+                                entries = categoryEntries,
+                                typeGroups = typeGroups,
+                                typeOptions = typeOptions,
+                                onSelectAll = {
+                                    selectedType = null
+                                    showCategoryResults = true
+                                },
+                                onSelectType = { type ->
+                                    selectedType = type
+                                    showCategoryResults = true
+                                }
                             )
                         }
                     }
+                    else -> {
+                        item(key = "database-results-header") {
+                            DatabaseBrowserHeader(
+                                title = when {
+                                    query.isNotBlank() && selectedCategory != null -> stringResource(R.string.ui_search_s, stringResource(selectedCategory!!.labelRes))
+                                    query.isNotBlank() -> stringResource(R.string.ui_search_results)
+                                    selectedCategory != null -> selectedType ?: stringResource(R.string.ui_all_s, stringResource(selectedCategory!!.labelRes))
+                                    else -> stringResource(R.string.ui_search_results)
+                                },
+                                subtitle = pluralStringResource(R.plurals.ui_matching_entries, filteredEntries.size, filteredEntries.size),
+                                onBack = {
+                                    if (selectedCategory != null && query.isBlank()) {
+                                        selectedType = null
+                                        showCategoryResults = false
+                                    } else {
+                                        query = ""
+                                        selectedCategory = null
+                                        selectedType = null
+                                        showCategoryResults = false
+                                    }
+                                }
+                            )
+                        }
+                        if (filteredEntries.isEmpty()) {
+                            item(key = "database-empty") {
+                                EmptyDatabaseResults(query = query)
+                            }
+                        } else {
+                            items(
+                                items = filteredEntries,
+                                key = { entry -> "${entry.category.name}:${entry.id}" },
+                                contentType = { entry -> entry.category }
+                            ) { entry ->
+                                val selectionItem = entry.toComparableLibrarySelectionItem()
+                                DatabaseResultCard(
+                                    entry = entry,
+                                    onClick = { selectedEntry = entry },
+                                    selected = selectionItem?.key?.let { it in selectedLibraryKeys } == true,
+                                    onToggleSelection = selectionItem?.let { item -> onToggleLibrarySelection?.let { toggle -> { toggle(item) } } }
+                                )
+                            }
+                        }
+                    }
                 }
-            }
-        } else {
-            item(key = "entry-back") {
-                TextButton(
-                    onClick = { selectedEntry = null },
-                    contentPadding = PaddingValues(horizontal = 0.dp)
-                ) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, null, modifier = Modifier.size(16.dp))
-                    Spacer(Modifier.width(4.dp))
-                    Text(stringResource(R.string.ui_back_to_database))
+            } else {
+                item(key = "entry-back") {
+                    TextButton(
+                        onClick = { selectedEntry = null },
+                        contentPadding = PaddingValues(horizontal = 0.dp)
+                    ) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, null, modifier = Modifier.size(16.dp))
+                        Spacer(Modifier.width(4.dp))
+                        Text(stringResource(R.string.ui_back_to_database))
+                    }
                 }
-            }
-            item(key = "entry-detail-${selectedEntry!!.category.name}:${selectedEntry!!.id}") {
-                val selectionItem = selectedEntry!!.toComparableLibrarySelectionItem()
-                DatabaseEntryDetail(
-                    entry = selectedEntry!!,
-                    onSearchCompound = onSearchCompound,
-                    onCopy = { value, label -> copyToClipboard(context, clipboard, label, value) },
-                    selected = selectionItem?.key?.let { it in selectedLibraryKeys } == true,
-                    onToggleSelection = selectionItem?.let { item -> onToggleLibrarySelection?.let { toggle -> { toggle(item) } } }
-                )
+                item(key = "entry-detail-${selectedEntry!!.category.name}:${selectedEntry!!.id}") {
+                    val selectionItem = selectedEntry!!.toComparableLibrarySelectionItem()
+                    DatabaseEntryDetail(
+                        entry = selectedEntry!!,
+                        onSearchCompound = onSearchCompound,
+                        onCopy = { value, label -> copyToClipboard(context, clipboard, label, value) },
+                        selected = selectionItem?.key?.let { it in selectedLibraryKeys } == true,
+                        onToggleSelection = selectionItem?.let { item -> onToggleLibrarySelection?.let { toggle -> { toggle(item) } } }
+                    )
+                }
             }
         }
+        VerticalScrollbar(
+            listState = listState,
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .fillMaxHeight()
+                .padding(vertical = 4.dp)
+        )
     }
 }
 

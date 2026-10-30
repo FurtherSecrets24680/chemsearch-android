@@ -527,6 +527,7 @@ Nothing is sent over the network while Offline Test Mode is active.
 
 Developer options also include:
 
+- Crash history with full stack traces, cause chains, thread dumps, device/build details, memory state, and recent logs
 - Debug logs
 - Notification tests
 - Cache and storage summaries

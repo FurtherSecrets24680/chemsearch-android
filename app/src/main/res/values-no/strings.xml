@@ -144,7 +144,7 @@
     <string name="ui_s_copied" translatable="true">%1$s kopiert</string>
     <string name="ui_back_to_database" translatable="true">Tilbake til databasen</string>
     <string name="ui_search_in_chemsearch" translatable="true">Søk i ChemSearch</string>
-    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Søk etter stoffer, reaksjoner, grupper, ioner...</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Søk i databasen...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Molekylformel</string>
     <string name="ui_empirical" translatable="true">Empirisk</string>
@@ -478,7 +478,30 @@
     <string name="ui_debug_api_endpoints_body" translatable="true">Kopier base URLer for PubChem, NCI/CADD, Wikipedia, GitHub utgivelser, og støttet AI leverandører på utklippstavlen for manuell testing.</string>
     <string name="ui_debug_wipe_prefs_body" translatable="true">Kaller prefs.edit().clear(). Fjerner eldre preferanseverdier, krypterte nøkkelposter, historikk, favoritter og feilsøkingsflagg. Innstillinger for datalager, rom-nedlastinger og mellomlagerfiler slettes ikke av denne handlingen; omstart anbefales.</string>
     <string name="ui_debug_force_crash" translatable="true">Tving krasj</string>
-    <string name="ui_debug_force_crash_body" translatable="true">Betydelig kaster en uhåndtert RuntimeException. Brukes til å verifisere at krasjrapportering / Logcat fungerer riktig. Det er et bekreftelsestrinn før den avfyrer.</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Kaster med vilje et uhåndtert RuntimeException-unntak. En detaljert krasjrapport lagres før prosessen avsluttes, så dette er den raskeste måten å kontrollere krasjrapportering. Det er et bekreftelsestrinn før den utløses.</string>
+    <string name="ui_crash_history" translatable="true">Krasjhistorikk</string>
+    <string name="ui_crash_history_body" translatable="true">Krasjrapporter skrives automatisk før et uhåndtert unntak avslutter appen. Hver rapport inneholder full stacksporing, årsakskjeden, stacksporing for alle aktive tråder, enhets- og byggedetaljer, minnetilstand, prosessgrenser og de nyeste apploggene.</string>
+    <string name="ui_crash_no_reports" translatable="true">Ingen krasj registrert</string>
+    <string name="ui_crash_empty_help" translatable="true">Det er ingen krasjrapporter ennå. Hvis appen krasjer, vises en rapport her neste gang du åpner den. Du kan også bruke «Krasj nå» nedenfor for å teste registreringen.</string>
+    <string name="ui_crash_copy_all" translatable="true">Kopier alle</string>
+    <string name="ui_crash_delete_all_title" translatable="true">Slette alle krasjrapporter?</string>
+    <string name="ui_crash_delete_all_body" translatable="true">Alle lagrede krasjrapporter slettes permanent. Dette kan ikke angres.</string>
+    <string name="ui_delete_all" translatable="true">Slett alle</string>
+    <string name="ui_crash_report_detail" translatable="true">Krasjrapport</string>
+    <string name="ui_crash_read_failed" translatable="true">Denne krasjrapporten kunne ikke leses.</string>
+    <string name="ui_crash_share" translatable="true">Del</string>
+    <string name="ui_crash_share_failed" translatable="true">Kunne ikke dele krasjrapporten</string>
+    <string name="ui_crash_share_subject" translatable="true">Krasjrapport for ChemSearch</string>
+    <string name="ui_crash_share_chooser" translatable="true">Del krasjrapport</string>
+    <string name="ui_crash_copied" translatable="true">Krasjrapport kopiert</string>
+    <string name="ui_crash_copied_all" translatable="true">Alle krasjrapporter kopiert</string>
+    <string name="ui_crash_copy_failed" translatable="true">Krasjrapporten er for stor til å kopieres. Bruk Del i stedet.</string>
+    <string name="ui_crash_deleted" translatable="true">Krasjrapport slettet</string>
+    <string name="ui_crash_all_deleted" translatable="true">Alle krasjrapporter slettet</string>
+    <string name="ui_crash_delete_one_title" translatable="true">Slette denne krasjrapporten?</string>
+    <string name="ui_crash_delete_one_body" translatable="true">Den valgte krasjrapporten slettes permanent. Dette kan ikke angres.</string>
+    <string name="ui_debug_crash_history_body" translatable="true">Bla gjennom alle lagrede krasjrapporter med full stacksporing, årsakskjede, alle trådutskrifter, enhets-/byggedetaljer, minnetilstand og nyeste logger. Kopier enkeltrapporter, kopier alle, del som fil eller slett dem.</string>
+    <string name="ui_clipboard_crash_report" translatable="true">Krasjrapport</string>
     <string name="ui_debug_hide_body" translatable="true">Setter dev_mode=falsk og gjemmer denne delen. Trykk på byggnummer 5 ganger på Om skjermen for å låse den opp igjen.</string>
     <string name="ui_remove_key" translatable="true">Fjern nøkkel</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Sensitive verdier maskeres og kopieres aldri fra denne visningen.</string>
@@ -1645,6 +1668,13 @@
     <string name="ui_add_reactant">Legg til reaktant</string>
     <string name="ui_predict_reaction">Forutsi produkter</string>
     <string name="ui_error_enter_two_reactants">Skriv inn to reaktanter.</string>
+    <string name="ui_error_enter_reactant" translatable="true">Skriv inn minst én reaktant.</string>
+    <string name="ui_pred_rule_decomposition" translatable="true">Nedbrytningsregel</string>
+    <string name="ui_pred_note_oxygen_gas" translatable="true">oksygengass</string>
+    <string name="ui_rp_decomposition_hint" translatable="true">La den andre reaktanten stå tom for å forutsi nedbrytingen av en forbindelse.</string>
+    <string name="ui_confidence_database" translatable="true">Databasetreff</string>
+    <string name="ui_confidence_rule" translatable="true">Regelbasert</string>
+    <string name="ui_confidence_low" translatable="true">Lav sikkerhet</string>
     <string name="ui_error_no_prediction_available">Ingen kjent regel passer til disse reaktantene. Prøv et vanlig par som en syre med en base, et metall eller et karbonat.</string>
     <string name="ui_pred_rule_neutralization">Nøytraliseringsregel</string>
     <string name="ui_pred_rule_acid_carbonate">Syre + karbonat-regel</string>
@@ -1665,7 +1695,7 @@
     <string name="ui_pred_note_ammonia_gas">ammoniakkgass</string>
     <string name="ui_pred_note_pungent_gas">stikkende SO2-gass</string>
     <string name="ui_pred_note_rotten_egg">lukt av råtne egg</string>
-    <string name="ui_rp_what_it_does_desc">Skriv inn to reaktanter for å se de forutsagte produktene, en balansert ligning og regelen eller databaseoppføringen bak forutsigelsen.</string>
+    <string name="ui_rp_what_it_does_desc">Skriv inn én eller to reaktanter for å se de forutsagte produktene, en balansert ligning og regelen eller databaseoppføringen bak forutsigelsen.</string>
     <string name="ui_rp_best_inputs_desc">Vanlige uorganiske par fungerer best: syrer med baser, metaller eller karbonater; aktive metaller i saltløsninger; hydrokarboner med O2; og to grunnstoffer som danner en kjent binær forbindelse.</string>
     <string name="ui_rp_limits_desc">Forutsigeren dekker bare vanlige regler. Organisk kjemi, redoks med spesielle betingelser og reaksjoner som krever katalysator eller varme kan mangle. Sjekk en referanse før du stoler på en forutsigelse.</string>
     <string name="ui_language_bengali">বাংলা</string>
@@ -1763,4 +1793,8 @@
     <string name="ui_source_pubchem_spectra" translatable="true">Kilde: PubChems spektralsamlinger</string>
     <string name="ui_info_spectral_what_body" translatable="true">Eksperimentelle spektre publisert i PubChem, gruppert etter teknikk (NMR, MS, IR, UV, Raman). Verdiene kommer fra den opprinnelige kilden, så instrumenter, løsemidler og enheter varierer mellom oppføringene.</string>
     <string name="ui_info_spectral_why_body" translatable="true">Ikke alle stoffer har publiserte spektre. Når PubChem ikke har noen, forblir denne delen skjult; stoffets PubChem-side viser fortsatt alt som er tilgjengelig.</string>
+    <plurals name="ui_crash_reports_count">
+        <item quantity="one">%1$d krasjrapport</item>
+        <item quantity="other">%1$d krasjrapporter</item>
+    </plurals>
 </resources>

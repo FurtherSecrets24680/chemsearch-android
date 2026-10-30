@@ -144,7 +144,7 @@
     <string name="ui_s_copied" translatable="true">Skopiowano: %1$s</string>
     <string name="ui_back_to_database" translatable="true">Wróć do bazy danych</string>
     <string name="ui_search_in_chemsearch" translatable="true">Szukaj w ChemSearch</string>
-    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Szukaj substancji, reakcji, grup i jonów...</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Szukaj w bazie...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Wzór cząsteczkowy</string>
     <string name="ui_empirical" translatable="true">Empiryczny</string>
@@ -478,7 +478,30 @@
     <string name="ui_debug_api_endpoints_body" translatable="true">Kopiuje bazowe adresy URL dla PubChem, NCI/CADD, Wikipedii, GitHub wydań i wspierał dostawców AI do schowka w celu przeprowadzenia testów ręcznych.</string>
     <string name="ui_debug_wipe_prefs_body" translatable="true">Wywołuje prefs.edit().clear(). Usuwa starsze wartości preferencji, zaszyfrowane rekordy kluczy, historię, ulubione i flagi debugowania. Ustawienia DataStore, pobrane pliki z Room i pliki pamięci podręcznej aplikacji nie są usuwane przez tę akcję; zalecane jest ponowne uruchomienie.</string>
     <string name="ui_debug_force_crash" translatable="true">Wymuś awarię</string>
-    <string name="ui_debug_force_crash_body" translatable="true">Dobrze rzuca nieobsługiwany RuntimeException. Używany do weryfikacji czy raportowanie awarii / Logcat działa poprawnie. Przed uruchomieniem jest krok potwierdzenia.</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Celowo zgłasza nieobsłużony wyjątek RuntimeException. Szczegółowy raport o awarii jest zapisywany przed zakończeniem procesu, więc to najszybszy sposób sprawdzenia zapisywania awarii. Przed uruchomieniem wymagane jest potwierdzenie.</string>
+    <string name="ui_crash_history" translatable="true">Historia awarii</string>
+    <string name="ui_crash_history_body" translatable="true">Raporty o awariach są zapisywane automatycznie, zanim nieobsłużony wyjątek zakończy aplikację. Każdy raport zawiera pełny ślad stosu, łańcuch przyczyn, stosy wszystkich aktywnych wątków, szczegóły urządzenia i kompilacji, stan pamięci, limity procesu oraz ostatnie logi aplikacji.</string>
+    <string name="ui_crash_no_reports" translatable="true">Nie zarejestrowano awarii</string>
+    <string name="ui_crash_empty_help" translatable="true">Nie ma jeszcze raportów o awariach. Jeśli aplikacja ulegnie awarii, raport pojawi się tutaj przy następnym uruchomieniu. Możesz też użyć opcji „Wywołaj awarię” poniżej, aby przetestować zapisywanie.</string>
+    <string name="ui_crash_copy_all" translatable="true">Kopiuj wszystko</string>
+    <string name="ui_crash_delete_all_title" translatable="true">Usunąć wszystkie raporty o awariach?</string>
+    <string name="ui_crash_delete_all_body" translatable="true">Wszystkie zapisane raporty o awariach zostaną trwale usunięte. Tej operacji nie można cofnąć.</string>
+    <string name="ui_delete_all" translatable="true">Usuń wszystko</string>
+    <string name="ui_crash_report_detail" translatable="true">Raport o awarii</string>
+    <string name="ui_crash_read_failed" translatable="true">Nie można odczytać tego raportu o awarii.</string>
+    <string name="ui_crash_share" translatable="true">Udostępnij</string>
+    <string name="ui_crash_share_failed" translatable="true">Nie udało się udostępnić raportu o awarii</string>
+    <string name="ui_crash_share_subject" translatable="true">Raport o awarii ChemSearch</string>
+    <string name="ui_crash_share_chooser" translatable="true">Udostępnij raport o awarii</string>
+    <string name="ui_crash_copied" translatable="true">Skopiowano raport o awarii</string>
+    <string name="ui_crash_copied_all" translatable="true">Skopiowano wszystkie raporty o awariach</string>
+    <string name="ui_crash_copy_failed" translatable="true">Raport o awarii jest zbyt duży, aby go skopiować. Użyj opcji Udostępnij.</string>
+    <string name="ui_crash_deleted" translatable="true">Usunięto raport o awarii</string>
+    <string name="ui_crash_all_deleted" translatable="true">Usunięto wszystkie raporty o awariach</string>
+    <string name="ui_crash_delete_one_title" translatable="true">Usunąć ten raport o awarii?</string>
+    <string name="ui_crash_delete_one_body" translatable="true">Wybrany raport o awarii zostanie trwale usunięty. Tej operacji nie można cofnąć.</string>
+    <string name="ui_debug_crash_history_body" translatable="true">Przeglądaj wszystkie zapisane raporty o awariach z pełnym śladem stosu, łańcuchem przyczyn, zrzutami wszystkich wątków, szczegółami urządzenia i kompilacji, stanem pamięci oraz ostatnimi logami. Kopiuj pojedyncze raporty, kopiuj wszystkie, udostępniaj jako plik lub usuwaj.</string>
+    <string name="ui_clipboard_crash_report" translatable="true">Raport o awarii</string>
     <string name="ui_debug_hide_body" translatable="true">Ustawia dev_mode=false i ukrywa tę sekcję. Stuknij 5 razy na ekranie informacyjnym, aby ponownie odblokować.</string>
     <string name="ui_remove_key" translatable="true">Usuń klucz</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Wrażliwe wartości są ukrywane i nigdy nie są kopiowane z tego widoku.</string>
@@ -1645,6 +1668,13 @@
     <string name="ui_add_reactant">Dodaj odczynnik</string>
     <string name="ui_predict_reaction">Przewidź produkty</string>
     <string name="ui_error_enter_two_reactants">Wprowadź dwa odczynniki.</string>
+    <string name="ui_error_enter_reactant" translatable="true">Wpisz co najmniej jeden reagent.</string>
+    <string name="ui_pred_rule_decomposition" translatable="true">Reguła rozkładu</string>
+    <string name="ui_pred_note_oxygen_gas" translatable="true">gazowy tlen</string>
+    <string name="ui_rp_decomposition_hint" translatable="true">Pozostaw drugi reagent pusty, aby przewidzieć rozkład jednego związku.</string>
+    <string name="ui_confidence_database" translatable="true">Dopasowanie w bazie</string>
+    <string name="ui_confidence_rule" translatable="true">Oparte na regułach</string>
+    <string name="ui_confidence_low" translatable="true">Niska pewność</string>
     <string name="ui_error_no_prediction_available">Żadna znana reguła nie pasuje do tych odczynników. Spróbuj typowej pary, np. kwas z zasadą, metalem lub węglanem.</string>
     <string name="ui_pred_rule_neutralization">Reguła neutralizacji</string>
     <string name="ui_pred_rule_acid_carbonate">Reguła kwas + węglan</string>
@@ -1665,7 +1695,7 @@
     <string name="ui_pred_note_ammonia_gas">gaz amoniak</string>
     <string name="ui_pred_note_pungent_gas">drażniący gaz SO2</string>
     <string name="ui_pred_note_rotten_egg">zapach zgniłych jaj</string>
-    <string name="ui_rp_what_it_does_desc">Wprowadź dwa odczynniki, aby zobaczyć przewidziane produkty, zbilansowane równanie oraz regułę lub wpis w bazie danych stojące za przewidywaniem.</string>
+    <string name="ui_rp_what_it_does_desc">Wpisz jeden lub dwa reagenty, aby zobaczyć przewidywane produkty, uzgodnione równanie oraz regułę lub wpis w bazie, na których opiera się przewidywanie.</string>
     <string name="ui_rp_best_inputs_desc">Typowe pary nieorganiczne działają najlepiej: kwasy z zasadami, metalami lub węglanami; aktywne metale w roztworach soli; węglowodory z O2; oraz dwa pierwiastki tworzące znany związek dwuskładnikowy.</string>
     <string name="ui_rp_limits_desc">Predyktor obejmuje tylko typowe reguły. Chemia organiczna, reakcje redoks w specjalnych warunkach i reakcje wymagające katalizatora lub ciepła mogą być nieobjęte. Sprawdź źródło, zanim zaufasz przewidywaniu.</string>
     <string name="ui_language_bengali">বাংলা</string>
@@ -1763,4 +1793,10 @@
     <string name="ui_source_pubchem_spectra" translatable="true">Źródło: kolekcje widm PubChem</string>
     <string name="ui_info_spectral_what_body" translatable="true">Widma eksperymentalne opublikowane w PubChem, pogrupowane według techniki (NMR, MS, IR, UV, Raman). Wartości pochodzą z oryginalnego źródła, więc aparatura, rozpuszczalniki i jednostki różnią się między rekordami.</string>
     <string name="ui_info_spectral_why_body" translatable="true">Nie każda substancja ma opublikowane widma. Gdy PubChem ich nie ma, ta sekcja pozostaje ukryta; strona substancji w PubChem nadal zawiera wszystko, co jest dostępne.</string>
+    <plurals name="ui_crash_reports_count">
+        <item quantity="one">%1$d raport o awarii</item>
+        <item quantity="few">%1$d raporty o awariach</item>
+        <item quantity="many">%1$d raportów o awariach</item>
+        <item quantity="other">%1$d raportu o awarii</item>
+    </plurals>
 </resources>

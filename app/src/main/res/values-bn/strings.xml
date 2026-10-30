@@ -141,7 +141,7 @@
     <string name="ui_s_copied">%1$s কপি হয়েছে</string>
     <string name="ui_back_to_database">ডেটাবেসে ফিরে যান</string>
     <string name="ui_search_in_chemsearch">ChemSearch এ অনুসন্ধান করুন</string>
-    <string name="ui_search_substances_reactions_groups_ions">অনুসন্ধান পদার্থ, প্রতিক্রিয়া, গ্রুপ, আয়ন...</string>
+    <string name="ui_search_substances_reactions_groups_ions">ডেটাবেস খুঁজুন...</string>
     <string name="ui_molecular_formula">আণবিক সূত্র</string>
     <string name="ui_empirical">অভিজ্ঞতাসম্পন্ন</string>
     <string name="ui_empirical_mass">পরীক্ষামূলক ভর</string>
@@ -464,7 +464,30 @@
     <string name="ui_debug_api_endpoints_body">PubChem, NCI/CADD, উইকিপিডিয়া, GitHub রিলিজের জন্য বেস ইউআরএল কপি করে এবং ম্যানুয়াল পরীক্ষার জন্য আপনার ক্লিপবোর্ডে AI প্রদানকারীদের সমর্থন করে ।</string>
     <string name="ui_debug_wipe_prefs_body">Prefs.edit () কল করে । clear () । উত্তরাধিকার পছন্দ মান, এনক্রিপ্ট করা কী রেকর্ড, ইতিহাস, পছন্দসই এবং ডিবাগ পতাকাগুলি সরিয়ে দেয় । ডেটাস্টোর সেটিংস, রুম ডাউনলোড এবং অ্যাপ ক্যাশে ফাইলগুলি এই ক্রিয়া দ্বারা মুছে ফেলা হয় না; পুনরায় চালু করার পরামর্শ দেওয়া হয় ।</string>
     <string name="ui_debug_force_crash">বল ক্র্যাশ</string>
-    <string name="ui_debug_force_crash_body">ইচ্ছাকৃতভাবে একটি অনিয়ন্ত্রিত RuntimeException নিক্ষেপ করে । ক্র্যাশ রিপোর্টিং /লগক্যাট সঠিকভাবে কাজ করছে কিনা তা যাচাই করতে ব্যবহৃত হয় । আগুন লাগার আগে একটি নিশ্চিতকরণ পদক্ষেপ রয়েছে ।</string>
+    <string name="ui_debug_force_crash_body" translatable="true">ইচ্ছাকৃতভাবে একটি অপ্রক্রিয়াজাত RuntimeException নিক্ষেপ করে। প্রক্রিয়া শেষ হওয়ার আগে বিস্তারিত ক্র্যাশ রিপোর্ট সংরক্ষণ করা হয়, তাই ক্র্যাশ রিপোর্টিং যাচাই করার এটি দ্রুততম উপায়। চালু হওয়ার আগে একটি নিশ্চিতকরণ ধাপ রয়েছে।</string>
+    <string name="ui_crash_history" translatable="true">ক্র্যাশ ইতিহাস</string>
+    <string name="ui_crash_history_body" translatable="true">অপ্রক্রিয়াজাত ব্যতিক্রমের কারণে অ্যাপ বন্ধ হওয়ার আগে ক্র্যাশ রিপোর্ট স্বয়ংক্রিয়ভাবে সংরক্ষণ করা হয়। প্রতিটি রিপোর্টে সম্পূর্ণ স্ট্যাক ট্রেস, কারণের শৃঙ্খল, সব সক্রিয় থ্রেডের স্ট্যাক, ডিভাইস ও বিল্ডের তথ্য, মেমরির অবস্থা, প্রক্রিয়ার সীমা এবং সাম্প্রতিক অ্যাপ লগ থাকে।</string>
+    <string name="ui_crash_no_reports" translatable="true">কোনো ক্র্যাশ রেকর্ড হয়নি</string>
+    <string name="ui_crash_empty_help" translatable="true">এখনো কোনো ক্র্যাশ রিপোর্ট নেই। অ্যাপটি ক্র্যাশ করলে পরেরবার খোলার সময় এখানে একটি রিপোর্ট দেখা যাবে। ক্যাপচার পরীক্ষা করতে নিচের ‘এখনই ক্র্যাশ করুন’ ব্যবহার করতে পারেন।</string>
+    <string name="ui_crash_copy_all" translatable="true">সব কপি করুন</string>
+    <string name="ui_crash_delete_all_title" translatable="true">সব ক্র্যাশ রিপোর্ট মুছবেন?</string>
+    <string name="ui_crash_delete_all_body" translatable="true">সংরক্ষিত সব ক্র্যাশ রিপোর্ট স্থায়ীভাবে মুছে যাবে। এটি ফিরিয়ে আনা যাবে না।</string>
+    <string name="ui_delete_all" translatable="true">সব মুছুন</string>
+    <string name="ui_crash_report_detail" translatable="true">ক্র্যাশ রিপোর্ট</string>
+    <string name="ui_crash_read_failed" translatable="true">এই ক্র্যাশ রিপোর্টটি পড়া যায়নি।</string>
+    <string name="ui_crash_share" translatable="true">শেয়ার</string>
+    <string name="ui_crash_share_failed" translatable="true">ক্র্যাশ রিপোর্ট শেয়ার করা যায়নি</string>
+    <string name="ui_crash_share_subject" translatable="true">ChemSearch ক্র্যাশ রিপোর্ট</string>
+    <string name="ui_crash_share_chooser" translatable="true">ক্র্যাশ রিপোর্ট শেয়ার করুন</string>
+    <string name="ui_crash_copied" translatable="true">ক্র্যাশ রিপোর্ট কপি করা হয়েছে</string>
+    <string name="ui_crash_copied_all" translatable="true">সব ক্র্যাশ রিপোর্ট কপি করা হয়েছে</string>
+    <string name="ui_crash_copy_failed" translatable="true">ক্র্যাশ রিপোর্টটি কপি করার জন্য খুব বড়। পরিবর্তে শেয়ার ব্যবহার করুন।</string>
+    <string name="ui_crash_deleted" translatable="true">ক্র্যাশ রিপোর্ট মুছে ফেলা হয়েছে</string>
+    <string name="ui_crash_all_deleted" translatable="true">সব ক্র্যাশ রিপোর্ট মুছে ফেলা হয়েছে</string>
+    <string name="ui_crash_delete_one_title" translatable="true">এই ক্র্যাশ রিপোর্টটি মুছবেন?</string>
+    <string name="ui_crash_delete_one_body" translatable="true">নির্বাচিত ক্র্যাশ রিপোর্টটি স্থায়ীভাবে মুছে যাবে। এটি ফিরিয়ে আনা যাবে না।</string>
+    <string name="ui_debug_crash_history_body" translatable="true">সম্পূর্ণ স্ট্যাক ট্রেস, কারণের শৃঙ্খল, সব থ্রেড ডাম্প, ডিভাইস/বিল্ডের তথ্য, মেমরির অবস্থা ও সাম্প্রতিক লগসহ সংরক্ষিত সব ক্র্যাশ রিপোর্ট দেখুন। আলাদা রিপোর্ট কপি করুন, সব কপি করুন, ফাইল হিসেবে শেয়ার করুন বা মুছে ফেলুন।</string>
+    <string name="ui_clipboard_crash_report" translatable="true">ক্র্যাশ রিপোর্ট</string>
     <string name="ui_debug_hide_body">Dev_mode=false সেট করে এবং এই বিভাগটি লুকিয়ে রাখে । বিল্ড নম্বরটি আবার আনলক করতে About স্ক্রিনে 5 বার ট্যাপ করুন ।</string>
     <string name="ui_remove_key">কী সরান</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied">সংবেদনশীল মানগুলি মুখোশযুক্ত এবং এই দৃশ্য থেকে কখনই অনুলিপি করা হয় না ।</string>
@@ -1601,6 +1624,13 @@
     <string name="ui_add_reactant">বিক্রিয়ক যোগ করুন</string>
     <string name="ui_predict_reaction">উৎপাদ অনুমান করুন</string>
     <string name="ui_error_enter_two_reactants">দুটি বিক্রিয়ক লিখুন।</string>
+    <string name="ui_error_enter_reactant" translatable="true">অন্তত একটি বিক্রিয়ক লিখুন।</string>
+    <string name="ui_pred_rule_decomposition" translatable="true">বিশ্লেষণ নিয়ম</string>
+    <string name="ui_pred_note_oxygen_gas" translatable="true">অক্সিজেন গ্যাস</string>
+    <string name="ui_rp_decomposition_hint" translatable="true">একটি যৌগের বিশ্লেষণ অনুমান করতে দ্বিতীয় বিক্রিয়কটি খালি রাখুন।</string>
+    <string name="ui_confidence_database" translatable="true">ডাটাবেস মিল</string>
+    <string name="ui_confidence_rule" translatable="true">নিয়মভিত্তিক</string>
+    <string name="ui_confidence_low" translatable="true">কম নির্ভরযোগ্যতা</string>
     <string name="ui_error_no_prediction_available">এই বিক্রিয়ক জুটির সাথে মেলে এমন কোনো পরিচিত নিয়ম নেই। অ্যাসিডের সাথে ক্ষার, ধাতু বা কার্বনেটের মতো সাধারণ জুটি চেষ্টা করুন।</string>
     <string name="ui_pred_rule_neutralization">প্রশমন নিয়ম</string>
     <string name="ui_pred_rule_acid_carbonate">অ্যাসিড + কার্বনেট নিয়ম</string>
@@ -1621,7 +1651,7 @@
     <string name="ui_pred_note_ammonia_gas">অ্যামোনিয়া গ্যাস</string>
     <string name="ui_pred_note_pungent_gas">তীব্র SO2 গ্যাস</string>
     <string name="ui_pred_note_rotten_egg">পচা ডিমের গন্ধ</string>
-    <string name="ui_rp_what_it_does_desc">দুটি বিক্রিয়ক লিখে অনুমানকৃত উৎপাদ, ভারসাম্যপূর্ণ সমীকরণ এবং পূর্বাভাসের পেছনের নিয়ম বা ডেটাবেস এন্ট্রি দেখুন।</string>
+    <string name="ui_rp_what_it_does_desc">এক বা দুটি বিক্রিয়ক লিখে পূর্বাভাসিত উৎপাদ, ভারসাম্যপূর্ণ সমীকরণ এবং পূর্বাভাসের ভিত্তি নিয়ম বা ডাটাবেস এন্ট্রি দেখুন।</string>
     <string name="ui_rp_best_inputs_desc">সাধারণ অজৈব জুটি সবচেয়ে ভালো কাজ করে: ক্ষার, ধাতু বা কার্বনেটের সাথে অ্যাসিড; লবণের দ্রবণে সক্রিয় ধাতু; O2 এর সাথে হাইড্রোকার্বন; এবং পরিচিত দ্বৈত যৌগ গঠনকারী দুটি মৌল।</string>
     <string name="ui_rp_limits_desc">পূর্বাভাসক শুধু সাধারণ নিয়ম জানে। জৈব রসায়ন, বিশেষ অবস্থার redox এবং প্রভাবক বা তাপ দরকার এমন বিক্রিয়া অনুপস্থিত থাকতে পারে। পূর্বাভাসের উপর নির্ভর করার আগে রেফারেন্স দেখে নিন।</string>
     <string name="ui_widget_name_placeholder" translatable="true">ChemSearch খুলুন…</string>
@@ -1714,4 +1744,8 @@
     <string name="ui_source_pubchem_spectra" translatable="true">উৎস: PubChem বর্ণালি সংগ্রহ</string>
     <string name="ui_info_spectral_what_body" translatable="true">PubChem-এ প্রকাশিত পরীক্ষামূলক বর্ণালি, কৌশল অনুযায়ী সাজানো (NMR, MS, IR, UV, Raman)। মানগুলি মূল উৎস থেকে আসে, তাই যন্ত্র, দ্রাবক ও একক রেকর্ডভেদে ভিন্ন হয়।</string>
     <string name="ui_info_spectral_why_body" translatable="true">সব পদার্থের প্রকাশিত বর্ণালি থাকে না। PubChem-এ না থাকলে এই বিভাগটি লুকানো থাকে; পদার্থটির PubChem পৃষ্ঠায় সবকিছু এখনও পাওয়া যায়।</string>
+    <plurals name="ui_crash_reports_count">
+        <item quantity="one">%1$dটি ক্র্যাশ রিপোর্ট</item>
+        <item quantity="other">%1$dটি ক্র্যাশ রিপোর্ট</item>
+    </plurals>
 </resources>

@@ -1968,6 +1968,7 @@ private fun readDebugMemSnapshot(context: android.content.Context): DebugMemSnap
 
 private val DEBUG_ENTRIES = listOf(
     R.string.ui_verbose_logging to R.string.ui_debug_verbose_logging_body,
+    R.string.ui_crash_history to R.string.ui_debug_crash_history_body,
     R.string.ui_live_log_viewer to R.string.ui_debug_live_log_viewer_body,
     R.string.ui_inspect_sharedpreferences to R.string.ui_debug_inspect_prefs_body,
     R.string.ui_debug_device_build_info to R.string.ui_debug_device_body,
@@ -4411,10 +4412,14 @@ private suspend fun runNetworkDiagnosticsChecks(
 // DEBUG SETTINGS
 object DebugLog {
     private const val MAX = 200
+    private val bufferLock = Any()
+    private val bufferedLines = ArrayDeque<String>()
     val lines = mutableStateListOf<String>()
     private val formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS", Locale.US)
     private val mainHandler = Handler(Looper.getMainLooper())
     @Volatile var verbose = false
+
+    fun snapshot(): List<String> = synchronized(bufferLock) { bufferedLines.toList() }
 
     fun d(tag: String, msg: String) {
         if (!verbose) return
@@ -4432,12 +4437,19 @@ object DebugLog {
     }
     private fun append(line: String) {
         val entry = "${LocalTime.now().format(formatter)}  $line"
+        synchronized(bufferLock) {
+            while (bufferedLines.size >= MAX) bufferedLines.removeFirst()
+            bufferedLines.addLast(entry)
+        }
         runOnMain {
             while (lines.size >= MAX) lines.removeAt(0)
             lines.add(entry)
         }
     }
-    fun clear() = runOnMain { lines.clear() }
+    fun clear() {
+        synchronized(bufferLock) { bufferedLines.clear() }
+        runOnMain { lines.clear() }
+    }
 
     private fun runOnMain(block: () -> Unit) {
         if (Looper.myLooper() == Looper.getMainLooper()) {
@@ -4477,6 +4489,55 @@ fun DebugSettingsSection(
     var networkDiagnosticsRunAt by remember { mutableStateOf<Long?>(null) }
     var networkDiagnosticsResults by remember { mutableStateOf<List<NetworkProbeResult>>(emptyList()) }
     val logLines = DebugLog.lines
+    val crashLogRepository = remember(context) { CrashLogRepository(context) }
+    var crashReports by remember { mutableStateOf<List<CrashLogEntry>>(emptyList()) }
+    var crashTotalBytes by remember { mutableLongStateOf(0L) }
+    var showCrashHistory by remember { mutableStateOf(false) }
+    var selectedCrashReport by remember { mutableStateOf<CrashLogEntry?>(null) }
+    var selectedCrashText by remember { mutableStateOf("") }
+    var crashRefreshKey by remember { mutableIntStateOf(0) }
+
+    LaunchedEffect(crashRefreshKey) {
+        val loaded = withContext(Dispatchers.IO) { crashLogRepository.list() }
+        crashReports = loaded
+        crashTotalBytes = loaded.sumOf { it.sizeBytes }
+    }
+
+    fun openCrashReport(report: CrashLogEntry) {
+        scope.launch {
+            selectedCrashText = withContext(Dispatchers.IO) { crashLogRepository.read(report) }
+            selectedCrashReport = report
+        }
+    }
+
+    fun deleteCrashReport(report: CrashLogEntry) {
+        scope.launch {
+            withContext(Dispatchers.IO) { crashLogRepository.delete(report) }
+            selectedCrashReport = null
+            selectedCrashText = ""
+            crashRefreshKey++
+            Toast.makeText(context, context.getString(R.string.ui_crash_deleted), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun copyAllCrashReports() {
+        scope.launch {
+            val text = withContext(Dispatchers.IO) { crashLogRepository.readAll() }
+            if (text.isNotBlank()) {
+                copyToClipboard(context, text, R.string.ui_crash_copied_all)
+            }
+        }
+    }
+
+    fun deleteAllCrashReports() {
+        scope.launch {
+            withContext(Dispatchers.IO) { crashLogRepository.deleteAll() }
+            selectedCrashReport = null
+            selectedCrashText = ""
+            crashRefreshKey++
+            Toast.makeText(context, context.getString(R.string.ui_crash_all_deleted), Toast.LENGTH_SHORT).show()
+        }
+    }
 
     fun runNetworkDiagnostics() {
         if (isRunningNetworkDiagnostics) return
@@ -4507,6 +4568,29 @@ fun DebugSettingsSection(
 
     LaunchedEffect(verboseLogging) {
         DebugLog.verbose = verboseLogging
+    }
+
+    if (showCrashHistory) {
+        CrashHistoryDialog(
+            reports = crashReports,
+            totalBytes = crashTotalBytes,
+            onOpen = { report -> openCrashReport(report) },
+            onCopyAll = { copyAllCrashReports() },
+            onDeleteAll = { deleteAllCrashReports() },
+            onDismiss = { showCrashHistory = false }
+        )
+    }
+
+    selectedCrashReport?.let { report ->
+        CrashLogDetailDialog(
+            report = report,
+            reportText = selectedCrashText,
+            onDelete = { deleteCrashReport(report) },
+            onDismiss = {
+                selectedCrashReport = null
+                selectedCrashText = ""
+            }
+        )
     }
 
     if (showInfoDialog) {
@@ -5355,6 +5439,28 @@ fun DebugSettingsSection(
                     }
                 )
             }
+
+            // Persisted crash reports
+            val crashSummary = if (crashReports.isEmpty()) {
+                context.getString(R.string.ui_crash_no_reports)
+            } else {
+                pluralStringResource(
+                    R.plurals.ui_crash_reports_count,
+                    crashReports.size,
+                    crashReports.size
+                ) + "  •  " + formatCrashReportBytes(crashTotalBytes)
+            }
+            SettingsActionRow(
+                icon = Icons.Default.History,
+                title = stringResource(R.string.ui_crash_history),
+                subtitle = crashSummary,
+                actionLabel = stringResource(R.string.ui_view),
+                actionColor = MaterialTheme.colorScheme.primary,
+                onClick = {
+                    crashRefreshKey++
+                    showCrashHistory = true
+                }
+            )
 
             // Live logs
             SettingsActionRow(

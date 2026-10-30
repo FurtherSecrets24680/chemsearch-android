@@ -144,7 +144,7 @@
     <string name="ui_s_copied" translatable="true">%1$s copié</string>
     <string name="ui_back_to_database" translatable="true">Retour à la base de données</string>
     <string name="ui_search_in_chemsearch" translatable="true">Rechercher dans ChemSearch</string>
-    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Rechercher des substances, des réactions, des groupes, des ions...</string>
+    <string name="ui_search_substances_reactions_groups_ions" translatable="true">Rechercher dans la base...</string>
     <!-- FormulaToolsUi.kt -->
     <string name="ui_molecular_formula" translatable="true">Formule moléculaire</string>
     <string name="ui_empirical" translatable="true">Empirique</string>
@@ -478,7 +478,30 @@
     <string name="ui_debug_api_endpoints_body" translatable="true">Copie des URL de base pour PubChem, NCI/CADD, Wikipedia, GitHub, et support les fournisseurs AI dans votre presse-papiers pour les tests manuels.</string>
     <string name="ui_debug_wipe_prefs_body" translatable="true">Appelle prefs.edit().clear(). Supprime les valeurs de préférences héritées, les enregistrements de clés chiffrés, l\'historique, les favoris et les indicateurs de débogage. Les paramètres du DataStore, les téléchargements des salles et les fichiers de cache des applications ne sont pas supprimés par cette action ; redémarrage recommandé.</string>
     <string name="ui_debug_force_crash" translatable="true">Forcer le plantage</string>
-    <string name="ui_debug_force_crash_body" translatable="true">Lance délibérément une exception Runtime non gérée. Utilisée pour vérifier que le rapport de plantage/Logcat fonctionne correctement. Il y a une étape de confirmation avant qu\'il ne se déclenche.</string>
+    <string name="ui_debug_force_crash_body" translatable="true">Lance délibérément une RuntimeException non gérée. Un rapport de plantage détaillé est enregistré avant la fin du processus ; c’est donc le moyen le plus rapide de vérifier le suivi des plantages. Une confirmation est demandée avant le déclenchement.</string>
+    <string name="ui_crash_history" translatable="true">Historique des plantages</string>
+    <string name="ui_crash_history_body" translatable="true">Les rapports de plantage sont écrits automatiquement avant qu’une exception non gérée n’arrête l’application. Chaque rapport contient la trace de pile complète, la chaîne des causes, les piles de tous les threads actifs, les détails de l’appareil et de la compilation, l’état de la mémoire, les limites du processus et les journaux récents de l’application.</string>
+    <string name="ui_crash_no_reports" translatable="true">Aucun plantage enregistré</string>
+    <string name="ui_crash_empty_help" translatable="true">Aucun rapport de plantage pour l’instant. Si l’application plante, un rapport apparaîtra ici à la prochaine ouverture. Vous pouvez aussi utiliser « Planter maintenant » ci-dessous pour tester la capture.</string>
+    <string name="ui_crash_copy_all" translatable="true">Tout copier</string>
+    <string name="ui_crash_delete_all_title" translatable="true">Supprimer tous les rapports de plantage ?</string>
+    <string name="ui_crash_delete_all_body" translatable="true">Tous les rapports de plantage enregistrés seront supprimés définitivement. Cette action est irréversible.</string>
+    <string name="ui_delete_all" translatable="true">Tout supprimer</string>
+    <string name="ui_crash_report_detail" translatable="true">Rapport de plantage</string>
+    <string name="ui_crash_read_failed" translatable="true">Impossible de lire ce rapport de plantage.</string>
+    <string name="ui_crash_share" translatable="true">Partager</string>
+    <string name="ui_crash_share_failed" translatable="true">Impossible de partager le rapport de plantage</string>
+    <string name="ui_crash_share_subject" translatable="true">Rapport de plantage ChemSearch</string>
+    <string name="ui_crash_share_chooser" translatable="true">Partager le rapport de plantage</string>
+    <string name="ui_crash_copied" translatable="true">Rapport de plantage copié</string>
+    <string name="ui_crash_copied_all" translatable="true">Tous les rapports de plantage copiés</string>
+    <string name="ui_crash_copy_failed" translatable="true">Le rapport de plantage est trop volumineux pour être copié. Utilisez Partager à la place.</string>
+    <string name="ui_crash_deleted" translatable="true">Rapport de plantage supprimé</string>
+    <string name="ui_crash_all_deleted" translatable="true">Tous les rapports de plantage supprimés</string>
+    <string name="ui_crash_delete_one_title" translatable="true">Supprimer ce rapport de plantage ?</string>
+    <string name="ui_crash_delete_one_body" translatable="true">Le rapport de plantage sélectionné sera supprimé définitivement. Cette action est irréversible.</string>
+    <string name="ui_debug_crash_history_body" translatable="true">Parcourez tous les rapports de plantage enregistrés avec la trace de pile complète, la chaîne des causes, tous les vidages de threads, les détails de l’appareil et de la compilation, l’état de la mémoire et les journaux récents. Copiez des rapports individuellement, copiez-les tous, partagez-les sous forme de fichier ou supprimez-les.</string>
+    <string name="ui_clipboard_crash_report" translatable="true">Rapport de plantage</string>
     <string name="ui_debug_hide_body" translatable="true">Définit dev_mode=false et masque cette section. Appuyez sur le numéro de build 5 fois sur l\'écran À propos pour le déverrouiller à nouveau.</string>
     <string name="ui_remove_key" translatable="true">Supprimer la clé</string>
     <string name="ui_sensitive_values_are_masked_and_are_never_copied" translatable="true">Les valeurs sensibles sont masquées et ne sont jamais copiées depuis cette vue.</string>
@@ -1645,6 +1668,13 @@
     <string name="ui_add_reactant">Ajouter un réactif</string>
     <string name="ui_predict_reaction">Prédire les produits</string>
     <string name="ui_error_enter_two_reactants">Entrez deux réactifs.</string>
+    <string name="ui_error_enter_reactant" translatable="true">Saisissez au moins un réactif.</string>
+    <string name="ui_pred_rule_decomposition" translatable="true">Règle de décomposition</string>
+    <string name="ui_pred_note_oxygen_gas" translatable="true">gaz oxygène</string>
+    <string name="ui_rp_decomposition_hint" translatable="true">Laissez le second réactif vide pour prédire la décomposition d\'un composé.</string>
+    <string name="ui_confidence_database" translatable="true">Correspondance dans la base</string>
+    <string name="ui_confidence_rule" translatable="true">Basé sur des règles</string>
+    <string name="ui_confidence_low" translatable="true">Confiance faible</string>
     <string name="ui_error_no_prediction_available">Aucune règle connue ne correspond à ces réactifs. Essayez une paire courante comme un acide avec une base, un métal ou un carbonate.</string>
     <string name="ui_pred_rule_neutralization">Règle de neutralisation</string>
     <string name="ui_pred_rule_acid_carbonate">Règle acide + carbonate</string>
@@ -1665,7 +1695,7 @@
     <string name="ui_pred_note_ammonia_gas">gaz ammoniac</string>
     <string name="ui_pred_note_pungent_gas">gaz SO2 irritant</string>
     <string name="ui_pred_note_rotten_egg">odeur d\'œuf pourri</string>
-    <string name="ui_rp_what_it_does_desc">Entrez deux réactifs pour voir les produits prédits, une équation équilibrée et la règle ou l\'entrée de base de données derrière la prédiction.</string>
+    <string name="ui_rp_what_it_does_desc">Saisissez un ou deux réactifs pour voir les produits prévus, une équation équilibrée et la règle ou l\'entrée de la base à l\'origine de la prédiction.</string>
     <string name="ui_rp_best_inputs_desc">Les paires inorganiques courantes fonctionnent mieux : acides avec bases, métaux ou carbonates ; métaux actifs dans des solutions de sels ; hydrocarbures avec O2 ; et deux éléments formant un composé binaire connu.</string>
     <string name="ui_rp_limits_desc">Le prédicteur ne couvre que les règles courantes. La chimie organique, les réactions redox avec conditions spéciales et les réactions nécessitant un catalyseur ou de la chaleur peuvent manquer. Vérifiez une référence avant de vous fier à une prédiction.</string>
     <string name="ui_language_bengali">বাংলা</string>
@@ -1763,4 +1793,8 @@
     <string name="ui_source_pubchem_spectra" translatable="true">Source : collections spectrales PubChem</string>
     <string name="ui_info_spectral_what_body" translatable="true">Spectres expérimentaux publiés dans PubChem, regroupés par technique (NMR, MS, IR, UV, Raman). Les valeurs proviennent de la source d\'origine, donc les instruments, solvants et unités varient d\'un enregistrement à l\'autre.</string>
     <string name="ui_info_spectral_why_body" translatable="true">Toutes les substances n\'ont pas de spectres publiés. Lorsque PubChem n\'en a aucun, cette section reste masquée ; la page PubChem de la substance répertorie toujours tout ce qui est disponible.</string>
+    <plurals name="ui_crash_reports_count">
+        <item quantity="one">%1$d rapport de plantage</item>
+        <item quantity="other">%1$d rapports de plantage</item>
+    </plurals>
 </resources>
