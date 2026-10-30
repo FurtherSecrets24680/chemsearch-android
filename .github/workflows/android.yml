@@ -6,7 +6,7 @@ name: Android CI
 
 on:
   push:
-    branches: ['**']
+    branches: ['**', '!ci-*']
     tags: ['*']
   pull_request:
   workflow_dispatch:
@@ -30,7 +30,7 @@ jobs:
     timeout-minutes: 60
     if: >-
       github.event_name == 'pull_request' ||
-      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'workflow_dispatch' && !inputs.build_release) ||
       (github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/'))
     env:
       PACKAGE_NAME: com.furthersecrets.chemsearch
