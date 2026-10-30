@@ -1,0 +1,132 @@
+# GitHub Actions mirror of codemagic.yaml.
+# Keep the Gradle invocations byte-identical to codemagic.yaml so drift is obvious.
+# Codemagic still owns tag-triggered releases until its `triggering:` block is removed.
+
+name: Android CI
+
+on:
+  push:
+    branches: ['**']
+    tags: ['*']
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      build_release:
+        description: 'Run the signed release job too'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  debug:
+    name: Debug APKs (github + fdroid)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    if: >-
+      github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/'))
+    env:
+      PACKAGE_NAME: com.furthersecrets.chemsearch
+      # R8 across two flavors needs more headroom than the local -Xmx2048m.
+      GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx4g -Dfile.encoding=UTF-8
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build Debug APKs (Github & F-droid)
+        run: |
+          chmod +x gradlew
+          ./gradlew :app:assembleGithubDebug :app:assembleFdroidDebug --stacktrace
+
+      - name: Upload APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: chemsearch-apk
+          path: app/build/outputs/apk/**/*.apk
+          if-no-files-found: error
+          retention-days: 30
+
+  release:
+    name: Signed release APKs + AABs (github + fdroid)
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    if: >-
+      startsWith(github.ref, 'refs/tags/') ||
+      (github.event_name == 'workflow_dispatch' && inputs.build_release)
+    env:
+      PACKAGE_NAME: com.furthersecrets.chemsearch
+      GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx4g -Dfile.encoding=UTF-8
+      # Names match the CI branch in app/build.gradle.kts:86-91, so no Gradle changes are needed.
+      CM_KEYSTORE_PASSWORD: ${{ secrets.CM_KEYSTORE_PASSWORD }}
+      CM_KEY_ALIAS: ${{ secrets.CM_KEY_ALIAS }}
+      CM_KEY_PASSWORD: ${{ secrets.CM_KEY_PASSWORD }}
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      # Without KEYSTORE_BASE64 the build still runs and produces an unsigned APK,
+      # which is what fork PRs and fresh clones get.
+      - name: Decode signing keystore
+        if: env.KEYSTORE_BASE64 != ''
+        run: |
+          set -euo pipefail
+          umask 077
+          printf '%s' "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.keystore"
+          if [ "$(stat -c%s "$RUNNER_TEMP/release.keystore")" -lt 1024 ]; then
+            echo "::error::Decoded keystore looks truncated"
+            exit 1
+          fi
+          echo "CM_KEYSTORE_PATH=$RUNNER_TEMP/release.keystore" >> "$GITHUB_ENV"
+          echo "Signing keystore ready"
+
+      - name: Warn if release will be unsigned
+        if: env.KEYSTORE_BASE64 == ''
+        run: echo "::warning::No KEYSTORE_BASE64 secret; producing an unsigned release build"
+
+      - name: Build Release APKs & App Bundles (Github & F-droid)
+        run: |
+          chmod +x gradlew
+          ./gradlew :app:assembleGithubRelease :app:assembleFdroidRelease \
+                    :app:bundleGithubRelease :app:bundleFdroidRelease --stacktrace
+
+      - name: Upload APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: chemsearch-apk-release
+          path: app/build/outputs/apk/**/*.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload AABs
+        uses: actions/upload-artifact@v4
+        with:
+          name: chemsearch-aab-release
+          path: app/build/outputs/bundle/**/*.aab
+          if-no-files-found: error
+          retention-days: 30
