@@ -267,17 +267,19 @@ private fun WelcomeStage(
 @Composable
 private fun WelcomeWhatsNewStage() {
     val featureBullets = listOf(
-        R.string.ui_whats_new_bullet_spectral,
-        R.string.ui_whats_new_bullet_database_group
+        R.string.ui_whats_new_bullet_reaction_decomposition,
+        R.string.ui_whats_new_bullet_crash_history
     )
-    val databaseBullets = listOf(
-        R.string.ui_whats_new_bullet_database,
-        R.string.ui_whats_new_bullet_ions,
-        R.string.ui_whats_new_bullet_functional_groups,
-        R.string.ui_whats_new_bullet_reactions
+    val crashHistoryBullets = listOf(
+        R.string.ui_whats_new_bullet_crash_reports,
+        R.string.ui_whats_new_bullet_crash_management
     )
     val changeBullets = listOf(
-        R.string.ui_whats_new_bullet_cards_default
+        R.string.ui_whats_new_bullet_predictor_refresh,
+        R.string.ui_whats_new_bullet_database_navigation,
+        R.string.ui_whats_new_bullet_compound_details,
+        R.string.ui_whats_new_bullet_periodic_table,
+        R.string.ui_whats_new_bullet_safety_layout
     )
     Column(verticalArrangement = Arrangement.spacedBy(14.dp), modifier = Modifier.fillMaxWidth()) {
         Column(
@@ -304,8 +306,8 @@ private fun WelcomeWhatsNewStage() {
         WelcomeWhatsNewSection(
             headerRes = R.string.ui_whats_new_section_features,
             bullets = featureBullets,
-            introRes = R.string.ui_whats_new_intro_database,
-            nestedBullets = databaseBullets
+            introRes = R.string.ui_whats_new_intro_11605,
+            nestedBullets = crashHistoryBullets
         )
         WelcomeWhatsNewSection(
             headerRes = R.string.ui_whats_new_section_changes,

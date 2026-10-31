@@ -1822,6 +1822,16 @@
     <string name="ui_whats_new_bullet_reactions" translatable="true">Reactions: Expanded from 149 to 326 entries, giving the offline Reaction Predictor wider coverage.</string>
     <string name="ui_whats_new_section_changes" translatable="true">Changes</string>
     <string name="ui_whats_new_bullet_cards_default" translatable="true">Cards mode: Off by default now for a flatter, denser layout. Turn it back on in Settings.</string>
+    <string name="ui_whats_new_intro_11605" translatable="true">New chemistry tools and better crash diagnostics</string>
+    <string name="ui_whats_new_bullet_reaction_decomposition" translatable="true">Reaction Predictor: Single-reactant decomposition</string>
+    <string name="ui_whats_new_bullet_crash_history" translatable="true">Crash history</string>
+    <string name="ui_whats_new_bullet_crash_reports" translatable="true">Saves detailed crash reports with stack traces, device information, memory state, and recent app logs.</string>
+    <string name="ui_whats_new_bullet_crash_management" translatable="true">View, copy, share, or delete reports in Settings &gt; Developer options.</string>
+    <string name="ui_whats_new_bullet_predictor_refresh" translatable="true">Reaction Predictor: Refreshed result cards and descriptions.</string>
+    <string name="ui_whats_new_bullet_database_navigation" translatable="true">Chemical Database: Added a draggable scrollbar and A–Z sorting; shortened the search hint.</string>
+    <string name="ui_whats_new_bullet_compound_details" translatable="true">Compound details: Added element-specific colours to composition bars and refreshed action buttons and description cards.</string>
+    <string name="ui_whats_new_bullet_periodic_table" translatable="true">Periodic table: Added animated electron shells; animation respects Reduce Motion.</string>
+    <string name="ui_whats_new_bullet_safety_layout" translatable="true">Safety information: Aligned GHS pictograms for a more consistent layout.</string>
     <string name="ui_error_search_not_found_s" translatable="true">No match found for “%1$s” in PubChem. Try a different name, a CAS number, or check the spelling.</string>
     <string name="ui_error_search_throttled" translatable="true">PubChem is rate-limiting requests right now. Wait a few seconds and try again.</string>
     <string name="ui_error_search_timeout" translatable="true">PubChem took too long to respond. Try again — very complex queries can time out.</string>

@@ -40,6 +40,7 @@ output-metadata.json
 
 # Local docs (working notes and analysis, not shipped with the repo)
 /docs/
+/AGENTS.md
 
 # Staging folders for store screenshots / one-off assets (superseded by phoneScreenshots)
 fastlane/metadata/android/en-US/images/new/
@@ -49,4 +50,3 @@ fastlane/metadata/android/en-US/images/new/
 
 # Python bytecode from untracked local tooling
 tools/__pycache__/
-
