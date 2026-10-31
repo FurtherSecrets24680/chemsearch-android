@@ -1,14 +1,10 @@
 # GitHub Actions mirror of codemagic.yaml.
 # Keep the Gradle invocations byte-identical to codemagic.yaml so drift is obvious.
-# Codemagic still owns tag-triggered releases until its `triggering:` block is removed.
+# This workflow is on-demand only. Codemagic retains its existing push/tag triggers.
 
 name: Android CI
 
 on:
-  push:
-    branches: ['**', '!ci-*']
-    tags: ['*']
-  pull_request:
   workflow_dispatch:
     inputs:
       build_release:
