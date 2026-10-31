@@ -57,13 +57,13 @@ It is aimed at students, teachers and anyone who wants chemistry data and common
 - **Advanced Search:** Filter by query type, included or excluded elements, molecular weight, charge, 3D data, GHS data, result count and name text.
 - **Structure Search:** Draw a structure and search PubChem by exact, similar, substructure or superstructure matching.
 - **Isomer Search:** Search by molecular formula and inspect isomer structures, formula details, mass, atom count, degrees of unsaturation and sorted results.
-- **Compound Results:** View formulas, identifiers, 2D structures, 3D models, descriptions, synonyms and GHS data when available.
+- **Compound Results:** View formulas, identifiers, 2D structures, 3D models, descriptions, synonyms and GHS data when available. Elemental-composition bars use element-specific CPK colors; description cards and favorite/offline-download controls have refreshed styling, and GHS pictograms use a consistent grid.
 - **Spectral Information:** Open published NMR, IR, mass, UV and Raman spectra for a compound from its result page.
 - **Offline Library:** Save compounds with their available data and export your library as CSV or JSON.
 - **Compound Comparison:** Compare up to six compounds and copy values from individual rows.
-- **Periodic Table:** Browse all 118 elements, filter by category, inspect trends and open element details.
-- **Chemical Database:** Browse 1532 substances, 211 ions, 122 functional groups and 326 reactions without an internet connection.
-- **Reaction Predictor:** Use an offline rule set to predict common reaction products, observations, conditions and reaction types.
+- **Periodic Table:** Browse all 118 elements, filter by category, inspect trends and open element details. Electron-shell diagrams animate unless Reduce Motion is enabled.
+- **Chemical Database:** Browse 1532 substances, 211 ions, 122 functional groups and 326 reactions without an internet connection; sort category results A–Z or use the draggable scrollbar.
+- **Reaction Predictor:** Use an offline rule set with one or two reactants to predict common reaction products, including single-reactant decomposition, with balanced equations and confidence levels.
 - **Home Screen:** Get a daily compound, use the random compound widget and open Search, Library, Tools or Settings from launcher shortcuts.
 - **Display Options:** Use light or dark themes, AMOLED mode, five color schemes, compact mode, reduced motion, high-contrast outlines, temperature units, cards mode and haptic feedback.
 - **Localization:** Choose from 16 language options, with each language shown by its native name in the language picker.
@@ -89,7 +89,7 @@ ChemSearch has 16 language options:
 - Russian
 - Swedish
 
-Translations cover the app UI, including tools, dialogs, widgets and other added strings. Language selection is available in **Settings > Language**. The translations are maintained with help from [Crowdin](https://crowdin.com/).
+Translations cover the app UI, including tools, dialogs, widgets and other added strings. Language selection is available in **Settings > Language**.
 
 ## Download for Android
 
@@ -332,7 +332,7 @@ It includes:
 - Full element detail pages
 - Wikipedia summaries
 - Element images
-- Electron-shell diagrams with short and full electronic configurations
+- Animated electron-shell diagrams, plus short and full electronic configurations (animation respects Reduce Motion)
 - Physical properties such as electronegativity, atomic radius, ionization energy, melting point, boiling point, density and molar heat
 - Spectral-line images
 
@@ -355,7 +355,7 @@ The bundled Chemical Database is available offline and contains:
 
 The substance collection includes acids, salts, organic families, polymers, alloys, drugs, dyes, biomolecules and other common chemistry references.
 
-Entries can be searched by name, alias or formula and filtered by type. The reaction entries are also used by the Reaction Predictor.
+Entries can be searched by name, alias or formula and filtered by type. Results within a category can be sorted alphabetically, and a draggable scrollbar helps navigate long lists. The reaction entries are also used by the Reaction Predictor.
 
 The 118 elements are kept in the Periodic Table instead of being duplicated in the substance list.
 
@@ -432,7 +432,7 @@ The grid adapts to the available width, using 2 columns on narrow phones and up 
 
 ### Reaction Predictor
 
-The Reaction Predictor uses the bundled Chemical Database and an offline rule set. It is intended for common study reactions rather than unusual chemistry.
+The Reaction Predictor uses the bundled Chemical Database and an offline rule set. Enter one or two reactants; single-reactant input can predict common decomposition reactions as well as the two-reactant reaction types below. Results include a balanced equation, likely products and a confidence level. This is a study aid for common cases, not a general chemistry simulation.
 
 Examples include:
 
@@ -448,8 +448,9 @@ Examples include:
 - Acid + sulfide
 - Ammonium salt + base
 - Simple synthesis reactions
+- Decomposition of hydrogen peroxide, bicarbonates, selected non-alkali carbonates and metal hydroxides, chlorates/perchlorates, sulfurous acid, and selected metal oxides such as HgO and Ag2O
 
-The result can include predicted products, a balanced equation, observations, conditions and a confidence level.
+Two-reactant results can also include observations, conditions and the rule or database entry behind the prediction. Decomposition coverage is rule-based and limited to supported compounds; it does not infer products for arbitrary single reactants.
 
 ## Display and Settings
 
@@ -527,7 +528,8 @@ Nothing is sent over the network while Offline Test Mode is active.
 
 Developer options also include:
 
-- Crash history with full stack traces, cause chains, thread dumps, device/build details, memory state, and recent logs
+- Crash history for uncaught app exceptions, with stack traces, cause chains, thread dumps, device/build details, memory and storage snapshots, and recent logs
+- View, copy, share or delete crash reports from Developer Options. Reports are kept in app-private storage, capped at 30 reports / 16 MB, and excluded from backup and device transfer.
 - Debug logs
 - Notification tests
 - Cache and storage summaries
